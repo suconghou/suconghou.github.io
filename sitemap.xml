@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>http://blog.suconghou.cn/</loc>
+    <lastmod>2016-01-02T00:01:24+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.suconghou.cn/post/end-of-2015/</loc>
+    <lastmod>2016-01-02T00:01:24+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.suconghou.cn/post/esay-use-setting/</loc>
+    <lastmod>2016-01-01T23:57:08+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.suconghou.cn/post/sync-files-on-linux/</loc>
+    <lastmod>2016-01-01T23:55:54+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.suconghou.cn/post/linux-download-tools/</loc>
+    <lastmod>2016-01-01T23:54:20+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.suconghou.cn/post/install-php7/</loc>
+    <lastmod>2016-01-01T23:51:02+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.suconghou.cn/post/start-your-blog-with-hugo/</loc>
+    <lastmod>2016-01-01T19:00:18+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.suconghou.cn/about/</loc>
+    <lastmod>2016-01-01T18:58:18+08:00</lastmod>
+  </url>
+  
+</urlset>

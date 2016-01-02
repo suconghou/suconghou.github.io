@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on 我的博客</title>
+    <link>http://blog.suconghou.cn/post/</link>
+    <description>Recent content in Posts on 我的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 02 Jan 2016 00:01:24 +0800</lastBuildDate>
+    <atom:link href="http://blog.suconghou.cn/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>二零一五结语,二零一六展望</title>
+      <link>http://blog.suconghou.cn/post/end-of-2015/</link>
+      <pubDate>Sat, 02 Jan 2016 00:01:24 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/end-of-2015/</guid>
+      <description>
+
+&lt;h2 id=&#34;回顾:f46a3f71f3adb5b403199c0bb47ce5cf&#34;&gt;回顾&lt;/h2&gt;
+
+&lt;p&gt;1.装备
+买了那些装备&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;树莓派2代 * 1&lt;/p&gt;
+
+&lt;p&gt;虚拟主机 * 2&lt;/p&gt;
+
+&lt;p&gt;VPS * 2&lt;/p&gt;
+
+&lt;p&gt;MacBook Pro * 1&lt;/p&gt;
+
+&lt;p&gt;山寨NUC * 1&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;2.技术
+学习vue
+学习react
+学习angular&lt;/p&gt;
+
+&lt;p&gt;phpstudy 网站&lt;/p&gt;
+
+&lt;h2 id=&#34;展望:f46a3f71f3adb5b403199c0bb47ce5cf&#34;&gt;展望&lt;/h2&gt;
+
+&lt;p&gt;1.还期望的装备&lt;/p&gt;
+
+&lt;p&gt;U2515H&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>常用的软件配置小技巧</title>
+      <link>http://blog.suconghou.cn/post/esay-use-setting/</link>
+      <pubDate>Fri, 01 Jan 2016 23:57:08 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/esay-use-setting/</guid>
+      <description>
+
+&lt;h2 id=&#34;配置git:4b7b0d7d811ca1b1653c08f5db9922dd&#34;&gt;配置Git&lt;/h2&gt;
+
+&lt;p&gt;1.git配置记住密码&lt;/p&gt;
+
+&lt;p&gt;2.分支线路图&lt;/p&gt;
+
+&lt;p&gt;3.配置换行符风格&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;配置sublime:4b7b0d7d811ca1b1653c08f5db9922dd&#34;&gt;配置Sublime&lt;/h2&gt;
+
+&lt;h3 id=&#34;插件:4b7b0d7d811ca1b1653c08f5db9922dd&#34;&gt;插件&lt;/h3&gt;
+
+&lt;h3 id=&#34;快捷键:4b7b0d7d811ca1b1653c08f5db9922dd&#34;&gt;快捷键&lt;/h3&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Linux下同步文件的多种方法</title>
+      <link>http://blog.suconghou.cn/post/sync-files-on-linux/</link>
+      <pubDate>Fri, 01 Jan 2016 23:55:54 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/sync-files-on-linux/</guid>
+      <description>
+
+&lt;h2 id=&#34;采用scp同步:33fb6ee0be4332317160ee00a21584a2&#34;&gt;采用scp同步&lt;/h2&gt;
+
+&lt;h2 id=&#34;采用rsync同步:33fb6ee0be4332317160ee00a21584a2&#34;&gt;采用rsync同步&lt;/h2&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Linux下常用的下载利器</title>
+      <link>http://blog.suconghou.cn/post/linux-download-tools/</link>
+      <pubDate>Fri, 01 Jan 2016 23:54:20 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/linux-download-tools/</guid>
+      <description>
+
+&lt;h2 id=&#34;wget:d42214d24013398e63cb86bbdfbd2d55&#34;&gt;wget&lt;/h2&gt;
+
+&lt;h2 id=&#34;curl:d42214d24013398e63cb86bbdfbd2d55&#34;&gt;curl&lt;/h2&gt;
+
+&lt;h2 id=&#34;axel:d42214d24013398e63cb86bbdfbd2d55&#34;&gt;Axel&lt;/h2&gt;
+
+&lt;h2 id=&#34;aria2:d42214d24013398e63cb86bbdfbd2d55&#34;&gt;Aria2&lt;/h2&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>安装PHP7和NGINX</title>
+      <link>http://blog.suconghou.cn/post/install-php7/</link>
+      <pubDate>Fri, 01 Jan 2016 23:51:02 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/install-php7/</guid>
+      <description>
+
+&lt;h2 id=&#34;编译安装nginx:d4cb4e734d41e78905840ce77b949d35&#34;&gt;编译安装NGINX&lt;/h2&gt;
+
+&lt;p&gt;首先安装一些依赖&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;yum -y install gcc make autoconf automake install zlib zlib-devel openssl openssl-devel pcre-devel
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编译安装&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;wget http://nginx.org/download/nginx-1.9.3.tar.gz
+tar -zxvf nginx-1.9.3.tar.gz
+cd nginx-1.9.3
+./configure
+make &amp;amp;&amp;amp; make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;编译安装php7:d4cb4e734d41e78905840ce77b949d35&#34;&gt;编译安装PHP7&lt;/h2&gt;
+
+&lt;p&gt;最好先&lt;code&gt;yum update&lt;/code&gt;一下,再安装以下依赖&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;yum install -y git wget curl curl-devel gcc gcc-c++ libmarypt cmake libxml2  autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libpng libpng-devel libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses curl openssl-devel gdbm-devel db4-devel libXpm-devel libX11-devel gd-devel gmp-devel readline-devel libxslt-devel expat-devel xmlrpc-c xmlrpc-c-devel
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;下载PHP7最新版本,解压,有多重压缩格式可选,其中xz最小&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;wget http://php.net/distributions/php-7.0.1.tar.xz
+xz -d php-7.0.1.tar.xz
+tar -xvf php-7.0.1.tar
+cd php-7.0.1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编译之前,可以开启O3编译优化,生成的可执行文件更小,性能更好
+&lt;code&gt;export CFLAGS=&amp;quot;-O3&amp;quot;&lt;/code&gt;
+不添加任何额外扩展,执行编译&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;./configure --prefix=/tmp --disable-all
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;得出的扩展有&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[PHP Modules]
+Core
+ctype
+date
+dom
+fileinfo
+filter
+hash
+iconv
+json
+libxml
+pcre
+PDO
+pdo_sqlite
+Phar
+posix
+Reflection
+session
+SimpleXML
+SPL
+sqlite3
+standard
+tokenizer
+xml
+xmlreader
+xmlwriter
+
+[Zend Modules]
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;包含部分常用扩展的编译&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;./configure --prefix=/tmp --enable-sockets --enable-zip --enable-mbstring --with-pdo-mysql --with-curl
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;得出的扩展有&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[PHP Modules]
+Core
+ctype
+curl
+date
+dom
+fileinfo
+filter
+hash
+iconv
+json
+libxml
+mbstring
+mysqlnd
+pcre
+PDO
+pdo_mysql
+pdo_sqlite
+Phar
+posix
+Reflection
+session
+SimpleXML
+sockets
+SPL
+sqlite3
+standard
+tokenizer
+xml
+xmlreader
+xmlwriter
+zip
+
+[Zend Modules]
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;功能更全的编译&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;export CFLAGS=&amp;quot;-O3&amp;quot;
+./configure --prefix=/usr/local --with-config-file-path=/etc --enable-opcache --enable-fpm --enable-sockets --enable-ftp --enable-bcmath --enable-pcntl --enable-posix --enable-zip --enable-mbstring --with-iconv --with-pdo-mysql --with-curl --with-mcrypt --with-gd  --with-openssl
+
+make &amp;amp;&amp;amp; make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其中部分步骤可能需要root权限&lt;/p&gt;
+
+&lt;h3 id=&#34;可能出现的错误:d4cb4e734d41e78905840ce77b949d35&#34;&gt;可能出现的错误&lt;/h3&gt;
+
+&lt;p&gt;1.curl未安装
+执行&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;yum install curl-devel
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;或者&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get install curl libcurl3 libcurl3-dev
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后再次尝试编译&lt;/p&gt;
+
+&lt;p&gt;2.需要安装libcrytpt&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;wget ftp://mcrypt.hellug.gr/pub/crypto/mcrypt/attic/libmcrypt/libmcrypt-2.5.7.tar.gz
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;安装：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;tar -zxvf libmcrypt-2.5.7.tar.gz
+cd libmcrypt-2.5.7
+mkdir -p /usr/local/libmcrytpt
+./configure prefix=/usr/local/libmcrytpt/
+make &amp;amp;&amp;amp; make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后重新编译,设定编译参数mcrypt指定路径:
+&lt;code&gt;--with-mcrypt=/usr/local/libmcrytpt/&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;提示: make 可使用多核提升编译性能
+用make -j带一个参数，可以把项目在进行并行编译，比如在一台双核的机器上，完全可以用&lt;code&gt;make -j4&lt;/code&gt;，让make最多允许4个编译命令同时执行，这样可以更有效的利用CPU资源。&lt;/p&gt;
+
+&lt;p&gt;-O这个选项控制所有的优化等级。使用优化选项会使编译过程耗费更多的时间，并且占用更多的内存，尤其是在提高优化等级的时候。
+-O2是推荐的优化等级,O3是最高等级。如果编译软件出现错误，请先检查是否启用了-O3&lt;/p&gt;
+
+&lt;h2 id=&#34;安装mariadb:d4cb4e734d41e78905840ce77b949d35&#34;&gt;安装MariaDB&lt;/h2&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>使用hugo搭建静态博客</title>
+      <link>http://blog.suconghou.cn/post/start-your-blog-with-hugo/</link>
+      <pubDate>Fri, 01 Jan 2016 19:00:18 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/start-your-blog-with-hugo/</guid>
+      <description>
+
+&lt;h2 id=&#34;什么是hugo:c9ea3f3791a768b68d4b792937e3f14b&#34;&gt;什么是hugo&lt;/h2&gt;
+
+&lt;p&gt;Hugo是用Go语言编写的静态网站生成器,与此类似的工具还有Hexo,相比Hexo,他的编译速度更快,而易于使用,主要表现在:&lt;/p&gt;
+
+&lt;p&gt;1.无依赖,无论是Linux环境,还是MacOs,Windows,下载一个二进制的可执行文件即可使用&lt;/p&gt;
+
+&lt;p&gt;2.即时刷新,无论是对于文章还是对于样式的修改都能够自动重新编译,自动刷新,无需配置,当你修改了文章,切换回浏览器,看到的已经是新页面了.&lt;/p&gt;
+
+&lt;p&gt;3.主题丰富,易于定制,编写一个主题十分简单,&lt;/p&gt;
+
+&lt;h2 id=&#34;如何使用:c9ea3f3791a768b68d4b792937e3f14b&#34;&gt;如何使用&lt;/h2&gt;
+
+&lt;p&gt;huogo 是开源的,在&lt;a href=&#34;https://github.com/spf13/hugo/releases&#34;&gt;github&lt;/a&gt;上下载即可.&lt;/p&gt;
+
+&lt;p&gt;1.基本命令&lt;/p&gt;
+
+&lt;p&gt;*. 新建一个站点&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;hugo new site /path/myblog&lt;/code&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
