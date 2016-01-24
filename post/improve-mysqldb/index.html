@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+	<meta name='renderer' content='webkit'><meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
+	<title> &middot; </title>
+	<link rel="stylesheet" type="text/css" href="/css/style.min.css">
+	<link href="" rel="alternate" type="application/rss+xml" title="" />
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+	<link rel="shortcut icon" href="/favicon.png">
+</head>
+<body>
+<header class="header">
+	<div class="header-main">
+		<a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
+		<h1> 苏苏的博客</h1>
+		<p class="sub-title">简约至极</p>
+		<ul class="contact">
+			<a href="https://github.com/suconghou" target="_blank"><i class="fa fa-github"></i></a>
+			<a href="javascript:music.show(1)"><i class="fa fa-music"></i></a>
+		</ul>
+	</div>
+</header>
+
+<aside></aside>
+
+<div class="content container">
+	<div class="post">
+		<h1 class="post-title">
+			<a href="javascript:void(0)"> Mysql性能优化</a>
+		</h1>
+		<p class="post-date">Mon, Jan 11, 2016</p>
+		
+		<div class="post-text">
+			 
+
+<h2 id="配置文件:3f024a9bc4eccdf3db769802efc70049">配置文件</h2>
+
+<p>配置文件一般放在<code>/etc/my.cnf</code></p>
+
+<p>默认的配置文件示例存放于<code>/usr/share/mysql</code></p>
+
+<p>各个文件适配不同内存的配置</p>
+
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>内存大小</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>my-small.cnf</td>
+<td>&lt;= 64M 不经常开启mysql</td>
+</tr>
+
+<tr>
+<td>my-medium.cnf</td>
+<td>32M–64M 经常其他程序搭配mysql</td>
+</tr>
+
+<tr>
+<td>my-large.cnf</td>
+<td>512M</td>
+</tr>
+
+<tr>
+<td>my-huge.cnf</td>
+<td>1G-2G</td>
+</tr>
+
+<tr>
+<td>my-innodb-heavy-4G.cnf</td>
+<td>4GB 使用InnoDB</td>
+</tr>
+</tbody>
+</table>
+
+<p>使用<code>SHOW VARIABLES</code>来查看系统参数,通过<code>SHOW STATUS</code>来判断系统状态</p>
+
+<p>show 命令还有很多用途</p>
+
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>show databases 或show tables from database_name</td>
+<td>显示mysql中所有数据库的名称</td>
+</tr>
+
+<tr>
+<td>show tables</td>
+<td>显示当前数据库中所有表的名称</td>
+</tr>
+
+<tr>
+<td>show columns from table_name from database_name</td>
+<td>显示表中列名称</td>
+</tr>
+
+<tr>
+<td>show grants for user_name</td>
+<td>显示一个用户的权限，显示结果类似于grant命令</td>
+</tr>
+
+<tr>
+<td>show table status</td>
+<td>显示当前使用或者指定的database中的每个表的信息。<br>信息包括表类型和表的最新更新时间。</td>
+</tr>
+
+<tr>
+<td>show index from table_name</td>
+<td>显示表的索引</td>
+</tr>
+
+<tr>
+<td>show status</td>
+<td>显示一些系统特定资源的信息,例如,正在运行的线程数量</td>
+</tr>
+
+<tr>
+<td>show variables</td>
+<td>显示系统变量的名称和值</td>
+</tr>
+
+<tr>
+<td>show processlist</td>
+<td>显示系统中正在运行的所有进程，也就是当前正在执行的查询。<br>大多数用户可以查看他们自己的进程，但是如果他们拥有process权限，<br>就可以查看所有人的进程，包括密码</td>
+</tr>
+
+<tr>
+<td>show engies</td>
+<td>显示安装以后可用的存储引擎和默认引擎</td>
+</tr>
+
+<tr>
+<td>show innodb status</td>
+<td>显示innoDB存储引擎的状态</td>
+</tr>
+
+<tr>
+<td>show logs</td>
+<td>显示BDB存储引擎的日志</td>
+</tr>
+
+<tr>
+<td>show warnings</td>
+<td>显示最后一个执行的语句所产生的错误、警告和通知</td>
+</tr>
+
+<tr>
+<td>show errors</td>
+<td>只显示最后一个执行语句所产生的错误</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="小内存优化:3f024a9bc4eccdf3db769802efc70049">小内存优化</h2>
+
+<p>依据<code>my-small.cnf</code>为模板</p>
+
+<p>主要指标:存储引擎,key_buffer,table_cache,max_connections,thread_concurrency,query_cache,thread_stack</p>
+
+<p><strong>存储引擎</strong>:
+如果不使用 BDB table 和 InnoDB table 的话，加入下面2行关闭不需要的表类型很有必要，关闭 innodb 可以省下大量内存，虽然 InnoDB 好处多多但是在一个64MB的 VPS 上并不能体现出来，并且很占内存。</p>
+
+<p><strong>key_buffer</strong>:
+用来缓存 tables keys 和 indexes，增加这个值可以更好的处理索引，读和写都需要索引,这里设置成16K足够了.</p>
+
+<p><strong>table_cache</strong>:
+所有线程打开的表的数量，增加值可以增大 MySQL 的文件描述符数量，避免频繁的打开表，原始 my-small.cnf 中 table_cache 设置成4有点小，一个 wordpress 的页面通常会涉及到10个左右的表，其他的程序比如 Drupal，MediaWiki 会涉及到更多，将table_cache改为8。</p>
+
+<p><strong>max_connections</strong>:
+数据库最大的连接数量，可以根据自己博客/网站的访问量来定这个值,如果博客/网站经常出现：Too many connections 错误的信息说明需要增大 max_connections 的值.</p>
+
+<p><strong>thread_concurrency</strong>:
+最大并发线程数，通常设置为 CPU核数量×2，在 VPS 宿主机上如果服务器有2颗物理 CPU，而每颗物理 CPU 又支持 H.T 超线程（一个处理器上整合了两个逻辑处理器单元），所以实际取值为4 × 2 ＝ 8。
+如果我们在优化 php.ini 的时候设置了同时只有2个 php-cgi 运行的话，那么我们也应该只设置2个 MySQL 线程同时运行。</p>
+
+<p><strong>query_cache</strong>:
+对于博客/新闻网站来说，用得最多的就是查询，所以需要加入 query cache 的设置。query_cache_size 是执行查询所使用的缓冲大小。
+query_cache_limit指定单个查询能够使用的缓冲区大小，缺省为1M,结果集超过这个大小将不会被缓存。</p>
+
+<p>与查询缓冲有关的参数还有query_cache_type、query_cache_limit、query_cache_min_res_unit。</p>
+
+<p>query_cache_type指定是否使用查询缓冲，可以设置为0、1、2,分别代表了off、on、demand,如果是0，那么query cache 是关闭的。如果是1，那么查询总是先到查询缓存中查找，除非使用了sql_no_cache。如果是2，那么，只有使用 sql_cache的查询，才会去查询缓存中查找.</p>
+
+<p>query_cache_limit指定单个查询能够使用的缓冲区大小，缺省为1M。
+query_cache_min_res_unit是在4.1版本以后引入的，它指定分配缓冲区空间的最小单位，缺省为4K。
+检查状态值Qcache_free_blocks，如果该值非常大，则表明缓冲区中碎片很多，这就表明查询结果都比较小，此时需要减小 query_cache_min_res_unit。</p>
+
+<p><strong>thread_stack</strong>:
+用来存放每个线程的标识信息，如线程 id，线程运行时环境等，可以通过设置 thread_stack 来决定给每个线程分配多大的内存。</p>
+
+<p><strong>sort_buffer_size</strong>:
+每个需要排序的线程分配的缓冲区大小，增加该值可以加速 order by 和 group by 的操作。注意：该参数是以每个连接分配内存，也就是说，如果有16个连接，sort_buffer_size 为 64K，那么实际分配的内存为：16 × 64K = 1MB。如果设置的缓存大小无法满足需要，MySQL 会将数据写入磁盘来完成排序。因为磁盘操作和内存操作不在一个数量级，所以 sort_buffer_size 对排序的性能影响很大。</p>
+
+<p><strong>read_buffer_size</strong>:
+顺序读取数据时的缓冲区大小，与 sort_buffer_size 一样，该参数分配的内存也是以每连接为单位的。
+当需要顺序读取数据的时候，如无法使用索引的情况下的全表扫描，全索引扫描等。在这种时候，MySQL 按照数据的存储顺序依次读取数据块，每次读取的数据快首先会暂存在 read_buffer_size 中，当 buffer 空间被写满或者全部数据读取结束后，再将 buffer 中的数据返回给上层调用者，以提高效率。</p>
+
+<p><strong>read_rnd_buffer_size</strong>:
+随机读取数据时的缓冲区大小，与顺序读相对应。</p>
+
+<p><strong>net_buffer_size</strong>:
+用来存放客户端连接线程的连接信息和返回客户端的结果集的缓存大小。当 MySQL 接到请求后，产生返回结果集时，会在返回给请求线程之前暂存在在这个缓存中，等积累到一定大小的时候才开始向客户端发送，以提高网络效率。不 过，net_buffer_size 所设置的仅仅只是初始大小，MySQL 会根据实际需要自行申请更多的内存，但最大不会超过 max_allowed_packet。</p>
+
+<p>skip-locking用来避免 MySQL 外部锁定，减少出错几率，增强稳定性。</p>
+
+<p>以上: 64M VPS数据库配置</p>
+
+<pre><code>skip-bdb
+skip-innodb
+
+key_buffer = 16K
+table_cache = 8
+
+max_connections = 16
+thread_concurrency = 2
+
+query_cache_limit = 256K
+query_cache_size = 4M
+query_cache_type = 1
+
+sort_buffer_size = 64K
+read_buffer_size = 256K
+read_rnd_buffer_size = 256K
+net_buffer_length = 2K
+thread_stack = 64K
+skip-locking
+
+</code></pre>
+
+<p>thread_cache_size 优化配置</p>
+
+<pre><code>1G  ---&gt; 8
+2G  ---&gt; 16
+3G  ---&gt; 32
+4G  ---&gt; 64
+</code></pre>
+
+<h2 id="数据库优化:3f024a9bc4eccdf3db769802efc70049">数据库优化</h2>
+
+<p>查看query_cache相关配置, 默认这个开关是关闭的,就是禁止使用query_cache
+query_cache_type 为0,是关闭的</p>
+
+<p><code>show variables where variable_name like '%query_cache%'</code> 单独查询一个使用 <code>select @@query_cache_type</code></p>
+
+<pre><code>+------------------------------+----------+
+| Variable_name                | Value    |
++------------------------------+----------+
+| have_query_cache             | YES      |
+| query_cache_limit            | 262144   |
+| query_cache_min_res_unit     | 4096     |
+| query_cache_size             | 33554432 |
+| query_cache_strip_comments   | OFF      |
+| query_cache_type             | ON       |
+| query_cache_wlock_invalidate | OFF      |
++------------------------------+----------+
+</code></pre>
+
+<p><code>query_cache_size</code>为0,没有分配缓存空间,如果配置了<code>query_cache_size = 4M</code>,这里会显示具体的字节</p>
+
+<p><code>show status like '%Qcache%'</code></p>
+
+<pre><code>+-------------------------+----------+
+| Variable_name           | Value    |
++-------------------------+----------+
+| Qcache_free_blocks      | 1        |
+| Qcache_free_memory      | 26444248 |
+| Qcache_hits             | 159619   |
+| Qcache_inserts          | 27496    |
+| Qcache_lowmem_prunes    | 0        |
+| Qcache_not_cached       | 180      |
+| Qcache_queries_in_cache | 6922     |
+| Qcache_total_blocks     | 13850    |
++-------------------------+----------+
+</code></pre>
+
+<p>如果<code>Qcache_lowmem_prunes</code>的值非常大，则表明经常出现缓冲不够的情况，如果<code>Qcache_hits</code>的值也非常大，则表明查询缓冲使用非常频繁，此时需要增加缓冲大小；
+如果<code>Qcache_hits</code>的值不大，则表明你的查询重复率很低，这种情况下使用查询缓冲反而会影响效率，那么可以考虑不用查询缓冲。此外，在SELECT语句中加入<code>SQL_NO_CACHE</code>可以明确表示不使用查询缓冲。</p>
+
+<blockquote>
+<p>查询缓存碎片率 = Qcache_free_blocks / Qcache_total_blocks * 100%</p>
+</blockquote>
+
+<p>如果查询缓存碎片率超过20%，可以用FLUSH QUERY CACHE整理缓存碎片，或者试试减小query_cache_min_res_unit，如果你的查询都是小数据量的话.</p>
+
+<blockquote>
+<p>查询缓存利用率 = (query_cache_size – Qcache_free_memory) / query_cache_size * 100%</p>
+</blockquote>
+
+<p>查询缓存利用率在25%以下的话说明query_cache_size设置的过大，可适当减小;查询缓存利用率在80%以上而且Qcache_lowmem_prunes &gt; 50的话说明query_cache_size可能有点小，要不就是碎片太多。</p>
+
+<blockquote>
+<p>查询缓存命中率 = Qcache_hits / ( Qcache_hits + Qcache_inserts ) * 100%</p>
+</blockquote>
+
+<p>命中率越高,效果越好</p>
+
+<h2 id="各个数据库引擎对比:3f024a9bc4eccdf3db769802efc70049">各个数据库引擎对比</h2>
+
+<p>主要讨论引擎: MyISAM存储引擎 InnoDB存储引擎 Memory存储引擎</p>
+
+<h3 id="myisam存储引擎:3f024a9bc4eccdf3db769802efc70049">MyISAM存储引擎</h3>
+
+<p>支持B-tree/FullText/R-tree索引类型
+锁级别是表锁,表锁的开销小，加锁快;锁粒度大，发生锁冲突的概率较高，并发度低；表锁适合查询
+不支持事务性，也不支持外键。</p>
+
+<blockquote>
+<p>并发不高，不需要支持事务,需要进行全文搜索,读次数大于写次数,适合数据量不是特别大并发不太高的大部分场合</p>
+</blockquote>
+
+<h3 id="innodb存储引擎:3f024a9bc4eccdf3db769802efc70049">InnoDB存储引擎</h3>
+
+<p>支持事务性，支持回滚,支持Hash/B-tree索引类型
+锁级别是行锁，行锁在锁定上带来的消耗大于表锁，但是在系统并发访问量较高时，InnoDB整体性能远高于MyISAM。
+InnoDB的索引不仅缓存索引本身，也缓存数据，所以InnoDB需要更大的内存。</p>
+
+<blockquote>
+<p>表数据量超过千万，高并发,频繁更新大字段,安全性和可用性要求高,更适合与大并发大数据量的场合，除了支持事务，在高并发时行级锁的优势就会发挥出来。</p>
+</blockquote>
+
+<h3 id="memory存储引擎:3f024a9bc4eccdf3db769802efc70049">Memory存储引擎</h3>
+
+<p>内存级的存储引擎，它将所有数据都存储在内存中，所以它能够存储的数据量是比较小的
+Memory的锁级别和MyISAM一样，是表锁；并且不支持事务性。</p>
+
+<blockquote>
+<p>适合与性能要求高数据量小的地方，和缓存的效果类似。</p>
+
+<p>innodb查询表的行数需要全表扫描，速度会非常慢，查询1千万行数据的表最多时要6、7s,而myisam因为保存了总行数是极快的。
+在一个进程操作的情况下，myisam的更新和查询速度都会稍快于innodb。memory引擎插入和查询修改的速度都极快，单只支持几万行数据.</p>
+</blockquote>
+
+<h3 id="锁:3f024a9bc4eccdf3db769802efc70049">锁</h3>
+
+<blockquote>
+<p>读锁：读操作时增加锁，叫共享锁，S-lock特征是阻塞其他客户端的写操作，不阻塞读操作</p>
+
+<p>写锁：写操作时增加锁，叫独占锁或排他锁，X-lock特征是阻塞其他客户端的读、写操作</p>
+</blockquote>
+
+<h3 id="锁定粒度-范围:3f024a9bc4eccdf3db769802efc70049">锁定粒度（范围）</h3>
+
+<blockquote>
+<p>行级：提升并发性，锁定开销大</p>
+
+<p>表级：不利于并发性，锁定开销小</p>
+</blockquote>
+
+		</div>
+	</div>
+</div>
+	<div class="music-container">
+	<div class="music-header">
+	    <a class="fa-button home" href="javascript:music.show(0)"><i class="fa fa-home" title="Home"></i></a>
+	    <a class="fa-button next" href="javascript:music.next()"><i class="fa fa-chevron-right" title="Next"></i></a>
+	</div>
+	<div class="backdrop"></div>
+	<div class="music-player">
+		<div class="cover">
+            <img src="http://p4.music.126.net/ckfEE9UUGcnGHylQJ12ENA==/670702092966093.jpg?param=350y350">
+            <div class="foredrag"><i class="fa fa-play"></i></div>
+        </div>
+        <div class="progress">
+            <div class="elapse"></div>
+        </div>
+        <div class="detail">
+            <div class="title">音乐标题</div>
+            <div class="artist">歌手</div>
+        </div>
+	</div>
+</div>
+<div id="loader" style="z-index:99999;" class="pageload-overlay" data-opening="M 40 -21.875 C 11.356078 -21.875 -11.875 1.3560784 -11.875 30 C -11.875 58.643922 11.356078 81.875 40 81.875 C 68.643922 81.875 91.875 58.643922 91.875 30 C 91.875 1.3560784 68.643922 -21.875 40 -21.875 Z">
+    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 80 60" preserveAspectRatio="xMidYMid slice"> <path d="M40,30 c 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 Z"/></svg>
+</div>
+
+	<footer class="footer">
+		<div class="footer-nav">
+			<ul>
+				<li><a href="/post/">归档</a></li>
+				<li><a href="/">专题</a></li>
+				<li><a href="/life/">生活</a></li>
+				<li><a href="/about/">关于</a></li>
+			</ul>
+		</div>
+	</footer>
+	<script type="text/javascript" src="/js/main.min.js" data-no-instant></script>
+</body>
+</html>
+
+

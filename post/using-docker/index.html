@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+	<meta name='renderer' content='webkit'><meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
+	<title> &middot; </title>
+	<link rel="stylesheet" type="text/css" href="/css/style.min.css">
+	<link href="" rel="alternate" type="application/rss+xml" title="" />
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+	<link rel="shortcut icon" href="/favicon.png">
+</head>
+<body>
+<header class="header">
+	<div class="header-main">
+		<a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
+		<h1> 苏苏的博客</h1>
+		<p class="sub-title">简约至极</p>
+		<ul class="contact">
+			<a href="https://github.com/suconghou" target="_blank"><i class="fa fa-github"></i></a>
+			<a href="javascript:music.show(1)"><i class="fa fa-music"></i></a>
+		</ul>
+	</div>
+</header>
+
+<aside></aside>
+
+<div class="content container">
+	<div class="post">
+		<h1 class="post-title">
+			<a href="javascript:void(0)"> 开启docker之旅</a>
+		</h1>
+		<p class="post-date">Tue, Jan 5, 2016</p>
+		
+		<div class="post-text">
+			 
+
+<h2 id="安装docker:6d93a80e55dc760775379b4fadc005db">安装Docker</h2>
+
+<p>docker 安装需要Linux内核在3.10.0以上,仅支持Linux,在Windows和MacOs上也是基于虚拟机方式运行,需要提前安装虚拟机
+默认的Ubuntu 14.04不能运行,内核版本太低.</p>
+
+<p>下面给出Linux各个发行版的默认内核版本</p>
+
+<p>查看系统内核版本<code>uname -r</code></p>
+
+<p>查看安装的系统版本
+<code>lsb_release -a</code> 或者 <code>cat /etc/issue</code></p>
+
+<p>以下二种方法适用于RedHat,CentOS
+1.<code>cat /etc/redhat-release</code> 或者 <code>cat /etc/centos-release</code>
+2. <code>rpm -q centos-release</code> 或者 <code>rpm -q redhat-release</code></p>
+
+<p>查看是否是64位系统<code>uname -i</code></p>
+
+<p>CentOS 系列</p>
+
+<table>
+<thead>
+<tr>
+<th>系统版本</th>
+<th>内核版本</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>CentOS release 5 (Final)</td>
+<td>2.6.18-53.e15</td>
+</tr>
+
+<tr>
+<td>CentOS release 5.5 (Final)</td>
+<td>2.6.18-194.el5</td>
+</tr>
+
+<tr>
+<td>CentOS release 5.7 (Final)</td>
+<td>2.6.18-274.el5</td>
+</tr>
+
+<tr>
+<td>CentOS 6.0</td>
+<td>2.6.32-71.el6</td>
+</tr>
+
+<tr>
+<td>CentOS 6.2</td>
+<td>2.6.32-220.e16</td>
+</tr>
+
+<tr>
+<td>CentOS 6.3</td>
+<td>2.6.32-279.e16</td>
+</tr>
+
+<tr>
+<td>CentOS 6.4</td>
+<td>2.6.32-358.el6</td>
+</tr>
+
+<tr>
+<td>CentOS Linux release 7.1.1503 (Core)</td>
+<td>3.10.0-229.14.1.el7.x86_64</td>
+</tr>
+</tbody>
+</table>
+
+<p>CentOS和RHEL(RedHat Enterprise Linux)同版本内核一样</p>
+
+<p>Ubuntu 系列</p>
+
+<table>
+<thead>
+<tr>
+<th>系统版本</th>
+<th>内核版本</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Ubuntu13.04</td>
+<td>3.8.0-19-generic</td>
+</tr>
+
+<tr>
+<td>Ubuntu14.04</td>
+<td>3.13.0-24-generic</td>
+</tr>
+</tbody>
+</table>
+
+<p>Debian 系列</p>
+
+<table>
+<thead>
+<tr>
+<th>系统版本</th>
+<th>内核版本</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Debian5.0.7</td>
+<td>2.6.26-2</td>
+</tr>
+
+<tr>
+<td>Debian6.0.5</td>
+<td>2.6.32-5</td>
+</tr>
+
+<tr>
+<td>Debian7</td>
+<td>3.2.0-4-686-pae</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<p>下载安装</p>
+
+<p><a href="http://www.oschina.net/news/68246/docker-1-9-1">各平台下载地址</a></p>
+
+<pre><code>wget https://get.docker.com/builds/Linux/x86_64/docker-1.9.1
+</code></pre>
+
+<h2 id="基本使用:6d93a80e55dc760775379b4fadc005db">基本使用</h2>
+
+<p>docker采用Go语言编写,编译以后生成一个无依赖的可执行文件,安装完整以后,可以移动到<code>/usr/bin</code>,即可使用<code>docker</code>和<code>sudo docker</code>命令</p>
+
+<pre><code>sudo mv docker-1.9.1 /usr/bin/docker
+</code></pre>
+
+<p>运行<code>docker -v</code>即可查看当前docker版本
+docker 分为两部分,一分部是docker server , 一部分是docker client
+在Linux下是一个可执行文件,在Windows上则是分开的.</p>
+
+<p>搜索 <code>docker search 镜像名字</code>
+下载 <code>docker pull learn/tutorial</code>, 下载时要写完整名字</p>
+
+<p><a href="https://hub.docker.com/explore/">官方Docker镜像一览</a></p>
+
+<p>下载官方ubuntu <code>docker pull ubuntu</code></p>
+
+<p>运行此ubuntu <code>docker run ubuntu echo &quot;hello&quot;</code></p>
+
+<p>运行完以后docker容器就退出了.</p>
+
+<p>进入此ubuntu的shell
+<code>docker run -i -t ubuntu /bin/bash</code> 也可以写为 <code>docker run -it ubuntu /bin/bash</code>
+期间如果有需要退出按 <code>Ctrl+P+Q</code>
+<code>docker ps</code> 查看正在运行的docker容器,可以看到后台的docker
+重新进入容器需要<code>docker attach CONTAINER</code> 此命令代表<code>Attach to a running container</code>
+CONTAINER,可以是最前面的CONTAINER ID ,也可以是最后面的NAMES</p>
+
+<p>你还可以使用 <code>docker run -it --name myname ubuntu /bin/bash</code> 来指定它使用的名字,否则名字的随机的</p>
+
+<p>你可以用不同的名字同时运行多个此种镜像</p>
+
+<p>使用 <code>docker rename hello hello2</code> 将原先名字为hello的容器改名为hello2
+使用 <code>docker top hello2</code> 查看运行在hello2中的所有进程
+使用 <code>docker pause hello2</code> 将docker hello2 中的所有进程暂停,使用<code>docker ps</code> 可以看到容器已经暂停了
+使用 <code>docker unpass hello2</code> 恢复暂停的容器
+使用 <code>docker stop hello2</code> 将名字为hello2的容器停止
+使用 <code>docker ps -a</code> 查看所有的容器,将会看到很多容器,因为每次执行<code>docker run</code>命令都是<code>Run a command in a new container</code>新建了一个容器,
+可以考虑使用 <code>docker start 容器名称</code> 然后再<code>docker attach</code> 进去,你上次的改动依然在那.
+也可以考虑使用<code>docker rm 容器名称</code> 删除容器以节约资源,rm后可用空格分隔多个容器名称,此命令执行较慢
+也可以在创建的时候指明结束运行时清除docker容器<code>docker run --rm ubuntu echo &quot;hello&quot;</code>
+或者将要执行的命令附加到正在运行的容器上<code>docker exec hello2  echo &quot;hihi&quot;</code></p>
+
+<p>技巧:</p>
+
+<p>删除所有停止运行的容器 <code>docker rm $(docker ps -a -q)</code></p>
+
+<h2 id="文件系统:6d93a80e55dc760775379b4fadc005db">文件系统</h2>
+
+<h3 id="把一个宿主机上的目录挂载到镜像里:6d93a80e55dc760775379b4fadc005db">把一个宿主机上的目录挂载到镜像里</h3>
+
+<blockquote>
+<p>通过-v参数，冒号前为宿主机目录，必须为绝对路径，冒号后为镜像内挂载的路径。</p>
+</blockquote>
+
+<p><code>docker run -it --name tmp -v /data/tmp:/home ubuntu /bin/bash</code></p>
+
+<p>宿主目录不存在会自动创建,但是镜像内挂载路径必须存在,挂载后双向可写,实时生效
+此镜像将一直保持挂载,stop,exit后重新进入,依然是挂载状态</p>
+
+<p>默认挂载的路径权限为读写。如果指定为只读可以用：ro
+<code>docker run -it --name tmp -v /data/tmp:/home:ro ubuntu /bin/bash</code>
+挂载后,镜像内对挂载的数据不可写</p>
+
+<p>docker还提供了一种高级的用法,叫数据卷。
+数据卷：“其实就是一个正常的容器，专门用来提供数据卷供其它容器挂载的”。感觉像是由一个容器定义的一个数据挂载信息。其他的容器启动可以直接挂载数据卷容器中定义的挂载信息。</p>
+
+<p>创建一个普通容器,定义一个名称,挂载目录.
+数据容器是不需要运行的。
+<code>docker run -v /data/tmp:/home  --name datafs busybox</code></p>
+
+<p>其他容器使用这个数据卷
+<code>docker run -it --name tmp --volumes-from datafs ubuntu /bin/bash</code></p>
+
+<p>docker的container是无状态的， 也就是说标记状态的数据，例如：数据库数据， 应用程序的log 等等， 是不应该放到container里的， 而是放到 Data Volume Container里</p>
+
+<h2 id="网络系统:6d93a80e55dc760775379b4fadc005db">网络系统</h2>
+
+<p>-p 映射端口
+-p 80:8080 容器内部的8080端口,对外暴漏于80端口
+-p 22 内外都是22端口映射</p>
+
+<h2 id="资源控制:6d93a80e55dc760775379b4fadc005db">资源控制</h2>
+
+<p><code>docker export</code> <code>docker import</code></p>
+
+<p><code>docker save</code>  <code>docker load</code></p>
+
+<p>导出后再导入(exported-imported)的镜像会丢失所有的历史，而保存后再加载（saveed-loaded）的镜像没有丢失历史和层(layer)。这意味着使用导出后再导入的方式，你将无法回滚到之前的层(layer)，同时，使用保存后再加载的方式持久化整个镜像，就可以做到层回滚（可以执行docker tag <LAYER ID> <IMAGE NAME>来回滚之前的层）</p>
+
+<p><code>docker images</code>
+显示本机上存在的资源,大部分是<code>docker pull</code>下来的,
+可以使用 <code>docker rmi</code>
+此资源信息以JSON格式记录于文件,
+<code>cat /var/lib/docker/repositories-devicemapper | python -mjson.tool</code> 此命令将得出类似的结果</p>
+
+<p><code>ls -lh /var/lib/docker/graph/</code> 发现有文件夹名和上述镜像ID一致的,文件夹内保存着:</p>
+
+<blockquote>
+<p>json -保存着关于这个镜像的元数据
+layersize – 一个整数，表示layer的大小。
+layer/ – 子文件夹，保存着rootfs该容器的镜像</p>
+</blockquote>
+
+<h2 id="使用流程:6d93a80e55dc760775379b4fadc005db">使用流程</h2>
+
+		</div>
+	</div>
+</div>
+	<div class="music-container">
+	<div class="music-header">
+	    <a class="fa-button home" href="javascript:music.show(0)"><i class="fa fa-home" title="Home"></i></a>
+	    <a class="fa-button next" href="javascript:music.next()"><i class="fa fa-chevron-right" title="Next"></i></a>
+	</div>
+	<div class="backdrop"></div>
+	<div class="music-player">
+		<div class="cover">
+            <img src="http://p4.music.126.net/ckfEE9UUGcnGHylQJ12ENA==/670702092966093.jpg?param=350y350">
+            <div class="foredrag"><i class="fa fa-play"></i></div>
+        </div>
+        <div class="progress">
+            <div class="elapse"></div>
+        </div>
+        <div class="detail">
+            <div class="title">音乐标题</div>
+            <div class="artist">歌手</div>
+        </div>
+	</div>
+</div>
+<div id="loader" style="z-index:99999;" class="pageload-overlay" data-opening="M 40 -21.875 C 11.356078 -21.875 -11.875 1.3560784 -11.875 30 C -11.875 58.643922 11.356078 81.875 40 81.875 C 68.643922 81.875 91.875 58.643922 91.875 30 C 91.875 1.3560784 68.643922 -21.875 40 -21.875 Z">
+    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 80 60" preserveAspectRatio="xMidYMid slice"> <path d="M40,30 c 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 Z"/></svg>
+</div>
+
+	<footer class="footer">
+		<div class="footer-nav">
+			<ul>
+				<li><a href="/post/">归档</a></li>
+				<li><a href="/">专题</a></li>
+				<li><a href="/life/">生活</a></li>
+				<li><a href="/about/">关于</a></li>
+			</ul>
+		</div>
+	</footer>
+	<script type="text/javascript" src="/js/main.min.js" data-no-instant></script>
+</body>
+</html>
+
+

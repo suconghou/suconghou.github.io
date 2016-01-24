@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Lnmp on 我的博客</title>
+    <link>http://blog.suconghou.cn/categories/lnmp/</link>
+    <description>Recent content in Lnmp on 我的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 01 Jan 2016 23:51:02 +0800</lastBuildDate>
+    <atom:link href="http://blog.suconghou.cn/categories/lnmp/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>安装PHP7和NGINX</title>
+      <link>http://blog.suconghou.cn/post/install-php7/</link>
+      <pubDate>Fri, 01 Jan 2016 23:51:02 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/install-php7/</guid>
+      <description>
+
+&lt;h2 id=&#34;编译安装nginx:d4cb4e734d41e78905840ce77b949d35&#34;&gt;编译安装NGINX&lt;/h2&gt;
+
+&lt;p&gt;首先安装一些依赖&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;yum -y install gcc make autoconf automake install zlib zlib-devel openssl openssl-devel pcre-devel
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编译安装&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;wget http://nginx.org/download/nginx-1.9.9.tar.gz
+tar -zxvf nginx-1.9.9.tar.gz
+cd nginx-1.9.9
+./configure
+make &amp;amp;&amp;amp; make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;编译安装php7:d4cb4e734d41e78905840ce77b949d35&#34;&gt;编译安装PHP7&lt;/h2&gt;
+
+&lt;p&gt;最好先&lt;code&gt;yum update&lt;/code&gt;一下,再安装以下依赖&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;yum install -y git wget curl curl-devel gcc gcc-c++ libmarypt cmake libxml2  autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libpng libpng-devel libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses curl openssl-devel gdbm-devel db4-devel libXpm-devel libX11-devel gd-devel gmp-devel readline-devel libxslt-devel expat-devel xmlrpc-c xmlrpc-c-devel
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;下载PHP7最新版本,解压,有多重压缩格式可选,其中xz最小&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;wget http://php.net/distributions/php-7.0.2.tar.xz
+xz -d php-7.0.2.tar.xz
+tar -xvf php-7.0.2.tar
+cd php-7.0.2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编译之前,可以开启O3编译优化,生成的可执行文件更小,性能更好
+&lt;code&gt;export CFLAGS=&amp;quot;-O3&amp;quot;&lt;/code&gt;
+不添加任何额外扩展,执行编译&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;./configure --prefix=/tmp --with-config-file-path=/etc --disable-all
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;得出的扩展有&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[PHP Modules]
+Core
+ctype
+date
+dom
+fileinfo
+filter
+hash
+iconv
+json
+libxml
+pcre
+PDO
+pdo_sqlite
+Phar
+posix
+Reflection
+session
+SimpleXML
+SPL
+sqlite3
+standard
+tokenizer
+xml
+xmlreader
+xmlwriter
+
+[Zend Modules]
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;包含部分常用扩展的编译&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;./configure --prefix=/tmp --with-config-file-path=/etc --enable-sockets --enable-zip --enable-mbstring --with-pdo-mysql --with-curl --with-gd
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;得出的扩展有&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[PHP Modules]
+Core
+ctype
+curl
+date
+dom
+fileinfo
+filter
+hash
+iconv
+json
+libxml
+mbstring
+mysqlnd
+pcre
+PDO
+pdo_mysql
+pdo_sqlite
+Phar
+posix
+Reflection
+session
+SimpleXML
+sockets
+SPL
+sqlite3
+standard
+tokenizer
+xml
+xmlreader
+xmlwriter
+zip
+
+[Zend Modules]
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;功能更全的编译&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;export CFLAGS=&amp;quot;-O3&amp;quot;
+./configure --prefix=/usr/local --with-config-file-path=/etc --enable-opcache --enable-fpm --enable-sockets --enable-ftp --enable-bcmath --enable-pcntl --enable-posix --enable-zip --enable-mbstring --with-iconv --with-pdo-mysql --with-curl --with-gd  --with-openssl --with-mcrypt
+
+make &amp;amp;&amp;amp; make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其中部分步骤可能需要root权限&lt;/p&gt;
+
+&lt;h3 id=&#34;可能出现的错误:d4cb4e734d41e78905840ce77b949d35&#34;&gt;可能出现的错误&lt;/h3&gt;
+
+&lt;p&gt;1.curl未安装
+执行&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;yum install curl-devel
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;或者&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get install curl libcurl3 libcurl3-dev
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后再次尝试编译&lt;/p&gt;
+
+&lt;p&gt;2.需要安装libcrytpt&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;wget ftp://mcrypt.hellug.gr/pub/crypto/mcrypt/attic/libmcrypt/libmcrypt-2.5.7.tar.gz
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;安装：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;tar -zxvf libmcrypt-2.5.7.tar.gz
+cd libmcrypt-2.5.7
+mkdir -p /usr/local/libmcrytpt
+./configure prefix=/usr/local/libmcrytpt/
+make &amp;amp;&amp;amp; make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后重新编译,设定编译参数mcrypt指定路径:
+&lt;code&gt;--with-mcrypt=/usr/local/libmcrytpt/&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;提示: make 可使用多核提升编译性能
+用make -j带一个参数，可以把项目在进行并行编译，比如在一台双核的机器上，完全可以用&lt;code&gt;make -j4&lt;/code&gt;，让make最多允许4个编译命令同时执行，这样可以更有效的利用CPU资源。&lt;/p&gt;
+
+&lt;p&gt;-O这个选项控制所有的优化等级。使用优化选项会使编译过程耗费更多的时间，并且占用更多的内存，尤其是在提高优化等级的时候。
+-O2是推荐的优化等级,O3是最高等级。如果编译软件出现错误，请先检查是否启用了-O3&lt;/p&gt;
+
+&lt;p&gt;PHP的数据库长连接有没有效,
+实际测试,采用香港服务器远程连接mysql,非长连接模式下耗时约600ms,使用PDO长连接,耗时下降到260ms左右,是有一定作用的.
+但是长连接不适用于CLI模式,CLI模式下,php进程退出,连接即断开.&lt;/p&gt;
+
+&lt;h2 id=&#34;安装mariadb:d4cb4e734d41e78905840ce77b949d35&#34;&gt;安装MariaDB&lt;/h2&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

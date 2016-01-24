@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+	<meta name='renderer' content='webkit'><meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
+	<title> &middot; </title>
+	<link rel="stylesheet" type="text/css" href="/css/style.min.css">
+	<link href="" rel="alternate" type="application/rss+xml" title="" />
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+	<link rel="shortcut icon" href="/favicon.png">
+</head>
+<body>
+<header class="header">
+	<div class="header-main">
+		<a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
+		<h1> 苏苏的博客</h1>
+		<p class="sub-title">简约至极</p>
+		<ul class="contact">
+			<a href="https://github.com/suconghou" target="_blank"><i class="fa fa-github"></i></a>
+			<a href="javascript:music.show(1)"><i class="fa fa-music"></i></a>
+		</ul>
+	</div>
+</header>
+
+<aside></aside>
+
+<div class="content container">
+	<div class="post">
+		<h1 class="post-title">
+			<a href="javascript:void(0)"> linux相关操作</a>
+		</h1>
+		<p class="post-date">Thu, Jan 21, 2016</p>
+		
+		<div class="post-text">
+			 
+
+<h2 id="linux实用命令:34fe9f2d9cc3cd7e319ca75e7da08332">Linux实用命令</h2>
+
+<h2 id="w:34fe9f2d9cc3cd7e319ca75e7da08332">w</h2>
+
+<p><code>w</code>命令能容清晰的显示,服务器在线时间,负载以及当前登陆的用户</p>
+
+<h2 id="vmstat:34fe9f2d9cc3cd7e319ca75e7da08332">vmstat</h2>
+
+<p><code>vmstat</code> 显示开机以来的平均值，而不是前一秒的值
+<code>vmstat 1</code>命令指定一个参数 1 运行，来打印每一秒的统计摘要.
+这些列代表的信息:</p>
+
+<blockquote>
+<p>r：CPU 中正在运行和等待运行的进程的数量。其提供了一个比平均负载更好的信号来确定 CPU 是否饱和，因为其不包含 I/O。解释：&rdquo;r&rdquo;的值大于了 CPU 的数量就表示已经饱和了。
+free：以 kb 为单位显式的空闲内存。如果数字位数很多，说明你有足够的空闲内存。&rdquo;free -m&rdquo; 命令，是下面的第七个命令，其可以更好的说明空闲内存的状态。
+si, so：Swap-ins 和 swap-outs。如果它们不是零，则代表你的内存不足了。
+us, sy, id, wa, st：这些都是平均了所有 CPU 的 CPU 分解时间。它们分别是用户时间（user）、系统时间（内核）（system）、空闲（idle）、等待 I/O（wait）、以及占用时间（stolen）（被其他访客，或使用 Xen，访客自己独立的驱动域）。</p>
+</blockquote>
+
+<p>CPU 分解时间将会通过用户时间加系统时间确认 CPU 是否为忙碌状态。等待 I/O 的时间一直不变则表明了一个磁盘瓶颈；这就是 CPU 的闲置，因为任务都阻塞在等待挂起磁盘 I/O 上了。你可以把等待 I/O 当成是 CPU 闲置的另一种形式，其给出了为什么 CPU 闲置的一个线索。
+对于 I/O 处理来说，系统时间是很重要的。一个高于 20% 的平均系统时间，可以值得进一步的探讨：也许内核在处理 I/O 时效率太低了。</p>
+
+<h2 id="top:34fe9f2d9cc3cd7e319ca75e7da08332">top</h2>
+
+<h2 id="free:34fe9f2d9cc3cd7e319ca75e7da08332">free</h2>
+
+<h2 id="磁盘相关:34fe9f2d9cc3cd7e319ca75e7da08332">磁盘相关</h2>
+
+<h3 id="dd:34fe9f2d9cc3cd7e319ca75e7da08332">dd</h3>
+
+<p><code>dd</code>把指定的输入文件拷贝到指定的输出文件中,并且在拷贝的过程中可以进行格式转换。</p>
+
+<p>if =输入文件(或设备名称)
+of =输出文件(或设备名称)
+bs = bytes 同时设置读/写缓冲区的字节数(等于设置obs和obs)
+count = blocks 只拷贝输入的blocks块</p>
+
+<p>创建一个100M的空文件
+<code>dd if=/dev/zero of=hello.txt bs=100M count=1</code></p>
+
+		</div>
+	</div>
+</div>
+	<div class="music-container">
+	<div class="music-header">
+	    <a class="fa-button home" href="javascript:music.show(0)"><i class="fa fa-home" title="Home"></i></a>
+	    <a class="fa-button next" href="javascript:music.next()"><i class="fa fa-chevron-right" title="Next"></i></a>
+	</div>
+	<div class="backdrop"></div>
+	<div class="music-player">
+		<div class="cover">
+            <img src="http://p4.music.126.net/ckfEE9UUGcnGHylQJ12ENA==/670702092966093.jpg?param=350y350">
+            <div class="foredrag"><i class="fa fa-play"></i></div>
+        </div>
+        <div class="progress">
+            <div class="elapse"></div>
+        </div>
+        <div class="detail">
+            <div class="title">音乐标题</div>
+            <div class="artist">歌手</div>
+        </div>
+	</div>
+</div>
+<div id="loader" style="z-index:99999;" class="pageload-overlay" data-opening="M 40 -21.875 C 11.356078 -21.875 -11.875 1.3560784 -11.875 30 C -11.875 58.643922 11.356078 81.875 40 81.875 C 68.643922 81.875 91.875 58.643922 91.875 30 C 91.875 1.3560784 68.643922 -21.875 40 -21.875 Z">
+    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 80 60" preserveAspectRatio="xMidYMid slice"> <path d="M40,30 c 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 Z"/></svg>
+</div>
+
+	<footer class="footer">
+		<div class="footer-nav">
+			<ul>
+				<li><a href="/post/">归档</a></li>
+				<li><a href="/">专题</a></li>
+				<li><a href="/life/">生活</a></li>
+				<li><a href="/about/">关于</a></li>
+			</ul>
+		</div>
+	</footer>
+	<script type="text/javascript" src="/js/main.min.js" data-no-instant></script>
+</body>
+</html>
+
+

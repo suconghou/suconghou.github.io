@@ -12,9 +12,18 @@
 </head>
 <body>
 <header class="header">
-
+	<div class="header-main">
+		<a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
+		<h1> 苏苏的博客</h1>
+		<p class="sub-title">简约至极</p>
+		<ul class="contact">
+			<a href="https://github.com/suconghou" target="_blank"><i class="fa fa-github"></i></a>
+			<a href="javascript:music.show(1)"><i class="fa fa-music"></i></a>
+		</ul>
+	</div>
 </header>
 
+<aside></aside>
 
 <div class="content container">
 	<div class="post">
@@ -22,6 +31,15 @@
 			<a href="javascript:void(0)"> 安装PHP7和NGINX</a>
 		</h1>
 		<p class="post-date">Fri, Jan 1, 2016</p>
+		
+			<p class="post-tags">
+			
+				<a href="/tags/php">#php</a>
+			
+				<a href="/tags/nginx">#nginx</a>
+			
+			</p>
+		
 		<div class="post-text">
 			 
 
@@ -34,9 +52,9 @@
 
 <p>编译安装</p>
 
-<pre><code>wget http://nginx.org/download/nginx-1.9.3.tar.gz
-tar -zxvf nginx-1.9.3.tar.gz
-cd nginx-1.9.3
+<pre><code>wget http://nginx.org/download/nginx-1.9.9.tar.gz
+tar -zxvf nginx-1.9.9.tar.gz
+cd nginx-1.9.9
 ./configure
 make &amp;&amp; make install
 </code></pre>
@@ -50,17 +68,17 @@ make &amp;&amp; make install
 
 <p>下载PHP7最新版本,解压,有多重压缩格式可选,其中xz最小</p>
 
-<pre><code>wget http://php.net/distributions/php-7.0.1.tar.xz
-xz -d php-7.0.1.tar.xz
-tar -xvf php-7.0.1.tar
-cd php-7.0.1
+<pre><code>wget http://php.net/distributions/php-7.0.2.tar.xz
+xz -d php-7.0.2.tar.xz
+tar -xvf php-7.0.2.tar
+cd php-7.0.2
 </code></pre>
 
 <p>编译之前,可以开启O3编译优化,生成的可执行文件更小,性能更好
 <code>export CFLAGS=&quot;-O3&quot;</code>
 不添加任何额外扩展,执行编译</p>
 
-<pre><code>./configure --prefix=/tmp --disable-all
+<pre><code>./configure --prefix=/tmp --with-config-file-path=/etc --disable-all
 </code></pre>
 
 <p>得出的扩展有</p>
@@ -98,7 +116,7 @@ xmlwriter
 
 <p>包含部分常用扩展的编译</p>
 
-<pre><code>./configure --prefix=/tmp --enable-sockets --enable-zip --enable-mbstring --with-pdo-mysql --with-curl
+<pre><code>./configure --prefix=/tmp --with-config-file-path=/etc --enable-sockets --enable-zip --enable-mbstring --with-pdo-mysql --with-curl --with-gd
 </code></pre>
 
 <p>得出的扩展有</p>
@@ -143,7 +161,7 @@ zip
 <p>功能更全的编译</p>
 
 <pre><code>export CFLAGS=&quot;-O3&quot;
-./configure --prefix=/usr/local --with-config-file-path=/etc --enable-opcache --enable-fpm --enable-sockets --enable-ftp --enable-bcmath --enable-pcntl --enable-posix --enable-zip --enable-mbstring --with-iconv --with-pdo-mysql --with-curl --with-mcrypt --with-gd  --with-openssl
+./configure --prefix=/usr/local --with-config-file-path=/etc --enable-opcache --enable-fpm --enable-sockets --enable-ftp --enable-bcmath --enable-pcntl --enable-posix --enable-zip --enable-mbstring --with-iconv --with-pdo-mysql --with-curl --with-gd  --with-openssl --with-mcrypt
 
 make &amp;&amp; make install
 </code></pre>
@@ -188,11 +206,39 @@ make &amp;&amp; make install
 <p>-O这个选项控制所有的优化等级。使用优化选项会使编译过程耗费更多的时间，并且占用更多的内存，尤其是在提高优化等级的时候。
 -O2是推荐的优化等级,O3是最高等级。如果编译软件出现错误，请先检查是否启用了-O3</p>
 
+<p>PHP的数据库长连接有没有效,
+实际测试,采用香港服务器远程连接mysql,非长连接模式下耗时约600ms,使用PDO长连接,耗时下降到260ms左右,是有一定作用的.
+但是长连接不适用于CLI模式,CLI模式下,php进程退出,连接即断开.</p>
+
 <h2 id="安装mariadb:d4cb4e734d41e78905840ce77b949d35">安装MariaDB</h2>
 
 		</div>
 	</div>
 </div>
+	<div class="music-container">
+	<div class="music-header">
+	    <a class="fa-button home" href="javascript:music.show(0)"><i class="fa fa-home" title="Home"></i></a>
+	    <a class="fa-button next" href="javascript:music.next()"><i class="fa fa-chevron-right" title="Next"></i></a>
+	</div>
+	<div class="backdrop"></div>
+	<div class="music-player">
+		<div class="cover">
+            <img src="http://p4.music.126.net/ckfEE9UUGcnGHylQJ12ENA==/670702092966093.jpg?param=350y350">
+            <div class="foredrag"><i class="fa fa-play"></i></div>
+        </div>
+        <div class="progress">
+            <div class="elapse"></div>
+        </div>
+        <div class="detail">
+            <div class="title">音乐标题</div>
+            <div class="artist">歌手</div>
+        </div>
+	</div>
+</div>
+<div id="loader" style="z-index:99999;" class="pageload-overlay" data-opening="M 40 -21.875 C 11.356078 -21.875 -11.875 1.3560784 -11.875 30 C -11.875 58.643922 11.356078 81.875 40 81.875 C 68.643922 81.875 91.875 58.643922 91.875 30 C 91.875 1.3560784 68.643922 -21.875 40 -21.875 Z">
+    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 80 60" preserveAspectRatio="xMidYMid slice"> <path d="M40,30 c 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 Z"/></svg>
+</div>
+
 	<footer class="footer">
 		<div class="footer-nav">
 			<ul>

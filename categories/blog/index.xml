@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blog on 我的博客</title>
+    <link>http://blog.suconghou.cn/categories/blog/</link>
+    <description>Recent content in Blog on 我的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 01 Jan 2016 19:00:18 +0800</lastBuildDate>
+    <atom:link href="http://blog.suconghou.cn/categories/blog/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>使用hugo搭建静态博客</title>
+      <link>http://blog.suconghou.cn/post/start-your-blog-with-hugo/</link>
+      <pubDate>Fri, 01 Jan 2016 19:00:18 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/start-your-blog-with-hugo/</guid>
+      <description>
+
+&lt;h2 id=&#34;什么是hugo:c9ea3f3791a768b68d4b792937e3f14b&#34;&gt;什么是hugo&lt;/h2&gt;
+
+&lt;p&gt;Hugo是用Go语言编写的静态网站生成器,与此类似的工具还有Hexo,相比Hexo,他的编译速度更快,而易于使用,主要表现在:&lt;/p&gt;
+
+&lt;p&gt;1.无依赖,无论是Linux环境,还是MacOs,Windows,下载一个二进制的可执行文件即可使用&lt;/p&gt;
+
+&lt;p&gt;2.即时刷新,无论是对于文章还是对于样式的修改都能够自动重新编译,自动刷新,无需配置,当你修改了文章,切换回浏览器,看到的已经是新页面了.&lt;/p&gt;
+
+&lt;p&gt;3.主题丰富,易于定制,编写一个主题十分简单,&lt;/p&gt;
+
+&lt;h2 id=&#34;如何使用:c9ea3f3791a768b68d4b792937e3f14b&#34;&gt;如何使用&lt;/h2&gt;
+
+&lt;p&gt;huogo 是开源的,在&lt;a href=&#34;https://github.com/spf13/hugo/releases&#34;&gt;github&lt;/a&gt;上下载即可.&lt;/p&gt;
+
+&lt;p&gt;1.基本命令&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;新建一个站点/初始化 &lt;code&gt;hugo new site /path/myblog&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;开启http服务器并指定使用主题 &lt;code&gt;hugo server --theme=su --buildDrafts --watch&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

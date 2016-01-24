@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sublime on 我的博客</title>
+    <link>http://blog.suconghou.cn/tags/sublime/</link>
+    <description>Recent content in Sublime on 我的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 08 Jan 2016 23:21:12 +0800</lastBuildDate>
+    <atom:link href="http://blog.suconghou.cn/tags/sublime/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Sublime使用和设置</title>
+      <link>http://blog.suconghou.cn/post/sublime-usage/</link>
+      <pubDate>Fri, 08 Jan 2016 23:21:12 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/sublime-usage/</guid>
+      <description>
+
+&lt;h2 id=&#34;配置文件:9eb5571a36ac869eaff7a87ede81093b&#34;&gt;配置文件&lt;/h2&gt;
+
+&lt;p&gt;最喜欢的字体&lt;code&gt;Monaco&lt;/code&gt;,&lt;a href=&#34;http://share.suconghou.cn/fonts/MONACO.TTF&#34;&gt;此处下载&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;配置文件
+&lt;code&gt;Preferences.sublime-settings&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+	&amp;quot;close_windows_when_empty&amp;quot;: true,
+	&amp;quot;default_encoding&amp;quot;: &amp;quot;UTF-8&amp;quot;,
+	&amp;quot;default_line_ending&amp;quot;: &amp;quot;unix&amp;quot;,
+	&amp;quot;ensure_newline_at_eof_on_save&amp;quot;: true,
+	&amp;quot;font_face&amp;quot;: &amp;quot;Monaco&amp;quot;,
+	&amp;quot;font_size&amp;quot;: 13,
+	&amp;quot;highlight_line&amp;quot;: true,
+	&amp;quot;highlight_modified_tabs&amp;quot;: true,
+	&amp;quot;ignored_packages&amp;quot;:
+	[
+		&amp;quot;Vintage&amp;quot;
+	],
+	&amp;quot;show_encoding&amp;quot;: true,
+	&amp;quot;show_line_endings&amp;quot;: true,
+	&amp;quot;tab_size&amp;quot;: 4,
+	&amp;quot;translate_tabs_to_spaces&amp;quot;: false,
+	&amp;quot;trim_trailing_white_space_on_save&amp;quot;: true,
+	&amp;quot;update_check&amp;quot;: false,
+	&amp;quot;word_wrap&amp;quot;: false
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;插件:9eb5571a36ac869eaff7a87ede81093b&#34;&gt;插件&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;open_browser.py&lt;/code&gt; 插件&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;import sublime, sublime_plugin
+import webbrowser
+import os
+
+url_map = {
+    &#39;D:\\git\\bbs\\&#39; : &#39;http://127.0.0.3/&#39;,
+    &#39;D:\\php\\su\\&#39; : &#39;http://127.0.0.2/&#39;,
+    &#39;D:\\php\\htdocs\\&#39; : &#39;http://127.0.0.1/&#39;
+}
+
+class OpenBrowserCommand(sublime_plugin.TextCommand):
+    def run(self,edit):
+        window = sublime.active_window()
+        window.run_command(&#39;save&#39;)
+        url = self.view.file_name()
+        flag = False
+        for path, domain in url_map.items():
+            if url.startswith(path):
+                url = url.replace(path, domain).replace(&#39;\\&#39;, &#39;/&#39;)
+                flag = True
+                break
+        if not flag:
+            cmd1=&#39;taskkill /f /im php.exe&#39;
+            cmd2=&#39;php -S 0.0.0.0:8088 -t &#39;+os.path.abspath(os.path.dirname(self.view.file_name()))
+            os.system(cmd1)
+            os.popen(cmd2)
+            url =  &#39;http://127.0.0.1:8088/&#39;+os.path.basename(self.view.file_name())
+        webbrowser.open_new(url)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;编译系统:9eb5571a36ac869eaff7a87ede81093b&#34;&gt;编译系统&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;node.sublime-build&lt;/code&gt; 执行nodejs代码&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+	&amp;quot;shell_cmd&amp;quot;: &amp;quot;node ${file}&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;快捷键配置:9eb5571a36ac869eaff7a87ede81093b&#34;&gt;快捷键配置&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;Default (OSX).sublime-keymap&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[
+	{ &amp;quot;keys&amp;quot;: [&amp;quot;alt+d&amp;quot;], &amp;quot;command&amp;quot;: &amp;quot;open_dir&amp;quot;, &amp;quot;args&amp;quot;: {&amp;quot;dir&amp;quot;: &amp;quot;$file_path&amp;quot;, &amp;quot;file&amp;quot;: &amp;quot;$file_name&amp;quot;} },
+	{ &amp;quot;keys&amp;quot;: [&amp;quot;ctrl+shift+c&amp;quot;], &amp;quot;command&amp;quot;: &amp;quot;copy_path&amp;quot; },
+	{ &amp;quot;keys&amp;quot;: [&amp;quot;ctrl+f11&amp;quot;], &amp;quot;command&amp;quot;: &amp;quot;toggle_distraction_free&amp;quot; }
+]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;添加sublime到命令行:9eb5571a36ac869eaff7a87ede81093b&#34;&gt;添加sublime到命令行&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;MacOs&lt;/code&gt;下&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/local/bin/sublime
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

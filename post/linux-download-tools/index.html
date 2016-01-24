@@ -12,9 +12,18 @@
 </head>
 <body>
 <header class="header">
-
+	<div class="header-main">
+		<a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
+		<h1> 苏苏的博客</h1>
+		<p class="sub-title">简约至极</p>
+		<ul class="contact">
+			<a href="https://github.com/suconghou" target="_blank"><i class="fa fa-github"></i></a>
+			<a href="javascript:music.show(1)"><i class="fa fa-music"></i></a>
+		</ul>
+	</div>
 </header>
 
+<aside></aside>
 
 <div class="content container">
 	<div class="post">
@@ -22,20 +31,80 @@
 			<a href="javascript:void(0)"> Linux下常用的下载利器</a>
 		</h1>
 		<p class="post-date">Fri, Jan 1, 2016</p>
+		
+			<p class="post-tags">
+			
+				<a href="/tags/download">#download</a>
+			
+				<a href="/tags/linux">#linux</a>
+			
+			</p>
+		
 		<div class="post-text">
 			 
 
 <h2 id="wget:d42214d24013398e63cb86bbdfbd2d55">wget</h2>
 
+<p><code>wget -c -O filename &quot;http://xx.com&quot;</code> 下载存储到指定文件,并指定断点续传</p>
+
 <h2 id="curl:d42214d24013398e63cb86bbdfbd2d55">curl</h2>
+
+<p>常用的命令</p>
+
+<p><code>curl http://xx.com</code> 只获取http消息正文</p>
+
+<p><code>curl -I http://xx.com</code> 只获取http消息头</p>
+
+<p><code>curl -i http://xx.com</code> 获取http消息头和正文</p>
+
+<p><code>curl -d &quot;name=abc&amp;pass=123&quot; http://xx.com</code> 发送<code>http post</code>请求,采用的是<code>application/x-www-form-urlencoded</code>形式</p>
+
+<p><code>curl -F &quot;name=abc&quot; -F &quot;pass=123&quot; http://xx.com</code> 发送<code>http post</code>请求,采用的是<code>multipart/form-data</code> 形式,此两种方式都可以由 $_POST 接收</p>
+
+<p><code>curl -F &quot;name=abc&quot; -F &quot;file=@/tmp/1.jpg&quot; http://xx.com</code> 发送 <code>http post</code>请求, <code>multipart/form-data</code> 形式还可以上传文件,只需改为@加路径</p>
+
+<p>curl 不仅能用来下载,还是网络调试的利器,Chrome的网络请求也可以直接另存为curl请求格式</p>
 
 <h2 id="axel:d42214d24013398e63cb86bbdfbd2d55">Axel</h2>
 
-<h2 id="aria2:d42214d24013398e63cb86bbdfbd2d55">Aria2</h2>
+<p>下载速度最快,分段下载速度优异
+<code>axel -n 30 -a -o localfilename http://xx.com/downloadfile</code> 30个线程分段下载,存储为localfilename
+参数<code>-a</code>更新进度条而不是每次都输出
+参数<code>-H</code> 添加header,参数<code>-U</code>设定<code>user-agent</code></p>
+
+<h2 id="aria2c:d42214d24013398e63cb86bbdfbd2d55">Aria2c</h2>
+
+<p>aria2c支持多种协议,<code>URI</code> <code>MAGNET</code> <code>TORRENT_FILE</code> <code>METALINK_FILE</code>,也支持axel类似的分段下载</p>
+
+<p><code>aria2c -s 30 -c -o localfilename http://xx.com/downloadfile</code> 30个线程分段下载,存储为localfilename,并断点续传</p>
 
 		</div>
 	</div>
 </div>
+	<div class="music-container">
+	<div class="music-header">
+	    <a class="fa-button home" href="javascript:music.show(0)"><i class="fa fa-home" title="Home"></i></a>
+	    <a class="fa-button next" href="javascript:music.next()"><i class="fa fa-chevron-right" title="Next"></i></a>
+	</div>
+	<div class="backdrop"></div>
+	<div class="music-player">
+		<div class="cover">
+            <img src="http://p4.music.126.net/ckfEE9UUGcnGHylQJ12ENA==/670702092966093.jpg?param=350y350">
+            <div class="foredrag"><i class="fa fa-play"></i></div>
+        </div>
+        <div class="progress">
+            <div class="elapse"></div>
+        </div>
+        <div class="detail">
+            <div class="title">音乐标题</div>
+            <div class="artist">歌手</div>
+        </div>
+	</div>
+</div>
+<div id="loader" style="z-index:99999;" class="pageload-overlay" data-opening="M 40 -21.875 C 11.356078 -21.875 -11.875 1.3560784 -11.875 30 C -11.875 58.643922 11.356078 81.875 40 81.875 C 68.643922 81.875 91.875 58.643922 91.875 30 C 91.875 1.3560784 68.643922 -21.875 40 -21.875 Z">
+    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 80 60" preserveAspectRatio="xMidYMid slice"> <path d="M40,30 c 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 Z"/></svg>
+</div>
+
 	<footer class="footer">
 		<div class="footer-nav">
 			<ul>

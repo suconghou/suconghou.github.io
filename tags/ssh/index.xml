@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ssh on 我的博客</title>
+    <link>http://blog.suconghou.cn/tags/ssh/</link>
+    <description>Recent content in Ssh on 我的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 07 Jan 2016 13:47:22 +0800</lastBuildDate>
+    <atom:link href="http://blog.suconghou.cn/tags/ssh/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>避免SSH自动断开连接</title>
+      <link>http://blog.suconghou.cn/post/prevent-broken-pipe-on-ssh/</link>
+      <pubDate>Thu, 07 Jan 2016 13:47:22 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/prevent-broken-pipe-on-ssh/</guid>
+      <description>&lt;p&gt;如果有一段时间在SSH连接上无数据传输，连接就会断开,以下设定可以解决这个问题&lt;/p&gt;
+
+&lt;p&gt;方案一：在客户端设置&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;sudo vim /etc/ssh/ssh_config&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;开启 &lt;code&gt;ServerAliveInterval 60&lt;/code&gt;
+开启 &lt;code&gt;TCPKeepAlive yes&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;此后该系统里的用户连接SSH时，每60秒会发一个KeepAlive请求，避免被踢。&lt;/p&gt;
+
+&lt;p&gt;方案二：在服务器端设置&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;sudo vim /etc/ssh/sshd_config&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;开启&lt;code&gt;ClientAliveInterval 60&lt;/code&gt;
+开启 &lt;code&gt;TCPKeepAlive yes&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;如果您只想让当前的 ssh 保持连接，可以使用以下的命令：&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ssh -o ServerAliveInterval=60 user@sshserver&lt;/code&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
