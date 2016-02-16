@@ -77,48 +77,11 @@ cd php-7.0.2
 </code></pre>
 
 <p>编译之前,可以开启O3编译优化,生成的可执行文件更小,性能更好
-<code>export CFLAGS=&quot;-O3&quot;</code>
-不添加任何额外扩展,执行编译</p>
-
-<pre><code>./configure --prefix=/tmp --with-config-file-path=/etc --disable-all
-</code></pre>
-
-<p>得出的扩展有</p>
-
-<pre><code>[PHP Modules]
-Core
-ctype
-date
-dom
-fileinfo
-filter
-hash
-iconv
-json
-libxml
-pcre
-PDO
-pdo_sqlite
-Phar
-posix
-Reflection
-session
-SimpleXML
-SPL
-sqlite3
-standard
-tokenizer
-xml
-xmlreader
-xmlwriter
-
-[Zend Modules]
-
-</code></pre>
+<code>export CFLAGS=&quot;-O3&quot;</code></p>
 
 <p>包含部分常用扩展的编译</p>
 
-<pre><code>./configure --prefix=/tmp --with-config-file-path=/etc --enable-sockets --enable-zip --enable-mbstring --with-pdo-mysql --with-curl --with-gd
+<pre><code>./configure --prefix=/tmp --with-config-file-path=/etc --enable-sockets --enable-ftp --enable-bcmath --enable-zip --enable-mbstring --with-iconv --with-pdo-mysql --with-curl --with-gd
 </code></pre>
 
 <p>得出的扩展有</p>

@@ -49,48 +49,11 @@ cd php-7.0.2
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;编译之前,可以开启O3编译优化,生成的可执行文件更小,性能更好
-&lt;code&gt;export CFLAGS=&amp;quot;-O3&amp;quot;&lt;/code&gt;
-不添加任何额外扩展,执行编译&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;./configure --prefix=/tmp --with-config-file-path=/etc --disable-all
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;得出的扩展有&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;[PHP Modules]
-Core
-ctype
-date
-dom
-fileinfo
-filter
-hash
-iconv
-json
-libxml
-pcre
-PDO
-pdo_sqlite
-Phar
-posix
-Reflection
-session
-SimpleXML
-SPL
-sqlite3
-standard
-tokenizer
-xml
-xmlreader
-xmlwriter
-
-[Zend Modules]
-
-&lt;/code&gt;&lt;/pre&gt;
+&lt;code&gt;export CFLAGS=&amp;quot;-O3&amp;quot;&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;包含部分常用扩展的编译&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;./configure --prefix=/tmp --with-config-file-path=/etc --enable-sockets --enable-zip --enable-mbstring --with-pdo-mysql --with-curl --with-gd
+&lt;pre&gt;&lt;code&gt;./configure --prefix=/tmp --with-config-file-path=/etc --enable-sockets --enable-ftp --enable-bcmath --enable-zip --enable-mbstring --with-iconv --with-pdo-mysql --with-curl --with-gd
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;得出的扩展有&lt;/p&gt;

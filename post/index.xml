@@ -88,7 +88,21 @@ root 密码 centos&lt;/p&gt;
 
 &lt;p&gt;或者安装OSMC转为树莓派制作的系统&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;https://osmc.tv/download/&#34;&gt;下载一览&lt;/a&gt;,选择&lt;code&gt;Disk images&lt;/code&gt;,此系统较省资源,默认开机进入OSMC&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://osmc.tv/download/&#34;&gt;下载一览&lt;/a&gt;,选择&lt;code&gt;Disk images&lt;/code&gt;,此系统较省资源,默认开机进入OSMC,img.gz 大小约160M&lt;/p&gt;
+
+&lt;h2 id=&#34;安装openelec:639f3845c6db751dcd1753d9faad824e&#34;&gt;安装openelec&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://openelec.tv/get-openelec&#34;&gt;openelec&lt;/a&gt; 镜像下载, img.gz 大小约102M&lt;/p&gt;
+
+&lt;h2 id=&#34;播放器皮肤推荐:639f3845c6db751dcd1753d9faad824e&#34;&gt;播放器皮肤推荐&lt;/h2&gt;
+
+&lt;p&gt;除了OSMC默认皮肤,还有一些好看的皮肤推荐&lt;/p&gt;
+
+&lt;p&gt;1.&lt;a href=&#34;http://forum.kodi.tv/showthread.php?tid=187071&#34;&gt;Eminence&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;2.&lt;a href=&#34;http://forum.kodi.tv/showthread.php?tid=214146&#34;&gt;Bello&lt;/a&gt; 看github,支持中文&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://forum.kodi.tv/forumdisplay.php?fid=26&#34;&gt;官方论坛&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     
@@ -430,6 +444,13 @@ skip-locking
 
 &lt;p&gt;thread_cache_size 优化配置&lt;/p&gt;
 
+&lt;p&gt;当update或者insert的内容过大时,&lt;code&gt;max_allowed_packet&lt;/code&gt;的值过小,会引起sql异常,需要改大
+修改&lt;code&gt;my.cnf&lt;/code&gt;  &lt;code&gt;max_allowed_packet = 20M&lt;/code&gt;
+或者零时动态设置 &lt;code&gt;set global max_allowed_packet = 20*1024*1024&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;查看是否生效
+&lt;code&gt;show VARIABLES like &#39;%max_allowed_packet%&#39;&lt;/code&gt;&lt;/p&gt;
+
 &lt;pre&gt;&lt;code&gt;1G  ---&amp;gt; 8
 2G  ---&amp;gt; 16
 3G  ---&amp;gt; 32
@@ -685,6 +706,8 @@ hash -r
 &lt;h2 id=&#34;下载官方的静态编译的linux通用二进制包:fdd7baccd40696c5c3f24a074d3d3604&#34;&gt;下载官方的静态编译的Linux通用二进制包&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://johnvansickle.com/ffmpeg/&#34;&gt;ffmeg&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;3.0正式版已发布,&lt;a href=&#34;http://www.oschina.net/news/70742/ffmpeg-3-0-final&#34;&gt;查看详情&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     
@@ -822,6 +845,10 @@ git stash pop
 
 &lt;p&gt;3.当你多次使用&lt;code&gt;git stash&lt;/code&gt;命令后，你的栈里将充满了未提交的代码，这时候你会对将哪个版本应用回来有些困惑，
 &lt;code&gt;git stash list&lt;/code&gt; 命令可以将当前的Git栈信息打印出来，你只需要将找到对应的版本号，例如使用&lt;code&gt;git stash apply stash@{1}&lt;/code&gt;就可以将你指定版本号为stash@{1}的工作取出来，当你将所有的栈都应用回来的时候，可以使用&lt;code&gt;git stash clear&lt;/code&gt;来将栈清空。&lt;/p&gt;
+
+&lt;h2 id=&#34;svn:4b413fdebfe42d43590394b35a48620b&#34;&gt;svn&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;svn revert xx.html&lt;/code&gt; 和&lt;code&gt;git checkout xx.html&lt;/code&gt; 类似,还原文件的更改&lt;/p&gt;
 </description>
     </item>
     
@@ -1049,7 +1076,7 @@ npm -v
 
 &lt;p&gt;&lt;a href=&#34;http://dev.dcloud.net.cn/mui/&#34;&gt;国产mui&lt;/a&gt; 最接近原生APP体验的高性能前端框架,不依赖任何第三方JS库,压缩后的JS和CSS文件仅有100+K和60+K&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://m.sui.taobao.org/&#34;&gt;SUI Mobile&lt;/a&gt; 轻量，小巧且精美的UI库 方便迅速搭建手机H5应用,兼容iOS 6.0+ 和 Android 4.0+，非常适合开发跨平台Web App。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://m.sui.taobao.org/&#34;&gt;SUI Mobile&lt;/a&gt; 淘宝移动UI框架,轻量，小巧且精美的UI库 方便迅速搭建手机H5应用,兼容iOS 6.0+ 和 Android 4.0+，非常适合开发跨平台Web App。&lt;/p&gt;
 
 &lt;h2 id=&#34;桌面开发:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;桌面开发&lt;/h2&gt;
 
@@ -1077,9 +1104,13 @@ npm -v
 
 &lt;p&gt;&lt;a href=&#34;http://www.iconfont.cn/&#34;&gt;阿里iconfont&lt;/a&gt; 阿里巴巴的网页矢量图标在线生成工具,中文字体和矢量图标&lt;/p&gt;
 
-&lt;h2 id=&#34;镜像网站:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;镜像网站&lt;/h2&gt;
+&lt;h2 id=&#34;镜像网站-cdn:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;镜像网站/CDN&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://npm.taobao.org/&#34;&gt;淘宝NPM镜像&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://css.net/&#34;&gt;常用前端公共库css.net&lt;/a&gt; 包括Gravatar,Google 字体库等反代,支持https&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.bootcdn.cn/&#34;&gt;bootcdn&lt;/a&gt; 支持https&lt;/p&gt;
 
 &lt;h2 id=&#34;云端ide:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;云端IDE&lt;/h2&gt;
 
@@ -1099,11 +1130,13 @@ npm -v
 
 &lt;p&gt;&lt;a href=&#34;https://sm.ms/&#34;&gt;smms&lt;/a&gt;&lt;/p&gt;
 
+&lt;p&gt;&lt;a href=&#34;https://get-link.xyz/&#34;&gt;get-link&lt;/a&gt;&lt;/p&gt;
+
 &lt;h2 id=&#34;前端-node:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;前端/Node&lt;/h2&gt;
 
 &lt;p&gt;Ajax库&lt;a href=&#34;https://github.com/visionmedia/superagent&#34;&gt;superagent&lt;/a&gt; 同时兼容IE9+和NodeJs的Ajax小工具,Gzip后仅为4.4kb&lt;/p&gt;
 
-&lt;p&gt;轮播图插件&lt;a href=&#34;http://slidesjs.com/&#34;&gt;slidesjs&lt;/a&gt; 纯js的jQuery轮播图插件,简单易用响应式支持触摸,压缩后大小仅12kb,Gzip后3.3kb&lt;/p&gt;
+&lt;p&gt;轮播图插件&lt;a href=&#34;http://slidesjs.com/&#34;&gt;slidesjs&lt;/a&gt; 纯js的jQuery轮播图插件,简单易用响应式支持触摸,压缩后大小仅12kb,Gzip后3.3kb,但是单张图片存在bug,很久没有更新&lt;/p&gt;
 
 &lt;p&gt;模板引擎&lt;a href=&#34;http://aui.github.io/artTemplate/&#34;&gt;artTemplate&lt;/a&gt; 性能卓越的Js模板引擎,同时有NodeJs版本,压缩后5kb大小,Gzip后2.9kb&lt;/p&gt;
 
@@ -1114,6 +1147,10 @@ npm -v
 &lt;h2 id=&#34;测试工具:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;测试工具&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://www.alibench.com/&#34;&gt;阿里测&lt;/a&gt; 测试你的服务器在全国各地的响应速度&lt;/p&gt;
+
+&lt;h2 id=&#34;代码转换:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;代码转换&lt;/h2&gt;
+
+&lt;p&gt;将python代码转化为可执行文件&lt;a href=&#34;http://nuitka.net/pages/download.html&#34;&gt;nuitka&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     

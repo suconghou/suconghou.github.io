@@ -242,6 +242,13 @@ skip-locking
 
 <p>thread_cache_size 优化配置</p>
 
+<p>当update或者insert的内容过大时,<code>max_allowed_packet</code>的值过小,会引起sql异常,需要改大
+修改<code>my.cnf</code>  <code>max_allowed_packet = 20M</code>
+或者零时动态设置 <code>set global max_allowed_packet = 20*1024*1024</code></p>
+
+<p>查看是否生效
+<code>show VARIABLES like '%max_allowed_packet%'</code></p>
+
 <pre><code>1G  ---&gt; 8
 2G  ---&gt; 16
 3G  ---&gt; 32
