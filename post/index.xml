@@ -92,7 +92,7 @@ root 密码 centos&lt;/p&gt;
 
 &lt;h2 id=&#34;安装openelec:639f3845c6db751dcd1753d9faad824e&#34;&gt;安装openelec&lt;/h2&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://openelec.tv/get-openelec&#34;&gt;openelec&lt;/a&gt; 镜像下载, img.gz 大小约102M&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://openelec.tv/get-openelec&#34;&gt;openelec&lt;/a&gt; 镜像下载,此系统相比osmc更加精简,是专为跑kodi精简的系统,osmc基于debain系统更加完善, img.gz 大小约102M&lt;/p&gt;
 
 &lt;h2 id=&#34;播放器皮肤推荐:639f3845c6db751dcd1753d9faad824e&#34;&gt;播放器皮肤推荐&lt;/h2&gt;
 
@@ -160,8 +160,7 @@ brew update
 
 &lt;pre&gt;&lt;code&gt;基本格式 :
 *　　*　　*　　*　　*　　command
-分　时　日　月　周　命令
-
+分　 时 　日 　月　 周　 命令
 
 * 第1列表示分钟1～59 每分钟用*或者*/1表示
 * 第2列表示小时1～23（0表示0点）
@@ -187,6 +186,7 @@ brew update
 &lt;pre&gt;&lt;code&gt;user=&amp;quot;root&amp;quot;
 pass=&amp;quot;root&amp;quot;
 host=&amp;quot;127.0.0.1&amp;quot;
+port=&amp;quot;3306&amp;quot;
 dbs=&amp;quot;db1 db2 db3&amp;quot;
 dir=&amp;quot;/data/backup/&amp;quot;
 
@@ -203,15 +203,45 @@ if [ -d $delold ]; then
 fi
 for i in $dbs
 	do
-		mysqldump -u$user -p$pass -h$host --databases $i &amp;gt; $backupdir/$i-$nowTime.sql
+		mysqldump -u$user -p$pass -h$host -P$port --databases $i &amp;gt; $backupdir/$i-$nowTime.sql
 	done
 
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;然后定时任务&lt;code&gt;crontab -e&lt;/code&gt; 每5个小时备份一次数据库,建议每20个小时以内备份一次数据库&lt;/p&gt;
+&lt;p&gt;然后定时任务&lt;code&gt;crontab -e&lt;/code&gt; 每5个小时备份一次数据库.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;0 5/* * * * sh /home/cron1.sh
+&lt;pre&gt;&lt;code&gt;0 */5 * * * sh /home/cron1.sh
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使用此脚本建议每20个小时以内备份一次数据库,此脚本保留最近7天备份,删除过期备份&lt;/p&gt;
+
+&lt;h2 id=&#34;增量备份数据库:821b39f3c5e329d9ee0933de8bb69bfb&#34;&gt;增量备份数据库&lt;/h2&gt;
+
+&lt;p&gt;先写好shell脚本存入&lt;code&gt;/home/cron2.sh&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user=&amp;quot;root&amp;quot;
+pass=&amp;quot;root&amp;quot;
+host=&amp;quot;127.0.0.1&amp;quot;
+port=&amp;quot;3306&amp;quot;
+storedb=&amp;quot;backup&amp;quot;
+backup=&amp;quot;db1.table1 db1.table2&amp;quot;
+
+mysql -u$user -p$pass -h$host -P$port -e &amp;quot;create database if not exists $storedb&amp;quot;
+for i in $backup
+	do
+		table=${i##*.}
+		sql=&amp;quot;create table if not exists $storedb.$table like $i;replace into $storedb.$table  select * from $i ;&amp;quot;
+		mysql -u$user -p$pass -h$host -P$port -e &amp;quot;$sql&amp;quot;
+	done
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;数据表从源数据库中增量备份至备份数据库中的同名数据表&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;0 */20 * * * sh /home/cron2.sh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;每20个小时增量备份一次&lt;/p&gt;
 
 &lt;h2 id=&#34;shell基本语法:821b39f3c5e329d9ee0933de8bb69bfb&#34;&gt;Shell基本语法&lt;/h2&gt;
 
@@ -549,7 +579,9 @@ Memory的锁级别和MyISAM一样，是表锁；并且不支持事务性。&lt;/
 &lt;p&gt;适合与性能要求高数据量小的地方，和缓存的效果类似。&lt;/p&gt;
 
 &lt;p&gt;innodb查询表的行数需要全表扫描，速度会非常慢，查询1千万行数据的表最多时要6、7s,而myisam因为保存了总行数是极快的。
-在一个进程操作的情况下，myisam的更新和查询速度都会稍快于innodb。memory引擎插入和查询修改的速度都极快，单只支持几万行数据.&lt;/p&gt;
+在一个进程操作的情况下，myisam的更新和查询速度都会稍快于innodb。memory引擎插入和查询修改的速度都极快，但支持的数据量有限,不支持BLOB/TEXT数据类型,适用于单表几万行数据.&lt;/p&gt;
+
+&lt;p&gt;MEMORY表最大值受系统变量 max_heap_table_size 限制，默认为16MB，要改变MEMORY表大小限制，需要改变max_heap_table_size 的值。&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;h3 id=&#34;锁:3f024a9bc4eccdf3db769802efc70049&#34;&gt;锁&lt;/h3&gt;
@@ -996,6 +1028,8 @@ class OpenBrowserCommand(sublime_plugin.TextCommand):
 &lt;p&gt;nodejs官方提供了编译好的二进制的包,全平台都有,十分方便
 &lt;a href=&#34;https://nodejs.org/download/release/latest/&#34;&gt;最新版本NodeJs官方库&lt;/a&gt;&lt;/p&gt;
 
+&lt;p&gt;其他信息&lt;a href=&#34;https://nodejs.org/download/release/latest/&#34;&gt;https://nodejs.org/download/release/latest/&lt;/a&gt;&lt;/p&gt;
+
 &lt;p&gt;例如安装Linux版本&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;wget https://nodejs.org/download/release/latest/node-v5.4.0-linux-x64.tar.xz
@@ -1018,7 +1052,7 @@ npm -v
 
 &lt;h2 id=&#34;一些必备package:7989e885d8dc487fe6df4b26f2ef5639&#34;&gt;一些必备package&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code&gt;sudo npm install -g less react-native-cli
+&lt;pre&gt;&lt;code&gt;sudo npm install -g less react-native-cli airs
 &lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
@@ -1072,11 +1106,13 @@ npm -v
 
 &lt;p&gt;&lt;a href=&#34;https://www.npmjs.com/package/imagemin&#34;&gt;nodejs imagemin&lt;/a&gt; NodeJs模块,压缩jpg,png,压缩效果一般&lt;/p&gt;
 
-&lt;h2 id=&#34;移动混合应用开发:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;移动混合应用开发&lt;/h2&gt;
+&lt;h2 id=&#34;移动混合应用-hhtml5开发:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;移动混合应用/HHTML5开发&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://dev.dcloud.net.cn/mui/&#34;&gt;国产mui&lt;/a&gt; 最接近原生APP体验的高性能前端框架,不依赖任何第三方JS库,压缩后的JS和CSS文件仅有100+K和60+K&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://m.sui.taobao.org/&#34;&gt;SUI Mobile&lt;/a&gt; 淘宝移动UI框架,轻量，小巧且精美的UI库 方便迅速搭建手机H5应用,兼容iOS 6.0+ 和 Android 4.0+，非常适合开发跨平台Web App。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://mobiscroll.com/&#34;&gt;mobiscroll&lt;/a&gt; 移动开发UI,丰富的时间选择器控件还有一些WEBAPP展示,&lt;a href=&#34;https://github.com/acidb/mobiscroll&#34;&gt;https://github.com/acidb/mobiscroll&lt;/a&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;桌面开发:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;桌面开发&lt;/h2&gt;
 
@@ -1120,11 +1156,9 @@ npm -v
 
 &lt;p&gt;&lt;a href=&#34;http://keepvid.com/&#34;&gt;keepvid&lt;/a&gt; 支持多种国外视频网站解析,转码&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://keepsubs.com/&#34;&gt;keepsubs&lt;/a&gt;&lt;/p&gt;
-
 &lt;p&gt;&lt;a href=&#34;http://www.clipconverter.cc/&#34;&gt;clipconverter&lt;/a&gt; 支持youtube视频解析,转码,多分辨率,速度又快.&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://www.youtube-dl.org/&#34;&gt;youtube-dl&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.youtube-dl.org/&#34;&gt;youtube-dl&lt;/a&gt; 全平台的YouTube视频下载工具&lt;/p&gt;
 
 &lt;h2 id=&#34;图床:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;图床&lt;/h2&gt;
 
@@ -1425,7 +1459,8 @@ layer/ – 子文件夹，保存着rootfs该容器的镜像&lt;/p&gt;
 
 &lt;h2 id=&#34;wget:d42214d24013398e63cb86bbdfbd2d55&#34;&gt;wget&lt;/h2&gt;
 
-&lt;p&gt;&lt;code&gt;wget -c -O filename &amp;quot;http://xx.com&amp;quot;&lt;/code&gt; 下载存储到指定文件,并指定断点续传&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;wget -c -O filename &amp;quot;http://xx.com&amp;quot;&lt;/code&gt; 下载存储到指定文件,并指定断点续传
+&lt;code&gt;wget -nc -c -i url.txt&lt;/code&gt; 批量下载文件中指定的资源(每行一个连接),跳过已下载的(同名的),并且断点续传.&lt;/p&gt;
 
 &lt;h2 id=&#34;curl:d42214d24013398e63cb86bbdfbd2d55&#34;&gt;curl&lt;/h2&gt;
 

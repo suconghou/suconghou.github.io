@@ -19,7 +19,8 @@
 
 &lt;h2 id=&#34;wget:d42214d24013398e63cb86bbdfbd2d55&#34;&gt;wget&lt;/h2&gt;
 
-&lt;p&gt;&lt;code&gt;wget -c -O filename &amp;quot;http://xx.com&amp;quot;&lt;/code&gt; 下载存储到指定文件,并指定断点续传&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;wget -c -O filename &amp;quot;http://xx.com&amp;quot;&lt;/code&gt; 下载存储到指定文件,并指定断点续传
+&lt;code&gt;wget -nc -c -i url.txt&lt;/code&gt; 批量下载文件中指定的资源(每行一个连接),跳过已下载的(同名的),并且断点续传.&lt;/p&gt;
 
 &lt;h2 id=&#34;curl:d42214d24013398e63cb86bbdfbd2d55&#34;&gt;curl&lt;/h2&gt;
 

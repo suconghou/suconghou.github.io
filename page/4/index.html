@@ -84,45 +84,6 @@ cd php-7.0.2
 <pre><code>./configure --prefix=/tmp --with-config-file-path=/etc --enable-sockets --enable-ftp --enable-bcmath --enable-zip --enable-mbstring --with-iconv --with-pdo-mysql --with-curl --with-gd
 </code></pre>
 
-<p>得出的扩展有</p>
-
-<pre><code>[PHP Modules]
-Core
-ctype
-curl
-date
-dom
-fileinfo
-filter
-hash
-iconv
-json
-libxml
-mbstring
-mysqlnd
-pcre
-PDO
-pdo_mysql
-pdo_sqlite
-Phar
-posix
-Reflection
-session
-SimpleXML
-sockets
-SPL
-sqlite3
-standard
-tokenizer
-xml
-xmlreader
-xmlwriter
-zip
-
-[Zend Modules]
-
-</code></pre>
-
 <p>功能更全的编译</p>
 
 <pre><code>export CFLAGS=&quot;-O3&quot;
@@ -166,7 +127,7 @@ make &amp;&amp; make install
 <code>--with-mcrypt=/usr/local/libmcrytpt/</code></p>
 
 <p>提示: make 可使用多核提升编译性能
-用make -j带一个参数，可以把项目在进行并行编译，比如在一台双核的机器上，完全可以用<code>make -j4</code>，让make最多允许4个编译命令同时执行，这样可以更有效的利用CPU资源。</p>
+用make -j带一个参数，可以把项目进行并行编译，比如在一台双核的机器上，完全可以用<code>make -j4</code>，让make最多允许4个编译命令同时执行，这样可以更有效的利用CPU资源。</p>
 
 <p>-O这个选项控制所有的优化等级。使用优化选项会使编译过程耗费更多的时间，并且占用更多的内存，尤其是在提高优化等级的时候。
 -O2是推荐的优化等级,O3是最高等级。如果编译软件出现错误，请先检查是否启用了-O3</p>
