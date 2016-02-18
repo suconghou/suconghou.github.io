@@ -30,6 +30,46 @@
 		
 		<div class="post">
 			<h1 class="post-title">
+				<a href="http://blog.suconghou.cn/post/prevent-broken-pipe-on-ssh/"> 避免SSH自动断开连接</a>
+			</h1>
+			<p class="post-date">Thu, Jan 7, 2016</p>
+			
+				<p class="post-tags">
+				
+					<a href="/tags/ssh">#ssh</a>
+				
+					<a href="/tags/linux">#linux</a>
+				
+				</p>
+			
+			<div class="post-text">
+				 <p>如果有一段时间在SSH连接上无数据传输，连接就会断开,以下设定可以解决这个问题</p>
+
+<p>方案一：在客户端设置</p>
+
+<p><code>sudo vim /etc/ssh/ssh_config</code></p>
+
+<p>开启 <code>ServerAliveInterval 60</code>
+开启 <code>TCPKeepAlive yes</code></p>
+
+<p>此后该系统里的用户连接SSH时，每60秒会发一个KeepAlive请求，避免被踢。</p>
+
+<p>方案二：在服务器端设置</p>
+
+<p><code>sudo vim /etc/ssh/sshd_config</code></p>
+
+<p>开启<code>ClientAliveInterval 60</code>
+开启 <code>TCPKeepAlive yes</code></p>
+
+<p>如果您只想让当前的 ssh 保持连接，可以使用以下的命令：</p>
+
+<p><code>ssh -o ServerAliveInterval=60 user@sshserver</code></p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
 				<a href="http://blog.suconghou.cn/post/install-nodejs/"> 安装NodeJs和npm</a>
 			</h1>
 			<p class="post-date">Thu, Jan 7, 2016</p>
@@ -466,62 +506,6 @@ layer/ – 子文件夹，保存着rootfs该容器的镜像</p>
 </blockquote>
 
 <h2 id="使用流程:6d93a80e55dc760775379b4fadc005db">使用流程</h2>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="http://blog.suconghou.cn/post/linux-download-tools/"> Linux下常用的下载利器</a>
-			</h1>
-			<p class="post-date">Fri, Jan 1, 2016</p>
-			
-				<p class="post-tags">
-				
-					<a href="/tags/download">#download</a>
-				
-					<a href="/tags/linux">#linux</a>
-				
-				</p>
-			
-			<div class="post-text">
-				 
-
-<h2 id="wget:d42214d24013398e63cb86bbdfbd2d55">wget</h2>
-
-<p><code>wget -c -O filename &quot;http://xx.com&quot;</code> 下载存储到指定文件,并指定断点续传
-<code>wget -nc -c -i url.txt</code> 批量下载文件中指定的资源(每行一个连接),跳过已下载的(同名的),并且断点续传.</p>
-
-<h2 id="curl:d42214d24013398e63cb86bbdfbd2d55">curl</h2>
-
-<p>常用的命令</p>
-
-<p><code>curl http://xx.com</code> 只获取http消息正文</p>
-
-<p><code>curl -I http://xx.com</code> 只获取http消息头</p>
-
-<p><code>curl -i http://xx.com</code> 获取http消息头和正文</p>
-
-<p><code>curl -d &quot;name=abc&amp;pass=123&quot; http://xx.com</code> 发送<code>http post</code>请求,采用的是<code>application/x-www-form-urlencoded</code>形式</p>
-
-<p><code>curl -F &quot;name=abc&quot; -F &quot;pass=123&quot; http://xx.com</code> 发送<code>http post</code>请求,采用的是<code>multipart/form-data</code> 形式,此两种方式都可以由 $_POST 接收</p>
-
-<p><code>curl -F &quot;name=abc&quot; -F &quot;file=@/tmp/1.jpg&quot; http://xx.com</code> 发送 <code>http post</code>请求, <code>multipart/form-data</code> 形式还可以上传文件,只需改为@加路径</p>
-
-<p>curl 不仅能用来下载,还是网络调试的利器,Chrome的网络请求也可以直接另存为curl请求格式</p>
-
-<h2 id="axel:d42214d24013398e63cb86bbdfbd2d55">Axel</h2>
-
-<p>下载速度最快,分段下载速度优异
-<code>axel -n 30 -a -o localfilename http://xx.com/downloadfile</code> 30个线程分段下载,存储为localfilename
-参数<code>-a</code>更新进度条而不是每次都输出
-参数<code>-H</code> 添加header,参数<code>-U</code>设定<code>user-agent</code></p>
-
-<h2 id="aria2c:d42214d24013398e63cb86bbdfbd2d55">Aria2c</h2>
-
-<p>aria2c支持多种协议,<code>URI</code> <code>MAGNET</code> <code>TORRENT_FILE</code> <code>METALINK_FILE</code>,也支持axel类似的分段下载</p>
-
-<p><code>aria2c -s 30 -c -o localfilename http://xx.com/downloadfile</code> 30个线程分段下载,存储为localfilename,并断点续传</p>
 
 			</div>
 		</div>

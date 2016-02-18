@@ -26,16 +26,14 @@
 <aside></aside>
 
 <div class="content container">
-	<div class="posts">
+	<div class="post">
+		<h1 class="post-title">
+			<a href="javascript:void(0)"> air</a>
+		</h1>
+		<p class="post-date">Thu, Feb 18, 2016</p>
 		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="http://blog.suconghou.cn/project/air/"> air</a>
-			</h1>
-			<p class="post-date">Thu, Feb 18, 2016</p>
-			
-			<div class="post-text">
-				 
+		<div class="post-text">
+			 
 
 <h1 id="serve-static-files-in-the-air:d24a8958531c812b1616d9380a6373a1">serve static files in the air</h1>
 
@@ -234,192 +232,8 @@
 <p>服务器模式 <code>air server -k 123456 -d</code></p>
 </blockquote>
 
-			</div>
 		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="http://blog.suconghou.cn/post/linux/"> linux相关操作</a>
-			</h1>
-			<p class="post-date">Thu, Jan 21, 2016</p>
-			
-			<div class="post-text">
-				 
-
-<h2 id="linux实用命令:34fe9f2d9cc3cd7e319ca75e7da08332">Linux实用命令</h2>
-
-<h2 id="w:34fe9f2d9cc3cd7e319ca75e7da08332">w</h2>
-
-<p><code>w</code>命令能容清晰的显示,服务器在线时间,负载以及当前登陆的用户</p>
-
-<h2 id="vmstat:34fe9f2d9cc3cd7e319ca75e7da08332">vmstat</h2>
-
-<p><code>vmstat</code> 显示开机以来的平均值，而不是前一秒的值
-<code>vmstat 1</code>命令指定一个参数 1 运行，来打印每一秒的统计摘要.
-这些列代表的信息:</p>
-
-<blockquote>
-<p>r：CPU 中正在运行和等待运行的进程的数量。其提供了一个比平均负载更好的信号来确定 CPU 是否饱和，因为其不包含 I/O。解释：&rdquo;r&rdquo;的值大于了 CPU 的数量就表示已经饱和了。
-free：以 kb 为单位显式的空闲内存。如果数字位数很多，说明你有足够的空闲内存。&rdquo;free -m&rdquo; 命令，是下面的第七个命令，其可以更好的说明空闲内存的状态。
-si, so：Swap-ins 和 swap-outs。如果它们不是零，则代表你的内存不足了。
-us, sy, id, wa, st：这些都是平均了所有 CPU 的 CPU 分解时间。它们分别是用户时间（user）、系统时间（内核）（system）、空闲（idle）、等待 I/O（wait）、以及占用时间（stolen）（被其他访客，或使用 Xen，访客自己独立的驱动域）。</p>
-</blockquote>
-
-<p>CPU 分解时间将会通过用户时间加系统时间确认 CPU 是否为忙碌状态。等待 I/O 的时间一直不变则表明了一个磁盘瓶颈；这就是 CPU 的闲置，因为任务都阻塞在等待挂起磁盘 I/O 上了。你可以把等待 I/O 当成是 CPU 闲置的另一种形式，其给出了为什么 CPU 闲置的一个线索。
-对于 I/O 处理来说，系统时间是很重要的。一个高于 20% 的平均系统时间，可以值得进一步的探讨：也许内核在处理 I/O 时效率太低了。</p>
-
-<h2 id="top:34fe9f2d9cc3cd7e319ca75e7da08332">top</h2>
-
-<h2 id="free:34fe9f2d9cc3cd7e319ca75e7da08332">free</h2>
-
-<h2 id="磁盘相关:34fe9f2d9cc3cd7e319ca75e7da08332">磁盘相关</h2>
-
-<h3 id="dd:34fe9f2d9cc3cd7e319ca75e7da08332">dd</h3>
-
-<p><code>dd</code>把指定的输入文件拷贝到指定的输出文件中,并且在拷贝的过程中可以进行格式转换。</p>
-
-<p>if =输入文件(或设备名称)
-of =输出文件(或设备名称)
-bs = bytes 同时设置读/写缓冲区的字节数(等于设置obs和obs)
-count = blocks 只拷贝输入的blocks块</p>
-
-<p>创建一个100M的空文件
-<code>dd if=/dev/zero of=hello.txt bs=100M count=1</code></p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="http://blog.suconghou.cn/post/play-with-raspberrypi/"> 玩转树莓派</a>
-			</h1>
-			<p class="post-date">Sun, Jan 17, 2016</p>
-			
-			<div class="post-text">
-				 
-
-<h2 id="安装其他操作系统:639f3845c6db751dcd1753d9faad824e">安装其他操作系统</h2>
-
-<h3 id="centos:639f3845c6db751dcd1753d9faad824e">CentOS</h3>
-
-<p>CentOS7官方支持了AMRV7发布了树莓派2、香蕉派、以及CubitTruck单片机的版本</p>
-
-<p><a href="http://mirror.centos.org/altarch/7/isos/armhfp/">CentOS7官方下载</a>
-root 密码 centos</p>
-
-<h3 id="archlinux:639f3845c6db751dcd1753d9faad824e">ArchLinux</h3>
-
-<p><a href="http://archlinuxarm.org/platforms/armv7/broadcom/raspberry-pi-2">armv7 raspberry-pi-2</a></p>
-
-<p><a href="http://archlinuxarm.org/platforms/armv6/raspberry-pi">armv6 raspberry-pi</a></p>
-
-<h2 id="安装osmc:639f3845c6db751dcd1753d9faad824e">安装OSMC</h2>
-
-<p><a href="http://software.opensuse.org/download.html?project=home:osmc&amp;package=osmc-installer&amp;hcolor=17394a&amp;fcolor=17394a&amp;acolor=17394a">osmc-installer</a></p>
-
-<p>或者安装OSMC转为树莓派制作的系统</p>
-
-<p><a href="https://osmc.tv/download/">下载一览</a>,选择<code>Disk images</code>,此系统较省资源,默认开机进入OSMC,img.gz 大小约160M</p>
-
-<h2 id="安装openelec:639f3845c6db751dcd1753d9faad824e">安装openelec</h2>
-
-<p><a href="http://openelec.tv/get-openelec">openelec</a> 镜像下载,此系统相比osmc更加精简,是专为跑kodi精简的系统,osmc基于debain系统更加完善, img.gz 大小约102M</p>
-
-<h2 id="播放器皮肤推荐:639f3845c6db751dcd1753d9faad824e">播放器皮肤推荐</h2>
-
-<p>除了OSMC默认皮肤,还有一些好看的皮肤推荐</p>
-
-<p>1.<a href="http://forum.kodi.tv/showthread.php?tid=187071">Eminence</a></p>
-
-<p>2.<a href="http://forum.kodi.tv/showthread.php?tid=214146">Bello</a> 看github,支持中文</p>
-
-<p><a href="http://forum.kodi.tv/forumdisplay.php?fid=26">官方论坛</a></p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="http://blog.suconghou.cn/post/homebrew-speedup/"> 使用镜像加速homebrew</a>
-			</h1>
-			<p class="post-date">Fri, Jan 15, 2016</p>
-			
-			<div class="post-text">
-				 <p><a href="http://mirrors.ustc.edu.cn/">中国科大镜像站</a> 提供 Debian, Ubuntu, Fedora, Archlinux, CentOS 等多个发行版的官方源.
-还有brew 的二进制源,brew使用此配置能大大提升速度.</p>
-
-<pre><code>cd /usr/local
-git remote set-url origin git://mirrors.ustc.edu.cn/homebrew.git
-git remote -v
-brew update
-</code></pre>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="http://blog.suconghou.cn/post/broswer-chrome/"> Chrome浏览器安装</a>
-			</h1>
-			<p class="post-date">Thu, Jan 14, 2016</p>
-			
-			<div class="post-text">
-				 
-
-<h2 id="配置chrome跨域:e0e57fba433e8be9bf422a453002b0ab">配置Chrome跨域</h2>
-
-<p>Chrome 浏览器配置可以跨域</p>
-
-<p><code>/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --disable-web-security</code></p>
-
-<p>或者</p>
-
-<p><code>open -a &quot;Google Chrome&quot; --args --disable-web-security</code></p>
-
-<p>必须完全退出Chrome,再使用上述方法.</p>
-
-			</div>
-		</div>
-		
 	</div>
-	<nav>
-		
-    
-    <ul class="pagination">
-        
-        <li>
-            <a href="/" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
-        </li>
-        
-        <li
-        class="disabled">
-        <a href="" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-        </li>
-        
-        <li
-        class="active"><a href="/">1</a></li>
-        
-        <li
-        ><a href="/page/2/">2</a></li>
-        
-        <li
-        ><a href="/page/3/">3</a></li>
-        
-        <li
-        ><a href="/page/4/">4</a></li>
-        
-        <li
-        >
-        <a href="/page/2/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-        </li>
-        
-        <li>
-            <a href="/page/4/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
-        </li>
-        
-    </ul>
-    
-	</nav>
 </div>
 	<div class="music-container">
 	<div class="music-header">
@@ -458,4 +272,5 @@ brew update
 	<script type="text/javascript" src="/js/main.min.js" data-no-instant></script>
 </body>
 </html>
+
 
