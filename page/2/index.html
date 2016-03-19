@@ -87,7 +87,9 @@ if [ -d $delold ]; then
 fi
 for i in $dbs
 	do
-		mysqldump -u$user -p$pass -h$host -P$port --databases $i &gt; $backupdir/$i-$nowTime.sql
+		backupFile=$backupdir/$i-$nowTime.sql
+		mysqldump -u$user -p$pass -h$host -P$port --databases $i &gt; $backupFile
+		xz $backupFile
 	done
 
 </code></pre>
@@ -127,6 +129,20 @@ for i in $backup
 
 <p>每20个小时增量备份一次</p>
 
+<h2 id="更高级的文件实时同步:821b39f3c5e329d9ee0933de8bb69bfb">更高级的文件实时同步</h2>
+
+<p><code>Mac</code>上可以使用<code>fswatch + rsync</code>进行实时同步</p>
+
+<p>首先安装<code>fswatch</code>,<code>rsync</code>应该是自带了</p>
+
+<p><code>brew install fswatch</code></p>
+
+<pre><code>&lt;!-- fswatch -o ./ | xargs -n1 -I{} md5 --&gt;
+
+fswatch -0 /tmp | xargs -0 -n 1 echo $1
+
+</code></pre>
+
 <h2 id="shell基本语法:821b39f3c5e329d9ee0933de8bb69bfb">Shell基本语法</h2>
 
 <p>声明数组</p>
@@ -146,7 +162,7 @@ for i in $backup
 		
 		<div class="post">
 			<h1 class="post-title">
-				<a href="http://blog.suconghou.cn/post/improve-mysqldb/"> Mysql性能优化</a>
+				<a href="http://blog.suconghou.cn/post/improve-mysqldb/"> MySQL性能优化</a>
 			</h1>
 			<p class="post-date">Mon, Jan 11, 2016</p>
 			
@@ -750,9 +766,9 @@ git config --global alias.lg &quot;log --graph --all --pretty=format:'%Cred%h%Cr
 <h2 id="6-git-push-origin-v0-1-2:4b413fdebfe42d43590394b35a48620b">6.git push origin v0.1.2</h2>
 
 <p>将v0.1.2标签提交到git服务器
-git push origin –tags
+git push origin –-tags
 将本地所有标签一次性提交到git服务器
-通常的git push不会将标签对象提交到git服务器，我们需要进行显式的操作：</p>
+通常的git push不会将标签对象提交到git服务器，所以我们需要进行显式的操作：</p>
 
 <h1 id="git-stash-操作:4b413fdebfe42d43590394b35a48620b">git stash 操作</h1>
 
@@ -879,6 +895,42 @@ class OpenBrowserCommand(sublime_plugin.TextCommand):
 <p><code>MacOs</code>下</p>
 
 <pre><code>ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/local/bin/sublime
+</code></pre>
+
+<h2 id="激活码:9eb5571a36ac869eaff7a87ede81093b">激活码</h2>
+
+<p>3103可用激活码</p>
+
+<pre><code>—– BEGIN LICENSE —–
+Ryan Clark
+Single User License
+EA7E-812479
+2158A7DE B690A7A3 8EC04710 006A5EEB
+34E77CA3 9C82C81F 0DB6371B 79704E6F
+93F36655 B031503A 03257CCC 01B20F60
+D304FA8D B1B4F0AF 8A76C7BA 0FA94D55
+56D46BCE 5237A341 CD837F30 4D60772D
+349B1179 A996F826 90CDB73C 24D41245
+FD032C30 AD5E7241 4EAA66ED 167D91FB
+55896B16 EA125C81 F550AF6B A6820916
+—— END LICENSE ——
+</code></pre>
+
+<p>3103之前版本可用</p>
+
+<pre><code>----- BEGIN LICENSE -----
+Andrew Weber
+Single User License
+EA7E-855605
+813A03DD 5E4AD9E6 6C0EEB94 BC99798F
+942194A6 02396E98 E62C9979 4BB979FE
+91424C9D A45400BF F6747D88 2FB88078
+90F5CC94 1CDC92DC 8457107A F151657B
+1D22E383 A997F016 42397640 33F41CFC
+E1D0AE85 A0BBD039 0E9C8D55 E1B89D5D
+5CDB7036 E56DE1C0 EFCC0840 650CD3A6
+B98FC99C 8FAC73EE D2B95564 DF450523
+------ END LICENSE ------
 </code></pre>
 
 			</div>

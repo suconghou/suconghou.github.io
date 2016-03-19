@@ -26,108 +26,30 @@
 <aside></aside>
 
 <div class="content container">
-	<div class="posts">
+	<div class="post">
+		<h1 class="post-title">
+			<a href="javascript:void(0)"> 安装PHP7和NGINX</a>
+		</h1>
+		<p class="post-date">Fri, Jan 1, 2016</p>
 		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="http://blog.suconghou.cn/post/linux-download-tools/"> Linux下常用的下载利器</a>
-			</h1>
-			<p class="post-date">Fri, Jan 1, 2016</p>
+			<p class="post-tags">
 			
-				<p class="post-tags">
-				
-					<a href="/tags/download">#download</a>
-				
-					<a href="/tags/linux">#linux</a>
-				
-				</p>
+				<a href="/tags/php">#php</a>
 			
-			<div class="post-text">
-				 
-
-<h2 id="wget:d42214d24013398e63cb86bbdfbd2d55">wget</h2>
-
-<p><code>wget -c -O filename &quot;http://xx.com&quot;</code> 下载存储到指定文件,并指定断点续传
-<code>wget -nc -c -i url.txt</code> 批量下载文件中指定的资源(每行一个连接),跳过已下载的(同名的),并且断点续传.</p>
-
-<h2 id="curl:d42214d24013398e63cb86bbdfbd2d55">curl</h2>
-
-<p>常用的命令</p>
-
-<p><code>curl http://xx.com</code> 只获取http消息正文</p>
-
-<p><code>curl -I http://xx.com</code> 只获取http消息头</p>
-
-<p><code>curl -i http://xx.com</code> 获取http消息头和正文</p>
-
-<p><code>curl -d &quot;name=abc&amp;pass=123&quot; http://xx.com</code> 发送<code>http post</code>请求,采用的是<code>application/x-www-form-urlencoded</code>形式</p>
-
-<p><code>curl -F &quot;name=abc&quot; -F &quot;pass=123&quot; http://xx.com</code> 发送<code>http post</code>请求,采用的是<code>multipart/form-data</code> 形式,此两种方式都可以由 $_POST 接收</p>
-
-<p><code>curl -F &quot;name=abc&quot; -F &quot;file=@/tmp/1.jpg&quot; http://xx.com</code> 发送 <code>http post</code>请求, <code>multipart/form-data</code> 形式还可以上传文件,只需改为@加路径</p>
-
-<p>curl 不仅能用来下载,还是网络调试的利器,Chrome的网络请求也可以直接另存为curl请求格式</p>
-
-<p>批量下载规则的URL资源</p>
-
-<pre><code>curl -O &quot;http://www.example.com/[0001-9999].jpg&quot;
-
-</code></pre>
-
-<p>在shell中可以这样用,实现同样功能</p>
-
-<pre><code>for i in {10001..19999}; do
-wget www.example.com/${i:1}.jpg;
-done
-</code></pre>
-
-<p>或</p>
-
-<pre><code>for i in {0001..9999}; do
-echo www.example.com/${i}.jpg;
-done
-</code></pre>
-
-<h2 id="axel:d42214d24013398e63cb86bbdfbd2d55">Axel</h2>
-
-<p>下载速度最快,分段下载速度优异
-<code>axel -n 30 -a -o localfilename http://xx.com/downloadfile</code> 30个线程分段下载,存储为localfilename
-参数<code>-a</code>更新进度条而不是每次都输出
-参数<code>-H</code> 添加header,参数<code>-U</code>设定<code>user-agent</code></p>
-
-<h2 id="aria2c:d42214d24013398e63cb86bbdfbd2d55">Aria2c</h2>
-
-<p>aria2c支持多种协议,<code>URI</code> <code>MAGNET</code> <code>TORRENT_FILE</code> <code>METALINK_FILE</code>,也支持axel类似的分段下载</p>
-
-<p><code>aria2c -s 30 -c -o localfilename http://xx.com/downloadfile</code> 30个线程分段下载,存储为localfilename,并断点续传</p>
-
-			</div>
-		</div>
+				<a href="/tags/nginx">#nginx</a>
+			
+				<a href="/tags/mysql">#mysql</a>
+			
+				<a href="/tags/redis">#redis</a>
+			
+				<a href="/tags/memcached">#memcached</a>
+			
+				<a href="/tags/swoole">#swoole</a>
+			
+			</p>
 		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="http://blog.suconghou.cn/post/install-nginx-php-mysql-redis/"> 安装PHP7和NGINX</a>
-			</h1>
-			<p class="post-date">Fri, Jan 1, 2016</p>
-			
-				<p class="post-tags">
-				
-					<a href="/tags/php">#php</a>
-				
-					<a href="/tags/nginx">#nginx</a>
-				
-					<a href="/tags/mysql">#mysql</a>
-				
-					<a href="/tags/redis">#redis</a>
-				
-					<a href="/tags/memcached">#memcached</a>
-				
-					<a href="/tags/swoole">#swoole</a>
-				
-				</p>
-			
-			<div class="post-text">
-				 
+		<div class="post-text">
+			 
 
 <h2 id="编译安装nginx:aa93c013153cd0b80f2e19308ae27e8a">编译安装NGINX</h2>
 
@@ -550,102 +472,8 @@ sudo chkconfig nginx on
 sudo chkconfig php-fpm on
 </code></pre>
 
-			</div>
 		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="http://blog.suconghou.cn/post/start-your-blog-with-hugo/"> 使用hugo搭建静态博客</a>
-			</h1>
-			<p class="post-date">Fri, Jan 1, 2016</p>
-			
-				<p class="post-tags">
-				
-					<a href="/tags/blog">#blog</a>
-				
-				</p>
-			
-			<div class="post-text">
-				 
-
-<h2 id="什么是hugo:c9ea3f3791a768b68d4b792937e3f14b">什么是hugo</h2>
-
-<p>Hugo是用Go语言编写的静态网站生成器,与此类似的工具还有Hexo,相比Hexo,他的编译速度更快,而易于使用,主要表现在:</p>
-
-<p>1.无依赖,无论是Linux环境,还是MacOs,Windows,下载一个二进制的可执行文件即可使用</p>
-
-<p>2.即时刷新,无论是对于文章还是对于样式的修改都能够自动重新编译,自动刷新,无需配置,当你修改了文章,切换回浏览器,看到的已经是新页面了.</p>
-
-<p>3.主题丰富,易于定制,编写一个主题十分简单,</p>
-
-<h2 id="如何使用:c9ea3f3791a768b68d4b792937e3f14b">如何使用</h2>
-
-<p>huogo 是开源的,在<a href="https://github.com/spf13/hugo/releases">github</a>上下载即可.</p>
-
-<p>1.基本命令</p>
-
-<ul>
-<li><p>新建一个站点/初始化 <code>hugo new site /path/myblog</code></p></li>
-
-<li><p>开启http服务器并指定使用主题 <code>hugo server --theme=su --buildDrafts --watch</code></p></li>
-</ul>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="http://blog.suconghou.cn/about/"> 关于</a>
-			</h1>
-			<p class="post-date">Fri, Jan 1, 2016</p>
-			
-			<div class="post-text">
-				 
-
-<h2 id="关于:6083a88ee3411b0d17ce02d738f69d47">关于</h2>
-
-			</div>
-		</div>
-		
 	</div>
-	<nav>
-		
-    
-    <ul class="pagination">
-        
-        <li>
-            <a href="/" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
-        </li>
-        
-        <li
-        >
-        <a href="/page/3/" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-        </li>
-        
-        <li
-        ><a href="/">1</a></li>
-        
-        <li
-        ><a href="/page/2/">2</a></li>
-        
-        <li
-        ><a href="/page/3/">3</a></li>
-        
-        <li
-        class="active"><a href="/page/4/">4</a></li>
-        
-        <li
-        class="disabled">
-        <a href="" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-        </li>
-        
-        <li>
-            <a href="/page/4/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
-        </li>
-        
-    </ul>
-    
-	</nav>
 </div>
 	<div class="music-container">
 	<div class="music-header">
@@ -684,4 +512,5 @@ sudo chkconfig php-fpm on
 	<script type="text/javascript" src="/js/main.min.js" data-no-instant></script>
 </body>
 </html>
+
 

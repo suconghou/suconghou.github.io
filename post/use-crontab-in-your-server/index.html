@@ -85,7 +85,9 @@ if [ -d $delold ]; then
 fi
 for i in $dbs
 	do
-		mysqldump -u$user -p$pass -h$host -P$port --databases $i &gt; $backupdir/$i-$nowTime.sql
+		backupFile=$backupdir/$i-$nowTime.sql
+		mysqldump -u$user -p$pass -h$host -P$port --databases $i &gt; $backupFile
+		xz $backupFile
 	done
 
 </code></pre>
@@ -124,6 +126,20 @@ for i in $backup
 </code></pre>
 
 <p>每20个小时增量备份一次</p>
+
+<h2 id="更高级的文件实时同步:821b39f3c5e329d9ee0933de8bb69bfb">更高级的文件实时同步</h2>
+
+<p><code>Mac</code>上可以使用<code>fswatch + rsync</code>进行实时同步</p>
+
+<p>首先安装<code>fswatch</code>,<code>rsync</code>应该是自带了</p>
+
+<p><code>brew install fswatch</code></p>
+
+<pre><code>&lt;!-- fswatch -o ./ | xargs -n1 -I{} md5 --&gt;
+
+fswatch -0 /tmp | xargs -0 -n 1 echo $1
+
+</code></pre>
 
 <h2 id="shell基本语法:821b39f3c5e329d9ee0933de8bb69bfb">Shell基本语法</h2>
 

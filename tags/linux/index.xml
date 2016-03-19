@@ -70,6 +70,26 @@
 
 &lt;p&gt;curl 不仅能用来下载,还是网络调试的利器,Chrome的网络请求也可以直接另存为curl请求格式&lt;/p&gt;
 
+&lt;p&gt;批量下载规则的URL资源&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;curl -O &amp;quot;http://www.example.com/[0001-9999].jpg&amp;quot;
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在shell中可以这样用,实现同样功能&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;for i in {10001..19999}; do
+wget www.example.com/${i:1}.jpg;
+done
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;或&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;for i in {0001..9999}; do
+echo www.example.com/${i}.jpg;
+done
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h2 id=&#34;axel:d42214d24013398e63cb86bbdfbd2d55&#34;&gt;Axel&lt;/h2&gt;
 
 &lt;p&gt;下载速度最快,分段下载速度优异

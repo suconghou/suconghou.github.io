@@ -246,6 +246,16 @@ us, sy, id, wa, st：这些都是平均了所有 CPU 的 CPU 分解时间。它�
 &lt;p&gt;CPU 分解时间将会通过用户时间加系统时间确认 CPU 是否为忙碌状态。等待 I/O 的时间一直不变则表明了一个磁盘瓶颈；这就是 CPU 的闲置，因为任务都阻塞在等待挂起磁盘 I/O 上了。你可以把等待 I/O 当成是 CPU 闲置的另一种形式，其给出了为什么 CPU 闲置的一个线索。
 对于 I/O 处理来说，系统时间是很重要的。一个高于 20% 的平均系统时间，可以值得进一步的探讨：也许内核在处理 I/O 时效率太低了。&lt;/p&gt;
 
+&lt;p&gt;SIZE(VIRT): 进程使用的地址空间, 如果进程映射了100M的内存, 进程的地址空间将报告为100M内存. 事实上, 这个大小不是一个程序实际使用的内存数.&lt;/p&gt;
+
+&lt;p&gt;RSS(RES): &amp;ldquo;Resident Set Size&amp;rdquo;, 实际驻留&amp;rdquo;在内存中&amp;rdquo;的内存数. 不包括已经交换出去的代码. 举一个例子: 如果你有一个程序使用了100K内存, 操作系统交换出40K内存, 那么RSS为60K. RSS还包括了与其它进程共享的内存区域. 这些区域通常用于libc库等.&lt;/p&gt;
+
+&lt;p&gt;SHARE(SHR): RSS中与其它进程共享的内存部分大小.&lt;/p&gt;
+
+&lt;p&gt;VMSIZE: 一个进程占用的总的地址空间大小. 它包括了没有映射到内存中的页面。&lt;/p&gt;
+
+&lt;p&gt;SZ（DATA）: 映射到内存中的页面, 这些页面仅由进程单独使用. 这也是我们最关心地方: 进程实际占用的内存数。&lt;/p&gt;
+
 &lt;h2 id=&#34;top:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;top&lt;/h2&gt;
 
 &lt;h2 id=&#34;free:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;free&lt;/h2&gt;
@@ -263,6 +273,76 @@ count = blocks 只拷贝输入的blocks块&lt;/p&gt;
 
 &lt;p&gt;创建一个100M的空文件
 &lt;code&gt;dd if=/dev/zero of=hello.txt bs=100M count=1&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;一份linux别名和函数库:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;一份Linux别名和函数库&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;alias tree=&amp;quot;find . -print | sed -e &#39;s;[^/]*/;|____;g;s;____|; |;g&#39; &amp;quot;;
+alias cls=&amp;quot;cd $1;ls -lh;&amp;quot;;
+# 获得你的公网IP地址和主机名。
+alias ipinfo=&amp;quot;curl ifconfig.me &amp;amp;&amp;amp; curl ifconfig.me/host&amp;quot;;
+# 显示出哪个应用程序连接到网络。
+alias listen=&amp;quot;lsof -P -i -n&amp;quot;;
+# 显示出活动的端口。
+alias port=&#39;netstat -tulanp&#39;
+# 统计TCP连接个数
+alias tcpstatus=&amp;quot;netstat -n|awk &#39;/^tcp/{++S[\$NF]} END {for(a in S) print a,S[a]}&#39;&amp;quot;
+# 回到上层目录
+alias ..=&#39;cd ..&#39;
+# 去到上两层目录
+alias ...=&#39;cd ../..&#39;
+# 按列格式化输出mount信息。
+alias cmount=&amp;quot;mount | column -t&amp;quot;
+# 查看你还有剩下多少内存
+alias meminfo=&#39;free -m -l -t&#39;
+# 按照文件在磁盘存储的大小排序，显示当前目录的文件列表。
+sbs() { du -b --max-depth 1 | sort -nr | perl -pe &#39;s{([0-9]+)}{sprintf &amp;quot;%.1f%s&amp;quot;, $1&amp;gt;=2**30? ($1/2**30, &amp;quot;G&amp;quot;): $1&amp;gt;=2**20? ($1/2**20, &amp;quot;M&amp;quot;): $1&amp;gt;=2**10? ($1/2**10, &amp;quot;K&amp;quot;): ($1, &amp;quot;&amp;quot;)}e&#39;;}
+# 找出指定目录中最大的10个文件
+largefile() { find . -type f -exec du -k {} \; | sort  -nrk 1 | head; }
+# 查看当前目录大于[多少]kb的文件
+bigfile() { size=${1:-100}; find . -type f -size +&amp;quot;$size&amp;quot;k |xargs  ls --color -lh ; }
+# 返回你的当前IP地址的地理位置。
+getlocation() { lynx -dump http://www.ip-adress.com/ip_tracer/?QRY=$1|grep address|egrep &#39;city|state|country&#39;|awk &#39;{print $3,$4,$5,$6,$7,$8}&#39;|sed &#39;s\ip address flag \\&#39;|sed &#39;s\My\\&#39;;}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;# 这几个Mac不兼容
+# 查看最占用内存的前五个进程
+topmem()
+{
+	ps aux | sort -k4nr | head -n5;
+}
+# 查看某一程序占用的内存
+mem()
+{
+    top -n1 -b | head -n7 | sed &#39;1,6d&#39; &amp;amp;&amp;amp; top -n1 -b | sed &#39;1,7d&#39; | grep --color=auto $1;
+    ps aux | grep --color=auto $1 | grep --color=auto -v grep | awk -F &amp;quot; &amp;quot; &#39;{ sum += $6 } END { printf &amp;quot;Total Memory Usage: %.1f MB\n&amp;quot;, sum/1024 }&#39;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;# 查看你机器的CPU个数,超线程信息
+sysinfo() {
+physicalNumber=0
+coreNumber=0
+logicalNumber=0
+HTNumber=0
+logicalNumber=$(grep &amp;quot;processor&amp;quot; /proc/cpuinfo|sort -u|wc -l)
+physicalNumber=$(grep &amp;quot;physical id&amp;quot; /proc/cpuinfo|sort -u|wc -l)
+coreNumber=$(grep &amp;quot;cpu cores&amp;quot; /proc/cpuinfo|uniq|awk -F&#39;:&#39; &#39;{print $2}&#39;|xargs)
+HTNumber=$((logicalNumber / (physicalNumber * coreNumber)))
+echo &amp;quot;****** CPU Information ******&amp;quot;
+echo &amp;quot;Logical CPU Number  : ${logicalNumber}&amp;quot;
+echo &amp;quot;Physical CPU Number : ${physicalNumber}&amp;quot;
+echo &amp;quot;CPU Core Number     : ${coreNumber}&amp;quot;
+echo &amp;quot;HT Number           : ${HTNumber}&amp;quot;
+echo &amp;quot;*****************************&amp;quot;
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;解决can-t-set-the-locale-make-sure-lc-and-lang-are-correct:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;解决can&amp;rsquo;t set the locale; make sure $LC_* and $LANG are correct&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian&#34;&gt;https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian&lt;/a&gt;
+&lt;code&gt;照着全部做下来&lt;/code&gt;&lt;/p&gt;
 </description>
     </item>
     
@@ -326,6 +406,13 @@ root 密码 centos&lt;/p&gt;
 git remote set-url origin git://mirrors.ustc.edu.cn/homebrew.git
 git remote -v
 brew update
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;brew list&lt;/code&gt; 列出所有安装的模块&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;brew&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; brew install vim git git-lfs subversion node go python3 nginx hugo openssl htop lftp ffmpeg xz aria2 wget axel memcached redis mcrypt md5sha1sum fswatch
 &lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
@@ -410,7 +497,9 @@ if [ -d $delold ]; then
 fi
 for i in $dbs
 	do
-		mysqldump -u$user -p$pass -h$host -P$port --databases $i &amp;gt; $backupdir/$i-$nowTime.sql
+		backupFile=$backupdir/$i-$nowTime.sql
+		mysqldump -u$user -p$pass -h$host -P$port --databases $i &amp;gt; $backupFile
+		xz $backupFile
 	done
 
 &lt;/code&gt;&lt;/pre&gt;
@@ -450,6 +539,20 @@ for i in $backup
 
 &lt;p&gt;每20个小时增量备份一次&lt;/p&gt;
 
+&lt;h2 id=&#34;更高级的文件实时同步:821b39f3c5e329d9ee0933de8bb69bfb&#34;&gt;更高级的文件实时同步&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;Mac&lt;/code&gt;上可以使用&lt;code&gt;fswatch + rsync&lt;/code&gt;进行实时同步&lt;/p&gt;
+
+&lt;p&gt;首先安装&lt;code&gt;fswatch&lt;/code&gt;,&lt;code&gt;rsync&lt;/code&gt;应该是自带了&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;brew install fswatch&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;!-- fswatch -o ./ | xargs -n1 -I{} md5 --&amp;gt;
+
+fswatch -0 /tmp | xargs -0 -n 1 echo $1
+
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h2 id=&#34;shell基本语法:821b39f3c5e329d9ee0933de8bb69bfb&#34;&gt;Shell基本语法&lt;/h2&gt;
 
 &lt;p&gt;声明数组&lt;/p&gt;
@@ -467,7 +570,7 @@ for i in $backup
     </item>
     
     <item>
-      <title>Mysql性能优化</title>
+      <title>MySQL性能优化</title>
       <link>http://blog.suconghou.cn/post/improve-mysqldb/</link>
       <pubDate>Mon, 11 Jan 2016 12:02:40 +0800</pubDate>
       
@@ -1067,9 +1170,9 @@ git config --global alias.lg &amp;quot;log --graph --all --pretty=format:&#39;%C
 &lt;h2 id=&#34;6-git-push-origin-v0-1-2:4b413fdebfe42d43590394b35a48620b&#34;&gt;6.git push origin v0.1.2&lt;/h2&gt;
 
 &lt;p&gt;将v0.1.2标签提交到git服务器
-git push origin –tags
+git push origin –-tags
 将本地所有标签一次性提交到git服务器
-通常的git push不会将标签对象提交到git服务器，我们需要进行显式的操作：&lt;/p&gt;
+通常的git push不会将标签对象提交到git服务器，所以我们需要进行显式的操作：&lt;/p&gt;
 
 &lt;h1 id=&#34;git-stash-操作:4b413fdebfe42d43590394b35a48620b&#34;&gt;git stash 操作&lt;/h1&gt;
 
@@ -1189,6 +1292,42 @@ class OpenBrowserCommand(sublime_plugin.TextCommand):
 
 &lt;pre&gt;&lt;code&gt;ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/local/bin/sublime
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;激活码:9eb5571a36ac869eaff7a87ede81093b&#34;&gt;激活码&lt;/h2&gt;
+
+&lt;p&gt;3103可用激活码&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;—– BEGIN LICENSE —–
+Ryan Clark
+Single User License
+EA7E-812479
+2158A7DE B690A7A3 8EC04710 006A5EEB
+34E77CA3 9C82C81F 0DB6371B 79704E6F
+93F36655 B031503A 03257CCC 01B20F60
+D304FA8D B1B4F0AF 8A76C7BA 0FA94D55
+56D46BCE 5237A341 CD837F30 4D60772D
+349B1179 A996F826 90CDB73C 24D41245
+FD032C30 AD5E7241 4EAA66ED 167D91FB
+55896B16 EA125C81 F550AF6B A6820916
+—— END LICENSE ——
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;3103之前版本可用&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;----- BEGIN LICENSE -----
+Andrew Weber
+Single User License
+EA7E-855605
+813A03DD 5E4AD9E6 6C0EEB94 BC99798F
+942194A6 02396E98 E62C9979 4BB979FE
+91424C9D A45400BF F6747D88 2FB88078
+90F5CC94 1CDC92DC 8457107A F151657B
+1D22E383 A997F016 42397640 33F41CFC
+E1D0AE85 A0BBD039 0E9C8D55 E1B89D5D
+5CDB7036 E56DE1C0 EFCC0840 650CD3A6
+B98FC99C 8FAC73EE D2B95564 DF450523
+------ END LICENSE ------
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
@@ -1235,7 +1374,7 @@ class OpenBrowserCommand(sublime_plugin.TextCommand):
 &lt;p&gt;nodejs官方提供了编译好的二进制的包,全平台都有,十分方便
 &lt;a href=&#34;https://nodejs.org/download/release/latest/&#34;&gt;最新版本NodeJs官方库&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;其他信息&lt;a href=&#34;https://nodejs.org/download/release/latest/&#34;&gt;https://nodejs.org/download/release/latest/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;其他信息&lt;a href=&#34;http://www.oschina.net/news/70955/node-js-5-7-0-stable&#34;&gt;http://www.oschina.net/news/70955/node-js-5-7-0-stable&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;例如安装Linux版本&lt;/p&gt;
 
@@ -1327,11 +1466,19 @@ npm -v
 
 &lt;h2 id=&#34;网页动画:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;网页动画&lt;/h2&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://ecomfe.github.io/zrender/index.html&#34;&gt;百度zrender&lt;/a&gt; 基于Canvas的图形仓库交互工具&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://ecomfe.github.io/zrender/index.html&#34;&gt;百度zrender&lt;/a&gt; 基于Canvas的图形仓库交互工具,可以方便的画出很多图形&lt;/p&gt;
+
+&lt;h2 id=&#34;游戏引擎:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;游戏引擎&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://hiloteam.github.io/&#34;&gt;阿里Hilo&lt;/a&gt; 游戏渲染引擎,实现2048,切水果等.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.egret.com/&#34;&gt;http://www.egret.com/&lt;/a&gt; 白鹭也是做这个的&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/iioinc/iio.js&#34;&gt;https://github.com/iioinc/iio.js&lt;/a&gt; 也是canvas的游戏&lt;/p&gt;
 
 &lt;h2 id=&#34;网页富文本编辑器:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;网页富文本编辑器&lt;/h2&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://wangeditor.github.io/&#34;&gt;wangeditor&lt;/a&gt; 轻量简介的富文本编辑器,使用什么容易,相比百度umeditor更简洁&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://wangeditor.github.io/&#34;&gt;wangeditor&lt;/a&gt; 轻量简介的富文本编辑器,使用容易,相比百度umeditor更简洁&lt;/p&gt;
 
 &lt;h2 id=&#34;网页markdown编辑器:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;网页Markdown编辑器&lt;/h2&gt;
 
@@ -1385,9 +1532,17 @@ npm -v
 
 &lt;p&gt;获取你的内网IP和外网IP&lt;a href=&#34;https://github.com/diafygi/webrtc-ips&#34;&gt;webrtc-ips&lt;/a&gt; 通过Webrtc技术连接stun服务器,取得IP&lt;/p&gt;
 
+&lt;p&gt;&lt;a href=&#34;https://github.com/amsul/pickadate.js&#34;&gt;https://github.com/amsul/pickadate.js&lt;/a&gt;
+&lt;a href=&#34;https://github.com/xdan/datetimepicker&#34;&gt;https://github.com/xdan/datetimepicker&lt;/a&gt;
+&lt;a href=&#34;https://github.com/rmm5t/jquery-timeago&#34;&gt;https://github.com/rmm5t/jquery-timeago&lt;/a&gt;
+&lt;a href=&#34;http://c3js.org/&#34;&gt;http://c3js.org/&lt;/a&gt;
+&lt;a href=&#34;https://github.com/datejs/Datejs/blob/master/build/date.js&#34;&gt;https://github.com/datejs/Datejs/blob/master/build/date.js&lt;/a&gt;
+&lt;a href=&#34;https://github.com/Teamweek/instadate&#34;&gt;https://github.com/Teamweek/instadate&lt;/a&gt;&lt;/p&gt;
+
 &lt;h2 id=&#34;测试工具:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;测试工具&lt;/h2&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://www.alibench.com/&#34;&gt;阿里测&lt;/a&gt; 测试你的服务器在全国各地的响应速度&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.alibench.com/&#34;&gt;阿里测&lt;/a&gt; 测试你的服务器在全国各地的响应速度
+&lt;a href=&#34;http://www.cloudping.info/&#34;&gt;cloudping&lt;/a&gt; 测试亚马逊云各节点到你电脑的延时&lt;/p&gt;
 
 &lt;h2 id=&#34;代码转换:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;代码转换&lt;/h2&gt;
 
@@ -1542,16 +1697,16 @@ npm -v
 
 &lt;p&gt;下载安装&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://www.oschina.net/news/68246/docker-1-9-1&#34;&gt;各平台下载地址&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.oschina.net/news/70957/docker-1-10-2-final&#34;&gt;各平台下载地址&lt;/a&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;wget https://get.docker.com/builds/Linux/x86_64/docker-1.9.1
+&lt;pre&gt;&lt;code&gt;wget https://get.docker.com/builds/Linux/x86_64/docker-1.10.2
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h2 id=&#34;基本使用:6d93a80e55dc760775379b4fadc005db&#34;&gt;基本使用&lt;/h2&gt;
 
 &lt;p&gt;docker采用Go语言编写,编译以后生成一个无依赖的可执行文件,安装完整以后,可以移动到&lt;code&gt;/usr/bin&lt;/code&gt;,即可使用&lt;code&gt;docker&lt;/code&gt;和&lt;code&gt;sudo docker&lt;/code&gt;命令&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;sudo mv docker-1.9.1 /usr/bin/docker
+&lt;pre&gt;&lt;code&gt;sudo mv docker-1.10.2 /usr/bin/docker
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;运行&lt;code&gt;docker -v&lt;/code&gt;即可查看当前docker版本
