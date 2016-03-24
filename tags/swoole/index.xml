@@ -34,7 +34,7 @@ cd nginx-1.9.12
 make &amp;amp;&amp;amp; make install
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;还可以添加(Google反代模块)[&lt;a href=&#34;https://github.com/cuber/ngx_http_google_filter_module],按下面操作编译&#34;&gt;https://github.com/cuber/ngx_http_google_filter_module],按下面操作编译&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;还可以添加&lt;a href=&#34;https://github.com/cuber/ngx_http_google_filter_module&#34;&gt;Google反代模块&lt;/a&gt;,按下面操作编译&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;cd /tmp
 git clone https://github.com/cuber/ngx_http_google_filter_module
