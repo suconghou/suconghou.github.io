@@ -673,6 +673,16 @@ git config --global alias.lg &quot;log --graph --all --pretty=format:'%Cred%h%Cr
 <p>以上分别是设置用户信息,禁止转换换行符,颜色高亮,记住密码,设置别名列出分支图. 设置别名后,可以使用 <code>git lg</code> 查看各个分支关系</p>
 </blockquote>
 
+<p>一个命令推送到多个服务端<code>vim .git/config</code> ,添加一个区段,例如:</p>
+
+<pre><code>[remote &quot;all&quot;]
+        url = https://git.oschina.net/suconghou/mvc.git
+        url = https://suconghou@git.coding.net/suconghou/mvc.git
+        url = https://github.com/suconghou/mvc.git
+</code></pre>
+
+<p>以后可以使用<code>git push all master</code>一次推送到多个后端</p>
+
 <h1 id="git分支管理:4b413fdebfe42d43590394b35a48620b">git分支管理</h1>
 
 <h2 id="1-创建分支:4b413fdebfe42d43590394b35a48620b">1.创建分支</h2>

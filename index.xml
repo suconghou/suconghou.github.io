@@ -274,6 +274,11 @@ count = blocks 只拷贝输入的blocks块&lt;/p&gt;
 &lt;p&gt;创建一个100M的空文件
 &lt;code&gt;dd if=/dev/zero of=hello.txt bs=100M count=1&lt;/code&gt;&lt;/p&gt;
 
+&lt;p&gt;#查看当前目录下所有一级子目录文件夹大小
+du -h &amp;ndash;max-depth=1
+#查看当前目录下所有一级子目录文件夹大小 并排序
+du -h &amp;ndash;max-depth=1 |sort&lt;/p&gt;
+
 &lt;h2 id=&#34;一份linux别名和函数库:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;一份Linux别名和函数库&lt;/h2&gt;
 
 &lt;pre&gt;&lt;code&gt;alias tree=&amp;quot;find . -print | sed -e &#39;s;[^/]*/;|____;g;s;____|; |;g&#39; &amp;quot;;
@@ -299,7 +304,7 @@ sbs() { du -b --max-depth 1 | sort -nr | perl -pe &#39;s{([0-9]+)}{sprintf &amp;
 # 找出指定目录中最大的10个文件
 largefile() { find . -type f -exec du -k {} \; | sort  -nrk 1 | head; }
 # 查看当前目录大于[多少]kb的文件
-bigfile() { size=${1:-100}; find . -type f -size +&amp;quot;$size&amp;quot;k |xargs  ls --color -lh ; }
+bigfile() { size=${1:-100}; find . -type f -size +&amp;quot;$size&amp;quot;k |xargs  ls  -lh ; }
 # 返回你的当前IP地址的地理位置。
 getlocation() { lynx -dump http://www.ip-adress.com/ip_tracer/?QRY=$1|grep address|egrep &#39;city|state|country&#39;|awk &#39;{print $3,$4,$5,$6,$7,$8}&#39;|sed &#39;s\ip address flag \\&#39;|sed &#39;s\My\\&#39;;}
 
@@ -1076,6 +1081,16 @@ git config --global alias.lg &amp;quot;log --graph --all --pretty=format:&#39;%C
 &lt;blockquote&gt;
 &lt;p&gt;以上分别是设置用户信息,禁止转换换行符,颜色高亮,记住密码,设置别名列出分支图. 设置别名后,可以使用 &lt;code&gt;git lg&lt;/code&gt; 查看各个分支关系&lt;/p&gt;
 &lt;/blockquote&gt;
+
+&lt;p&gt;一个命令推送到多个服务端&lt;code&gt;vim .git/config&lt;/code&gt; ,添加一个区段,例如:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[remote &amp;quot;all&amp;quot;]
+        url = https://git.oschina.net/suconghou/mvc.git
+        url = https://suconghou@git.coding.net/suconghou/mvc.git
+        url = https://github.com/suconghou/mvc.git
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以后可以使用&lt;code&gt;git push all master&lt;/code&gt;一次推送到多个后端&lt;/p&gt;
 
 &lt;h1 id=&#34;git分支管理:4b413fdebfe42d43590394b35a48620b&#34;&gt;git分支管理&lt;/h1&gt;
 

@@ -85,6 +85,11 @@ count = blocks 只拷贝输入的blocks块</p>
 <p>创建一个100M的空文件
 <code>dd if=/dev/zero of=hello.txt bs=100M count=1</code></p>
 
+<p>#查看当前目录下所有一级子目录文件夹大小
+du -h &ndash;max-depth=1
+#查看当前目录下所有一级子目录文件夹大小 并排序
+du -h &ndash;max-depth=1 |sort</p>
+
 <h2 id="一份linux别名和函数库:34fe9f2d9cc3cd7e319ca75e7da08332">一份Linux别名和函数库</h2>
 
 <pre><code>alias tree=&quot;find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g' &quot;;
@@ -110,7 +115,7 @@ sbs() { du -b --max-depth 1 | sort -nr | perl -pe 's{([0-9]+)}{sprintf &quot;%.1
 # 找出指定目录中最大的10个文件
 largefile() { find . -type f -exec du -k {} \; | sort  -nrk 1 | head; }
 # 查看当前目录大于[多少]kb的文件
-bigfile() { size=${1:-100}; find . -type f -size +&quot;$size&quot;k |xargs  ls --color -lh ; }
+bigfile() { size=${1:-100}; find . -type f -size +&quot;$size&quot;k |xargs  ls  -lh ; }
 # 返回你的当前IP地址的地理位置。
 getlocation() { lynx -dump http://www.ip-adress.com/ip_tracer/?QRY=$1|grep address|egrep 'city|state|country'|awk '{print $3,$4,$5,$6,$7,$8}'|sed 's\ip address flag \\'|sed 's\My\\';}
 
