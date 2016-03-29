@@ -53,6 +53,12 @@ us, sy, id, wa, st：这些都是平均了所有 CPU 的 CPU 分解时间。它�
 
 &lt;h2 id=&#34;free:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;free&lt;/h2&gt;
 
+&lt;h2 id=&#34;ssh:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;ssh&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;ssh-copy-id -i ~/.ssh/id_rsa.pub root@host&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ssh-copy-id -i ~/.ssh/id_rsa.pub -p 26671 root@host&lt;/code&gt;&lt;/p&gt;
+
 &lt;h2 id=&#34;磁盘相关:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;磁盘相关&lt;/h2&gt;
 
 &lt;h3 id=&#34;dd:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;dd&lt;/h3&gt;
@@ -377,7 +383,7 @@ fswatch -0 /tmp | xargs -0 -n 1 echo $1
 
 &lt;h2 id=&#34;配置文件:3f024a9bc4eccdf3db769802efc70049&#34;&gt;配置文件&lt;/h2&gt;
 
-&lt;p&gt;配置文件一般放在&lt;code&gt;/etc/my.cnf&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;配置文件一般放在&lt;code&gt;/etc/my.cnf&lt;/code&gt; 或者 &lt;code&gt;/etc/mysql/my.cnf&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;默认的配置文件示例存放于&lt;code&gt;/usr/share/mysql&lt;/code&gt;&lt;/p&gt;
 

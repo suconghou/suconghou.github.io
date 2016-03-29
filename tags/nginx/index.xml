@@ -24,6 +24,10 @@
 &lt;pre&gt;&lt;code&gt;yum -y install gcc make autoconf automake install zlib zlib-devel openssl openssl-devel pcre-devel
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;pre&gt;&lt;code&gt;apt-get update
+apt-get -y install gcc make  openssl libssl-dev libpcre3 libpcre3-dev
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;编译安装&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;cd /tmp
@@ -84,11 +88,48 @@ make &amp;amp;&amp;amp; make install
 
 &lt;p&gt;&lt;code&gt;gzip_proxied any&lt;/code&gt;&lt;/p&gt;
 
+&lt;h3 id=&#34;可能需要移动配置目录:aa93c013153cd0b80f2e19308ae27e8a&#34;&gt;可能需要移动配置目录&lt;/h3&gt;
+
+&lt;p&gt;在&lt;code&gt;nginx.conf&lt;/code&gt;中配置&lt;code&gt;include /usr/local/nginx/conf/conf.d/*.conf;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;建立目录&lt;code&gt;mkdir /etc/nginx/conf.d&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;使用&lt;code&gt;ln -s /etc/nginx/conf.d /usr/local/nginx/conf/conf.d&lt;/code&gt;建立软连接&lt;/p&gt;
+
+&lt;h3 id=&#34;卸载apache:aa93c013153cd0b80f2e19308ae27e8a&#34;&gt;卸载apache&lt;/h3&gt;
+
+&lt;p&gt;1.完全卸载使用apt-get安装的apache
+1、sudo apt-get remove apache2
+2、sudo apt-get remove apache2.2-common
+3、sudo apt-get autoremove (此命令会自动卸载PHP)
+卸载完成&lt;/p&gt;
+
+&lt;p&gt;2.rpm 方式安装的&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;rpm -qa|grep httpd
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;得出结果
+httpd-2.2.15-39.el6.centos.i686
+httpd-tools-2.2.15-39.el6.centos.i686&lt;/p&gt;
+
+&lt;p&gt;从上往下一个一个卸载&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;rpm -e httpd-2.2.15
+rpm -e httpd-tools
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ab压力测试在httpd-tools,可以不卸载;
+CenterOS 安装 ab 压力测试&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;yum install httpd-tools
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h2 id=&#34;编译安装php7:aa93c013153cd0b80f2e19308ae27e8a&#34;&gt;编译安装PHP7&lt;/h2&gt;
 
 &lt;p&gt;最好先&lt;code&gt;yum update&lt;/code&gt;一下,再安装以下依赖&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;yum install -y git wget curl curl-devel gcc gcc-c++ libmarypt cmake libxml2  autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libpng libpng-devel libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses curl openssl-devel gdbm-devel db4-devel libXpm-devel libX11-devel gd-devel gmp-devel readline-devel libxslt-devel expat-devel xmlrpc-c xmlrpc-c-devel
+&lt;pre&gt;&lt;code&gt;yum install -y git wget curl curl-devel gcc gcc-c++ libmarypt cmake  autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libpng libpng-devel libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses curl openssl-devel gdbm-devel db4-devel libXpm-devel libX11-devel gd-devel gmp-devel readline-devel libxslt-devel expat-devel xmlrpc-c xmlrpc-c-devel
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;下载PHP7最新版本,解压,有多重压缩格式可选,其中xz最小&lt;/p&gt;
@@ -175,6 +216,44 @@ Linux上 &lt;code&gt;yum install openssl openssl-devel&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;brew install openssl&lt;/code&gt; 然后执行 &lt;code&gt;brew link openssl --force&lt;/code&gt; 并添加环境变量
 &lt;code&gt;export LDFLAGS=&amp;quot;/usr/local/opt/openssl/lib/libssl.dylib /usr/local/opt/openssl/lib/libcrypto.dylib&amp;quot;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;4.configure: error: xml2-config not found. Please check your libxml2 installation.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;apt-get install libxml2 libxml2-dev libmcrypt-dev openssl libssl-dev libcurl4-openssl-dev
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;5.Cannot find OpenSSL&amp;rsquo;s libraries&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;apt-get install libmcrypt-dev openssl libssl-dev libcurl4-openssl-dev
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;6.configure: error: png.h not found.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;apt-get install libjpeg-dev libpng-dev
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;make: *** [ext/fileinfo/libmagic/apprentice.lo] Error 1&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;这是由于内存小于1G所导致.可以&lt;code&gt;--disable-fileinfo&lt;/code&gt;,或者添加添加零时的swap&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#创建一个大小为256M的文件
+dd if=/dev/zero of=/swapfile bs=1024 count=262144
+#把这个文件变成swap文件
+mkswap /swapfile
+#启用这个swap文件
+swapon /swapfile
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果要每次开机就加载&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#编辑/etc/fstab文件，使在每次开机时自动加载swap文件
+/swapfile    swap    swap    default   0 0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;注意:XEN KVM 可以创建SWAP,OVZ本身就是Virtual Environmen,不支持创建SWAP
+通过&lt;code&gt;df -lhT&lt;/code&gt; 看到Type为simfs,而不是ext3,ext4,一般就不支持&lt;/p&gt;
 
 &lt;p&gt;提示: make 可使用多核提升编译性能
 用make -j带一个参数，可以把项目进行并行编译，比如在一台双核的机器上，完全可以用&lt;code&gt;make -j4&lt;/code&gt;，让make最多允许4个编译命令同时执行，这样可以更有效的利用CPU资源。&lt;/p&gt;
@@ -321,9 +400,31 @@ make install
 
 &lt;p&gt;注意&lt;code&gt;fastcgi_param&lt;/code&gt;指令是数组型的,内层替换外层,但是同级多次使用的时候，是新增而不是替换。注意不要重复使用.&lt;/p&gt;
 
+&lt;p&gt;php-fpm 运行时错误
+1. [pool www] cannot get gid for group &amp;lsquo;nobody&amp;rsquo;
+&lt;code&gt;groupadd nobody&lt;/code&gt;或者
+ 修改php-fpm.conf&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user = www-data
+group = www-data
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h2 id=&#34;安装mariadb:aa93c013153cd0b80f2e19308ae27e8a&#34;&gt;安装MariaDB&lt;/h2&gt;
 
+&lt;pre&gt;&lt;code&gt;apt-get install mariadb-server
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;MySql&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;apt-get install mysql-server
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;安装过程中要求设定一个root密码,安装完&lt;code&gt;service mysql status&lt;/code&gt;查看运行状态,&lt;code&gt;sudo service mysql restart&lt;/code&gt;可以重启&lt;/p&gt;
+
 &lt;h2 id=&#34;开机启动脚本:aa93c013153cd0b80f2e19308ae27e8a&#34;&gt;开机启动脚本&lt;/h2&gt;
+
+&lt;p&gt;Debian and Ubuntu function at &lt;code&gt;/lib/lsb/init-functions&lt;/code&gt;
+&lt;code&gt;ln -s  /lib/lsb/init-functions /etc/init.d/functions&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;nginx&lt;/p&gt;
 
@@ -374,7 +475,9 @@ exit 2
 esac
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;php-fpm&lt;/p&gt;
+&lt;h3 id=&#34;php-fpm:aa93c013153cd0b80f2e19308ae27e8a&#34;&gt;php-fpm&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;sudo vim /etc/init.d/php-fpm&lt;/code&gt;&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;#!/bin/sh
 #chkconfig: 2345 90 91
@@ -436,7 +539,16 @@ sudo chkconfig --add php-fpm
 ##   开机自启
 sudo chkconfig nginx on
 sudo chkconfig php-fpm on
+
+## 查看是否开机启动
+
+sudo chkconfig --list nginx
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Ubuntu里没有chkconfig
+可以使用sysv-rc-conf
+&lt;code&gt;sudo apt-get install sysv-rc-conf&lt;/code&gt;
+然后直接使用 sysv-rc-conf 来管理,或者&lt;code&gt;sudo sysv-rc-conf nginx on&lt;/code&gt;直接把&lt;code&gt;/etc/init.d/nginx&lt;/code&gt; 加入到系统自动 启动列表中&lt;/p&gt;
 </description>
     </item>
     

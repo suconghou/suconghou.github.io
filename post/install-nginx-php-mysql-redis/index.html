@@ -58,6 +58,10 @@
 <pre><code>yum -y install gcc make autoconf automake install zlib zlib-devel openssl openssl-devel pcre-devel
 </code></pre>
 
+<pre><code>apt-get update
+apt-get -y install gcc make  openssl libssl-dev libpcre3 libpcre3-dev
+</code></pre>
+
 <p>编译安装</p>
 
 <pre><code>cd /tmp
@@ -118,11 +122,48 @@ make &amp;&amp; make install
 
 <p><code>gzip_proxied any</code></p>
 
+<h3 id="可能需要移动配置目录:aa93c013153cd0b80f2e19308ae27e8a">可能需要移动配置目录</h3>
+
+<p>在<code>nginx.conf</code>中配置<code>include /usr/local/nginx/conf/conf.d/*.conf;</code></p>
+
+<p>建立目录<code>mkdir /etc/nginx/conf.d</code></p>
+
+<p>使用<code>ln -s /etc/nginx/conf.d /usr/local/nginx/conf/conf.d</code>建立软连接</p>
+
+<h3 id="卸载apache:aa93c013153cd0b80f2e19308ae27e8a">卸载apache</h3>
+
+<p>1.完全卸载使用apt-get安装的apache
+1、sudo apt-get remove apache2
+2、sudo apt-get remove apache2.2-common
+3、sudo apt-get autoremove (此命令会自动卸载PHP)
+卸载完成</p>
+
+<p>2.rpm 方式安装的</p>
+
+<pre><code>rpm -qa|grep httpd
+</code></pre>
+
+<p>得出结果
+httpd-2.2.15-39.el6.centos.i686
+httpd-tools-2.2.15-39.el6.centos.i686</p>
+
+<p>从上往下一个一个卸载</p>
+
+<pre><code>rpm -e httpd-2.2.15
+rpm -e httpd-tools
+</code></pre>
+
+<p>ab压力测试在httpd-tools,可以不卸载;
+CenterOS 安装 ab 压力测试</p>
+
+<pre><code>yum install httpd-tools
+</code></pre>
+
 <h2 id="编译安装php7:aa93c013153cd0b80f2e19308ae27e8a">编译安装PHP7</h2>
 
 <p>最好先<code>yum update</code>一下,再安装以下依赖</p>
 
-<pre><code>yum install -y git wget curl curl-devel gcc gcc-c++ libmarypt cmake libxml2  autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libpng libpng-devel libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses curl openssl-devel gdbm-devel db4-devel libXpm-devel libX11-devel gd-devel gmp-devel readline-devel libxslt-devel expat-devel xmlrpc-c xmlrpc-c-devel
+<pre><code>yum install -y git wget curl curl-devel gcc gcc-c++ libmarypt cmake  autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libpng libpng-devel libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses curl openssl-devel gdbm-devel db4-devel libXpm-devel libX11-devel gd-devel gmp-devel readline-devel libxslt-devel expat-devel xmlrpc-c xmlrpc-c-devel
 </code></pre>
 
 <p>下载PHP7最新版本,解压,有多重压缩格式可选,其中xz最小</p>
@@ -209,6 +250,44 @@ Linux上 <code>yum install openssl openssl-devel</code></p>
 
 <p><code>brew install openssl</code> 然后执行 <code>brew link openssl --force</code> 并添加环境变量
 <code>export LDFLAGS=&quot;/usr/local/opt/openssl/lib/libssl.dylib /usr/local/opt/openssl/lib/libcrypto.dylib&quot;</code></p>
+
+<p>4.configure: error: xml2-config not found. Please check your libxml2 installation.</p>
+
+<pre><code>apt-get install libxml2 libxml2-dev libmcrypt-dev openssl libssl-dev libcurl4-openssl-dev
+</code></pre>
+
+<p>5.Cannot find OpenSSL&rsquo;s libraries</p>
+
+<pre><code>apt-get install libmcrypt-dev openssl libssl-dev libcurl4-openssl-dev
+</code></pre>
+
+<p>6.configure: error: png.h not found.</p>
+
+<pre><code>apt-get install libjpeg-dev libpng-dev
+</code></pre>
+
+<ol>
+<li>make: *** [ext/fileinfo/libmagic/apprentice.lo] Error 1</li>
+</ol>
+
+<p>这是由于内存小于1G所导致.可以<code>--disable-fileinfo</code>,或者添加添加零时的swap</p>
+
+<pre><code>#创建一个大小为256M的文件
+dd if=/dev/zero of=/swapfile bs=1024 count=262144
+#把这个文件变成swap文件
+mkswap /swapfile
+#启用这个swap文件
+swapon /swapfile
+</code></pre>
+
+<p>如果要每次开机就加载</p>
+
+<pre><code>#编辑/etc/fstab文件，使在每次开机时自动加载swap文件
+/swapfile    swap    swap    default   0 0
+</code></pre>
+
+<p>注意:XEN KVM 可以创建SWAP,OVZ本身就是Virtual Environmen,不支持创建SWAP
+通过<code>df -lhT</code> 看到Type为simfs,而不是ext3,ext4,一般就不支持</p>
 
 <p>提示: make 可使用多核提升编译性能
 用make -j带一个参数，可以把项目进行并行编译，比如在一台双核的机器上，完全可以用<code>make -j4</code>，让make最多允许4个编译命令同时执行，这样可以更有效的利用CPU资源。</p>
@@ -355,9 +434,31 @@ make install
 
 <p>注意<code>fastcgi_param</code>指令是数组型的,内层替换外层,但是同级多次使用的时候，是新增而不是替换。注意不要重复使用.</p>
 
+<p>php-fpm 运行时错误
+1. [pool www] cannot get gid for group &lsquo;nobody&rsquo;
+<code>groupadd nobody</code>或者
+ 修改php-fpm.conf</p>
+
+<pre><code>user = www-data
+group = www-data
+</code></pre>
+
 <h2 id="安装mariadb:aa93c013153cd0b80f2e19308ae27e8a">安装MariaDB</h2>
 
+<pre><code>apt-get install mariadb-server
+</code></pre>
+
+<p>MySql</p>
+
+<pre><code>apt-get install mysql-server
+</code></pre>
+
+<p>安装过程中要求设定一个root密码,安装完<code>service mysql status</code>查看运行状态,<code>sudo service mysql restart</code>可以重启</p>
+
 <h2 id="开机启动脚本:aa93c013153cd0b80f2e19308ae27e8a">开机启动脚本</h2>
+
+<p>Debian and Ubuntu function at <code>/lib/lsb/init-functions</code>
+<code>ln -s  /lib/lsb/init-functions /etc/init.d/functions</code></p>
 
 <p>nginx</p>
 
@@ -408,7 +509,9 @@ exit 2
 esac
 </code></pre>
 
-<p>php-fpm</p>
+<h3 id="php-fpm:aa93c013153cd0b80f2e19308ae27e8a">php-fpm</h3>
+
+<p><code>sudo vim /etc/init.d/php-fpm</code></p>
 
 <pre><code>#!/bin/sh
 #chkconfig: 2345 90 91
@@ -470,7 +573,16 @@ sudo chkconfig --add php-fpm
 ##   开机自启
 sudo chkconfig nginx on
 sudo chkconfig php-fpm on
+
+## 查看是否开机启动
+
+sudo chkconfig --list nginx
 </code></pre>
+
+<p>Ubuntu里没有chkconfig
+可以使用sysv-rc-conf
+<code>sudo apt-get install sysv-rc-conf</code>
+然后直接使用 sysv-rc-conf 来管理,或者<code>sudo sysv-rc-conf nginx on</code>直接把<code>/etc/init.d/nginx</code> 加入到系统自动 启动列表中</p>
 
 		</div>
 	</div>
