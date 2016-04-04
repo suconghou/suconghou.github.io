@@ -143,9 +143,9 @@ apt-get -y install gcc make  openssl libssl-dev libpcre3 libpcre3-dev
 <p>编译安装</p>
 
 <pre><code>cd /tmp
-wget http://nginx.org/download/nginx-1.9.12.tar.gz
-tar -zxvf nginx-1.9.12.tar.gz
-cd nginx-1.9.12
+wget http://nginx.org/download/nginx-1.9.13.tar.gz
+tar -zxvf nginx-1.9.13.tar.gz
+cd nginx-1.9.13
 ./configure
 make &amp;&amp; make install
 </code></pre>
@@ -155,9 +155,9 @@ make &amp;&amp; make install
 <pre><code>cd /tmp
 git clone https://github.com/cuber/ngx_http_google_filter_module
 git clone https://github.com/yaoweibin/ngx_http_substitutions_filter_module
-wget http://nginx.org/download/nginx-1.9.12.tar.gz
-tar -zxvf nginx-1.9.12.tar.gz
-cd nginx-1.9.12
+wget http://nginx.org/download/nginx-1.9.13.tar.gz
+tar -zxvf nginx-1.9.13.tar.gz
+cd nginx-1.9.13
 ./configure  --with-http_ssl_module  --add-module=/tmp/ngx_http_google_filter_module  --add-module=/tmp/ngx_http_substitutions_filter_module
 make &amp;&amp; make install
 </code></pre>
@@ -246,9 +246,9 @@ CenterOS 安装 ab 压力测试</p>
 
 <p>下载PHP7最新版本,解压,有多重压缩格式可选,其中xz最小</p>
 
-<pre><code>wget http://php.net/distributions/php-7.0.4.tar.xz
-tar -xJf php-7.0.4.tar.xz
-cd php-7.0.4
+<pre><code>wget http://php.net/distributions/php-7.0.5.tar.xz
+tar -xJf php-7.0.5.tar.xz
+cd php-7.0.5
 </code></pre>
 
 <p>编译之前,可以开启O3编译优化,生成的可执行文件更小,性能更好
@@ -428,14 +428,14 @@ make &amp;&amp; make install
 
 <h2 id="静态编译redis-memcached-opcache到php7:aa93c013153cd0b80f2e19308ae27e8a">静态编译redis,memcached,opcache到php7</h2>
 
-<pre><code>wget -c http://php.net/distributions/php-7.0.4.tar.xz
+<pre><code>wget -c http://php.net/distributions/php-7.0.5.tar.xz
 wget -c -O php-redis.zip https://github.com/phpredis/phpredis/archive/php7.zip
 wget -c -O php-memcached.zip https://github.com/php-memcached-dev/php-memcached/archive/php7.zip
-tar -xJf php-7.0.4.tar.xz
-unzip php-redis.zip -d php-7.0.4/ext
-unzip php-memcached.zip -d php-7.0.4/ext
+tar -xJf php-7.0.5.tar.xz
+unzip php-redis.zip -d php-7.0.5/ext
+unzip php-memcached.zip -d php-7.0.5/ext
 export CFLAGS=&quot;-O3&quot;
-cd php-7.0.4
+cd php-7.0.5
 rm -rf configure
 ./buildconf --force
 ./configure --help

@@ -354,6 +354,15 @@ echo &amp;quot;*****************************&amp;quot;
 
 &lt;p&gt;&lt;a href=&#34;https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian&#34;&gt;https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian&lt;/a&gt;
 &lt;code&gt;照着全部做下来&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;vim乱码解决:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;Vim乱码解决&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;vim ~/.vimrc&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
+set termencoding=utf-8
+set encoding=utf-8
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
@@ -1081,12 +1090,57 @@ git config --global core.autocrlf false
 git config --global color.ui true
 git config --global credential.helper store
 
-git config --global alias.lg &amp;quot;log --graph --all --pretty=format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&amp;lt;%an&amp;gt;%Creset&#39; --abbrev-commit --date=relative&amp;quot;
+git config --global alias.lg &amp;quot;log --graph --all --pretty=format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci,%cr) %C(bold blue)&amp;lt;%an&amp;gt;%Creset&#39; --abbrev-commit --date=relative&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;blockquote&gt;
 &lt;p&gt;以上分别是设置用户信息,禁止转换换行符,颜色高亮,记住密码,设置别名列出分支图. 设置别名后,可以使用 &lt;code&gt;git lg&lt;/code&gt; 查看各个分支关系&lt;/p&gt;
 &lt;/blockquote&gt;
+
+&lt;p&gt;参数  说明
+%H  commit hash
+%h  commit short hash
+%T  tree hash
+%t  tree short hash
+%P  parent hash
+%p  parent short hash
+%an 作者名字
+%aN .mailmap 中对应的作者名字
+%ae 作者邮箱
+%aE .mailmap 中对应的作者邮箱
+%ad –date=制定的日期格式
+%aD RFC2822 日期格式
+%ar 日期格式，例如：1 day ago
+%at UNIX timestamp 日期格式
+%ai ISO 8601 日期格式
+%cn 提交者名字
+%cN .mailmap 对应的提交的名字
+%ce 提交者邮箱
+%cE .mailmap 对应的提交者的邮箱
+%cd –data=制定的提交日期的格式
+%cD RFC2822 提交日期的格式
+%cr 提交日期的格式，例如：1day ago
+%ct UNIX timestamp 提交日期的格式
+%ci ISO 8601 提交日期的格式
+%d  ref 名称
+%e  encoding
+%s  commit 信息标题
+%f  过滤 commit 信息的标题使之可以作为文件名
+%b  commit 信息内容
+%N  commit notes
+%gD reflog selector, e.g., refs/stash@{1}
+%gd shortened reflog selector, e.g., stash@{1}
+%gs reflog subject
+%Cred   切换至红色
+%Cgreen 切换至绿色
+%Cblue  切换至蓝色
+%Creset 重设颜色
+%C(color)   制定颜色，as described in color.branch.* config option
+%m  left right or boundary mark
+%n  换行
+%%  a raw %
+%x00    print a byte from a hex code
+%w([[,[,]]])    switch line wrapping, like the -w option of git-shortlog(1).&lt;/p&gt;
 
 &lt;p&gt;一个命令推送到多个服务端&lt;code&gt;vim .git/config&lt;/code&gt; ,添加一个区段,例如:&lt;/p&gt;
 
