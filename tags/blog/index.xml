@@ -37,6 +37,8 @@
 &lt;li&gt;&lt;p&gt;新建一个站点/初始化 &lt;code&gt;hugo new site /path/myblog&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
 
 &lt;li&gt;&lt;p&gt;开启http服务器并指定使用主题 &lt;code&gt;hugo server --theme=su --buildDrafts --watch&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;编译文件,直接执行&lt;code&gt;hugo&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>

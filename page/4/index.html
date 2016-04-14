@@ -143,9 +143,9 @@ apt-get -y install gcc make  openssl libssl-dev libpcre3 libpcre3-dev
 <p>编译安装</p>
 
 <pre><code>cd /tmp
-wget http://nginx.org/download/nginx-1.9.13.tar.gz
-tar -zxvf nginx-1.9.13.tar.gz
-cd nginx-1.9.13
+wget http://nginx.org/download/nginx-1.9.14.tar.gz
+tar -zxvf nginx-1.9.14.tar.gz
+cd nginx-1.9.14
 ./configure
 make &amp;&amp; make install
 </code></pre>
@@ -155,9 +155,9 @@ make &amp;&amp; make install
 <pre><code>cd /tmp
 git clone https://github.com/cuber/ngx_http_google_filter_module
 git clone https://github.com/yaoweibin/ngx_http_substitutions_filter_module
-wget http://nginx.org/download/nginx-1.9.13.tar.gz
-tar -zxvf nginx-1.9.13.tar.gz
-cd nginx-1.9.13
+wget http://nginx.org/download/nginx-1.9.14.tar.gz
+tar -zxvf nginx-1.9.14.tar.gz
+cd nginx-1.9.14
 ./configure  --with-http_ssl_module  --add-module=/tmp/ngx_http_google_filter_module  --add-module=/tmp/ngx_http_substitutions_filter_module
 make &amp;&amp; make install
 </code></pre>
@@ -700,6 +700,8 @@ sudo chkconfig --list nginx
 <li><p>新建一个站点/初始化 <code>hugo new site /path/myblog</code></p></li>
 
 <li><p>开启http服务器并指定使用主题 <code>hugo server --theme=su --buildDrafts --watch</code></p></li>
+
+<li><p>编译文件,直接执行<code>hugo</code></p></li>
 </ul>
 
 			</div>
@@ -715,6 +717,8 @@ sudo chkconfig --list nginx
 				 
 
 <h2 id="关于:6083a88ee3411b0d17ce02d738f69d47">关于</h2>
+
+<p>php node go python</p>
 
 			</div>
 		</div>

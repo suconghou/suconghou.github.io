@@ -65,9 +65,9 @@ apt-get -y install gcc make  openssl libssl-dev libpcre3 libpcre3-dev
 <p>编译安装</p>
 
 <pre><code>cd /tmp
-wget http://nginx.org/download/nginx-1.9.13.tar.gz
-tar -zxvf nginx-1.9.13.tar.gz
-cd nginx-1.9.13
+wget http://nginx.org/download/nginx-1.9.14.tar.gz
+tar -zxvf nginx-1.9.14.tar.gz
+cd nginx-1.9.14
 ./configure
 make &amp;&amp; make install
 </code></pre>
@@ -77,9 +77,9 @@ make &amp;&amp; make install
 <pre><code>cd /tmp
 git clone https://github.com/cuber/ngx_http_google_filter_module
 git clone https://github.com/yaoweibin/ngx_http_substitutions_filter_module
-wget http://nginx.org/download/nginx-1.9.13.tar.gz
-tar -zxvf nginx-1.9.13.tar.gz
-cd nginx-1.9.13
+wget http://nginx.org/download/nginx-1.9.14.tar.gz
+tar -zxvf nginx-1.9.14.tar.gz
+cd nginx-1.9.14
 ./configure  --with-http_ssl_module  --add-module=/tmp/ngx_http_google_filter_module  --add-module=/tmp/ngx_http_substitutions_filter_module
 make &amp;&amp; make install
 </code></pre>
