@@ -156,6 +156,19 @@ echo &amp;quot;*****************************&amp;quot;
 set termencoding=utf-8
 set encoding=utf-8
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;检视和控制systemd的主要命令是systemctl&lt;/p&gt;
+
+&lt;p&gt;详细使用见&lt;a href=&#34;https://wiki.archlinux.org/index.php/systemd_(简体中文&#34;&gt;https://wiki.archlinux.org/index.php/systemd_(简体中文)&lt;/a&gt;)&lt;/p&gt;
+
+&lt;p&gt;Centos7 用&lt;code&gt;systemctl&lt;/code&gt;取代了&lt;code&gt;service&lt;/code&gt;
+旧版本的 &lt;code&gt;service docker start&lt;/code&gt; 改为&lt;code&gt;systemctl start docker&lt;/code&gt;
+设置开机启动
+旧版本的 &lt;code&gt;chkconfig docker on&lt;/code&gt; 改为 &lt;code&gt;systemctl enable docker&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;/usr/lib/systemd/system/&lt;/code&gt;
+&lt;code&gt;/etc/systemd/system/&lt;/code&gt;
+后者有较高优先级会覆盖前者&lt;/p&gt;
 </description>
     </item>
     
@@ -1242,14 +1255,14 @@ B98FC99C 8FAC73EE D2B95564 DF450523
 &lt;p&gt;nodejs官方提供了编译好的二进制的包,全平台都有,十分方便
 &lt;a href=&#34;https://nodejs.org/download/release/latest/&#34;&gt;最新版本NodeJs官方库&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;其他信息&lt;a href=&#34;http://www.oschina.net/news/70955/node-js-5-7-0-stable&#34;&gt;http://www.oschina.net/news/70955/node-js-5-7-0-stable&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;其他信息&lt;a href=&#34;http://www.oschina.net/news/72721/node-v-5-11-0-stable&#34;&gt;http://www.oschina.net/news/72721/node-v-5-11-0-stable&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;例如安装Linux版本&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;wget https://nodejs.org/download/release/latest/node-v5.4.0-linux-x64.tar.xz
-xz -d node-v5.4.0-linux-x64.tar.xz
-tar -vxf node-v5.4.0-linux-x64.tar
-sudo mv node-v5.4.0-linux-x64 /usr/local/nodejs
+&lt;pre&gt;&lt;code&gt;wget https://nodejs.org/download/release/latest/node-v5.11.0-linux-x64.tar.xz
+xz -d node-v5.11.0-linux-x64.tar.xz
+tar -vxf node-v5.11.0-linux-x64.tar
+sudo mv node-v5.11.0-linux-x64 /usr/local/nodejs
 sudo ln -s /usr/local/nodejs/bin/node /usr/local/bin/node
 sudo ln -s /usr/local/nodejs/bin/npm /usr/local/bin/npm
 node -v
@@ -1266,7 +1279,7 @@ npm -v
 
 &lt;h2 id=&#34;一些必备package:7989e885d8dc487fe6df4b26f2ef5639&#34;&gt;一些必备package&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code&gt;sudo npm install -g less react-native-cli airs
+&lt;pre&gt;&lt;code&gt;sudo npm install -g less autoprefixer express jshint uglify-js webpack react-native-cli airs
 &lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
@@ -1601,7 +1614,7 @@ docker 分为两部分,一分部是docker server , 一部分是docker client
 
 &lt;p&gt;进入此ubuntu的shell
 &lt;code&gt;docker run -i -t ubuntu /bin/bash&lt;/code&gt; 也可以写为 &lt;code&gt;docker run -it ubuntu /bin/bash&lt;/code&gt;
-期间如果有需要退出按 &lt;code&gt;Ctrl+P+Q&lt;/code&gt;
+期间如果有需要退出按 &lt;code&gt;Ctrl+P+Q&lt;/code&gt;,退出后,容器任然是运行的,&lt;code&gt;Ctrl+D&lt;/code&gt;退出后容器停止
 &lt;code&gt;docker ps&lt;/code&gt; 查看正在运行的docker容器,可以看到后台的docker
 重新进入容器需要&lt;code&gt;docker attach CONTAINER&lt;/code&gt; 此命令代表&lt;code&gt;Attach to a running container&lt;/code&gt;
 CONTAINER,可以是最前面的CONTAINER ID ,也可以是最后面的NAMES&lt;/p&gt;
@@ -1621,9 +1634,23 @@ CONTAINER,可以是最前面的CONTAINER ID ,也可以是最后面的NAMES&lt;/p
 也可以在创建的时候指明结束运行时清除docker容器&lt;code&gt;docker run --rm ubuntu echo &amp;quot;hello&amp;quot;&lt;/code&gt;
 或者将要执行的命令附加到正在运行的容器上&lt;code&gt;docker exec hello2  echo &amp;quot;hihi&amp;quot;&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;技巧:&lt;/p&gt;
+&lt;p&gt;使用&lt;code&gt;docker rmi&lt;/code&gt;来删除镜像
+&lt;code&gt;docker ps&lt;/code&gt; 默认显示当前正在运行中的container
+&lt;code&gt;docker ps -a&lt;/code&gt; 查看包括已经停止的所有容器
+&lt;code&gt;docker ps -l&lt;/code&gt; 显示最新启动的一个容器（包括已停止的）&lt;/p&gt;
+
+&lt;p&gt;技巧:
+attach是可以带上&amp;ndash;sig-proxy=false来确保CTRL-D或CTRL-C不会关闭容器&lt;/p&gt;
 
 &lt;p&gt;删除所有停止运行的容器 &lt;code&gt;docker rm $(docker ps -a -q)&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;获取最后(-l)一个启动的容器id(-q) &lt;code&gt;docker ps -l -q&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;这是一些经常使用的镜像相关的数据：
+scratch - 基础镜像， 0个文件，大小为0
+busybox - 最小Unix系统，2.5MB，10000个文件
+debian:jessie - Debian最新版， 122MB， 18000 个文件
+ubuntu:14.04 - 188MB，23000 个文件&lt;/p&gt;
 
 &lt;h2 id=&#34;文件系统:6d93a80e55dc760775379b4fadc005db&#34;&gt;文件系统&lt;/h2&gt;
 
@@ -1652,7 +1679,14 @@ CONTAINER,可以是最前面的CONTAINER ID ,也可以是最后面的NAMES&lt;/p
 &lt;p&gt;其他容器使用这个数据卷
 &lt;code&gt;docker run -it --name tmp --volumes-from datafs ubuntu /bin/bash&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;docker的container是无状态的， 也就是说标记状态的数据，例如：数据库数据， 应用程序的log 等等， 是不应该放到container里的， 而是放到 Data Volume Container里&lt;/p&gt;
+&lt;p&gt;docker1.9可以使用&lt;code&gt;docker volume create --name datafs&lt;/code&gt;创建&lt;code&gt;volume&lt;/code&gt;
+使用时类似&lt;code&gt;docker run --name=gogs -p 10022:22 -p 10080:3000 -v datafs:/data gogs/gogs&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;docker volume ls&lt;/code&gt;
+查看创建的&lt;code&gt;volume&lt;/code&gt;,&lt;code&gt;docker volume rm&lt;/code&gt;用来删除
+&lt;code&gt;docker volume inspect datafs&lt;/code&gt;查看详情
+这些数据是放在&lt;code&gt;var/lib/docker/volumes/&lt;/code&gt;下面的
+docker的container是无状态的， 也就是说标记状态的数据，例如：数据库数据， 应用程序的log 等等， 是不应该放到container里的， 而是放到 Data Volume Container里&lt;/p&gt;
 
 &lt;h2 id=&#34;网络系统:6d93a80e55dc760775379b4fadc005db&#34;&gt;网络系统&lt;/h2&gt;
 
@@ -1667,6 +1701,8 @@ CONTAINER,可以是最前面的CONTAINER ID ,也可以是最后面的NAMES&lt;/p
 &lt;p&gt;&lt;code&gt;docker save&lt;/code&gt;  &lt;code&gt;docker load&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;导出后再导入(exported-imported)的镜像会丢失所有的历史，而保存后再加载（saveed-loaded）的镜像没有丢失历史和层(layer)。这意味着使用导出后再导入的方式，你将无法回滚到之前的层(layer)，同时，使用保存后再加载的方式持久化整个镜像，就可以做到层回滚（可以执行docker tag &lt;LAYER ID&gt; &lt;IMAGE NAME&gt;来回滚之前的层）&lt;/p&gt;
+
+&lt;h2 id=&#34;镜像:6d93a80e55dc760775379b4fadc005db&#34;&gt;镜像&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;docker images&lt;/code&gt;
 显示本机上存在的资源,大部分是&lt;code&gt;docker pull&lt;/code&gt;下来的,
@@ -1683,6 +1719,88 @@ layer/ – 子文件夹，保存着rootfs该容器的镜像&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;h2 id=&#34;使用流程:6d93a80e55dc760775379b4fadc005db&#34;&gt;使用流程&lt;/h2&gt;
+
+&lt;p&gt;配置为&lt;code&gt;service&lt;/code&gt; 见
+&lt;a href=&#34;https://docs.docker.com/v1.7/articles/systemd/&#34;&gt;https://docs.docker.com/v1.7/articles/systemd/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/docker/docker/tree/master/contrib/init/systemd&#34;&gt;https://github.com/docker/docker/tree/master/contrib/init/systemd&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;vim /etc/systemd/system/docker.service&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[Unit]
+Description=Docker Application Container Engine
+Documentation=https://docs.docker.com
+After=network.target docker.socket
+Requires=docker.socket
+
+[Service]
+Type=notify
+# the default is not to use systemd for cgroups because the delegate issues still
+# exists and systemd currently does not support the cgroup feature set required
+# for containers run by docker
+ExecStart=/usr/bin/docker daemon -H fd://
+MountFlags=slave
+LimitNOFILE=1048576
+LimitNPROC=1048576
+LimitCORE=infinity
+# Uncomment TasksMax if your systemd version supports it.
+# Only systemd 226 and above support this version.
+#TasksMax=infinity
+TimeoutStartSec=0
+# set delegate yes so that systemd does not reset the cgroups of docker containers
+Delegate=yes
+
+[Install]
+WantedBy=multi-user.target
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;vim /etc/systemd/system/docker.socket&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[Unit]
+Description=Docker Socket for the API
+PartOf=docker.service
+
+[Socket]
+ListenStream=/var/run/docker.sock
+SocketMode=0660
+SocketUser=root
+SocketGroup=docker
+
+[Install]
+WantedBy=sockets.target
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo groupadd docker
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;重新加载配置 &lt;code&gt;sudo systemctl daemon-reload&lt;/code&gt;
+&lt;code&gt;sudo systemctl restart docker&lt;/code&gt;
+当你的docker不支持&lt;code&gt;devicemapper&lt;/code&gt;存储驱动时,会报错
+可以使用&lt;code&gt;-s overlay&lt;/code&gt; 参数指定存储驱动&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ExecStart=/usr/bin/docker daemon -s overlay -H fd://&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;如果已经启动&lt;code&gt;docker daemon&lt;/code&gt;但是任然无法连接上,查看&lt;code&gt;systemctl status  docker.service&lt;/code&gt;
+监听是否正确,如正确,查看当前登录的用户是否和docker用户一个组内
+假设当前登录用户是root&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo usermod -aG docker root
+newgrp docker
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;再次重启docker daemon,退出当前用户再次登录&lt;/p&gt;
+
+&lt;h2 id=&#34;文件结构:6d93a80e55dc760775379b4fadc005db&#34;&gt;文件结构&lt;/h2&gt;
+
+&lt;p&gt;进入目录查看 &lt;code&gt;/var/lib/docker&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;pull的镜像信息保存在了graph文件夹下，镜像的内容存在了 &lt;code&gt;devicemapper/devicemapper/data&lt;/code&gt; 下&lt;/p&gt;
+
+&lt;p&gt;启动的容器配置信息保存在 containers 里，查看了还有 execdriver/native/
+容器里操作的内容保存在 &lt;code&gt;devicemapper/devicemapper/data&lt;/code&gt; 下&lt;/p&gt;
+
+&lt;p&gt;查看devicemapper/devicemapper文件夹
+其实device mapper driver是就是把 镜像和容器的文件 都存储在 &lt;strong&gt;data&lt;/strong&gt; 这个文件内。可以通过docker info查看data和metadata的大小&lt;/p&gt;
 </description>
     </item>
     

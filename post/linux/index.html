@@ -175,6 +175,19 @@ set termencoding=utf-8
 set encoding=utf-8
 </code></pre>
 
+<p>检视和控制systemd的主要命令是systemctl</p>
+
+<p>详细使用见<a href="https://wiki.archlinux.org/index.php/systemd_(简体中文">https://wiki.archlinux.org/index.php/systemd_(简体中文)</a>)</p>
+
+<p>Centos7 用<code>systemctl</code>取代了<code>service</code>
+旧版本的 <code>service docker start</code> 改为<code>systemctl start docker</code>
+设置开机启动
+旧版本的 <code>chkconfig docker on</code> 改为 <code>systemctl enable docker</code></p>
+
+<p><code>/usr/lib/systemd/system/</code>
+<code>/etc/systemd/system/</code>
+后者有较高优先级会覆盖前者</p>
+
 		</div>
 	</div>
 </div>
