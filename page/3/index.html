@@ -82,14 +82,13 @@
 <p>nodejs官方提供了编译好的二进制的包,全平台都有,十分方便
 <a href="https://nodejs.org/download/release/latest/">最新版本NodeJs官方库</a></p>
 
-<p>其他信息<a href="http://www.oschina.net/news/72721/node-v-5-11-0-stable">http://www.oschina.net/news/72721/node-v-5-11-0-stable</a></p>
+<p>其他信息<a href="http://www.oschina.net/news/72886/node-v-6-0-0-current">http://www.oschina.net/news/72886/node-v-6-0-0-current</a></p>
 
 <p>例如安装Linux版本</p>
 
-<pre><code>wget https://nodejs.org/download/release/latest/node-v5.11.0-linux-x64.tar.xz
-xz -d node-v5.11.0-linux-x64.tar.xz
-tar -vxf node-v5.11.0-linux-x64.tar
-sudo mv node-v5.11.0-linux-x64 /usr/local/nodejs
+<pre><code>wget https://nodejs.org/dist/v6.0.0/node-v6.0.0-linux-x64.tar.xz
+tar -xJf node-v6.0.0-linux-x64.tar.xz
+sudo mv node-v6.0.0-linux-x64 /usr/local/nodejs
 sudo ln -s /usr/local/nodejs/bin/node /usr/local/bin/node
 sudo ln -s /usr/local/nodejs/bin/npm /usr/local/bin/npm
 node -v
@@ -300,141 +299,49 @@ npm -v
 
 <h2 id="安装docker:6d93a80e55dc760775379b4fadc005db">安装Docker</h2>
 
-<p>docker 安装需要Linux内核在3.10.0以上,仅支持Linux,在Windows和MacOs上也是基于虚拟机方式运行,需要提前安装虚拟机
-默认的Ubuntu 14.04不能运行,内核版本太低.</p>
-
-<p>下面给出Linux各个发行版的默认内核版本</p>
+<p>docker 安装需要Linux内核在3.10.0以上,仅支持Linux,在Windows和MacOs上也是基于虚拟机方式运行,需要提前安装虚拟机</p>
 
 <p>查看系统内核版本<code>uname -r</code></p>
 
 <p>查看安装的系统版本
 <code>lsb_release -a</code> 或者 <code>cat /etc/issue</code></p>
 
-<p>以下二种方法适用于RedHat,CentOS
-1.<code>cat /etc/redhat-release</code> 或者 <code>cat /etc/centos-release</code>
-2. <code>rpm -q centos-release</code> 或者 <code>rpm -q redhat-release</code></p>
+<p>以下二种方法适用于RedHat,CentOS</p>
+
+<ul>
+<li><code>cat /etc/redhat-release</code> 或者 <code>cat /etc/centos-release</code></li>
+<li><code>rpm -q centos-release</code> 或者 <code>rpm -q redhat-release</code></li>
+</ul>
 
 <p>查看是否是64位系统<code>uname -i</code></p>
 
-<p>CentOS 系列</p>
+<h3 id="下载安装:6d93a80e55dc760775379b4fadc005db">下载安装</h3>
 
-<table>
-<thead>
-<tr>
-<th>系统版本</th>
-<th>内核版本</th>
-</tr>
-</thead>
+<p><strong>docker-1-11-1</strong> <a href="http://www.oschina.net/news/72899/docker-1-11-1">各平台下载地址</a></p>
 
-<tbody>
-<tr>
-<td>CentOS release 5 (Final)</td>
-<td>2.6.18-53.e15</td>
-</tr>
+<p>docker采用Go语言编写,编译以后生成一个无依赖的可执行文件.</p>
 
-<tr>
-<td>CentOS release 5.5 (Final)</td>
-<td>2.6.18-194.el5</td>
-</tr>
+<p>安装完整以后,可以移动到<code>/usr/bin</code>,即可使用<code>docker</code>和<code>sudo docker</code>命令</p>
 
-<tr>
-<td>CentOS release 5.7 (Final)</td>
-<td>2.6.18-274.el5</td>
-</tr>
+<pre><code>wget https://get.docker.com/builds/Linux/x86_64/docker-1.11.1.tgz
+tar zxvf docker-1.11.1.tgz
+cd docker
+ls -lh
+</code></pre>
 
-<tr>
-<td>CentOS 6.0</td>
-<td>2.6.32-71.el6</td>
-</tr>
+<p>得到如下:</p>
 
-<tr>
-<td>CentOS 6.2</td>
-<td>2.6.32-220.e16</td>
-</tr>
+<pre><code>total 66M
+-rwxr-xr-x 1 root root  34M Apr 27 08:38 docker
+-rwxr-xr-x 1 root root  12M Apr 27 08:38 docker-containerd
+-rwxr-xr-x 1 root root 9.1M Apr 27 08:38 docker-containerd-ctr
+-rwxr-xr-x 1 root root 3.6M Apr 27 08:38 docker-containerd-shim
+-rwxr-xr-x 1 root root 8.2M Apr 27 08:38 docker-runc
+</code></pre>
 
-<tr>
-<td>CentOS 6.3</td>
-<td>2.6.32-279.e16</td>
-</tr>
-
-<tr>
-<td>CentOS 6.4</td>
-<td>2.6.32-358.el6</td>
-</tr>
-
-<tr>
-<td>CentOS Linux release 7.1.1503 (Core)</td>
-<td>3.10.0-229.14.1.el7.x86_64</td>
-</tr>
-</tbody>
-</table>
-
-<p>CentOS和RHEL(RedHat Enterprise Linux)同版本内核一样</p>
-
-<p>Ubuntu 系列</p>
-
-<table>
-<thead>
-<tr>
-<th>系统版本</th>
-<th>内核版本</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>Ubuntu13.04</td>
-<td>3.8.0-19-generic</td>
-</tr>
-
-<tr>
-<td>Ubuntu14.04</td>
-<td>3.13.0-24-generic</td>
-</tr>
-</tbody>
-</table>
-
-<p>Debian 系列</p>
-
-<table>
-<thead>
-<tr>
-<th>系统版本</th>
-<th>内核版本</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>Debian5.0.7</td>
-<td>2.6.26-2</td>
-</tr>
-
-<tr>
-<td>Debian6.0.5</td>
-<td>2.6.32-5</td>
-</tr>
-
-<tr>
-<td>Debian7</td>
-<td>3.2.0-4-686-pae</td>
-</tr>
-</tbody>
-</table>
-
-<hr />
-
-<p>下载安装</p>
-
-<p><a href="http://www.oschina.net/news/72459/docker-v-1-11-0">各平台下载地址</a></p>
+<p>移动到<code>/usr/bin/</code> 即可替换旧版本 <code>mv * /usr/bin/</code></p>
 
 <h2 id="基本使用:6d93a80e55dc760775379b4fadc005db">基本使用</h2>
-
-<p>docker采用Go语言编写,编译以后生成一个无依赖的可执行文件,安装完整以后,可以移动到<code>/usr/bin</code>,即可使用<code>docker</code>和<code>sudo docker</code>命令</p>
-
-<pre><code>wget https://get.docker.com/builds/Linux/x86_64/docker-1.10.2
-sudo mv docker-1.10.2 /usr/bin/docker
-</code></pre>
 
 <p>运行<code>docker -v</code>即可查看当前docker版本
 docker 分为两部分,一分部是docker server , 一部分是docker client
@@ -453,47 +360,111 @@ docker 分为两部分,一分部是docker server , 一部分是docker client
 
 <p>进入此ubuntu的shell
 <code>docker run -i -t ubuntu /bin/bash</code> 也可以写为 <code>docker run -it ubuntu /bin/bash</code>
-期间如果有需要退出按 <code>Ctrl+P+Q</code>,退出后,容器任然是运行的,<code>Ctrl+D</code>退出后容器停止
-<code>docker ps</code> 查看正在运行的docker容器,可以看到后台的docker
-重新进入容器需要<code>docker attach CONTAINER</code> 此命令代表<code>Attach to a running container</code>
-CONTAINER,可以是最前面的CONTAINER ID ,也可以是最后面的NAMES</p>
+期间如果有需要退出按 <code>Ctrl+P+Q</code>,退出后,容器任然是运行的,<code>Ctrl+D</code>退出后容器停止</p>
+
+<p><code>docker ps</code> 查看正在运行的docker容器,可以看到后台的docker
+重新进入容器需要<code>docker attach CONTAINER</code> 此命令代表<code>Attach to a running container</code>.
+CONTAINER可以是最前面的CONTAINER ID ,也可以是最后面的NAMES</p>
 
 <p>你还可以使用 <code>docker run -it --name myname ubuntu /bin/bash</code> 来指定它使用的名字,否则名字的随机的</p>
 
 <p>你可以用不同的名字同时运行多个此种镜像</p>
 
-<p>使用 <code>docker rename hello hello2</code> 将原先名字为hello的容器改名为hello2
-使用 <code>docker top hello2</code> 查看运行在hello2中的所有进程
-使用 <code>docker pause hello2</code> 将docker hello2 中的所有进程暂停,使用<code>docker ps</code> 可以看到容器已经暂停了
-使用 <code>docker unpass hello2</code> 恢复暂停的容器
-使用 <code>docker stop hello2</code> 将名字为hello2的容器停止
-使用 <code>docker ps -a</code> 查看所有的容器,将会看到很多容器,因为每次执行<code>docker run</code>命令都是<code>Run a command in a new container</code>新建了一个容器,
-可以考虑使用 <code>docker start 容器名称</code> 然后再<code>docker attach</code> 进去,你上次的改动依然在那.
-也可以考虑使用<code>docker rm 容器名称</code> 删除容器以节约资源,rm后可用空格分隔多个容器名称,此命令执行较慢
+<p>使用 <code>docker rename hello hello2</code> 将原先名字为hello的容器改名为hello2</p>
+
+<p>使用 <code>docker top hello2</code> 查看运行在hello2中的所有进程</p>
+
+<p>使用 <code>docker pause hello2</code> 将docker hello2 中的所有进程暂停,使用<code>docker ps</code> 可以看到容器已经暂停了</p>
+
+<p>使用 <code>docker unpass hello2</code> 恢复暂停的容器</p>
+
+<p>使用 <code>docker stop hello2</code> 将名字为hello2的容器停止</p>
+
+<p>使用 <code>docker ps -a</code> 查看所有的容器,将会看到很多容器,因为每次执行<code>docker run</code>命令都是<code>Run a command in a new container</code>新建了一个容器,
+可以考虑使用 <code>docker start 容器名称</code> 然后再<code>docker attach</code> 进去,你上次的改动依然在那.</p>
+
+<p>也可以考虑使用<code>docker rm 容器名称</code> 删除容器以节约资源,rm后可用空格分隔多个容器名称,此命令执行较慢
 也可以在创建的时候指明结束运行时清除docker容器<code>docker run --rm ubuntu echo &quot;hello&quot;</code>
 或者将要执行的命令附加到正在运行的容器上<code>docker exec hello2  echo &quot;hihi&quot;</code></p>
+
+<p>使用<code>docker start -ia vps</code> 当<code>docker start</code>后立即退出,来不及attach时,采用这种方式</p>
 
 <p>使用<code>docker rmi</code>来删除镜像
 <code>docker ps</code> 默认显示当前正在运行中的container
 <code>docker ps -a</code> 查看包括已经停止的所有容器
 <code>docker ps -l</code> 显示最新启动的一个容器（包括已停止的）</p>
 
+<p>使用<code>docker info</code>查看机器的配置,docker版本,容器和镜像的数量,存储驱动等</p>
+
 <p>技巧:
-attach是可以带上&ndash;sig-proxy=false来确保CTRL-D或CTRL-C不会关闭容器</p>
+attach是可以带上<code>--sig-proxy=false</code>来确保<code>CTRL-D</code>或<code>CTRL-C</code>不会关闭容器</p>
 
-<p>删除所有停止运行的容器 <code>docker rm $(docker ps -a -q)</code></p>
+<ul>
+<li>删除所有停止运行的容器 <code>docker rm $(docker ps -a -q)</code></li>
+<li>获取最后(-l)一个启动的容器id(-q) <code>docker ps -l -q</code></li>
+</ul>
 
-<p>获取最后(-l)一个启动的容器id(-q) <code>docker ps -l -q</code></p>
+<p>这是一些经常使用的镜像相关的数据：</p>
 
-<p>这是一些经常使用的镜像相关的数据：
-scratch - 基础镜像， 0个文件，大小为0
-busybox - 最小Unix系统，2.5MB，10000个文件
-debian:jessie - Debian最新版， 122MB， 18000 个文件
-ubuntu:14.04 - 188MB，23000 个文件</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>描述</th>
+<th>大小</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>scratch</td>
+<td>基础镜像</td>
+<td>大小为0</td>
+</tr>
+
+<tr>
+<td>busybox</td>
+<td>最小Unix系统</td>
+<td>1.1MB</td>
+</tr>
+
+<tr>
+<td>Alpine</td>
+<td>基于busybox</td>
+<td>4.8MB</td>
+</tr>
+
+<tr>
+<td>CirrOS</td>
+<td>最小化的Linux发行版</td>
+<td>7.7MB</td>
+</tr>
+
+<tr>
+<td>ubuntu:16.04</td>
+<td>Ubuntu</td>
+<td>121MB</td>
+</tr>
+
+<tr>
+<td>debian:jessie</td>
+<td>Debian最新版</td>
+<td>125MB</td>
+</tr>
+
+<tr>
+<td>centos:latest</td>
+<td>Centos最新版</td>
+<td>196MB</td>
+</tr>
+</tbody>
+</table>
 
 <h2 id="文件系统:6d93a80e55dc760775379b4fadc005db">文件系统</h2>
 
-<h3 id="把一个宿主机上的目录挂载到镜像里:6d93a80e55dc760775379b4fadc005db">把一个宿主机上的目录挂载到镜像里</h3>
+<p>把一个宿主机上的目录挂载到镜像里</p>
+
+<p><strong>通过挂载的方式</strong></p>
 
 <blockquote>
 <p>通过-v参数，冒号前为宿主机目录，必须为绝对路径，冒号后为镜像内挂载的路径。</p>
@@ -502,7 +473,7 @@ ubuntu:14.04 - 188MB，23000 个文件</p>
 <p><code>docker run -it --name tmp -v /data/tmp:/home ubuntu /bin/bash</code></p>
 
 <p>宿主目录不存在会自动创建,但是镜像内挂载路径必须存在,挂载后双向可写,实时生效
-此镜像将一直保持挂载,stop,exit后重新进入,依然是挂载状态</p>
+此镜像将一直保持挂载,stop,exit后重新进入,依然是挂载状态.</p>
 
 <p>默认挂载的路径权限为读写。如果指定为只读可以用：ro
 <code>docker run -it --name tmp -v /data/tmp:/home:ro ubuntu /bin/bash</code>
@@ -511,50 +482,96 @@ ubuntu:14.04 - 188MB，23000 个文件</p>
 <p>docker还提供了一种高级的用法,叫数据卷。
 数据卷：“其实就是一个正常的容器，专门用来提供数据卷供其它容器挂载的”。感觉像是由一个容器定义的一个数据挂载信息。其他的容器启动可以直接挂载数据卷容器中定义的挂载信息。</p>
 
-<p>创建一个普通容器,定义一个名称,挂载目录.
-数据容器是不需要运行的。
-<code>docker run -v /data/tmp:/home  --name datafs busybox</code></p>
+<p>创建一个普通容器,定义一个名称,挂载目录. 数据容器是不需要运行的。</p>
+
+<p><code>docker run -v /data/tmp:/home  --name datafs busybox</code></p>
 
 <p>其他容器使用这个数据卷
 <code>docker run -it --name tmp --volumes-from datafs ubuntu /bin/bash</code></p>
 
-<p>docker1.9可以使用<code>docker volume create --name datafs</code>创建<code>volume</code>
-使用时类似<code>docker run --name=gogs -p 10022:22 -p 10080:3000 -v datafs:/data gogs/gogs</code></p>
+<p><strong>通过volume方式(建议使用这种最新的方式)</strong></p>
 
-<p><code>docker volume ls</code>
-查看创建的<code>volume</code>,<code>docker volume rm</code>用来删除
-<code>docker volume inspect datafs</code>查看详情
-这些数据是放在<code>var/lib/docker/volumes/</code>下面的
-docker的container是无状态的， 也就是说标记状态的数据，例如：数据库数据， 应用程序的log 等等， 是不应该放到container里的， 而是放到 Data Volume Container里</p>
+<p>docker1.9可以使用<code>docker volume create --name datafs</code>创建<code>volume</code>
+使用时类似<code>docker run --name=yourcontainername -p 10022:22 -p 10080:3000 -v datafs:/data ubuntu</code></p>
+
+<p><code>docker volume ls</code> 查看创建的<code>volume</code></p>
+
+<p><code>docker volume rm</code>用来删除</p>
+
+<p><code>docker volume inspect datafs</code>查看详情</p>
+
+<p>这些数据是放在<code>/var/lib/docker/volumes/</code>下面的</p>
+
+<p>docker的container是无状态的,也就是说标记状态的数据,例如：数据库数据,应用程序的log等等,是不应该放到container里的,而是放到 Data Volume Container里</p>
+
+<p>建议使用Data Volume Container不要使用过去的方法了</p>
 
 <h2 id="网络系统:6d93a80e55dc760775379b4fadc005db">网络系统</h2>
 
-<p>-p 映射端口
--p 80:8080 容器内部的8080端口,对外暴漏于80端口
--p 22 内外都是22端口映射</p>
+<p>使用<code>-p</code>进行映射端口,第一个是外部端口,第二个是内部端口</p>
 
-<h2 id="资源控制:6d93a80e55dc760775379b4fadc005db">资源控制</h2>
+<p>默认的规则是TCP,如果需要UDP,采用类似<code>-p 1234:1234/udp</code></p>
 
-<p><code>docker export</code> <code>docker import</code></p>
+<p><code>-p 80:8080</code>容器内部的8080端口,对外暴漏于80端口
+<code>-p 22</code>内部是22端口映射,外部则为一个随机可用的端口,<code>-P</code>则是将Dockerfile里暴露的所有容器接口映射到动态分配的宿主机端口上</p>
 
-<p><code>docker save</code>  <code>docker load</code></p>
+<p>-p参数只能在<code>docker run</code>时指明,一旦生成了container就不能修改端口映射
+可以采用如下方式生成新的容器修改</p>
 
-<p>导出后再导入(exported-imported)的镜像会丢失所有的历史，而保存后再加载（saveed-loaded）的镜像没有丢失历史和层(layer)。这意味着使用导出后再导入的方式，你将无法回滚到之前的层(layer)，同时，使用保存后再加载的方式持久化整个镜像，就可以做到层回滚（可以执行docker tag <LAYER ID> <IMAGE NAME>来回滚之前的层）</p>
+<pre><code>docker stop vps
+docker commit vps vpsimage
+docker rm vps
+docker run -it -p 8080:8000 --name vps vpsimage bash
+</code></pre>
 
-<h2 id="镜像:6d93a80e55dc760775379b4fadc005db">镜像</h2>
+<p>多个端口类似<code>docker run -it --name vps -p 443:443 -p 80:8080 -p 8000:80 vpsimage bash</code></p>
 
-<p><code>docker images</code>
-显示本机上存在的资源,大部分是<code>docker pull</code>下来的,
-可以使用 <code>docker rmi</code>
-此资源信息以JSON格式记录于文件,
-<code>cat /var/lib/docker/repositories-devicemapper | python -mjson.tool</code> 此命令将得出类似的结果</p>
+<p>使用<code>docker port vps</code>可以查看此容器当前的端口映射,容器停止后,<code>docker port vps</code>不会显示出来,他显示的是正在工作的.</p>
 
-<p><code>ls -lh /var/lib/docker/graph/</code> 发现有文件夹名和上述镜像ID一致的,文件夹内保存着:</p>
+<p><code>docker inspect vps</code> 查看容器的详细配置信息,包括端口映射,来源镜像,日志存储路径,内存,CPU等</p>
+
+<h2 id="容器与镜像:6d93a80e55dc760775379b4fadc005db">容器与镜像</h2>
+
+<p><code>docker export</code> <code>docker import</code>  与  <code>docker save</code>  <code>docker load</code></p>
+
+<p>导出后再导入<code>exported-imported</code>的镜像会丢失所有的历史.
+而保存后再加载<code>saveed-loaded</code>的镜像没有丢失历史和层(layer)。
+这意味着使用导出后再导入的方式，你将无法回滚到之前的层(layer)，
+同时，使用保存后再加载的方式持久化整个镜像，就可以做到层回滚（可以执行<code>docker tag &lt;LAYER ID&gt; &lt;IMAGE NAME&gt;</code>来回滚之前的层）
+<code>docker history vpsimage</code> 查看镜像的变迁历史</p>
 
 <blockquote>
-<p>json -保存着关于这个镜像的元数据
-layersize – 一个整数，表示layer的大小。
-layer/ – 子文件夹，保存着rootfs该容器的镜像</p>
+<p>Export命令用于持久化容器[Export a container&rsquo;s filesystem as a tar archive]</p>
+
+<p>Save命令用于持久化镜像[Save an image(s) to a tar archive]</p>
+</blockquote>
+
+<p><strong>容器</strong></p>
+
+<p><code>docker ps -a</code> 查看所有的容器,包含已经停止的,暂停的,在运行的等,可以恢复运行,停止等,删除使用<code>docker rm xx</code></p>
+
+<p>修改容器名字:<code>docker rename old new</code></p>
+
+<p>导出:<code>docker export vps &gt; vpsdata.tar</code></p>
+
+<p>导入:<code>cat /home/vpsdata.tar | docker import – yourname</code></p>
+
+<p><strong>镜像</strong></p>
+
+<p><code>docker images</code> 显示本机上存在的资源,大部分是<code>docker pull</code>下来的,可以使用 <code>docker rmi xx</code> 删除</p>
+
+<p>修改镜像名字:<code>docker tag old new</code> 然后 <code>docker rmi old</code></p>
+
+<p>导出:<code>docker save vpsimage &gt; image.tar</code></p>
+
+<p>导入:<code>docker load &lt; /home/image.tar</code></p>
+
+<p>docker server 与 client 分离时,save,export等操作会非常慢,因为会通过网络把生成的文件下载到本地.</p>
+
+<blockquote>
+<p><code>docker rm $(docker ps -q -a)</code> 一次性删除所有的容器</p>
+
+<p><code>docker rmi $(docker images -q)</code> 一次性删除所有的镜像</p>
 </blockquote>
 
 <h2 id="使用流程:6d93a80e55dc760775379b4fadc005db">使用流程</h2>
@@ -633,13 +650,23 @@ newgrp docker
 
 <p>进入目录查看 <code>/var/lib/docker</code></p>
 
-<p>pull的镜像信息保存在了graph文件夹下，镜像的内容存在了 <code>devicemapper/devicemapper/data</code> 下</p>
+<p><code>volumes</code> 目录里存放着创建的<code>Data Volume Container</code></p>
 
-<p>启动的容器配置信息保存在 containers 里，查看了还有 execdriver/native/
-容器里操作的内容保存在 <code>devicemapper/devicemapper/data</code> 下</p>
+<p><code>containers</code> 目录存储启动的容器配置信息,查看<code>docker ps -a</code>里的CONTAINER ID和此文件夹下某些目录的前几位是相同的</p>
 
-<p>查看devicemapper/devicemapper文件夹
-其实device mapper driver是就是把 镜像和容器的文件 都存储在 <strong>data</strong> 这个文件内。可以通过docker info查看data和metadata的大小</p>
+<p><code>graph</code> pull的镜像信息保存在了graph文件夹下,镜像的内容存在了<code>devicemapper/devicemapper/data</code> 下,根据存储驱动不同,也可能存放在<code>overlay</code>目录,这些目录都比较大</p>
+
+<p><code>ls -lh /var/lib/docker/graph/</code>,进入一个文件夹,文件夹内保存着:</p>
+
+<blockquote>
+<p>json -保存着关于这个镜像的元数据, <code>cat json | python -mjson.tool</code></p>
+
+<p>layersize – 一个整数，表示layer的大小。</p>
+
+<p>checksum - 一个sha256值</p>
+</blockquote>
+
+<p><code>image</code></p>
 
 			</div>
 		</div>

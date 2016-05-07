@@ -31,9 +31,9 @@ apt-get -y install gcc make  openssl libssl-dev libpcre3 libpcre3-dev
 &lt;p&gt;编译安装&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;cd /tmp
-wget http://nginx.org/download/nginx-1.9.15.tar.gz
-tar -zxvf nginx-1.9.15.tar.gz
-cd nginx-1.9.15
+wget http://nginx.org/download/nginx-1.10.0.tar.gz
+tar -zxvf nginx-1.10.0.tar.gz
+cd nginx-1.10.0
 ./configure
 make &amp;amp;&amp;amp; make install
 &lt;/code&gt;&lt;/pre&gt;
@@ -43,9 +43,9 @@ make &amp;amp;&amp;amp; make install
 &lt;pre&gt;&lt;code&gt;cd /tmp
 git clone https://github.com/cuber/ngx_http_google_filter_module
 git clone https://github.com/yaoweibin/ngx_http_substitutions_filter_module
-wget http://nginx.org/download/nginx-1.9.15.tar.gz
-tar -zxvf nginx-1.9.15.tar.gz
-cd nginx-1.9.15
+wget http://nginx.org/download/nginx-1.10.0.tar.gz
+tar -zxvf nginx-1.10.0.tar.gz
+cd nginx-1.10.0
 ./configure  --with-http_ssl_module  --add-module=/tmp/ngx_http_google_filter_module  --add-module=/tmp/ngx_http_substitutions_filter_module
 make &amp;amp;&amp;amp; make install
 &lt;/code&gt;&lt;/pre&gt;
@@ -95,6 +95,12 @@ make &amp;amp;&amp;amp; make install
 &lt;p&gt;建立目录&lt;code&gt;mkdir /etc/nginx/conf.d&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;使用&lt;code&gt;ln -s /etc/nginx/conf.d /usr/local/nginx/conf/conf.d&lt;/code&gt;建立软连接&lt;/p&gt;
+
+&lt;h3 id=&#34;修改nginx配置:aa93c013153cd0b80f2e19308ae27e8a&#34;&gt;修改Nginx配置&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;设置最大上传文件大小&lt;/strong&gt;,配置&lt;code&gt;nginx.conf&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;client_max_body_size 50m&lt;/code&gt; Default value for client_max_body_size is 1 MiB,超过大小报错&lt;code&gt;413 Request Entity Too Large&lt;/code&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;卸载apache:aa93c013153cd0b80f2e19308ae27e8a&#34;&gt;卸载apache&lt;/h3&gt;
 

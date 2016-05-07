@@ -102,6 +102,8 @@ done
 &lt;p&gt;aria2c支持多种协议,&lt;code&gt;URI&lt;/code&gt; &lt;code&gt;MAGNET&lt;/code&gt; &lt;code&gt;TORRENT_FILE&lt;/code&gt; &lt;code&gt;METALINK_FILE&lt;/code&gt;,也支持axel类似的分段下载&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;aria2c -s 30 -c -o localfilename http://xx.com/downloadfile&lt;/code&gt; 30个线程分段下载,存储为localfilename,并断点续传&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;aria2c file1.torrent file2.torrent&lt;/code&gt;&lt;/p&gt;
 </description>
     </item>
     
