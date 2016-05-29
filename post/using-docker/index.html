@@ -3,10 +3,13 @@
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
-	<meta name='renderer' content='webkit'><meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
-	<title> &middot; </title>
+	<meta name='renderer' content='webkit'>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
+	<meta name='description' content='记录学习的点点滴滴'>
+	<meta name='keywords' content='前端,PHP,GO,编程博客'>
+	<title>开启docker之旅 &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.min.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="" />
+	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -14,7 +17,7 @@
 <header class="header">
 	<div class="header-main">
 		<a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
-		<h1> 苏苏的博客</h1>
+		<h1>苏苏的博客</h1>
 		<p class="sub-title">简约至极</p>
 		<ul class="contact">
 			<a href="https://github.com/suconghou" target="_blank"><i class="fa fa-github"></i></a>
@@ -33,13 +36,18 @@
 		<p class="post-date">Tue, Jan 5, 2016</p>
 		
 		<div class="post-text">
-			 
+			
 
 <h2 id="安装docker:6d93a80e55dc760775379b4fadc005db">安装Docker</h2>
 
 <p>docker 安装需要Linux内核在3.10.0以上,仅支持Linux,在Windows和MacOs上也是基于虚拟机方式运行,需要提前安装虚拟机</p>
 
-<p>查看系统内核版本<code>uname -r</code></p>
+<p>OpenVZ的VPS内核版本较低,且不能升级,并不能作为docker server,但是可以使用docker client</p>
+
+<ul>
+<li>通过<code>df -lhT</code> 看到Type为simfs,而不是ext3,ext4,一般就代表使用的是OpenVZ虚拟化的</li>
+<li>查看系统内核版本<code>uname -r</code></li>
+</ul>
 
 <p>查看安装的系统版本
 <code>lsb_release -a</code> 或者 <code>cat /etc/issue</code></p>
@@ -56,6 +64,8 @@
 <h3 id="下载安装:6d93a80e55dc760775379b4fadc005db">下载安装</h3>
 
 <p><strong>docker-1-11-1</strong> <a href="http://www.oschina.net/news/72899/docker-1-11-1">各平台下载地址</a></p>
+
+<p>或者<code>http://get.daocloud.io/docker/builds/</code>查看</p>
 
 <p>docker采用Go语言编写,编译以后生成一个无依赖的可执行文件.</p>
 
@@ -162,13 +172,13 @@ attach是可以带上<code>--sig-proxy=false</code>来确保<code>CTRL-D</code>�
 
 <tr>
 <td>busybox</td>
-<td>最小Unix系统</td>
+<td>最小Unix系统 (uClibc)</td>
 <td>1.1MB</td>
 </tr>
 
 <tr>
 <td>Alpine</td>
-<td>基于busybox</td>
+<td>基于busybox(musl)</td>
 <td>4.8MB</td>
 </tr>
 
@@ -205,7 +215,7 @@ attach是可以带上<code>--sig-proxy=false</code>来确保<code>CTRL-D</code>�
 <p><strong>通过挂载的方式</strong></p>
 
 <blockquote>
-<p>通过-v参数，冒号前为宿主机目录，必须为绝对路径，冒号后为镜像内挂载的路径。</p>
+<p>通过-v参数,冒号前为宿主机目录,必须为绝对路径,冒号后为镜像内挂载的路径.</p>
 </blockquote>
 
 <p><code>docker run -it --name tmp -v /data/tmp:/home ubuntu /bin/bash</code></p>
@@ -213,14 +223,14 @@ attach是可以带上<code>--sig-proxy=false</code>来确保<code>CTRL-D</code>�
 <p>宿主目录不存在会自动创建,但是镜像内挂载路径必须存在,挂载后双向可写,实时生效
 此镜像将一直保持挂载,stop,exit后重新进入,依然是挂载状态.</p>
 
-<p>默认挂载的路径权限为读写。如果指定为只读可以用：ro
+<p>默认挂载的路径权限为读写.如果指定为只读可以用：ro
 <code>docker run -it --name tmp -v /data/tmp:/home:ro ubuntu /bin/bash</code>
 挂载后,镜像内对挂载的数据不可写</p>
 
-<p>docker还提供了一种高级的用法,叫数据卷。
-数据卷：“其实就是一个正常的容器，专门用来提供数据卷供其它容器挂载的”。感觉像是由一个容器定义的一个数据挂载信息。其他的容器启动可以直接挂载数据卷容器中定义的挂载信息。</p>
+<p>docker还提供了一种高级的用法,叫数据卷.
+数据卷：&rdquo;其实就是一个正常的容器,专门用来提供数据卷供其它容器挂载的&rdquo;.感觉像是由一个容器定义的一个数据挂载信息.其他的容器启动可以直接挂载数据卷容器中定义的挂载信息.</p>
 
-<p>创建一个普通容器,定义一个名称,挂载目录. 数据容器是不需要运行的。</p>
+<p>创建一个普通容器,定义一个名称,挂载目录. 数据容器是不需要运行的.</p>
 
 <p><code>docker run -v /data/tmp:/home  --name datafs busybox</code></p>
 
@@ -251,7 +261,7 @@ attach是可以带上<code>--sig-proxy=false</code>来确保<code>CTRL-D</code>�
 <p>默认的规则是TCP,如果需要UDP,采用类似<code>-p 1234:1234/udp</code></p>
 
 <p><code>-p 80:8080</code>容器内部的8080端口,对外暴漏于80端口
-<code>-p 22</code>内部是22端口映射,外部则为一个随机可用的端口,<code>-P</code>则是将Dockerfile里暴露的所有容器接口映射到动态分配的宿主机端口上</p>
+<code>-p 22</code>内部是22端口映射,外部则为一个随机可用的端口,<code>-P</code>则是将Dockerfile里EXPOSE的所有端口分配到宿主机的动态端口上,EXPOSE的端口不创建和宿主机的映射,是不能直接访问的</p>
 
 <p>-p参数只能在<code>docker run</code>时指明,一旦生成了container就不能修改端口映射
 可以采用如下方式生成新的容器修改</p>
@@ -273,9 +283,9 @@ docker run -it -p 8080:8000 --name vps vpsimage bash
 <p><code>docker export</code> <code>docker import</code>  与  <code>docker save</code>  <code>docker load</code></p>
 
 <p>导出后再导入<code>exported-imported</code>的镜像会丢失所有的历史.
-而保存后再加载<code>saveed-loaded</code>的镜像没有丢失历史和层(layer)。
-这意味着使用导出后再导入的方式，你将无法回滚到之前的层(layer)，
-同时，使用保存后再加载的方式持久化整个镜像，就可以做到层回滚（可以执行<code>docker tag &lt;LAYER ID&gt; &lt;IMAGE NAME&gt;</code>来回滚之前的层）
+而保存后再加载<code>saveed-loaded</code>的镜像没有丢失历史和层(layer).
+这意味着使用导出后再导入的方式,你将无法回滚到之前的层(layer),
+同时,使用保存后再加载的方式持久化整个镜像,就可以做到层回滚（可以执行<code>docker tag &lt;LAYER ID&gt; &lt;IMAGE NAME&gt;</code>来回滚之前的层）
 <code>docker history vpsimage</code> 查看镜像的变迁历史</p>
 
 <blockquote>
@@ -292,7 +302,7 @@ docker run -it -p 8080:8000 --name vps vpsimage bash
 
 <p>导出:<code>docker export vps &gt; vpsdata.tar</code></p>
 
-<p>导入:<code>cat /home/vpsdata.tar | docker import – yourname</code></p>
+<p>导入:<code>cat /home/vpsdata.tar | docker import – yourname</code>,也可以通过指定 URL 或者某个目录来导入<code>docker import http://example.com/exampleimage.tgz example/imagerepo</code></p>
 
 <p><strong>镜像</strong></p>
 
@@ -311,6 +321,18 @@ docker run -it -p 8080:8000 --name vps vpsimage bash
 
 <p><code>docker rmi $(docker images -q)</code> 一次性删除所有的镜像</p>
 </blockquote>
+
+<h2 id="国内加速:6d93a80e55dc760775379b4fadc005db">国内加速</h2>
+
+<p><code>docker pull</code> 默认采用https通信,国内一般提供镜像,或者自己的registry,可以采用
+例如<code>docker pull registry.aliyuncs.com/suconghou/http</code> 这种方式指明registry</p>
+
+<p><a href="https://dev.aliyun.com/search.html">阿里云的registry</a>,提供私有,公开docker镜像,但是并不是dockerhub的镜像</p>
+
+<p>Daocloud提供的Docker服务地址 daocloud.io
+并提供单独域名的加速器, <code>--registry-mirror=http://xxx.m.daocloud.io</code> 可以指定docker启动时使用的registry</p>
+
+<p>网易提供的镜像 <a href="https://hub-mirror.c.163.com/">https://hub-mirror.c.163.com/</a></p>
 
 <h2 id="使用流程:6d93a80e55dc760775379b4fadc005db">使用流程</h2>
 
@@ -384,6 +406,14 @@ newgrp docker
 
 <p>再次重启docker daemon,退出当前用户再次登录</p>
 
+<h2 id="根据dockerfile创建:6d93a80e55dc760775379b4fadc005db">根据Dockerfile创建</h2>
+
+<p><code>sudo docker build -t=&quot;user/imgname:tag&quot; .</code></p>
+
+<p>其中-t标记来添加 tag,指定新的镜像的用户信息.</p>
+
+<p>&rdquo;.&rdquo; 是 Dockerfile 所在的路径（当前目录）,也可以替换为一个具体的 Dockerfile 的路径.</p>
+
 <h2 id="文件结构:6d93a80e55dc760775379b4fadc005db">文件结构</h2>
 
 <p>进入目录查看 <code>/var/lib/docker</code></p>
@@ -399,12 +429,35 @@ newgrp docker
 <blockquote>
 <p>json -保存着关于这个镜像的元数据, <code>cat json | python -mjson.tool</code></p>
 
-<p>layersize – 一个整数，表示layer的大小。</p>
+<p>layersize – 一个整数,表示layer的大小.</p>
 
 <p>checksum - 一个sha256值</p>
 </blockquote>
 
 <p><code>image</code></p>
+
+<h3 id="存储驱动:6d93a80e55dc760775379b4fadc005db">存储驱动</h3>
+
+<p>做paas一般使用aufs驱动,用于存储大量的docker,但是aufs只在ubuntu系的内核才自带此功能.</p>
+
+<p>devicemapper驱动将所有文件存储在一个100G的虚拟磁盘,但是静态编译好的二进制文件不支持此驱动</p>
+
+<p>overlay驱动将镜像里的各个文件还是存储在磁盘的各个文件,镜像过多存储的文件数量也很多,一般兼容性较好</p>
+
+<h2 id="构建镜像:6d93a80e55dc760775379b4fadc005db">构建镜像</h2>
+
+<p>build images 使用
+<code>docker build -t=&quot;http&quot; .</code></p>
+
+<p>-t 指明tag
+后面的.指明Dockerfile所在的目录</p>
+
+<h2 id="关联远端docker-hub仓库:6d93a80e55dc760775379b4fadc005db">关联远端Docker Hub仓库</h2>
+
+<p><code>docker login</code>
+输入用户名,密码,邮箱登陆</p>
+
+<p><code>docker push yourname/imagename</code></p>
 
 		</div>
 	</div>

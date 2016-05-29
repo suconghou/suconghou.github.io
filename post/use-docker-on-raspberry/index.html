@@ -7,7 +7,7 @@
 	<meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
 	<meta name='description' content='记录学习的点点滴滴'>
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
-	<title>关于 &middot; 苏苏的博客</title>
+	<title>在树莓派上使用Docker &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.min.css">
 	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
@@ -31,32 +31,42 @@
 <div class="content container">
 	<div class="post">
 		<h1 class="post-title">
-			<a href="javascript:void(0)"> 关于</a>
+			<a href="javascript:void(0)"> 在树莓派上使用Docker</a>
 		</h1>
-		<p class="post-date">Fri, Jan 1, 2016</p>
+		<p class="post-date">Sun, May 8, 2016</p>
 		
 		<div class="post-text">
 			
 
-<h2 id="关于博客:6083a88ee3411b0d17ce02d738f69d47">关于博客</h2>
+<h2 id="安装支持docker的系统:742f0b5a2292586baafc29ed5c3da3ab">安装支持Docker的系统</h2>
 
-<p>博客使用<code>hugo</code>搭建,自己编写的主题.</p>
+<p>树莓派官方系统并不支持Docker,需要安装.</p>
 
-<p><code>hugo</code>把<code>Markdown</code>解析为<code>html</code>,托管于<code>github pages</code>,<code>DNSPOD</code>双线解析.</p>
+<p>查看 <a href="http://blog.hypriot.com/downloads/">集成Dcoker的树莓派系统</a></p>
 
-<p>国内解析到<code>coding page</code>服务</p>
+<pre><code>aria2c -s 50 -c https://downloads.hypriot.com/hypriot-rpi-20160306-192317.img.zip
 
-<p>国外解析到<code>github pages</code>服务</p>
 
-<p>博客常记录一些自己折腾的东西,以备必要时查阅.</p>
+diskutil list
+diskutil unmountdisk /dev/disk2
+</code></pre>
 
-<h2 id="关于我:6083a88ee3411b0d17ce02d738f69d47">关于我</h2>
+<p>用以下命令前必须卸载u盘<code>diskutil unmountdisk /dev/disk2</code></p>
 
-<p>90后,计算机宅男,<code>PHP程序猿</code>,<code>前端攻城狮</code>,也常写一些<code>Node</code>,<code>Go</code>,<code>Python</code></p>
+<pre><code>sudo dd if=hypriotos-rpi-v0.8.0.img of=/dev/disk2 bs=8k
+</code></pre>
 
-<p><code>Mac</code>用户,<code>Linux</code>党,常混迹于各大编程社区.</p>
+<p>安装完成重启就可以啦,启动后登陆的用户是pirate,密码hypriot</p>
 
-<p>热爱编程,目前正向全栈发展.</p>
+<p>修改密码:执行<code>passwd</code>,输入当前密码,输入新密码,再输入新密码,更新完成</p>
+
+<p>执行<code>exit</code>退出,或者<code>sudo reboot</code>重启</p>
+
+<p>创建用户:<code>useradd -g test -d /home/test1 -s /etc/bash -m test1</code>
+注解：-g 所属组 -d 家目录 -s 所用的SHELL
+passwd abc</p>
+
+<p>获得sudo权限:编辑<code>/etc/sudoers</code> 加入新添加的用户名</p>
 
 		</div>
 	</div>

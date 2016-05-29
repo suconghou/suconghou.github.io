@@ -3,10 +3,13 @@
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
-	<meta name='renderer' content='webkit'><meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
-	<title> &middot; </title>
+	<meta name='renderer' content='webkit'>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
+	<meta name='description' content='记录学习的点点滴滴'>
+	<meta name='keywords' content='前端,PHP,GO,编程博客'>
+	<title>安装PHP7和NGINX &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.min.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="" />
+	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -14,7 +17,7 @@
 <header class="header">
 	<div class="header-main">
 		<a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
-		<h1> 苏苏的博客</h1>
+		<h1>苏苏的博客</h1>
 		<p class="sub-title">简约至极</p>
 		<ul class="contact">
 			<a href="https://github.com/suconghou" target="_blank"><i class="fa fa-github"></i></a>
@@ -49,7 +52,7 @@
 			</p>
 		
 		<div class="post-text">
-			 
+			
 
 <h2 id="编译安装nginx:aa93c013153cd0b80f2e19308ae27e8a">编译安装NGINX</h2>
 
@@ -65,9 +68,10 @@ apt-get -y install gcc make  openssl libssl-dev libpcre3 libpcre3-dev
 <p>编译安装</p>
 
 <pre><code>cd /tmp
-wget http://nginx.org/download/nginx-1.10.0.tar.gz
-tar -zxvf nginx-1.10.0.tar.gz
-cd nginx-1.10.0
+wget http://nginx.org/download/nginx-1.11.0.tar.gz
+tar -zxvf nginx-1.11.0.tar.gz
+cd nginx-1.11.0
+export CFLAGS=&quot;-O3&quot;
 ./configure
 make &amp;&amp; make install
 </code></pre>
@@ -77,9 +81,10 @@ make &amp;&amp; make install
 <pre><code>cd /tmp
 git clone https://github.com/cuber/ngx_http_google_filter_module
 git clone https://github.com/yaoweibin/ngx_http_substitutions_filter_module
-wget http://nginx.org/download/nginx-1.10.0.tar.gz
-tar -zxvf nginx-1.10.0.tar.gz
-cd nginx-1.10.0
+wget http://nginx.org/download/nginx-1.11.0.tar.gz
+tar -zxvf nginx-1.11.0.tar.gz
+cd nginx-1.11.0
+export CFLAGS=&quot;-O3&quot;
 ./configure  --with-http_ssl_module  --add-module=/tmp/ngx_http_google_filter_module  --add-module=/tmp/ngx_http_substitutions_filter_module
 make &amp;&amp; make install
 </code></pre>
@@ -110,6 +115,10 @@ make &amp;&amp; make install
 
 </code></pre>
 
+<blockquote>
+<p>使用我编译的google代理的docker版本更易部署 <a href="https://hub.docker.com/r/suconghou/nginx-google/">https://hub.docker.com/r/suconghou/nginx-google/</a></p>
+</blockquote>
+
 <h3 id="各模块说明:aa93c013153cd0b80f2e19308ae27e8a">各模块说明</h3>
 
 <p>http_gzip_module提供了对gzip的基本的支持，默认是编译到nginx的发行版本里面的。</p>
@@ -135,6 +144,19 @@ make &amp;&amp; make install
 <p><strong>设置最大上传文件大小</strong>,配置<code>nginx.conf</code></p>
 
 <p><code>client_max_body_size 50m</code> Default value for client_max_body_size is 1 MiB,超过大小报错<code>413 Request Entity Too Large</code></p>
+
+<p>静态由Nginx,动态转到后端</p>
+
+<pre><code>root /home/demo/goproj/src/Test/public;
+try_files $uri/index.html $uri.html $uri @goapp;
+
+location @goapp {
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_set_header Host $http_host;
+  proxy_redirect off;
+  proxy_pass http://localhost:8080;
+}
+</code></pre>
 
 <h3 id="卸载apache:aa93c013153cd0b80f2e19308ae27e8a">卸载apache</h3>
 
@@ -174,9 +196,9 @@ CenterOS 安装 ab 压力测试</p>
 
 <p>下载PHP7最新版本,解压,有多重压缩格式可选,其中xz最小</p>
 
-<pre><code>wget http://php.net/distributions/php-7.0.5.tar.xz
-tar -xJf php-7.0.5.tar.xz
-cd php-7.0.5
+<pre><code>wget http://php.net/distributions/php-7.0.7.tar.xz
+tar -xJf php-7.0.7.tar.xz
+cd php-7.0.7
 </code></pre>
 
 <p>编译之前,可以开启O3编译优化,生成的可执行文件更小,性能更好
@@ -184,15 +206,18 @@ cd php-7.0.5
 
 <p>包含部分常用扩展的编译</p>
 
-<pre><code>./configure --enable-inline-optimization --enable-static=yes --prefix=/tmp --with-config-file-path=/etc --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath --enable-zip --enable-mbstring --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd --with-openssl
+<pre><code>./configure --enable-inline-optimization --enable-static=yes --prefix=/tmp --with-config-file-path=/etc --disable-cgi  --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath --enable-zip --enable-mbstring --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd --with-openssl --with-mcrypt
 </code></pre>
 
 <p>功能更全的编译</p>
 
 <pre><code>export CFLAGS=&quot;-O3&quot;
-./configure --enable-inline-optimization --enable-static=yes --prefix=/usr/local --with-config-file-path=/etc --enable-opcache --enable-fpm  --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath  --enable-zip --enable-mbstring --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd  --with-openssl --with-mcrypt
+./configure --enable-inline-optimization --enable-static=yes --prefix=/usr/local --with-config-file-path=/etc --disable-cgi --enable-opcache --enable-fpm  --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath  --enable-zip --enable-mbstring --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd  --with-openssl --with-mcrypt
 make &amp;&amp; make install
 </code></pre>
+
+<p>其他扩展
+<code>--enable-exif --enable-calendar --with-libzip --with-xsl --with-bz2</code></p>
 
 <p>其中部分步骤可能需要root权限</p>
 
@@ -292,14 +317,22 @@ swapon /swapfile
 /swapfile    swap    swap    default   0 0
 </code></pre>
 
-<p>注意:XEN KVM 可以创建SWAP,OVZ本身就是Virtual Environmen,不支持创建SWAP
-通过<code>df -lhT</code> 看到Type为simfs,而不是ext3,ext4,一般就不支持</p>
+<blockquote>
+<p>注意:XEN KVM 可以创建SWAP,OVZ本身就是Virtual Environmen,不支持创建SWAP</p>
 
-<p>提示: make 可使用多核提升编译性能
-用make -j带一个参数，可以把项目进行并行编译，比如在一台双核的机器上，完全可以用<code>make -j4</code>，让make最多允许4个编译命令同时执行，这样可以更有效的利用CPU资源。</p>
+<p>通过<code>df -lhT</code> 看到Type为simfs,而不是ext3,ext4,一般就不支持</p>
+</blockquote>
+
+<p><strong>提示: make 可使用多核提升编译性能</strong></p>
+
+<p>用make -j带一个参数，可以把项目进行并行编译，比如在一台双核的机器上，完全可以用<code>make -j4</code>，让make最多允许4个编译命令同时执行，这样可以更有效的利用CPU资源。</p>
 
 <p>-O这个选项控制所有的优化等级。使用优化选项会使编译过程耗费更多的时间，并且占用更多的内存，尤其是在提高优化等级的时候。
 -O2是推荐的优化等级,O3是最高等级。如果编译软件出现错误，请先检查是否启用了-O3</p>
+
+<p>php编译完成以后,无缝升级php
+只需<code>kill -USR2 php-fpm master 进程的PID</code>,向php-fpm master进程发送重启指令,php-fpm的master和worker都会重新加载配置,重新运行起来.
+<code>curl -I 127.0.0.1</code>查看,新版本的fpm已经在工作了.</p>
 
 <p>PHP的数据库长连接有没有效,
 实际测试,采用香港服务器远程连接mysql,非长连接模式下耗时约600ms,使用PDO长连接,耗时下降到260ms左右,是有一定作用的.
@@ -356,14 +389,14 @@ make &amp;&amp; make install
 
 <h2 id="静态编译redis-memcached-opcache到php7:aa93c013153cd0b80f2e19308ae27e8a">静态编译redis,memcached,opcache到php7</h2>
 
-<pre><code>wget -c http://php.net/distributions/php-7.0.5.tar.xz
+<pre><code>wget -c http://php.net/distributions/php-7.0.7.tar.xz
 wget -c -O php-redis.zip https://github.com/phpredis/phpredis/archive/php7.zip
 wget -c -O php-memcached.zip https://github.com/php-memcached-dev/php-memcached/archive/php7.zip
-tar -xJf php-7.0.5.tar.xz
-unzip php-redis.zip -d php-7.0.5/ext
-unzip php-memcached.zip -d php-7.0.5/ext
+tar -xJf php-7.0.7.tar.xz
+unzip php-redis.zip -d php-7.0.7/ext
+unzip php-memcached.zip -d php-7.0.7/ext
 export CFLAGS=&quot;-O3&quot;
-cd php-7.0.5
+cd php-7.0.7
 rm -rf configure
 ./buildconf --force
 ./configure --help

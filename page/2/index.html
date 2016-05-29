@@ -3,10 +3,13 @@
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
-	<meta name='renderer' content='webkit'><meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
-	<title> &middot; </title>
+	<meta name='renderer' content='webkit'>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
+	<meta name='description' content='记录学习的点点滴滴'>
+	<meta name='keywords' content='前端,PHP,GO,编程博客'>
+	<title>苏苏的博客 &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.min.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="" />
+	<link href="http://blog.suconghou.cn/index.xml" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -14,7 +17,7 @@
 <header class="header">
 	<div class="header-main">
 		<a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
-		<h1> 苏苏的博客</h1>
+		<h1>苏苏的博客</h1>
 		<p class="sub-title">简约至极</p>
 		<ul class="contact">
 			<a href="https://github.com/suconghou" target="_blank"><i class="fa fa-github"></i></a>
@@ -30,12 +33,161 @@
 		
 		<div class="post">
 			<h1 class="post-title">
-				<a href="http://blog.suconghou.cn/post/use-crontab-in-your-server/"> Crontab与自动备份</a>
+				<a href="/post/play-with-raspberrypi/"> 玩转树莓派</a>
+			</h1>
+			<p class="post-date">Sun, Jan 17, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="安装其他操作系统:639f3845c6db751dcd1753d9faad824e">安装其他操作系统</h2>
+
+<h3 id="centos:639f3845c6db751dcd1753d9faad824e">CentOS</h3>
+
+<p>CentOS7官方支持了AMRV7发布了树莓派2、香蕉派、以及CubitTruck单片机的版本</p>
+
+<p><a href="http://mirror.centos.org/altarch/7/isos/armhfp/">CentOS7官方下载</a>
+root 密码 centos</p>
+
+<h3 id="archlinux:639f3845c6db751dcd1753d9faad824e">ArchLinux</h3>
+
+<p><a href="http://archlinuxarm.org/platforms/armv7/broadcom/raspberry-pi-2">armv7 raspberry-pi-2</a></p>
+
+<p><a href="http://archlinuxarm.org/platforms/armv6/raspberry-pi">armv6 raspberry-pi</a></p>
+
+<h2 id="安装osmc:639f3845c6db751dcd1753d9faad824e">安装OSMC</h2>
+
+<p><a href="http://software.opensuse.org/download.html?project=home:osmc&amp;package=osmc-installer&amp;hcolor=17394a&amp;fcolor=17394a&amp;acolor=17394a">osmc-installer</a></p>
+
+<p>或者安装OSMC转为树莓派制作的系统</p>
+
+<p><a href="https://osmc.tv/download/">下载一览</a>,选择<code>Disk images</code>,此系统较省资源,默认开机进入OSMC,img.gz 大小约160M</p>
+
+<pre><code>cd /tmp
+axel -n 20 http://download.osmc.tv/installers/diskimages/OSMC_TGT_rbp2_20160502.img.gz
+md5sum OSMC_TGT_rbp2_20160502.img.gz
+ls -lh
+</code></pre>
+
+<p>插入内存卡,开始烧写到内存卡中.烧写之前需要取消挂载</p>
+
+<p><code>diskutil list</code> 查看你的内存卡的挂载位置,取消挂载</p>
+
+<p>执行<code>diskutil unmountdisk /dev/disk2</code> 取消挂载,需要稍等一小会.</p>
+
+<p>烧写,烧写过程中读卡器不断闪烁.</p>
+
+<pre><code>gzip -dc /tmp/OSMC_TGT_rbp2_20160502.img.gz | sudo dd of=/dev/disk2 bs=8k
+</code></pre>
+
+<p><code>dd if=/dev/zero of=hello.txt bs=1024</code></p>
+
+<p>除了OSMC默认皮肤,还有一些好看的皮肤推荐</p>
+
+<p>1.<a href="http://forum.kodi.tv/showthread.php?tid=187071">Eminence</a></p>
+
+<p>2.<a href="http://forum.kodi.tv/showthread.php?tid=214146">Bello</a> 看github,支持中文</p>
+
+<p><a href="http://forum.kodi.tv/forumdisplay.php?fid=26">官方论坛</a></p>
+
+<p>OSMC默认的ssh连接用户是</p>
+
+<h2 id="安装openelec:639f3845c6db751dcd1753d9faad824e">安装openelec</h2>
+
+<p><a href="http://openelec.tv/get-openelec">openelec</a> 镜像下载,osmc是基于debain的,系统更加完善.此系统相比osmc更加精简,是专为跑kodi精简的系统. img.gz 大小约102M</p>
+
+<h2 id="安装xbian:639f3845c6db751dcd1753d9faad824e">安装xbian</h2>
+
+<p><a href="http://www.xbian.org/">http://www.xbian.org/</a></p>
+
+<p>与openelec,osmc都是类似,img.gz较大,大约316MB</p>
+
+<h2 id="安装chromeos:639f3845c6db751dcd1753d9faad824e">安装ChromeOs</h2>
+
+<p>ChromeOs已经有支持树莓派的版本了,<a href="www.chromiumosforsbc.org">www.chromiumosforsbc.org</a></p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
+				<a href="/post/homebrew-speedup/"> 使用镜像加速homebrew</a>
+			</h1>
+			<p class="post-date">Fri, Jan 15, 2016</p>
+			<div class="post-text">
+				<p><a href="http://mirrors.ustc.edu.cn/">中国科大镜像站</a> 提供 Debian, Ubuntu, Fedora, Archlinux, CentOS 等多个发行版的官方源.
+还有brew 的二进制源,brew使用此配置能大大提升速度.</p>
+
+<pre><code>cd /usr/local
+git remote set-url origin git://mirrors.ustc.edu.cn/brew.git
+git remote -v
+brew update
+</code></pre>
+
+<p>修改二进制源见<a href="https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-bottles">https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-bottles</a></p>
+
+<p>即<code>export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles</code></p>
+
+<p>使用<code>brew config</code> 查看<code>ORIGIN</code>和<code>HOMEBREW_BOTTLE_DOMAIN</code>已经是新的<code>mirrors.ustc.edu.cn</code>即为配置成功</p>
+
+<p><code>brew list</code> 列出所有安装的模块</p>
+
+<p><code>brew search mysql</code> 查找</p>
+
+<p><code>brew commands</code> 查看所有命令</p>
+
+<p>安装（需要 Ruby）：
+<code>ruby -e &quot;$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)&quot;</code></p>
+
+<p>搜索：<code>brew search mysql</code></p>
+
+<p>查询：<code>brew info mysql</code> 主要看具体的信息，比如目前的版本，依赖，安装后注意事项等</p>
+
+<p>更新：<code>brew update</code> 这会更新 Homebrew 自己，并且使得接下来的两个操作有意义——</p>
+
+<p>检查过时（是否有新版本）：<code>brew outdated</code> 这回列出所有安装的软件里可以升级的那些</p>
+
+<p>升级：<code>brew upgrade</code> 升级所有可以升级的软件们</p>
+
+<p>清理：<code>brew cleanup</code> 清理不需要的版本极其安装包缓存</p>
+
+<p>一些必备的软件.</p>
+
+<pre><code> brew install vim git git-lfs subversion node go python3 nginx hugo openssl htop ffmpeg xz aria2 wget axel memcached redis mcrypt md5sha1sum fswatch mpv
+</code></pre>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
+				<a href="/post/broswer-chrome/"> Chrome浏览器安装</a>
+			</h1>
+			<p class="post-date">Thu, Jan 14, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="配置chrome跨域:e0e57fba433e8be9bf422a453002b0ab">配置Chrome跨域</h2>
+
+<p>Chrome 浏览器配置可以跨域</p>
+
+<p><code>/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --disable-web-security</code></p>
+
+<p>或者</p>
+
+<p><code>open -a &quot;Google Chrome&quot; --args --disable-web-security</code></p>
+
+<p>必须完全退出Chrome,再使用上述方法.</p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
+				<a href="/post/use-crontab-in-your-server/"> Crontab与自动备份</a>
 			</h1>
 			<p class="post-date">Tue, Jan 12, 2016</p>
-			
 			<div class="post-text">
-				 
+				
 
 <h2 id="crontab使用:821b39f3c5e329d9ee0933de8bb69bfb">Crontab使用</h2>
 
@@ -162,12 +314,11 @@ fswatch -0 /tmp | xargs -0 -n 1 echo $1
 		
 		<div class="post">
 			<h1 class="post-title">
-				<a href="http://blog.suconghou.cn/post/improve-mysqldb/"> MySQL性能优化</a>
+				<a href="/post/improve-mysqldb/"> MySQL性能优化</a>
 			</h1>
 			<p class="post-date">Mon, Jan 11, 2016</p>
-			
 			<div class="post-text">
-				 
+				
 
 <h2 id="配置文件:3f024a9bc4eccdf3db769802efc70049">配置文件</h2>
 
@@ -505,492 +656,6 @@ Memory的锁级别和MyISAM一样，是表锁；并且不支持事务性。</p>
 			</div>
 		</div>
 		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="http://blog.suconghou.cn/post/ffmpeg-usage/"> ffmpeg安装使用</a>
-			</h1>
-			<p class="post-date">Mon, Jan 11, 2016</p>
-			
-			<div class="post-text">
-				 
-
-<h2 id="安装:fdd7baccd40696c5c3f24a074d3d3604">安装</h2>
-
-<pre><code>yum install autoconf automake cmake freetype-devel gcc gcc-c++ git libtool make mercurial nasm pkgconfig zlib-devel
-mkdir ~/ffmpeg_sources
-</code></pre>
-
-<p>Yasm is an assembler used by x264 and FFmpeg</p>
-
-<pre><code>cd ~/ffmpeg_sources
-git clone --depth 1 git://github.com/yasm/yasm.git
-cd yasm
-autoreconf -fiv
-./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --bindir=&quot;$HOME/bin&quot;
-make
-make install
-make distclean
-</code></pre>
-
-<p>H.264 video encoder.
-Requires ffmpeg to be configured with <code>--enable-gpl --enable-libx264</code></p>
-
-<pre><code>cd ~/ffmpeg_sources
-git clone --depth 1 git://git.videolan.org/x264
-cd x264
-PKG_CONFIG_PATH=&quot;$HOME/ffmpeg_build/lib/pkgconfig&quot; ./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --bindir=&quot;$HOME/bin&quot; --enable-static
-make
-make install
-make distclean
-</code></pre>
-
-<p>H.265/HEVC video encoder. Requires ffmpeg to be configured with <code>--enable-gpl --enable-libx265</code></p>
-
-<pre><code>cd ~/ffmpeg_sources
-hg clone https://bitbucket.org/multicoreware/x265
-cd ~/ffmpeg_sources/x265/build/linux
-cmake -G &quot;Unix Makefiles&quot; -DCMAKE_INSTALL_PREFIX=&quot;$HOME/ffmpeg_build&quot; -DENABLE_SHARED:bool=off ../../source
-make
-make install
-</code></pre>
-
-<p>AAC audio encoder. Requires ffmpeg to be configured with <code>--enable-libfdk-aac</code> (and <code>--enable-nonfree</code> if you also included <code>--enable-gpl</code>)</p>
-
-<pre><code>cd ~/ffmpeg_sources
-git clone --depth 1 git://git.code.sf.net/p/opencore-amr/fdk-aac
-cd fdk-aac
-autoreconf -fiv
-./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --disable-shared
-make
-make install
-make distclean
-</code></pre>
-
-<p>MP3 audio encoder. Requires ffmpeg to be configured with <code>--enable-libmp3lame</code></p>
-
-<pre><code>cd ~/ffmpeg_sources
-curl -L -O http://downloads.sourceforge.net/project/lame/lame/3.99/lame-3.99.5.tar.gz
-tar xzvf lame-3.99.5.tar.gz
-cd lame-3.99.5
-./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --bindir=&quot;$HOME/bin&quot; --disable-shared --enable-nasm
-make
-make install
-make distclean
-</code></pre>
-
-<p>Opus audio decoder and encoder. Requires ffmpeg to be configured with <code>--enable-libopus</code></p>
-
-<pre><code>cd ~/ffmpeg_sources
-git clone git://git.opus-codec.org/opus.git
-cd opus
-autoreconf -fiv
-./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --disable-shared
-make
-make install
-make distclean
-</code></pre>
-
-<p>Ogg bitstream library. Required by libtheora and libvorbis.</p>
-
-<pre><code>cd ~/ffmpeg_sources
-curl -O http://downloads.xiph.org/releases/ogg/libogg-1.3.2.tar.gz
-tar xzvf libogg-1.3.2.tar.gz
-cd libogg-1.3.2
-./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --disable-shared
-make
-make install
-make distclean
-</code></pre>
-
-<p>Vorbis audio encoder. Requires libogg. Requires ffmpeg to be configured with <code>--enable-libvorbis</code></p>
-
-<pre><code>cd ~/ffmpeg_sources
-curl -O http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.4.tar.gz
-tar xzvf libvorbis-1.3.4.tar.gz
-cd libvorbis-1.3.4
-LDFLAGS=&quot;-L$HOME/ffmeg_build/lib&quot; CPPFLAGS=&quot;-I$HOME/ffmpeg_build/include&quot; ./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --with-ogg=&quot;$HOME/ffmpeg_build&quot; --disable-shared
-make
-make install
-make distclean
-</code></pre>
-
-<p>VP8/VP9 video encoder. Requires ffmpeg to be configured with <code>--enable-libvpx</code></p>
-
-<pre><code>cd ~/ffmpeg_sources
-git clone --depth 1 https://chromium.googlesource.com/webm/libvpx.git
-cd libvpx
-./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --disable-examples
-make
-make install
-make clean
-</code></pre>
-
-<p>Compilation is now complete and ffmpeg (also ffprobe, ffserver, lame, and x264) should now be ready to use.</p>
-
-<pre><code>cd ~/ffmpeg_sources
-git clone https://github.com/FFmpeg/FFmpeg ffmpeg
-cd ffmpeg
-PKG_CONFIG_PATH=&quot;$HOME/ffmpeg_build/lib/pkgconfig&quot; ./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --extra-cflags=&quot;-I$HOME/ffmpeg_build/include&quot; --extra-ldflags=&quot;-L$HOME/ffmpeg_build/lib&quot; --bindir=&quot;$HOME/bin&quot; --pkg-config-flags=&quot;--static&quot; --enable-gpl --enable-nonfree --enable-libfdk-aac --enable-libfreetype --enable-libmp3lame --enable-libopus --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libx265
-make -j4
-make install
-make distclean
-hash -r
-</code></pre>
-
-<p>生成的可执行文件存放在<code>~/bin</code></p>
-
-<h2 id="下载官方的静态编译的linux通用二进制包:fdd7baccd40696c5c3f24a074d3d3604">下载官方的静态编译的Linux通用二进制包</h2>
-
-<p><a href="http://johnvansickle.com/ffmpeg/">ffmeg</a></p>
-
-<p>3.0正式版已发布,<a href="http://www.oschina.net/news/70742/ffmpeg-3-0-final">查看详情</a></p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="http://blog.suconghou.cn/post/git-usage/"> git基本使用</a>
-			</h1>
-			<p class="post-date">Fri, Jan 8, 2016</p>
-			
-			<div class="post-text">
-				 
-
-<h1 id="git配置:4b413fdebfe42d43590394b35a48620b">git配置</h1>
-
-<pre><code>git config --global user.email &quot;1126045770@qq.com&quot;
-git config --global user.name &quot;sucongohu&quot;
-
-git config --global core.autocrlf false
-git config --global color.ui true
-git config --global credential.helper store
-
-git config --global alias.lg &quot;log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci,%cr) %C(bold blue)&lt;%an&gt;%Creset' --abbrev-commit --date=relative&quot;
-</code></pre>
-
-<blockquote>
-<p>以上分别是设置用户信息,禁止转换换行符,颜色高亮,记住密码,设置别名列出分支图. 设置别名后,可以使用 <code>git lg</code> 查看各个分支关系</p>
-</blockquote>
-
-<p>参数  说明
-%H  commit hash
-%h  commit short hash
-%T  tree hash
-%t  tree short hash
-%P  parent hash
-%p  parent short hash
-%an 作者名字
-%aN .mailmap 中对应的作者名字
-%ae 作者邮箱
-%aE .mailmap 中对应的作者邮箱
-%ad –date=制定的日期格式
-%aD RFC2822 日期格式
-%ar 日期格式，例如：1 day ago
-%at UNIX timestamp 日期格式
-%ai ISO 8601 日期格式
-%cn 提交者名字
-%cN .mailmap 对应的提交的名字
-%ce 提交者邮箱
-%cE .mailmap 对应的提交者的邮箱
-%cd –data=制定的提交日期的格式
-%cD RFC2822 提交日期的格式
-%cr 提交日期的格式，例如：1day ago
-%ct UNIX timestamp 提交日期的格式
-%ci ISO 8601 提交日期的格式
-%d  ref 名称
-%e  encoding
-%s  commit 信息标题
-%f  过滤 commit 信息的标题使之可以作为文件名
-%b  commit 信息内容
-%N  commit notes
-%gD reflog selector, e.g., refs/stash@{1}
-%gd shortened reflog selector, e.g., stash@{1}
-%gs reflog subject
-%Cred   切换至红色
-%Cgreen 切换至绿色
-%Cblue  切换至蓝色
-%Creset 重设颜色
-%C(color)   制定颜色，as described in color.branch.* config option
-%m  left right or boundary mark
-%n  换行
-%%  a raw %
-%x00    print a byte from a hex code
-%w([[,[,]]])    switch line wrapping, like the -w option of git-shortlog(1).</p>
-
-<p>一个命令推送到多个服务端<code>vim .git/config</code> ,添加一个区段,例如:</p>
-
-<pre><code>[remote &quot;all&quot;]
-        url = https://git.oschina.net/suconghou/mvc.git
-        url = https://suconghou@git.coding.net/suconghou/mvc.git
-        url = https://github.com/suconghou/mvc.git
-</code></pre>
-
-<p>以后可以使用<code>git push all master</code>一次推送到多个后端</p>
-
-<h1 id="git分支管理:4b413fdebfe42d43590394b35a48620b">git分支管理</h1>
-
-<h2 id="1-创建分支:4b413fdebfe42d43590394b35a48620b">1.创建分支</h2>
-
-<blockquote>
-<p>git branch &lt;分支名&gt;</p>
-</blockquote>
-
-<h2 id="2-切换到分支:4b413fdebfe42d43590394b35a48620b">2.切换到分支</h2>
-
-<blockquote>
-<p>git checkout &lt;分支名&gt;</p>
-</blockquote>
-
-<h2 id="3-创建一个分支并切换过去:4b413fdebfe42d43590394b35a48620b">3.创建一个分支并切换过去</h2>
-
-<blockquote>
-<p>git checkout -b &lt;分支名&gt;</p>
-</blockquote>
-
-<p>或者</p>
-
-<blockquote>
-<p>git checkout -b &lt;分支名&gt; master</p>
-</blockquote>
-
-<p>后面是跟一个master说明创建的develop分支是基于当前的master， 如果当前就在master分支，则可以不写。 如果当前分支HEAD指向的是别的分支，又想基于master分支创建，就必须写master</p>
-
-<h2 id="4-分支合并:4b413fdebfe42d43590394b35a48620b">4.分支合并</h2>
-
-<p>如:要将develop分支合并和master分支
-首先切换的master分支：<code>git checkout master</code>
-然后执行合并操作：<code>git merge develop</code>
-如果有冲突，会提示你，调用<code>git status</code>查看冲突文件。
-解决冲突，然后调用<code>git add</code>或<code>git rm</code>将解决后的文件暂存。
-所有冲突解决后，<code>git commit</code>提交更改。</p>
-
-<h2 id="5-删除分支:4b413fdebfe42d43590394b35a48620b">5.删除分支</h2>
-
-<p>删除本地分支,删除分支之前记得先合并,以免数据丢失</p>
-
-<blockquote>
-<p>git branch -d &lt;分支名&gt;</p>
-</blockquote>
-
-<p><code>git push [远程名] [本地分支]:[远程分支]</code> 本地分支的数据推送到远程分支,如果远程分支不存在,将会自动创建</p>
-
-<p>如果本地分支为空格,则将删除远程分支 <code>git push origin :deletebranch</code></p>
-
-<h2 id="6-显示所有分支:4b413fdebfe42d43590394b35a48620b">6.显示所有分支</h2>
-
-<blockquote>
-<p>git branch -a</p>
-</blockquote>
-
-<p>显示远端分支</p>
-
-<blockquote>
-<p>git branch -r</p>
-</blockquote>
-
-<p><code>git push -all</code> 把所有本地分支都推到远端</p>
-
-<p><code>git pull origin remotebranch:localbranch</code>
-将远程某分支拉倒本地某分支,当本地分支和远程分支名称相同时，只写一个就可以</p>
-
-<h1 id="git-tag-管理:4b413fdebfe42d43590394b35a48620b">git tag 管理</h1>
-
-<h2 id="1-git-tag:4b413fdebfe42d43590394b35a48620b">1.git tag</h2>
-
-<p>在控制台打印出当前仓库的所有标签</p>
-
-<h2 id="2-git-tag-l-v0-1:4b413fdebfe42d43590394b35a48620b">2.git tag -l &lsquo;v0.1.*&rsquo;</h2>
-
-<p>搜索符合模式的标签</p>
-
-<h2 id="3-git-tag-v0-1-2-light:4b413fdebfe42d43590394b35a48620b">3.git tag v0.1.2-light</h2>
-
-<p>创建轻量标签</p>
-
-<h2 id="4-git-tag-a-v0-1-2-m-0-1-2版本:4b413fdebfe42d43590394b35a48620b">4.git tag -a v0.1.2 -m &ldquo;0.1.2版本&rdquo;</h2>
-
-<p>创建附注标签</p>
-
-<p>git标签分为两种类型：轻量标签和附注标签。轻量标签是指向提交对象的引用，附注标签则是仓库中的一个独立对象。建议使用附注标签。</p>
-
-<h2 id="5-git-tag-d-v0-1-2:4b413fdebfe42d43590394b35a48620b">5.git tag -d v0.1.2</h2>
-
-<p>删除标签</p>
-
-<h2 id="6-git-push-origin-v0-1-2:4b413fdebfe42d43590394b35a48620b">6.git push origin v0.1.2</h2>
-
-<p>将v0.1.2标签提交到git服务器
-git push origin –-tags
-将本地所有标签一次性提交到git服务器
-通常的git push不会将标签对象提交到git服务器，所以我们需要进行显式的操作：</p>
-
-<h1 id="git-stash-操作:4b413fdebfe42d43590394b35a48620b">git stash 操作</h1>
-
-<p>1.git stash 可用来暂存当前正在进行的工作， 比如想pull 最新代码， 又不想加新commit， 或者另外一种情况，为了fix 一个紧急的bug,  先stash, 使返回到自己上一个commit, 改完bug之后再stash pop, 继续原来的工作。</p>
-
-<pre><code>git stash
-//do some work
-git stash pop
-</code></pre>
-
-<p>2.同样可以使用 git stash save &ldquo;work in progress for foo feature&rdquo; 添加标记</p>
-
-<p>3.当你多次使用<code>git stash</code>命令后，你的栈里将充满了未提交的代码，这时候你会对将哪个版本应用回来有些困惑，
-<code>git stash list</code> 命令可以将当前的Git栈信息打印出来，你只需要将找到对应的版本号，例如使用<code>git stash apply stash@{1}</code>就可以将你指定版本号为stash@{1}的工作取出来，当你将所有的栈都应用回来的时候，可以使用<code>git stash clear</code>来将栈清空。</p>
-
-<h2 id="svn:4b413fdebfe42d43590394b35a48620b">svn</h2>
-
-<p><code>svn revert xx.html</code> 和<code>git checkout xx.html</code> 类似,还原文件的更改</p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="http://blog.suconghou.cn/post/sublime-usage/"> Sublime使用和设置</a>
-			</h1>
-			<p class="post-date">Fri, Jan 8, 2016</p>
-			
-				<p class="post-tags">
-				
-					<a href="/tags/sublime">#sublime</a>
-				
-				</p>
-			
-			<div class="post-text">
-				 
-
-<h2 id="配置文件:9eb5571a36ac869eaff7a87ede81093b">配置文件</h2>
-
-<p>最喜欢的字体<code>Monaco</code>,<a href="http://share.suconghou.cn/fonts/MONACO.TTF">此处下载</a></p>
-
-<p>配置文件
-<code>Preferences.sublime-settings</code></p>
-
-<pre><code>{
-	&quot;close_windows_when_empty&quot;: true,
-	&quot;default_encoding&quot;: &quot;UTF-8&quot;,
-	&quot;default_line_ending&quot;: &quot;unix&quot;,
-	&quot;ensure_newline_at_eof_on_save&quot;: true,
-	&quot;font_face&quot;: &quot;Monaco&quot;,
-	&quot;font_size&quot;: 13,
-	&quot;highlight_line&quot;: true,
-	&quot;highlight_modified_tabs&quot;: true,
-	&quot;ignored_packages&quot;:
-	[
-		&quot;Vintage&quot;
-	],
-	&quot;show_encoding&quot;: true,
-	&quot;show_line_endings&quot;: true,
-	&quot;tab_size&quot;: 4,
-	&quot;translate_tabs_to_spaces&quot;: false,
-	&quot;trim_trailing_white_space_on_save&quot;: true,
-	&quot;update_check&quot;: false,
-	&quot;word_wrap&quot;: false
-}
-</code></pre>
-
-<h2 id="插件:9eb5571a36ac869eaff7a87ede81093b">插件</h2>
-
-<p><code>open_browser.py</code> 插件</p>
-
-<pre><code>import sublime, sublime_plugin
-import webbrowser
-import os
-
-url_map = {
-    'D:\\git\\bbs\\' : 'http://127.0.0.3/',
-    'D:\\php\\su\\' : 'http://127.0.0.2/',
-    'D:\\php\\htdocs\\' : 'http://127.0.0.1/'
-}
-
-class OpenBrowserCommand(sublime_plugin.TextCommand):
-    def run(self,edit):
-        window = sublime.active_window()
-        window.run_command('save')
-        url = self.view.file_name()
-        flag = False
-        for path, domain in url_map.items():
-            if url.startswith(path):
-                url = url.replace(path, domain).replace('\\', '/')
-                flag = True
-                break
-        if not flag:
-            cmd1='taskkill /f /im php.exe'
-            cmd2='php -S 0.0.0.0:8088 -t '+os.path.abspath(os.path.dirname(self.view.file_name()))
-            os.system(cmd1)
-            os.popen(cmd2)
-            url =  'http://127.0.0.1:8088/'+os.path.basename(self.view.file_name())
-        webbrowser.open_new(url)
-</code></pre>
-
-<h2 id="编译系统:9eb5571a36ac869eaff7a87ede81093b">编译系统</h2>
-
-<p><code>node.sublime-build</code> 执行nodejs代码</p>
-
-<pre><code>{
-	&quot;shell_cmd&quot;: &quot;node ${file}&quot;
-}
-</code></pre>
-
-<h2 id="快捷键配置:9eb5571a36ac869eaff7a87ede81093b">快捷键配置</h2>
-
-<p><code>Default (OSX).sublime-keymap</code></p>
-
-<pre><code>[
-	{ &quot;keys&quot;: [&quot;alt+d&quot;], &quot;command&quot;: &quot;open_dir&quot;, &quot;args&quot;: {&quot;dir&quot;: &quot;$file_path&quot;, &quot;file&quot;: &quot;$file_name&quot;} },
-	{ &quot;keys&quot;: [&quot;ctrl+shift+c&quot;], &quot;command&quot;: &quot;copy_path&quot; },
-	{ &quot;keys&quot;: [&quot;ctrl+f11&quot;], &quot;command&quot;: &quot;toggle_distraction_free&quot; }
-]
-</code></pre>
-
-<h2 id="添加sublime到命令行:9eb5571a36ac869eaff7a87ede81093b">添加sublime到命令行</h2>
-
-<p><code>MacOs</code>下</p>
-
-<pre><code>ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/local/bin/sublime
-</code></pre>
-
-<h2 id="激活码:9eb5571a36ac869eaff7a87ede81093b">激活码</h2>
-
-<p>3103可用激活码</p>
-
-<pre><code>—– BEGIN LICENSE —–
-Ryan Clark
-Single User License
-EA7E-812479
-2158A7DE B690A7A3 8EC04710 006A5EEB
-34E77CA3 9C82C81F 0DB6371B 79704E6F
-93F36655 B031503A 03257CCC 01B20F60
-D304FA8D B1B4F0AF 8A76C7BA 0FA94D55
-56D46BCE 5237A341 CD837F30 4D60772D
-349B1179 A996F826 90CDB73C 24D41245
-FD032C30 AD5E7241 4EAA66ED 167D91FB
-55896B16 EA125C81 F550AF6B A6820916
-—— END LICENSE ——
-</code></pre>
-
-<p>3103之前版本可用</p>
-
-<pre><code>----- BEGIN LICENSE -----
-Andrew Weber
-Single User License
-EA7E-855605
-813A03DD 5E4AD9E6 6C0EEB94 BC99798F
-942194A6 02396E98 E62C9979 4BB979FE
-91424C9D A45400BF F6747D88 2FB88078
-90F5CC94 1CDC92DC 8457107A F151657B
-1D22E383 A997F016 42397640 33F41CFC
-E1D0AE85 A0BBD039 0E9C8D55 E1B89D5D
-5CDB7036 E56DE1C0 EFCC0840 650CD3A6
-B98FC99C 8FAC73EE D2B95564 DF450523
------- END LICENSE ------
-</code></pre>
-
-			</div>
-		</div>
-		
 	</div>
 	<nav>
 		
@@ -1019,12 +684,15 @@ B98FC99C 8FAC73EE D2B95564 DF450523
         ><a href="/page/4/">4</a></li>
         
         <li
+        ><a href="/page/5/">5</a></li>
+        
+        <li
         >
         <a href="/page/3/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
         </li>
         
         <li>
-            <a href="/page/4/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+            <a href="/page/5/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
         </li>
         
     </ul>

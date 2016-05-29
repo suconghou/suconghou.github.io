@@ -3,10 +3,13 @@
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
-	<meta name='renderer' content='webkit'><meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
-	<title> &middot; </title>
+	<meta name='renderer' content='webkit'>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
+	<meta name='description' content='记录学习的点点滴滴'>
+	<meta name='keywords' content='前端,PHP,GO,编程博客'>
+	<title>玩转树莓派 &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.min.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="" />
+	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -14,7 +17,7 @@
 <header class="header">
 	<div class="header-main">
 		<a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
-		<h1> 苏苏的博客</h1>
+		<h1>苏苏的博客</h1>
 		<p class="sub-title">简约至极</p>
 		<ul class="contact">
 			<a href="https://github.com/suconghou" target="_blank"><i class="fa fa-github"></i></a>
@@ -33,7 +36,7 @@
 		<p class="post-date">Sun, Jan 17, 2016</p>
 		
 		<div class="post-text">
-			 
+			
 
 <h2 id="安装其他操作系统:639f3845c6db751dcd1753d9faad824e">安装其他操作系统</h2>
 
@@ -58,11 +61,24 @@ root 密码 centos</p>
 
 <p><a href="https://osmc.tv/download/">下载一览</a>,选择<code>Disk images</code>,此系统较省资源,默认开机进入OSMC,img.gz 大小约160M</p>
 
-<h2 id="安装openelec:639f3845c6db751dcd1753d9faad824e">安装openelec</h2>
+<pre><code>cd /tmp
+axel -n 20 http://download.osmc.tv/installers/diskimages/OSMC_TGT_rbp2_20160502.img.gz
+md5sum OSMC_TGT_rbp2_20160502.img.gz
+ls -lh
+</code></pre>
 
-<p><a href="http://openelec.tv/get-openelec">openelec</a> 镜像下载,此系统相比osmc更加精简,是专为跑kodi精简的系统,osmc基于debain系统更加完善, img.gz 大小约102M</p>
+<p>插入内存卡,开始烧写到内存卡中.烧写之前需要取消挂载</p>
 
-<h2 id="播放器皮肤推荐:639f3845c6db751dcd1753d9faad824e">播放器皮肤推荐</h2>
+<p><code>diskutil list</code> 查看你的内存卡的挂载位置,取消挂载</p>
+
+<p>执行<code>diskutil unmountdisk /dev/disk2</code> 取消挂载,需要稍等一小会.</p>
+
+<p>烧写,烧写过程中读卡器不断闪烁.</p>
+
+<pre><code>gzip -dc /tmp/OSMC_TGT_rbp2_20160502.img.gz | sudo dd of=/dev/disk2 bs=8k
+</code></pre>
+
+<p><code>dd if=/dev/zero of=hello.txt bs=1024</code></p>
 
 <p>除了OSMC默认皮肤,还有一些好看的皮肤推荐</p>
 
@@ -71,6 +87,22 @@ root 密码 centos</p>
 <p>2.<a href="http://forum.kodi.tv/showthread.php?tid=214146">Bello</a> 看github,支持中文</p>
 
 <p><a href="http://forum.kodi.tv/forumdisplay.php?fid=26">官方论坛</a></p>
+
+<p>OSMC默认的ssh连接用户是</p>
+
+<h2 id="安装openelec:639f3845c6db751dcd1753d9faad824e">安装openelec</h2>
+
+<p><a href="http://openelec.tv/get-openelec">openelec</a> 镜像下载,osmc是基于debain的,系统更加完善.此系统相比osmc更加精简,是专为跑kodi精简的系统. img.gz 大小约102M</p>
+
+<h2 id="安装xbian:639f3845c6db751dcd1753d9faad824e">安装xbian</h2>
+
+<p><a href="http://www.xbian.org/">http://www.xbian.org/</a></p>
+
+<p>与openelec,osmc都是类似,img.gz较大,大约316MB</p>
+
+<h2 id="安装chromeos:639f3845c6db751dcd1753d9faad824e">安装ChromeOs</h2>
+
+<p>ChromeOs已经有支持树莓派的版本了,<a href="www.chromiumosforsbc.org">www.chromiumosforsbc.org</a></p>
 
 		</div>
 	</div>

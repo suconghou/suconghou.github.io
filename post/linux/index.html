@@ -3,10 +3,13 @@
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
-	<meta name='renderer' content='webkit'><meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
-	<title> &middot; </title>
+	<meta name='renderer' content='webkit'>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
+	<meta name='description' content='记录学习的点点滴滴'>
+	<meta name='keywords' content='前端,PHP,GO,编程博客'>
+	<title>linux相关操作 &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.min.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="" />
+	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -14,7 +17,7 @@
 <header class="header">
 	<div class="header-main">
 		<a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
-		<h1> 苏苏的博客</h1>
+		<h1>苏苏的博客</h1>
 		<p class="sub-title">简约至极</p>
 		<ul class="contact">
 			<a href="https://github.com/suconghou" target="_blank"><i class="fa fa-github"></i></a>
@@ -32,8 +35,14 @@
 		</h1>
 		<p class="post-date">Thu, Jan 21, 2016</p>
 		
+			<p class="post-tags">
+			
+				<a href="/tags/linux">#linux</a>
+			
+			</p>
+		
 		<div class="post-text">
-			 
+			
 
 <h2 id="linux实用命令:34fe9f2d9cc3cd7e319ca75e7da08332">Linux实用命令</h2>
 
@@ -89,12 +98,17 @@ bs = bytes 同时设置读/写缓冲区的字节数(等于设置obs和obs)
 count = blocks 只拷贝输入的blocks块</p>
 
 <p>创建一个100M的空文件
-<code>dd if=/dev/zero of=hello.txt bs=100M count=1</code></p>
+<code>dd if=/dev/zero of=hello.txt bs=100m count=1</code></p>
 
-<p>#查看当前目录下所有一级子目录文件夹大小
-du -h &ndash;max-depth=1
-#查看当前目录下所有一级子目录文件夹大小 并排序
-du -h &ndash;max-depth=1 |sort</p>
+<h2 id="查看当前目录下所有一级子目录文件夹大小:34fe9f2d9cc3cd7e319ca75e7da08332">查看当前目录下所有一级子目录文件夹大小</h2>
+
+<p><code>du -h --max-depth=1</code></p>
+
+<h2 id="查看当前目录下所有一级子目录文件夹大小-并排序:34fe9f2d9cc3cd7e319ca75e7da08332">查看当前目录下所有一级子目录文件夹大小 并排序</h2>
+
+<p><code>du -h --max-depth=1 |sort</code></p>
+
+<p>以上两条命令不适用于MacOs,可以使用<code>du -sh *</code></p>
 
 <h2 id="一份linux别名和函数库:34fe9f2d9cc3cd7e319ca75e7da08332">一份Linux别名和函数库</h2>
 
@@ -120,10 +134,12 @@ alias meminfo='free -m -l -t'
 sbs() { du -b --max-depth 1 | sort -nr | perl -pe 's{([0-9]+)}{sprintf &quot;%.1f%s&quot;, $1&gt;=2**30? ($1/2**30, &quot;G&quot;): $1&gt;=2**20? ($1/2**20, &quot;M&quot;): $1&gt;=2**10? ($1/2**10, &quot;K&quot;): ($1, &quot;&quot;)}e';}
 # 找出指定目录中最大的10个文件
 largefile() { find . -type f -exec du -k {} \; | sort  -nrk 1 | head; }
-# 查看当前目录大于[多少]kb的文件
+# 查看当前目录大于[多少]kb的文件,速度更快
 bigfile() { size=${1:-100}; find . -type f -size +&quot;$size&quot;k |xargs  ls  -lh ; }
 # 返回你的当前IP地址的地理位置。
 getlocation() { lynx -dump http://www.ip-adress.com/ip_tracer/?QRY=$1|grep address|egrep 'city|state|country'|awk '{print $3,$4,$5,$6,$7,$8}'|sed 's\ip address flag \\'|sed 's\My\\';}
+# 删除.log.1.gz 或者 .log.1.bz2
+delog(){ ls | grep &quot;log.\d\+.\(bz2\|gz\)&quot; | xargs rm}
 
 </code></pre>
 
@@ -206,6 +222,10 @@ RedHat 系列
 <p>2 包管理工具 apt-get</p>
 
 <p>3 支持tar包</p>
+
+<p><code>soft rlimits too low. Number of files is 256, should be at least 1000</code></p>
+
+<p><code>ulimit -n 1024</code></p>
 
 		</div>
 	</div>

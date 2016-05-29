@@ -1,13 +1,190 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on 我的博客</title>
+    <title>Posts on 苏苏的博客</title>
     <link>http://blog.suconghou.cn/post/</link>
-    <description>Recent content in Posts on 我的博客</description>
+    <description>Recent content in Posts on 苏苏的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 21 Jan 2016 13:40:53 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 16 May 2016 18:21:04 +0800</lastBuildDate>
     <atom:link href="http://blog.suconghou.cn/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>使用tcpdump</title>
+      <link>http://blog.suconghou.cn/post/tcpdump/</link>
+      <pubDate>Mon, 16 May 2016 18:21:04 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/tcpdump/</guid>
+      <description>&lt;p&gt;各版本 &lt;code&gt;http://www.tcpdump.org/release/&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;安装依赖 &lt;code&gt;yum install -y flex gcc make byacc&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;export CFLAGS=&amp;quot;-O3&amp;quot;
+cd /tmp
+wget http://www.tcpdump.org/release/libpcap-1.7.4.tar.gz
+tar zxvf libpcap-1.7.4.tar.gz
+cd libpcap-1.7.4
+./configure
+make -j4
+cd ../
+wget http://www.tcpdump.org/release/tcpdump-4.7.4.tar.gz
+tar zxvf tcpdump-4.7.4.tar.gz
+cd tcpdump-4.7.4
+./configure
+make -j4
+make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;安装成功后,位于&lt;code&gt;ls -lh /usr/local/sbin/tcpdump&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;不采用&lt;code&gt;CFLAGS=&amp;quot;-O3&amp;quot;&lt;/code&gt;编译为4.3MB,采用&lt;code&gt;CFLAGS=&amp;quot;-O3&amp;quot;&lt;/code&gt;编译后为1.3MB&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;tcpdump -h&lt;/code&gt; 查看版本号以及用法&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>编译安装Apache Traffic Server</title>
+      <link>http://blog.suconghou.cn/post/use-apache-traffic-server/</link>
+      <pubDate>Mon, 09 May 2016 22:24:14 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/use-apache-traffic-server/</guid>
+      <description>
+
+&lt;h2 id=&#34;编译安装:fbf3f2ebc346fa698c7d85539d07d01e&#34;&gt;编译安装&lt;/h2&gt;
+
+&lt;p&gt;Centos下编译安装&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;yum update -y &amp;amp;&amp;amp; yum install wget gcc g++ gcc-c++ glibc-headers perl openssl openssl-devel tcl-devel libxml2-devel pcre-devel
+wget http://apache.fayea.com/trafficserver/trafficserver-6.1.1.tar.bz2
+tar xvjf trafficserver-6.1.1.tar.bz2
+cd trafficserver-6.1.1
+./configure
+make &amp;amp;&amp;amp; make install
+useradd -s /sbin/nologin trafficserver
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Apache镜像&lt;a href=&#34;http://archive.apache.org/dist/&#34;&gt;http://archive.apache.org/dist/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;国内Apache镜像&lt;a href=&#34;http://apache.fayea.com/&#34;&gt;http://apache.fayea.com/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;编译完成后,就可以使用了,默认是安装在&lt;code&gt;/usr/local/bin&lt;/code&gt;,编译后是比较大&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;total 98M
+-rwxr-xr-x 1 root root 692K May  9 14:30 header_rewrite_test
+-rwxr-xr-x 1 root root 520K May  9 14:30 traffic_cop
+-rwxr-xr-x 1 root root 1.9M May  9 14:30 traffic_crashlog
+-rwxr-xr-x 1 root root 259K May  9 14:30 traffic_ctl
+-rwxr-xr-x 1 root root 1.9M May  9 14:30 traffic_layout
+-rwxr-xr-x 1 root root  41K May  9 14:30 traffic_line
+-rwxr-xr-x 1 root root 4.4M May  9 14:30 traffic_logcat
+-rwxr-xr-x 1 root root 5.0M May  9 14:30 traffic_logstats
+-rwxr-xr-x 1 root root 4.7M May  9 14:30 traffic_manager
+-rwxr-xr-x 1 root root  37M May  9 14:30 traffic_sac
+-rwxr-xr-x 1 root root  43M May  9 14:30 traffic_server
+-rwxr-xr-x 1 root root  42K May  9 14:30 traffic_via
+-rwxr-xr-x 1 root root  18K May  9 14:30 trafficserver
+-rwxr-xr-x 1 root root 2.1K May  9 14:30 tspush
+-rwxr-xr-x 1 root root 5.7K May  9 14:30 tsxs
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;运行&lt;code&gt;traffic_server -R 1&lt;/code&gt;执行测试,经过一系列测试后,显示&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Tests Passed: 177
+Tests Failed: 0
+    REGRESSION_RESULT PARENTSELECTION:                          PASSED
+REGRESSION_TEST DONE: PASSED
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;全部测试通过&lt;/p&gt;
+
+&lt;h2 id=&#34;使用:fbf3f2ebc346fa698c7d85539d07d01e&#34;&gt;使用&lt;/h2&gt;
+
+&lt;p&gt;默认的配置文件存放在&lt;code&gt;/usr/local/etc/trafficserver&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;drwxr-xr-x 3 nobody nobody 1.0K May  9 14:30 body_factory
+-rw-r--r-- 1 nobody nobody 1.7K May  9 14:30 cache.config
+-rw-r--r-- 1 nobody nobody  657 May  9 14:30 cluster.config
+-rw-r--r-- 1 nobody nobody 1.9K May  9 14:30 congestion.config
+-rw-r--r-- 1 nobody nobody  746 May  9 14:30 hosting.config
+-rw-r--r-- 1 nobody nobody 1.8K May  9 14:30 icp.config
+-rw-r--r-- 1 nobody nobody 1.2K May  9 14:30 ip_allow.config
+-rw-r--r-- 1 nobody nobody  328 May  9 14:30 log_hosts.config
+-rw-r--r-- 1 nobody nobody  17K May  9 14:30 logs_xml.config
+-rw-r--r-- 1 nobody nobody 1.4K May  9 14:30 parent.config
+-rw-r--r-- 1 nobody nobody  261 May  9 14:30 plugin.config
+-rw-r--r-- 1 nobody nobody  13K May  9 14:30 records.config
+-rw-r--r-- 1 nobody nobody 8.6K May  9 14:30 remap.config
+-rw-r--r-- 1 nobody nobody 1.7K May  9 14:30 socks.config
+-rw-r--r-- 1 nobody nobody 2.1K May  9 14:30 splitdns.config
+-rw-r--r-- 1 nobody nobody 2.7K May  9 14:30 ssl_multicert.config
+-rw-r--r-- 1 nobody nobody  76K May  9 14:30 stats.config.xml
+-rw-r--r-- 1 nobody nobody 1.9K May  9 14:30 storage.config
+-rw-r--r-- 1 root   root     19 May  9 14:30 trafficserver-release
+-rw-r--r-- 1 nobody nobody  649 May  9 14:30 vaddrs.config
+-rw-r--r-- 1 nobody nobody 1.3K May  9 14:30 volume.config
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;records.config&lt;/code&gt;负责大部分全局的选项设置，即主要配置文件&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;CONFIG proxy.config.reverse_proxy.enabled INT 1                           # 开启反向代理
+CONFIG proxy.config.url_remap.remap_required INT 1                        # 1 代理反向代理，0代表正向+反向代理
+CONFIG proxy.config.http.cache.http INT 1                                 # 打开http缓存功能
+CONFIG proxy.config.cache.ram_cache.size INT 512M                         # RAM 缓存大小
+CONFIG proxy.config.http.keep_alive_no_activity_timeout_out INT 120       # 当一个事务结束后同原服务器保持连接的时间
+CONFIG proxy.config.cluster.ethernet_interface STRING eth0                # 修改成需要侦听的interface名称
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;remap.config&lt;/code&gt;定义映射规则，用于请求的重定向（rewrite）,反向代理即在此配置&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;storage.config&lt;/code&gt; 用于指定磁盘存储&lt;/p&gt;
+
+&lt;p&gt;启动&lt;code&gt;trafficserver start&lt;/code&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>在树莓派上使用Docker</title>
+      <link>http://blog.suconghou.cn/post/use-docker-on-raspberry/</link>
+      <pubDate>Sun, 08 May 2016 20:01:56 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/use-docker-on-raspberry/</guid>
+      <description>
+
+&lt;h2 id=&#34;安装支持docker的系统:742f0b5a2292586baafc29ed5c3da3ab&#34;&gt;安装支持Docker的系统&lt;/h2&gt;
+
+&lt;p&gt;树莓派官方系统并不支持Docker,需要安装.&lt;/p&gt;
+
+&lt;p&gt;查看 &lt;a href=&#34;http://blog.hypriot.com/downloads/&#34;&gt;集成Dcoker的树莓派系统&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;aria2c -s 50 -c https://downloads.hypriot.com/hypriot-rpi-20160306-192317.img.zip
+
+
+diskutil list
+diskutil unmountdisk /dev/disk2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;用以下命令前必须卸载u盘&lt;code&gt;diskutil unmountdisk /dev/disk2&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo dd if=hypriotos-rpi-v0.8.0.img of=/dev/disk2 bs=8k
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;安装完成重启就可以啦,启动后登陆的用户是pirate,密码hypriot&lt;/p&gt;
+
+&lt;p&gt;修改密码:执行&lt;code&gt;passwd&lt;/code&gt;,输入当前密码,输入新密码,再输入新密码,更新完成&lt;/p&gt;
+
+&lt;p&gt;执行&lt;code&gt;exit&lt;/code&gt;退出,或者&lt;code&gt;sudo reboot&lt;/code&gt;重启&lt;/p&gt;
+
+&lt;p&gt;创建用户:&lt;code&gt;useradd -g test -d /home/test1 -s /etc/bash -m test1&lt;/code&gt;
+注解：-g 所属组 -d 家目录 -s 所用的SHELL
+passwd abc&lt;/p&gt;
+
+&lt;p&gt;获得sudo权限:编辑&lt;code&gt;/etc/sudoers&lt;/code&gt; 加入新添加的用户名&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>linux相关操作</title>
@@ -71,12 +248,17 @@ bs = bytes 同时设置读/写缓冲区的字节数(等于设置obs和obs)
 count = blocks 只拷贝输入的blocks块&lt;/p&gt;
 
 &lt;p&gt;创建一个100M的空文件
-&lt;code&gt;dd if=/dev/zero of=hello.txt bs=100M count=1&lt;/code&gt;&lt;/p&gt;
+&lt;code&gt;dd if=/dev/zero of=hello.txt bs=100m count=1&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;#查看当前目录下所有一级子目录文件夹大小
-du -h &amp;ndash;max-depth=1
-#查看当前目录下所有一级子目录文件夹大小 并排序
-du -h &amp;ndash;max-depth=1 |sort&lt;/p&gt;
+&lt;h2 id=&#34;查看当前目录下所有一级子目录文件夹大小:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;查看当前目录下所有一级子目录文件夹大小&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;du -h --max-depth=1&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;查看当前目录下所有一级子目录文件夹大小-并排序:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;查看当前目录下所有一级子目录文件夹大小 并排序&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;du -h --max-depth=1 |sort&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;以上两条命令不适用于MacOs,可以使用&lt;code&gt;du -sh *&lt;/code&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;一份linux别名和函数库:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;一份Linux别名和函数库&lt;/h2&gt;
 
@@ -102,10 +284,12 @@ alias meminfo=&#39;free -m -l -t&#39;
 sbs() { du -b --max-depth 1 | sort -nr | perl -pe &#39;s{([0-9]+)}{sprintf &amp;quot;%.1f%s&amp;quot;, $1&amp;gt;=2**30? ($1/2**30, &amp;quot;G&amp;quot;): $1&amp;gt;=2**20? ($1/2**20, &amp;quot;M&amp;quot;): $1&amp;gt;=2**10? ($1/2**10, &amp;quot;K&amp;quot;): ($1, &amp;quot;&amp;quot;)}e&#39;;}
 # 找出指定目录中最大的10个文件
 largefile() { find . -type f -exec du -k {} \; | sort  -nrk 1 | head; }
-# 查看当前目录大于[多少]kb的文件
+# 查看当前目录大于[多少]kb的文件,速度更快
 bigfile() { size=${1:-100}; find . -type f -size +&amp;quot;$size&amp;quot;k |xargs  ls  -lh ; }
 # 返回你的当前IP地址的地理位置。
 getlocation() { lynx -dump http://www.ip-adress.com/ip_tracer/?QRY=$1|grep address|egrep &#39;city|state|country&#39;|awk &#39;{print $3,$4,$5,$6,$7,$8}&#39;|sed &#39;s\ip address flag \\&#39;|sed &#39;s\My\\&#39;;}
+# 删除.log.1.gz 或者 .log.1.bz2
+delog(){ ls | grep &amp;quot;log.\d\+.\(bz2\|gz\)&amp;quot; | xargs rm}
 
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -188,6 +372,10 @@ RedHat 系列
 &lt;p&gt;2 包管理工具 apt-get&lt;/p&gt;
 
 &lt;p&gt;3 支持tar包&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;soft rlimits too low. Number of files is 256, should be at least 1000&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ulimit -n 1024&lt;/code&gt;&lt;/p&gt;
 </description>
     </item>
     
@@ -222,11 +410,24 @@ root 密码 centos&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://osmc.tv/download/&#34;&gt;下载一览&lt;/a&gt;,选择&lt;code&gt;Disk images&lt;/code&gt;,此系统较省资源,默认开机进入OSMC,img.gz 大小约160M&lt;/p&gt;
 
-&lt;h2 id=&#34;安装openelec:639f3845c6db751dcd1753d9faad824e&#34;&gt;安装openelec&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;cd /tmp
+axel -n 20 http://download.osmc.tv/installers/diskimages/OSMC_TGT_rbp2_20160502.img.gz
+md5sum OSMC_TGT_rbp2_20160502.img.gz
+ls -lh
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://openelec.tv/get-openelec&#34;&gt;openelec&lt;/a&gt; 镜像下载,此系统相比osmc更加精简,是专为跑kodi精简的系统,osmc基于debain系统更加完善, img.gz 大小约102M&lt;/p&gt;
+&lt;p&gt;插入内存卡,开始烧写到内存卡中.烧写之前需要取消挂载&lt;/p&gt;
 
-&lt;h2 id=&#34;播放器皮肤推荐:639f3845c6db751dcd1753d9faad824e&#34;&gt;播放器皮肤推荐&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;diskutil list&lt;/code&gt; 查看你的内存卡的挂载位置,取消挂载&lt;/p&gt;
+
+&lt;p&gt;执行&lt;code&gt;diskutil unmountdisk /dev/disk2&lt;/code&gt; 取消挂载,需要稍等一小会.&lt;/p&gt;
+
+&lt;p&gt;烧写,烧写过程中读卡器不断闪烁.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;gzip -dc /tmp/OSMC_TGT_rbp2_20160502.img.gz | sudo dd of=/dev/disk2 bs=8k
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;dd if=/dev/zero of=hello.txt bs=1024&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;除了OSMC默认皮肤,还有一些好看的皮肤推荐&lt;/p&gt;
 
@@ -235,6 +436,22 @@ root 密码 centos&lt;/p&gt;
 &lt;p&gt;2.&lt;a href=&#34;http://forum.kodi.tv/showthread.php?tid=214146&#34;&gt;Bello&lt;/a&gt; 看github,支持中文&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://forum.kodi.tv/forumdisplay.php?fid=26&#34;&gt;官方论坛&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;OSMC默认的ssh连接用户是&lt;/p&gt;
+
+&lt;h2 id=&#34;安装openelec:639f3845c6db751dcd1753d9faad824e&#34;&gt;安装openelec&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://openelec.tv/get-openelec&#34;&gt;openelec&lt;/a&gt; 镜像下载,osmc是基于debain的,系统更加完善.此系统相比osmc更加精简,是专为跑kodi精简的系统. img.gz 大小约102M&lt;/p&gt;
+
+&lt;h2 id=&#34;安装xbian:639f3845c6db751dcd1753d9faad824e&#34;&gt;安装xbian&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.xbian.org/&#34;&gt;http://www.xbian.org/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;与openelec,osmc都是类似,img.gz较大,大约316MB&lt;/p&gt;
+
+&lt;h2 id=&#34;安装chromeos:639f3845c6db751dcd1753d9faad824e&#34;&gt;安装ChromeOs&lt;/h2&gt;
+
+&lt;p&gt;ChromeOs已经有支持树莓派的版本了,&lt;a href=&#34;www.chromiumosforsbc.org&#34;&gt;www.chromiumosforsbc.org&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     
@@ -248,16 +465,41 @@ root 密码 centos&lt;/p&gt;
 还有brew 的二进制源,brew使用此配置能大大提升速度.&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;cd /usr/local
-git remote set-url origin git://mirrors.ustc.edu.cn/homebrew.git
+git remote set-url origin git://mirrors.ustc.edu.cn/brew.git
 git remote -v
 brew update
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;p&gt;修改二进制源见&lt;a href=&#34;https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-bottles&#34;&gt;https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-bottles&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;即&lt;code&gt;export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;使用&lt;code&gt;brew config&lt;/code&gt; 查看&lt;code&gt;ORIGIN&lt;/code&gt;和&lt;code&gt;HOMEBREW_BOTTLE_DOMAIN&lt;/code&gt;已经是新的&lt;code&gt;mirrors.ustc.edu.cn&lt;/code&gt;即为配置成功&lt;/p&gt;
+
 &lt;p&gt;&lt;code&gt;brew list&lt;/code&gt; 列出所有安装的模块&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;brew&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;brew search mysql&lt;/code&gt; 查找&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt; brew install vim git git-lfs subversion node go python3 nginx hugo openssl htop lftp ffmpeg xz aria2 wget axel memcached redis mcrypt md5sha1sum fswatch
+&lt;p&gt;&lt;code&gt;brew commands&lt;/code&gt; 查看所有命令&lt;/p&gt;
+
+&lt;p&gt;安装（需要 Ruby）：
+&lt;code&gt;ruby -e &amp;quot;$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)&amp;quot;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;搜索：&lt;code&gt;brew search mysql&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;查询：&lt;code&gt;brew info mysql&lt;/code&gt; 主要看具体的信息，比如目前的版本，依赖，安装后注意事项等&lt;/p&gt;
+
+&lt;p&gt;更新：&lt;code&gt;brew update&lt;/code&gt; 这会更新 Homebrew 自己，并且使得接下来的两个操作有意义——&lt;/p&gt;
+
+&lt;p&gt;检查过时（是否有新版本）：&lt;code&gt;brew outdated&lt;/code&gt; 这回列出所有安装的软件里可以升级的那些&lt;/p&gt;
+
+&lt;p&gt;升级：&lt;code&gt;brew upgrade&lt;/code&gt; 升级所有可以升级的软件们&lt;/p&gt;
+
+&lt;p&gt;清理：&lt;code&gt;brew cleanup&lt;/code&gt; 清理不需要的版本极其安装包缓存&lt;/p&gt;
+
+&lt;p&gt;一些必备的软件.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; brew install vim git git-lfs subversion node go python3 nginx hugo openssl htop ffmpeg xz aria2 wget axel memcached redis mcrypt md5sha1sum fswatch mpv
 &lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
@@ -1274,7 +1516,7 @@ B98FC99C 8FAC73EE D2B95564 DF450523
 &lt;p&gt;nodejs官方提供了编译好的二进制的包,全平台都有,十分方便
 &lt;a href=&#34;https://nodejs.org/download/release/latest/&#34;&gt;最新版本NodeJs官方库&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;其他信息&lt;a href=&#34;http://www.oschina.net/news/72886/node-v-6-0-0-current&#34;&gt;http://www.oschina.net/news/72886/node-v-6-0-0-current&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;其他信息&lt;a href=&#34;http://www.oschina.net/news/73504/node-v6-2-0-current&#34;&gt;http://www.oschina.net/news/73504/node-v6-2-0-current&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;例如安装Linux版本&lt;/p&gt;
 
@@ -1427,6 +1669,8 @@ npm -v
 
 &lt;p&gt;&lt;a href=&#34;https://get-link.xyz/&#34;&gt;get-link&lt;/a&gt;&lt;/p&gt;
 
+&lt;p&gt;&lt;a href=&#34;http://v2ex.com/t/278912#reply24&#34;&gt;two.yt&lt;/a&gt;&lt;/p&gt;
+
 &lt;h2 id=&#34;前端-node:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;前端/Node&lt;/h2&gt;
 
 &lt;p&gt;Ajax库&lt;a href=&#34;https://github.com/visionmedia/superagent&#34;&gt;superagent&lt;/a&gt; 同时兼容IE9+和NodeJs的Ajax小工具,Gzip后仅为4.4kb&lt;/p&gt;
@@ -1446,6 +1690,10 @@ npm -v
 &lt;a href=&#34;https://github.com/datejs/Datejs/blob/master/build/date.js&#34;&gt;https://github.com/datejs/Datejs/blob/master/build/date.js&lt;/a&gt;
 &lt;a href=&#34;https://github.com/Teamweek/instadate&#34;&gt;https://github.com/Teamweek/instadate&lt;/a&gt;&lt;/p&gt;
 
+&lt;h2 id=&#34;js插件:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;JS插件&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.swiper.com.cn/&#34;&gt;swiper滑动插件&lt;/a&gt;&lt;/p&gt;
+
 &lt;h2 id=&#34;测试工具:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;测试工具&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://www.alibench.com/&#34;&gt;阿里测&lt;/a&gt; 测试你的服务器在全国各地的响应速度
@@ -1461,466 +1709,6 @@ npm -v
 &lt;p&gt;&lt;a href=&#34;http://cheapwindowsvps.com/&#34;&gt;cheapwindowsvps&lt;/a&gt; G口亚洲越南和新加坡不限流量支持Windows
 &lt;a href=&#34;https://dedistation.com/billing/order.php?step=0&amp;amp;productGroup=13&#34;&gt;dedistation&lt;/a&gt;
 &lt;a href=&#34;http://www.winode.org/cart.php?gid=15&amp;amp;language=chinese&#34;&gt;winode&lt;/a&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>MacOs上Chrome中的submit按钮默认样式问题</title>
-      <link>http://blog.suconghou.cn/post/mac-chrome-input-submit/</link>
-      <pubDate>Tue, 05 Jan 2016 16:44:47 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/post/mac-chrome-input-submit/</guid>
-      <description>&lt;p&gt;发现MacOs的Chrome中,input为submit的按钮,添加其他样式不生效,任然是默认样式,
-解决方法是为其添加一个border或者backgroud就好了&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>开启docker之旅</title>
-      <link>http://blog.suconghou.cn/post/using-docker/</link>
-      <pubDate>Tue, 05 Jan 2016 10:28:49 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/post/using-docker/</guid>
-      <description>
-
-&lt;h2 id=&#34;安装docker:6d93a80e55dc760775379b4fadc005db&#34;&gt;安装Docker&lt;/h2&gt;
-
-&lt;p&gt;docker 安装需要Linux内核在3.10.0以上,仅支持Linux,在Windows和MacOs上也是基于虚拟机方式运行,需要提前安装虚拟机&lt;/p&gt;
-
-&lt;p&gt;查看系统内核版本&lt;code&gt;uname -r&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;查看安装的系统版本
-&lt;code&gt;lsb_release -a&lt;/code&gt; 或者 &lt;code&gt;cat /etc/issue&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;以下二种方法适用于RedHat,CentOS&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;cat /etc/redhat-release&lt;/code&gt; 或者 &lt;code&gt;cat /etc/centos-release&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;rpm -q centos-release&lt;/code&gt; 或者 &lt;code&gt;rpm -q redhat-release&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;查看是否是64位系统&lt;code&gt;uname -i&lt;/code&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;下载安装:6d93a80e55dc760775379b4fadc005db&#34;&gt;下载安装&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;docker-1-11-1&lt;/strong&gt; &lt;a href=&#34;http://www.oschina.net/news/72899/docker-1-11-1&#34;&gt;各平台下载地址&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;docker采用Go语言编写,编译以后生成一个无依赖的可执行文件.&lt;/p&gt;
-
-&lt;p&gt;安装完整以后,可以移动到&lt;code&gt;/usr/bin&lt;/code&gt;,即可使用&lt;code&gt;docker&lt;/code&gt;和&lt;code&gt;sudo docker&lt;/code&gt;命令&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;wget https://get.docker.com/builds/Linux/x86_64/docker-1.11.1.tgz
-tar zxvf docker-1.11.1.tgz
-cd docker
-ls -lh
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;得到如下:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;total 66M
--rwxr-xr-x 1 root root  34M Apr 27 08:38 docker
--rwxr-xr-x 1 root root  12M Apr 27 08:38 docker-containerd
--rwxr-xr-x 1 root root 9.1M Apr 27 08:38 docker-containerd-ctr
--rwxr-xr-x 1 root root 3.6M Apr 27 08:38 docker-containerd-shim
--rwxr-xr-x 1 root root 8.2M Apr 27 08:38 docker-runc
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;移动到&lt;code&gt;/usr/bin/&lt;/code&gt; 即可替换旧版本 &lt;code&gt;mv * /usr/bin/&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;基本使用:6d93a80e55dc760775379b4fadc005db&#34;&gt;基本使用&lt;/h2&gt;
-
-&lt;p&gt;运行&lt;code&gt;docker -v&lt;/code&gt;即可查看当前docker版本
-docker 分为两部分,一分部是docker server , 一部分是docker client
-在Linux下是一个可执行文件,在Windows上则是分开的.&lt;/p&gt;
-
-&lt;p&gt;搜索 &lt;code&gt;docker search 镜像名字&lt;/code&gt;
-下载 &lt;code&gt;docker pull learn/tutorial&lt;/code&gt;, 下载时要写完整名字&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://hub.docker.com/explore/&#34;&gt;官方Docker镜像一览&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;下载官方ubuntu &lt;code&gt;docker pull ubuntu&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;运行此ubuntu &lt;code&gt;docker run ubuntu echo &amp;quot;hello&amp;quot;&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;运行完以后docker容器就退出了.&lt;/p&gt;
-
-&lt;p&gt;进入此ubuntu的shell
-&lt;code&gt;docker run -i -t ubuntu /bin/bash&lt;/code&gt; 也可以写为 &lt;code&gt;docker run -it ubuntu /bin/bash&lt;/code&gt;
-期间如果有需要退出按 &lt;code&gt;Ctrl+P+Q&lt;/code&gt;,退出后,容器任然是运行的,&lt;code&gt;Ctrl+D&lt;/code&gt;退出后容器停止&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;docker ps&lt;/code&gt; 查看正在运行的docker容器,可以看到后台的docker
-重新进入容器需要&lt;code&gt;docker attach CONTAINER&lt;/code&gt; 此命令代表&lt;code&gt;Attach to a running container&lt;/code&gt;.
-CONTAINER可以是最前面的CONTAINER ID ,也可以是最后面的NAMES&lt;/p&gt;
-
-&lt;p&gt;你还可以使用 &lt;code&gt;docker run -it --name myname ubuntu /bin/bash&lt;/code&gt; 来指定它使用的名字,否则名字的随机的&lt;/p&gt;
-
-&lt;p&gt;你可以用不同的名字同时运行多个此种镜像&lt;/p&gt;
-
-&lt;p&gt;使用 &lt;code&gt;docker rename hello hello2&lt;/code&gt; 将原先名字为hello的容器改名为hello2&lt;/p&gt;
-
-&lt;p&gt;使用 &lt;code&gt;docker top hello2&lt;/code&gt; 查看运行在hello2中的所有进程&lt;/p&gt;
-
-&lt;p&gt;使用 &lt;code&gt;docker pause hello2&lt;/code&gt; 将docker hello2 中的所有进程暂停,使用&lt;code&gt;docker ps&lt;/code&gt; 可以看到容器已经暂停了&lt;/p&gt;
-
-&lt;p&gt;使用 &lt;code&gt;docker unpass hello2&lt;/code&gt; 恢复暂停的容器&lt;/p&gt;
-
-&lt;p&gt;使用 &lt;code&gt;docker stop hello2&lt;/code&gt; 将名字为hello2的容器停止&lt;/p&gt;
-
-&lt;p&gt;使用 &lt;code&gt;docker ps -a&lt;/code&gt; 查看所有的容器,将会看到很多容器,因为每次执行&lt;code&gt;docker run&lt;/code&gt;命令都是&lt;code&gt;Run a command in a new container&lt;/code&gt;新建了一个容器,
-可以考虑使用 &lt;code&gt;docker start 容器名称&lt;/code&gt; 然后再&lt;code&gt;docker attach&lt;/code&gt; 进去,你上次的改动依然在那.&lt;/p&gt;
-
-&lt;p&gt;也可以考虑使用&lt;code&gt;docker rm 容器名称&lt;/code&gt; 删除容器以节约资源,rm后可用空格分隔多个容器名称,此命令执行较慢
-也可以在创建的时候指明结束运行时清除docker容器&lt;code&gt;docker run --rm ubuntu echo &amp;quot;hello&amp;quot;&lt;/code&gt;
-或者将要执行的命令附加到正在运行的容器上&lt;code&gt;docker exec hello2  echo &amp;quot;hihi&amp;quot;&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;使用&lt;code&gt;docker start -ia vps&lt;/code&gt; 当&lt;code&gt;docker start&lt;/code&gt;后立即退出,来不及attach时,采用这种方式&lt;/p&gt;
-
-&lt;p&gt;使用&lt;code&gt;docker rmi&lt;/code&gt;来删除镜像
-&lt;code&gt;docker ps&lt;/code&gt; 默认显示当前正在运行中的container
-&lt;code&gt;docker ps -a&lt;/code&gt; 查看包括已经停止的所有容器
-&lt;code&gt;docker ps -l&lt;/code&gt; 显示最新启动的一个容器（包括已停止的）&lt;/p&gt;
-
-&lt;p&gt;使用&lt;code&gt;docker info&lt;/code&gt;查看机器的配置,docker版本,容器和镜像的数量,存储驱动等&lt;/p&gt;
-
-&lt;p&gt;技巧:
-attach是可以带上&lt;code&gt;--sig-proxy=false&lt;/code&gt;来确保&lt;code&gt;CTRL-D&lt;/code&gt;或&lt;code&gt;CTRL-C&lt;/code&gt;不会关闭容器&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;删除所有停止运行的容器 &lt;code&gt;docker rm $(docker ps -a -q)&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;获取最后(-l)一个启动的容器id(-q) &lt;code&gt;docker ps -l -q&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;这是一些经常使用的镜像相关的数据：&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;名称&lt;/th&gt;
-&lt;th&gt;描述&lt;/th&gt;
-&lt;th&gt;大小&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;scratch&lt;/td&gt;
-&lt;td&gt;基础镜像&lt;/td&gt;
-&lt;td&gt;大小为0&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;busybox&lt;/td&gt;
-&lt;td&gt;最小Unix系统&lt;/td&gt;
-&lt;td&gt;1.1MB&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;Alpine&lt;/td&gt;
-&lt;td&gt;基于busybox&lt;/td&gt;
-&lt;td&gt;4.8MB&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;CirrOS&lt;/td&gt;
-&lt;td&gt;最小化的Linux发行版&lt;/td&gt;
-&lt;td&gt;7.7MB&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;ubuntu:16.04&lt;/td&gt;
-&lt;td&gt;Ubuntu&lt;/td&gt;
-&lt;td&gt;121MB&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;debian:jessie&lt;/td&gt;
-&lt;td&gt;Debian最新版&lt;/td&gt;
-&lt;td&gt;125MB&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;centos:latest&lt;/td&gt;
-&lt;td&gt;Centos最新版&lt;/td&gt;
-&lt;td&gt;196MB&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&#34;文件系统:6d93a80e55dc760775379b4fadc005db&#34;&gt;文件系统&lt;/h2&gt;
-
-&lt;p&gt;把一个宿主机上的目录挂载到镜像里&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;通过挂载的方式&lt;/strong&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;通过-v参数，冒号前为宿主机目录，必须为绝对路径，冒号后为镜像内挂载的路径。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;code&gt;docker run -it --name tmp -v /data/tmp:/home ubuntu /bin/bash&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;宿主目录不存在会自动创建,但是镜像内挂载路径必须存在,挂载后双向可写,实时生效
-此镜像将一直保持挂载,stop,exit后重新进入,依然是挂载状态.&lt;/p&gt;
-
-&lt;p&gt;默认挂载的路径权限为读写。如果指定为只读可以用：ro
-&lt;code&gt;docker run -it --name tmp -v /data/tmp:/home:ro ubuntu /bin/bash&lt;/code&gt;
-挂载后,镜像内对挂载的数据不可写&lt;/p&gt;
-
-&lt;p&gt;docker还提供了一种高级的用法,叫数据卷。
-数据卷：“其实就是一个正常的容器，专门用来提供数据卷供其它容器挂载的”。感觉像是由一个容器定义的一个数据挂载信息。其他的容器启动可以直接挂载数据卷容器中定义的挂载信息。&lt;/p&gt;
-
-&lt;p&gt;创建一个普通容器,定义一个名称,挂载目录. 数据容器是不需要运行的。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;docker run -v /data/tmp:/home  --name datafs busybox&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;其他容器使用这个数据卷
-&lt;code&gt;docker run -it --name tmp --volumes-from datafs ubuntu /bin/bash&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;通过volume方式(建议使用这种最新的方式)&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;docker1.9可以使用&lt;code&gt;docker volume create --name datafs&lt;/code&gt;创建&lt;code&gt;volume&lt;/code&gt;
-使用时类似&lt;code&gt;docker run --name=yourcontainername -p 10022:22 -p 10080:3000 -v datafs:/data ubuntu&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;docker volume ls&lt;/code&gt; 查看创建的&lt;code&gt;volume&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;docker volume rm&lt;/code&gt;用来删除&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;docker volume inspect datafs&lt;/code&gt;查看详情&lt;/p&gt;
-
-&lt;p&gt;这些数据是放在&lt;code&gt;/var/lib/docker/volumes/&lt;/code&gt;下面的&lt;/p&gt;
-
-&lt;p&gt;docker的container是无状态的,也就是说标记状态的数据,例如：数据库数据,应用程序的log等等,是不应该放到container里的,而是放到 Data Volume Container里&lt;/p&gt;
-
-&lt;p&gt;建议使用Data Volume Container不要使用过去的方法了&lt;/p&gt;
-
-&lt;h2 id=&#34;网络系统:6d93a80e55dc760775379b4fadc005db&#34;&gt;网络系统&lt;/h2&gt;
-
-&lt;p&gt;使用&lt;code&gt;-p&lt;/code&gt;进行映射端口,第一个是外部端口,第二个是内部端口&lt;/p&gt;
-
-&lt;p&gt;默认的规则是TCP,如果需要UDP,采用类似&lt;code&gt;-p 1234:1234/udp&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;-p 80:8080&lt;/code&gt;容器内部的8080端口,对外暴漏于80端口
-&lt;code&gt;-p 22&lt;/code&gt;内部是22端口映射,外部则为一个随机可用的端口,&lt;code&gt;-P&lt;/code&gt;则是将Dockerfile里暴露的所有容器接口映射到动态分配的宿主机端口上&lt;/p&gt;
-
-&lt;p&gt;-p参数只能在&lt;code&gt;docker run&lt;/code&gt;时指明,一旦生成了container就不能修改端口映射
-可以采用如下方式生成新的容器修改&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;docker stop vps
-docker commit vps vpsimage
-docker rm vps
-docker run -it -p 8080:8000 --name vps vpsimage bash
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;多个端口类似&lt;code&gt;docker run -it --name vps -p 443:443 -p 80:8080 -p 8000:80 vpsimage bash&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;使用&lt;code&gt;docker port vps&lt;/code&gt;可以查看此容器当前的端口映射,容器停止后,&lt;code&gt;docker port vps&lt;/code&gt;不会显示出来,他显示的是正在工作的.&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;docker inspect vps&lt;/code&gt; 查看容器的详细配置信息,包括端口映射,来源镜像,日志存储路径,内存,CPU等&lt;/p&gt;
-
-&lt;h2 id=&#34;容器与镜像:6d93a80e55dc760775379b4fadc005db&#34;&gt;容器与镜像&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;docker export&lt;/code&gt; &lt;code&gt;docker import&lt;/code&gt;  与  &lt;code&gt;docker save&lt;/code&gt;  &lt;code&gt;docker load&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;导出后再导入&lt;code&gt;exported-imported&lt;/code&gt;的镜像会丢失所有的历史.
-而保存后再加载&lt;code&gt;saveed-loaded&lt;/code&gt;的镜像没有丢失历史和层(layer)。
-这意味着使用导出后再导入的方式，你将无法回滚到之前的层(layer)，
-同时，使用保存后再加载的方式持久化整个镜像，就可以做到层回滚（可以执行&lt;code&gt;docker tag &amp;lt;LAYER ID&amp;gt; &amp;lt;IMAGE NAME&amp;gt;&lt;/code&gt;来回滚之前的层）
-&lt;code&gt;docker history vpsimage&lt;/code&gt; 查看镜像的变迁历史&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;Export命令用于持久化容器[Export a container&amp;rsquo;s filesystem as a tar archive]&lt;/p&gt;
-
-&lt;p&gt;Save命令用于持久化镜像[Save an image(s) to a tar archive]&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;strong&gt;容器&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;docker ps -a&lt;/code&gt; 查看所有的容器,包含已经停止的,暂停的,在运行的等,可以恢复运行,停止等,删除使用&lt;code&gt;docker rm xx&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;修改容器名字:&lt;code&gt;docker rename old new&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;导出:&lt;code&gt;docker export vps &amp;gt; vpsdata.tar&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;导入:&lt;code&gt;cat /home/vpsdata.tar | docker import – yourname&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;镜像&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;docker images&lt;/code&gt; 显示本机上存在的资源,大部分是&lt;code&gt;docker pull&lt;/code&gt;下来的,可以使用 &lt;code&gt;docker rmi xx&lt;/code&gt; 删除&lt;/p&gt;
-
-&lt;p&gt;修改镜像名字:&lt;code&gt;docker tag old new&lt;/code&gt; 然后 &lt;code&gt;docker rmi old&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;导出:&lt;code&gt;docker save vpsimage &amp;gt; image.tar&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;导入:&lt;code&gt;docker load &amp;lt; /home/image.tar&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;docker server 与 client 分离时,save,export等操作会非常慢,因为会通过网络把生成的文件下载到本地.&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;&lt;code&gt;docker rm $(docker ps -q -a)&lt;/code&gt; 一次性删除所有的容器&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;docker rmi $(docker images -q)&lt;/code&gt; 一次性删除所有的镜像&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&#34;使用流程:6d93a80e55dc760775379b4fadc005db&#34;&gt;使用流程&lt;/h2&gt;
-
-&lt;p&gt;配置为&lt;code&gt;service&lt;/code&gt; 见
-&lt;a href=&#34;https://docs.docker.com/v1.7/articles/systemd/&#34;&gt;https://docs.docker.com/v1.7/articles/systemd/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/docker/docker/tree/master/contrib/init/systemd&#34;&gt;https://github.com/docker/docker/tree/master/contrib/init/systemd&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;vim /etc/systemd/system/docker.service&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;[Unit]
-Description=Docker Application Container Engine
-Documentation=https://docs.docker.com
-After=network.target docker.socket
-Requires=docker.socket
-
-[Service]
-Type=notify
-# the default is not to use systemd for cgroups because the delegate issues still
-# exists and systemd currently does not support the cgroup feature set required
-# for containers run by docker
-ExecStart=/usr/bin/docker daemon -H fd://
-MountFlags=slave
-LimitNOFILE=1048576
-LimitNPROC=1048576
-LimitCORE=infinity
-# Uncomment TasksMax if your systemd version supports it.
-# Only systemd 226 and above support this version.
-#TasksMax=infinity
-TimeoutStartSec=0
-# set delegate yes so that systemd does not reset the cgroups of docker containers
-Delegate=yes
-
-[Install]
-WantedBy=multi-user.target
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;vim /etc/systemd/system/docker.socket&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;[Unit]
-Description=Docker Socket for the API
-PartOf=docker.service
-
-[Socket]
-ListenStream=/var/run/docker.sock
-SocketMode=0660
-SocketUser=root
-SocketGroup=docker
-
-[Install]
-WantedBy=sockets.target
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;sudo groupadd docker
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;重新加载配置 &lt;code&gt;sudo systemctl daemon-reload&lt;/code&gt;
-&lt;code&gt;sudo systemctl restart docker&lt;/code&gt;
-当你的docker不支持&lt;code&gt;devicemapper&lt;/code&gt;存储驱动时,会报错
-可以使用&lt;code&gt;-s overlay&lt;/code&gt; 参数指定存储驱动&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;ExecStart=/usr/bin/docker daemon -s overlay -H fd://&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;如果已经启动&lt;code&gt;docker daemon&lt;/code&gt;但是任然无法连接上,查看&lt;code&gt;systemctl status  docker.service&lt;/code&gt;
-监听是否正确,如正确,查看当前登录的用户是否和docker用户一个组内
-假设当前登录用户是root&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sudo usermod -aG docker root
-newgrp docker
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;再次重启docker daemon,退出当前用户再次登录&lt;/p&gt;
-
-&lt;h2 id=&#34;文件结构:6d93a80e55dc760775379b4fadc005db&#34;&gt;文件结构&lt;/h2&gt;
-
-&lt;p&gt;进入目录查看 &lt;code&gt;/var/lib/docker&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;volumes&lt;/code&gt; 目录里存放着创建的&lt;code&gt;Data Volume Container&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;containers&lt;/code&gt; 目录存储启动的容器配置信息,查看&lt;code&gt;docker ps -a&lt;/code&gt;里的CONTAINER ID和此文件夹下某些目录的前几位是相同的&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;graph&lt;/code&gt; pull的镜像信息保存在了graph文件夹下,镜像的内容存在了&lt;code&gt;devicemapper/devicemapper/data&lt;/code&gt; 下,根据存储驱动不同,也可能存放在&lt;code&gt;overlay&lt;/code&gt;目录,这些目录都比较大&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;ls -lh /var/lib/docker/graph/&lt;/code&gt;,进入一个文件夹,文件夹内保存着:&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;json -保存着关于这个镜像的元数据, &lt;code&gt;cat json | python -mjson.tool&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;layersize – 一个整数，表示layer的大小。&lt;/p&gt;
-
-&lt;p&gt;checksum - 一个sha256值&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;code&gt;image&lt;/code&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Linux下常用的下载利器</title>
-      <link>http://blog.suconghou.cn/post/linux-download-tools/</link>
-      <pubDate>Fri, 01 Jan 2016 23:54:20 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/post/linux-download-tools/</guid>
-      <description>
-
-&lt;h2 id=&#34;wget:d42214d24013398e63cb86bbdfbd2d55&#34;&gt;wget&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;wget -c -O filename &amp;quot;http://xx.com&amp;quot;&lt;/code&gt; 下载存储到指定文件,并指定断点续传
-&lt;code&gt;wget -nc -c -i url.txt&lt;/code&gt; 批量下载文件中指定的资源(每行一个连接),跳过已下载的(同名的),并且断点续传.&lt;/p&gt;
-
-&lt;h2 id=&#34;curl:d42214d24013398e63cb86bbdfbd2d55&#34;&gt;curl&lt;/h2&gt;
-
-&lt;p&gt;常用的命令&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;curl http://xx.com&lt;/code&gt; 只获取http消息正文&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;curl -I http://xx.com&lt;/code&gt; 只获取http消息头&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;curl -i http://xx.com&lt;/code&gt; 获取http消息头和正文&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;curl -d &amp;quot;name=abc&amp;amp;pass=123&amp;quot; http://xx.com&lt;/code&gt; 发送&lt;code&gt;http post&lt;/code&gt;请求,采用的是&lt;code&gt;application/x-www-form-urlencoded&lt;/code&gt;形式&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;curl -F &amp;quot;name=abc&amp;quot; -F &amp;quot;pass=123&amp;quot; http://xx.com&lt;/code&gt; 发送&lt;code&gt;http post&lt;/code&gt;请求,采用的是&lt;code&gt;multipart/form-data&lt;/code&gt; 形式,此两种方式都可以由 $_POST 接收&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;curl -F &amp;quot;name=abc&amp;quot; -F &amp;quot;file=@/tmp/1.jpg&amp;quot; http://xx.com&lt;/code&gt; 发送 &lt;code&gt;http post&lt;/code&gt;请求, &lt;code&gt;multipart/form-data&lt;/code&gt; 形式还可以上传文件,只需改为@加路径&lt;/p&gt;
-
-&lt;p&gt;curl 不仅能用来下载,还是网络调试的利器,Chrome的网络请求也可以直接另存为curl请求格式&lt;/p&gt;
-
-&lt;p&gt;批量下载规则的URL资源&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;curl -O &amp;quot;http://www.example.com/[0001-9999].jpg&amp;quot;
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;在shell中可以这样用,实现同样功能&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;for i in {10001..19999}; do
-wget www.example.com/${i:1}.jpg;
-done
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;或&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;for i in {0001..9999}; do
-echo www.example.com/${i}.jpg;
-done
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;axel:d42214d24013398e63cb86bbdfbd2d55&#34;&gt;Axel&lt;/h2&gt;
-
-&lt;p&gt;下载速度最快,分段下载速度优异
-&lt;code&gt;axel -n 30 -a -o localfilename http://xx.com/downloadfile&lt;/code&gt; 30个线程分段下载,存储为localfilename
-参数&lt;code&gt;-a&lt;/code&gt;更新进度条而不是每次都输出
-参数&lt;code&gt;-H&lt;/code&gt; 添加header,参数&lt;code&gt;-U&lt;/code&gt;设定&lt;code&gt;user-agent&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;aria2c:d42214d24013398e63cb86bbdfbd2d55&#34;&gt;Aria2c&lt;/h2&gt;
-
-&lt;p&gt;aria2c支持多种协议,&lt;code&gt;URI&lt;/code&gt; &lt;code&gt;MAGNET&lt;/code&gt; &lt;code&gt;TORRENT_FILE&lt;/code&gt; &lt;code&gt;METALINK_FILE&lt;/code&gt;,也支持axel类似的分段下载&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;aria2c -s 30 -c -o localfilename http://xx.com/downloadfile&lt;/code&gt; 30个线程分段下载,存储为localfilename,并断点续传&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;aria2c file1.torrent file2.torrent&lt;/code&gt;&lt;/p&gt;
 </description>
     </item>
     

@@ -2,12 +2,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Linux on 苏苏的博客</title>
-    <link>http://blog.suconghou.cn/tags/linux/</link>
+    <link>http://blog.suconghou.cn/categories/linux/</link>
     <description>Recent content in Linux on 苏苏的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 21 Jan 2016 13:40:53 +0800</lastBuildDate>
-    <atom:link href="http://blog.suconghou.cn/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://blog.suconghou.cn/categories/linux/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>linux相关操作</title>
@@ -199,108 +199,6 @@ RedHat 系列
 &lt;p&gt;&lt;code&gt;soft rlimits too low. Number of files is 256, should be at least 1000&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;ulimit -n 1024&lt;/code&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>避免SSH自动断开连接</title>
-      <link>http://blog.suconghou.cn/post/prevent-broken-pipe-on-ssh/</link>
-      <pubDate>Thu, 07 Jan 2016 13:47:22 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/post/prevent-broken-pipe-on-ssh/</guid>
-      <description>&lt;p&gt;如果有一段时间在SSH连接上无数据传输，连接就会断开,以下设定可以解决这个问题&lt;/p&gt;
-
-&lt;p&gt;方案一：在客户端设置&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;sudo vim /etc/ssh/ssh_config&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;开启 &lt;code&gt;ServerAliveInterval 60&lt;/code&gt;
-开启 &lt;code&gt;TCPKeepAlive yes&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;此后该系统里的用户连接SSH时，每60秒会发一个KeepAlive请求，避免被踢。&lt;/p&gt;
-
-&lt;p&gt;方案二：在服务器端设置&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;sudo vim /etc/ssh/sshd_config&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;开启&lt;code&gt;ClientAliveInterval 60&lt;/code&gt;
-开启 &lt;code&gt;TCPKeepAlive yes&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;如果您只想让当前的 ssh 保持连接，可以使用以下的命令：&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;ssh -o ServerAliveInterval=60 user@sshserver&lt;/code&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Linux下常用的下载利器</title>
-      <link>http://blog.suconghou.cn/post/linux-download-tools/</link>
-      <pubDate>Fri, 01 Jan 2016 23:54:20 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/post/linux-download-tools/</guid>
-      <description>
-
-&lt;h2 id=&#34;wget:d42214d24013398e63cb86bbdfbd2d55&#34;&gt;wget&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;wget -c -O filename &amp;quot;http://xx.com&amp;quot;&lt;/code&gt; 下载存储到指定文件,并指定断点续传
-&lt;code&gt;wget -nc -c -i url.txt&lt;/code&gt; 批量下载文件中指定的资源(每行一个连接),跳过已下载的(同名的),并且断点续传.&lt;/p&gt;
-
-&lt;h2 id=&#34;curl:d42214d24013398e63cb86bbdfbd2d55&#34;&gt;curl&lt;/h2&gt;
-
-&lt;p&gt;常用的命令&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;curl http://xx.com&lt;/code&gt; 只获取http消息正文&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;curl -I http://xx.com&lt;/code&gt; 只获取http消息头&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;curl -i http://xx.com&lt;/code&gt; 获取http消息头和正文&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;curl -d &amp;quot;name=abc&amp;amp;pass=123&amp;quot; http://xx.com&lt;/code&gt; 发送&lt;code&gt;http post&lt;/code&gt;请求,采用的是&lt;code&gt;application/x-www-form-urlencoded&lt;/code&gt;形式&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;curl -F &amp;quot;name=abc&amp;quot; -F &amp;quot;pass=123&amp;quot; http://xx.com&lt;/code&gt; 发送&lt;code&gt;http post&lt;/code&gt;请求,采用的是&lt;code&gt;multipart/form-data&lt;/code&gt; 形式,此两种方式都可以由 $_POST 接收&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;curl -F &amp;quot;name=abc&amp;quot; -F &amp;quot;file=@/tmp/1.jpg&amp;quot; http://xx.com&lt;/code&gt; 发送 &lt;code&gt;http post&lt;/code&gt;请求, &lt;code&gt;multipart/form-data&lt;/code&gt; 形式还可以上传文件,只需改为@加路径&lt;/p&gt;
-
-&lt;p&gt;curl 不仅能用来下载,还是网络调试的利器,Chrome的网络请求也可以直接另存为curl请求格式&lt;/p&gt;
-
-&lt;p&gt;批量下载规则的URL资源&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;curl -O &amp;quot;http://www.example.com/[0001-9999].jpg&amp;quot;
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;在shell中可以这样用,实现同样功能&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;for i in {10001..19999}; do
-wget www.example.com/${i:1}.jpg;
-done
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;或&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;for i in {0001..9999}; do
-echo www.example.com/${i}.jpg;
-done
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;axel:d42214d24013398e63cb86bbdfbd2d55&#34;&gt;Axel&lt;/h2&gt;
-
-&lt;p&gt;下载速度最快,分段下载速度优异
-&lt;code&gt;axel -n 30 -a -o localfilename http://xx.com/downloadfile&lt;/code&gt; 30个线程分段下载,存储为localfilename
-参数&lt;code&gt;-a&lt;/code&gt;更新进度条而不是每次都输出
-参数&lt;code&gt;-H&lt;/code&gt; 添加header,参数&lt;code&gt;-U&lt;/code&gt;设定&lt;code&gt;user-agent&lt;/code&gt;
-&lt;strong&gt;Downloads patch from 4 ftp mirrors&lt;/strong&gt;
-axel &lt;a href=&#34;ftp://ftp.{us,uk,br,fr}.kernel.org/pub/linux/kernel/v2.6/patch-2.6.39.gz&#34;&gt;ftp://ftp.{us,uk,br,fr}.kernel.org/pub/linux/kernel/v2.6/patch-2.6.39.gz&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;axel &lt;a href=&#34;http://itmp.suconghou.cn&#34;&gt;http://itmp.suconghou.cn&lt;/a&gt; hypriot-rpi-20160306-192317.img.zip &lt;a href=&#34;http://wtmp.suconghou.cn&#34;&gt;http://wtmp.suconghou.cn&lt;/a&gt; hypriot-rpi-20160306-192317.img.zip &lt;a href=&#34;http://btmp.suconghou.cn&#34;&gt;http://btmp.suconghou.cn&lt;/a&gt; hypriot-rpi-20160306-192317.img.zip&lt;/p&gt;
-
-&lt;h2 id=&#34;aria2c:d42214d24013398e63cb86bbdfbd2d55&#34;&gt;Aria2c&lt;/h2&gt;
-
-&lt;p&gt;aria2c支持多种协议,&lt;code&gt;URI&lt;/code&gt; &lt;code&gt;MAGNET&lt;/code&gt; &lt;code&gt;TORRENT_FILE&lt;/code&gt; &lt;code&gt;METALINK_FILE&lt;/code&gt;,也支持axel类似的分段下载&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;aria2c -s 30 -c -o localfilename http://xx.com/downloadfile&lt;/code&gt; 30个线程分段下载,存储为localfilename,并断点续传&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;aria2c file1.torrent file2.torrent&lt;/code&gt;&lt;/p&gt;
 </description>
     </item>
     

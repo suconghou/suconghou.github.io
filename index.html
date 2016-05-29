@@ -3,10 +3,13 @@
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
-	<meta name='renderer' content='webkit'><meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
-	<title> &middot; </title>
+	<meta name='renderer' content='webkit'>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
+	<meta name='description' content='记录学习的点点滴滴'>
+	<meta name='keywords' content='前端,PHP,GO,编程博客'>
+	<title>苏苏的博客 &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.min.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="" />
+	<link href="http://blog.suconghou.cn/index.xml" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -14,7 +17,7 @@
 <header class="header">
 	<div class="header-main">
 		<a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
-		<h1> 苏苏的博客</h1>
+		<h1>苏苏的博客</h1>
 		<p class="sub-title">简约至极</p>
 		<ul class="contact">
 			<a href="https://github.com/suconghou" target="_blank"><i class="fa fa-github"></i></a>
@@ -30,12 +33,191 @@
 		
 		<div class="post">
 			<h1 class="post-title">
-				<a href="http://blog.suconghou.cn/project/air/"> air</a>
+				<a href="/post/tcpdump/"> 使用tcpdump</a>
+			</h1>
+			<p class="post-date">Mon, May 16, 2016</p>
+			<div class="post-text">
+				<p>各版本 <code>http://www.tcpdump.org/release/</code></p>
+
+<p>安装依赖 <code>yum install -y flex gcc make byacc</code></p>
+
+<pre><code>export CFLAGS=&quot;-O3&quot;
+cd /tmp
+wget http://www.tcpdump.org/release/libpcap-1.7.4.tar.gz
+tar zxvf libpcap-1.7.4.tar.gz
+cd libpcap-1.7.4
+./configure
+make -j4
+cd ../
+wget http://www.tcpdump.org/release/tcpdump-4.7.4.tar.gz
+tar zxvf tcpdump-4.7.4.tar.gz
+cd tcpdump-4.7.4
+./configure
+make -j4
+make install
+</code></pre>
+
+<p>安装成功后,位于<code>ls -lh /usr/local/sbin/tcpdump</code></p>
+
+<p>不采用<code>CFLAGS=&quot;-O3&quot;</code>编译为4.3MB,采用<code>CFLAGS=&quot;-O3&quot;</code>编译后为1.3MB</p>
+
+<p><code>tcpdump -h</code> 查看版本号以及用法</p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
+				<a href="/post/use-apache-traffic-server/"> 编译安装Apache Traffic Server</a>
+			</h1>
+			<p class="post-date">Mon, May 9, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="编译安装:fbf3f2ebc346fa698c7d85539d07d01e">编译安装</h2>
+
+<p>Centos下编译安装</p>
+
+<pre><code>yum update -y &amp;&amp; yum install wget gcc g++ gcc-c++ glibc-headers perl openssl openssl-devel tcl-devel libxml2-devel pcre-devel
+wget http://apache.fayea.com/trafficserver/trafficserver-6.1.1.tar.bz2
+tar xvjf trafficserver-6.1.1.tar.bz2
+cd trafficserver-6.1.1
+./configure
+make &amp;&amp; make install
+useradd -s /sbin/nologin trafficserver
+</code></pre>
+
+<p>Apache镜像<a href="http://archive.apache.org/dist/">http://archive.apache.org/dist/</a></p>
+
+<p>国内Apache镜像<a href="http://apache.fayea.com/">http://apache.fayea.com/</a></p>
+
+<p>编译完成后,就可以使用了,默认是安装在<code>/usr/local/bin</code>,编译后是比较大</p>
+
+<pre><code>total 98M
+-rwxr-xr-x 1 root root 692K May  9 14:30 header_rewrite_test
+-rwxr-xr-x 1 root root 520K May  9 14:30 traffic_cop
+-rwxr-xr-x 1 root root 1.9M May  9 14:30 traffic_crashlog
+-rwxr-xr-x 1 root root 259K May  9 14:30 traffic_ctl
+-rwxr-xr-x 1 root root 1.9M May  9 14:30 traffic_layout
+-rwxr-xr-x 1 root root  41K May  9 14:30 traffic_line
+-rwxr-xr-x 1 root root 4.4M May  9 14:30 traffic_logcat
+-rwxr-xr-x 1 root root 5.0M May  9 14:30 traffic_logstats
+-rwxr-xr-x 1 root root 4.7M May  9 14:30 traffic_manager
+-rwxr-xr-x 1 root root  37M May  9 14:30 traffic_sac
+-rwxr-xr-x 1 root root  43M May  9 14:30 traffic_server
+-rwxr-xr-x 1 root root  42K May  9 14:30 traffic_via
+-rwxr-xr-x 1 root root  18K May  9 14:30 trafficserver
+-rwxr-xr-x 1 root root 2.1K May  9 14:30 tspush
+-rwxr-xr-x 1 root root 5.7K May  9 14:30 tsxs
+
+</code></pre>
+
+<p>运行<code>traffic_server -R 1</code>执行测试,经过一系列测试后,显示</p>
+
+<pre><code>Tests Passed: 177
+Tests Failed: 0
+    REGRESSION_RESULT PARENTSELECTION:                          PASSED
+REGRESSION_TEST DONE: PASSED
+</code></pre>
+
+<p>全部测试通过</p>
+
+<h2 id="使用:fbf3f2ebc346fa698c7d85539d07d01e">使用</h2>
+
+<p>默认的配置文件存放在<code>/usr/local/etc/trafficserver</code></p>
+
+<pre><code>drwxr-xr-x 3 nobody nobody 1.0K May  9 14:30 body_factory
+-rw-r--r-- 1 nobody nobody 1.7K May  9 14:30 cache.config
+-rw-r--r-- 1 nobody nobody  657 May  9 14:30 cluster.config
+-rw-r--r-- 1 nobody nobody 1.9K May  9 14:30 congestion.config
+-rw-r--r-- 1 nobody nobody  746 May  9 14:30 hosting.config
+-rw-r--r-- 1 nobody nobody 1.8K May  9 14:30 icp.config
+-rw-r--r-- 1 nobody nobody 1.2K May  9 14:30 ip_allow.config
+-rw-r--r-- 1 nobody nobody  328 May  9 14:30 log_hosts.config
+-rw-r--r-- 1 nobody nobody  17K May  9 14:30 logs_xml.config
+-rw-r--r-- 1 nobody nobody 1.4K May  9 14:30 parent.config
+-rw-r--r-- 1 nobody nobody  261 May  9 14:30 plugin.config
+-rw-r--r-- 1 nobody nobody  13K May  9 14:30 records.config
+-rw-r--r-- 1 nobody nobody 8.6K May  9 14:30 remap.config
+-rw-r--r-- 1 nobody nobody 1.7K May  9 14:30 socks.config
+-rw-r--r-- 1 nobody nobody 2.1K May  9 14:30 splitdns.config
+-rw-r--r-- 1 nobody nobody 2.7K May  9 14:30 ssl_multicert.config
+-rw-r--r-- 1 nobody nobody  76K May  9 14:30 stats.config.xml
+-rw-r--r-- 1 nobody nobody 1.9K May  9 14:30 storage.config
+-rw-r--r-- 1 root   root     19 May  9 14:30 trafficserver-release
+-rw-r--r-- 1 nobody nobody  649 May  9 14:30 vaddrs.config
+-rw-r--r-- 1 nobody nobody 1.3K May  9 14:30 volume.config
+
+</code></pre>
+
+<p><code>records.config</code>负责大部分全局的选项设置，即主要配置文件</p>
+
+<pre><code>CONFIG proxy.config.reverse_proxy.enabled INT 1                           # 开启反向代理
+CONFIG proxy.config.url_remap.remap_required INT 1                        # 1 代理反向代理，0代表正向+反向代理
+CONFIG proxy.config.http.cache.http INT 1                                 # 打开http缓存功能
+CONFIG proxy.config.cache.ram_cache.size INT 512M                         # RAM 缓存大小
+CONFIG proxy.config.http.keep_alive_no_activity_timeout_out INT 120       # 当一个事务结束后同原服务器保持连接的时间
+CONFIG proxy.config.cluster.ethernet_interface STRING eth0                # 修改成需要侦听的interface名称
+
+</code></pre>
+
+<p><code>remap.config</code>定义映射规则，用于请求的重定向（rewrite）,反向代理即在此配置</p>
+
+<p><code>storage.config</code> 用于指定磁盘存储</p>
+
+<p>启动<code>trafficserver start</code></p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
+				<a href="/post/use-docker-on-raspberry/"> 在树莓派上使用Docker</a>
+			</h1>
+			<p class="post-date">Sun, May 8, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="安装支持docker的系统:742f0b5a2292586baafc29ed5c3da3ab">安装支持Docker的系统</h2>
+
+<p>树莓派官方系统并不支持Docker,需要安装.</p>
+
+<p>查看 <a href="http://blog.hypriot.com/downloads/">集成Dcoker的树莓派系统</a></p>
+
+<pre><code>aria2c -s 50 -c https://downloads.hypriot.com/hypriot-rpi-20160306-192317.img.zip
+
+
+diskutil list
+diskutil unmountdisk /dev/disk2
+</code></pre>
+
+<p>用以下命令前必须卸载u盘<code>diskutil unmountdisk /dev/disk2</code></p>
+
+<pre><code>sudo dd if=hypriotos-rpi-v0.8.0.img of=/dev/disk2 bs=8k
+</code></pre>
+
+<p>安装完成重启就可以啦,启动后登陆的用户是pirate,密码hypriot</p>
+
+<p>修改密码:执行<code>passwd</code>,输入当前密码,输入新密码,再输入新密码,更新完成</p>
+
+<p>执行<code>exit</code>退出,或者<code>sudo reboot</code>重启</p>
+
+<p>创建用户:<code>useradd -g test -d /home/test1 -s /etc/bash -m test1</code>
+注解：-g 所属组 -d 家目录 -s 所用的SHELL
+passwd abc</p>
+
+<p>获得sudo权限:编辑<code>/etc/sudoers</code> 加入新添加的用户名</p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
+				<a href="/project/air/"> air</a>
 			</h1>
 			<p class="post-date">Thu, Feb 18, 2016</p>
-			
 			<div class="post-text">
-				 
+				
 
 <h1 id="serve-static-files-in-the-air:d24a8958531c812b1616d9380a6373a1">serve static files in the air</h1>
 
@@ -239,12 +421,11 @@
 		
 		<div class="post">
 			<h1 class="post-title">
-				<a href="http://blog.suconghou.cn/post/linux/"> linux相关操作</a>
+				<a href="/post/linux/"> linux相关操作</a>
 			</h1>
 			<p class="post-date">Thu, Jan 21, 2016</p>
-			
 			<div class="post-text">
-				 
+				
 
 <h2 id="linux实用命令:34fe9f2d9cc3cd7e319ca75e7da08332">Linux实用命令</h2>
 
@@ -300,12 +481,17 @@ bs = bytes 同时设置读/写缓冲区的字节数(等于设置obs和obs)
 count = blocks 只拷贝输入的blocks块</p>
 
 <p>创建一个100M的空文件
-<code>dd if=/dev/zero of=hello.txt bs=100M count=1</code></p>
+<code>dd if=/dev/zero of=hello.txt bs=100m count=1</code></p>
 
-<p>#查看当前目录下所有一级子目录文件夹大小
-du -h &ndash;max-depth=1
-#查看当前目录下所有一级子目录文件夹大小 并排序
-du -h &ndash;max-depth=1 |sort</p>
+<h2 id="查看当前目录下所有一级子目录文件夹大小:34fe9f2d9cc3cd7e319ca75e7da08332">查看当前目录下所有一级子目录文件夹大小</h2>
+
+<p><code>du -h --max-depth=1</code></p>
+
+<h2 id="查看当前目录下所有一级子目录文件夹大小-并排序:34fe9f2d9cc3cd7e319ca75e7da08332">查看当前目录下所有一级子目录文件夹大小 并排序</h2>
+
+<p><code>du -h --max-depth=1 |sort</code></p>
+
+<p>以上两条命令不适用于MacOs,可以使用<code>du -sh *</code></p>
 
 <h2 id="一份linux别名和函数库:34fe9f2d9cc3cd7e319ca75e7da08332">一份Linux别名和函数库</h2>
 
@@ -331,10 +517,12 @@ alias meminfo='free -m -l -t'
 sbs() { du -b --max-depth 1 | sort -nr | perl -pe 's{([0-9]+)}{sprintf &quot;%.1f%s&quot;, $1&gt;=2**30? ($1/2**30, &quot;G&quot;): $1&gt;=2**20? ($1/2**20, &quot;M&quot;): $1&gt;=2**10? ($1/2**10, &quot;K&quot;): ($1, &quot;&quot;)}e';}
 # 找出指定目录中最大的10个文件
 largefile() { find . -type f -exec du -k {} \; | sort  -nrk 1 | head; }
-# 查看当前目录大于[多少]kb的文件
+# 查看当前目录大于[多少]kb的文件,速度更快
 bigfile() { size=${1:-100}; find . -type f -size +&quot;$size&quot;k |xargs  ls  -lh ; }
 # 返回你的当前IP地址的地理位置。
 getlocation() { lynx -dump http://www.ip-adress.com/ip_tracer/?QRY=$1|grep address|egrep 'city|state|country'|awk '{print $3,$4,$5,$6,$7,$8}'|sed 's\ip address flag \\'|sed 's\My\\';}
+# 删除.log.1.gz 或者 .log.1.bz2
+delog(){ ls | grep &quot;log.\d\+.\(bz2\|gz\)&quot; | xargs rm}
 
 </code></pre>
 
@@ -418,104 +606,9 @@ RedHat 系列
 
 <p>3 支持tar包</p>
 
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="http://blog.suconghou.cn/post/play-with-raspberrypi/"> 玩转树莓派</a>
-			</h1>
-			<p class="post-date">Sun, Jan 17, 2016</p>
-			
-			<div class="post-text">
-				 
+<p><code>soft rlimits too low. Number of files is 256, should be at least 1000</code></p>
 
-<h2 id="安装其他操作系统:639f3845c6db751dcd1753d9faad824e">安装其他操作系统</h2>
-
-<h3 id="centos:639f3845c6db751dcd1753d9faad824e">CentOS</h3>
-
-<p>CentOS7官方支持了AMRV7发布了树莓派2、香蕉派、以及CubitTruck单片机的版本</p>
-
-<p><a href="http://mirror.centos.org/altarch/7/isos/armhfp/">CentOS7官方下载</a>
-root 密码 centos</p>
-
-<h3 id="archlinux:639f3845c6db751dcd1753d9faad824e">ArchLinux</h3>
-
-<p><a href="http://archlinuxarm.org/platforms/armv7/broadcom/raspberry-pi-2">armv7 raspberry-pi-2</a></p>
-
-<p><a href="http://archlinuxarm.org/platforms/armv6/raspberry-pi">armv6 raspberry-pi</a></p>
-
-<h2 id="安装osmc:639f3845c6db751dcd1753d9faad824e">安装OSMC</h2>
-
-<p><a href="http://software.opensuse.org/download.html?project=home:osmc&amp;package=osmc-installer&amp;hcolor=17394a&amp;fcolor=17394a&amp;acolor=17394a">osmc-installer</a></p>
-
-<p>或者安装OSMC转为树莓派制作的系统</p>
-
-<p><a href="https://osmc.tv/download/">下载一览</a>,选择<code>Disk images</code>,此系统较省资源,默认开机进入OSMC,img.gz 大小约160M</p>
-
-<h2 id="安装openelec:639f3845c6db751dcd1753d9faad824e">安装openelec</h2>
-
-<p><a href="http://openelec.tv/get-openelec">openelec</a> 镜像下载,此系统相比osmc更加精简,是专为跑kodi精简的系统,osmc基于debain系统更加完善, img.gz 大小约102M</p>
-
-<h2 id="播放器皮肤推荐:639f3845c6db751dcd1753d9faad824e">播放器皮肤推荐</h2>
-
-<p>除了OSMC默认皮肤,还有一些好看的皮肤推荐</p>
-
-<p>1.<a href="http://forum.kodi.tv/showthread.php?tid=187071">Eminence</a></p>
-
-<p>2.<a href="http://forum.kodi.tv/showthread.php?tid=214146">Bello</a> 看github,支持中文</p>
-
-<p><a href="http://forum.kodi.tv/forumdisplay.php?fid=26">官方论坛</a></p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="http://blog.suconghou.cn/post/homebrew-speedup/"> 使用镜像加速homebrew</a>
-			</h1>
-			<p class="post-date">Fri, Jan 15, 2016</p>
-			
-			<div class="post-text">
-				 <p><a href="http://mirrors.ustc.edu.cn/">中国科大镜像站</a> 提供 Debian, Ubuntu, Fedora, Archlinux, CentOS 等多个发行版的官方源.
-还有brew 的二进制源,brew使用此配置能大大提升速度.</p>
-
-<pre><code>cd /usr/local
-git remote set-url origin git://mirrors.ustc.edu.cn/homebrew.git
-git remote -v
-brew update
-</code></pre>
-
-<p><code>brew list</code> 列出所有安装的模块</p>
-
-<p><code>brew</code></p>
-
-<pre><code> brew install vim git git-lfs subversion node go python3 nginx hugo openssl htop lftp ffmpeg xz aria2 wget axel memcached redis mcrypt md5sha1sum fswatch
-</code></pre>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="http://blog.suconghou.cn/post/broswer-chrome/"> Chrome浏览器安装</a>
-			</h1>
-			<p class="post-date">Thu, Jan 14, 2016</p>
-			
-			<div class="post-text">
-				 
-
-<h2 id="配置chrome跨域:e0e57fba433e8be9bf422a453002b0ab">配置Chrome跨域</h2>
-
-<p>Chrome 浏览器配置可以跨域</p>
-
-<p><code>/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --disable-web-security</code></p>
-
-<p>或者</p>
-
-<p><code>open -a &quot;Google Chrome&quot; --args --disable-web-security</code></p>
-
-<p>必须完全退出Chrome,再使用上述方法.</p>
+<p><code>ulimit -n 1024</code></p>
 
 			</div>
 		</div>
@@ -548,12 +641,15 @@ brew update
         ><a href="/page/4/">4</a></li>
         
         <li
+        ><a href="/page/5/">5</a></li>
+        
+        <li
         >
         <a href="/page/2/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
         </li>
         
         <li>
-            <a href="/page/4/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+            <a href="/page/5/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
         </li>
         
     </ul>

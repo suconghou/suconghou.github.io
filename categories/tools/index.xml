@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tools on 我的博客</title>
+    <title>Tools on 苏苏的博客</title>
     <link>http://blog.suconghou.cn/categories/tools/</link>
-    <description>Recent content in Tools on 我的博客</description>
+    <description>Recent content in Tools on 苏苏的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 01 Jan 2016 23:54:20 +0800</lastBuildDate>
@@ -65,7 +65,11 @@ done
 &lt;p&gt;下载速度最快,分段下载速度优异
 &lt;code&gt;axel -n 30 -a -o localfilename http://xx.com/downloadfile&lt;/code&gt; 30个线程分段下载,存储为localfilename
 参数&lt;code&gt;-a&lt;/code&gt;更新进度条而不是每次都输出
-参数&lt;code&gt;-H&lt;/code&gt; 添加header,参数&lt;code&gt;-U&lt;/code&gt;设定&lt;code&gt;user-agent&lt;/code&gt;&lt;/p&gt;
+参数&lt;code&gt;-H&lt;/code&gt; 添加header,参数&lt;code&gt;-U&lt;/code&gt;设定&lt;code&gt;user-agent&lt;/code&gt;
+&lt;strong&gt;Downloads patch from 4 ftp mirrors&lt;/strong&gt;
+axel &lt;a href=&#34;ftp://ftp.{us,uk,br,fr}.kernel.org/pub/linux/kernel/v2.6/patch-2.6.39.gz&#34;&gt;ftp://ftp.{us,uk,br,fr}.kernel.org/pub/linux/kernel/v2.6/patch-2.6.39.gz&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;axel &lt;a href=&#34;http://itmp.suconghou.cn&#34;&gt;http://itmp.suconghou.cn&lt;/a&gt; hypriot-rpi-20160306-192317.img.zip &lt;a href=&#34;http://wtmp.suconghou.cn&#34;&gt;http://wtmp.suconghou.cn&lt;/a&gt; hypriot-rpi-20160306-192317.img.zip &lt;a href=&#34;http://btmp.suconghou.cn&#34;&gt;http://btmp.suconghou.cn&lt;/a&gt; hypriot-rpi-20160306-192317.img.zip&lt;/p&gt;
 
 &lt;h2 id=&#34;aria2c:d42214d24013398e63cb86bbdfbd2d55&#34;&gt;Aria2c&lt;/h2&gt;
 
