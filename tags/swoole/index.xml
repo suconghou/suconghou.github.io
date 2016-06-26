@@ -72,7 +72,7 @@ make -j$CPU_NUM &amp;amp;&amp;amp; make install
 	gzip_min_length 1024;
 	gzip_proxied any;
 	gzip_comp_level 3;
-	gzip_types text/plain text/javascript text/css text/json application/javascript  application/json image/jpeg image/gif image/png;
+	gzip_types text/html text/javascript text/css text/json application/xml application/javascript  application/json image/jpeg image/gif image/png;
 	proxy_hide_header Set-Cookie;
 	proxy_hide_header Alt-Svc;
 	proxy_hide_header Alternate-Protocol;
@@ -202,11 +202,14 @@ php-fpm -t
 
 &lt;p&gt;修改文件名,使配置文件正确,还可以修改配置,记录log和slow log&lt;/p&gt;
 
-&lt;p&gt;提前建立文件夹&lt;code&gt;mkdir -p /var/log/php-fpm&lt;/code&gt;
-* 修改&lt;code&gt;php-fpm.conf&lt;/code&gt;内&lt;code&gt;global&lt;/code&gt;段&lt;code&gt;error_log&lt;/code&gt;为&lt;code&gt;/var/log/php-fpm/php-fpm.log&lt;/code&gt;
-* 修改&lt;code&gt;php-fpm.conf&lt;/code&gt;内&lt;code&gt;global&lt;/code&gt;段&lt;code&gt;pid&lt;/code&gt;为&lt;code&gt;/var/run/php-fpm.pid&lt;/code&gt;
-* 修改&lt;code&gt;www.conf&lt;/code&gt;内&lt;code&gt;slowlog&lt;/code&gt;为&lt;code&gt;/var/log/php-fpm/$pool.log.slow&lt;/code&gt;
-* 修改&lt;code&gt;www.conf&lt;/code&gt;内&lt;code&gt;request_slowlog_timeout&lt;/code&gt;为&lt;code&gt;5&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;提前建立文件夹&lt;code&gt;mkdir -p /var/log/php-fpm&lt;/code&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;修改&lt;code&gt;php-fpm.conf&lt;/code&gt;内&lt;code&gt;global&lt;/code&gt;段&lt;code&gt;error_log&lt;/code&gt;为&lt;code&gt;/var/log/php-fpm/php-fpm.log&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;修改&lt;code&gt;php-fpm.conf&lt;/code&gt;内&lt;code&gt;global&lt;/code&gt;段&lt;code&gt;pid&lt;/code&gt;为&lt;code&gt;/var/run/php-fpm.pid&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;修改&lt;code&gt;www.conf&lt;/code&gt;内&lt;code&gt;slowlog&lt;/code&gt;为&lt;code&gt;/var/log/php-fpm/$pool.log.slow&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;修改&lt;code&gt;www.conf&lt;/code&gt;内&lt;code&gt;request_slowlog_timeout&lt;/code&gt;为&lt;code&gt;5&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;p&gt;下面一段代码实现自动修改&lt;/p&gt;
 
@@ -260,9 +263,7 @@ make -j$CPU_NUM  &amp;amp;&amp;amp; make install
 &lt;p&gt;然后重新编译,设定编译参数mcrypt指定路径:
 &lt;code&gt;--with-mcrypt=/usr/local/libmcrytpt/&lt;/code&gt;&lt;/p&gt;
 
-&lt;ol&gt;
-&lt;li&gt;OpenSSL相关错误&lt;/li&gt;
-&lt;/ol&gt;
+&lt;p&gt;3.OpenSSL相关错误&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;Cannot find OpenSSL&#39;s &amp;lt;evp.h&amp;gt;&lt;/code&gt;
 或者&lt;/p&gt;
@@ -293,8 +294,9 @@ Linux上 &lt;code&gt;yum install openssl openssl-devel&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;Mac上编译须做如下配置&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;brew install openssl&lt;/code&gt; 然后执行 &lt;code&gt;brew link openssl --force&lt;/code&gt; 并添加环境变量
-&lt;code&gt;export LDFLAGS=&amp;quot;/usr/local/opt/openssl/lib/libssl.dylib /usr/local/opt/openssl/lib/libcrypto.dylib&amp;quot;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;brew install openssl&lt;/code&gt; 然后执行 &lt;code&gt;brew link openssl --force&lt;/code&gt; 并添加环境变量&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;export LDFLAGS=&amp;quot;/usr/local/opt/openssl/lib/libssl.dylib /usr/local/opt/openssl/lib/libcrypto.dylib&amp;quot;&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;4.configure: error: xml2-config not found. Please check your libxml2 installation.&lt;/p&gt;
 
@@ -311,9 +313,7 @@ Linux上 &lt;code&gt;yum install openssl openssl-devel&lt;/code&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;apt-get install libjpeg-dev libpng-dev
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;ol&gt;
-&lt;li&gt;make: *** [ext/fileinfo/libmagic/apprentice.lo] Error 1&lt;/li&gt;
-&lt;/ol&gt;
+&lt;p&gt;7.make: *** [ext/fileinfo/libmagic/apprentice.lo] Error 1&lt;/p&gt;
 
 &lt;p&gt;这是由于内存小于1G所导致.可以&lt;code&gt;--disable-fileinfo&lt;/code&gt;,或者添加添加零时的swap&lt;/p&gt;
 
@@ -353,12 +353,16 @@ make -j$CPU_NUM  &amp;amp;&amp;amp; make install
 
 &lt;p&gt;编译PHP时加上&lt;code&gt;--with-libzip=/usr/local/libzip/&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;提示: make 可使用多核提升编译性能&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;使用多核提升编译性能&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;用make -j带一个参数，可以把项目进行并行编译，比如在一台双核的机器上，完全可以用&lt;code&gt;make -j4&lt;/code&gt;，让make最多允许4个编译命令同时执行，这样可以更有效的利用CPU资源。&lt;/p&gt;
 
+&lt;p&gt;&lt;strong&gt;优化等级&lt;/strong&gt;&lt;/p&gt;
+
 &lt;p&gt;-O这个选项控制所有的优化等级。使用优化选项会使编译过程耗费更多的时间，并且占用更多的内存，尤其是在提高优化等级的时候。
 -O2是推荐的优化等级,O3是最高等级。如果编译软件出现错误，请先检查是否启用了-O3&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;无缝升级&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;php编译完成以后,无缝升级php
 只需&lt;code&gt;kill -USR2 php-fpm master 进程的PID&lt;/code&gt;,向php-fpm master进程发送重启指令,php-fpm的master和worker都会重新加载配置,重新运行起来.
@@ -493,8 +497,11 @@ make install
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Nginx里同&lt;code&gt;fastcgi_params&lt;/code&gt;文件一样,还存在一份配置&lt;code&gt;fastcgi.conf&lt;/code&gt;,只不过后者多了一行&lt;code&gt;fastcgi_param  SCRIPT_FILENAME    $document_root$fastcgi_script_name;&lt;/code&gt;
-我们可以直接使用它来替换&lt;code&gt;fastcgi_params&lt;/code&gt;文件配置,同时我们也都添加了try_files检测,也可以略去&lt;code&gt;fastcgi_index&lt;/code&gt;,故可以简写为:&lt;/p&gt;
+&lt;p&gt;Nginx里同&lt;code&gt;fastcgi_params&lt;/code&gt;文件一样,还存在一份配置&lt;code&gt;fastcgi.conf&lt;/code&gt;;&lt;/p&gt;
+
+&lt;p&gt;只不过后者多了一行&lt;code&gt;fastcgi_param  SCRIPT_FILENAME    $document_root$fastcgi_script_name;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;我们可以直接使用它来替换&lt;code&gt;fastcgi_params&lt;/code&gt;文件配置,同时我们也都添加了try_files检测,也可以略去&lt;code&gt;fastcgi_index&lt;/code&gt;,故可以简写为:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;location ~ \.php$ {
 	try_files $uri /index.php?$args;
@@ -678,8 +685,10 @@ sudo chkconfig --list nginx
 
 &lt;p&gt;Ubuntu里没有chkconfig
 可以使用sysv-rc-conf
-&lt;code&gt;sudo apt-get install sysv-rc-conf&lt;/code&gt;
-然后直接使用 sysv-rc-conf 来管理,或者&lt;code&gt;sudo sysv-rc-conf nginx on&lt;/code&gt;直接把&lt;code&gt;/etc/init.d/nginx&lt;/code&gt; 加入到系统自动 启动列表中&lt;/p&gt;
+&lt;code&gt;sudo apt-get install sysv-rc-conf&lt;/code&gt;,
+然后直接使用 sysv-rc-conf 来管理;&lt;/p&gt;
+
+&lt;p&gt;或者&lt;code&gt;sudo sysv-rc-conf nginx on&lt;/code&gt;直接把&lt;code&gt;/etc/init.d/nginx&lt;/code&gt; 加入到系统自动 启动列表中&lt;/p&gt;
 </description>
     </item>
     

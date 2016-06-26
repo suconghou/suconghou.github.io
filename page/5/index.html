@@ -95,7 +95,7 @@ make -j$CPU_NUM &amp;&amp; make install
 	gzip_min_length 1024;
 	gzip_proxied any;
 	gzip_comp_level 3;
-	gzip_types text/plain text/javascript text/css text/json application/javascript  application/json image/jpeg image/gif image/png;
+	gzip_types text/html text/javascript text/css text/json application/xml application/javascript  application/json image/jpeg image/gif image/png;
 	proxy_hide_header Set-Cookie;
 	proxy_hide_header Alt-Svc;
 	proxy_hide_header Alternate-Protocol;
@@ -225,11 +225,14 @@ php-fpm -t
 
 <p>修改文件名,使配置文件正确,还可以修改配置,记录log和slow log</p>
 
-<p>提前建立文件夹<code>mkdir -p /var/log/php-fpm</code>
-* 修改<code>php-fpm.conf</code>内<code>global</code>段<code>error_log</code>为<code>/var/log/php-fpm/php-fpm.log</code>
-* 修改<code>php-fpm.conf</code>内<code>global</code>段<code>pid</code>为<code>/var/run/php-fpm.pid</code>
-* 修改<code>www.conf</code>内<code>slowlog</code>为<code>/var/log/php-fpm/$pool.log.slow</code>
-* 修改<code>www.conf</code>内<code>request_slowlog_timeout</code>为<code>5</code></p>
+<p>提前建立文件夹<code>mkdir -p /var/log/php-fpm</code></p>
+
+<ul>
+<li>修改<code>php-fpm.conf</code>内<code>global</code>段<code>error_log</code>为<code>/var/log/php-fpm/php-fpm.log</code></li>
+<li>修改<code>php-fpm.conf</code>内<code>global</code>段<code>pid</code>为<code>/var/run/php-fpm.pid</code></li>
+<li>修改<code>www.conf</code>内<code>slowlog</code>为<code>/var/log/php-fpm/$pool.log.slow</code></li>
+<li>修改<code>www.conf</code>内<code>request_slowlog_timeout</code>为<code>5</code></li>
+</ul>
 
 <p>下面一段代码实现自动修改</p>
 
@@ -283,9 +286,7 @@ make -j$CPU_NUM  &amp;&amp; make install
 <p>然后重新编译,设定编译参数mcrypt指定路径:
 <code>--with-mcrypt=/usr/local/libmcrytpt/</code></p>
 
-<ol>
-<li>OpenSSL相关错误</li>
-</ol>
+<p>3.OpenSSL相关错误</p>
 
 <p><code>Cannot find OpenSSL's &lt;evp.h&gt;</code>
 或者</p>
@@ -316,8 +317,9 @@ Linux上 <code>yum install openssl openssl-devel</code></p>
 
 <p>Mac上编译须做如下配置</p>
 
-<p><code>brew install openssl</code> 然后执行 <code>brew link openssl --force</code> 并添加环境变量
-<code>export LDFLAGS=&quot;/usr/local/opt/openssl/lib/libssl.dylib /usr/local/opt/openssl/lib/libcrypto.dylib&quot;</code></p>
+<p><code>brew install openssl</code> 然后执行 <code>brew link openssl --force</code> 并添加环境变量</p>
+
+<p><code>export LDFLAGS=&quot;/usr/local/opt/openssl/lib/libssl.dylib /usr/local/opt/openssl/lib/libcrypto.dylib&quot;</code></p>
 
 <p>4.configure: error: xml2-config not found. Please check your libxml2 installation.</p>
 
@@ -334,9 +336,7 @@ Linux上 <code>yum install openssl openssl-devel</code></p>
 <pre><code>apt-get install libjpeg-dev libpng-dev
 </code></pre>
 
-<ol>
-<li>make: *** [ext/fileinfo/libmagic/apprentice.lo] Error 1</li>
-</ol>
+<p>7.make: *** [ext/fileinfo/libmagic/apprentice.lo] Error 1</p>
 
 <p>这是由于内存小于1G所导致.可以<code>--disable-fileinfo</code>,或者添加添加零时的swap</p>
 
@@ -376,12 +376,16 @@ make -j$CPU_NUM  &amp;&amp; make install
 
 <p>编译PHP时加上<code>--with-libzip=/usr/local/libzip/</code></p>
 
-<p><strong>提示: make 可使用多核提升编译性能</strong></p>
+<p><strong>使用多核提升编译性能</strong></p>
 
 <p>用make -j带一个参数，可以把项目进行并行编译，比如在一台双核的机器上，完全可以用<code>make -j4</code>，让make最多允许4个编译命令同时执行，这样可以更有效的利用CPU资源。</p>
 
+<p><strong>优化等级</strong></p>
+
 <p>-O这个选项控制所有的优化等级。使用优化选项会使编译过程耗费更多的时间，并且占用更多的内存，尤其是在提高优化等级的时候。
 -O2是推荐的优化等级,O3是最高等级。如果编译软件出现错误，请先检查是否启用了-O3</p>
+
+<p><strong>无缝升级</strong></p>
 
 <p>php编译完成以后,无缝升级php
 只需<code>kill -USR2 php-fpm master 进程的PID</code>,向php-fpm master进程发送重启指令,php-fpm的master和worker都会重新加载配置,重新运行起来.
@@ -516,8 +520,11 @@ make install
 }
 </code></pre>
 
-<p>Nginx里同<code>fastcgi_params</code>文件一样,还存在一份配置<code>fastcgi.conf</code>,只不过后者多了一行<code>fastcgi_param  SCRIPT_FILENAME    $document_root$fastcgi_script_name;</code>
-我们可以直接使用它来替换<code>fastcgi_params</code>文件配置,同时我们也都添加了try_files检测,也可以略去<code>fastcgi_index</code>,故可以简写为:</p>
+<p>Nginx里同<code>fastcgi_params</code>文件一样,还存在一份配置<code>fastcgi.conf</code>;</p>
+
+<p>只不过后者多了一行<code>fastcgi_param  SCRIPT_FILENAME    $document_root$fastcgi_script_name;</code></p>
+
+<p>我们可以直接使用它来替换<code>fastcgi_params</code>文件配置,同时我们也都添加了try_files检测,也可以略去<code>fastcgi_index</code>,故可以简写为:</p>
 
 <pre><code>location ~ \.php$ {
 	try_files $uri /index.php?$args;
@@ -701,8 +708,10 @@ sudo chkconfig --list nginx
 
 <p>Ubuntu里没有chkconfig
 可以使用sysv-rc-conf
-<code>sudo apt-get install sysv-rc-conf</code>
-然后直接使用 sysv-rc-conf 来管理,或者<code>sudo sysv-rc-conf nginx on</code>直接把<code>/etc/init.d/nginx</code> 加入到系统自动 启动列表中</p>
+<code>sudo apt-get install sysv-rc-conf</code>,
+然后直接使用 sysv-rc-conf 来管理;</p>
+
+<p>或者<code>sudo sysv-rc-conf nginx on</code>直接把<code>/etc/init.d/nginx</code> 加入到系统自动 启动列表中</p>
 
 			</div>
 		</div>
