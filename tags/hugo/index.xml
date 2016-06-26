@@ -17,7 +17,7 @@
       <guid>http://blog.suconghou.cn/post/start-your-blog-with-hugo/</guid>
       <description>
 
-&lt;h2 id=&#34;什么是hugo:c9ea3f3791a768b68d4b792937e3f14b&#34;&gt;什么是hugo&lt;/h2&gt;
+&lt;h2 id=&#34;什么是hugo&#34;&gt;什么是hugo&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;hugo&lt;/code&gt;是用Go语言编写的静态网站生成器,与此类似的工具还有Hexo,相比Hexo,他的编译速度更快,而易于使用,主要表现在:&lt;/p&gt;
 
@@ -27,11 +27,11 @@
 &lt;li&gt;主题丰富,易于定制,编写一个主题也十分简单.&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h2 id=&#34;如何使用:c9ea3f3791a768b68d4b792937e3f14b&#34;&gt;如何使用&lt;/h2&gt;
+&lt;h2 id=&#34;如何使用&#34;&gt;如何使用&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;hugo&lt;/code&gt; 是开源的,在&lt;a href=&#34;https://github.com/spf13/hugo/releases&#34;&gt;github&lt;/a&gt;上下载即可.&lt;/p&gt;
 
-&lt;h3 id=&#34;基本命令:c9ea3f3791a768b68d4b792937e3f14b&#34;&gt;基本命令&lt;/h3&gt;
+&lt;h3 id=&#34;基本命令&#34;&gt;基本命令&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;新建一个站点/初始化 &lt;code&gt;hugo new site /path/myblog&lt;/code&gt;&lt;/li&gt;
@@ -44,7 +44,7 @@
 
 &lt;p&gt;如果想让草稿也被渲染,使用&lt;code&gt;hugo server -D&lt;/code&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;编写主题:c9ea3f3791a768b68d4b792937e3f14b&#34;&gt;编写主题&lt;/h2&gt;
+&lt;h2 id=&#34;编写主题&#34;&gt;编写主题&lt;/h2&gt;
 
 &lt;p&gt;在平级的themes目录下,建立一个文件夹为你主题的名字,里面有&lt;code&gt;static&lt;/code&gt;,&lt;code&gt;layouts&lt;/code&gt;,&lt;code&gt;archetypes&lt;/code&gt;文件夹.&lt;/p&gt;
 

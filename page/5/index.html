@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<meta name="generator" content="Hugo 0.16" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -33,13 +34,688 @@
 		
 		<div class="post">
 			<h1 class="post-title">
+				<a href="/post/install-nginx-php-mysql-redis/"> 安装PHP7和NGINX</a>
+			</h1>
+			<p class="post-date">Fri, Jan 1, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="编译安装nginx">编译安装NGINX</h2>
+
+<p>首先安装一些依赖</p>
+
+<pre><code>yum -y install gcc make autoconf automake install zlib zlib-devel openssl openssl-devel pcre-devel
+</code></pre>
+
+<pre><code>apt-get update
+apt-get -y install gcc make  openssl libssl-dev libpcre3 libpcre3-dev
+</code></pre>
+
+<p>Nginx最新版本<a href="http://www.oschina.net/news/73922/nginx-1-10-1">查看</a></p>
+
+<p>编译安装</p>
+
+<pre><code>NGINX_VERSION=nginx-1.11.1
+CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
+cd /tmp
+wget http://nginx.org/download/${NGINX_VERSION}.tar.gz
+tar -zxvf ${NGINX_VERSION}.tar.gz
+cd ${NGINX_VERSION}
+export CFLAGS=&quot;-O3&quot;
+./configure --with-http_v2_module --with-http_ssl_module --sbin-path=/usr/local/sbin/nginx --prefix=/etc/nginx --conf-path=/etc/nginx/nginx.conf --http-log-path=/var/log/nginx/access.log --error-log-path=/var/log/nginx/error.log --pid-path=/var/run/nginx.pid
+make -j$CPU_NUM  &amp;&amp; make install
+rm -rf /tmp/nginx* /etc/nginx/*.default
+strip -s /usr/local/sbin/nginx
+nginx -V
+</code></pre>
+
+<p>还可以添加<a href="https://github.com/cuber/ngx_http_google_filter_module">Google反代模块</a>,按下面操作编译</p>
+
+<pre><code>cd /tmp
+git clone https://github.com/cuber/ngx_http_google_filter_module
+git clone https://github.com/yaoweibin/ngx_http_substitutions_filter_module
+wget http://nginx.org/download/${NGINX_VERSION}.tar.gz
+tar -zxvf ${NGINX_VERSION}.tar.gz
+cd ${NGINX_VERSION}
+export CFLAGS=&quot;-O3&quot;
+./configure  --with-http_ssl_module  --add-module=/tmp/ngx_http_google_filter_module  --add-module=/tmp/ngx_http_substitutions_filter_module
+make -j$CPU_NUM &amp;&amp; make install
+</code></pre>
+
+<p>注意:重复执行,需要清理上次编译数据<code>make clean</code></p>
+
+<p><code>nginx -V</code> 查看编译的参数和已加载的模块</p>
+
+<pre><code>server {
+	listen       80;
+	server_name  g.suconghou.cn google.com www.google.com;
+	resolver 8.8.8.8;
+	expires 1d;
+	gzip on;
+	gzip_min_length 1024;
+	gzip_proxied any;
+	gzip_comp_level 3;
+	gzip_types text/plain text/javascript text/css text/json application/javascript  application/json image/jpeg image/gif image/png;
+	proxy_hide_header Set-Cookie;
+	proxy_hide_header Alt-Svc;
+	proxy_hide_header Alternate-Protocol;
+	location / {
+			google on;
+			google_scholar on;
+	}
+
+}
+
+</code></pre>
+
+<blockquote>
+<p>使用我编译的google代理的docker版本更易部署 <a href="https://hub.docker.com/r/suconghou/nginx-google/">https://hub.docker.com/r/suconghou/nginx-google/</a></p>
+</blockquote>
+
+<h3 id="各模块说明">各模块说明</h3>
+
+<p>http_gzip_module提供了对gzip的基本的支持，默认是编译到nginx的发行版本里面的。</p>
+
+<p>http_gzip_static_module则是针对nginx serve的静态文件，需要编译进去才能有。比如a.html，如果启用了<code>gzip_static on</code>，如果同一目录下还有a.html.gz作为a.html压缩版本存在，那么nginx会以a.html.gz作为a.html的gzip version来serve。</p>
+
+<h3 id="配置gzip">配置Gzip</h3>
+
+<p><code>gzip on</code> 开启Gzip</p>
+
+<p><code>gzip_proxied any</code></p>
+
+<h3 id="可能需要移动配置目录">可能需要移动配置目录</h3>
+
+<p>在<code>nginx.conf</code>中配置<code>include /usr/local/nginx/conf/conf.d/*.conf;</code></p>
+
+<p>建立目录<code>mkdir /etc/nginx/conf.d</code></p>
+
+<p>使用<code>ln -s /etc/nginx/conf.d /usr/local/nginx/conf/conf.d</code>建立软连接</p>
+
+<h3 id="修改nginx配置">修改Nginx配置</h3>
+
+<p><strong>设置最大上传文件大小</strong>,配置<code>nginx.conf</code></p>
+
+<p><code>client_max_body_size 50m</code> Default value for client_max_body_size is 1 MiB,超过大小报错<code>413 Request Entity Too Large</code></p>
+
+<p>静态由Nginx,动态转到后端</p>
+
+<pre><code>root /home/demo/goproj/src/Test/public;
+try_files $uri/index.html $uri.html $uri @goapp;
+
+location @goapp {
+	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+	proxy_set_header Host $http_host;
+	proxy_redirect off;
+	proxy_pass http://localhost:8080;
+}
+</code></pre>
+
+<h3 id="卸载apache">卸载apache</h3>
+
+<p>1.完全卸载使用apt-get安装的apache
+1、sudo apt-get remove apache2
+2、sudo apt-get remove apache2.2-common
+3、sudo apt-get autoremove (此命令会自动卸载PHP)
+卸载完成</p>
+
+<p>2.rpm 方式安装的</p>
+
+<pre><code>rpm -qa|grep httpd
+</code></pre>
+
+<p>得出结果
+httpd-2.2.15-39.el6.centos.i686
+httpd-tools-2.2.15-39.el6.centos.i686</p>
+
+<p>从上往下一个一个卸载</p>
+
+<pre><code>rpm -e httpd-2.2.15
+rpm -e httpd-tools
+</code></pre>
+
+<p>ab压力测试在httpd-tools,可以不卸载;
+CenterOS 安装 ab 压力测试</p>
+
+<pre><code>yum install httpd-tools
+</code></pre>
+
+<h2 id="编译安装php7">编译安装PHP7</h2>
+
+<p>最好先<code>yum update</code>一下,再安装以下依赖</p>
+
+<pre><code>yum install -y git wget curl  curl-devel libzip libzip-devel libmcrypt libmcrypt-devel gcc gcc-c++ cmake  autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libpng libpng-devel libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses  openssl-devel gdbm-devel db4-devel libXpm-devel libX11-devel gd-devel gmp-devel readline-devel libxslt-devel expat-devel xmlrpc-c xmlrpc-c-devel
+</code></pre>
+
+<p>下载PHP7最新版本,解压,有多重压缩格式可选,其中xz最小</p>
+
+<pre><code>cd /tmp
+PHP_VERSION=php-7.0.8
+CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
+wget http://php.net/distributions/${PHP_VERSION}.tar.xz
+tar -xJf ${PHP_VERSION}.tar.xz
+cd ${PHP_VERSION}
+export CFLAGS=&quot;-O3&quot;
+</code></pre>
+
+<p>编译之前,可以开启O3编译优化,生成的可执行文件更小,性能更好</p>
+
+<p>包含部分常用扩展的编译</p>
+
+<pre><code>./configure --enable-inline-optimization --enable-static=yes --prefix=/tmp --with-config-file-path=/etc --disable-cgi  --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath --enable-zip --enable-mbstring --enable-gd-native-ttf --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd --with-freetype-dir=/usr/include/freetype2 --with-png-dir=/usr/include --with-jpeg-dir=/usr/include --with-openssl --with-mcrypt
+make -j$CPU_NUM &amp;&amp; make install
+</code></pre>
+
+<p>功能更全的编译</p>
+
+<p>包含<code>php-fpm</code>和<code>opcache</code>,添加其他常用扩展<code>--enable-exif --enable-calendar  --with-xsl --with-bz2</code></p>
+
+<pre><code>./configure --enable-inline-optimization --enable-static=yes --prefix=/usr/local --with-config-file-path=/etc --disable-cgi --enable-opcache --enable-fpm  --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath  --enable-zip --enable-mbstring --enable-gd-native-ttf --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd --with-freetype-dir=/usr/include/freetype2 --with-png-dir=/usr/include --with-jpeg-dir=/usr/include --with-openssl --with-mcrypt --enable-exif --enable-calendar  --with-xsl --with-bz2
+make -j$CPU_NUM &amp;&amp; make install
+</code></pre>
+
+<p>安装过后就可以只用<code>php</code>命令了,但是<code>php-fpm</code>还需要配置一下</p>
+
+<pre><code>php -v
+php -m
+mv /usr/local/etc/php-fpm.conf.default  /usr/local/etc/php-fpm.conf
+mv /usr/local/etc/php-fpm.d/www.conf.default /usr/local/etc/php-fpm.d/www.conf
+php-fpm -t
+</code></pre>
+
+<p>修改文件名,使配置文件正确,还可以修改配置,记录log和slow log</p>
+
+<p>提前建立文件夹<code>mkdir -p /var/log/php-fpm</code>
+* 修改<code>php-fpm.conf</code>内<code>global</code>段<code>error_log</code>为<code>/var/log/php-fpm/php-fpm.log</code>
+* 修改<code>php-fpm.conf</code>内<code>global</code>段<code>pid</code>为<code>/var/run/php-fpm.pid</code>
+* 修改<code>www.conf</code>内<code>slowlog</code>为<code>/var/log/php-fpm/$pool.log.slow</code>
+* 修改<code>www.conf</code>内<code>request_slowlog_timeout</code>为<code>5</code></p>
+
+<p>下面一段代码实现自动修改</p>
+
+<pre><code>mkdir -p /var/log/php-fpm
+sed -i '/^;error_log.*/cerror_log = \/var\/log\/php-fpm\/php-fpm.log' /usr/local/etc/php-fpm.conf
+sed -i '/^;pid.*/cpid = \/var\/run\/php-fpm.pid' /usr/local/etc/php-fpm.conf
+sed -i '/^;slowlog.*/cslowlog = \/var\/log\/php-fpm\/$pool.log.slow' /usr/local/etc/php-fpm.d/www.conf
+sed -i '/^;request_slowlog_timeout.*/crequest_slowlog_timeout = 5' /usr/local/etc/php-fpm.d/www.conf
+php-fpm -t
+</code></pre>
+
+<p>启动<code>php-fpm</code>
+以下一些常用操作相信十分有用,<code>vim ~/.shell.sh</code>加入吧</p>
+
+<pre><code>alias phpfpmreload=' sudo kill -USR2 `cat /var/run/php-fpm.pid` ';
+alias phpfpmstop=' sudo kill -INT `cat /var/run/php-fpm.pid` ';
+alias errorlog='tail -f /var/log/nginx/error.log  /var/log/php-fpm/* ';
+</code></pre>
+
+<p>在你的<code>.baserc</code>,<code>vim ~/.baserc</code></p>
+
+<pre><code>if [ -f ~/.shell.sh ]; then
+        . ~/.shell.sh
+fi
+</code></pre>
+
+<p><code>su</code>一下就可以使用了.</p>
+
+<p>其中部分步骤可能需要root权限</p>
+
+<h3 id="可能出现的错误">可能出现的错误</h3>
+
+<p>1.curl未安装
+执行
+<code>yum install curl-devel</code>
+或者 <code>sudo apt-get install curl libcurl3 libcurl3-dev</code>
+然后再次尝试编译</p>
+
+<p>2.<code>error: mcrypt.h not found. Please reinstall libmcrypt.</code>
+需要安装libcrytpt</p>
+
+<pre><code>cd /tmp
+wget ftp://mcrypt.hellug.gr/pub/crypto/mcrypt/attic/libmcrypt/libmcrypt-2.5.7.tar.gz
+tar -zxvf libmcrypt-2.5.7.tar.gz
+cd libmcrypt-2.5.7
+mkdir -p /usr/local/libmcrytpt
+./configure prefix=/usr/local/libmcrytpt/
+make -j$CPU_NUM  &amp;&amp; make install
+</code></pre>
+
+<p>然后重新编译,设定编译参数mcrypt指定路径:
+<code>--with-mcrypt=/usr/local/libmcrytpt/</code></p>
+
+<ol>
+<li>OpenSSL相关错误</li>
+</ol>
+
+<p><code>Cannot find OpenSSL's &lt;evp.h&gt;</code>
+或者</p>
+
+<pre><code>Undefined symbols for architecture x86_64:
+	&quot;_PKCS5_PBKDF2_HMAC&quot;, referenced from:
+			_zif_openssl_pbkdf2 in openssl.o
+	&quot;_SSL_CTX_set_alpn_protos&quot;, referenced from:
+			_php_openssl_setup_crypto in xp_ssl.o
+	&quot;_SSL_CTX_set_alpn_select_cb&quot;, referenced from:
+			_php_openssl_setup_crypto in xp_ssl.o
+	&quot;_SSL_get0_alpn_selected&quot;, referenced from:
+			_php_openssl_sockop_set_option in xp_ssl.o
+	&quot;_SSL_select_next_proto&quot;, referenced from:
+			_server_alpn_callback in xp_ssl.o
+	&quot;_TLSv1_1_client_method&quot;, referenced from:
+			_php_openssl_setup_crypto in xp_ssl.o
+	&quot;_TLSv1_1_server_method&quot;, referenced from:
+			_php_openssl_setup_crypto in xp_ssl.o
+	&quot;_TLSv1_2_client_method&quot;, referenced from:
+			_php_openssl_setup_crypto in xp_ssl.o
+	&quot;_TLSv1_2_server_method&quot;, referenced from:
+			_php_openssl_setup_crypto in xp_ssl.o
+</code></pre>
+
+<p>解决:
+Linux上 <code>yum install openssl openssl-devel</code></p>
+
+<p>Mac上编译须做如下配置</p>
+
+<p><code>brew install openssl</code> 然后执行 <code>brew link openssl --force</code> 并添加环境变量
+<code>export LDFLAGS=&quot;/usr/local/opt/openssl/lib/libssl.dylib /usr/local/opt/openssl/lib/libcrypto.dylib&quot;</code></p>
+
+<p>4.configure: error: xml2-config not found. Please check your libxml2 installation.</p>
+
+<pre><code>apt-get install libxml2 libxml2-dev libmcrypt-dev openssl libssl-dev libcurl4-openssl-dev
+</code></pre>
+
+<p>5.Cannot find OpenSSL&rsquo;s libraries</p>
+
+<pre><code>apt-get install libmcrypt-dev openssl libssl-dev libcurl4-openssl-dev
+</code></pre>
+
+<p>6.configure: error: png.h not found.</p>
+
+<pre><code>apt-get install libjpeg-dev libpng-dev
+</code></pre>
+
+<ol>
+<li>make: *** [ext/fileinfo/libmagic/apprentice.lo] Error 1</li>
+</ol>
+
+<p>这是由于内存小于1G所导致.可以<code>--disable-fileinfo</code>,或者添加添加零时的swap</p>
+
+<pre><code>#创建一个大小为256M的文件(要创建512M的话把1024改为2048)
+dd if=/dev/zero of=/swapfile bs=1024 count=262144
+#把这个文件变成swap文件
+mkswap /swapfile
+#启用这个swap文件
+swapon /swapfile
+#查看已经生效了
+free -m
+</code></pre>
+
+<p>如果要每次开机就加载</p>
+
+<pre><code>#编辑/etc/fstab文件，使在每次开机时自动加载swap文件
+/swapfile    swap    swap    default   0 0
+</code></pre>
+
+<blockquote>
+<p>注意:XEN KVM 可以创建SWAP,OVZ本身就是Virtual Environmen,不支持创建SWAP</p>
+
+<p>通过<code>df -lhT</code> 看到Type为simfs,而不是ext3,ext4,一般就不支持</p>
+</blockquote>
+
+<p>8.<code>system libzip must be upgraded to version &gt;= 0.11</code>
+libzip 地址 <a href="http://www.nih.at/libzip/">http://www.nih.at/libzip/</a></p>
+
+<pre><code>cd /tmp
+wget http://www.nih.at/libzip/libzip-1.1.2.tar.xz
+tar Jxvf libzip-1.1.2.tar.xz
+cd libzip-1.1.2
+mkdir -p /usr/local/libzip
+./configure prefix=/usr/local/libzip/
+make -j$CPU_NUM  &amp;&amp; make install
+</code></pre>
+
+<p>编译PHP时加上<code>--with-libzip=/usr/local/libzip/</code></p>
+
+<p><strong>提示: make 可使用多核提升编译性能</strong></p>
+
+<p>用make -j带一个参数，可以把项目进行并行编译，比如在一台双核的机器上，完全可以用<code>make -j4</code>，让make最多允许4个编译命令同时执行，这样可以更有效的利用CPU资源。</p>
+
+<p>-O这个选项控制所有的优化等级。使用优化选项会使编译过程耗费更多的时间，并且占用更多的内存，尤其是在提高优化等级的时候。
+-O2是推荐的优化等级,O3是最高等级。如果编译软件出现错误，请先检查是否启用了-O3</p>
+
+<p>php编译完成以后,无缝升级php
+只需<code>kill -USR2 php-fpm master 进程的PID</code>,向php-fpm master进程发送重启指令,php-fpm的master和worker都会重新加载配置,重新运行起来.
+<code>curl -I 127.0.0.1</code>查看,新版本的fpm已经在工作了.</p>
+
+<p>PHP的数据库长连接有没有效,
+实际测试,采用香港服务器远程连接mysql,非长连接模式下耗时约600ms,使用PDO长连接,耗时下降到260ms左右,是有一定作用的.
+但是长连接不适用于CLI模式,CLI模式下,php进程退出,连接即断开.</p>
+
+<h2 id="安装一些其他扩展">安装一些其他扩展</h2>
+
+<p>php redis 扩展</p>
+
+<pre><code>wget -c -O php-redis.zip https://github.com/phpredis/phpredis/archive/php7.zip
+unzip php-redis.zip
+cd phpredis-php7
+phpize
+./configure --enable-redis-igbinary
+make -j$CPU_NUM  &amp;&amp; make install
+
+</code></pre>
+
+<p>安装libmemcached,memcached依赖此项</p>
+
+<pre><code>wget -c https://launchpad.net/libmemcached/1.0/1.0.18/+download/libmemcached-1.0.18.tar.gz
+tar -xzf libmemcached-1.0.18.tar.gz -C /tmp
+cd /tmp/libmemcached-1.0.18
+./configure
+make -j$CPU_NUM  &amp;&amp; make install
+</code></pre>
+
+<p>php memcached 扩展</p>
+
+<pre><code>wget -c -O php-memcached.zip https://github.com/php-memcached-dev/php-memcached/archive/php7.zip
+unzip php-memcached.zip
+cd php-memcached-php7
+phpize
+make -j$CPU_NUM  &amp;&amp; make install
+</code></pre>
+
+<p>安装memcached,见<a href="http://memcached.org/downloads">http://memcached.org/downloads</a></p>
+
+<pre><code>wget http://memcached.org/latest
+tar -zxvf memcached-1.x.x.tar.gz
+cd memcached-1.x.x
+./configure &amp;&amp; make -j$CPU_NUM  &amp;&amp; make test &amp;&amp; sudo make install
+</code></pre>
+
+<p>安装swoole扩展</p>
+
+<pre><code>wget -c -O php-swoole.zip https://github.com/swoole/swoole-src/archive/master.zip
+unzip php-swoole.zip
+cd swoole-src-master
+phpize
+./configure
+make -j$CPU_NUM  &amp;&amp; make install
+</code></pre>
+
+<h2 id="静态编译redis-memcached-opcache到php7">静态编译redis,memcached,opcache到php7</h2>
+
+<pre><code>wget -c http://php.net/distributions/${PHP_VERSION}.tar.xz
+wget -c -O php-redis.zip https://github.com/phpredis/phpredis/archive/php7.zip
+wget -c -O php-memcached.zip https://github.com/php-memcached-dev/php-memcached/archive/php7.zip
+tar -xJf ${PHP_VERSION}.tar.xz
+unzip php-redis.zip -d ${PHP_VERSION}/ext
+unzip php-memcached.zip -d ${PHP_VERSION}/ext
+export CFLAGS=&quot;-O3&quot;
+cd ${PHP_VERSION}
+rm -rf configure
+./buildconf --force
+./configure --help
+./configure --enable-inline-optimization --enable-static=yes --prefix=/tmp --with-config-file-path=/etc --enable-opcache --enable-redis --enable-memcached --disable-memcached-sasl --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath --enable-zip --enable-mbstring --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd --with-openssl
+make -j$CPU_NUM
+make install
+</code></pre>
+
+<p>可能出现的错误</p>
+
+<p>1.<code>configure: error: no, sasl.h is not available. Run configure with --disable-memcached-sasl to disable this check</code></p>
+
+<p>解决:</p>
+
+<p><code>yum install cyrus-sasl-devel</code> 或 <code>sudo apt-get install libsasl2-dev</code></p>
+
+<p>或者禁用掉</p>
+
+<p>搭配PHP的配置</p>
+
+<pre><code>server{
+	listen 8080;
+	server_name 127.0.0.1;
+	index index.html index.php;
+	root /data/sites/default;
+	location / {
+		try_files $uri $uri/ /index.php?$args;
+	}
+	location ~ \.php$ {
+		try_files $uri /index.php?$args;
+		fastcgi_pass  unix:/var/run/php-fpm.sock;
+		fastcgi_index index.php;
+		fastcgi_param SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+		include        fastcgi_params;
+	}
+}
+
+</code></pre>
+
+<p>一个Server实现多个域名,多个主机</p>
+
+<pre><code>server{
+	listen 8080;
+	server_name *.git.suconghou.cn;
+	index index.php index.html adminer.php;
+	if ($host ~* ^((\w+)\.git\.suconghou\.cn)$) {
+		set $subdomain $2;
+	}
+	root /data/git/$subdomain;
+	add_header X-Root &quot;$subdomain&quot;;
+	fastcgi_connect_timeout 2s;
+	fastcgi_send_timeout 3s;
+	fastcgi_read_timeout 8s;
+	location / {
+		try_files $uri $uri/ /index.php?$args;
+	}
+	location ~ \.php$ {
+		try_files $uri /index.php?$args;
+		fastcgi_pass  unix:/var/run/php-fpm.sock;
+		fastcgi_index index.php;
+		fastcgi_param SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+		include        fastcgi_params;
+	}
+}
+</code></pre>
+
+<p>Nginx里同<code>fastcgi_params</code>文件一样,还存在一份配置<code>fastcgi.conf</code>,只不过后者多了一行<code>fastcgi_param  SCRIPT_FILENAME    $document_root$fastcgi_script_name;</code>
+我们可以直接使用它来替换<code>fastcgi_params</code>文件配置,同时我们也都添加了try_files检测,也可以略去<code>fastcgi_index</code>,故可以简写为:</p>
+
+<pre><code>location ~ \.php$ {
+	try_files $uri /index.php?$args;
+	fastcgi_pass  unix:/var/run/php-fpm.sock;
+	include fastcgi.conf;
+}
+</code></pre>
+
+<p>注意<code>fastcgi_param</code>指令是数组型的,内层替换外层,但是同级多次使用的时候，是新增而不是替换。注意不要重复使用.</p>
+
+<p>排除favicon.ico错误</p>
+
+<pre><code>location = /favicon.ico {
+log_not_found off;
+access_log off;
+}
+</code></pre>
+
+<p>不允许以.开头的文件</p>
+
+<pre><code>location ~ /. {
+deny all;
+access_log off;
+log_not_found off;
+}
+</code></pre>
+
+<p>排除找不到robots错误</p>
+
+<pre><code>location = /robots.txt {
+allow all;
+log_not_found off;
+access_log off;
+}
+</code></pre>
+
+<p>php-fpm 运行时错误
+1. [pool www] cannot get gid for group &lsquo;nobody&rsquo;
+<code>groupadd nobody</code>或者
+ 修改php-fpm.conf</p>
+
+<pre><code>user = www-data
+group = www-data
+</code></pre>
+
+<h2 id="安装mariadb">安装MariaDB</h2>
+
+<pre><code>apt-get install mariadb-server
+</code></pre>
+
+<p>MySql</p>
+
+<pre><code>apt-get install mysql-server
+</code></pre>
+
+<p>安装过程中要求设定一个root密码,安装完<code>service mysql status</code>查看运行状态,<code>sudo service mysql restart</code>可以重启</p>
+
+<h2 id="开机启动脚本">开机启动脚本</h2>
+
+<p>Debian and Ubuntu function at <code>/lib/lsb/init-functions</code>
+<code>ln -s  /lib/lsb/init-functions /etc/init.d/functions</code></p>
+
+<p>nginx</p>
+
+<pre><code>#!/bin/sh
+#chkconfig: 2345 90 91
+
+binpath=`which nginx`
+prog=$(basename $binpath)
+. /etc/init.d/functions
+. /etc/sysconfig/network
+[ &quot;$NETWORKING&quot; = &quot;no&quot; ] &amp;&amp; exit 0
+[ -x $binpath ] || exit 0
+[ -f /etc/sysconfig/$prog ] &amp;&amp; . /etc/sysconfig/$prog
+
+start(){
+	echo -n $&quot;Starting $prog: &quot;
+	$prog || echo -n &quot;$prog already running&quot;
+}
+stop(){
+	echo -n $&quot;Stopping $prog: &quot;
+	$prog -s quit
+}
+restart(){
+	stop
+	sleep 1
+	start
+}
+reload() {
+	echo -n $&quot;Reloading $prog: &quot;
+	$prog -s reload
+}
+case &quot;$1&quot; in
+start)
+		$1
+		;;
+stop)
+		$1
+		;;
+restart)
+		$1
+		;;
+reload)
+		$1
+		;;
+*)
+echo $&quot;Usage: $0 {start|stop|restart|reload}&quot;
+exit 2
+esac
+</code></pre>
+
+<h3 id="php-fpm">php-fpm</h3>
+
+<p><code>sudo vim /etc/init.d/php-fpm</code></p>
+
+<pre><code>#!/bin/sh
+#chkconfig: 2345 90 91
+
+binpath=`which php-fpm`
+prog=$(basename $binpath)
+. /etc/init.d/functions
+. /etc/sysconfig/network
+[ &quot;$NETWORKING&quot; = &quot;no&quot; ] &amp;&amp; exit 0
+[ -x $binpath ] || exit 0
+[ -f /etc/sysconfig/$prog ] &amp;&amp; . /etc/sysconfig/$prog
+pidfile=/var/run/php-fpm.pid
+
+
+start(){
+	echo -n $&quot;Starting $prog: &quot;
+	$prog || echo -n &quot;$prog already running&quot;
+}
+stop(){
+	echo -n $&quot;Stopping $prog: &quot;
+	kill -INT `cat $pidfile`
+}
+restart(){
+	stop
+	sleep 1
+	start
+}
+reload() {
+	echo -n $&quot;Reloading $prog: &quot;
+	kill -USR2 `cat $pidfile`
+}
+case &quot;$1&quot; in
+start)
+		$1
+		;;
+stop)
+		$1
+		;;
+restart)
+		$1
+		;;
+reload)
+		$1
+		;;
+*)
+echo $&quot;Usage: $0 {start|stop|restart|reload}&quot;
+exit 2
+esac
+</code></pre>
+
+<pre><code>##  添加执行权限
+sudo chmod a+x /etc/init.d/nginx
+sudo chmod a+x /etc/init.d/php-fpm
+
+##  加入服务
+sudo chkconfig --add nginx
+sudo chkconfig --add php-fpm
+
+##   开机自启
+sudo chkconfig nginx on
+sudo chkconfig php-fpm on
+
+## 查看是否开机启动
+
+sudo chkconfig --list nginx
+</code></pre>
+
+<p>Ubuntu里没有chkconfig
+可以使用sysv-rc-conf
+<code>sudo apt-get install sysv-rc-conf</code>
+然后直接使用 sysv-rc-conf 来管理,或者<code>sudo sysv-rc-conf nginx on</code>直接把<code>/etc/init.d/nginx</code> 加入到系统自动 启动列表中</p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
 				<a href="/post/start-your-blog-with-hugo/"> 使用hugo搭建静态博客</a>
 			</h1>
 			<p class="post-date">Fri, Jan 1, 2016</p>
 			<div class="post-text">
 				
 
-<h2 id="什么是hugo:c9ea3f3791a768b68d4b792937e3f14b">什么是hugo</h2>
+<h2 id="什么是hugo">什么是hugo</h2>
 
 <p><code>hugo</code>是用Go语言编写的静态网站生成器,与此类似的工具还有Hexo,相比Hexo,他的编译速度更快,而易于使用,主要表现在:</p>
 
@@ -49,11 +725,11 @@
 <li>主题丰富,易于定制,编写一个主题也十分简单.</li>
 </ol>
 
-<h2 id="如何使用:c9ea3f3791a768b68d4b792937e3f14b">如何使用</h2>
+<h2 id="如何使用">如何使用</h2>
 
 <p><code>hugo</code> 是开源的,在<a href="https://github.com/spf13/hugo/releases">github</a>上下载即可.</p>
 
-<h3 id="基本命令:c9ea3f3791a768b68d4b792937e3f14b">基本命令</h3>
+<h3 id="基本命令">基本命令</h3>
 
 <ul>
 <li>新建一个站点/初始化 <code>hugo new site /path/myblog</code></li>
@@ -66,7 +742,7 @@
 
 <p>如果想让草稿也被渲染,使用<code>hugo server -D</code></p>
 
-<h2 id="编写主题:c9ea3f3791a768b68d4b792937e3f14b">编写主题</h2>
+<h2 id="编写主题">编写主题</h2>
 
 <p>在平级的themes目录下,建立一个文件夹为你主题的名字,里面有<code>static</code>,<code>layouts</code>,<code>archetypes</code>文件夹.</p>
 
@@ -83,7 +759,7 @@
 			<div class="post-text">
 				
 
-<h2 id="关于博客:6083a88ee3411b0d17ce02d738f69d47">关于博客</h2>
+<h2 id="关于博客">关于博客</h2>
 
 <p>博客使用<code>hugo</code>搭建,自己编写的主题.</p>
 
@@ -95,7 +771,7 @@
 
 <p>博客常记录一些自己折腾的东西,以备必要时查阅.</p>
 
-<h2 id="关于我:6083a88ee3411b0d17ce02d738f69d47">关于我</h2>
+<h2 id="关于我">关于我</h2>
 
 <p>90后,计算机宅男,<code>PHP程序猿</code>,<code>前端攻城狮</code>,也常写一些<code>Node</code>,<code>Go</code>,<code>Python</code></p>
 

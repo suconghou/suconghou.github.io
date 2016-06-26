@@ -38,7 +38,7 @@
 		<div class="post-text">
 			
 
-<h2 id="crontab使用:821b39f3c5e329d9ee0933de8bb69bfb">Crontab使用</h2>
+<h2 id="crontab使用">Crontab使用</h2>
 
 <p><code>crontab -l</code> 查看当前用户的crontab列表
 使用<code>crontab -e</code>开始编辑规则</p>
@@ -64,7 +64,7 @@
 0 1 5 10 * /path/to/script.sh &gt; &amp;&gt; /dev/null
 </code></pre>
 
-<h2 id="定时备份数据库:821b39f3c5e329d9ee0933de8bb69bfb">定时备份数据库</h2>
+<h2 id="定时备份数据库">定时备份数据库</h2>
 
 <p>先写好shell脚本存入<code>/home/cron1.sh</code></p>
 
@@ -102,7 +102,7 @@ for i in $dbs
 
 <p>使用此脚本建议每20个小时以内备份一次数据库,此脚本保留最近7天备份,删除过期备份</p>
 
-<h2 id="增量备份数据库:821b39f3c5e329d9ee0933de8bb69bfb">增量备份数据库</h2>
+<h2 id="增量备份数据库">增量备份数据库</h2>
 
 <p>先写好shell脚本存入<code>/home/cron2.sh</code></p>
 
@@ -130,7 +130,7 @@ for i in $backup
 
 <p>每20个小时增量备份一次</p>
 
-<h2 id="更高级的文件实时同步:821b39f3c5e329d9ee0933de8bb69bfb">更高级的文件实时同步</h2>
+<h2 id="更高级的文件实时同步">更高级的文件实时同步</h2>
 
 <p><code>Mac</code>上可以使用<code>fswatch + rsync</code>进行实时同步</p>
 
@@ -144,7 +144,7 @@ fswatch -0 /tmp | xargs -0 -n 1 echo $1
 
 </code></pre>
 
-<h2 id="shell基本语法:821b39f3c5e329d9ee0933de8bb69bfb">Shell基本语法</h2>
+<h2 id="shell基本语法">Shell基本语法</h2>
 
 <p>声明数组</p>
 

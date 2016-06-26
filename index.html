@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<meta name="generator" content="Hugo 0.16" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -74,7 +75,7 @@ make install
 			<div class="post-text">
 				
 
-<h2 id="编译安装:fbf3f2ebc346fa698c7d85539d07d01e">编译安装</h2>
+<h2 id="编译安装">编译安装</h2>
 
 <p>Centos下编译安装</p>
 
@@ -122,7 +123,7 @@ REGRESSION_TEST DONE: PASSED
 
 <p>全部测试通过</p>
 
-<h2 id="使用:fbf3f2ebc346fa698c7d85539d07d01e">使用</h2>
+<h2 id="使用">使用</h2>
 
 <p>默认的配置文件存放在<code>/usr/local/etc/trafficserver</code></p>
 
@@ -178,7 +179,7 @@ CONFIG proxy.config.cluster.ethernet_interface STRING eth0                # 修�
 			<div class="post-text">
 				
 
-<h2 id="安装支持docker的系统:742f0b5a2292586baafc29ed5c3da3ab">安装支持Docker的系统</h2>
+<h2 id="安装支持docker的系统">安装支持Docker的系统</h2>
 
 <p>树莓派官方系统并不支持Docker,需要安装.</p>
 
@@ -213,23 +214,84 @@ passwd abc</p>
 		
 		<div class="post">
 			<h1 class="post-title">
+				<a href="/software/android-studio/"> Android Studio</a>
+			</h1>
+			<p class="post-date">Fri, Apr 8, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="下载-android-studio">下载 Android Studio</h2>
+
+<pre><code>
+Android Studio 2.1.1 各平台下载地址,http://www.oschina.net/news/73336/android-studio-2-1-1
+
+Windows: https://dl.google.com/dl/android/studio/ide-zips/2.1.1.0/android-studio-ide-143.2821654-windows.zip (286.7 MiB)
+
+Mac: https://dl.google.com/dl/android/studio/ide-zips/2.1.1.0/android-studio-ide-143.2821654-mac.zip (285.2 MiB)
+
+Linux: https://dl.google.com/dl/android/studio/ide-zips/2.1.1.0/android-studio-ide-143.2821654-linux.zip (284.3 MiB)
+
+</code></pre>
+
+<pre><code>root /home/demo/goproj/src/Test/public;
+try_files $uri/index.html $uri.html $uri @goapp;
+
+location @goapp {
+	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+	proxy_set_header Host $http_host;
+	proxy_redirect off;
+	proxy_pass http://localhost:8080;
+}
+</code></pre>
+
+<h2 id="安装android-sdk">安装android-sdk</h2>
+
+<p><code>brew install android-sdk</code> 或者使用Android Studio SDK Manager</p>
+
+<p>从ElasticSearch官方的多份文档中可以看到，官方并不建议部署ES时为实例指定超过32GB的内存，但是现在内存的价格非常便宜，一台实体机服务器仅用32G内存显然是非常浪费的。所以我们要尝试在一个服务器上开多个ES实例，以便达到充分利用资源的目的。本文提供了一些ES单机双实例的配置要点，可扩展至单机多实例，供大家来实际参考。</p>
+
+<p>突破32G</p>
+
+<p>从ElasticSearch官方的多份文档中可以看到，官方并不建议部署ES时为实例指定超过32GB的内存，例如这些写着大字警告用户的文章： Don’t Cross 32 GB!</p>
+
+<p>但是现在内存的价格非常便宜，一台实体机服务器仅用32G内存显然是非常浪费的。所以我们要尝试在一个服务器上开多个ES实例，以便达到充分利用资源的目的。</p>
+
+<p>配置变更</p>
+
+<p>要做到单机上开多个实例，需要修改ES的默认配置，以下是一些配置要点：</p>
+
+<p>node.max_local_storage_nodes</p>
+
+<p>这个配置限制了单节点上可以开启的ES存储实例的个数，我们需要开多个实例，因此需要把这个配置写到配置文件中，并为这个配置赋值为2或者更高。</p>
+
+<p>http.port</p>
+
+<p>这个配置是elasticsearch对外提供服务的http端口配置，默认情况下ES会取用9200~9299之间的端口，如果9200被占用就会自动使用9201，在单机多实例的配置中这个配置实际是不需要修改的。</p>
+
+<p>但是为了更好地进行配置管理，以及和老的配置兼容，我们还是手动将第一个实例的http端口配置为9200，第二个实例配置为9201。</p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
 				<a href="/project/air/"> air</a>
 			</h1>
 			<p class="post-date">Thu, Feb 18, 2016</p>
 			<div class="post-text">
 				
 
-<h1 id="serve-static-files-in-the-air:d24a8958531c812b1616d9380a6373a1">serve static files in the air</h1>
+<h1 id="serve-static-files-in-the-air">serve static files in the air</h1>
 
 <p>在线解析压缩合并Less,打包压缩Javascript.</p>
 
 <p>手动压缩打包,执行Lint,静态服务器,缓存版本控制,完美结合CDN</p>
 
-<h1 id="安装:d24a8958531c812b1616d9380a6373a1">安装</h1>
+<h1 id="安装">安装</h1>
 
 <p><code>npm install airs -g</code></p>
 
-<h1 id="基本参数:d24a8958531c812b1616d9380a6373a1">基本参数</h1>
+<h1 id="基本参数">基本参数</h1>
 
 <ul>
 <li>纯静态项目,在项目根目录直接执行<code>air</code></li>
@@ -303,7 +365,7 @@ passwd abc</p>
 <p>同时可添加参数 <code>--less=/data/pathto/lesslib</code> 指定lessLib路径,可接受相对路径和绝对路径</p>
 </blockquote>
 
-<h1 id="目录结构:d24a8958531c812b1616d9380a6373a1">目录结构</h1>
+<h1 id="目录结构">目录结构</h1>
 
 <p>目录结构采用类似 <code>项目名/static/css/style.less</code></p>
 
@@ -364,7 +426,7 @@ passwd abc</p>
 | |____mixins.less
 </code></pre>
 
-<h1 id="webhook:d24a8958531c812b1616d9380a6373a1">Webhook</h1>
+<h1 id="webhook">Webhook</h1>
 
 <ul>
 <li><code>/webhook/gitpull</code> 执行 <code>git pull origin master</code> 立刻拉取代码更新.</li>
@@ -378,7 +440,7 @@ passwd abc</p>
 <p>在网址后面添加?key=密码即可</p>
 </blockquote>
 
-<h1 id="性能:d24a8958531c812b1616d9380a6373a1">性能</h1>
+<h1 id="性能">性能</h1>
 
 <p>所有的Less编译和压缩,Javascript合并与压缩均在第一次访问的时候执行</p>
 
@@ -390,7 +452,7 @@ passwd abc</p>
 
 <p>本地开发和线上服务都完全无需担心.</p>
 
-<h1 id="缓存:d24a8958531c812b1616d9380a6373a1">缓存</h1>
+<h1 id="缓存">缓存</h1>
 
 <p>内存缓存保存最近一次编译的版本号.</p>
 
@@ -400,7 +462,7 @@ passwd abc</p>
 
 <p>可以放心开启强缓存.</p>
 
-<h1 id="共享:d24a8958531c812b1616d9380a6373a1">共享</h1>
+<h1 id="共享">共享</h1>
 
 <p>根目录下<code>less</code>文件夹作为共享文件夹.</p>
 
@@ -408,207 +470,13 @@ passwd abc</p>
 
 <p>可放置mixins等.</p>
 
-<h1 id="示例:d24a8958531c812b1616d9380a6373a1">示例</h1>
+<h1 id="示例">示例</h1>
 
 <blockquote>
 <p>本地开发 <code>air develop -w</code></p>
 
 <p>服务器模式 <code>air server -k 123456 -d</code></p>
 </blockquote>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/linux/"> linux相关操作</a>
-			</h1>
-			<p class="post-date">Thu, Jan 21, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="linux实用命令:34fe9f2d9cc3cd7e319ca75e7da08332">Linux实用命令</h2>
-
-<h2 id="w:34fe9f2d9cc3cd7e319ca75e7da08332">w</h2>
-
-<p><code>w</code>命令能容清晰的显示,服务器在线时间,负载以及当前登陆的用户</p>
-
-<h2 id="vmstat:34fe9f2d9cc3cd7e319ca75e7da08332">vmstat</h2>
-
-<p><code>vmstat</code> 显示开机以来的平均值，而不是前一秒的值
-<code>vmstat 1</code>命令指定一个参数 1 运行，来打印每一秒的统计摘要.
-这些列代表的信息:</p>
-
-<blockquote>
-<p>r：CPU 中正在运行和等待运行的进程的数量。其提供了一个比平均负载更好的信号来确定 CPU 是否饱和，因为其不包含 I/O。解释：&rdquo;r&rdquo;的值大于了 CPU 的数量就表示已经饱和了。
-free：以 kb 为单位显式的空闲内存。如果数字位数很多，说明你有足够的空闲内存。&rdquo;free -m&rdquo; 命令，是下面的第七个命令，其可以更好的说明空闲内存的状态。
-si, so：Swap-ins 和 swap-outs。如果它们不是零，则代表你的内存不足了。
-us, sy, id, wa, st：这些都是平均了所有 CPU 的 CPU 分解时间。它们分别是用户时间（user）、系统时间（内核）（system）、空闲（idle）、等待 I/O（wait）、以及占用时间（stolen）（被其他访客，或使用 Xen，访客自己独立的驱动域）。</p>
-</blockquote>
-
-<p>CPU 分解时间将会通过用户时间加系统时间确认 CPU 是否为忙碌状态。等待 I/O 的时间一直不变则表明了一个磁盘瓶颈；这就是 CPU 的闲置，因为任务都阻塞在等待挂起磁盘 I/O 上了。你可以把等待 I/O 当成是 CPU 闲置的另一种形式，其给出了为什么 CPU 闲置的一个线索。
-对于 I/O 处理来说，系统时间是很重要的。一个高于 20% 的平均系统时间，可以值得进一步的探讨：也许内核在处理 I/O 时效率太低了。</p>
-
-<p>SIZE(VIRT): 进程使用的地址空间, 如果进程映射了100M的内存, 进程的地址空间将报告为100M内存. 事实上, 这个大小不是一个程序实际使用的内存数.</p>
-
-<p>RSS(RES): &ldquo;Resident Set Size&rdquo;, 实际驻留&rdquo;在内存中&rdquo;的内存数. 不包括已经交换出去的代码. 举一个例子: 如果你有一个程序使用了100K内存, 操作系统交换出40K内存, 那么RSS为60K. RSS还包括了与其它进程共享的内存区域. 这些区域通常用于libc库等.</p>
-
-<p>SHARE(SHR): RSS中与其它进程共享的内存部分大小.</p>
-
-<p>VMSIZE: 一个进程占用的总的地址空间大小. 它包括了没有映射到内存中的页面。</p>
-
-<p>SZ（DATA）: 映射到内存中的页面, 这些页面仅由进程单独使用. 这也是我们最关心地方: 进程实际占用的内存数。</p>
-
-<h2 id="top:34fe9f2d9cc3cd7e319ca75e7da08332">top</h2>
-
-<h2 id="free:34fe9f2d9cc3cd7e319ca75e7da08332">free</h2>
-
-<h2 id="ssh:34fe9f2d9cc3cd7e319ca75e7da08332">ssh</h2>
-
-<p><code>ssh-copy-id -i ~/.ssh/id_rsa.pub root@host</code></p>
-
-<p><code>ssh-copy-id -i ~/.ssh/id_rsa.pub -p 26671 root@host</code></p>
-
-<h2 id="磁盘相关:34fe9f2d9cc3cd7e319ca75e7da08332">磁盘相关</h2>
-
-<h3 id="dd:34fe9f2d9cc3cd7e319ca75e7da08332">dd</h3>
-
-<p><code>dd</code>把指定的输入文件拷贝到指定的输出文件中,并且在拷贝的过程中可以进行格式转换。</p>
-
-<p>if =输入文件(或设备名称)
-of =输出文件(或设备名称)
-bs = bytes 同时设置读/写缓冲区的字节数(等于设置obs和obs)
-count = blocks 只拷贝输入的blocks块</p>
-
-<p>创建一个100M的空文件
-<code>dd if=/dev/zero of=hello.txt bs=100m count=1</code></p>
-
-<h2 id="查看当前目录下所有一级子目录文件夹大小:34fe9f2d9cc3cd7e319ca75e7da08332">查看当前目录下所有一级子目录文件夹大小</h2>
-
-<p><code>du -h --max-depth=1</code></p>
-
-<h2 id="查看当前目录下所有一级子目录文件夹大小-并排序:34fe9f2d9cc3cd7e319ca75e7da08332">查看当前目录下所有一级子目录文件夹大小 并排序</h2>
-
-<p><code>du -h --max-depth=1 |sort</code></p>
-
-<p>以上两条命令不适用于MacOs,可以使用<code>du -sh *</code></p>
-
-<h2 id="一份linux别名和函数库:34fe9f2d9cc3cd7e319ca75e7da08332">一份Linux别名和函数库</h2>
-
-<pre><code>alias tree=&quot;find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g' &quot;;
-alias cls=&quot;cd $1;ls -lh;&quot;;
-# 获得你的公网IP地址和主机名。
-alias ipinfo=&quot;curl ifconfig.me &amp;&amp; curl ifconfig.me/host&quot;;
-# 显示出哪个应用程序连接到网络。
-alias listen=&quot;lsof -P -i -n&quot;;
-# 显示出活动的端口。
-alias port='netstat -tulanp'
-# 统计TCP连接个数
-alias tcpstatus=&quot;netstat -n|awk '/^tcp/{++S[\$NF]} END {for(a in S) print a,S[a]}'&quot;
-# 回到上层目录
-alias ..='cd ..'
-# 去到上两层目录
-alias ...='cd ../..'
-# 按列格式化输出mount信息。
-alias cmount=&quot;mount | column -t&quot;
-# 查看你还有剩下多少内存
-alias meminfo='free -m -l -t'
-# 按照文件在磁盘存储的大小排序，显示当前目录的文件列表。
-sbs() { du -b --max-depth 1 | sort -nr | perl -pe 's{([0-9]+)}{sprintf &quot;%.1f%s&quot;, $1&gt;=2**30? ($1/2**30, &quot;G&quot;): $1&gt;=2**20? ($1/2**20, &quot;M&quot;): $1&gt;=2**10? ($1/2**10, &quot;K&quot;): ($1, &quot;&quot;)}e';}
-# 找出指定目录中最大的10个文件
-largefile() { find . -type f -exec du -k {} \; | sort  -nrk 1 | head; }
-# 查看当前目录大于[多少]kb的文件,速度更快
-bigfile() { size=${1:-100}; find . -type f -size +&quot;$size&quot;k |xargs  ls  -lh ; }
-# 返回你的当前IP地址的地理位置。
-getlocation() { lynx -dump http://www.ip-adress.com/ip_tracer/?QRY=$1|grep address|egrep 'city|state|country'|awk '{print $3,$4,$5,$6,$7,$8}'|sed 's\ip address flag \\'|sed 's\My\\';}
-# 删除.log.1.gz 或者 .log.1.bz2
-delog(){ ls | grep &quot;log.\d\+.\(bz2\|gz\)&quot; | xargs rm}
-
-</code></pre>
-
-<pre><code># 这几个Mac不兼容
-# 查看最占用内存的前五个进程
-topmem()
-{
-	ps aux | sort -k4nr | head -n5;
-}
-# 查看某一程序占用的内存
-mem()
-{
-    top -n1 -b | head -n7 | sed '1,6d' &amp;&amp; top -n1 -b | sed '1,7d' | grep --color=auto $1;
-    ps aux | grep --color=auto $1 | grep --color=auto -v grep | awk -F &quot; &quot; '{ sum += $6 } END { printf &quot;Total Memory Usage: %.1f MB\n&quot;, sum/1024 }'
-}
-</code></pre>
-
-<pre><code># 查看你机器的CPU个数,超线程信息
-sysinfo() {
-physicalNumber=0
-coreNumber=0
-logicalNumber=0
-HTNumber=0
-logicalNumber=$(grep &quot;processor&quot; /proc/cpuinfo|sort -u|wc -l)
-physicalNumber=$(grep &quot;physical id&quot; /proc/cpuinfo|sort -u|wc -l)
-coreNumber=$(grep &quot;cpu cores&quot; /proc/cpuinfo|uniq|awk -F':' '{print $2}'|xargs)
-HTNumber=$((logicalNumber / (physicalNumber * coreNumber)))
-echo &quot;****** CPU Information ******&quot;
-echo &quot;Logical CPU Number  : ${logicalNumber}&quot;
-echo &quot;Physical CPU Number : ${physicalNumber}&quot;
-echo &quot;CPU Core Number     : ${coreNumber}&quot;
-echo &quot;HT Number           : ${HTNumber}&quot;
-echo &quot;*****************************&quot;
-}
-
-</code></pre>
-
-<h2 id="解决can-t-set-the-locale-make-sure-lc-and-lang-are-correct:34fe9f2d9cc3cd7e319ca75e7da08332">解决can&rsquo;t set the locale; make sure $LC_* and $LANG are correct</h2>
-
-<p><a href="https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian">https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian</a>
-<code>照着全部做下来</code></p>
-
-<h2 id="vim乱码解决:34fe9f2d9cc3cd7e319ca75e7da08332">Vim乱码解决</h2>
-
-<p><code>vim ~/.vimrc</code></p>
-
-<pre><code>set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
-set termencoding=utf-8
-set encoding=utf-8
-</code></pre>
-
-<p>检视和控制systemd的主要命令是systemctl</p>
-
-<p>详细使用见<a href="https://wiki.archlinux.org/index.php/systemd_(简体中文">https://wiki.archlinux.org/index.php/systemd_(简体中文)</a>)</p>
-
-<p>Centos7 用<code>systemctl</code>取代了<code>service</code>
-旧版本的 <code>service docker start</code> 改为<code>systemctl start docker</code>
-设置开机启动
-旧版本的 <code>chkconfig docker on</code> 改为 <code>systemctl enable docker</code></p>
-
-<p><code>/usr/lib/systemd/system/</code>
-<code>/etc/systemd/system/</code>
-后者有较高优先级会覆盖前者</p>
-
-<p>一般来说著名的linux系统基本上分两大类：</p>
-
-<p>1.RedHat系列：Redhat、Centos、Fedora等</p>
-
-<p>2.Debian系列：Debian、Ubuntu等
-RedHat 系列
-1 常见的安装包格式 rpm包,安装rpm包的命令是“rpm -参数”</p>
-
-<p>2 包管理工具 yum</p>
-
-<p>3 支持tar包</p>
-
-<p>Debian系列
-1 常见的安装包格式 deb包,安装deb包的命令是“dpkg -参数”</p>
-
-<p>2 包管理工具 apt-get</p>
-
-<p>3 支持tar包</p>
-
-<p><code>soft rlimits too low. Number of files is 256, should be at least 1000</code></p>
-
-<p><code>ulimit -n 1024</code></p>
 
 			</div>
 		</div>

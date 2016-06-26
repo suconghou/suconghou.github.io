@@ -44,13 +44,13 @@
 		<div class="post-text">
 			
 
-<h2 id="linux实用命令:34fe9f2d9cc3cd7e319ca75e7da08332">Linux实用命令</h2>
+<h2 id="linux实用命令">Linux实用命令</h2>
 
-<h2 id="w:34fe9f2d9cc3cd7e319ca75e7da08332">w</h2>
+<h2 id="w">w</h2>
 
 <p><code>w</code>命令能容清晰的显示,服务器在线时间,负载以及当前登陆的用户</p>
 
-<h2 id="vmstat:34fe9f2d9cc3cd7e319ca75e7da08332">vmstat</h2>
+<h2 id="vmstat">vmstat</h2>
 
 <p><code>vmstat</code> 显示开机以来的平均值，而不是前一秒的值
 <code>vmstat 1</code>命令指定一个参数 1 运行，来打印每一秒的统计摘要.
@@ -76,19 +76,19 @@ us, sy, id, wa, st：这些都是平均了所有 CPU 的 CPU 分解时间。它�
 
 <p>SZ（DATA）: 映射到内存中的页面, 这些页面仅由进程单独使用. 这也是我们最关心地方: 进程实际占用的内存数。</p>
 
-<h2 id="top:34fe9f2d9cc3cd7e319ca75e7da08332">top</h2>
+<h2 id="top">top</h2>
 
-<h2 id="free:34fe9f2d9cc3cd7e319ca75e7da08332">free</h2>
+<h2 id="free">free</h2>
 
-<h2 id="ssh:34fe9f2d9cc3cd7e319ca75e7da08332">ssh</h2>
+<h2 id="ssh">ssh</h2>
 
 <p><code>ssh-copy-id -i ~/.ssh/id_rsa.pub root@host</code></p>
 
 <p><code>ssh-copy-id -i ~/.ssh/id_rsa.pub -p 26671 root@host</code></p>
 
-<h2 id="磁盘相关:34fe9f2d9cc3cd7e319ca75e7da08332">磁盘相关</h2>
+<h2 id="磁盘相关">磁盘相关</h2>
 
-<h3 id="dd:34fe9f2d9cc3cd7e319ca75e7da08332">dd</h3>
+<h3 id="dd">dd</h3>
 
 <p><code>dd</code>把指定的输入文件拷贝到指定的输出文件中,并且在拷贝的过程中可以进行格式转换。</p>
 
@@ -100,17 +100,17 @@ count = blocks 只拷贝输入的blocks块</p>
 <p>创建一个100M的空文件
 <code>dd if=/dev/zero of=hello.txt bs=100m count=1</code></p>
 
-<h2 id="查看当前目录下所有一级子目录文件夹大小:34fe9f2d9cc3cd7e319ca75e7da08332">查看当前目录下所有一级子目录文件夹大小</h2>
+<h2 id="查看当前目录下所有一级子目录文件夹大小">查看当前目录下所有一级子目录文件夹大小</h2>
 
 <p><code>du -h --max-depth=1</code></p>
 
-<h2 id="查看当前目录下所有一级子目录文件夹大小-并排序:34fe9f2d9cc3cd7e319ca75e7da08332">查看当前目录下所有一级子目录文件夹大小 并排序</h2>
+<h2 id="查看当前目录下所有一级子目录文件夹大小-并排序">查看当前目录下所有一级子目录文件夹大小 并排序</h2>
 
 <p><code>du -h --max-depth=1 |sort</code></p>
 
 <p>以上两条命令不适用于MacOs,可以使用<code>du -sh *</code></p>
 
-<h2 id="一份linux别名和函数库:34fe9f2d9cc3cd7e319ca75e7da08332">一份Linux别名和函数库</h2>
+<h2 id="一份linux别名和函数库">一份Linux别名和函数库</h2>
 
 <pre><code>alias tree=&quot;find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g' &quot;;
 alias cls=&quot;cd $1;ls -lh;&quot;;
@@ -177,12 +177,12 @@ echo &quot;*****************************&quot;
 
 </code></pre>
 
-<h2 id="解决can-t-set-the-locale-make-sure-lc-and-lang-are-correct:34fe9f2d9cc3cd7e319ca75e7da08332">解决can&rsquo;t set the locale; make sure $LC_* and $LANG are correct</h2>
+<h2 id="解决can-t-set-the-locale-make-sure-lc-and-lang-are-correct">解决can&rsquo;t set the locale; make sure $LC_* and $LANG are correct</h2>
 
 <p><a href="https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian">https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian</a>
 <code>照着全部做下来</code></p>
 
-<h2 id="vim乱码解决:34fe9f2d9cc3cd7e319ca75e7da08332">Vim乱码解决</h2>
+<h2 id="vim乱码解决">Vim乱码解决</h2>
 
 <p><code>vim ~/.vimrc</code></p>
 
@@ -193,7 +193,7 @@ set encoding=utf-8
 
 <p>检视和控制systemd的主要命令是systemctl</p>
 
-<p>详细使用见<a href="https://wiki.archlinux.org/index.php/systemd_(简体中文">https://wiki.archlinux.org/index.php/systemd_(简体中文)</a>)</p>
+<p>详细使用见<a href="https://wiki.archlinux.org/index.php/systemd_(简体中文)">https://wiki.archlinux.org/index.php/systemd_(简体中文)</a></p>
 
 <p>Centos7 用<code>systemctl</code>取代了<code>service</code>
 旧版本的 <code>service docker start</code> 改为<code>systemctl start docker</code>

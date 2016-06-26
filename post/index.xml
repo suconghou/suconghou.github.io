@@ -51,7 +51,7 @@ make install
       <guid>http://blog.suconghou.cn/post/use-apache-traffic-server/</guid>
       <description>
 
-&lt;h2 id=&#34;编译安装:fbf3f2ebc346fa698c7d85539d07d01e&#34;&gt;编译安装&lt;/h2&gt;
+&lt;h2 id=&#34;编译安装&#34;&gt;编译安装&lt;/h2&gt;
 
 &lt;p&gt;Centos下编译安装&lt;/p&gt;
 
@@ -99,7 +99,7 @@ REGRESSION_TEST DONE: PASSED
 
 &lt;p&gt;全部测试通过&lt;/p&gt;
 
-&lt;h2 id=&#34;使用:fbf3f2ebc346fa698c7d85539d07d01e&#34;&gt;使用&lt;/h2&gt;
+&lt;h2 id=&#34;使用&#34;&gt;使用&lt;/h2&gt;
 
 &lt;p&gt;默认的配置文件存放在&lt;code&gt;/usr/local/etc/trafficserver&lt;/code&gt;&lt;/p&gt;
 
@@ -154,7 +154,7 @@ CONFIG proxy.config.cluster.ethernet_interface STRING eth0                # 修�
       <guid>http://blog.suconghou.cn/post/use-docker-on-raspberry/</guid>
       <description>
 
-&lt;h2 id=&#34;安装支持docker的系统:742f0b5a2292586baafc29ed5c3da3ab&#34;&gt;安装支持Docker的系统&lt;/h2&gt;
+&lt;h2 id=&#34;安装支持docker的系统&#34;&gt;安装支持Docker的系统&lt;/h2&gt;
 
 &lt;p&gt;树莓派官方系统并不支持Docker,需要安装.&lt;/p&gt;
 
@@ -194,13 +194,13 @@ passwd abc&lt;/p&gt;
       <guid>http://blog.suconghou.cn/post/linux/</guid>
       <description>
 
-&lt;h2 id=&#34;linux实用命令:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;Linux实用命令&lt;/h2&gt;
+&lt;h2 id=&#34;linux实用命令&#34;&gt;Linux实用命令&lt;/h2&gt;
 
-&lt;h2 id=&#34;w:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;w&lt;/h2&gt;
+&lt;h2 id=&#34;w&#34;&gt;w&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;w&lt;/code&gt;命令能容清晰的显示,服务器在线时间,负载以及当前登陆的用户&lt;/p&gt;
 
-&lt;h2 id=&#34;vmstat:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;vmstat&lt;/h2&gt;
+&lt;h2 id=&#34;vmstat&#34;&gt;vmstat&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;vmstat&lt;/code&gt; 显示开机以来的平均值，而不是前一秒的值
 &lt;code&gt;vmstat 1&lt;/code&gt;命令指定一个参数 1 运行，来打印每一秒的统计摘要.
@@ -226,19 +226,19 @@ us, sy, id, wa, st：这些都是平均了所有 CPU 的 CPU 分解时间。它�
 
 &lt;p&gt;SZ（DATA）: 映射到内存中的页面, 这些页面仅由进程单独使用. 这也是我们最关心地方: 进程实际占用的内存数。&lt;/p&gt;
 
-&lt;h2 id=&#34;top:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;top&lt;/h2&gt;
+&lt;h2 id=&#34;top&#34;&gt;top&lt;/h2&gt;
 
-&lt;h2 id=&#34;free:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;free&lt;/h2&gt;
+&lt;h2 id=&#34;free&#34;&gt;free&lt;/h2&gt;
 
-&lt;h2 id=&#34;ssh:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;ssh&lt;/h2&gt;
+&lt;h2 id=&#34;ssh&#34;&gt;ssh&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;ssh-copy-id -i ~/.ssh/id_rsa.pub root@host&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;ssh-copy-id -i ~/.ssh/id_rsa.pub -p 26671 root@host&lt;/code&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;磁盘相关:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;磁盘相关&lt;/h2&gt;
+&lt;h2 id=&#34;磁盘相关&#34;&gt;磁盘相关&lt;/h2&gt;
 
-&lt;h3 id=&#34;dd:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;dd&lt;/h3&gt;
+&lt;h3 id=&#34;dd&#34;&gt;dd&lt;/h3&gt;
 
 &lt;p&gt;&lt;code&gt;dd&lt;/code&gt;把指定的输入文件拷贝到指定的输出文件中,并且在拷贝的过程中可以进行格式转换。&lt;/p&gt;
 
@@ -250,17 +250,17 @@ count = blocks 只拷贝输入的blocks块&lt;/p&gt;
 &lt;p&gt;创建一个100M的空文件
 &lt;code&gt;dd if=/dev/zero of=hello.txt bs=100m count=1&lt;/code&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;查看当前目录下所有一级子目录文件夹大小:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;查看当前目录下所有一级子目录文件夹大小&lt;/h2&gt;
+&lt;h2 id=&#34;查看当前目录下所有一级子目录文件夹大小&#34;&gt;查看当前目录下所有一级子目录文件夹大小&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;du -h --max-depth=1&lt;/code&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;查看当前目录下所有一级子目录文件夹大小-并排序:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;查看当前目录下所有一级子目录文件夹大小 并排序&lt;/h2&gt;
+&lt;h2 id=&#34;查看当前目录下所有一级子目录文件夹大小-并排序&#34;&gt;查看当前目录下所有一级子目录文件夹大小 并排序&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;du -h --max-depth=1 |sort&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;以上两条命令不适用于MacOs,可以使用&lt;code&gt;du -sh *&lt;/code&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;一份linux别名和函数库:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;一份Linux别名和函数库&lt;/h2&gt;
+&lt;h2 id=&#34;一份linux别名和函数库&#34;&gt;一份Linux别名和函数库&lt;/h2&gt;
 
 &lt;pre&gt;&lt;code&gt;alias tree=&amp;quot;find . -print | sed -e &#39;s;[^/]*/;|____;g;s;____|; |;g&#39; &amp;quot;;
 alias cls=&amp;quot;cd $1;ls -lh;&amp;quot;;
@@ -327,12 +327,12 @@ echo &amp;quot;*****************************&amp;quot;
 
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;解决can-t-set-the-locale-make-sure-lc-and-lang-are-correct:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;解决can&amp;rsquo;t set the locale; make sure $LC_* and $LANG are correct&lt;/h2&gt;
+&lt;h2 id=&#34;解决can-t-set-the-locale-make-sure-lc-and-lang-are-correct&#34;&gt;解决can&amp;rsquo;t set the locale; make sure $LC_* and $LANG are correct&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian&#34;&gt;https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian&lt;/a&gt;
 &lt;code&gt;照着全部做下来&lt;/code&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;vim乱码解决:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;Vim乱码解决&lt;/h2&gt;
+&lt;h2 id=&#34;vim乱码解决&#34;&gt;Vim乱码解决&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;vim ~/.vimrc&lt;/code&gt;&lt;/p&gt;
 
@@ -343,7 +343,7 @@ set encoding=utf-8
 
 &lt;p&gt;检视和控制systemd的主要命令是systemctl&lt;/p&gt;
 
-&lt;p&gt;详细使用见&lt;a href=&#34;https://wiki.archlinux.org/index.php/systemd_(简体中文&#34;&gt;https://wiki.archlinux.org/index.php/systemd_(简体中文)&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;详细使用见&lt;a href=&#34;https://wiki.archlinux.org/index.php/systemd_(简体中文)&#34;&gt;https://wiki.archlinux.org/index.php/systemd_(简体中文)&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Centos7 用&lt;code&gt;systemctl&lt;/code&gt;取代了&lt;code&gt;service&lt;/code&gt;
 旧版本的 &lt;code&gt;service docker start&lt;/code&gt; 改为&lt;code&gt;systemctl start docker&lt;/code&gt;
@@ -387,22 +387,22 @@ RedHat 系列
       <guid>http://blog.suconghou.cn/post/play-with-raspberrypi/</guid>
       <description>
 
-&lt;h2 id=&#34;安装其他操作系统:639f3845c6db751dcd1753d9faad824e&#34;&gt;安装其他操作系统&lt;/h2&gt;
+&lt;h2 id=&#34;安装其他操作系统&#34;&gt;安装其他操作系统&lt;/h2&gt;
 
-&lt;h3 id=&#34;centos:639f3845c6db751dcd1753d9faad824e&#34;&gt;CentOS&lt;/h3&gt;
+&lt;h3 id=&#34;centos&#34;&gt;CentOS&lt;/h3&gt;
 
 &lt;p&gt;CentOS7官方支持了AMRV7发布了树莓派2、香蕉派、以及CubitTruck单片机的版本&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://mirror.centos.org/altarch/7/isos/armhfp/&#34;&gt;CentOS7官方下载&lt;/a&gt;
 root 密码 centos&lt;/p&gt;
 
-&lt;h3 id=&#34;archlinux:639f3845c6db751dcd1753d9faad824e&#34;&gt;ArchLinux&lt;/h3&gt;
+&lt;h3 id=&#34;archlinux&#34;&gt;ArchLinux&lt;/h3&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://archlinuxarm.org/platforms/armv7/broadcom/raspberry-pi-2&#34;&gt;armv7 raspberry-pi-2&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://archlinuxarm.org/platforms/armv6/raspberry-pi&#34;&gt;armv6 raspberry-pi&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;安装osmc:639f3845c6db751dcd1753d9faad824e&#34;&gt;安装OSMC&lt;/h2&gt;
+&lt;h2 id=&#34;安装osmc&#34;&gt;安装OSMC&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://software.opensuse.org/download.html?project=home:osmc&amp;amp;package=osmc-installer&amp;amp;hcolor=17394a&amp;amp;fcolor=17394a&amp;amp;acolor=17394a&#34;&gt;osmc-installer&lt;/a&gt;&lt;/p&gt;
 
@@ -439,17 +439,17 @@ ls -lh
 
 &lt;p&gt;OSMC默认的ssh连接用户是&lt;/p&gt;
 
-&lt;h2 id=&#34;安装openelec:639f3845c6db751dcd1753d9faad824e&#34;&gt;安装openelec&lt;/h2&gt;
+&lt;h2 id=&#34;安装openelec&#34;&gt;安装openelec&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://openelec.tv/get-openelec&#34;&gt;openelec&lt;/a&gt; 镜像下载,osmc是基于debain的,系统更加完善.此系统相比osmc更加精简,是专为跑kodi精简的系统. img.gz 大小约102M&lt;/p&gt;
 
-&lt;h2 id=&#34;安装xbian:639f3845c6db751dcd1753d9faad824e&#34;&gt;安装xbian&lt;/h2&gt;
+&lt;h2 id=&#34;安装xbian&#34;&gt;安装xbian&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://www.xbian.org/&#34;&gt;http://www.xbian.org/&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;与openelec,osmc都是类似,img.gz较大,大约316MB&lt;/p&gt;
 
-&lt;h2 id=&#34;安装chromeos:639f3845c6db751dcd1753d9faad824e&#34;&gt;安装ChromeOs&lt;/h2&gt;
+&lt;h2 id=&#34;安装chromeos&#34;&gt;安装ChromeOs&lt;/h2&gt;
 
 &lt;p&gt;ChromeOs已经有支持树莓派的版本了,&lt;a href=&#34;www.chromiumosforsbc.org&#34;&gt;www.chromiumosforsbc.org&lt;/a&gt;&lt;/p&gt;
 </description>
@@ -512,7 +512,7 @@ brew update
       <guid>http://blog.suconghou.cn/post/broswer-chrome/</guid>
       <description>
 
-&lt;h2 id=&#34;配置chrome跨域:e0e57fba433e8be9bf422a453002b0ab&#34;&gt;配置Chrome跨域&lt;/h2&gt;
+&lt;h2 id=&#34;配置chrome跨域&#34;&gt;配置Chrome跨域&lt;/h2&gt;
 
 &lt;p&gt;Chrome 浏览器配置可以跨域&lt;/p&gt;
 
@@ -534,7 +534,7 @@ brew update
       <guid>http://blog.suconghou.cn/post/use-crontab-in-your-server/</guid>
       <description>
 
-&lt;h2 id=&#34;crontab使用:821b39f3c5e329d9ee0933de8bb69bfb&#34;&gt;Crontab使用&lt;/h2&gt;
+&lt;h2 id=&#34;crontab使用&#34;&gt;Crontab使用&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;crontab -l&lt;/code&gt; 查看当前用户的crontab列表
 使用&lt;code&gt;crontab -e&lt;/code&gt;开始编辑规则&lt;/p&gt;
@@ -560,7 +560,7 @@ brew update
 0 1 5 10 * /path/to/script.sh &amp;gt; &amp;amp;&amp;gt; /dev/null
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;定时备份数据库:821b39f3c5e329d9ee0933de8bb69bfb&#34;&gt;定时备份数据库&lt;/h2&gt;
+&lt;h2 id=&#34;定时备份数据库&#34;&gt;定时备份数据库&lt;/h2&gt;
 
 &lt;p&gt;先写好shell脚本存入&lt;code&gt;/home/cron1.sh&lt;/code&gt;&lt;/p&gt;
 
@@ -598,7 +598,7 @@ for i in $dbs
 
 &lt;p&gt;使用此脚本建议每20个小时以内备份一次数据库,此脚本保留最近7天备份,删除过期备份&lt;/p&gt;
 
-&lt;h2 id=&#34;增量备份数据库:821b39f3c5e329d9ee0933de8bb69bfb&#34;&gt;增量备份数据库&lt;/h2&gt;
+&lt;h2 id=&#34;增量备份数据库&#34;&gt;增量备份数据库&lt;/h2&gt;
 
 &lt;p&gt;先写好shell脚本存入&lt;code&gt;/home/cron2.sh&lt;/code&gt;&lt;/p&gt;
 
@@ -626,7 +626,7 @@ for i in $backup
 
 &lt;p&gt;每20个小时增量备份一次&lt;/p&gt;
 
-&lt;h2 id=&#34;更高级的文件实时同步:821b39f3c5e329d9ee0933de8bb69bfb&#34;&gt;更高级的文件实时同步&lt;/h2&gt;
+&lt;h2 id=&#34;更高级的文件实时同步&#34;&gt;更高级的文件实时同步&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;Mac&lt;/code&gt;上可以使用&lt;code&gt;fswatch + rsync&lt;/code&gt;进行实时同步&lt;/p&gt;
 
@@ -640,7 +640,7 @@ fswatch -0 /tmp | xargs -0 -n 1 echo $1
 
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;shell基本语法:821b39f3c5e329d9ee0933de8bb69bfb&#34;&gt;Shell基本语法&lt;/h2&gt;
+&lt;h2 id=&#34;shell基本语法&#34;&gt;Shell基本语法&lt;/h2&gt;
 
 &lt;p&gt;声明数组&lt;/p&gt;
 
@@ -664,7 +664,7 @@ fswatch -0 /tmp | xargs -0 -n 1 echo $1
       <guid>http://blog.suconghou.cn/post/improve-mysqldb/</guid>
       <description>
 
-&lt;h2 id=&#34;配置文件:3f024a9bc4eccdf3db769802efc70049&#34;&gt;配置文件&lt;/h2&gt;
+&lt;h2 id=&#34;配置文件&#34;&gt;配置文件&lt;/h2&gt;
 
 &lt;p&gt;配置文件一般放在&lt;code&gt;/etc/my.cnf&lt;/code&gt; 或者 &lt;code&gt;/etc/mysql/my.cnf&lt;/code&gt;&lt;/p&gt;
 
@@ -793,7 +793,7 @@ fswatch -0 /tmp | xargs -0 -n 1 echo $1
 &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;h2 id=&#34;小内存优化:3f024a9bc4eccdf3db769802efc70049&#34;&gt;小内存优化&lt;/h2&gt;
+&lt;h2 id=&#34;小内存优化&#34;&gt;小内存优化&lt;/h2&gt;
 
 &lt;p&gt;依据&lt;code&gt;my-small.cnf&lt;/code&gt;为模板&lt;/p&gt;
 
@@ -871,12 +871,16 @@ skip-locking
 
 &lt;p&gt;thread_cache_size 优化配置&lt;/p&gt;
 
-&lt;p&gt;当update或者insert的内容过大时,&lt;code&gt;max_allowed_packet&lt;/code&gt;的值过小,会引起sql异常,需要改大
+&lt;h3 id=&#34;packet-for-query-is-too-large&#34;&gt;Packet for query is too large&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;show variables like &#39;%max%&#39;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;当update或者insert的内容过大时,&lt;code&gt;max_allowed_packet&lt;/code&gt;的值过小,会引起sql异常,需要改大;其默认值为1048576(1M)，
 修改&lt;code&gt;my.cnf&lt;/code&gt;  &lt;code&gt;max_allowed_packet = 20M&lt;/code&gt;
 或者零时动态设置 &lt;code&gt;set global max_allowed_packet = 20*1024*1024&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;查看是否生效
-&lt;code&gt;show VARIABLES like &#39;%max_allowed_packet%&#39;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;查看是否生效,零时修改一般断开后重新连接即可生效.
+&lt;code&gt;show variables like &#39;%max_allowed_packet%&#39;&lt;/code&gt;&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;1G  ---&amp;gt; 8
 2G  ---&amp;gt; 16
@@ -884,7 +888,7 @@ skip-locking
 4G  ---&amp;gt; 64
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;数据库优化:3f024a9bc4eccdf3db769802efc70049&#34;&gt;数据库优化&lt;/h2&gt;
+&lt;h2 id=&#34;数据库优化&#34;&gt;数据库优化&lt;/h2&gt;
 
 &lt;p&gt;查看query_cache相关配置, 默认这个开关是关闭的,就是禁止使用query_cache
 query_cache_type 为0,是关闭的&lt;/p&gt;
@@ -943,11 +947,11 @@ query_cache_type 为0,是关闭的&lt;/p&gt;
 
 &lt;p&gt;命中率越高,效果越好&lt;/p&gt;
 
-&lt;h2 id=&#34;各个数据库引擎对比:3f024a9bc4eccdf3db769802efc70049&#34;&gt;各个数据库引擎对比&lt;/h2&gt;
+&lt;h2 id=&#34;各个数据库引擎对比&#34;&gt;各个数据库引擎对比&lt;/h2&gt;
 
 &lt;p&gt;主要讨论引擎: MyISAM存储引擎 InnoDB存储引擎 Memory存储引擎&lt;/p&gt;
 
-&lt;h3 id=&#34;myisam存储引擎:3f024a9bc4eccdf3db769802efc70049&#34;&gt;MyISAM存储引擎&lt;/h3&gt;
+&lt;h3 id=&#34;myisam存储引擎&#34;&gt;MyISAM存储引擎&lt;/h3&gt;
 
 &lt;p&gt;支持B-tree/FullText/R-tree索引类型
 锁级别是表锁,表锁的开销小，加锁快;锁粒度大，发生锁冲突的概率较高，并发度低；表锁适合查询
@@ -957,7 +961,7 @@ query_cache_type 为0,是关闭的&lt;/p&gt;
 &lt;p&gt;并发不高，不需要支持事务,需要进行全文搜索,读次数大于写次数,适合数据量不是特别大并发不太高的大部分场合&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h3 id=&#34;innodb存储引擎:3f024a9bc4eccdf3db769802efc70049&#34;&gt;InnoDB存储引擎&lt;/h3&gt;
+&lt;h3 id=&#34;innodb存储引擎&#34;&gt;InnoDB存储引擎&lt;/h3&gt;
 
 &lt;p&gt;支持事务性，支持回滚,支持Hash/B-tree索引类型
 锁级别是行锁，行锁在锁定上带来的消耗大于表锁，但是在系统并发访问量较高时，InnoDB整体性能远高于MyISAM。
@@ -967,7 +971,7 @@ InnoDB的索引不仅缓存索引本身，也缓存数据，所以InnoDB需要�
 &lt;p&gt;表数据量超过千万，高并发,频繁更新大字段,安全性和可用性要求高,更适合与大并发大数据量的场合，除了支持事务，在高并发时行级锁的优势就会发挥出来。&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h3 id=&#34;memory存储引擎:3f024a9bc4eccdf3db769802efc70049&#34;&gt;Memory存储引擎&lt;/h3&gt;
+&lt;h3 id=&#34;memory存储引擎&#34;&gt;Memory存储引擎&lt;/h3&gt;
 
 &lt;p&gt;内存级的存储引擎，它将所有数据都存储在内存中，所以它能够存储的数据量是比较小的
 Memory的锁级别和MyISAM一样，是表锁；并且不支持事务性。&lt;/p&gt;
@@ -981,7 +985,7 @@ Memory的锁级别和MyISAM一样，是表锁；并且不支持事务性。&lt;/
 &lt;p&gt;MEMORY表最大值受系统变量 max_heap_table_size 限制，默认为16MB，要改变MEMORY表大小限制，需要改变max_heap_table_size 的值。&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h3 id=&#34;锁:3f024a9bc4eccdf3db769802efc70049&#34;&gt;锁&lt;/h3&gt;
+&lt;h3 id=&#34;锁&#34;&gt;锁&lt;/h3&gt;
 
 &lt;blockquote&gt;
 &lt;p&gt;读锁：读操作时增加锁，叫共享锁，S-lock特征是阻塞其他客户端的写操作，不阻塞读操作&lt;/p&gt;
@@ -989,7 +993,7 @@ Memory的锁级别和MyISAM一样，是表锁；并且不支持事务性。&lt;/
 &lt;p&gt;写锁：写操作时增加锁，叫独占锁或排他锁，X-lock特征是阻塞其他客户端的读、写操作&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h3 id=&#34;锁定粒度-范围:3f024a9bc4eccdf3db769802efc70049&#34;&gt;锁定粒度（范围）&lt;/h3&gt;
+&lt;h3 id=&#34;锁定粒度-范围&#34;&gt;锁定粒度（范围）&lt;/h3&gt;
 
 &lt;blockquote&gt;
 &lt;p&gt;行级：提升并发性，锁定开销大&lt;/p&gt;
@@ -1007,7 +1011,7 @@ Memory的锁级别和MyISAM一样，是表锁；并且不支持事务性。&lt;/
       <guid>http://blog.suconghou.cn/post/ffmpeg-usage/</guid>
       <description>
 
-&lt;h2 id=&#34;安装:fdd7baccd40696c5c3f24a074d3d3604&#34;&gt;安装&lt;/h2&gt;
+&lt;h2 id=&#34;安装&#34;&gt;安装&lt;/h2&gt;
 
 &lt;pre&gt;&lt;code&gt;yum install autoconf automake cmake freetype-devel gcc gcc-c++ git libtool make mercurial nasm pkgconfig zlib-devel
 mkdir ~/ffmpeg_sources
@@ -1132,7 +1136,7 @@ hash -r
 
 &lt;p&gt;生成的可执行文件存放在&lt;code&gt;~/bin&lt;/code&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;下载官方的静态编译的linux通用二进制包:fdd7baccd40696c5c3f24a074d3d3604&#34;&gt;下载官方的静态编译的Linux通用二进制包&lt;/h2&gt;
+&lt;h2 id=&#34;下载官方的静态编译的linux通用二进制包&#34;&gt;下载官方的静态编译的Linux通用二进制包&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://johnvansickle.com/ffmpeg/&#34;&gt;ffmeg&lt;/a&gt;&lt;/p&gt;
 
@@ -1148,7 +1152,7 @@ hash -r
       <guid>http://blog.suconghou.cn/post/git-usage/</guid>
       <description>
 
-&lt;h1 id=&#34;git配置:4b413fdebfe42d43590394b35a48620b&#34;&gt;git配置&lt;/h1&gt;
+&lt;h1 id=&#34;git配置&#34;&gt;git配置&lt;/h1&gt;
 
 &lt;pre&gt;&lt;code&gt;git config --global user.email &amp;quot;1126045770@qq.com&amp;quot;
 git config --global user.name &amp;quot;sucongohu&amp;quot;
@@ -1219,21 +1223,21 @@ git config --global alias.lg &amp;quot;log --graph --all --pretty=format:&#39;%C
 
 &lt;p&gt;以后可以使用&lt;code&gt;git push all master&lt;/code&gt;一次推送到多个后端&lt;/p&gt;
 
-&lt;h1 id=&#34;git分支管理:4b413fdebfe42d43590394b35a48620b&#34;&gt;git分支管理&lt;/h1&gt;
+&lt;h1 id=&#34;git分支管理&#34;&gt;git分支管理&lt;/h1&gt;
 
-&lt;h2 id=&#34;1-创建分支:4b413fdebfe42d43590394b35a48620b&#34;&gt;1.创建分支&lt;/h2&gt;
+&lt;h2 id=&#34;1-创建分支&#34;&gt;1.创建分支&lt;/h2&gt;
 
 &lt;blockquote&gt;
 &lt;p&gt;git branch &amp;lt;分支名&amp;gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h2 id=&#34;2-切换到分支:4b413fdebfe42d43590394b35a48620b&#34;&gt;2.切换到分支&lt;/h2&gt;
+&lt;h2 id=&#34;2-切换到分支&#34;&gt;2.切换到分支&lt;/h2&gt;
 
 &lt;blockquote&gt;
 &lt;p&gt;git checkout &amp;lt;分支名&amp;gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h2 id=&#34;3-创建一个分支并切换过去:4b413fdebfe42d43590394b35a48620b&#34;&gt;3.创建一个分支并切换过去&lt;/h2&gt;
+&lt;h2 id=&#34;3-创建一个分支并切换过去&#34;&gt;3.创建一个分支并切换过去&lt;/h2&gt;
 
 &lt;blockquote&gt;
 &lt;p&gt;git checkout -b &amp;lt;分支名&amp;gt;&lt;/p&gt;
@@ -1247,7 +1251,7 @@ git config --global alias.lg &amp;quot;log --graph --all --pretty=format:&#39;%C
 
 &lt;p&gt;后面是跟一个master说明创建的develop分支是基于当前的master， 如果当前就在master分支，则可以不写。 如果当前分支HEAD指向的是别的分支，又想基于master分支创建，就必须写master&lt;/p&gt;
 
-&lt;h2 id=&#34;4-分支合并:4b413fdebfe42d43590394b35a48620b&#34;&gt;4.分支合并&lt;/h2&gt;
+&lt;h2 id=&#34;4-分支合并&#34;&gt;4.分支合并&lt;/h2&gt;
 
 &lt;p&gt;如:要将develop分支合并和master分支
 首先切换的master分支：&lt;code&gt;git checkout master&lt;/code&gt;
@@ -1256,7 +1260,7 @@ git config --global alias.lg &amp;quot;log --graph --all --pretty=format:&#39;%C
 解决冲突，然后调用&lt;code&gt;git add&lt;/code&gt;或&lt;code&gt;git rm&lt;/code&gt;将解决后的文件暂存。
 所有冲突解决后，&lt;code&gt;git commit&lt;/code&gt;提交更改。&lt;/p&gt;
 
-&lt;h2 id=&#34;5-删除分支:4b413fdebfe42d43590394b35a48620b&#34;&gt;5.删除分支&lt;/h2&gt;
+&lt;h2 id=&#34;5-删除分支&#34;&gt;5.删除分支&lt;/h2&gt;
 
 &lt;p&gt;删除本地分支,删除分支之前记得先合并,以免数据丢失&lt;/p&gt;
 
@@ -1268,7 +1272,7 @@ git config --global alias.lg &amp;quot;log --graph --all --pretty=format:&#39;%C
 
 &lt;p&gt;如果本地分支为空格,则将删除远程分支 &lt;code&gt;git push origin :deletebranch&lt;/code&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;6-显示所有分支:4b413fdebfe42d43590394b35a48620b&#34;&gt;6.显示所有分支&lt;/h2&gt;
+&lt;h2 id=&#34;6-显示所有分支&#34;&gt;6.显示所有分支&lt;/h2&gt;
 
 &lt;blockquote&gt;
 &lt;p&gt;git branch -a&lt;/p&gt;
@@ -1285,38 +1289,38 @@ git config --global alias.lg &amp;quot;log --graph --all --pretty=format:&#39;%C
 &lt;p&gt;&lt;code&gt;git pull origin remotebranch:localbranch&lt;/code&gt;
 将远程某分支拉倒本地某分支,当本地分支和远程分支名称相同时，只写一个就可以&lt;/p&gt;
 
-&lt;h1 id=&#34;git-tag-管理:4b413fdebfe42d43590394b35a48620b&#34;&gt;git tag 管理&lt;/h1&gt;
+&lt;h1 id=&#34;git-tag-管理&#34;&gt;git tag 管理&lt;/h1&gt;
 
-&lt;h2 id=&#34;1-git-tag:4b413fdebfe42d43590394b35a48620b&#34;&gt;1.git tag&lt;/h2&gt;
+&lt;h2 id=&#34;1-git-tag&#34;&gt;1.git tag&lt;/h2&gt;
 
 &lt;p&gt;在控制台打印出当前仓库的所有标签&lt;/p&gt;
 
-&lt;h2 id=&#34;2-git-tag-l-v0-1:4b413fdebfe42d43590394b35a48620b&#34;&gt;2.git tag -l &amp;lsquo;v0.1.*&amp;rsquo;&lt;/h2&gt;
+&lt;h2 id=&#34;2-git-tag-l-v0-1&#34;&gt;2.git tag -l &amp;lsquo;v0.1.*&amp;rsquo;&lt;/h2&gt;
 
 &lt;p&gt;搜索符合模式的标签&lt;/p&gt;
 
-&lt;h2 id=&#34;3-git-tag-v0-1-2-light:4b413fdebfe42d43590394b35a48620b&#34;&gt;3.git tag v0.1.2-light&lt;/h2&gt;
+&lt;h2 id=&#34;3-git-tag-v0-1-2-light&#34;&gt;3.git tag v0.1.2-light&lt;/h2&gt;
 
 &lt;p&gt;创建轻量标签&lt;/p&gt;
 
-&lt;h2 id=&#34;4-git-tag-a-v0-1-2-m-0-1-2版本:4b413fdebfe42d43590394b35a48620b&#34;&gt;4.git tag -a v0.1.2 -m &amp;ldquo;0.1.2版本&amp;rdquo;&lt;/h2&gt;
+&lt;h2 id=&#34;4-git-tag-a-v0-1-2-m-0-1-2版本&#34;&gt;4.git tag -a v0.1.2 -m &amp;ldquo;0.1.2版本&amp;rdquo;&lt;/h2&gt;
 
 &lt;p&gt;创建附注标签&lt;/p&gt;
 
 &lt;p&gt;git标签分为两种类型：轻量标签和附注标签。轻量标签是指向提交对象的引用，附注标签则是仓库中的一个独立对象。建议使用附注标签。&lt;/p&gt;
 
-&lt;h2 id=&#34;5-git-tag-d-v0-1-2:4b413fdebfe42d43590394b35a48620b&#34;&gt;5.git tag -d v0.1.2&lt;/h2&gt;
+&lt;h2 id=&#34;5-git-tag-d-v0-1-2&#34;&gt;5.git tag -d v0.1.2&lt;/h2&gt;
 
 &lt;p&gt;删除标签&lt;/p&gt;
 
-&lt;h2 id=&#34;6-git-push-origin-v0-1-2:4b413fdebfe42d43590394b35a48620b&#34;&gt;6.git push origin v0.1.2&lt;/h2&gt;
+&lt;h2 id=&#34;6-git-push-origin-v0-1-2&#34;&gt;6.git push origin v0.1.2&lt;/h2&gt;
 
 &lt;p&gt;将v0.1.2标签提交到git服务器
 git push origin –-tags
 将本地所有标签一次性提交到git服务器
 通常的git push不会将标签对象提交到git服务器，所以我们需要进行显式的操作：&lt;/p&gt;
 
-&lt;h1 id=&#34;git-stash-操作:4b413fdebfe42d43590394b35a48620b&#34;&gt;git stash 操作&lt;/h1&gt;
+&lt;h1 id=&#34;git-stash-操作&#34;&gt;git stash 操作&lt;/h1&gt;
 
 &lt;p&gt;1.git stash 可用来暂存当前正在进行的工作， 比如想pull 最新代码， 又不想加新commit， 或者另外一种情况，为了fix 一个紧急的bug,  先stash, 使返回到自己上一个commit, 改完bug之后再stash pop, 继续原来的工作。&lt;/p&gt;
 
@@ -1330,7 +1334,7 @@ git stash pop
 &lt;p&gt;3.当你多次使用&lt;code&gt;git stash&lt;/code&gt;命令后，你的栈里将充满了未提交的代码，这时候你会对将哪个版本应用回来有些困惑，
 &lt;code&gt;git stash list&lt;/code&gt; 命令可以将当前的Git栈信息打印出来，你只需要将找到对应的版本号，例如使用&lt;code&gt;git stash apply stash@{1}&lt;/code&gt;就可以将你指定版本号为stash@{1}的工作取出来，当你将所有的栈都应用回来的时候，可以使用&lt;code&gt;git stash clear&lt;/code&gt;来将栈清空。&lt;/p&gt;
 
-&lt;h2 id=&#34;svn:4b413fdebfe42d43590394b35a48620b&#34;&gt;svn&lt;/h2&gt;
+&lt;h2 id=&#34;svn&#34;&gt;svn&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;svn revert xx.html&lt;/code&gt; 和&lt;code&gt;git checkout xx.html&lt;/code&gt; 类似,还原文件的更改&lt;/p&gt;
 </description>
@@ -1344,7 +1348,7 @@ git stash pop
       <guid>http://blog.suconghou.cn/post/sublime-usage/</guid>
       <description>
 
-&lt;h2 id=&#34;配置文件:9eb5571a36ac869eaff7a87ede81093b&#34;&gt;配置文件&lt;/h2&gt;
+&lt;h2 id=&#34;配置文件&#34;&gt;配置文件&lt;/h2&gt;
 
 &lt;p&gt;最喜欢的字体&lt;code&gt;Monaco&lt;/code&gt;,&lt;a href=&#34;http://share.suconghou.cn/fonts/MONACO.TTF&#34;&gt;此处下载&lt;/a&gt;&lt;/p&gt;
 
@@ -1374,7 +1378,7 @@ git stash pop
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;插件:9eb5571a36ac869eaff7a87ede81093b&#34;&gt;插件&lt;/h2&gt;
+&lt;h2 id=&#34;插件&#34;&gt;插件&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;open_browser.py&lt;/code&gt; 插件&lt;/p&gt;
 
@@ -1408,7 +1412,7 @@ class OpenBrowserCommand(sublime_plugin.TextCommand):
         webbrowser.open_new(url)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;编译系统:9eb5571a36ac869eaff7a87ede81093b&#34;&gt;编译系统&lt;/h2&gt;
+&lt;h2 id=&#34;编译系统&#34;&gt;编译系统&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;node.sublime-build&lt;/code&gt; 执行nodejs代码&lt;/p&gt;
 
@@ -1417,7 +1421,7 @@ class OpenBrowserCommand(sublime_plugin.TextCommand):
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;快捷键配置:9eb5571a36ac869eaff7a87ede81093b&#34;&gt;快捷键配置&lt;/h2&gt;
+&lt;h2 id=&#34;快捷键配置&#34;&gt;快捷键配置&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;Default (OSX).sublime-keymap&lt;/code&gt;&lt;/p&gt;
 
@@ -1428,14 +1432,14 @@ class OpenBrowserCommand(sublime_plugin.TextCommand):
 ]
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;添加sublime到命令行:9eb5571a36ac869eaff7a87ede81093b&#34;&gt;添加sublime到命令行&lt;/h2&gt;
+&lt;h2 id=&#34;添加sublime到命令行&#34;&gt;添加sublime到命令行&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;MacOs&lt;/code&gt;下&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/local/bin/sublime
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;激活码:9eb5571a36ac869eaff7a87ede81093b&#34;&gt;激活码&lt;/h2&gt;
+&lt;h2 id=&#34;激活码&#34;&gt;激活码&lt;/h2&gt;
 
 &lt;p&gt;3103可用激活码&lt;/p&gt;
 
@@ -1474,12 +1478,16 @@ B98FC99C 8FAC73EE D2B95564 DF450523
     </item>
     
     <item>
-      <title>避免SSH自动断开连接</title>
-      <link>http://blog.suconghou.cn/post/prevent-broken-pipe-on-ssh/</link>
+      <title>SSH</title>
+      <link>http://blog.suconghou.cn/post/linux-ssh/</link>
       <pubDate>Thu, 07 Jan 2016 13:47:22 +0800</pubDate>
       
-      <guid>http://blog.suconghou.cn/post/prevent-broken-pipe-on-ssh/</guid>
-      <description>&lt;p&gt;如果有一段时间在SSH连接上无数据传输，连接就会断开,以下设定可以解决这个问题&lt;/p&gt;
+      <guid>http://blog.suconghou.cn/post/linux-ssh/</guid>
+      <description>
+
+&lt;h2 id=&#34;避免ssh自动断开连接&#34;&gt;避免SSH自动断开连接&lt;/h2&gt;
+
+&lt;p&gt;如果有一段时间在SSH连接上无数据传输，连接就会断开,以下设定可以解决这个问题&lt;/p&gt;
 
 &lt;p&gt;方案一：在客户端设置&lt;/p&gt;
 
@@ -1500,6 +1508,29 @@ B98FC99C 8FAC73EE D2B95564 DF450523
 &lt;p&gt;如果您只想让当前的 ssh 保持连接，可以使用以下的命令：&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;ssh -o ServerAliveInterval=60 user@sshserver&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;ssh隧道&#34;&gt;ssh隧道&lt;/h2&gt;
+
+&lt;p&gt;-L [本地监听IP:]本地监听端口号:目标主机IP:目标端口号
+(其中,“本地监听IP”可以省略，省略的话就认为是“0.0.0.0”，但为了安全性考虑，请务必使用“127.0.0.1”做为本地监听端口， 而不要使用默认的“0.0.0.0”。）&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ssh -D 8080 user@host&lt;/code&gt;
+SSH会建立一个socket，去监听本地的8080端口。一旦有数据传向那个端口，就自动把它转移到SSH连接上面，发往远程主机。可以想象，如果8080端口原来是一个不加密端口，现在将变成一个加密端口。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ssh -L 2121:host2:21 host3&lt;/code&gt;
+命令中的L参数一共接受三个值，分别是&amp;rdquo;本地端口:目标主机:目标主机端口&amp;rdquo;，它们之间用冒号分隔。这条命令的意思，就是指定SSH绑定本地端口2121，然后指定host3将所有的数据，转发到目标主机host2的21端口（假定host2运行FTP，默认端口为21）。
+这样一来，我们只要连接host1的2121端口，就等于连上了host2的21端口。&lt;/p&gt;
+
+&lt;h3 id=&#34;使用socks5代理&#34;&gt;使用socks5代理&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;alias socksproxy=&amp;quot;ssh -NT -f -D 0.0.0.0:1090  -p 1234 root@host&amp;quot;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;-N 不打开远程的shell
+-T 不分配tty
+-f 后台运行&lt;/p&gt;
+
+&lt;p&gt;执行&lt;code&gt;socksproxy&lt;/code&gt;后就建立了一条ssh socks5 proxy,本地使用127.0.0.1:1090就可以使用服务器中转流量.&lt;/p&gt;
 </description>
     </item>
     
@@ -1511,12 +1542,12 @@ B98FC99C 8FAC73EE D2B95564 DF450523
       <guid>http://blog.suconghou.cn/post/install-nodejs/</guid>
       <description>
 
-&lt;h2 id=&#34;安装nodejs:7989e885d8dc487fe6df4b26f2ef5639&#34;&gt;安装NodeJs&lt;/h2&gt;
+&lt;h2 id=&#34;安装nodejs&#34;&gt;安装NodeJs&lt;/h2&gt;
 
 &lt;p&gt;nodejs官方提供了编译好的二进制的包,全平台都有,十分方便
 &lt;a href=&#34;https://nodejs.org/download/release/latest/&#34;&gt;最新版本NodeJs官方库&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;其他信息&lt;a href=&#34;http://www.oschina.net/news/73504/node-v6-2-0-current&#34;&gt;http://www.oschina.net/news/73504/node-v6-2-0-current&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;其他信息&lt;a href=&#34;http://www.oschina.net/news/73974/node-v6-2-1-current&#34;&gt;http://www.oschina.net/news/73974/node-v6-2-1-current&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;例如安装Linux版本&lt;/p&gt;
 
@@ -1529,7 +1560,7 @@ node -v
 npm -v
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;单文件版node-exe单独安装npm:7989e885d8dc487fe6df4b26f2ef5639&#34;&gt;单文件版node.exe单独安装npm&lt;/h2&gt;
+&lt;h2 id=&#34;单文件版node-exe单独安装npm&#34;&gt;单文件版node.exe单独安装npm&lt;/h2&gt;
 
 &lt;p&gt;1.clone npm 源码
 &lt;code&gt;git clone --recursive git://github.com/isaacs/npm.git&lt;/code&gt;&lt;/p&gt;
@@ -1537,7 +1568,7 @@ npm -v
 &lt;p&gt;2.进入npm目录,安装npm
 &lt;code&gt;node cli.js install npm -gf&lt;/code&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;一些必备package:7989e885d8dc487fe6df4b26f2ef5639&#34;&gt;一些必备package&lt;/h2&gt;
+&lt;h2 id=&#34;一些必备package&#34;&gt;一些必备package&lt;/h2&gt;
 
 &lt;pre&gt;&lt;code&gt;sudo npm install -g less autoprefixer express jshint uglify-js webpack react-native-cli airs
 &lt;/code&gt;&lt;/pre&gt;
@@ -1552,7 +1583,7 @@ npm -v
       <guid>http://blog.suconghou.cn/post/some-good-useful-things/</guid>
       <description>
 
-&lt;h2 id=&#34;云计算-存储-分发等:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;云计算,存储,分发等&lt;/h2&gt;
+&lt;h2 id=&#34;云计算-存储-分发等&#34;&gt;云计算,存储,分发等&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://baichuan.taobao.com/&#34;&gt;阿里百川&lt;/a&gt;
 &lt;a href=&#34;http://open.taobao.com/&#34;&gt;淘宝开放平台&lt;/a&gt;&lt;/p&gt;
@@ -1569,7 +1600,7 @@ npm -v
 
 &lt;p&gt;&lt;a href=&#34;http://bmob.cn/&#34;&gt;bmob&lt;/a&gt;移动后端云,网友示例项目&lt;a href=&#34;https://github.com/bestony/BandwaghonhostAPP&#34;&gt;BandwaghonhostAPP&lt;/a&gt;,结合&lt;a href=&#34;http://dev.dcloud.net.cn/mui/&#34;&gt;mui移动开发框架&lt;/a&gt;开发手机APP&lt;/p&gt;
 
-&lt;h2 id=&#34;短信-推动消息等:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;短信,推动消息等&lt;/h2&gt;
+&lt;h2 id=&#34;短信-推动消息等&#34;&gt;短信,推动消息等&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://www.alidayu.com/&#34;&gt;阿里大鱼&lt;/a&gt;&lt;/li&gt;
@@ -1587,7 +1618,7 @@ npm -v
 &lt;p&gt;短信和邮件发送服务,邮件有每日免费200封,短信5.5分每条&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h2 id=&#34;图像压缩软件:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;图像压缩软件&lt;/h2&gt;
+&lt;h2 id=&#34;图像压缩软件&#34;&gt;图像压缩软件&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://imageoptim.com/&#34;&gt;ImageOptim无损压缩&lt;/a&gt;&lt;/p&gt;
 
@@ -1601,7 +1632,7 @@ npm -v
 
 &lt;p&gt;&lt;a href=&#34;https://www.npmjs.com/package/imagemin&#34;&gt;nodejs imagemin&lt;/a&gt; NodeJs模块,压缩jpg,png,压缩效果一般&lt;/p&gt;
 
-&lt;h2 id=&#34;移动混合应用-hhtml5开发:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;移动混合应用/HHTML5开发&lt;/h2&gt;
+&lt;h2 id=&#34;移动混合应用-hhtml5开发&#34;&gt;移动混合应用/HHTML5开发&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://dev.dcloud.net.cn/mui/&#34;&gt;国产mui&lt;/a&gt; 最接近原生APP体验的高性能前端框架,不依赖任何第三方JS库,压缩后的JS和CSS文件仅有100+K和60+K&lt;/p&gt;
 
@@ -1609,15 +1640,15 @@ npm -v
 
 &lt;p&gt;&lt;a href=&#34;http://mobiscroll.com/&#34;&gt;mobiscroll&lt;/a&gt; 移动开发UI,丰富的时间选择器控件还有一些WEBAPP展示,&lt;a href=&#34;https://github.com/acidb/mobiscroll&#34;&gt;https://github.com/acidb/mobiscroll&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;桌面开发:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;桌面开发&lt;/h2&gt;
+&lt;h2 id=&#34;桌面开发&#34;&gt;桌面开发&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://nwjs.io/&#34;&gt;nwjs&lt;/a&gt; Mac版钉钉使用的就是这个技术,界面还算漂亮&lt;/p&gt;
 
-&lt;h2 id=&#34;网页动画:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;网页动画&lt;/h2&gt;
+&lt;h2 id=&#34;网页动画&#34;&gt;网页动画&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://ecomfe.github.io/zrender/index.html&#34;&gt;百度zrender&lt;/a&gt; 基于Canvas的图形仓库交互工具,可以方便的画出很多图形&lt;/p&gt;
 
-&lt;h2 id=&#34;游戏引擎:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;游戏引擎&lt;/h2&gt;
+&lt;h2 id=&#34;游戏引擎&#34;&gt;游戏引擎&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://hiloteam.github.io/&#34;&gt;阿里Hilo&lt;/a&gt; 游戏渲染引擎,实现2048,切水果等.&lt;/p&gt;
 
@@ -1625,17 +1656,17 @@ npm -v
 
 &lt;p&gt;&lt;a href=&#34;https://github.com/iioinc/iio.js&#34;&gt;https://github.com/iioinc/iio.js&lt;/a&gt; 也是canvas的游戏&lt;/p&gt;
 
-&lt;h2 id=&#34;网页富文本编辑器:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;网页富文本编辑器&lt;/h2&gt;
+&lt;h2 id=&#34;网页富文本编辑器&#34;&gt;网页富文本编辑器&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://wangeditor.github.io/&#34;&gt;wangeditor&lt;/a&gt; 轻量简介的富文本编辑器,使用容易,相比百度umeditor更简洁&lt;/p&gt;
 
-&lt;h2 id=&#34;网页markdown编辑器:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;网页Markdown编辑器&lt;/h2&gt;
+&lt;h2 id=&#34;网页markdown编辑器&#34;&gt;网页Markdown编辑器&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://github.com/pandao/editor.md&#34;&gt;Editor.md&lt;/a&gt; 一款开源的、可嵌入的 Markdown 在线编辑器（组件），基于 CodeMirror、jQuery 和 Marked 构建。&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://github.com/tylingsoft/markdown-plus&#34;&gt;markdown-plus&lt;/a&gt; Markdown Plus,界面不是很漂亮,也有收费的桌面APP&lt;/p&gt;
 
-&lt;h2 id=&#34;字体相关:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;字体相关&lt;/h2&gt;
+&lt;h2 id=&#34;字体相关&#34;&gt;字体相关&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://www.youziku.com/&#34;&gt;有字库中文字体&lt;/a&gt; 在线字体,CDN引用&lt;/p&gt;
 
@@ -1643,7 +1674,7 @@ npm -v
 
 &lt;p&gt;&lt;a href=&#34;http://www.iconfont.cn/&#34;&gt;阿里iconfont&lt;/a&gt; 阿里巴巴的网页矢量图标在线生成工具,中文字体和矢量图标&lt;/p&gt;
 
-&lt;h2 id=&#34;镜像网站-cdn:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;镜像网站/CDN&lt;/h2&gt;
+&lt;h2 id=&#34;镜像网站-cdn&#34;&gt;镜像网站/CDN&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://npm.taobao.org/&#34;&gt;淘宝NPM镜像&lt;/a&gt;&lt;/p&gt;
 
@@ -1651,19 +1682,21 @@ npm -v
 
 &lt;p&gt;&lt;a href=&#34;http://www.bootcdn.cn/&#34;&gt;bootcdn&lt;/a&gt; 支持https&lt;/p&gt;
 
-&lt;h2 id=&#34;云端ide:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;云端IDE&lt;/h2&gt;
+&lt;h2 id=&#34;云端ide&#34;&gt;云端IDE&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://coderpad.io/&#34;&gt;coderpad&lt;/a&gt; 在线运行多种语言代码,保存分享,不过是收费的,我创建的&lt;a href=&#34;https://coderpad.io/GP2KRHQQ&#34;&gt;演示&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;视频解析:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;视频解析&lt;/h2&gt;
+&lt;h2 id=&#34;视频解析&#34;&gt;视频解析&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://keepvid.com/&#34;&gt;keepvid&lt;/a&gt; 支持多种国外视频网站解析,转码&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://www.clipconverter.cc/&#34;&gt;clipconverter&lt;/a&gt; 支持youtube视频解析,转码,多分辨率,速度又快.&lt;/p&gt;
 
+&lt;p&gt;&lt;a href=&#34;https://www.tubeninja.net/en/&#34;&gt;tubeninja&lt;/a&gt; 支持多种国内外视频网站解析&lt;/p&gt;
+
 &lt;p&gt;&lt;a href=&#34;http://www.youtube-dl.org/&#34;&gt;youtube-dl&lt;/a&gt; 全平台的YouTube视频下载工具&lt;/p&gt;
 
-&lt;h2 id=&#34;图床:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;图床&lt;/h2&gt;
+&lt;h2 id=&#34;图床&#34;&gt;图床&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://sm.ms/&#34;&gt;smms&lt;/a&gt;&lt;/p&gt;
 
@@ -1671,7 +1704,9 @@ npm -v
 
 &lt;p&gt;&lt;a href=&#34;http://v2ex.com/t/278912#reply24&#34;&gt;two.yt&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;前端-node:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;前端/Node&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.niupic.com/&#34;&gt;niupic&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;前端-node&#34;&gt;前端/Node&lt;/h2&gt;
 
 &lt;p&gt;Ajax库&lt;a href=&#34;https://github.com/visionmedia/superagent&#34;&gt;superagent&lt;/a&gt; 同时兼容IE9+和NodeJs的Ajax小工具,Gzip后仅为4.4kb&lt;/p&gt;
 
@@ -1690,21 +1725,21 @@ npm -v
 &lt;a href=&#34;https://github.com/datejs/Datejs/blob/master/build/date.js&#34;&gt;https://github.com/datejs/Datejs/blob/master/build/date.js&lt;/a&gt;
 &lt;a href=&#34;https://github.com/Teamweek/instadate&#34;&gt;https://github.com/Teamweek/instadate&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;js插件:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;JS插件&lt;/h2&gt;
+&lt;h2 id=&#34;js插件&#34;&gt;JS插件&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://www.swiper.com.cn/&#34;&gt;swiper滑动插件&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;测试工具:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;测试工具&lt;/h2&gt;
+&lt;h2 id=&#34;测试工具&#34;&gt;测试工具&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://www.alibench.com/&#34;&gt;阿里测&lt;/a&gt; 测试你的服务器在全国各地的响应速度
 &lt;a href=&#34;http://www.cloudping.info/&#34;&gt;cloudping&lt;/a&gt; 测试亚马逊云各节点到你电脑的延时
 &lt;a href=&#34;http://requestb.in/&#34;&gt;requestb&lt;/a&gt; 测试你发送的HTTP请求&lt;/p&gt;
 
-&lt;h2 id=&#34;代码转换:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;代码转换&lt;/h2&gt;
+&lt;h2 id=&#34;代码转换&#34;&gt;代码转换&lt;/h2&gt;
 
 &lt;p&gt;将python代码转化为可执行文件&lt;a href=&#34;http://nuitka.net/pages/download.html&#34;&gt;nuitka&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;服务器vps:49483a20fa0a8bb8347c64e9ee523801&#34;&gt;服务器VPS&lt;/h2&gt;
+&lt;h2 id=&#34;服务器vps&#34;&gt;服务器VPS&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://cheapwindowsvps.com/&#34;&gt;cheapwindowsvps&lt;/a&gt; G口亚洲越南和新加坡不限流量支持Windows
 &lt;a href=&#34;https://dedistation.com/billing/order.php?step=0&amp;amp;productGroup=13&#34;&gt;dedistation&lt;/a&gt;

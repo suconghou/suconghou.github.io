@@ -17,7 +17,7 @@
       <guid>http://blog.suconghou.cn/post/sublime-usage/</guid>
       <description>
 
-&lt;h2 id=&#34;配置文件:9eb5571a36ac869eaff7a87ede81093b&#34;&gt;配置文件&lt;/h2&gt;
+&lt;h2 id=&#34;配置文件&#34;&gt;配置文件&lt;/h2&gt;
 
 &lt;p&gt;最喜欢的字体&lt;code&gt;Monaco&lt;/code&gt;,&lt;a href=&#34;http://share.suconghou.cn/fonts/MONACO.TTF&#34;&gt;此处下载&lt;/a&gt;&lt;/p&gt;
 
@@ -47,7 +47,7 @@
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;插件:9eb5571a36ac869eaff7a87ede81093b&#34;&gt;插件&lt;/h2&gt;
+&lt;h2 id=&#34;插件&#34;&gt;插件&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;open_browser.py&lt;/code&gt; 插件&lt;/p&gt;
 
@@ -81,7 +81,7 @@ class OpenBrowserCommand(sublime_plugin.TextCommand):
         webbrowser.open_new(url)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;编译系统:9eb5571a36ac869eaff7a87ede81093b&#34;&gt;编译系统&lt;/h2&gt;
+&lt;h2 id=&#34;编译系统&#34;&gt;编译系统&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;node.sublime-build&lt;/code&gt; 执行nodejs代码&lt;/p&gt;
 
@@ -90,7 +90,7 @@ class OpenBrowserCommand(sublime_plugin.TextCommand):
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;快捷键配置:9eb5571a36ac869eaff7a87ede81093b&#34;&gt;快捷键配置&lt;/h2&gt;
+&lt;h2 id=&#34;快捷键配置&#34;&gt;快捷键配置&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;Default (OSX).sublime-keymap&lt;/code&gt;&lt;/p&gt;
 
@@ -101,14 +101,14 @@ class OpenBrowserCommand(sublime_plugin.TextCommand):
 ]
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;添加sublime到命令行:9eb5571a36ac869eaff7a87ede81093b&#34;&gt;添加sublime到命令行&lt;/h2&gt;
+&lt;h2 id=&#34;添加sublime到命令行&#34;&gt;添加sublime到命令行&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;MacOs&lt;/code&gt;下&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/local/bin/sublime
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;激活码:9eb5571a36ac869eaff7a87ede81093b&#34;&gt;激活码&lt;/h2&gt;
+&lt;h2 id=&#34;激活码&#34;&gt;激活码&lt;/h2&gt;
 
 &lt;p&gt;3103可用激活码&lt;/p&gt;
 

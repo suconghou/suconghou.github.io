@@ -17,7 +17,7 @@
       <guid>http://blog.suconghou.cn/post/install-nginx-php-mysql-redis/</guid>
       <description>
 
-&lt;h2 id=&#34;编译安装nginx:aa93c013153cd0b80f2e19308ae27e8a&#34;&gt;编译安装NGINX&lt;/h2&gt;
+&lt;h2 id=&#34;编译安装nginx&#34;&gt;编译安装NGINX&lt;/h2&gt;
 
 &lt;p&gt;首先安装一些依赖&lt;/p&gt;
 
@@ -28,15 +28,22 @@
 apt-get -y install gcc make  openssl libssl-dev libpcre3 libpcre3-dev
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;p&gt;Nginx最新版本&lt;a href=&#34;http://www.oschina.net/news/73922/nginx-1-10-1&#34;&gt;查看&lt;/a&gt;&lt;/p&gt;
+
 &lt;p&gt;编译安装&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;cd /tmp
-wget http://nginx.org/download/nginx-1.11.0.tar.gz
-tar -zxvf nginx-1.11.0.tar.gz
-cd nginx-1.11.0
+&lt;pre&gt;&lt;code&gt;NGINX_VERSION=nginx-1.11.1
+CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
+cd /tmp
+wget http://nginx.org/download/${NGINX_VERSION}.tar.gz
+tar -zxvf ${NGINX_VERSION}.tar.gz
+cd ${NGINX_VERSION}
 export CFLAGS=&amp;quot;-O3&amp;quot;
-./configure
-make &amp;amp;&amp;amp; make install
+./configure --with-http_v2_module --with-http_ssl_module --sbin-path=/usr/local/sbin/nginx --prefix=/etc/nginx --conf-path=/etc/nginx/nginx.conf --http-log-path=/var/log/nginx/access.log --error-log-path=/var/log/nginx/error.log --pid-path=/var/run/nginx.pid
+make -j$CPU_NUM  &amp;amp;&amp;amp; make install
+rm -rf /tmp/nginx* /etc/nginx/*.default
+strip -s /usr/local/sbin/nginx
+nginx -V
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;还可以添加&lt;a href=&#34;https://github.com/cuber/ngx_http_google_filter_module&#34;&gt;Google反代模块&lt;/a&gt;,按下面操作编译&lt;/p&gt;
@@ -44,12 +51,12 @@ make &amp;amp;&amp;amp; make install
 &lt;pre&gt;&lt;code&gt;cd /tmp
 git clone https://github.com/cuber/ngx_http_google_filter_module
 git clone https://github.com/yaoweibin/ngx_http_substitutions_filter_module
-wget http://nginx.org/download/nginx-1.11.0.tar.gz
-tar -zxvf nginx-1.11.0.tar.gz
-cd nginx-1.11.0
+wget http://nginx.org/download/${NGINX_VERSION}.tar.gz
+tar -zxvf ${NGINX_VERSION}.tar.gz
+cd ${NGINX_VERSION}
 export CFLAGS=&amp;quot;-O3&amp;quot;
 ./configure  --with-http_ssl_module  --add-module=/tmp/ngx_http_google_filter_module  --add-module=/tmp/ngx_http_substitutions_filter_module
-make &amp;amp;&amp;amp; make install
+make -j$CPU_NUM &amp;amp;&amp;amp; make install
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;注意:重复执行,需要清理上次编译数据&lt;code&gt;make clean&lt;/code&gt;&lt;/p&gt;
@@ -82,19 +89,19 @@ make &amp;amp;&amp;amp; make install
 &lt;p&gt;使用我编译的google代理的docker版本更易部署 &lt;a href=&#34;https://hub.docker.com/r/suconghou/nginx-google/&#34;&gt;https://hub.docker.com/r/suconghou/nginx-google/&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h3 id=&#34;各模块说明:aa93c013153cd0b80f2e19308ae27e8a&#34;&gt;各模块说明&lt;/h3&gt;
+&lt;h3 id=&#34;各模块说明&#34;&gt;各模块说明&lt;/h3&gt;
 
 &lt;p&gt;http_gzip_module提供了对gzip的基本的支持，默认是编译到nginx的发行版本里面的。&lt;/p&gt;
 
 &lt;p&gt;http_gzip_static_module则是针对nginx serve的静态文件，需要编译进去才能有。比如a.html，如果启用了&lt;code&gt;gzip_static on&lt;/code&gt;，如果同一目录下还有a.html.gz作为a.html压缩版本存在，那么nginx会以a.html.gz作为a.html的gzip version来serve。&lt;/p&gt;
 
-&lt;h3 id=&#34;配置gzip:aa93c013153cd0b80f2e19308ae27e8a&#34;&gt;配置Gzip&lt;/h3&gt;
+&lt;h3 id=&#34;配置gzip&#34;&gt;配置Gzip&lt;/h3&gt;
 
 &lt;p&gt;&lt;code&gt;gzip on&lt;/code&gt; 开启Gzip&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;gzip_proxied any&lt;/code&gt;&lt;/p&gt;
 
-&lt;h3 id=&#34;可能需要移动配置目录:aa93c013153cd0b80f2e19308ae27e8a&#34;&gt;可能需要移动配置目录&lt;/h3&gt;
+&lt;h3 id=&#34;可能需要移动配置目录&#34;&gt;可能需要移动配置目录&lt;/h3&gt;
 
 &lt;p&gt;在&lt;code&gt;nginx.conf&lt;/code&gt;中配置&lt;code&gt;include /usr/local/nginx/conf/conf.d/*.conf;&lt;/code&gt;&lt;/p&gt;
 
@@ -102,7 +109,7 @@ make &amp;amp;&amp;amp; make install
 
 &lt;p&gt;使用&lt;code&gt;ln -s /etc/nginx/conf.d /usr/local/nginx/conf/conf.d&lt;/code&gt;建立软连接&lt;/p&gt;
 
-&lt;h3 id=&#34;修改nginx配置:aa93c013153cd0b80f2e19308ae27e8a&#34;&gt;修改Nginx配置&lt;/h3&gt;
+&lt;h3 id=&#34;修改nginx配置&#34;&gt;修改Nginx配置&lt;/h3&gt;
 
 &lt;p&gt;&lt;strong&gt;设置最大上传文件大小&lt;/strong&gt;,配置&lt;code&gt;nginx.conf&lt;/code&gt;&lt;/p&gt;
 
@@ -114,14 +121,14 @@ make &amp;amp;&amp;amp; make install
 try_files $uri/index.html $uri.html $uri @goapp;
 
 location @goapp {
-  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-  proxy_set_header Host $http_host;
-  proxy_redirect off;
-  proxy_pass http://localhost:8080;
+	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+	proxy_set_header Host $http_host;
+	proxy_redirect off;
+	proxy_pass http://localhost:8080;
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;卸载apache:aa93c013153cd0b80f2e19308ae27e8a&#34;&gt;卸载apache&lt;/h3&gt;
+&lt;h3 id=&#34;卸载apache&#34;&gt;卸载apache&lt;/h3&gt;
 
 &lt;p&gt;1.完全卸载使用apt-get安装的apache
 1、sudo apt-get remove apache2
@@ -150,41 +157,87 @@ CenterOS 安装 ab 压力测试&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;yum install httpd-tools
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;编译安装php7:aa93c013153cd0b80f2e19308ae27e8a&#34;&gt;编译安装PHP7&lt;/h2&gt;
+&lt;h2 id=&#34;编译安装php7&#34;&gt;编译安装PHP7&lt;/h2&gt;
 
 &lt;p&gt;最好先&lt;code&gt;yum update&lt;/code&gt;一下,再安装以下依赖&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;yum install -y git wget curl curl-devel gcc gcc-c++ libmarypt cmake  autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libpng libpng-devel libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses curl openssl-devel gdbm-devel db4-devel libXpm-devel libX11-devel gd-devel gmp-devel readline-devel libxslt-devel expat-devel xmlrpc-c xmlrpc-c-devel
+&lt;pre&gt;&lt;code&gt;yum install -y git wget curl  curl-devel libzip libzip-devel libmcrypt libmcrypt-devel gcc gcc-c++ cmake  autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libpng libpng-devel libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses  openssl-devel gdbm-devel db4-devel libXpm-devel libX11-devel gd-devel gmp-devel readline-devel libxslt-devel expat-devel xmlrpc-c xmlrpc-c-devel
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;下载PHP7最新版本,解压,有多重压缩格式可选,其中xz最小&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;wget http://php.net/distributions/php-7.0.7.tar.xz
-tar -xJf php-7.0.7.tar.xz
-cd php-7.0.7
+&lt;pre&gt;&lt;code&gt;cd /tmp
+PHP_VERSION=php-7.0.8
+CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
+wget http://php.net/distributions/${PHP_VERSION}.tar.xz
+tar -xJf ${PHP_VERSION}.tar.xz
+cd ${PHP_VERSION}
+export CFLAGS=&amp;quot;-O3&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;编译之前,可以开启O3编译优化,生成的可执行文件更小,性能更好
-&lt;code&gt;export CFLAGS=&amp;quot;-O3&amp;quot;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;编译之前,可以开启O3编译优化,生成的可执行文件更小,性能更好&lt;/p&gt;
 
 &lt;p&gt;包含部分常用扩展的编译&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;./configure --enable-inline-optimization --enable-static=yes --prefix=/tmp --with-config-file-path=/etc --disable-cgi  --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath --enable-zip --enable-mbstring --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd --with-openssl --with-mcrypt
+&lt;pre&gt;&lt;code&gt;./configure --enable-inline-optimization --enable-static=yes --prefix=/tmp --with-config-file-path=/etc --disable-cgi  --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath --enable-zip --enable-mbstring --enable-gd-native-ttf --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd --with-freetype-dir=/usr/include/freetype2 --with-png-dir=/usr/include --with-jpeg-dir=/usr/include --with-openssl --with-mcrypt
+make -j$CPU_NUM &amp;amp;&amp;amp; make install
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;功能更全的编译&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;export CFLAGS=&amp;quot;-O3&amp;quot;
-./configure --enable-inline-optimization --enable-static=yes --prefix=/usr/local --with-config-file-path=/etc --disable-cgi --enable-opcache --enable-fpm  --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath  --enable-zip --enable-mbstring --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd  --with-openssl --with-mcrypt
-make &amp;amp;&amp;amp; make install
+&lt;p&gt;包含&lt;code&gt;php-fpm&lt;/code&gt;和&lt;code&gt;opcache&lt;/code&gt;,添加其他常用扩展&lt;code&gt;--enable-exif --enable-calendar  --with-xsl --with-bz2&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;./configure --enable-inline-optimization --enable-static=yes --prefix=/usr/local --with-config-file-path=/etc --disable-cgi --enable-opcache --enable-fpm  --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath  --enable-zip --enable-mbstring --enable-gd-native-ttf --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd --with-freetype-dir=/usr/include/freetype2 --with-png-dir=/usr/include --with-jpeg-dir=/usr/include --with-openssl --with-mcrypt --enable-exif --enable-calendar  --with-xsl --with-bz2
+make -j$CPU_NUM &amp;amp;&amp;amp; make install
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;其他扩展
-&lt;code&gt;--enable-exif --enable-calendar --with-libzip --with-xsl --with-bz2&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;安装过后就可以只用&lt;code&gt;php&lt;/code&gt;命令了,但是&lt;code&gt;php-fpm&lt;/code&gt;还需要配置一下&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;php -v
+php -m
+mv /usr/local/etc/php-fpm.conf.default  /usr/local/etc/php-fpm.conf
+mv /usr/local/etc/php-fpm.d/www.conf.default /usr/local/etc/php-fpm.d/www.conf
+php-fpm -t
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;修改文件名,使配置文件正确,还可以修改配置,记录log和slow log&lt;/p&gt;
+
+&lt;p&gt;提前建立文件夹&lt;code&gt;mkdir -p /var/log/php-fpm&lt;/code&gt;
+* 修改&lt;code&gt;php-fpm.conf&lt;/code&gt;内&lt;code&gt;global&lt;/code&gt;段&lt;code&gt;error_log&lt;/code&gt;为&lt;code&gt;/var/log/php-fpm/php-fpm.log&lt;/code&gt;
+* 修改&lt;code&gt;php-fpm.conf&lt;/code&gt;内&lt;code&gt;global&lt;/code&gt;段&lt;code&gt;pid&lt;/code&gt;为&lt;code&gt;/var/run/php-fpm.pid&lt;/code&gt;
+* 修改&lt;code&gt;www.conf&lt;/code&gt;内&lt;code&gt;slowlog&lt;/code&gt;为&lt;code&gt;/var/log/php-fpm/$pool.log.slow&lt;/code&gt;
+* 修改&lt;code&gt;www.conf&lt;/code&gt;内&lt;code&gt;request_slowlog_timeout&lt;/code&gt;为&lt;code&gt;5&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;下面一段代码实现自动修改&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mkdir -p /var/log/php-fpm
+sed -i &#39;/^;error_log.*/cerror_log = \/var\/log\/php-fpm\/php-fpm.log&#39; /usr/local/etc/php-fpm.conf
+sed -i &#39;/^;pid.*/cpid = \/var\/run\/php-fpm.pid&#39; /usr/local/etc/php-fpm.conf
+sed -i &#39;/^;slowlog.*/cslowlog = \/var\/log\/php-fpm\/$pool.log.slow&#39; /usr/local/etc/php-fpm.d/www.conf
+sed -i &#39;/^;request_slowlog_timeout.*/crequest_slowlog_timeout = 5&#39; /usr/local/etc/php-fpm.d/www.conf
+php-fpm -t
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;启动&lt;code&gt;php-fpm&lt;/code&gt;
+以下一些常用操作相信十分有用,&lt;code&gt;vim ~/.shell.sh&lt;/code&gt;加入吧&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;alias phpfpmreload=&#39; sudo kill -USR2 `cat /var/run/php-fpm.pid` &#39;;
+alias phpfpmstop=&#39; sudo kill -INT `cat /var/run/php-fpm.pid` &#39;;
+alias errorlog=&#39;tail -f /var/log/nginx/error.log  /var/log/php-fpm/* &#39;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在你的&lt;code&gt;.baserc&lt;/code&gt;,&lt;code&gt;vim ~/.baserc&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if [ -f ~/.shell.sh ]; then
+        . ~/.shell.sh
+fi
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;su&lt;/code&gt;一下就可以使用了.&lt;/p&gt;
 
 &lt;p&gt;其中部分步骤可能需要root权限&lt;/p&gt;
 
-&lt;h3 id=&#34;可能出现的错误:aa93c013153cd0b80f2e19308ae27e8a&#34;&gt;可能出现的错误&lt;/h3&gt;
+&lt;h3 id=&#34;可能出现的错误&#34;&gt;可能出现的错误&lt;/h3&gt;
 
 &lt;p&gt;1.curl未安装
 执行
@@ -192,18 +245,16 @@ make &amp;amp;&amp;amp; make install
 或者 &lt;code&gt;sudo apt-get install curl libcurl3 libcurl3-dev&lt;/code&gt;
 然后再次尝试编译&lt;/p&gt;
 
-&lt;p&gt;2.需要安装libcrytpt&lt;/p&gt;
+&lt;p&gt;2.&lt;code&gt;error: mcrypt.h not found. Please reinstall libmcrypt.&lt;/code&gt;
+需要安装libcrytpt&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;wget ftp://mcrypt.hellug.gr/pub/crypto/mcrypt/attic/libmcrypt/libmcrypt-2.5.7.tar.gz
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;安装：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;tar -zxvf libmcrypt-2.5.7.tar.gz
+&lt;pre&gt;&lt;code&gt;cd /tmp
+wget ftp://mcrypt.hellug.gr/pub/crypto/mcrypt/attic/libmcrypt/libmcrypt-2.5.7.tar.gz
+tar -zxvf libmcrypt-2.5.7.tar.gz
 cd libmcrypt-2.5.7
 mkdir -p /usr/local/libmcrytpt
 ./configure prefix=/usr/local/libmcrytpt/
-make &amp;amp;&amp;amp; make install
+make -j$CPU_NUM  &amp;amp;&amp;amp; make install
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;然后重新编译,设定编译参数mcrypt指定路径:
@@ -217,24 +268,24 @@ make &amp;amp;&amp;amp; make install
 或者&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;Undefined symbols for architecture x86_64:
-  &amp;quot;_PKCS5_PBKDF2_HMAC&amp;quot;, referenced from:
-      _zif_openssl_pbkdf2 in openssl.o
-  &amp;quot;_SSL_CTX_set_alpn_protos&amp;quot;, referenced from:
-      _php_openssl_setup_crypto in xp_ssl.o
-  &amp;quot;_SSL_CTX_set_alpn_select_cb&amp;quot;, referenced from:
-      _php_openssl_setup_crypto in xp_ssl.o
-  &amp;quot;_SSL_get0_alpn_selected&amp;quot;, referenced from:
-      _php_openssl_sockop_set_option in xp_ssl.o
-  &amp;quot;_SSL_select_next_proto&amp;quot;, referenced from:
-      _server_alpn_callback in xp_ssl.o
-  &amp;quot;_TLSv1_1_client_method&amp;quot;, referenced from:
-      _php_openssl_setup_crypto in xp_ssl.o
-  &amp;quot;_TLSv1_1_server_method&amp;quot;, referenced from:
-      _php_openssl_setup_crypto in xp_ssl.o
-  &amp;quot;_TLSv1_2_client_method&amp;quot;, referenced from:
-      _php_openssl_setup_crypto in xp_ssl.o
-  &amp;quot;_TLSv1_2_server_method&amp;quot;, referenced from:
-      _php_openssl_setup_crypto in xp_ssl.o
+	&amp;quot;_PKCS5_PBKDF2_HMAC&amp;quot;, referenced from:
+			_zif_openssl_pbkdf2 in openssl.o
+	&amp;quot;_SSL_CTX_set_alpn_protos&amp;quot;, referenced from:
+			_php_openssl_setup_crypto in xp_ssl.o
+	&amp;quot;_SSL_CTX_set_alpn_select_cb&amp;quot;, referenced from:
+			_php_openssl_setup_crypto in xp_ssl.o
+	&amp;quot;_SSL_get0_alpn_selected&amp;quot;, referenced from:
+			_php_openssl_sockop_set_option in xp_ssl.o
+	&amp;quot;_SSL_select_next_proto&amp;quot;, referenced from:
+			_server_alpn_callback in xp_ssl.o
+	&amp;quot;_TLSv1_1_client_method&amp;quot;, referenced from:
+			_php_openssl_setup_crypto in xp_ssl.o
+	&amp;quot;_TLSv1_1_server_method&amp;quot;, referenced from:
+			_php_openssl_setup_crypto in xp_ssl.o
+	&amp;quot;_TLSv1_2_client_method&amp;quot;, referenced from:
+			_php_openssl_setup_crypto in xp_ssl.o
+	&amp;quot;_TLSv1_2_server_method&amp;quot;, referenced from:
+			_php_openssl_setup_crypto in xp_ssl.o
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;解决:
@@ -266,12 +317,14 @@ Linux上 &lt;code&gt;yum install openssl openssl-devel&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;这是由于内存小于1G所导致.可以&lt;code&gt;--disable-fileinfo&lt;/code&gt;,或者添加添加零时的swap&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;#创建一个大小为256M的文件
+&lt;pre&gt;&lt;code&gt;#创建一个大小为256M的文件(要创建512M的话把1024改为2048)
 dd if=/dev/zero of=/swapfile bs=1024 count=262144
 #把这个文件变成swap文件
 mkswap /swapfile
 #启用这个swap文件
 swapon /swapfile
+#查看已经生效了
+free -m
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;如果要每次开机就加载&lt;/p&gt;
@@ -285,6 +338,20 @@ swapon /swapfile
 
 &lt;p&gt;通过&lt;code&gt;df -lhT&lt;/code&gt; 看到Type为simfs,而不是ext3,ext4,一般就不支持&lt;/p&gt;
 &lt;/blockquote&gt;
+
+&lt;p&gt;8.&lt;code&gt;system libzip must be upgraded to version &amp;gt;= 0.11&lt;/code&gt;
+libzip 地址 &lt;a href=&#34;http://www.nih.at/libzip/&#34;&gt;http://www.nih.at/libzip/&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd /tmp
+wget http://www.nih.at/libzip/libzip-1.1.2.tar.xz
+tar Jxvf libzip-1.1.2.tar.xz
+cd libzip-1.1.2
+mkdir -p /usr/local/libzip
+./configure prefix=/usr/local/libzip/
+make -j$CPU_NUM  &amp;amp;&amp;amp; make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编译PHP时加上&lt;code&gt;--with-libzip=/usr/local/libzip/&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;提示: make 可使用多核提升编译性能&lt;/strong&gt;&lt;/p&gt;
 
@@ -301,7 +368,7 @@ swapon /swapfile
 实际测试,采用香港服务器远程连接mysql,非长连接模式下耗时约600ms,使用PDO长连接,耗时下降到260ms左右,是有一定作用的.
 但是长连接不适用于CLI模式,CLI模式下,php进程退出,连接即断开.&lt;/p&gt;
 
-&lt;h2 id=&#34;安装一些其他扩展:aa93c013153cd0b80f2e19308ae27e8a&#34;&gt;安装一些其他扩展&lt;/h2&gt;
+&lt;h2 id=&#34;安装一些其他扩展&#34;&gt;安装一些其他扩展&lt;/h2&gt;
 
 &lt;p&gt;php redis 扩展&lt;/p&gt;
 
@@ -310,7 +377,7 @@ unzip php-redis.zip
 cd phpredis-php7
 phpize
 ./configure --enable-redis-igbinary
-make &amp;amp;&amp;amp; make install
+make -j$CPU_NUM  &amp;amp;&amp;amp; make install
 
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -320,7 +387,7 @@ make &amp;amp;&amp;amp; make install
 tar -xzf libmemcached-1.0.18.tar.gz -C /tmp
 cd /tmp/libmemcached-1.0.18
 ./configure
-make &amp;amp;&amp;amp; make install
+make -j$CPU_NUM  &amp;amp;&amp;amp; make install
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;php memcached 扩展&lt;/p&gt;
@@ -329,7 +396,7 @@ make &amp;amp;&amp;amp; make install
 unzip php-memcached.zip
 cd php-memcached-php7
 phpize
-make &amp;amp;&amp;amp; make install
+make -j$CPU_NUM  &amp;amp;&amp;amp; make install
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;安装memcached,见&lt;a href=&#34;http://memcached.org/downloads&#34;&gt;http://memcached.org/downloads&lt;/a&gt;&lt;/p&gt;
@@ -337,7 +404,7 @@ make &amp;amp;&amp;amp; make install
 &lt;pre&gt;&lt;code&gt;wget http://memcached.org/latest
 tar -zxvf memcached-1.x.x.tar.gz
 cd memcached-1.x.x
-./configure &amp;amp;&amp;amp; make &amp;amp;&amp;amp; make test &amp;amp;&amp;amp; sudo make install
+./configure &amp;amp;&amp;amp; make -j$CPU_NUM  &amp;amp;&amp;amp; make test &amp;amp;&amp;amp; sudo make install
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;安装swoole扩展&lt;/p&gt;
@@ -347,24 +414,24 @@ unzip php-swoole.zip
 cd swoole-src-master
 phpize
 ./configure
-make &amp;amp;&amp;amp; make install
+make -j$CPU_NUM  &amp;amp;&amp;amp; make install
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;静态编译redis-memcached-opcache到php7:aa93c013153cd0b80f2e19308ae27e8a&#34;&gt;静态编译redis,memcached,opcache到php7&lt;/h2&gt;
+&lt;h2 id=&#34;静态编译redis-memcached-opcache到php7&#34;&gt;静态编译redis,memcached,opcache到php7&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code&gt;wget -c http://php.net/distributions/php-7.0.7.tar.xz
+&lt;pre&gt;&lt;code&gt;wget -c http://php.net/distributions/${PHP_VERSION}.tar.xz
 wget -c -O php-redis.zip https://github.com/phpredis/phpredis/archive/php7.zip
 wget -c -O php-memcached.zip https://github.com/php-memcached-dev/php-memcached/archive/php7.zip
-tar -xJf php-7.0.7.tar.xz
-unzip php-redis.zip -d php-7.0.7/ext
-unzip php-memcached.zip -d php-7.0.7/ext
+tar -xJf ${PHP_VERSION}.tar.xz
+unzip php-redis.zip -d ${PHP_VERSION}/ext
+unzip php-memcached.zip -d ${PHP_VERSION}/ext
 export CFLAGS=&amp;quot;-O3&amp;quot;
-cd php-7.0.7
+cd ${PHP_VERSION}
 rm -rf configure
 ./buildconf --force
 ./configure --help
 ./configure --enable-inline-optimization --enable-static=yes --prefix=/tmp --with-config-file-path=/etc --enable-opcache --enable-redis --enable-memcached --disable-memcached-sasl --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath --enable-zip --enable-mbstring --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd --with-openssl
-make
+make -j$CPU_NUM
 make install
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -386,14 +453,14 @@ make install
 	index index.html index.php;
 	root /data/sites/default;
 	location / {
-			try_files $uri $uri/ /index.php?$args;
+		try_files $uri $uri/ /index.php?$args;
 	}
 	location ~ \.php$ {
-			try_files $uri /index.php?$args;
-			fastcgi_pass  unix:/var/run/php-fpm.sock;
-			fastcgi_index index.php;
-			fastcgi_param SCRIPT_FILENAME  $document_root$fastcgi_script_name;
-			include        fastcgi_params;
+		try_files $uri /index.php?$args;
+		fastcgi_pass  unix:/var/run/php-fpm.sock;
+		fastcgi_index index.php;
+		fastcgi_param SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+		include        fastcgi_params;
 	}
 }
 
@@ -404,23 +471,25 @@ make install
 &lt;pre&gt;&lt;code&gt;server{
 	listen 8080;
 	server_name *.git.suconghou.cn;
-	index index.html index.php;
+	index index.php index.html adminer.php;
 	if ($host ~* ^((\w+)\.git\.suconghou\.cn)$) {
-			set $subdomain $2;
+		set $subdomain $2;
 	}
 	root /data/git/$subdomain;
 	add_header X-Root &amp;quot;$subdomain&amp;quot;;
+	fastcgi_connect_timeout 2s;
+	fastcgi_send_timeout 3s;
+	fastcgi_read_timeout 8s;
 	location / {
-			try_files $uri $uri/ /index.php?$args;
+		try_files $uri $uri/ /index.php?$args;
 	}
 	location ~ \.php$ {
-			try_files $uri /index.php?$args;
-			fastcgi_pass  unix:/var/run/php-fpm.sock;
-			fastcgi_index index.php;
-			fastcgi_param SCRIPT_FILENAME  $document_root$fastcgi_script_name;
-			include        fastcgi_params;
+		try_files $uri /index.php?$args;
+		fastcgi_pass  unix:/var/run/php-fpm.sock;
+		fastcgi_index index.php;
+		fastcgi_param SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+		include        fastcgi_params;
 	}
-
 }
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -436,6 +505,32 @@ make install
 
 &lt;p&gt;注意&lt;code&gt;fastcgi_param&lt;/code&gt;指令是数组型的,内层替换外层,但是同级多次使用的时候，是新增而不是替换。注意不要重复使用.&lt;/p&gt;
 
+&lt;p&gt;排除favicon.ico错误&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;location = /favicon.ico {
+log_not_found off;
+access_log off;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;不允许以.开头的文件&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;location ~ /. {
+deny all;
+access_log off;
+log_not_found off;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;排除找不到robots错误&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;location = /robots.txt {
+allow all;
+log_not_found off;
+access_log off;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;php-fpm 运行时错误
 1. [pool www] cannot get gid for group &amp;lsquo;nobody&amp;rsquo;
 &lt;code&gt;groupadd nobody&lt;/code&gt;或者
@@ -445,7 +540,7 @@ make install
 group = www-data
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;安装mariadb:aa93c013153cd0b80f2e19308ae27e8a&#34;&gt;安装MariaDB&lt;/h2&gt;
+&lt;h2 id=&#34;安装mariadb&#34;&gt;安装MariaDB&lt;/h2&gt;
 
 &lt;pre&gt;&lt;code&gt;apt-get install mariadb-server
 &lt;/code&gt;&lt;/pre&gt;
@@ -457,7 +552,7 @@ group = www-data
 
 &lt;p&gt;安装过程中要求设定一个root密码,安装完&lt;code&gt;service mysql status&lt;/code&gt;查看运行状态,&lt;code&gt;sudo service mysql restart&lt;/code&gt;可以重启&lt;/p&gt;
 
-&lt;h2 id=&#34;开机启动脚本:aa93c013153cd0b80f2e19308ae27e8a&#34;&gt;开机启动脚本&lt;/h2&gt;
+&lt;h2 id=&#34;开机启动脚本&#34;&gt;开机启动脚本&lt;/h2&gt;
 
 &lt;p&gt;Debian and Ubuntu function at &lt;code&gt;/lib/lsb/init-functions&lt;/code&gt;
 &lt;code&gt;ln -s  /lib/lsb/init-functions /etc/init.d/functions&lt;/code&gt;&lt;/p&gt;
@@ -494,24 +589,24 @@ reload() {
 }
 case &amp;quot;$1&amp;quot; in
 start)
-    $1
-    ;;
+		$1
+		;;
 stop)
-    $1
-    ;;
+		$1
+		;;
 restart)
-    $1
-    ;;
+		$1
+		;;
 reload)
-    $1
-    ;;
+		$1
+		;;
 *)
 echo $&amp;quot;Usage: $0 {start|stop|restart|reload}&amp;quot;
 exit 2
 esac
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;php-fpm:aa93c013153cd0b80f2e19308ae27e8a&#34;&gt;php-fpm&lt;/h3&gt;
+&lt;h3 id=&#34;php-fpm&#34;&gt;php-fpm&lt;/h3&gt;
 
 &lt;p&gt;&lt;code&gt;sudo vim /etc/init.d/php-fpm&lt;/code&gt;&lt;/p&gt;
 
@@ -547,17 +642,17 @@ reload() {
 }
 case &amp;quot;$1&amp;quot; in
 start)
-    $1
-    ;;
+		$1
+		;;
 stop)
-    $1
-    ;;
+		$1
+		;;
 restart)
-    $1
-    ;;
+		$1
+		;;
 reload)
-    $1
-    ;;
+		$1
+		;;
 *)
 echo $&amp;quot;Usage: $0 {start|stop|restart|reload}&amp;quot;
 exit 2

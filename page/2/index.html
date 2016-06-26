@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<meta name="generator" content="Hugo 0.16" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -33,28 +34,222 @@
 		
 		<div class="post">
 			<h1 class="post-title">
+				<a href="/post/linux/"> linux相关操作</a>
+			</h1>
+			<p class="post-date">Thu, Jan 21, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="linux实用命令">Linux实用命令</h2>
+
+<h2 id="w">w</h2>
+
+<p><code>w</code>命令能容清晰的显示,服务器在线时间,负载以及当前登陆的用户</p>
+
+<h2 id="vmstat">vmstat</h2>
+
+<p><code>vmstat</code> 显示开机以来的平均值，而不是前一秒的值
+<code>vmstat 1</code>命令指定一个参数 1 运行，来打印每一秒的统计摘要.
+这些列代表的信息:</p>
+
+<blockquote>
+<p>r：CPU 中正在运行和等待运行的进程的数量。其提供了一个比平均负载更好的信号来确定 CPU 是否饱和，因为其不包含 I/O。解释：&rdquo;r&rdquo;的值大于了 CPU 的数量就表示已经饱和了。
+free：以 kb 为单位显式的空闲内存。如果数字位数很多，说明你有足够的空闲内存。&rdquo;free -m&rdquo; 命令，是下面的第七个命令，其可以更好的说明空闲内存的状态。
+si, so：Swap-ins 和 swap-outs。如果它们不是零，则代表你的内存不足了。
+us, sy, id, wa, st：这些都是平均了所有 CPU 的 CPU 分解时间。它们分别是用户时间（user）、系统时间（内核）（system）、空闲（idle）、等待 I/O（wait）、以及占用时间（stolen）（被其他访客，或使用 Xen，访客自己独立的驱动域）。</p>
+</blockquote>
+
+<p>CPU 分解时间将会通过用户时间加系统时间确认 CPU 是否为忙碌状态。等待 I/O 的时间一直不变则表明了一个磁盘瓶颈；这就是 CPU 的闲置，因为任务都阻塞在等待挂起磁盘 I/O 上了。你可以把等待 I/O 当成是 CPU 闲置的另一种形式，其给出了为什么 CPU 闲置的一个线索。
+对于 I/O 处理来说，系统时间是很重要的。一个高于 20% 的平均系统时间，可以值得进一步的探讨：也许内核在处理 I/O 时效率太低了。</p>
+
+<p>SIZE(VIRT): 进程使用的地址空间, 如果进程映射了100M的内存, 进程的地址空间将报告为100M内存. 事实上, 这个大小不是一个程序实际使用的内存数.</p>
+
+<p>RSS(RES): &ldquo;Resident Set Size&rdquo;, 实际驻留&rdquo;在内存中&rdquo;的内存数. 不包括已经交换出去的代码. 举一个例子: 如果你有一个程序使用了100K内存, 操作系统交换出40K内存, 那么RSS为60K. RSS还包括了与其它进程共享的内存区域. 这些区域通常用于libc库等.</p>
+
+<p>SHARE(SHR): RSS中与其它进程共享的内存部分大小.</p>
+
+<p>VMSIZE: 一个进程占用的总的地址空间大小. 它包括了没有映射到内存中的页面。</p>
+
+<p>SZ（DATA）: 映射到内存中的页面, 这些页面仅由进程单独使用. 这也是我们最关心地方: 进程实际占用的内存数。</p>
+
+<h2 id="top">top</h2>
+
+<h2 id="free">free</h2>
+
+<h2 id="ssh">ssh</h2>
+
+<p><code>ssh-copy-id -i ~/.ssh/id_rsa.pub root@host</code></p>
+
+<p><code>ssh-copy-id -i ~/.ssh/id_rsa.pub -p 26671 root@host</code></p>
+
+<h2 id="磁盘相关">磁盘相关</h2>
+
+<h3 id="dd">dd</h3>
+
+<p><code>dd</code>把指定的输入文件拷贝到指定的输出文件中,并且在拷贝的过程中可以进行格式转换。</p>
+
+<p>if =输入文件(或设备名称)
+of =输出文件(或设备名称)
+bs = bytes 同时设置读/写缓冲区的字节数(等于设置obs和obs)
+count = blocks 只拷贝输入的blocks块</p>
+
+<p>创建一个100M的空文件
+<code>dd if=/dev/zero of=hello.txt bs=100m count=1</code></p>
+
+<h2 id="查看当前目录下所有一级子目录文件夹大小">查看当前目录下所有一级子目录文件夹大小</h2>
+
+<p><code>du -h --max-depth=1</code></p>
+
+<h2 id="查看当前目录下所有一级子目录文件夹大小-并排序">查看当前目录下所有一级子目录文件夹大小 并排序</h2>
+
+<p><code>du -h --max-depth=1 |sort</code></p>
+
+<p>以上两条命令不适用于MacOs,可以使用<code>du -sh *</code></p>
+
+<h2 id="一份linux别名和函数库">一份Linux别名和函数库</h2>
+
+<pre><code>alias tree=&quot;find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g' &quot;;
+alias cls=&quot;cd $1;ls -lh;&quot;;
+# 获得你的公网IP地址和主机名。
+alias ipinfo=&quot;curl ifconfig.me &amp;&amp; curl ifconfig.me/host&quot;;
+# 显示出哪个应用程序连接到网络。
+alias listen=&quot;lsof -P -i -n&quot;;
+# 显示出活动的端口。
+alias port='netstat -tulanp'
+# 统计TCP连接个数
+alias tcpstatus=&quot;netstat -n|awk '/^tcp/{++S[\$NF]} END {for(a in S) print a,S[a]}'&quot;
+# 回到上层目录
+alias ..='cd ..'
+# 去到上两层目录
+alias ...='cd ../..'
+# 按列格式化输出mount信息。
+alias cmount=&quot;mount | column -t&quot;
+# 查看你还有剩下多少内存
+alias meminfo='free -m -l -t'
+# 按照文件在磁盘存储的大小排序，显示当前目录的文件列表。
+sbs() { du -b --max-depth 1 | sort -nr | perl -pe 's{([0-9]+)}{sprintf &quot;%.1f%s&quot;, $1&gt;=2**30? ($1/2**30, &quot;G&quot;): $1&gt;=2**20? ($1/2**20, &quot;M&quot;): $1&gt;=2**10? ($1/2**10, &quot;K&quot;): ($1, &quot;&quot;)}e';}
+# 找出指定目录中最大的10个文件
+largefile() { find . -type f -exec du -k {} \; | sort  -nrk 1 | head; }
+# 查看当前目录大于[多少]kb的文件,速度更快
+bigfile() { size=${1:-100}; find . -type f -size +&quot;$size&quot;k |xargs  ls  -lh ; }
+# 返回你的当前IP地址的地理位置。
+getlocation() { lynx -dump http://www.ip-adress.com/ip_tracer/?QRY=$1|grep address|egrep 'city|state|country'|awk '{print $3,$4,$5,$6,$7,$8}'|sed 's\ip address flag \\'|sed 's\My\\';}
+# 删除.log.1.gz 或者 .log.1.bz2
+delog(){ ls | grep &quot;log.\d\+.\(bz2\|gz\)&quot; | xargs rm}
+
+</code></pre>
+
+<pre><code># 这几个Mac不兼容
+# 查看最占用内存的前五个进程
+topmem()
+{
+	ps aux | sort -k4nr | head -n5;
+}
+# 查看某一程序占用的内存
+mem()
+{
+    top -n1 -b | head -n7 | sed '1,6d' &amp;&amp; top -n1 -b | sed '1,7d' | grep --color=auto $1;
+    ps aux | grep --color=auto $1 | grep --color=auto -v grep | awk -F &quot; &quot; '{ sum += $6 } END { printf &quot;Total Memory Usage: %.1f MB\n&quot;, sum/1024 }'
+}
+</code></pre>
+
+<pre><code># 查看你机器的CPU个数,超线程信息
+sysinfo() {
+physicalNumber=0
+coreNumber=0
+logicalNumber=0
+HTNumber=0
+logicalNumber=$(grep &quot;processor&quot; /proc/cpuinfo|sort -u|wc -l)
+physicalNumber=$(grep &quot;physical id&quot; /proc/cpuinfo|sort -u|wc -l)
+coreNumber=$(grep &quot;cpu cores&quot; /proc/cpuinfo|uniq|awk -F':' '{print $2}'|xargs)
+HTNumber=$((logicalNumber / (physicalNumber * coreNumber)))
+echo &quot;****** CPU Information ******&quot;
+echo &quot;Logical CPU Number  : ${logicalNumber}&quot;
+echo &quot;Physical CPU Number : ${physicalNumber}&quot;
+echo &quot;CPU Core Number     : ${coreNumber}&quot;
+echo &quot;HT Number           : ${HTNumber}&quot;
+echo &quot;*****************************&quot;
+}
+
+</code></pre>
+
+<h2 id="解决can-t-set-the-locale-make-sure-lc-and-lang-are-correct">解决can&rsquo;t set the locale; make sure $LC_* and $LANG are correct</h2>
+
+<p><a href="https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian">https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian</a>
+<code>照着全部做下来</code></p>
+
+<h2 id="vim乱码解决">Vim乱码解决</h2>
+
+<p><code>vim ~/.vimrc</code></p>
+
+<pre><code>set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
+set termencoding=utf-8
+set encoding=utf-8
+</code></pre>
+
+<p>检视和控制systemd的主要命令是systemctl</p>
+
+<p>详细使用见<a href="https://wiki.archlinux.org/index.php/systemd_(简体中文)">https://wiki.archlinux.org/index.php/systemd_(简体中文)</a></p>
+
+<p>Centos7 用<code>systemctl</code>取代了<code>service</code>
+旧版本的 <code>service docker start</code> 改为<code>systemctl start docker</code>
+设置开机启动
+旧版本的 <code>chkconfig docker on</code> 改为 <code>systemctl enable docker</code></p>
+
+<p><code>/usr/lib/systemd/system/</code>
+<code>/etc/systemd/system/</code>
+后者有较高优先级会覆盖前者</p>
+
+<p>一般来说著名的linux系统基本上分两大类：</p>
+
+<p>1.RedHat系列：Redhat、Centos、Fedora等</p>
+
+<p>2.Debian系列：Debian、Ubuntu等
+RedHat 系列
+1 常见的安装包格式 rpm包,安装rpm包的命令是“rpm -参数”</p>
+
+<p>2 包管理工具 yum</p>
+
+<p>3 支持tar包</p>
+
+<p>Debian系列
+1 常见的安装包格式 deb包,安装deb包的命令是“dpkg -参数”</p>
+
+<p>2 包管理工具 apt-get</p>
+
+<p>3 支持tar包</p>
+
+<p><code>soft rlimits too low. Number of files is 256, should be at least 1000</code></p>
+
+<p><code>ulimit -n 1024</code></p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
 				<a href="/post/play-with-raspberrypi/"> 玩转树莓派</a>
 			</h1>
 			<p class="post-date">Sun, Jan 17, 2016</p>
 			<div class="post-text">
 				
 
-<h2 id="安装其他操作系统:639f3845c6db751dcd1753d9faad824e">安装其他操作系统</h2>
+<h2 id="安装其他操作系统">安装其他操作系统</h2>
 
-<h3 id="centos:639f3845c6db751dcd1753d9faad824e">CentOS</h3>
+<h3 id="centos">CentOS</h3>
 
 <p>CentOS7官方支持了AMRV7发布了树莓派2、香蕉派、以及CubitTruck单片机的版本</p>
 
 <p><a href="http://mirror.centos.org/altarch/7/isos/armhfp/">CentOS7官方下载</a>
 root 密码 centos</p>
 
-<h3 id="archlinux:639f3845c6db751dcd1753d9faad824e">ArchLinux</h3>
+<h3 id="archlinux">ArchLinux</h3>
 
 <p><a href="http://archlinuxarm.org/platforms/armv7/broadcom/raspberry-pi-2">armv7 raspberry-pi-2</a></p>
 
 <p><a href="http://archlinuxarm.org/platforms/armv6/raspberry-pi">armv6 raspberry-pi</a></p>
 
-<h2 id="安装osmc:639f3845c6db751dcd1753d9faad824e">安装OSMC</h2>
+<h2 id="安装osmc">安装OSMC</h2>
 
 <p><a href="http://software.opensuse.org/download.html?project=home:osmc&amp;package=osmc-installer&amp;hcolor=17394a&amp;fcolor=17394a&amp;acolor=17394a">osmc-installer</a></p>
 
@@ -91,17 +286,17 @@ ls -lh
 
 <p>OSMC默认的ssh连接用户是</p>
 
-<h2 id="安装openelec:639f3845c6db751dcd1753d9faad824e">安装openelec</h2>
+<h2 id="安装openelec">安装openelec</h2>
 
 <p><a href="http://openelec.tv/get-openelec">openelec</a> 镜像下载,osmc是基于debain的,系统更加完善.此系统相比osmc更加精简,是专为跑kodi精简的系统. img.gz 大小约102M</p>
 
-<h2 id="安装xbian:639f3845c6db751dcd1753d9faad824e">安装xbian</h2>
+<h2 id="安装xbian">安装xbian</h2>
 
 <p><a href="http://www.xbian.org/">http://www.xbian.org/</a></p>
 
 <p>与openelec,osmc都是类似,img.gz较大,大约316MB</p>
 
-<h2 id="安装chromeos:639f3845c6db751dcd1753d9faad824e">安装ChromeOs</h2>
+<h2 id="安装chromeos">安装ChromeOs</h2>
 
 <p>ChromeOs已经有支持树莓派的版本了,<a href="www.chromiumosforsbc.org">www.chromiumosforsbc.org</a></p>
 
@@ -166,7 +361,7 @@ brew update
 			<div class="post-text">
 				
 
-<h2 id="配置chrome跨域:e0e57fba433e8be9bf422a453002b0ab">配置Chrome跨域</h2>
+<h2 id="配置chrome跨域">配置Chrome跨域</h2>
 
 <p>Chrome 浏览器配置可以跨域</p>
 
@@ -189,7 +384,7 @@ brew update
 			<div class="post-text">
 				
 
-<h2 id="crontab使用:821b39f3c5e329d9ee0933de8bb69bfb">Crontab使用</h2>
+<h2 id="crontab使用">Crontab使用</h2>
 
 <p><code>crontab -l</code> 查看当前用户的crontab列表
 使用<code>crontab -e</code>开始编辑规则</p>
@@ -215,7 +410,7 @@ brew update
 0 1 5 10 * /path/to/script.sh &gt; &amp;&gt; /dev/null
 </code></pre>
 
-<h2 id="定时备份数据库:821b39f3c5e329d9ee0933de8bb69bfb">定时备份数据库</h2>
+<h2 id="定时备份数据库">定时备份数据库</h2>
 
 <p>先写好shell脚本存入<code>/home/cron1.sh</code></p>
 
@@ -253,7 +448,7 @@ for i in $dbs
 
 <p>使用此脚本建议每20个小时以内备份一次数据库,此脚本保留最近7天备份,删除过期备份</p>
 
-<h2 id="增量备份数据库:821b39f3c5e329d9ee0933de8bb69bfb">增量备份数据库</h2>
+<h2 id="增量备份数据库">增量备份数据库</h2>
 
 <p>先写好shell脚本存入<code>/home/cron2.sh</code></p>
 
@@ -281,7 +476,7 @@ for i in $backup
 
 <p>每20个小时增量备份一次</p>
 
-<h2 id="更高级的文件实时同步:821b39f3c5e329d9ee0933de8bb69bfb">更高级的文件实时同步</h2>
+<h2 id="更高级的文件实时同步">更高级的文件实时同步</h2>
 
 <p><code>Mac</code>上可以使用<code>fswatch + rsync</code>进行实时同步</p>
 
@@ -295,7 +490,7 @@ fswatch -0 /tmp | xargs -0 -n 1 echo $1
 
 </code></pre>
 
-<h2 id="shell基本语法:821b39f3c5e329d9ee0933de8bb69bfb">Shell基本语法</h2>
+<h2 id="shell基本语法">Shell基本语法</h2>
 
 <p>声明数组</p>
 
@@ -308,350 +503,6 @@ fswatch -0 /tmp | xargs -0 -n 1 echo $1
 <p>数组下标以0开始,取得第二个元素为<code>echo ${arr[1]}</code></p>
 
 <p>赋值使用<code>arr[5]=5555</code></p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/improve-mysqldb/"> MySQL性能优化</a>
-			</h1>
-			<p class="post-date">Mon, Jan 11, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="配置文件:3f024a9bc4eccdf3db769802efc70049">配置文件</h2>
-
-<p>配置文件一般放在<code>/etc/my.cnf</code> 或者 <code>/etc/mysql/my.cnf</code></p>
-
-<p>默认的配置文件示例存放于<code>/usr/share/mysql</code></p>
-
-<p>各个文件适配不同内存的配置</p>
-
-<table>
-<thead>
-<tr>
-<th>文件</th>
-<th>内存大小</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>my-small.cnf</td>
-<td>&lt;= 64M 不经常开启mysql</td>
-</tr>
-
-<tr>
-<td>my-medium.cnf</td>
-<td>32M–64M 经常其他程序搭配mysql</td>
-</tr>
-
-<tr>
-<td>my-large.cnf</td>
-<td>512M</td>
-</tr>
-
-<tr>
-<td>my-huge.cnf</td>
-<td>1G-2G</td>
-</tr>
-
-<tr>
-<td>my-innodb-heavy-4G.cnf</td>
-<td>4GB 使用InnoDB</td>
-</tr>
-</tbody>
-</table>
-
-<p>使用<code>SHOW VARIABLES</code>来查看系统参数,通过<code>SHOW STATUS</code>来判断系统状态</p>
-
-<p>show 命令还有很多用途</p>
-
-<table>
-<thead>
-<tr>
-<th>命令</th>
-<th>描述</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>show databases 或show tables from database_name</td>
-<td>显示mysql中所有数据库的名称</td>
-</tr>
-
-<tr>
-<td>show tables</td>
-<td>显示当前数据库中所有表的名称</td>
-</tr>
-
-<tr>
-<td>show columns from table_name from database_name</td>
-<td>显示表中列名称</td>
-</tr>
-
-<tr>
-<td>show grants for user_name</td>
-<td>显示一个用户的权限，显示结果类似于grant命令</td>
-</tr>
-
-<tr>
-<td>show table status</td>
-<td>显示当前使用或者指定的database中的每个表的信息。<br>信息包括表类型和表的最新更新时间。</td>
-</tr>
-
-<tr>
-<td>show index from table_name</td>
-<td>显示表的索引</td>
-</tr>
-
-<tr>
-<td>show status</td>
-<td>显示一些系统特定资源的信息,例如,正在运行的线程数量</td>
-</tr>
-
-<tr>
-<td>show variables</td>
-<td>显示系统变量的名称和值</td>
-</tr>
-
-<tr>
-<td>show processlist</td>
-<td>显示系统中正在运行的所有进程，也就是当前正在执行的查询。<br>大多数用户可以查看他们自己的进程，但是如果他们拥有process权限，<br>就可以查看所有人的进程，包括密码</td>
-</tr>
-
-<tr>
-<td>show engies</td>
-<td>显示安装以后可用的存储引擎和默认引擎</td>
-</tr>
-
-<tr>
-<td>show innodb status</td>
-<td>显示innoDB存储引擎的状态</td>
-</tr>
-
-<tr>
-<td>show logs</td>
-<td>显示BDB存储引擎的日志</td>
-</tr>
-
-<tr>
-<td>show warnings</td>
-<td>显示最后一个执行的语句所产生的错误、警告和通知</td>
-</tr>
-
-<tr>
-<td>show errors</td>
-<td>只显示最后一个执行语句所产生的错误</td>
-</tr>
-</tbody>
-</table>
-
-<h2 id="小内存优化:3f024a9bc4eccdf3db769802efc70049">小内存优化</h2>
-
-<p>依据<code>my-small.cnf</code>为模板</p>
-
-<p>主要指标:存储引擎,key_buffer,table_cache,max_connections,thread_concurrency,query_cache,thread_stack</p>
-
-<p><strong>存储引擎</strong>:
-如果不使用 BDB table 和 InnoDB table 的话，加入下面2行关闭不需要的表类型很有必要，关闭 innodb 可以省下大量内存，虽然 InnoDB 好处多多但是在一个64MB的 VPS 上并不能体现出来，并且很占内存。</p>
-
-<p><strong>key_buffer</strong>:
-用来缓存 tables keys 和 indexes，增加这个值可以更好的处理索引，读和写都需要索引,这里设置成16K足够了.</p>
-
-<p><strong>table_cache</strong>:
-所有线程打开的表的数量，增加值可以增大 MySQL 的文件描述符数量，避免频繁的打开表，原始 my-small.cnf 中 table_cache 设置成4有点小，一个 wordpress 的页面通常会涉及到10个左右的表，其他的程序比如 Drupal，MediaWiki 会涉及到更多，将table_cache改为8。</p>
-
-<p><strong>max_connections</strong>:
-数据库最大的连接数量，可以根据自己博客/网站的访问量来定这个值,如果博客/网站经常出现：Too many connections 错误的信息说明需要增大 max_connections 的值.</p>
-
-<p><strong>thread_concurrency</strong>:
-最大并发线程数，通常设置为 CPU核数量×2，在 VPS 宿主机上如果服务器有2颗物理 CPU，而每颗物理 CPU 又支持 H.T 超线程（一个处理器上整合了两个逻辑处理器单元），所以实际取值为4 × 2 ＝ 8。
-如果我们在优化 php.ini 的时候设置了同时只有2个 php-cgi 运行的话，那么我们也应该只设置2个 MySQL 线程同时运行。</p>
-
-<p><strong>query_cache</strong>:
-对于博客/新闻网站来说，用得最多的就是查询，所以需要加入 query cache 的设置。query_cache_size 是执行查询所使用的缓冲大小。
-query_cache_limit指定单个查询能够使用的缓冲区大小，缺省为1M,结果集超过这个大小将不会被缓存。</p>
-
-<p>与查询缓冲有关的参数还有query_cache_type、query_cache_limit、query_cache_min_res_unit。</p>
-
-<p>query_cache_type指定是否使用查询缓冲，可以设置为0、1、2,分别代表了off、on、demand,如果是0，那么query cache 是关闭的。如果是1，那么查询总是先到查询缓存中查找，除非使用了sql_no_cache。如果是2，那么，只有使用 sql_cache的查询，才会去查询缓存中查找.</p>
-
-<p>query_cache_limit指定单个查询能够使用的缓冲区大小，缺省为1M。
-query_cache_min_res_unit是在4.1版本以后引入的，它指定分配缓冲区空间的最小单位，缺省为4K。
-检查状态值Qcache_free_blocks，如果该值非常大，则表明缓冲区中碎片很多，这就表明查询结果都比较小，此时需要减小 query_cache_min_res_unit。</p>
-
-<p><strong>thread_stack</strong>:
-用来存放每个线程的标识信息，如线程 id，线程运行时环境等，可以通过设置 thread_stack 来决定给每个线程分配多大的内存。</p>
-
-<p><strong>sort_buffer_size</strong>:
-每个需要排序的线程分配的缓冲区大小，增加该值可以加速 order by 和 group by 的操作。注意：该参数是以每个连接分配内存，也就是说，如果有16个连接，sort_buffer_size 为 64K，那么实际分配的内存为：16 × 64K = 1MB。如果设置的缓存大小无法满足需要，MySQL 会将数据写入磁盘来完成排序。因为磁盘操作和内存操作不在一个数量级，所以 sort_buffer_size 对排序的性能影响很大。</p>
-
-<p><strong>read_buffer_size</strong>:
-顺序读取数据时的缓冲区大小，与 sort_buffer_size 一样，该参数分配的内存也是以每连接为单位的。
-当需要顺序读取数据的时候，如无法使用索引的情况下的全表扫描，全索引扫描等。在这种时候，MySQL 按照数据的存储顺序依次读取数据块，每次读取的数据快首先会暂存在 read_buffer_size 中，当 buffer 空间被写满或者全部数据读取结束后，再将 buffer 中的数据返回给上层调用者，以提高效率。</p>
-
-<p><strong>read_rnd_buffer_size</strong>:
-随机读取数据时的缓冲区大小，与顺序读相对应。</p>
-
-<p><strong>net_buffer_size</strong>:
-用来存放客户端连接线程的连接信息和返回客户端的结果集的缓存大小。当 MySQL 接到请求后，产生返回结果集时，会在返回给请求线程之前暂存在在这个缓存中，等积累到一定大小的时候才开始向客户端发送，以提高网络效率。不 过，net_buffer_size 所设置的仅仅只是初始大小，MySQL 会根据实际需要自行申请更多的内存，但最大不会超过 max_allowed_packet。</p>
-
-<p>skip-locking用来避免 MySQL 外部锁定，减少出错几率，增强稳定性。</p>
-
-<p>以上: 64M VPS数据库配置</p>
-
-<pre><code>skip-bdb
-skip-innodb
-
-key_buffer = 16K
-table_cache = 8
-
-max_connections = 16
-thread_concurrency = 2
-
-query_cache_limit = 256K
-query_cache_size = 4M
-query_cache_type = 1
-
-sort_buffer_size = 64K
-read_buffer_size = 256K
-read_rnd_buffer_size = 256K
-net_buffer_length = 2K
-thread_stack = 64K
-skip-locking
-
-</code></pre>
-
-<p>thread_cache_size 优化配置</p>
-
-<p>当update或者insert的内容过大时,<code>max_allowed_packet</code>的值过小,会引起sql异常,需要改大
-修改<code>my.cnf</code>  <code>max_allowed_packet = 20M</code>
-或者零时动态设置 <code>set global max_allowed_packet = 20*1024*1024</code></p>
-
-<p>查看是否生效
-<code>show VARIABLES like '%max_allowed_packet%'</code></p>
-
-<pre><code>1G  ---&gt; 8
-2G  ---&gt; 16
-3G  ---&gt; 32
-4G  ---&gt; 64
-</code></pre>
-
-<h2 id="数据库优化:3f024a9bc4eccdf3db769802efc70049">数据库优化</h2>
-
-<p>查看query_cache相关配置, 默认这个开关是关闭的,就是禁止使用query_cache
-query_cache_type 为0,是关闭的</p>
-
-<p><code>show variables where variable_name like '%query_cache%'</code> 单独查询一个使用 <code>select @@query_cache_type</code></p>
-
-<pre><code>+------------------------------+----------+
-| Variable_name                | Value    |
-+------------------------------+----------+
-| have_query_cache             | YES      |
-| query_cache_limit            | 262144   |
-| query_cache_min_res_unit     | 4096     |
-| query_cache_size             | 33554432 |
-| query_cache_strip_comments   | OFF      |
-| query_cache_type             | ON       |
-| query_cache_wlock_invalidate | OFF      |
-+------------------------------+----------+
-</code></pre>
-
-<p><code>query_cache_size</code>为0,没有分配缓存空间,如果配置了<code>query_cache_size = 4M</code>,这里会显示具体的字节</p>
-
-<p><code>show status like '%Qcache%'</code></p>
-
-<pre><code>+-------------------------+----------+
-| Variable_name           | Value    |
-+-------------------------+----------+
-| Qcache_free_blocks      | 1        |
-| Qcache_free_memory      | 26444248 |
-| Qcache_hits             | 159619   |
-| Qcache_inserts          | 27496    |
-| Qcache_lowmem_prunes    | 0        |
-| Qcache_not_cached       | 180      |
-| Qcache_queries_in_cache | 6922     |
-| Qcache_total_blocks     | 13850    |
-+-------------------------+----------+
-</code></pre>
-
-<p>如果<code>Qcache_lowmem_prunes</code>的值非常大，则表明经常出现缓冲不够的情况，如果<code>Qcache_hits</code>的值也非常大，则表明查询缓冲使用非常频繁，此时需要增加缓冲大小；
-如果<code>Qcache_hits</code>的值不大，则表明你的查询重复率很低，这种情况下使用查询缓冲反而会影响效率，那么可以考虑不用查询缓冲。此外，在SELECT语句中加入<code>SQL_NO_CACHE</code>可以明确表示不使用查询缓冲。</p>
-
-<blockquote>
-<p>查询缓存碎片率 = Qcache_free_blocks / Qcache_total_blocks * 100%</p>
-</blockquote>
-
-<p>如果查询缓存碎片率超过20%，可以用FLUSH QUERY CACHE整理缓存碎片，或者试试减小query_cache_min_res_unit，如果你的查询都是小数据量的话.</p>
-
-<blockquote>
-<p>查询缓存利用率 = (query_cache_size – Qcache_free_memory) / query_cache_size * 100%</p>
-</blockquote>
-
-<p>查询缓存利用率在25%以下的话说明query_cache_size设置的过大，可适当减小;查询缓存利用率在80%以上而且Qcache_lowmem_prunes &gt; 50的话说明query_cache_size可能有点小，要不就是碎片太多。</p>
-
-<blockquote>
-<p>查询缓存命中率 = Qcache_hits / ( Qcache_hits + Qcache_inserts ) * 100%</p>
-</blockquote>
-
-<p>命中率越高,效果越好</p>
-
-<h2 id="各个数据库引擎对比:3f024a9bc4eccdf3db769802efc70049">各个数据库引擎对比</h2>
-
-<p>主要讨论引擎: MyISAM存储引擎 InnoDB存储引擎 Memory存储引擎</p>
-
-<h3 id="myisam存储引擎:3f024a9bc4eccdf3db769802efc70049">MyISAM存储引擎</h3>
-
-<p>支持B-tree/FullText/R-tree索引类型
-锁级别是表锁,表锁的开销小，加锁快;锁粒度大，发生锁冲突的概率较高，并发度低；表锁适合查询
-不支持事务性，也不支持外键。</p>
-
-<blockquote>
-<p>并发不高，不需要支持事务,需要进行全文搜索,读次数大于写次数,适合数据量不是特别大并发不太高的大部分场合</p>
-</blockquote>
-
-<h3 id="innodb存储引擎:3f024a9bc4eccdf3db769802efc70049">InnoDB存储引擎</h3>
-
-<p>支持事务性，支持回滚,支持Hash/B-tree索引类型
-锁级别是行锁，行锁在锁定上带来的消耗大于表锁，但是在系统并发访问量较高时，InnoDB整体性能远高于MyISAM。
-InnoDB的索引不仅缓存索引本身，也缓存数据，所以InnoDB需要更大的内存。</p>
-
-<blockquote>
-<p>表数据量超过千万，高并发,频繁更新大字段,安全性和可用性要求高,更适合与大并发大数据量的场合，除了支持事务，在高并发时行级锁的优势就会发挥出来。</p>
-</blockquote>
-
-<h3 id="memory存储引擎:3f024a9bc4eccdf3db769802efc70049">Memory存储引擎</h3>
-
-<p>内存级的存储引擎，它将所有数据都存储在内存中，所以它能够存储的数据量是比较小的
-Memory的锁级别和MyISAM一样，是表锁；并且不支持事务性。</p>
-
-<blockquote>
-<p>适合与性能要求高数据量小的地方，和缓存的效果类似。</p>
-
-<p>innodb查询表的行数需要全表扫描，速度会非常慢，查询1千万行数据的表最多时要6、7s,而myisam因为保存了总行数是极快的。
-在一个进程操作的情况下，myisam的更新和查询速度都会稍快于innodb。memory引擎插入和查询修改的速度都极快，但支持的数据量有限,不支持BLOB/TEXT数据类型,适用于单表几万行数据.</p>
-
-<p>MEMORY表最大值受系统变量 max_heap_table_size 限制，默认为16MB，要改变MEMORY表大小限制，需要改变max_heap_table_size 的值。</p>
-</blockquote>
-
-<h3 id="锁:3f024a9bc4eccdf3db769802efc70049">锁</h3>
-
-<blockquote>
-<p>读锁：读操作时增加锁，叫共享锁，S-lock特征是阻塞其他客户端的写操作，不阻塞读操作</p>
-
-<p>写锁：写操作时增加锁，叫独占锁或排他锁，X-lock特征是阻塞其他客户端的读、写操作</p>
-</blockquote>
-
-<h3 id="锁定粒度-范围:3f024a9bc4eccdf3db769802efc70049">锁定粒度（范围）</h3>
-
-<blockquote>
-<p>行级：提升并发性，锁定开销大</p>
-
-<p>表级：不利于并发性，锁定开销小</p>
-</blockquote>
 
 			</div>
 		</div>

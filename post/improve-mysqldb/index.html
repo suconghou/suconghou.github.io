@@ -38,7 +38,7 @@
 		<div class="post-text">
 			
 
-<h2 id="配置文件:3f024a9bc4eccdf3db769802efc70049">配置文件</h2>
+<h2 id="配置文件">配置文件</h2>
 
 <p>配置文件一般放在<code>/etc/my.cnf</code> 或者 <code>/etc/mysql/my.cnf</code></p>
 
@@ -167,7 +167,7 @@
 </tbody>
 </table>
 
-<h2 id="小内存优化:3f024a9bc4eccdf3db769802efc70049">小内存优化</h2>
+<h2 id="小内存优化">小内存优化</h2>
 
 <p>依据<code>my-small.cnf</code>为模板</p>
 
@@ -245,12 +245,16 @@ skip-locking
 
 <p>thread_cache_size 优化配置</p>
 
-<p>当update或者insert的内容过大时,<code>max_allowed_packet</code>的值过小,会引起sql异常,需要改大
+<h3 id="packet-for-query-is-too-large">Packet for query is too large</h3>
+
+<p><code>show variables like '%max%'</code></p>
+
+<p>当update或者insert的内容过大时,<code>max_allowed_packet</code>的值过小,会引起sql异常,需要改大;其默认值为1048576(1M)，
 修改<code>my.cnf</code>  <code>max_allowed_packet = 20M</code>
 或者零时动态设置 <code>set global max_allowed_packet = 20*1024*1024</code></p>
 
-<p>查看是否生效
-<code>show VARIABLES like '%max_allowed_packet%'</code></p>
+<p>查看是否生效,零时修改一般断开后重新连接即可生效.
+<code>show variables like '%max_allowed_packet%'</code></p>
 
 <pre><code>1G  ---&gt; 8
 2G  ---&gt; 16
@@ -258,7 +262,7 @@ skip-locking
 4G  ---&gt; 64
 </code></pre>
 
-<h2 id="数据库优化:3f024a9bc4eccdf3db769802efc70049">数据库优化</h2>
+<h2 id="数据库优化">数据库优化</h2>
 
 <p>查看query_cache相关配置, 默认这个开关是关闭的,就是禁止使用query_cache
 query_cache_type 为0,是关闭的</p>
@@ -317,11 +321,11 @@ query_cache_type 为0,是关闭的</p>
 
 <p>命中率越高,效果越好</p>
 
-<h2 id="各个数据库引擎对比:3f024a9bc4eccdf3db769802efc70049">各个数据库引擎对比</h2>
+<h2 id="各个数据库引擎对比">各个数据库引擎对比</h2>
 
 <p>主要讨论引擎: MyISAM存储引擎 InnoDB存储引擎 Memory存储引擎</p>
 
-<h3 id="myisam存储引擎:3f024a9bc4eccdf3db769802efc70049">MyISAM存储引擎</h3>
+<h3 id="myisam存储引擎">MyISAM存储引擎</h3>
 
 <p>支持B-tree/FullText/R-tree索引类型
 锁级别是表锁,表锁的开销小，加锁快;锁粒度大，发生锁冲突的概率较高，并发度低；表锁适合查询
@@ -331,7 +335,7 @@ query_cache_type 为0,是关闭的</p>
 <p>并发不高，不需要支持事务,需要进行全文搜索,读次数大于写次数,适合数据量不是特别大并发不太高的大部分场合</p>
 </blockquote>
 
-<h3 id="innodb存储引擎:3f024a9bc4eccdf3db769802efc70049">InnoDB存储引擎</h3>
+<h3 id="innodb存储引擎">InnoDB存储引擎</h3>
 
 <p>支持事务性，支持回滚,支持Hash/B-tree索引类型
 锁级别是行锁，行锁在锁定上带来的消耗大于表锁，但是在系统并发访问量较高时，InnoDB整体性能远高于MyISAM。
@@ -341,7 +345,7 @@ InnoDB的索引不仅缓存索引本身，也缓存数据，所以InnoDB需要�
 <p>表数据量超过千万，高并发,频繁更新大字段,安全性和可用性要求高,更适合与大并发大数据量的场合，除了支持事务，在高并发时行级锁的优势就会发挥出来。</p>
 </blockquote>
 
-<h3 id="memory存储引擎:3f024a9bc4eccdf3db769802efc70049">Memory存储引擎</h3>
+<h3 id="memory存储引擎">Memory存储引擎</h3>
 
 <p>内存级的存储引擎，它将所有数据都存储在内存中，所以它能够存储的数据量是比较小的
 Memory的锁级别和MyISAM一样，是表锁；并且不支持事务性。</p>
@@ -355,7 +359,7 @@ Memory的锁级别和MyISAM一样，是表锁；并且不支持事务性。</p>
 <p>MEMORY表最大值受系统变量 max_heap_table_size 限制，默认为16MB，要改变MEMORY表大小限制，需要改变max_heap_table_size 的值。</p>
 </blockquote>
 
-<h3 id="锁:3f024a9bc4eccdf3db769802efc70049">锁</h3>
+<h3 id="锁">锁</h3>
 
 <blockquote>
 <p>读锁：读操作时增加锁，叫共享锁，S-lock特征是阻塞其他客户端的写操作，不阻塞读操作</p>
@@ -363,7 +367,7 @@ Memory的锁级别和MyISAM一样，是表锁；并且不支持事务性。</p>
 <p>写锁：写操作时增加锁，叫独占锁或排他锁，X-lock特征是阻塞其他客户端的读、写操作</p>
 </blockquote>
 
-<h3 id="锁定粒度-范围:3f024a9bc4eccdf3db769802efc70049">锁定粒度（范围）</h3>
+<h3 id="锁定粒度-范围">锁定粒度（范围）</h3>
 
 <blockquote>
 <p>行级：提升并发性，锁定开销大</p>

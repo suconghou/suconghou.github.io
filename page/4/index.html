@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<meta name="generator" content="Hugo 0.16" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -33,13 +34,55 @@
 		
 		<div class="post">
 			<h1 class="post-title">
+				<a href="/post/install-nodejs/"> 安装NodeJs和npm</a>
+			</h1>
+			<p class="post-date">Thu, Jan 7, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="安装nodejs">安装NodeJs</h2>
+
+<p>nodejs官方提供了编译好的二进制的包,全平台都有,十分方便
+<a href="https://nodejs.org/download/release/latest/">最新版本NodeJs官方库</a></p>
+
+<p>其他信息<a href="http://www.oschina.net/news/73974/node-v6-2-1-current">http://www.oschina.net/news/73974/node-v6-2-1-current</a></p>
+
+<p>例如安装Linux版本</p>
+
+<pre><code>wget https://nodejs.org/dist/v6.0.0/node-v6.0.0-linux-x64.tar.xz
+tar -xJf node-v6.0.0-linux-x64.tar.xz
+sudo mv node-v6.0.0-linux-x64 /usr/local/nodejs
+sudo ln -s /usr/local/nodejs/bin/node /usr/local/bin/node
+sudo ln -s /usr/local/nodejs/bin/npm /usr/local/bin/npm
+node -v
+npm -v
+</code></pre>
+
+<h2 id="单文件版node-exe单独安装npm">单文件版node.exe单独安装npm</h2>
+
+<p>1.clone npm 源码
+<code>git clone --recursive git://github.com/isaacs/npm.git</code></p>
+
+<p>2.进入npm目录,安装npm
+<code>node cli.js install npm -gf</code></p>
+
+<h2 id="一些必备package">一些必备package</h2>
+
+<pre><code>sudo npm install -g less autoprefixer express jshint uglify-js webpack react-native-cli airs
+</code></pre>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
 				<a href="/post/some-good-useful-things/"> 网摘</a>
 			</h1>
 			<p class="post-date">Wed, Jan 6, 2016</p>
 			<div class="post-text">
 				
 
-<h2 id="云计算-存储-分发等:49483a20fa0a8bb8347c64e9ee523801">云计算,存储,分发等</h2>
+<h2 id="云计算-存储-分发等">云计算,存储,分发等</h2>
 
 <p><a href="http://baichuan.taobao.com/">阿里百川</a>
 <a href="http://open.taobao.com/">淘宝开放平台</a></p>
@@ -56,7 +99,7 @@
 
 <p><a href="http://bmob.cn/">bmob</a>移动后端云,网友示例项目<a href="https://github.com/bestony/BandwaghonhostAPP">BandwaghonhostAPP</a>,结合<a href="http://dev.dcloud.net.cn/mui/">mui移动开发框架</a>开发手机APP</p>
 
-<h2 id="短信-推动消息等:49483a20fa0a8bb8347c64e9ee523801">短信,推动消息等</h2>
+<h2 id="短信-推动消息等">短信,推动消息等</h2>
 
 <ul>
 <li><a href="http://www.alidayu.com/">阿里大鱼</a></li>
@@ -74,7 +117,7 @@
 <p>短信和邮件发送服务,邮件有每日免费200封,短信5.5分每条</p>
 </blockquote>
 
-<h2 id="图像压缩软件:49483a20fa0a8bb8347c64e9ee523801">图像压缩软件</h2>
+<h2 id="图像压缩软件">图像压缩软件</h2>
 
 <p><a href="https://imageoptim.com/">ImageOptim无损压缩</a></p>
 
@@ -88,7 +131,7 @@
 
 <p><a href="https://www.npmjs.com/package/imagemin">nodejs imagemin</a> NodeJs模块,压缩jpg,png,压缩效果一般</p>
 
-<h2 id="移动混合应用-hhtml5开发:49483a20fa0a8bb8347c64e9ee523801">移动混合应用/HHTML5开发</h2>
+<h2 id="移动混合应用-hhtml5开发">移动混合应用/HHTML5开发</h2>
 
 <p><a href="http://dev.dcloud.net.cn/mui/">国产mui</a> 最接近原生APP体验的高性能前端框架,不依赖任何第三方JS库,压缩后的JS和CSS文件仅有100+K和60+K</p>
 
@@ -96,15 +139,15 @@
 
 <p><a href="http://mobiscroll.com/">mobiscroll</a> 移动开发UI,丰富的时间选择器控件还有一些WEBAPP展示,<a href="https://github.com/acidb/mobiscroll">https://github.com/acidb/mobiscroll</a></p>
 
-<h2 id="桌面开发:49483a20fa0a8bb8347c64e9ee523801">桌面开发</h2>
+<h2 id="桌面开发">桌面开发</h2>
 
 <p><a href="http://nwjs.io/">nwjs</a> Mac版钉钉使用的就是这个技术,界面还算漂亮</p>
 
-<h2 id="网页动画:49483a20fa0a8bb8347c64e9ee523801">网页动画</h2>
+<h2 id="网页动画">网页动画</h2>
 
 <p><a href="http://ecomfe.github.io/zrender/index.html">百度zrender</a> 基于Canvas的图形仓库交互工具,可以方便的画出很多图形</p>
 
-<h2 id="游戏引擎:49483a20fa0a8bb8347c64e9ee523801">游戏引擎</h2>
+<h2 id="游戏引擎">游戏引擎</h2>
 
 <p><a href="http://hiloteam.github.io/">阿里Hilo</a> 游戏渲染引擎,实现2048,切水果等.</p>
 
@@ -112,17 +155,17 @@
 
 <p><a href="https://github.com/iioinc/iio.js">https://github.com/iioinc/iio.js</a> 也是canvas的游戏</p>
 
-<h2 id="网页富文本编辑器:49483a20fa0a8bb8347c64e9ee523801">网页富文本编辑器</h2>
+<h2 id="网页富文本编辑器">网页富文本编辑器</h2>
 
 <p><a href="http://wangeditor.github.io/">wangeditor</a> 轻量简介的富文本编辑器,使用容易,相比百度umeditor更简洁</p>
 
-<h2 id="网页markdown编辑器:49483a20fa0a8bb8347c64e9ee523801">网页Markdown编辑器</h2>
+<h2 id="网页markdown编辑器">网页Markdown编辑器</h2>
 
 <p><a href="https://github.com/pandao/editor.md">Editor.md</a> 一款开源的、可嵌入的 Markdown 在线编辑器（组件），基于 CodeMirror、jQuery 和 Marked 构建。</p>
 
 <p><a href="https://github.com/tylingsoft/markdown-plus">markdown-plus</a> Markdown Plus,界面不是很漂亮,也有收费的桌面APP</p>
 
-<h2 id="字体相关:49483a20fa0a8bb8347c64e9ee523801">字体相关</h2>
+<h2 id="字体相关">字体相关</h2>
 
 <p><a href="http://www.youziku.com/">有字库中文字体</a> 在线字体,CDN引用</p>
 
@@ -130,7 +173,7 @@
 
 <p><a href="http://www.iconfont.cn/">阿里iconfont</a> 阿里巴巴的网页矢量图标在线生成工具,中文字体和矢量图标</p>
 
-<h2 id="镜像网站-cdn:49483a20fa0a8bb8347c64e9ee523801">镜像网站/CDN</h2>
+<h2 id="镜像网站-cdn">镜像网站/CDN</h2>
 
 <p><a href="http://npm.taobao.org/">淘宝NPM镜像</a></p>
 
@@ -138,19 +181,21 @@
 
 <p><a href="http://www.bootcdn.cn/">bootcdn</a> 支持https</p>
 
-<h2 id="云端ide:49483a20fa0a8bb8347c64e9ee523801">云端IDE</h2>
+<h2 id="云端ide">云端IDE</h2>
 
 <p><a href="https://coderpad.io/">coderpad</a> 在线运行多种语言代码,保存分享,不过是收费的,我创建的<a href="https://coderpad.io/GP2KRHQQ">演示</a></p>
 
-<h2 id="视频解析:49483a20fa0a8bb8347c64e9ee523801">视频解析</h2>
+<h2 id="视频解析">视频解析</h2>
 
 <p><a href="http://keepvid.com/">keepvid</a> 支持多种国外视频网站解析,转码</p>
 
 <p><a href="http://www.clipconverter.cc/">clipconverter</a> 支持youtube视频解析,转码,多分辨率,速度又快.</p>
 
+<p><a href="https://www.tubeninja.net/en/">tubeninja</a> 支持多种国内外视频网站解析</p>
+
 <p><a href="http://www.youtube-dl.org/">youtube-dl</a> 全平台的YouTube视频下载工具</p>
 
-<h2 id="图床:49483a20fa0a8bb8347c64e9ee523801">图床</h2>
+<h2 id="图床">图床</h2>
 
 <p><a href="https://sm.ms/">smms</a></p>
 
@@ -158,7 +203,9 @@
 
 <p><a href="http://v2ex.com/t/278912#reply24">two.yt</a></p>
 
-<h2 id="前端-node:49483a20fa0a8bb8347c64e9ee523801">前端/Node</h2>
+<p><a href="https://www.niupic.com/">niupic</a></p>
+
+<h2 id="前端-node">前端/Node</h2>
 
 <p>Ajax库<a href="https://github.com/visionmedia/superagent">superagent</a> 同时兼容IE9+和NodeJs的Ajax小工具,Gzip后仅为4.4kb</p>
 
@@ -177,21 +224,21 @@
 <a href="https://github.com/datejs/Datejs/blob/master/build/date.js">https://github.com/datejs/Datejs/blob/master/build/date.js</a>
 <a href="https://github.com/Teamweek/instadate">https://github.com/Teamweek/instadate</a></p>
 
-<h2 id="js插件:49483a20fa0a8bb8347c64e9ee523801">JS插件</h2>
+<h2 id="js插件">JS插件</h2>
 
 <p><a href="http://www.swiper.com.cn/">swiper滑动插件</a></p>
 
-<h2 id="测试工具:49483a20fa0a8bb8347c64e9ee523801">测试工具</h2>
+<h2 id="测试工具">测试工具</h2>
 
 <p><a href="http://www.alibench.com/">阿里测</a> 测试你的服务器在全国各地的响应速度
 <a href="http://www.cloudping.info/">cloudping</a> 测试亚马逊云各节点到你电脑的延时
 <a href="http://requestb.in/">requestb</a> 测试你发送的HTTP请求</p>
 
-<h2 id="代码转换:49483a20fa0a8bb8347c64e9ee523801">代码转换</h2>
+<h2 id="代码转换">代码转换</h2>
 
 <p>将python代码转化为可执行文件<a href="http://nuitka.net/pages/download.html">nuitka</a></p>
 
-<h2 id="服务器vps:49483a20fa0a8bb8347c64e9ee523801">服务器VPS</h2>
+<h2 id="服务器vps">服务器VPS</h2>
 
 <p><a href="http://cheapwindowsvps.com/">cheapwindowsvps</a> G口亚洲越南和新加坡不限流量支持Windows
 <a href="https://dedistation.com/billing/order.php?step=0&amp;productGroup=13">dedistation</a>
@@ -220,7 +267,7 @@
 			<div class="post-text">
 				
 
-<h2 id="安装docker:6d93a80e55dc760775379b4fadc005db">安装Docker</h2>
+<h2 id="安装docker">安装Docker</h2>
 
 <p>docker 安装需要Linux内核在3.10.0以上,仅支持Linux,在Windows和MacOs上也是基于虚拟机方式运行,需要提前安装虚拟机</p>
 
@@ -243,9 +290,11 @@
 
 <p>查看是否是64位系统<code>uname -i</code></p>
 
-<h3 id="下载安装:6d93a80e55dc760775379b4fadc005db">下载安装</h3>
+<h3 id="下载安装">下载安装</h3>
 
-<p><strong>docker-1-11-1</strong> <a href="http://www.oschina.net/news/72899/docker-1-11-1">各平台下载地址</a></p>
+<p><a href="http://www.oschina.net/news/73935/docker-v-1-11-2">各平台下载地址</a></p>
+
+<p><a href="https://docs.docker.com/engine/installation/linux/centos/">官方安装教程</a></p>
 
 <p>或者<code>http://get.daocloud.io/docker/builds/</code>查看</p>
 
@@ -253,8 +302,8 @@
 
 <p>安装完整以后,可以移动到<code>/usr/bin</code>,即可使用<code>docker</code>和<code>sudo docker</code>命令</p>
 
-<pre><code>wget https://get.docker.com/builds/Linux/x86_64/docker-1.11.1.tgz
-tar zxvf docker-1.11.1.tgz
+<pre><code>wget https://get.docker.com/builds/Linux/x86_64/docker-1.11.2.tgz
+tar zxvf docker-1.11.2.tgz
 cd docker
 ls -lh
 </code></pre>
@@ -271,7 +320,7 @@ ls -lh
 
 <p>移动到<code>/usr/bin/</code> 即可替换旧版本 <code>mv * /usr/bin/</code></p>
 
-<h2 id="基本使用:6d93a80e55dc760775379b4fadc005db">基本使用</h2>
+<h2 id="基本使用">基本使用</h2>
 
 <p>运行<code>docker -v</code>即可查看当前docker版本
 docker 分为两部分,一分部是docker server , 一部分是docker client
@@ -281,6 +330,27 @@ docker 分为两部分,一分部是docker server , 一部分是docker client
 下载 <code>docker pull learn/tutorial</code>, 下载时要写完整名字</p>
 
 <p><a href="https://hub.docker.com/explore/">官方Docker镜像一览</a></p>
+
+<blockquote>
+<p>还可以使用<code>yum update &amp;&amp; yum install docker</code> 安装docker,使用二进制方式安装的docker不支持<code>devicemapper</code>驱动,yum安装的支持.
+yum安装的版本落后于官方最新版,可以使用官方的yum源</p>
+</blockquote>
+
+<pre><code>sudo tee /etc/yum.repos.d/docker.repo &lt;&lt;-'EOF'
+[dockerrepo]
+name=Docker Repository
+baseurl=https://yum.dockerproject.org/repo/main/centos/$releasever/
+enabled=1
+gpgcheck=1
+gpgkey=https://yum.dockerproject.org/gpg
+EOF
+</code></pre>
+
+<p>然后<code>yum info docker-engine</code>可以看到官方的docker版本.执行<code>yum install docker-engine</code>安装</p>
+
+<p><code>sudo service docker start</code> 启动服务,开机启动<code>sudo chkconfig docker on</code></p>
+
+<p>如果你以前采用<code>yum install docker</code>安装过非官方源里的docker,需要先卸载<code>yum remove docker*</code></p>
 
 <p>下载官方ubuntu <code>docker pull ubuntu</code></p>
 
@@ -328,11 +398,6 @@ CONTAINER可以是最前面的CONTAINER ID ,也可以是最后面的NAMES</p>
 
 <p>技巧:
 attach是可以带上<code>--sig-proxy=false</code>来确保<code>CTRL-D</code>或<code>CTRL-C</code>不会关闭容器</p>
-
-<ul>
-<li>删除所有停止运行的容器 <code>docker rm $(docker ps -a -q)</code></li>
-<li>获取最后(-l)一个启动的容器id(-q) <code>docker ps -l -q</code></li>
-</ul>
 
 <p>这是一些经常使用的镜像相关的数据：</p>
 
@@ -390,7 +455,7 @@ attach是可以带上<code>--sig-proxy=false</code>来确保<code>CTRL-D</code>�
 </tbody>
 </table>
 
-<h2 id="文件系统:6d93a80e55dc760775379b4fadc005db">文件系统</h2>
+<h2 id="文件系统">文件系统</h2>
 
 <p>把一个宿主机上的目录挂载到镜像里</p>
 
@@ -436,7 +501,7 @@ attach是可以带上<code>--sig-proxy=false</code>来确保<code>CTRL-D</code>�
 
 <p>建议使用Data Volume Container不要使用过去的方法了</p>
 
-<h2 id="网络系统:6d93a80e55dc760775379b4fadc005db">网络系统</h2>
+<h2 id="网络系统">网络系统</h2>
 
 <p>使用<code>-p</code>进行映射端口,第一个是外部端口,第二个是内部端口</p>
 
@@ -460,7 +525,7 @@ docker run -it -p 8080:8000 --name vps vpsimage bash
 
 <p><code>docker inspect vps</code> 查看容器的详细配置信息,包括端口映射,来源镜像,日志存储路径,内存,CPU等</p>
 
-<h2 id="容器与镜像:6d93a80e55dc760775379b4fadc005db">容器与镜像</h2>
+<h2 id="容器与镜像">容器与镜像</h2>
 
 <p><code>docker export</code> <code>docker import</code>  与  <code>docker save</code>  <code>docker load</code></p>
 
@@ -501,10 +566,14 @@ docker run -it -p 8080:8000 --name vps vpsimage bash
 <blockquote>
 <p><code>docker rm $(docker ps -q -a)</code> 一次性删除所有的容器</p>
 
+<p><code>docker rm $(docker ps -a -q)</code> 删除所有停止运行的容器</p>
+
 <p><code>docker rmi $(docker images -q)</code> 一次性删除所有的镜像</p>
+
+<p><code>docker ps -l -q</code> 获取最后(-l)一个启动的容器id(-q)</p>
 </blockquote>
 
-<h2 id="国内加速:6d93a80e55dc760775379b4fadc005db">国内加速</h2>
+<h2 id="国内加速">国内加速</h2>
 
 <p><code>docker pull</code> 默认采用https通信,国内一般提供镜像,或者自己的registry,可以采用
 例如<code>docker pull registry.aliyuncs.com/suconghou/http</code> 这种方式指明registry</p>
@@ -516,7 +585,7 @@ docker run -it -p 8080:8000 --name vps vpsimage bash
 
 <p>网易提供的镜像 <a href="https://hub-mirror.c.163.com/">https://hub-mirror.c.163.com/</a></p>
 
-<h2 id="使用流程:6d93a80e55dc760775379b4fadc005db">使用流程</h2>
+<h2 id="使用流程">使用流程</h2>
 
 <p>配置为<code>service</code> 见
 <a href="https://docs.docker.com/v1.7/articles/systemd/">https://docs.docker.com/v1.7/articles/systemd/</a></p>
@@ -588,7 +657,7 @@ newgrp docker
 
 <p>再次重启docker daemon,退出当前用户再次登录</p>
 
-<h2 id="根据dockerfile创建:6d93a80e55dc760775379b4fadc005db">根据Dockerfile创建</h2>
+<h2 id="根据dockerfile创建">根据Dockerfile创建</h2>
 
 <p><code>sudo docker build -t=&quot;user/imgname:tag&quot; .</code></p>
 
@@ -596,7 +665,7 @@ newgrp docker
 
 <p>&rdquo;.&rdquo; 是 Dockerfile 所在的路径（当前目录）,也可以替换为一个具体的 Dockerfile 的路径.</p>
 
-<h2 id="文件结构:6d93a80e55dc760775379b4fadc005db">文件结构</h2>
+<h2 id="文件结构">文件结构</h2>
 
 <p>进入目录查看 <code>/var/lib/docker</code></p>
 
@@ -618,7 +687,7 @@ newgrp docker
 
 <p><code>image</code></p>
 
-<h3 id="存储驱动:6d93a80e55dc760775379b4fadc005db">存储驱动</h3>
+<h3 id="存储驱动">存储驱动</h3>
 
 <p>做paas一般使用aufs驱动,用于存储大量的docker,但是aufs只在ubuntu系的内核才自带此功能.</p>
 
@@ -626,7 +695,7 @@ newgrp docker
 
 <p>overlay驱动将镜像里的各个文件还是存储在磁盘的各个文件,镜像过多存储的文件数量也很多,一般兼容性较好</p>
 
-<h2 id="构建镜像:6d93a80e55dc760775379b4fadc005db">构建镜像</h2>
+<h2 id="构建镜像">构建镜像</h2>
 
 <p>build images 使用
 <code>docker build -t=&quot;http&quot; .</code></p>
@@ -634,7 +703,7 @@ newgrp docker
 <p>-t 指明tag
 后面的.指明Dockerfile所在的目录</p>
 
-<h2 id="关联远端docker-hub仓库:6d93a80e55dc760775379b4fadc005db">关联远端Docker Hub仓库</h2>
+<h2 id="关联远端docker-hub仓库">关联远端Docker Hub仓库</h2>
 
 <p><code>docker login</code>
 输入用户名,密码,邮箱登陆</p>
@@ -652,12 +721,12 @@ newgrp docker
 			<div class="post-text">
 				
 
-<h2 id="wget:d42214d24013398e63cb86bbdfbd2d55">wget</h2>
+<h2 id="wget">wget</h2>
 
 <p><code>wget -c -O filename &quot;http://xx.com&quot;</code> 下载存储到指定文件,并指定断点续传
 <code>wget -nc -c -i url.txt</code> 批量下载文件中指定的资源(每行一个连接),跳过已下载的(同名的),并且断点续传.</p>
 
-<h2 id="curl:d42214d24013398e63cb86bbdfbd2d55">curl</h2>
+<h2 id="curl">curl</h2>
 
 <p>常用的命令</p>
 
@@ -695,7 +764,7 @@ echo www.example.com/${i}.jpg;
 done
 </code></pre>
 
-<h2 id="axel:d42214d24013398e63cb86bbdfbd2d55">Axel</h2>
+<h2 id="axel">Axel</h2>
 
 <p>下载速度最快,分段下载速度优异
 <code>axel -n 30 -a -o localfilename http://xx.com/downloadfile</code> 30个线程分段下载,存储为localfilename
@@ -706,593 +775,13 @@ axel <a href="ftp://ftp.{us,uk,br,fr}.kernel.org/pub/linux/kernel/v2.6/patch-2.6
 
 <p>axel <a href="http://itmp.suconghou.cn">http://itmp.suconghou.cn</a> hypriot-rpi-20160306-192317.img.zip <a href="http://wtmp.suconghou.cn">http://wtmp.suconghou.cn</a> hypriot-rpi-20160306-192317.img.zip <a href="http://btmp.suconghou.cn">http://btmp.suconghou.cn</a> hypriot-rpi-20160306-192317.img.zip</p>
 
-<h2 id="aria2c:d42214d24013398e63cb86bbdfbd2d55">Aria2c</h2>
+<h2 id="aria2c">Aria2c</h2>
 
 <p>aria2c支持多种协议,<code>URI</code> <code>MAGNET</code> <code>TORRENT_FILE</code> <code>METALINK_FILE</code>,也支持axel类似的分段下载</p>
 
 <p><code>aria2c -s 30 -c -o localfilename http://xx.com/downloadfile</code> 30个线程分段下载,存储为localfilename,并断点续传</p>
 
 <p><code>aria2c file1.torrent file2.torrent</code></p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/install-nginx-php-mysql-redis/"> 安装PHP7和NGINX</a>
-			</h1>
-			<p class="post-date">Fri, Jan 1, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="编译安装nginx:aa93c013153cd0b80f2e19308ae27e8a">编译安装NGINX</h2>
-
-<p>首先安装一些依赖</p>
-
-<pre><code>yum -y install gcc make autoconf automake install zlib zlib-devel openssl openssl-devel pcre-devel
-</code></pre>
-
-<pre><code>apt-get update
-apt-get -y install gcc make  openssl libssl-dev libpcre3 libpcre3-dev
-</code></pre>
-
-<p>编译安装</p>
-
-<pre><code>cd /tmp
-wget http://nginx.org/download/nginx-1.11.0.tar.gz
-tar -zxvf nginx-1.11.0.tar.gz
-cd nginx-1.11.0
-export CFLAGS=&quot;-O3&quot;
-./configure
-make &amp;&amp; make install
-</code></pre>
-
-<p>还可以添加<a href="https://github.com/cuber/ngx_http_google_filter_module">Google反代模块</a>,按下面操作编译</p>
-
-<pre><code>cd /tmp
-git clone https://github.com/cuber/ngx_http_google_filter_module
-git clone https://github.com/yaoweibin/ngx_http_substitutions_filter_module
-wget http://nginx.org/download/nginx-1.11.0.tar.gz
-tar -zxvf nginx-1.11.0.tar.gz
-cd nginx-1.11.0
-export CFLAGS=&quot;-O3&quot;
-./configure  --with-http_ssl_module  --add-module=/tmp/ngx_http_google_filter_module  --add-module=/tmp/ngx_http_substitutions_filter_module
-make &amp;&amp; make install
-</code></pre>
-
-<p>注意:重复执行,需要清理上次编译数据<code>make clean</code></p>
-
-<p><code>nginx -V</code> 查看编译的参数和已加载的模块</p>
-
-<pre><code>server {
-	listen       80;
-	server_name  g.suconghou.cn google.com www.google.com;
-	resolver 8.8.8.8;
-	expires 1d;
-	gzip on;
-	gzip_min_length 1024;
-	gzip_proxied any;
-	gzip_comp_level 3;
-	gzip_types text/plain text/javascript text/css text/json application/javascript  application/json image/jpeg image/gif image/png;
-	proxy_hide_header Set-Cookie;
-	proxy_hide_header Alt-Svc;
-	proxy_hide_header Alternate-Protocol;
-	location / {
-			google on;
-			google_scholar on;
-	}
-
-}
-
-</code></pre>
-
-<blockquote>
-<p>使用我编译的google代理的docker版本更易部署 <a href="https://hub.docker.com/r/suconghou/nginx-google/">https://hub.docker.com/r/suconghou/nginx-google/</a></p>
-</blockquote>
-
-<h3 id="各模块说明:aa93c013153cd0b80f2e19308ae27e8a">各模块说明</h3>
-
-<p>http_gzip_module提供了对gzip的基本的支持，默认是编译到nginx的发行版本里面的。</p>
-
-<p>http_gzip_static_module则是针对nginx serve的静态文件，需要编译进去才能有。比如a.html，如果启用了<code>gzip_static on</code>，如果同一目录下还有a.html.gz作为a.html压缩版本存在，那么nginx会以a.html.gz作为a.html的gzip version来serve。</p>
-
-<h3 id="配置gzip:aa93c013153cd0b80f2e19308ae27e8a">配置Gzip</h3>
-
-<p><code>gzip on</code> 开启Gzip</p>
-
-<p><code>gzip_proxied any</code></p>
-
-<h3 id="可能需要移动配置目录:aa93c013153cd0b80f2e19308ae27e8a">可能需要移动配置目录</h3>
-
-<p>在<code>nginx.conf</code>中配置<code>include /usr/local/nginx/conf/conf.d/*.conf;</code></p>
-
-<p>建立目录<code>mkdir /etc/nginx/conf.d</code></p>
-
-<p>使用<code>ln -s /etc/nginx/conf.d /usr/local/nginx/conf/conf.d</code>建立软连接</p>
-
-<h3 id="修改nginx配置:aa93c013153cd0b80f2e19308ae27e8a">修改Nginx配置</h3>
-
-<p><strong>设置最大上传文件大小</strong>,配置<code>nginx.conf</code></p>
-
-<p><code>client_max_body_size 50m</code> Default value for client_max_body_size is 1 MiB,超过大小报错<code>413 Request Entity Too Large</code></p>
-
-<p>静态由Nginx,动态转到后端</p>
-
-<pre><code>root /home/demo/goproj/src/Test/public;
-try_files $uri/index.html $uri.html $uri @goapp;
-
-location @goapp {
-  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-  proxy_set_header Host $http_host;
-  proxy_redirect off;
-  proxy_pass http://localhost:8080;
-}
-</code></pre>
-
-<h3 id="卸载apache:aa93c013153cd0b80f2e19308ae27e8a">卸载apache</h3>
-
-<p>1.完全卸载使用apt-get安装的apache
-1、sudo apt-get remove apache2
-2、sudo apt-get remove apache2.2-common
-3、sudo apt-get autoremove (此命令会自动卸载PHP)
-卸载完成</p>
-
-<p>2.rpm 方式安装的</p>
-
-<pre><code>rpm -qa|grep httpd
-</code></pre>
-
-<p>得出结果
-httpd-2.2.15-39.el6.centos.i686
-httpd-tools-2.2.15-39.el6.centos.i686</p>
-
-<p>从上往下一个一个卸载</p>
-
-<pre><code>rpm -e httpd-2.2.15
-rpm -e httpd-tools
-</code></pre>
-
-<p>ab压力测试在httpd-tools,可以不卸载;
-CenterOS 安装 ab 压力测试</p>
-
-<pre><code>yum install httpd-tools
-</code></pre>
-
-<h2 id="编译安装php7:aa93c013153cd0b80f2e19308ae27e8a">编译安装PHP7</h2>
-
-<p>最好先<code>yum update</code>一下,再安装以下依赖</p>
-
-<pre><code>yum install -y git wget curl curl-devel gcc gcc-c++ libmarypt cmake  autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libpng libpng-devel libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses curl openssl-devel gdbm-devel db4-devel libXpm-devel libX11-devel gd-devel gmp-devel readline-devel libxslt-devel expat-devel xmlrpc-c xmlrpc-c-devel
-</code></pre>
-
-<p>下载PHP7最新版本,解压,有多重压缩格式可选,其中xz最小</p>
-
-<pre><code>wget http://php.net/distributions/php-7.0.7.tar.xz
-tar -xJf php-7.0.7.tar.xz
-cd php-7.0.7
-</code></pre>
-
-<p>编译之前,可以开启O3编译优化,生成的可执行文件更小,性能更好
-<code>export CFLAGS=&quot;-O3&quot;</code></p>
-
-<p>包含部分常用扩展的编译</p>
-
-<pre><code>./configure --enable-inline-optimization --enable-static=yes --prefix=/tmp --with-config-file-path=/etc --disable-cgi  --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath --enable-zip --enable-mbstring --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd --with-openssl --with-mcrypt
-</code></pre>
-
-<p>功能更全的编译</p>
-
-<pre><code>export CFLAGS=&quot;-O3&quot;
-./configure --enable-inline-optimization --enable-static=yes --prefix=/usr/local --with-config-file-path=/etc --disable-cgi --enable-opcache --enable-fpm  --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath  --enable-zip --enable-mbstring --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd  --with-openssl --with-mcrypt
-make &amp;&amp; make install
-</code></pre>
-
-<p>其他扩展
-<code>--enable-exif --enable-calendar --with-libzip --with-xsl --with-bz2</code></p>
-
-<p>其中部分步骤可能需要root权限</p>
-
-<h3 id="可能出现的错误:aa93c013153cd0b80f2e19308ae27e8a">可能出现的错误</h3>
-
-<p>1.curl未安装
-执行
-<code>yum install curl-devel</code>
-或者 <code>sudo apt-get install curl libcurl3 libcurl3-dev</code>
-然后再次尝试编译</p>
-
-<p>2.需要安装libcrytpt</p>
-
-<pre><code>wget ftp://mcrypt.hellug.gr/pub/crypto/mcrypt/attic/libmcrypt/libmcrypt-2.5.7.tar.gz
-</code></pre>
-
-<p>安装：</p>
-
-<pre><code>tar -zxvf libmcrypt-2.5.7.tar.gz
-cd libmcrypt-2.5.7
-mkdir -p /usr/local/libmcrytpt
-./configure prefix=/usr/local/libmcrytpt/
-make &amp;&amp; make install
-</code></pre>
-
-<p>然后重新编译,设定编译参数mcrypt指定路径:
-<code>--with-mcrypt=/usr/local/libmcrytpt/</code></p>
-
-<ol>
-<li>OpenSSL相关错误</li>
-</ol>
-
-<p><code>Cannot find OpenSSL's &lt;evp.h&gt;</code>
-或者</p>
-
-<pre><code>Undefined symbols for architecture x86_64:
-  &quot;_PKCS5_PBKDF2_HMAC&quot;, referenced from:
-      _zif_openssl_pbkdf2 in openssl.o
-  &quot;_SSL_CTX_set_alpn_protos&quot;, referenced from:
-      _php_openssl_setup_crypto in xp_ssl.o
-  &quot;_SSL_CTX_set_alpn_select_cb&quot;, referenced from:
-      _php_openssl_setup_crypto in xp_ssl.o
-  &quot;_SSL_get0_alpn_selected&quot;, referenced from:
-      _php_openssl_sockop_set_option in xp_ssl.o
-  &quot;_SSL_select_next_proto&quot;, referenced from:
-      _server_alpn_callback in xp_ssl.o
-  &quot;_TLSv1_1_client_method&quot;, referenced from:
-      _php_openssl_setup_crypto in xp_ssl.o
-  &quot;_TLSv1_1_server_method&quot;, referenced from:
-      _php_openssl_setup_crypto in xp_ssl.o
-  &quot;_TLSv1_2_client_method&quot;, referenced from:
-      _php_openssl_setup_crypto in xp_ssl.o
-  &quot;_TLSv1_2_server_method&quot;, referenced from:
-      _php_openssl_setup_crypto in xp_ssl.o
-</code></pre>
-
-<p>解决:
-Linux上 <code>yum install openssl openssl-devel</code></p>
-
-<p>Mac上编译须做如下配置</p>
-
-<p><code>brew install openssl</code> 然后执行 <code>brew link openssl --force</code> 并添加环境变量
-<code>export LDFLAGS=&quot;/usr/local/opt/openssl/lib/libssl.dylib /usr/local/opt/openssl/lib/libcrypto.dylib&quot;</code></p>
-
-<p>4.configure: error: xml2-config not found. Please check your libxml2 installation.</p>
-
-<pre><code>apt-get install libxml2 libxml2-dev libmcrypt-dev openssl libssl-dev libcurl4-openssl-dev
-</code></pre>
-
-<p>5.Cannot find OpenSSL&rsquo;s libraries</p>
-
-<pre><code>apt-get install libmcrypt-dev openssl libssl-dev libcurl4-openssl-dev
-</code></pre>
-
-<p>6.configure: error: png.h not found.</p>
-
-<pre><code>apt-get install libjpeg-dev libpng-dev
-</code></pre>
-
-<ol>
-<li>make: *** [ext/fileinfo/libmagic/apprentice.lo] Error 1</li>
-</ol>
-
-<p>这是由于内存小于1G所导致.可以<code>--disable-fileinfo</code>,或者添加添加零时的swap</p>
-
-<pre><code>#创建一个大小为256M的文件
-dd if=/dev/zero of=/swapfile bs=1024 count=262144
-#把这个文件变成swap文件
-mkswap /swapfile
-#启用这个swap文件
-swapon /swapfile
-</code></pre>
-
-<p>如果要每次开机就加载</p>
-
-<pre><code>#编辑/etc/fstab文件，使在每次开机时自动加载swap文件
-/swapfile    swap    swap    default   0 0
-</code></pre>
-
-<blockquote>
-<p>注意:XEN KVM 可以创建SWAP,OVZ本身就是Virtual Environmen,不支持创建SWAP</p>
-
-<p>通过<code>df -lhT</code> 看到Type为simfs,而不是ext3,ext4,一般就不支持</p>
-</blockquote>
-
-<p><strong>提示: make 可使用多核提升编译性能</strong></p>
-
-<p>用make -j带一个参数，可以把项目进行并行编译，比如在一台双核的机器上，完全可以用<code>make -j4</code>，让make最多允许4个编译命令同时执行，这样可以更有效的利用CPU资源。</p>
-
-<p>-O这个选项控制所有的优化等级。使用优化选项会使编译过程耗费更多的时间，并且占用更多的内存，尤其是在提高优化等级的时候。
--O2是推荐的优化等级,O3是最高等级。如果编译软件出现错误，请先检查是否启用了-O3</p>
-
-<p>php编译完成以后,无缝升级php
-只需<code>kill -USR2 php-fpm master 进程的PID</code>,向php-fpm master进程发送重启指令,php-fpm的master和worker都会重新加载配置,重新运行起来.
-<code>curl -I 127.0.0.1</code>查看,新版本的fpm已经在工作了.</p>
-
-<p>PHP的数据库长连接有没有效,
-实际测试,采用香港服务器远程连接mysql,非长连接模式下耗时约600ms,使用PDO长连接,耗时下降到260ms左右,是有一定作用的.
-但是长连接不适用于CLI模式,CLI模式下,php进程退出,连接即断开.</p>
-
-<h2 id="安装一些其他扩展:aa93c013153cd0b80f2e19308ae27e8a">安装一些其他扩展</h2>
-
-<p>php redis 扩展</p>
-
-<pre><code>wget -c -O php-redis.zip https://github.com/phpredis/phpredis/archive/php7.zip
-unzip php-redis.zip
-cd phpredis-php7
-phpize
-./configure --enable-redis-igbinary
-make &amp;&amp; make install
-
-</code></pre>
-
-<p>安装libmemcached,memcached依赖此项</p>
-
-<pre><code>wget -c https://launchpad.net/libmemcached/1.0/1.0.18/+download/libmemcached-1.0.18.tar.gz
-tar -xzf libmemcached-1.0.18.tar.gz -C /tmp
-cd /tmp/libmemcached-1.0.18
-./configure
-make &amp;&amp; make install
-</code></pre>
-
-<p>php memcached 扩展</p>
-
-<pre><code>wget -c -O php-memcached.zip https://github.com/php-memcached-dev/php-memcached/archive/php7.zip
-unzip php-memcached.zip
-cd php-memcached-php7
-phpize
-make &amp;&amp; make install
-</code></pre>
-
-<p>安装memcached,见<a href="http://memcached.org/downloads">http://memcached.org/downloads</a></p>
-
-<pre><code>wget http://memcached.org/latest
-tar -zxvf memcached-1.x.x.tar.gz
-cd memcached-1.x.x
-./configure &amp;&amp; make &amp;&amp; make test &amp;&amp; sudo make install
-</code></pre>
-
-<p>安装swoole扩展</p>
-
-<pre><code>wget -c -O php-swoole.zip https://github.com/swoole/swoole-src/archive/master.zip
-unzip php-swoole.zip
-cd swoole-src-master
-phpize
-./configure
-make &amp;&amp; make install
-</code></pre>
-
-<h2 id="静态编译redis-memcached-opcache到php7:aa93c013153cd0b80f2e19308ae27e8a">静态编译redis,memcached,opcache到php7</h2>
-
-<pre><code>wget -c http://php.net/distributions/php-7.0.7.tar.xz
-wget -c -O php-redis.zip https://github.com/phpredis/phpredis/archive/php7.zip
-wget -c -O php-memcached.zip https://github.com/php-memcached-dev/php-memcached/archive/php7.zip
-tar -xJf php-7.0.7.tar.xz
-unzip php-redis.zip -d php-7.0.7/ext
-unzip php-memcached.zip -d php-7.0.7/ext
-export CFLAGS=&quot;-O3&quot;
-cd php-7.0.7
-rm -rf configure
-./buildconf --force
-./configure --help
-./configure --enable-inline-optimization --enable-static=yes --prefix=/tmp --with-config-file-path=/etc --enable-opcache --enable-redis --enable-memcached --disable-memcached-sasl --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath --enable-zip --enable-mbstring --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd --with-openssl
-make
-make install
-</code></pre>
-
-<p>可能出现的错误</p>
-
-<p>1.<code>configure: error: no, sasl.h is not available. Run configure with --disable-memcached-sasl to disable this check</code></p>
-
-<p>解决:</p>
-
-<p><code>yum install cyrus-sasl-devel</code> 或 <code>sudo apt-get install libsasl2-dev</code></p>
-
-<p>或者禁用掉</p>
-
-<p>搭配PHP的配置</p>
-
-<pre><code>server{
-	listen 8080;
-	server_name 127.0.0.1;
-	index index.html index.php;
-	root /data/sites/default;
-	location / {
-			try_files $uri $uri/ /index.php?$args;
-	}
-	location ~ \.php$ {
-			try_files $uri /index.php?$args;
-			fastcgi_pass  unix:/var/run/php-fpm.sock;
-			fastcgi_index index.php;
-			fastcgi_param SCRIPT_FILENAME  $document_root$fastcgi_script_name;
-			include        fastcgi_params;
-	}
-}
-
-</code></pre>
-
-<p>一个Server实现多个域名,多个主机</p>
-
-<pre><code>server{
-	listen 8080;
-	server_name *.git.suconghou.cn;
-	index index.html index.php;
-	if ($host ~* ^((\w+)\.git\.suconghou\.cn)$) {
-			set $subdomain $2;
-	}
-	root /data/git/$subdomain;
-	add_header X-Root &quot;$subdomain&quot;;
-	location / {
-			try_files $uri $uri/ /index.php?$args;
-	}
-	location ~ \.php$ {
-			try_files $uri /index.php?$args;
-			fastcgi_pass  unix:/var/run/php-fpm.sock;
-			fastcgi_index index.php;
-			fastcgi_param SCRIPT_FILENAME  $document_root$fastcgi_script_name;
-			include        fastcgi_params;
-	}
-
-}
-</code></pre>
-
-<p>Nginx里同<code>fastcgi_params</code>文件一样,还存在一份配置<code>fastcgi.conf</code>,只不过后者多了一行<code>fastcgi_param  SCRIPT_FILENAME    $document_root$fastcgi_script_name;</code>
-我们可以直接使用它来替换<code>fastcgi_params</code>文件配置,同时我们也都添加了try_files检测,也可以略去<code>fastcgi_index</code>,故可以简写为:</p>
-
-<pre><code>location ~ \.php$ {
-	try_files $uri /index.php?$args;
-	fastcgi_pass  unix:/var/run/php-fpm.sock;
-	include fastcgi.conf;
-}
-</code></pre>
-
-<p>注意<code>fastcgi_param</code>指令是数组型的,内层替换外层,但是同级多次使用的时候，是新增而不是替换。注意不要重复使用.</p>
-
-<p>php-fpm 运行时错误
-1. [pool www] cannot get gid for group &lsquo;nobody&rsquo;
-<code>groupadd nobody</code>或者
- 修改php-fpm.conf</p>
-
-<pre><code>user = www-data
-group = www-data
-</code></pre>
-
-<h2 id="安装mariadb:aa93c013153cd0b80f2e19308ae27e8a">安装MariaDB</h2>
-
-<pre><code>apt-get install mariadb-server
-</code></pre>
-
-<p>MySql</p>
-
-<pre><code>apt-get install mysql-server
-</code></pre>
-
-<p>安装过程中要求设定一个root密码,安装完<code>service mysql status</code>查看运行状态,<code>sudo service mysql restart</code>可以重启</p>
-
-<h2 id="开机启动脚本:aa93c013153cd0b80f2e19308ae27e8a">开机启动脚本</h2>
-
-<p>Debian and Ubuntu function at <code>/lib/lsb/init-functions</code>
-<code>ln -s  /lib/lsb/init-functions /etc/init.d/functions</code></p>
-
-<p>nginx</p>
-
-<pre><code>#!/bin/sh
-#chkconfig: 2345 90 91
-
-binpath=`which nginx`
-prog=$(basename $binpath)
-. /etc/init.d/functions
-. /etc/sysconfig/network
-[ &quot;$NETWORKING&quot; = &quot;no&quot; ] &amp;&amp; exit 0
-[ -x $binpath ] || exit 0
-[ -f /etc/sysconfig/$prog ] &amp;&amp; . /etc/sysconfig/$prog
-
-start(){
-	echo -n $&quot;Starting $prog: &quot;
-	$prog || echo -n &quot;$prog already running&quot;
-}
-stop(){
-	echo -n $&quot;Stopping $prog: &quot;
-	$prog -s quit
-}
-restart(){
-	stop
-	sleep 1
-	start
-}
-reload() {
-	echo -n $&quot;Reloading $prog: &quot;
-	$prog -s reload
-}
-case &quot;$1&quot; in
-start)
-    $1
-    ;;
-stop)
-    $1
-    ;;
-restart)
-    $1
-    ;;
-reload)
-    $1
-    ;;
-*)
-echo $&quot;Usage: $0 {start|stop|restart|reload}&quot;
-exit 2
-esac
-</code></pre>
-
-<h3 id="php-fpm:aa93c013153cd0b80f2e19308ae27e8a">php-fpm</h3>
-
-<p><code>sudo vim /etc/init.d/php-fpm</code></p>
-
-<pre><code>#!/bin/sh
-#chkconfig: 2345 90 91
-
-binpath=`which php-fpm`
-prog=$(basename $binpath)
-. /etc/init.d/functions
-. /etc/sysconfig/network
-[ &quot;$NETWORKING&quot; = &quot;no&quot; ] &amp;&amp; exit 0
-[ -x $binpath ] || exit 0
-[ -f /etc/sysconfig/$prog ] &amp;&amp; . /etc/sysconfig/$prog
-pidfile=/var/run/php-fpm.pid
-
-
-start(){
-	echo -n $&quot;Starting $prog: &quot;
-	$prog || echo -n &quot;$prog already running&quot;
-}
-stop(){
-	echo -n $&quot;Stopping $prog: &quot;
-	kill -INT `cat $pidfile`
-}
-restart(){
-	stop
-	sleep 1
-	start
-}
-reload() {
-	echo -n $&quot;Reloading $prog: &quot;
-	kill -USR2 `cat $pidfile`
-}
-case &quot;$1&quot; in
-start)
-    $1
-    ;;
-stop)
-    $1
-    ;;
-restart)
-    $1
-    ;;
-reload)
-    $1
-    ;;
-*)
-echo $&quot;Usage: $0 {start|stop|restart|reload}&quot;
-exit 2
-esac
-</code></pre>
-
-<pre><code>##  添加执行权限
-sudo chmod a+x /etc/init.d/nginx
-sudo chmod a+x /etc/init.d/php-fpm
-
-##  加入服务
-sudo chkconfig --add nginx
-sudo chkconfig --add php-fpm
-
-##   开机自启
-sudo chkconfig nginx on
-sudo chkconfig php-fpm on
-
-## 查看是否开机启动
-
-sudo chkconfig --list nginx
-</code></pre>
-
-<p>Ubuntu里没有chkconfig
-可以使用sysv-rc-conf
-<code>sudo apt-get install sysv-rc-conf</code>
-然后直接使用 sysv-rc-conf 来管理,或者<code>sudo sysv-rc-conf nginx on</code>直接把<code>/etc/init.d/nginx</code> 加入到系统自动 启动列表中</p>
 
 			</div>
 		</div>

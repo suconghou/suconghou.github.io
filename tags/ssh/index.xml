@@ -10,12 +10,16 @@
     <atom:link href="http://blog.suconghou.cn/tags/ssh/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>避免SSH自动断开连接</title>
-      <link>http://blog.suconghou.cn/post/prevent-broken-pipe-on-ssh/</link>
+      <title>SSH</title>
+      <link>http://blog.suconghou.cn/post/linux-ssh/</link>
       <pubDate>Thu, 07 Jan 2016 13:47:22 +0800</pubDate>
       
-      <guid>http://blog.suconghou.cn/post/prevent-broken-pipe-on-ssh/</guid>
-      <description>&lt;p&gt;如果有一段时间在SSH连接上无数据传输，连接就会断开,以下设定可以解决这个问题&lt;/p&gt;
+      <guid>http://blog.suconghou.cn/post/linux-ssh/</guid>
+      <description>
+
+&lt;h2 id=&#34;避免ssh自动断开连接&#34;&gt;避免SSH自动断开连接&lt;/h2&gt;
+
+&lt;p&gt;如果有一段时间在SSH连接上无数据传输，连接就会断开,以下设定可以解决这个问题&lt;/p&gt;
 
 &lt;p&gt;方案一：在客户端设置&lt;/p&gt;
 
@@ -36,6 +40,29 @@
 &lt;p&gt;如果您只想让当前的 ssh 保持连接，可以使用以下的命令：&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;ssh -o ServerAliveInterval=60 user@sshserver&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;ssh隧道&#34;&gt;ssh隧道&lt;/h2&gt;
+
+&lt;p&gt;-L [本地监听IP:]本地监听端口号:目标主机IP:目标端口号
+(其中,“本地监听IP”可以省略，省略的话就认为是“0.0.0.0”，但为了安全性考虑，请务必使用“127.0.0.1”做为本地监听端口， 而不要使用默认的“0.0.0.0”。）&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ssh -D 8080 user@host&lt;/code&gt;
+SSH会建立一个socket，去监听本地的8080端口。一旦有数据传向那个端口，就自动把它转移到SSH连接上面，发往远程主机。可以想象，如果8080端口原来是一个不加密端口，现在将变成一个加密端口。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ssh -L 2121:host2:21 host3&lt;/code&gt;
+命令中的L参数一共接受三个值，分别是&amp;rdquo;本地端口:目标主机:目标主机端口&amp;rdquo;，它们之间用冒号分隔。这条命令的意思，就是指定SSH绑定本地端口2121，然后指定host3将所有的数据，转发到目标主机host2的21端口（假定host2运行FTP，默认端口为21）。
+这样一来，我们只要连接host1的2121端口，就等于连上了host2的21端口。&lt;/p&gt;
+
+&lt;h3 id=&#34;使用socks5代理&#34;&gt;使用socks5代理&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;alias socksproxy=&amp;quot;ssh -NT -f -D 0.0.0.0:1090  -p 1234 root@host&amp;quot;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;-N 不打开远程的shell
+-T 不分配tty
+-f 后台运行&lt;/p&gt;
+
+&lt;p&gt;执行&lt;code&gt;socksproxy&lt;/code&gt;后就建立了一条ssh socks5 proxy,本地使用127.0.0.1:1090就可以使用服务器中转流量.&lt;/p&gt;
 </description>
     </item>
     

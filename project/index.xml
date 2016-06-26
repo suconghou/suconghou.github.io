@@ -17,17 +17,17 @@
       <guid>http://blog.suconghou.cn/project/air/</guid>
       <description>
 
-&lt;h1 id=&#34;serve-static-files-in-the-air:d24a8958531c812b1616d9380a6373a1&#34;&gt;serve static files in the air&lt;/h1&gt;
+&lt;h1 id=&#34;serve-static-files-in-the-air&#34;&gt;serve static files in the air&lt;/h1&gt;
 
 &lt;p&gt;在线解析压缩合并Less,打包压缩Javascript.&lt;/p&gt;
 
 &lt;p&gt;手动压缩打包,执行Lint,静态服务器,缓存版本控制,完美结合CDN&lt;/p&gt;
 
-&lt;h1 id=&#34;安装:d24a8958531c812b1616d9380a6373a1&#34;&gt;安装&lt;/h1&gt;
+&lt;h1 id=&#34;安装&#34;&gt;安装&lt;/h1&gt;
 
 &lt;p&gt;&lt;code&gt;npm install airs -g&lt;/code&gt;&lt;/p&gt;
 
-&lt;h1 id=&#34;基本参数:d24a8958531c812b1616d9380a6373a1&#34;&gt;基本参数&lt;/h1&gt;
+&lt;h1 id=&#34;基本参数&#34;&gt;基本参数&lt;/h1&gt;
 
 &lt;ul&gt;
 &lt;li&gt;纯静态项目,在项目根目录直接执行&lt;code&gt;air&lt;/code&gt;&lt;/li&gt;
@@ -101,7 +101,7 @@
 &lt;p&gt;同时可添加参数 &lt;code&gt;--less=/data/pathto/lesslib&lt;/code&gt; 指定lessLib路径,可接受相对路径和绝对路径&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h1 id=&#34;目录结构:d24a8958531c812b1616d9380a6373a1&#34;&gt;目录结构&lt;/h1&gt;
+&lt;h1 id=&#34;目录结构&#34;&gt;目录结构&lt;/h1&gt;
 
 &lt;p&gt;目录结构采用类似 &lt;code&gt;项目名/static/css/style.less&lt;/code&gt;&lt;/p&gt;
 
@@ -162,7 +162,7 @@
 | |____mixins.less
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h1 id=&#34;webhook:d24a8958531c812b1616d9380a6373a1&#34;&gt;Webhook&lt;/h1&gt;
+&lt;h1 id=&#34;webhook&#34;&gt;Webhook&lt;/h1&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;/webhook/gitpull&lt;/code&gt; 执行 &lt;code&gt;git pull origin master&lt;/code&gt; 立刻拉取代码更新.&lt;/li&gt;
@@ -176,7 +176,7 @@
 &lt;p&gt;在网址后面添加?key=密码即可&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h1 id=&#34;性能:d24a8958531c812b1616d9380a6373a1&#34;&gt;性能&lt;/h1&gt;
+&lt;h1 id=&#34;性能&#34;&gt;性能&lt;/h1&gt;
 
 &lt;p&gt;所有的Less编译和压缩,Javascript合并与压缩均在第一次访问的时候执行&lt;/p&gt;
 
@@ -188,7 +188,7 @@
 
 &lt;p&gt;本地开发和线上服务都完全无需担心.&lt;/p&gt;
 
-&lt;h1 id=&#34;缓存:d24a8958531c812b1616d9380a6373a1&#34;&gt;缓存&lt;/h1&gt;
+&lt;h1 id=&#34;缓存&#34;&gt;缓存&lt;/h1&gt;
 
 &lt;p&gt;内存缓存保存最近一次编译的版本号.&lt;/p&gt;
 
@@ -198,7 +198,7 @@
 
 &lt;p&gt;可以放心开启强缓存.&lt;/p&gt;
 
-&lt;h1 id=&#34;共享:d24a8958531c812b1616d9380a6373a1&#34;&gt;共享&lt;/h1&gt;
+&lt;h1 id=&#34;共享&#34;&gt;共享&lt;/h1&gt;
 
 &lt;p&gt;根目录下&lt;code&gt;less&lt;/code&gt;文件夹作为共享文件夹.&lt;/p&gt;
 
@@ -206,7 +206,7 @@
 
 &lt;p&gt;可放置mixins等.&lt;/p&gt;
 
-&lt;h1 id=&#34;示例:d24a8958531c812b1616d9380a6373a1&#34;&gt;示例&lt;/h1&gt;
+&lt;h1 id=&#34;示例&#34;&gt;示例&lt;/h1&gt;
 
 &lt;blockquote&gt;
 &lt;p&gt;本地开发 &lt;code&gt;air develop -w&lt;/code&gt;&lt;/p&gt;

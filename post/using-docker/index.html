@@ -38,7 +38,7 @@
 		<div class="post-text">
 			
 
-<h2 id="安装docker:6d93a80e55dc760775379b4fadc005db">安装Docker</h2>
+<h2 id="安装docker">安装Docker</h2>
 
 <p>docker 安装需要Linux内核在3.10.0以上,仅支持Linux,在Windows和MacOs上也是基于虚拟机方式运行,需要提前安装虚拟机</p>
 
@@ -61,9 +61,11 @@
 
 <p>查看是否是64位系统<code>uname -i</code></p>
 
-<h3 id="下载安装:6d93a80e55dc760775379b4fadc005db">下载安装</h3>
+<h3 id="下载安装">下载安装</h3>
 
-<p><strong>docker-1-11-1</strong> <a href="http://www.oschina.net/news/72899/docker-1-11-1">各平台下载地址</a></p>
+<p><a href="http://www.oschina.net/news/73935/docker-v-1-11-2">各平台下载地址</a></p>
+
+<p><a href="https://docs.docker.com/engine/installation/linux/centos/">官方安装教程</a></p>
 
 <p>或者<code>http://get.daocloud.io/docker/builds/</code>查看</p>
 
@@ -71,8 +73,8 @@
 
 <p>安装完整以后,可以移动到<code>/usr/bin</code>,即可使用<code>docker</code>和<code>sudo docker</code>命令</p>
 
-<pre><code>wget https://get.docker.com/builds/Linux/x86_64/docker-1.11.1.tgz
-tar zxvf docker-1.11.1.tgz
+<pre><code>wget https://get.docker.com/builds/Linux/x86_64/docker-1.11.2.tgz
+tar zxvf docker-1.11.2.tgz
 cd docker
 ls -lh
 </code></pre>
@@ -89,7 +91,7 @@ ls -lh
 
 <p>移动到<code>/usr/bin/</code> 即可替换旧版本 <code>mv * /usr/bin/</code></p>
 
-<h2 id="基本使用:6d93a80e55dc760775379b4fadc005db">基本使用</h2>
+<h2 id="基本使用">基本使用</h2>
 
 <p>运行<code>docker -v</code>即可查看当前docker版本
 docker 分为两部分,一分部是docker server , 一部分是docker client
@@ -99,6 +101,27 @@ docker 分为两部分,一分部是docker server , 一部分是docker client
 下载 <code>docker pull learn/tutorial</code>, 下载时要写完整名字</p>
 
 <p><a href="https://hub.docker.com/explore/">官方Docker镜像一览</a></p>
+
+<blockquote>
+<p>还可以使用<code>yum update &amp;&amp; yum install docker</code> 安装docker,使用二进制方式安装的docker不支持<code>devicemapper</code>驱动,yum安装的支持.
+yum安装的版本落后于官方最新版,可以使用官方的yum源</p>
+</blockquote>
+
+<pre><code>sudo tee /etc/yum.repos.d/docker.repo &lt;&lt;-'EOF'
+[dockerrepo]
+name=Docker Repository
+baseurl=https://yum.dockerproject.org/repo/main/centos/$releasever/
+enabled=1
+gpgcheck=1
+gpgkey=https://yum.dockerproject.org/gpg
+EOF
+</code></pre>
+
+<p>然后<code>yum info docker-engine</code>可以看到官方的docker版本.执行<code>yum install docker-engine</code>安装</p>
+
+<p><code>sudo service docker start</code> 启动服务,开机启动<code>sudo chkconfig docker on</code></p>
+
+<p>如果你以前采用<code>yum install docker</code>安装过非官方源里的docker,需要先卸载<code>yum remove docker*</code></p>
 
 <p>下载官方ubuntu <code>docker pull ubuntu</code></p>
 
@@ -146,11 +169,6 @@ CONTAINER可以是最前面的CONTAINER ID ,也可以是最后面的NAMES</p>
 
 <p>技巧:
 attach是可以带上<code>--sig-proxy=false</code>来确保<code>CTRL-D</code>或<code>CTRL-C</code>不会关闭容器</p>
-
-<ul>
-<li>删除所有停止运行的容器 <code>docker rm $(docker ps -a -q)</code></li>
-<li>获取最后(-l)一个启动的容器id(-q) <code>docker ps -l -q</code></li>
-</ul>
 
 <p>这是一些经常使用的镜像相关的数据：</p>
 
@@ -208,7 +226,7 @@ attach是可以带上<code>--sig-proxy=false</code>来确保<code>CTRL-D</code>�
 </tbody>
 </table>
 
-<h2 id="文件系统:6d93a80e55dc760775379b4fadc005db">文件系统</h2>
+<h2 id="文件系统">文件系统</h2>
 
 <p>把一个宿主机上的目录挂载到镜像里</p>
 
@@ -254,7 +272,7 @@ attach是可以带上<code>--sig-proxy=false</code>来确保<code>CTRL-D</code>�
 
 <p>建议使用Data Volume Container不要使用过去的方法了</p>
 
-<h2 id="网络系统:6d93a80e55dc760775379b4fadc005db">网络系统</h2>
+<h2 id="网络系统">网络系统</h2>
 
 <p>使用<code>-p</code>进行映射端口,第一个是外部端口,第二个是内部端口</p>
 
@@ -278,7 +296,7 @@ docker run -it -p 8080:8000 --name vps vpsimage bash
 
 <p><code>docker inspect vps</code> 查看容器的详细配置信息,包括端口映射,来源镜像,日志存储路径,内存,CPU等</p>
 
-<h2 id="容器与镜像:6d93a80e55dc760775379b4fadc005db">容器与镜像</h2>
+<h2 id="容器与镜像">容器与镜像</h2>
 
 <p><code>docker export</code> <code>docker import</code>  与  <code>docker save</code>  <code>docker load</code></p>
 
@@ -319,10 +337,14 @@ docker run -it -p 8080:8000 --name vps vpsimage bash
 <blockquote>
 <p><code>docker rm $(docker ps -q -a)</code> 一次性删除所有的容器</p>
 
+<p><code>docker rm $(docker ps -a -q)</code> 删除所有停止运行的容器</p>
+
 <p><code>docker rmi $(docker images -q)</code> 一次性删除所有的镜像</p>
+
+<p><code>docker ps -l -q</code> 获取最后(-l)一个启动的容器id(-q)</p>
 </blockquote>
 
-<h2 id="国内加速:6d93a80e55dc760775379b4fadc005db">国内加速</h2>
+<h2 id="国内加速">国内加速</h2>
 
 <p><code>docker pull</code> 默认采用https通信,国内一般提供镜像,或者自己的registry,可以采用
 例如<code>docker pull registry.aliyuncs.com/suconghou/http</code> 这种方式指明registry</p>
@@ -334,7 +356,7 @@ docker run -it -p 8080:8000 --name vps vpsimage bash
 
 <p>网易提供的镜像 <a href="https://hub-mirror.c.163.com/">https://hub-mirror.c.163.com/</a></p>
 
-<h2 id="使用流程:6d93a80e55dc760775379b4fadc005db">使用流程</h2>
+<h2 id="使用流程">使用流程</h2>
 
 <p>配置为<code>service</code> 见
 <a href="https://docs.docker.com/v1.7/articles/systemd/">https://docs.docker.com/v1.7/articles/systemd/</a></p>
@@ -406,7 +428,7 @@ newgrp docker
 
 <p>再次重启docker daemon,退出当前用户再次登录</p>
 
-<h2 id="根据dockerfile创建:6d93a80e55dc760775379b4fadc005db">根据Dockerfile创建</h2>
+<h2 id="根据dockerfile创建">根据Dockerfile创建</h2>
 
 <p><code>sudo docker build -t=&quot;user/imgname:tag&quot; .</code></p>
 
@@ -414,7 +436,7 @@ newgrp docker
 
 <p>&rdquo;.&rdquo; 是 Dockerfile 所在的路径（当前目录）,也可以替换为一个具体的 Dockerfile 的路径.</p>
 
-<h2 id="文件结构:6d93a80e55dc760775379b4fadc005db">文件结构</h2>
+<h2 id="文件结构">文件结构</h2>
 
 <p>进入目录查看 <code>/var/lib/docker</code></p>
 
@@ -436,7 +458,7 @@ newgrp docker
 
 <p><code>image</code></p>
 
-<h3 id="存储驱动:6d93a80e55dc760775379b4fadc005db">存储驱动</h3>
+<h3 id="存储驱动">存储驱动</h3>
 
 <p>做paas一般使用aufs驱动,用于存储大量的docker,但是aufs只在ubuntu系的内核才自带此功能.</p>
 
@@ -444,7 +466,7 @@ newgrp docker
 
 <p>overlay驱动将镜像里的各个文件还是存储在磁盘的各个文件,镜像过多存储的文件数量也很多,一般兼容性较好</p>
 
-<h2 id="构建镜像:6d93a80e55dc760775379b4fadc005db">构建镜像</h2>
+<h2 id="构建镜像">构建镜像</h2>
 
 <p>build images 使用
 <code>docker build -t=&quot;http&quot; .</code></p>
@@ -452,7 +474,7 @@ newgrp docker
 <p>-t 指明tag
 后面的.指明Dockerfile所在的目录</p>
 
-<h2 id="关联远端docker-hub仓库:6d93a80e55dc760775379b4fadc005db">关联远端Docker Hub仓库</h2>
+<h2 id="关联远端docker-hub仓库">关联远端Docker Hub仓库</h2>
 
 <p><code>docker login</code>
 输入用户名,密码,邮箱登陆</p>

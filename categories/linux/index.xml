@@ -17,13 +17,13 @@
       <guid>http://blog.suconghou.cn/post/linux/</guid>
       <description>
 
-&lt;h2 id=&#34;linux实用命令:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;Linux实用命令&lt;/h2&gt;
+&lt;h2 id=&#34;linux实用命令&#34;&gt;Linux实用命令&lt;/h2&gt;
 
-&lt;h2 id=&#34;w:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;w&lt;/h2&gt;
+&lt;h2 id=&#34;w&#34;&gt;w&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;w&lt;/code&gt;命令能容清晰的显示,服务器在线时间,负载以及当前登陆的用户&lt;/p&gt;
 
-&lt;h2 id=&#34;vmstat:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;vmstat&lt;/h2&gt;
+&lt;h2 id=&#34;vmstat&#34;&gt;vmstat&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;vmstat&lt;/code&gt; 显示开机以来的平均值，而不是前一秒的值
 &lt;code&gt;vmstat 1&lt;/code&gt;命令指定一个参数 1 运行，来打印每一秒的统计摘要.
@@ -49,19 +49,19 @@ us, sy, id, wa, st：这些都是平均了所有 CPU 的 CPU 分解时间。它�
 
 &lt;p&gt;SZ（DATA）: 映射到内存中的页面, 这些页面仅由进程单独使用. 这也是我们最关心地方: 进程实际占用的内存数。&lt;/p&gt;
 
-&lt;h2 id=&#34;top:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;top&lt;/h2&gt;
+&lt;h2 id=&#34;top&#34;&gt;top&lt;/h2&gt;
 
-&lt;h2 id=&#34;free:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;free&lt;/h2&gt;
+&lt;h2 id=&#34;free&#34;&gt;free&lt;/h2&gt;
 
-&lt;h2 id=&#34;ssh:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;ssh&lt;/h2&gt;
+&lt;h2 id=&#34;ssh&#34;&gt;ssh&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;ssh-copy-id -i ~/.ssh/id_rsa.pub root@host&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;ssh-copy-id -i ~/.ssh/id_rsa.pub -p 26671 root@host&lt;/code&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;磁盘相关:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;磁盘相关&lt;/h2&gt;
+&lt;h2 id=&#34;磁盘相关&#34;&gt;磁盘相关&lt;/h2&gt;
 
-&lt;h3 id=&#34;dd:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;dd&lt;/h3&gt;
+&lt;h3 id=&#34;dd&#34;&gt;dd&lt;/h3&gt;
 
 &lt;p&gt;&lt;code&gt;dd&lt;/code&gt;把指定的输入文件拷贝到指定的输出文件中,并且在拷贝的过程中可以进行格式转换。&lt;/p&gt;
 
@@ -73,17 +73,17 @@ count = blocks 只拷贝输入的blocks块&lt;/p&gt;
 &lt;p&gt;创建一个100M的空文件
 &lt;code&gt;dd if=/dev/zero of=hello.txt bs=100m count=1&lt;/code&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;查看当前目录下所有一级子目录文件夹大小:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;查看当前目录下所有一级子目录文件夹大小&lt;/h2&gt;
+&lt;h2 id=&#34;查看当前目录下所有一级子目录文件夹大小&#34;&gt;查看当前目录下所有一级子目录文件夹大小&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;du -h --max-depth=1&lt;/code&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;查看当前目录下所有一级子目录文件夹大小-并排序:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;查看当前目录下所有一级子目录文件夹大小 并排序&lt;/h2&gt;
+&lt;h2 id=&#34;查看当前目录下所有一级子目录文件夹大小-并排序&#34;&gt;查看当前目录下所有一级子目录文件夹大小 并排序&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;du -h --max-depth=1 |sort&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;以上两条命令不适用于MacOs,可以使用&lt;code&gt;du -sh *&lt;/code&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;一份linux别名和函数库:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;一份Linux别名和函数库&lt;/h2&gt;
+&lt;h2 id=&#34;一份linux别名和函数库&#34;&gt;一份Linux别名和函数库&lt;/h2&gt;
 
 &lt;pre&gt;&lt;code&gt;alias tree=&amp;quot;find . -print | sed -e &#39;s;[^/]*/;|____;g;s;____|; |;g&#39; &amp;quot;;
 alias cls=&amp;quot;cd $1;ls -lh;&amp;quot;;
@@ -150,12 +150,12 @@ echo &amp;quot;*****************************&amp;quot;
 
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;解决can-t-set-the-locale-make-sure-lc-and-lang-are-correct:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;解决can&amp;rsquo;t set the locale; make sure $LC_* and $LANG are correct&lt;/h2&gt;
+&lt;h2 id=&#34;解决can-t-set-the-locale-make-sure-lc-and-lang-are-correct&#34;&gt;解决can&amp;rsquo;t set the locale; make sure $LC_* and $LANG are correct&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian&#34;&gt;https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian&lt;/a&gt;
 &lt;code&gt;照着全部做下来&lt;/code&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;vim乱码解决:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;Vim乱码解决&lt;/h2&gt;
+&lt;h2 id=&#34;vim乱码解决&#34;&gt;Vim乱码解决&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;vim ~/.vimrc&lt;/code&gt;&lt;/p&gt;
 
@@ -166,7 +166,7 @@ set encoding=utf-8
 
 &lt;p&gt;检视和控制systemd的主要命令是systemctl&lt;/p&gt;
 
-&lt;p&gt;详细使用见&lt;a href=&#34;https://wiki.archlinux.org/index.php/systemd_(简体中文&#34;&gt;https://wiki.archlinux.org/index.php/systemd_(简体中文)&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;详细使用见&lt;a href=&#34;https://wiki.archlinux.org/index.php/systemd_(简体中文)&#34;&gt;https://wiki.archlinux.org/index.php/systemd_(简体中文)&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Centos7 用&lt;code&gt;systemctl&lt;/code&gt;取代了&lt;code&gt;service&lt;/code&gt;
 旧版本的 &lt;code&gt;service docker start&lt;/code&gt; 改为&lt;code&gt;systemctl start docker&lt;/code&gt;
