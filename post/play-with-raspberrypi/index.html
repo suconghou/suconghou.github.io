@@ -61,11 +61,16 @@ root 密码 centos</p>
 
 <p><a href="https://osmc.tv/download/">下载一览</a>,选择<code>Disk images</code>,此系统较省资源,默认开机进入OSMC,img.gz 大小约160M</p>
 
-<pre><code>cd /tmp
-axel -n 20 http://download.osmc.tv/installers/diskimages/OSMC_TGT_rbp2_20160502.img.gz
-md5sum OSMC_TGT_rbp2_20160502.img.gz
+<pre><code>OSMC_FILE=OSMC_TGT_rbp2_20160621.img.gz
+cd /data/tmp
+axel -n 20 http://download.osmc.tv/installers/diskimages/$OSMC_FILE
+md5sum $OSMC_FILE
 ls -lh
 </code></pre>
+
+<blockquote>
+<p>使用清华大学镜像站国内下载速度更快: <a href="https://mirrors.tuna.tsinghua.edu.cn/osmc/osmc/download/installers/">https://mirrors.tuna.tsinghua.edu.cn/osmc/osmc/download/installers/</a></p>
+</blockquote>
 
 <p>插入内存卡,开始烧写到内存卡中.烧写之前需要取消挂载</p>
 
@@ -75,10 +80,10 @@ ls -lh
 
 <p>烧写,烧写过程中读卡器不断闪烁.</p>
 
-<pre><code>gzip -dc /tmp/OSMC_TGT_rbp2_20160502.img.gz | sudo dd of=/dev/disk2 bs=8k
+<pre><code>gzip -dc /data/tmp/$OSMC_FILE | sudo dd of=/dev/disk2 bs=8k
 </code></pre>
 
-<p><code>dd if=/dev/zero of=hello.txt bs=1024</code></p>
+<p>dd的用法: <code>dd if=/dev/zero of=hello.txt bs=1024</code></p>
 
 <p>除了OSMC默认皮肤,还有一些好看的皮肤推荐</p>
 
@@ -88,7 +93,7 @@ ls -lh
 
 <p><a href="http://forum.kodi.tv/forumdisplay.php?fid=26">官方论坛</a></p>
 
-<p>OSMC默认的ssh连接用户是</p>
+<p>OSMC默认的ssh连接用户是 osmc 密码 osmc</p>
 
 <h2 id="安装openelec">安装openelec</h2>
 

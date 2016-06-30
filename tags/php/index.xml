@@ -40,11 +40,15 @@ tar -zxvf ${NGINX_VERSION}.tar.gz
 cd ${NGINX_VERSION}
 export CFLAGS=&amp;quot;-O3&amp;quot;
 ./configure --with-http_v2_module --with-http_ssl_module --sbin-path=/usr/local/sbin/nginx --prefix=/etc/nginx --conf-path=/etc/nginx/nginx.conf --http-log-path=/var/log/nginx/access.log --error-log-path=/var/log/nginx/error.log --pid-path=/var/run/nginx.pid
-make -j$CPU_NUM  &amp;amp;&amp;amp; make install
+sudo make -j$CPU_NUM  &amp;amp;&amp;amp; sudo make install
+sudo strip -s /usr/local/sbin/nginx
 rm -rf /tmp/nginx* /etc/nginx/*.default
-strip -s /usr/local/sbin/nginx
 nginx -V
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果找不到&lt;code&gt;sudo nginx&lt;/code&gt;,使用以下命令:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;sudo ln -sf /usr/local/sbin/nginx /usr/sbin/nginx&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;还可以添加&lt;a href=&#34;https://github.com/cuber/ngx_http_google_filter_module&#34;&gt;Google反代模块&lt;/a&gt;,按下面操作编译&lt;/p&gt;
 
@@ -65,14 +69,14 @@ make -j$CPU_NUM &amp;amp;&amp;amp; make install
 
 &lt;pre&gt;&lt;code&gt;server {
 	listen       80;
-	server_name  g.suconghou.cn google.com www.google.com;
+	server_name  xxx.domain.com google.com www.google.com;
 	resolver 8.8.8.8;
-	expires 1d;
+	expires 7d;
 	gzip on;
 	gzip_min_length 1024;
 	gzip_proxied any;
 	gzip_comp_level 3;
-	gzip_types text/html text/javascript text/css text/json application/xml application/javascript  application/json image/jpeg image/gif image/png;
+	gzip_types text/plain text/javascript text/css text/json application/xml application/javascript  application/json image/jpeg image/gif image/png;
 	proxy_hide_header Set-Cookie;
 	proxy_hide_header Alt-Svc;
 	proxy_hide_header Alternate-Protocol;

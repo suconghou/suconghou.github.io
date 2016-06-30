@@ -160,7 +160,7 @@ CONFIG proxy.config.cluster.ethernet_interface STRING eth0                # 修�
 
 &lt;p&gt;查看 &lt;a href=&#34;http://blog.hypriot.com/downloads/&#34;&gt;集成Dcoker的树莓派系统&lt;/a&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;aria2c -s 50 -c https://downloads.hypriot.com/hypriot-rpi-20160306-192317.img.zip
+&lt;pre&gt;&lt;code&gt;aria2c -s 50 -c https://downloads.hypriot.com/hypriotos-rpi-v0.8.0.img.zip
 
 
 diskutil list
@@ -677,11 +677,16 @@ root 密码 centos&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://osmc.tv/download/&#34;&gt;下载一览&lt;/a&gt;,选择&lt;code&gt;Disk images&lt;/code&gt;,此系统较省资源,默认开机进入OSMC,img.gz 大小约160M&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;cd /tmp
-axel -n 20 http://download.osmc.tv/installers/diskimages/OSMC_TGT_rbp2_20160502.img.gz
-md5sum OSMC_TGT_rbp2_20160502.img.gz
+&lt;pre&gt;&lt;code&gt;OSMC_FILE=OSMC_TGT_rbp2_20160621.img.gz
+cd /data/tmp
+axel -n 20 http://download.osmc.tv/installers/diskimages/$OSMC_FILE
+md5sum $OSMC_FILE
 ls -lh
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;使用清华大学镜像站国内下载速度更快: &lt;a href=&#34;https://mirrors.tuna.tsinghua.edu.cn/osmc/osmc/download/installers/&#34;&gt;https://mirrors.tuna.tsinghua.edu.cn/osmc/osmc/download/installers/&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;p&gt;插入内存卡,开始烧写到内存卡中.烧写之前需要取消挂载&lt;/p&gt;
 
@@ -691,10 +696,10 @@ ls -lh
 
 &lt;p&gt;烧写,烧写过程中读卡器不断闪烁.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;gzip -dc /tmp/OSMC_TGT_rbp2_20160502.img.gz | sudo dd of=/dev/disk2 bs=8k
+&lt;pre&gt;&lt;code&gt;gzip -dc /data/tmp/$OSMC_FILE | sudo dd of=/dev/disk2 bs=8k
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;code&gt;dd if=/dev/zero of=hello.txt bs=1024&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;dd的用法: &lt;code&gt;dd if=/dev/zero of=hello.txt bs=1024&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;除了OSMC默认皮肤,还有一些好看的皮肤推荐&lt;/p&gt;
 
@@ -704,7 +709,7 @@ ls -lh
 
 &lt;p&gt;&lt;a href=&#34;http://forum.kodi.tv/forumdisplay.php?fid=26&#34;&gt;官方论坛&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;OSMC默认的ssh连接用户是&lt;/p&gt;
+&lt;p&gt;OSMC默认的ssh连接用户是 osmc 密码 osmc&lt;/p&gt;
 
 &lt;h2 id=&#34;安装openelec&#34;&gt;安装openelec&lt;/h2&gt;
 
@@ -1407,7 +1412,7 @@ hash -r
 
 &lt;p&gt;&lt;a href=&#34;http://johnvansickle.com/ffmpeg/&#34;&gt;ffmeg&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;3.0正式版已发布,&lt;a href=&#34;http://www.oschina.net/news/70742/ffmpeg-3-0-final&#34;&gt;查看详情&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;3.1正式版已发布,&lt;a href=&#34;http://www.oschina.net/news/74702/ffmpeg-3-1&#34;&gt;查看详情&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     
