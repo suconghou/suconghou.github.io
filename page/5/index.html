@@ -155,22 +155,30 @@ location @goapp {
 }
 </code></pre>
 
-<h3 id="卸载apache">卸载apache</h3>
+<h3 id="附上卸载apache方法">附上卸载Apache方法</h3>
 
-<p>1.完全卸载使用apt-get安装的apache
-1、sudo apt-get remove apache2
-2、sudo apt-get remove apache2.2-common
-3、sudo apt-get autoremove (此命令会自动卸载PHP)
-卸载完成</p>
+<ul>
+<li><strong>完全卸载使用apt-get安装的apache</strong></li>
+</ul>
 
-<p>2.rpm 方式安装的</p>
+<ol>
+<li><code>sudo apt-get remove apache2</code></li>
+<li><code>sudo apt-get remove apache2.2-common</code></li>
+<li><code>sudo apt-get autoremove (此命令会自动卸载PHP)</code></li>
+</ol>
+
+<ul>
+<li><strong>卸载由rpm方式安装的apache</strong></li>
+</ul>
 
 <pre><code>rpm -qa|grep httpd
 </code></pre>
 
-<p>得出结果
-httpd-2.2.15-39.el6.centos.i686
-httpd-tools-2.2.15-39.el6.centos.i686</p>
+<p>得出结果</p>
+
+<p><code>httpd-2.2.15-39.el6.centos.i686</code></p>
+
+<p><code>httpd-tools-2.2.15-39.el6.centos.i686</code></p>
 
 <p>从上往下一个一个卸载</p>
 
@@ -178,8 +186,9 @@ httpd-tools-2.2.15-39.el6.centos.i686</p>
 rpm -e httpd-tools
 </code></pre>
 
-<p>ab压力测试在httpd-tools,可以不卸载;
-CenterOS 安装 ab 压力测试</p>
+<p>ab压力测试在httpd-tools,可以不卸载;</p>
+
+<p>在CentOS上安装ab压力测试</p>
 
 <pre><code>yum install httpd-tools
 </code></pre>
@@ -191,7 +200,7 @@ CenterOS 安装 ab 压力测试</p>
 <pre><code>yum install -y git wget curl  curl-devel libzip libzip-devel libmcrypt libmcrypt-devel gcc gcc-c++ cmake  autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libpng libpng-devel libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses  openssl-devel gdbm-devel db4-devel libXpm-devel libX11-devel gd-devel gmp-devel readline-devel libxslt-devel expat-devel xmlrpc-c xmlrpc-c-devel
 </code></pre>
 
-<p>下载PHP7最新版本,解压,有多重压缩格式可选,其中xz最小</p>
+<p>下载PHP7最新版本,解压,有多种压缩格式可选,其中xz最小</p>
 
 <pre><code>cd /tmp
 PHP_VERSION=php-7.0.8
@@ -363,7 +372,7 @@ free -m
 <blockquote>
 <p>注意:XEN KVM 可以创建SWAP,OVZ本身就是Virtual Environmen,不支持创建SWAP</p>
 
-<p>通过<code>df -lhT</code> 看到Type为simfs,而不是ext3,ext4,一般就不支持</p>
+<p>通过<code>df -lhT</code> 看到磁盘类型为simfs,而不是ext3,ext4,一般就不支持</p>
 </blockquote>
 
 <p>8.<code>system libzip must be upgraded to version &gt;= 0.11</code>
@@ -392,7 +401,7 @@ make -j$CPU_NUM  &amp;&amp; make install
 <p><strong>无缝升级</strong></p>
 
 <p>php编译完成以后,无缝升级php
-只需<code>kill -USR2 php-fpm master 进程的PID</code>,向php-fpm master进程发送重启指令,php-fpm的master和worker都会重新加载配置,重新运行起来.
+只需<code>kill -USR2 php-fpm master 进程的PID</code>,向<code>php-fpm master</code>进程发送重启指令,php-fpm的master和worker都会重新加载配置,重新运行起来.
 <code>curl -I 127.0.0.1</code>查看,新版本的fpm已经在工作了.</p>
 
 <p>PHP的数据库长连接有没有效,

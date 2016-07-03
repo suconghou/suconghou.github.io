@@ -891,6 +891,15 @@ B98FC99C 8FAC73EE D2B95564 DF450523
 
 <h2 id="ssh隧道">ssh隧道</h2>
 
+<h3 id="cfng">-CfNg</h3>
+
+<p>C表示压缩数据传输
+f表示后台用户验证,这个选项很有用,没有shell的不可登陆账号也能使用.
+N表示不执行脚本或命令
+g表示允许远程主机连接转发端口</p>
+
+<h3 id="l-本地转发">-L 本地转发</h3>
+
 <p>-L [本地监听IP:]本地监听端口号:目标主机IP:目标端口号
 (其中,“本地监听IP”可以省略，省略的话就认为是“0.0.0.0”，但为了安全性考虑，请务必使用“127.0.0.1”做为本地监听端口， 而不要使用默认的“0.0.0.0”。）</p>
 
@@ -900,6 +909,48 @@ SSH会建立一个socket，去监听本地的8080端口。一旦有数据传向�
 <p><code>ssh -L 2121:host2:21 host3</code>
 命令中的L参数一共接受三个值，分别是&rdquo;本地端口:目标主机:目标主机端口&rdquo;，它们之间用冒号分隔。这条命令的意思，就是指定SSH绑定本地端口2121，然后指定host3将所有的数据，转发到目标主机host2的21端口（假定host2运行FTP，默认端口为21）。
 这样一来，我们只要连接host1的2121端口，就等于连上了host2的21端口。</p>
+
+<pre><code>ssh -CfNg -L 6300:127.0.0.1:1521 oracle@172.16.1.164
+</code></pre>
+
+<p>本机的6300端口就是远程主机172.16.1.164的1521端口</p>
+
+<h3 id="r-远程转发">-R 远程转发</h3>
+
+<pre><code> ssh -CfNg -R 1521:127.0.0.1:6300 oracle@172.16.1.164
+</code></pre>
+
+<p>在远程主机172.16.1.164上打开1521端口, 来映射本机的6300端口.</p>
+
+<p><strong>在树莓派上映射ssh到外网</strong></p>
+
+<pre><code>ssh -CfNg -R 2222:127.0.0.1:22 username@yourvps.com
+</code></pre>
+
+<p>这样就映射vps的2222端口到树莓派上了.但是这样映射的是服务器的127.0.0.1:2222,外网无法连接这个2222端口</p>
+
+<p>可以在服务器上执行<code>netstat -anltp</code>查看,这样要先登陆到自己的vps才能通过2222访问树莓派.</p>
+
+<p>可以使用</p>
+
+<pre><code>ssh -CfNg -R 0.0.0.0:2222:127.0.0.1:22 username@yourvps.com
+</code></pre>
+
+<p>再在服务器上配置<code>/etc/ssh/sshd_config</code></p>
+
+<pre><code>#增加下面一句
+GatewayPorts yes
+#如果有
+GatewayPorts no
+#则改为
+GatewayPorts yes
+#然后重启ssh
+#centos7： systemctl restart sshd
+#centos6： service sshd restart
+#ubuntu:   service ssh restart
+</code></pre>
+
+<p>使用<code>netstat -anltp</code>查看,监听的已经是<code>0.0.0.0</code>了,不过即使你指定-R参数<code>127.0.0.1:2222</code>,也不会监听<code>127.0.0.1</code>而始终是<code>0.0.0.0</code></p>
 
 <h3 id="使用socks5代理">使用socks5代理</h3>
 
