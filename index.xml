@@ -6,8 +6,133 @@
     <description>Recent content on 苏苏的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 16 May 2016 18:21:04 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 07 Jul 2016 15:46:03 +0800</lastBuildDate>
     <atom:link href="http://blog.suconghou.cn/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>都有哪些坑</title>
+      <link>http://blog.suconghou.cn/post/some-hole/</link>
+      <pubDate>Thu, 07 Jul 2016 15:46:03 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/some-hole/</guid>
+      <description>
+
+&lt;h2 id=&#34;总结一下遇到的坑&#34;&gt;总结一下遇到的坑&lt;/h2&gt;
+
+&lt;h3 id=&#34;微信&#34;&gt;微信&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;关于横竖屏的坑&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;css3可以使用媒体查询判断设备是横屏还是竖屏&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//横屏时显示
+@media all and (orientation : landscape) {
+#screenMask{display:block}
+}
+
+//竖屏时隐藏
+@media all and (orientation : portrait) {
+#screenMask{display:none}
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在手机浏览器中表现良好,微信中看样子也可以,但是微信网页中如果聚焦输入框,弹起键盘就有问题了.&lt;/p&gt;
+
+&lt;p&gt;软键盘弹起后,网页可用面积减小,安卓就自动识别为横屏了,原有的页面消失了,影响非常大.IOS则没有这个问题,媒体查询判断横竖屏在IOS上工作良好.&lt;/p&gt;
+
+&lt;p&gt;并且由此发现,css3媒体查询就是根据宽度是否比高度小来判断横竖屏的.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;解决方案1&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;使用&lt;code&gt;javascript&lt;/code&gt;的&lt;code&gt;orientation&lt;/code&gt;和&lt;code&gt;orientationchange&lt;/code&gt;判断&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;window.orientation   属于window对象上一个属性；共有三个值 ：0为竖屏模式（portrait）,90为向左反转变为横屏模式（landscape），-90为向右反转变为横屏模式（landscape），最后180就是设备上下互换还是竖屏模式。&lt;/li&gt;
+&lt;li&gt;orientationchange    是一个event，在设备旋转时，会触发此事件，如同PC上使用的resize事件。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;(function(){
+    var init = function(){
+        var updateOrientation = function(){
+            var orientation = window.orientation;
+            switch(orientation){
+                case 90:
+                case -90:
+                    orientation = &#39;landscape&#39;;
+                    break;
+                default:
+                    orientation = &#39;portrait&#39;;
+                    break;
+            }
+
+           //do something
+           //比如在html标签加一个状态
+            //然后根据不同状态，显示不同大小
+            document.body.parentNode.setAttribute(&#39;class&#39;,orientation);
+        };
+
+        window.addEventListener(&#39;orientationchange&#39;,updateOrientation,false);
+        updateOrientation();
+    };
+
+    window.addEventListener(&#39;DOMContentLoaded&#39;,init,false);
+})();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;经测试使用JS判断能够正确得出安卓微信客户端里输入框聚焦时的横竖屏状态.&lt;/p&gt;
+
+&lt;p&gt;orientation和orientationchange只有移动设备有这些属性和事件.&lt;/p&gt;
+
+&lt;p&gt;在不支持这种属性和事件的设备上使用宽高比来判断做一下兼容,这样在不支持&lt;code&gt;orientation&lt;/code&gt;的设备上就相当于使用了媒体查询&lt;/p&gt;
+
+&lt;p&gt;最终总结代码如下:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(function(w)
+{
+    var supportOrientation = (typeof w.orientation === &#39;number&#39; &amp;amp;&amp;amp; typeof w.onorientationchange === &#39;object&#39;);
+    var init = function()
+    {
+        var htmlNode = document.body.parentNode, orientation;
+        var updateOrientation = function()
+        {
+            if(supportOrientation)
+            {
+                orientation = w.orientation;
+                switch(orientation)
+                {
+                    case 90:
+                    case -90:
+                        orientation = &#39;landscape&#39;;
+                        break;
+                    default:
+                        orientation = &#39;portrait&#39;;
+                        break;
+                }
+            }
+            else
+            {
+                orientation = (w.innerWidth &amp;gt; w.innerHeight) ? &#39;landscape&#39; : &#39;portrait&#39;;
+            }
+            htmlNode.setAttribute(&#39;class&#39;,orientation);
+        };
+        if(supportOrientation)
+        {
+            w.addEventListener(&#39;orientationchange&#39;,updateOrientation,false);
+        }
+        else
+        {
+            //监听resize事件
+            w.addEventListener(&#39;resize&#39;,updateOrientation,false);
+        }
+        updateOrientation();
+    };
+    w.addEventListener(&#39;DOMContentLoaded&#39;,init,false);
+})(window);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以访问如下网址测试: /html/wx&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>使用tcpdump</title>
@@ -1746,114 +1871,6 @@ E1D0AE85 A0BBD039 0E9C8D55 E1B89D5D
 B98FC99C 8FAC73EE D2B95564 DF450523
 ------ END LICENSE ------
 &lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>SSH</title>
-      <link>http://blog.suconghou.cn/post/linux-ssh/</link>
-      <pubDate>Thu, 07 Jan 2016 13:47:22 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/post/linux-ssh/</guid>
-      <description>
-
-&lt;h2 id=&#34;避免ssh自动断开连接&#34;&gt;避免SSH自动断开连接&lt;/h2&gt;
-
-&lt;p&gt;如果有一段时间在SSH连接上无数据传输，连接就会断开,以下设定可以解决这个问题&lt;/p&gt;
-
-&lt;p&gt;方案一：在客户端设置&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;sudo vim /etc/ssh/ssh_config&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;开启 &lt;code&gt;ServerAliveInterval 60&lt;/code&gt;
-开启 &lt;code&gt;TCPKeepAlive yes&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;此后该系统里的用户连接SSH时，每60秒会发一个KeepAlive请求，避免被踢。&lt;/p&gt;
-
-&lt;p&gt;方案二：在服务器端设置&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;sudo vim /etc/ssh/sshd_config&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;开启&lt;code&gt;ClientAliveInterval 60&lt;/code&gt;
-开启 &lt;code&gt;TCPKeepAlive yes&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;如果您只想让当前的 ssh 保持连接，可以使用以下的命令：&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;ssh -o ServerAliveInterval=60 user@sshserver&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;ssh隧道&#34;&gt;ssh隧道&lt;/h2&gt;
-
-&lt;h3 id=&#34;cfng&#34;&gt;-CfNg&lt;/h3&gt;
-
-&lt;p&gt;C表示压缩数据传输
-f表示后台用户验证,这个选项很有用,没有shell的不可登陆账号也能使用.
-N表示不执行脚本或命令
-g表示允许远程主机连接转发端口&lt;/p&gt;
-
-&lt;h3 id=&#34;l-本地转发&#34;&gt;-L 本地转发&lt;/h3&gt;
-
-&lt;p&gt;-L [本地监听IP:]本地监听端口号:目标主机IP:目标端口号
-(其中,“本地监听IP”可以省略，省略的话就认为是“0.0.0.0”，但为了安全性考虑，请务必使用“127.0.0.1”做为本地监听端口， 而不要使用默认的“0.0.0.0”。）&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;ssh -D 8080 user@host&lt;/code&gt;
-SSH会建立一个socket，去监听本地的8080端口。一旦有数据传向那个端口，就自动把它转移到SSH连接上面，发往远程主机。可以想象，如果8080端口原来是一个不加密端口，现在将变成一个加密端口。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;ssh -L 2121:host2:21 host3&lt;/code&gt;
-命令中的L参数一共接受三个值，分别是&amp;rdquo;本地端口:目标主机:目标主机端口&amp;rdquo;，它们之间用冒号分隔。这条命令的意思，就是指定SSH绑定本地端口2121，然后指定host3将所有的数据，转发到目标主机host2的21端口（假定host2运行FTP，默认端口为21）。
-这样一来，我们只要连接host1的2121端口，就等于连上了host2的21端口。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;ssh -CfNg -L 6300:127.0.0.1:1521 oracle@172.16.1.164
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;本机的6300端口就是远程主机172.16.1.164的1521端口&lt;/p&gt;
-
-&lt;h3 id=&#34;r-远程转发&#34;&gt;-R 远程转发&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt; ssh -CfNg -R 1521:127.0.0.1:6300 oracle@172.16.1.164
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;在远程主机172.16.1.164上打开1521端口, 来映射本机的6300端口.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;在树莓派上映射ssh到外网&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;ssh -CfNg -R 2222:127.0.0.1:22 username@yourvps.com
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这样就映射vps的2222端口到树莓派上了.但是这样映射的是服务器的127.0.0.1:2222,外网无法连接这个2222端口&lt;/p&gt;
-
-&lt;p&gt;可以在服务器上执行&lt;code&gt;netstat -anltp&lt;/code&gt;查看,这样要先登陆到自己的vps才能通过2222访问树莓派.&lt;/p&gt;
-
-&lt;p&gt;可以使用&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;ssh -CfNg -R 0.0.0.0:2222:127.0.0.1:22 username@yourvps.com
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;再在服务器上配置&lt;code&gt;/etc/ssh/sshd_config&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;#增加下面一句
-GatewayPorts yes
-#如果有
-GatewayPorts no
-#则改为
-GatewayPorts yes
-#然后重启ssh
-#centos7： systemctl restart sshd
-#centos6： service sshd restart
-#ubuntu:   service ssh restart
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;使用&lt;code&gt;netstat -anltp&lt;/code&gt;查看,监听的已经是&lt;code&gt;0.0.0.0&lt;/code&gt;了,不过即使你指定-R参数&lt;code&gt;127.0.0.1:2222&lt;/code&gt;,也不会监听&lt;code&gt;127.0.0.1&lt;/code&gt;而始终是&lt;code&gt;0.0.0.0&lt;/code&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;使用socks5代理&#34;&gt;使用socks5代理&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;alias socksproxy=&amp;quot;ssh -NT -f -D 0.0.0.0:1090  -p 1234 root@host&amp;quot;;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;-N 不打开远程的shell
--T 不分配tty
--f 后台运行&lt;/p&gt;
-
-&lt;p&gt;执行&lt;code&gt;socksproxy&lt;/code&gt;后就建立了一条ssh socks5 proxy,本地使用127.0.0.1:1090就可以使用服务器中转流量.&lt;/p&gt;
 </description>
     </item>
     

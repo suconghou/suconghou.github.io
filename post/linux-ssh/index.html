@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+	<meta name='renderer' content='webkit'>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
+	<meta name='description' content='记录学习的点点滴滴'>
+	<meta name='keywords' content='前端,PHP,GO,编程博客'>
+	<title>SSH &middot; 苏苏的博客</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.min.css">
+	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+	<link rel="shortcut icon" href="/favicon.png">
+</head>
+<body>
+<header class="header">
+	<div class="header-main">
+		<a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
+		<h1>苏苏的博客</h1>
+		<p class="sub-title">简约至极</p>
+		<ul class="contact">
+			<a href="https://github.com/suconghou" target="_blank"><i class="fa fa-github"></i></a>
+			<a href="javascript:music.show(1)"><i class="fa fa-music"></i></a>
+		</ul>
+	</div>
+</header>
+
+<aside></aside>
+
+<div class="content container">
+	<div class="post">
+		<h1 class="post-title">
+			<a href="javascript:void(0)"> SSH</a>
+		</h1>
+		<p class="post-date">Thu, Jan 7, 2016</p>
+		
+			<p class="post-tags">
+			
+				<a href="/tags/ssh">#ssh</a>
+			
+				<a href="/tags/linux">#linux</a>
+			
+			</p>
+		
+		<div class="post-text">
+			
+
+<h2 id="避免ssh自动断开连接">避免SSH自动断开连接</h2>
+
+<p>如果有一段时间在SSH连接上无数据传输，连接就会断开,以下设定可以解决这个问题</p>
+
+<p>方案一：在客户端设置</p>
+
+<p><code>sudo vim /etc/ssh/ssh_config</code></p>
+
+<p>开启 <code>ServerAliveInterval 60</code>
+开启 <code>TCPKeepAlive yes</code></p>
+
+<p>此后该系统里的用户连接SSH时，每60秒会发一个KeepAlive请求，避免被踢。</p>
+
+<p>方案二：在服务器端设置</p>
+
+<p><code>sudo vim /etc/ssh/sshd_config</code></p>
+
+<p>开启<code>ClientAliveInterval 60</code>
+开启 <code>TCPKeepAlive yes</code></p>
+
+<p>如果您只想让当前的 ssh 保持连接，可以使用以下的命令：</p>
+
+<p><code>ssh -o ServerAliveInterval=60 user@sshserver</code></p>
+
+<h2 id="ssh隧道">ssh隧道</h2>
+
+<h3 id="cfng">-CfNg</h3>
+
+<p>C表示压缩数据传输
+f表示后台用户验证,这个选项很有用,没有shell的不可登陆账号也能使用.
+N表示不执行脚本或命令
+g表示允许远程主机连接转发端口</p>
+
+<h3 id="l-本地转发">-L 本地转发</h3>
+
+<p>-L [本地监听IP:]本地监听端口号:目标主机IP:目标端口号
+(其中,“本地监听IP”可以省略，省略的话就认为是“0.0.0.0”，但为了安全性考虑，请务必使用“127.0.0.1”做为本地监听端口， 而不要使用默认的“0.0.0.0”。）</p>
+
+<p><code>ssh -D 8080 user@host</code>
+SSH会建立一个socket，去监听本地的8080端口。一旦有数据传向那个端口，就自动把它转移到SSH连接上面，发往远程主机。可以想象，如果8080端口原来是一个不加密端口，现在将变成一个加密端口。</p>
+
+<p><code>ssh -L 2121:host2:21 host3</code>
+命令中的L参数一共接受三个值，分别是&rdquo;本地端口:目标主机:目标主机端口&rdquo;，它们之间用冒号分隔。这条命令的意思，就是指定SSH绑定本地端口2121，然后指定host3将所有的数据，转发到目标主机host2的21端口（假定host2运行FTP，默认端口为21）。
+这样一来，我们只要连接host1的2121端口，就等于连上了host2的21端口。</p>
+
+<pre><code>ssh -CfNg -L 6300:127.0.0.1:1521 oracle@172.16.1.164
+</code></pre>
+
+<p>本机的6300端口就是远程主机172.16.1.164的1521端口</p>
+
+<h3 id="r-远程转发">-R 远程转发</h3>
+
+<pre><code> ssh -CfNg -R 1521:127.0.0.1:6300 oracle@172.16.1.164
+</code></pre>
+
+<p>在远程主机172.16.1.164上打开1521端口, 来映射本机的6300端口.</p>
+
+<p><strong>在树莓派上映射ssh到外网</strong></p>
+
+<pre><code>ssh -CfNg -R 2222:127.0.0.1:22 username@yourvps.com
+</code></pre>
+
+<p>这样就映射vps的2222端口到树莓派上了.但是这样映射的是服务器的127.0.0.1:2222,外网无法连接这个2222端口</p>
+
+<p>可以在服务器上执行<code>netstat -anltp</code>查看,这样要先登陆到自己的vps才能通过2222访问树莓派.</p>
+
+<p>可以使用</p>
+
+<pre><code>ssh -CfNg -R 0.0.0.0:2222:127.0.0.1:22 username@yourvps.com
+</code></pre>
+
+<p>再在服务器上配置<code>/etc/ssh/sshd_config</code></p>
+
+<pre><code>#增加下面一句
+GatewayPorts yes
+#如果有
+GatewayPorts no
+#则改为
+GatewayPorts yes
+#然后重启ssh
+#centos7： systemctl restart sshd
+#centos6： service sshd restart
+#ubuntu:   service ssh restart
+</code></pre>
+
+<p>使用<code>netstat -anltp</code>查看,监听的已经是<code>0.0.0.0</code>了,不过即使你指定-R参数<code>127.0.0.1:2222</code>,也不会监听<code>127.0.0.1</code>而始终是<code>0.0.0.0</code></p>
+
+<h3 id="使用socks5代理">使用socks5代理</h3>
+
+<pre><code>alias socksproxy=&quot;ssh -NT -f -D 0.0.0.0:1090  -p 1234 root@host&quot;;
+</code></pre>
+
+<p>-N 不打开远程的shell
+-T 不分配tty
+-f 后台运行</p>
+
+<p>执行<code>socksproxy</code>后就建立了一条ssh socks5 proxy,本地使用127.0.0.1:1090就可以使用服务器中转流量.</p>
+
+		</div>
+	</div>
+</div>
+	<div class="music-container">
+	<div class="music-header">
+	    <a class="fa-button home" href="javascript:music.show(0)"><i class="fa fa-home" title="Home"></i></a>
+	    <a class="fa-button next" href="javascript:music.next()"><i class="fa fa-chevron-right" title="Next"></i></a>
+	</div>
+	<div class="backdrop"></div>
+	<div class="music-player">
+		<div class="cover">
+            <img src="http://p4.music.126.net/ckfEE9UUGcnGHylQJ12ENA==/670702092966093.jpg?param=350y350">
+            <div class="foredrag"><i class="fa fa-play"></i></div>
+        </div>
+        <div class="progress">
+            <div class="elapse"></div>
+        </div>
+        <div class="detail">
+            <div class="title">音乐标题</div>
+            <div class="artist">歌手</div>
+        </div>
+	</div>
+</div>
+<div id="loader" style="z-index:99999;" class="pageload-overlay" data-opening="M 40 -21.875 C 11.356078 -21.875 -11.875 1.3560784 -11.875 30 C -11.875 58.643922 11.356078 81.875 40 81.875 C 68.643922 81.875 91.875 58.643922 91.875 30 C 91.875 1.3560784 68.643922 -21.875 40 -21.875 Z">
+    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 80 60" preserveAspectRatio="xMidYMid slice"> <path d="M40,30 c 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 Z"/></svg>
+</div>
+
+	<footer class="footer">
+		<div class="footer-nav">
+			<ul>
+				<li><a href="/post/">归档</a></li>
+				<li><a href="/">专题</a></li>
+				<li><a href="/life/">生活</a></li>
+				<li><a href="/about/">关于</a></li>
+			</ul>
+		</div>
+	</footer>
+	<script type="text/javascript" src="/js/main.min.js" data-no-instant></script>
+</body>
+</html>
+
+

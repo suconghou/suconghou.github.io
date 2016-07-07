@@ -67,19 +67,40 @@ apt-get -y install gcc make  openssl libssl-dev libpcre3 libpcre3-dev
 
 <p>Nginx最新版本<a href="http://www.oschina.net/news/73922/nginx-1-10-1">查看</a></p>
 
-<p>编译安装</p>
+<p><strong>编译安装</strong></p>
 
-<pre><code>NGINX_VERSION=nginx-1.11.1
+<p>Chrome51以后版本废弃了NPN的支持,要让Chrome51以后版本支持http2,需要更新OpenSSL到1.0.2及以上.</p>
+
+<p>查看当前系统的OpenSSL版本:<code>openssl version</code></p>
+
+<p>更新OpenSSL</p>
+
+<pre><code>OPENSSL_VERSION=openssl-1.0.2h
+cd /tmp
+wget https://www.openssl.org/source/${OPENSSL_VERSION}.tar.gz
+tar zxvf ${OPENSSL_VERSION}.tar.gz
+cd ${OPENSSL_VERSION}
+./config --prefix=/usr --shared
+make -j4
+sudo make install
+openssl version
+</code></pre>
+
+<p>最后一句查看版本是否更新了</p>
+
+<p>编译nginx</p>
+
+<pre><code>NGINX_VERSION=nginx-1.11.2
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
 cd /tmp
 wget http://nginx.org/download/${NGINX_VERSION}.tar.gz
 tar -zxvf ${NGINX_VERSION}.tar.gz
 cd ${NGINX_VERSION}
 export CFLAGS=&quot;-O3&quot;
-./configure --with-http_v2_module --with-http_ssl_module --sbin-path=/usr/local/sbin/nginx --prefix=/etc/nginx --conf-path=/etc/nginx/nginx.conf --http-log-path=/var/log/nginx/access.log --error-log-path=/var/log/nginx/error.log --pid-path=/var/run/nginx.pid
+./configure --with-http_v2_module --with-http_ssl_module --sbin-path=/usr/local/sbin/nginx --prefix=/etc/nginx --conf-path=/etc/nginx/nginx.conf --http-log-path=/var/log/nginx/access.log --error-log-path=/var/log/nginx/error.log --pid-path=/var/run/nginx.pid --lock-path=/var/run/nginx.lock --user=www-data --group=www-data
 sudo make -j$CPU_NUM  &amp;&amp; sudo make install
 sudo strip -s /usr/local/sbin/nginx
-rm -rf /tmp/nginx* /etc/nginx/*.default
+rm -rf /tmp/nginx* /etc/nginx/*.default ${OPENSSL_VERSION}*
 nginx -V
 </code></pre>
 

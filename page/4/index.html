@@ -34,6 +34,115 @@
 		
 		<div class="post">
 			<h1 class="post-title">
+				<a href="/post/linux-ssh/"> SSH</a>
+			</h1>
+			<p class="post-date">Thu, Jan 7, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="避免ssh自动断开连接">避免SSH自动断开连接</h2>
+
+<p>如果有一段时间在SSH连接上无数据传输，连接就会断开,以下设定可以解决这个问题</p>
+
+<p>方案一：在客户端设置</p>
+
+<p><code>sudo vim /etc/ssh/ssh_config</code></p>
+
+<p>开启 <code>ServerAliveInterval 60</code>
+开启 <code>TCPKeepAlive yes</code></p>
+
+<p>此后该系统里的用户连接SSH时，每60秒会发一个KeepAlive请求，避免被踢。</p>
+
+<p>方案二：在服务器端设置</p>
+
+<p><code>sudo vim /etc/ssh/sshd_config</code></p>
+
+<p>开启<code>ClientAliveInterval 60</code>
+开启 <code>TCPKeepAlive yes</code></p>
+
+<p>如果您只想让当前的 ssh 保持连接，可以使用以下的命令：</p>
+
+<p><code>ssh -o ServerAliveInterval=60 user@sshserver</code></p>
+
+<h2 id="ssh隧道">ssh隧道</h2>
+
+<h3 id="cfng">-CfNg</h3>
+
+<p>C表示压缩数据传输
+f表示后台用户验证,这个选项很有用,没有shell的不可登陆账号也能使用.
+N表示不执行脚本或命令
+g表示允许远程主机连接转发端口</p>
+
+<h3 id="l-本地转发">-L 本地转发</h3>
+
+<p>-L [本地监听IP:]本地监听端口号:目标主机IP:目标端口号
+(其中,“本地监听IP”可以省略，省略的话就认为是“0.0.0.0”，但为了安全性考虑，请务必使用“127.0.0.1”做为本地监听端口， 而不要使用默认的“0.0.0.0”。）</p>
+
+<p><code>ssh -D 8080 user@host</code>
+SSH会建立一个socket，去监听本地的8080端口。一旦有数据传向那个端口，就自动把它转移到SSH连接上面，发往远程主机。可以想象，如果8080端口原来是一个不加密端口，现在将变成一个加密端口。</p>
+
+<p><code>ssh -L 2121:host2:21 host3</code>
+命令中的L参数一共接受三个值，分别是&rdquo;本地端口:目标主机:目标主机端口&rdquo;，它们之间用冒号分隔。这条命令的意思，就是指定SSH绑定本地端口2121，然后指定host3将所有的数据，转发到目标主机host2的21端口（假定host2运行FTP，默认端口为21）。
+这样一来，我们只要连接host1的2121端口，就等于连上了host2的21端口。</p>
+
+<pre><code>ssh -CfNg -L 6300:127.0.0.1:1521 oracle@172.16.1.164
+</code></pre>
+
+<p>本机的6300端口就是远程主机172.16.1.164的1521端口</p>
+
+<h3 id="r-远程转发">-R 远程转发</h3>
+
+<pre><code> ssh -CfNg -R 1521:127.0.0.1:6300 oracle@172.16.1.164
+</code></pre>
+
+<p>在远程主机172.16.1.164上打开1521端口, 来映射本机的6300端口.</p>
+
+<p><strong>在树莓派上映射ssh到外网</strong></p>
+
+<pre><code>ssh -CfNg -R 2222:127.0.0.1:22 username@yourvps.com
+</code></pre>
+
+<p>这样就映射vps的2222端口到树莓派上了.但是这样映射的是服务器的127.0.0.1:2222,外网无法连接这个2222端口</p>
+
+<p>可以在服务器上执行<code>netstat -anltp</code>查看,这样要先登陆到自己的vps才能通过2222访问树莓派.</p>
+
+<p>可以使用</p>
+
+<pre><code>ssh -CfNg -R 0.0.0.0:2222:127.0.0.1:22 username@yourvps.com
+</code></pre>
+
+<p>再在服务器上配置<code>/etc/ssh/sshd_config</code></p>
+
+<pre><code>#增加下面一句
+GatewayPorts yes
+#如果有
+GatewayPorts no
+#则改为
+GatewayPorts yes
+#然后重启ssh
+#centos7： systemctl restart sshd
+#centos6： service sshd restart
+#ubuntu:   service ssh restart
+</code></pre>
+
+<p>使用<code>netstat -anltp</code>查看,监听的已经是<code>0.0.0.0</code>了,不过即使你指定-R参数<code>127.0.0.1:2222</code>,也不会监听<code>127.0.0.1</code>而始终是<code>0.0.0.0</code></p>
+
+<h3 id="使用socks5代理">使用socks5代理</h3>
+
+<pre><code>alias socksproxy=&quot;ssh -NT -f -D 0.0.0.0:1090  -p 1234 root@host&quot;;
+</code></pre>
+
+<p>-N 不打开远程的shell
+-T 不分配tty
+-f 后台运行</p>
+
+<p>执行<code>socksproxy</code>后就建立了一条ssh socks5 proxy,本地使用127.0.0.1:1090就可以使用服务器中转流量.</p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
 				<a href="/post/install-nodejs/"> 安装NodeJs和npm</a>
 			</h1>
 			<p class="post-date">Thu, Jan 7, 2016</p>
@@ -243,6 +352,14 @@ npm -v
 <p><a href="http://cheapwindowsvps.com/">cheapwindowsvps</a> G口亚洲越南和新加坡不限流量支持Windows
 <a href="https://dedistation.com/billing/order.php?step=0&amp;productGroup=13">dedistation</a>
 <a href="http://www.winode.org/cart.php?gid=15&amp;language=chinese">winode</a></p>
+
+<h2 id="内网穿透">内网穿透</h2>
+
+<p><a href="https://github.com/fatedier/frp">frp</a> 由于ngrok2不开源,ngrok1不在维护而新创建的项目,使用GO编写
+<a href="https://natapp.cn/">natapp</a> 国内服务提供商,基于ngrok
+<a href="https://pc5s.com/">pc5s</a> 使用java编写的,需要jre
+<a href="http://qydev.com/">qydev.com</a> 国内服务商基于ngrok
+<a href="https://github.com/vzex/dog-tunnel">dog-tunnel</a> 使用GO编写的功能更加丰富的,<a href="http://dog-tunnel.tk/">http://dog-tunnel.tk/</a></p>
 
 			</div>
 		</div>
@@ -709,79 +826,6 @@ newgrp docker
 输入用户名,密码,邮箱登陆</p>
 
 <p><code>docker push yourname/imagename</code></p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/linux-download-tools/"> Linux下常用的下载利器</a>
-			</h1>
-			<p class="post-date">Fri, Jan 1, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="wget">wget</h2>
-
-<p><code>wget -c -O filename &quot;http://xx.com&quot;</code> 下载存储到指定文件,并指定断点续传
-<code>wget -nc -c -i url.txt</code> 批量下载文件中指定的资源(每行一个连接),跳过已下载的(同名的),并且断点续传.</p>
-
-<h2 id="curl">curl</h2>
-
-<p>常用的命令</p>
-
-<p><code>curl http://xx.com</code> 只获取http消息正文</p>
-
-<p><code>curl -I http://xx.com</code> 只获取http消息头</p>
-
-<p><code>curl -i http://xx.com</code> 获取http消息头和正文</p>
-
-<p><code>curl -d &quot;name=abc&amp;pass=123&quot; http://xx.com</code> 发送<code>http post</code>请求,采用的是<code>application/x-www-form-urlencoded</code>形式</p>
-
-<p><code>curl -F &quot;name=abc&quot; -F &quot;pass=123&quot; http://xx.com</code> 发送<code>http post</code>请求,采用的是<code>multipart/form-data</code> 形式,此两种方式都可以由 $_POST 接收</p>
-
-<p><code>curl -F &quot;name=abc&quot; -F &quot;file=@/tmp/1.jpg&quot; http://xx.com</code> 发送 <code>http post</code>请求, <code>multipart/form-data</code> 形式还可以上传文件,只需改为@加路径</p>
-
-<p>curl 不仅能用来下载,还是网络调试的利器,Chrome的网络请求也可以直接另存为curl请求格式</p>
-
-<p>批量下载规则的URL资源</p>
-
-<pre><code>curl -O &quot;http://www.example.com/[0001-9999].jpg&quot;
-
-</code></pre>
-
-<p>在shell中可以这样用,实现同样功能</p>
-
-<pre><code>for i in {10001..19999}; do
-wget www.example.com/${i:1}.jpg;
-done
-</code></pre>
-
-<p>或</p>
-
-<pre><code>for i in {0001..9999}; do
-echo www.example.com/${i}.jpg;
-done
-</code></pre>
-
-<h2 id="axel">Axel</h2>
-
-<p>下载速度最快,分段下载速度优异
-<code>axel -n 30 -a -o localfilename http://xx.com/downloadfile</code> 30个线程分段下载,存储为localfilename
-参数<code>-a</code>更新进度条而不是每次都输出
-参数<code>-H</code> 添加header,参数<code>-U</code>设定<code>user-agent</code>
-<strong>Downloads patch from 4 ftp mirrors</strong>
-axel <a href="ftp://ftp.{us,uk,br,fr}.kernel.org/pub/linux/kernel/v2.6/patch-2.6.39.gz">ftp://ftp.{us,uk,br,fr}.kernel.org/pub/linux/kernel/v2.6/patch-2.6.39.gz</a></p>
-
-<p>axel <a href="http://itmp.suconghou.cn">http://itmp.suconghou.cn</a> hypriot-rpi-20160306-192317.img.zip <a href="http://wtmp.suconghou.cn">http://wtmp.suconghou.cn</a> hypriot-rpi-20160306-192317.img.zip <a href="http://btmp.suconghou.cn">http://btmp.suconghou.cn</a> hypriot-rpi-20160306-192317.img.zip</p>
-
-<h2 id="aria2c">Aria2c</h2>
-
-<p>aria2c支持多种协议,<code>URI</code> <code>MAGNET</code> <code>TORRENT_FILE</code> <code>METALINK_FILE</code>,也支持axel类似的分段下载</p>
-
-<p><code>aria2c -s 30 -c -o localfilename http://xx.com/downloadfile</code> 30个线程分段下载,存储为localfilename,并断点续传</p>
-
-<p><code>aria2c file1.torrent file2.torrent</code></p>
 
 			</div>
 		</div>

@@ -34,6 +34,137 @@
 		
 		<div class="post">
 			<h1 class="post-title">
+				<a href="/post/use-crontab-in-your-server/"> Crontab与自动备份</a>
+			</h1>
+			<p class="post-date">Tue, Jan 12, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="crontab使用">Crontab使用</h2>
+
+<p><code>crontab -l</code> 查看当前用户的crontab列表
+使用<code>crontab -e</code>开始编辑规则</p>
+
+<pre><code>基本格式 :
+*　　*　　*　　*　　*　　command
+分　 时 　日 　月　 周　 命令
+
+* 第1列表示分钟1～59 每分钟用*或者*/1表示
+* 第2列表示小时1～23（0表示0点）
+* 第3列表示日期1～31
+* 第4列表示月份1～12
+* 第5列标识号星期0～6（0表示星期天）
+* 第6列要运行的命令
+</code></pre>
+
+<p>禁止Crontab产生邮件:
+在crontab末尾加上<code>&gt; /dev/null 2&gt;&amp;1</code> 或者 <code>&gt; &amp;&gt; /dev/null</code></p>
+
+<p>例如</p>
+
+<pre><code>0 1 5 10 * /path/to/script.sh &gt; /dev/null 2&gt;&amp;1
+0 1 5 10 * /path/to/script.sh &gt; &amp;&gt; /dev/null
+</code></pre>
+
+<h2 id="定时备份数据库">定时备份数据库</h2>
+
+<p>先写好shell脚本存入<code>/home/cron1.sh</code></p>
+
+<pre><code>user=&quot;root&quot;
+pass=&quot;root&quot;
+host=&quot;127.0.0.1&quot;
+port=&quot;3306&quot;
+dbs=&quot;db1 db2 db3&quot;
+dir=&quot;/data/backup/&quot;
+
+nowDate=`date '+%Y%m%d'`
+nowTime=`date '+%H%M'`
+backupdir=$dir$nowDate
+timeold=`date -d &quot;-1 week&quot; +%Y%m%d`
+delold=$dir$timeold
+if [ ! -d $backupdir ]; then
+  mkdir -p $backupdir
+fi
+if [ -d $delold ]; then
+  rm -rf $delold
+fi
+for i in $dbs
+	do
+		backupFile=$backupdir/$i-$nowTime.sql
+		mysqldump -u$user -p$pass -h$host -P$port --databases $i &gt; $backupFile
+		xz $backupFile
+	done
+
+</code></pre>
+
+<p>然后定时任务<code>crontab -e</code> 每5个小时备份一次数据库.</p>
+
+<pre><code>0 */5 * * * sh /home/cron1.sh
+</code></pre>
+
+<p>使用此脚本建议每20个小时以内备份一次数据库,此脚本保留最近7天备份,删除过期备份</p>
+
+<h2 id="增量备份数据库">增量备份数据库</h2>
+
+<p>先写好shell脚本存入<code>/home/cron2.sh</code></p>
+
+<pre><code>user=&quot;root&quot;
+pass=&quot;root&quot;
+host=&quot;127.0.0.1&quot;
+port=&quot;3306&quot;
+storedb=&quot;backup&quot;
+backup=&quot;db1.table1 db1.table2&quot;
+
+mysql -u$user -p$pass -h$host -P$port -e &quot;create database if not exists $storedb&quot;
+for i in $backup
+	do
+		table=${i##*.}
+		sql=&quot;create table if not exists $storedb.$table like $i;replace into $storedb.$table  select * from $i ;&quot;
+		mysql -u$user -p$pass -h$host -P$port -e &quot;$sql&quot;
+	done
+
+</code></pre>
+
+<p>数据表从源数据库中增量备份至备份数据库中的同名数据表</p>
+
+<pre><code>0 */20 * * * sh /home/cron2.sh
+</code></pre>
+
+<p>每20个小时增量备份一次</p>
+
+<h2 id="更高级的文件实时同步">更高级的文件实时同步</h2>
+
+<p><code>Mac</code>上可以使用<code>fswatch + rsync</code>进行实时同步</p>
+
+<p>首先安装<code>fswatch</code>,<code>rsync</code>应该是自带了</p>
+
+<p><code>brew install fswatch</code></p>
+
+<pre><code>&lt;!-- fswatch -o ./ | xargs -n1 -I{} md5 --&gt;
+
+fswatch -0 /tmp | xargs -0 -n 1 echo $1
+
+</code></pre>
+
+<h2 id="shell基本语法">Shell基本语法</h2>
+
+<p>声明数组</p>
+
+<p><code>arr=(item1 item2 item3)</code> 使用空格分开</p>
+
+<p>使用<code>echo ${arr[*]}</code> 或者 <code>echo ${arr[@]}</code> 可以查看数组内的元素,<code>echo $arr</code>只能取得第一个元素</p>
+
+<p>要取得数组长度,只需在名字前面加一个#,如<code>echo ${#arr[*]}</code> 或者 <code>echo ${#arr[@]}</code></p>
+
+<p>数组下标以0开始,取得第二个元素为<code>echo ${arr[1]}</code></p>
+
+<p>赋值使用<code>arr[5]=5555</code></p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
 				<a href="/post/improve-mysqldb/"> MySQL性能优化</a>
 			</h1>
 			<p class="post-date">Mon, Jan 11, 2016</p>
@@ -853,115 +984,6 @@ E1D0AE85 A0BBD039 0E9C8D55 E1B89D5D
 B98FC99C 8FAC73EE D2B95564 DF450523
 ------ END LICENSE ------
 </code></pre>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/linux-ssh/"> SSH</a>
-			</h1>
-			<p class="post-date">Thu, Jan 7, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="避免ssh自动断开连接">避免SSH自动断开连接</h2>
-
-<p>如果有一段时间在SSH连接上无数据传输，连接就会断开,以下设定可以解决这个问题</p>
-
-<p>方案一：在客户端设置</p>
-
-<p><code>sudo vim /etc/ssh/ssh_config</code></p>
-
-<p>开启 <code>ServerAliveInterval 60</code>
-开启 <code>TCPKeepAlive yes</code></p>
-
-<p>此后该系统里的用户连接SSH时，每60秒会发一个KeepAlive请求，避免被踢。</p>
-
-<p>方案二：在服务器端设置</p>
-
-<p><code>sudo vim /etc/ssh/sshd_config</code></p>
-
-<p>开启<code>ClientAliveInterval 60</code>
-开启 <code>TCPKeepAlive yes</code></p>
-
-<p>如果您只想让当前的 ssh 保持连接，可以使用以下的命令：</p>
-
-<p><code>ssh -o ServerAliveInterval=60 user@sshserver</code></p>
-
-<h2 id="ssh隧道">ssh隧道</h2>
-
-<h3 id="cfng">-CfNg</h3>
-
-<p>C表示压缩数据传输
-f表示后台用户验证,这个选项很有用,没有shell的不可登陆账号也能使用.
-N表示不执行脚本或命令
-g表示允许远程主机连接转发端口</p>
-
-<h3 id="l-本地转发">-L 本地转发</h3>
-
-<p>-L [本地监听IP:]本地监听端口号:目标主机IP:目标端口号
-(其中,“本地监听IP”可以省略，省略的话就认为是“0.0.0.0”，但为了安全性考虑，请务必使用“127.0.0.1”做为本地监听端口， 而不要使用默认的“0.0.0.0”。）</p>
-
-<p><code>ssh -D 8080 user@host</code>
-SSH会建立一个socket，去监听本地的8080端口。一旦有数据传向那个端口，就自动把它转移到SSH连接上面，发往远程主机。可以想象，如果8080端口原来是一个不加密端口，现在将变成一个加密端口。</p>
-
-<p><code>ssh -L 2121:host2:21 host3</code>
-命令中的L参数一共接受三个值，分别是&rdquo;本地端口:目标主机:目标主机端口&rdquo;，它们之间用冒号分隔。这条命令的意思，就是指定SSH绑定本地端口2121，然后指定host3将所有的数据，转发到目标主机host2的21端口（假定host2运行FTP，默认端口为21）。
-这样一来，我们只要连接host1的2121端口，就等于连上了host2的21端口。</p>
-
-<pre><code>ssh -CfNg -L 6300:127.0.0.1:1521 oracle@172.16.1.164
-</code></pre>
-
-<p>本机的6300端口就是远程主机172.16.1.164的1521端口</p>
-
-<h3 id="r-远程转发">-R 远程转发</h3>
-
-<pre><code> ssh -CfNg -R 1521:127.0.0.1:6300 oracle@172.16.1.164
-</code></pre>
-
-<p>在远程主机172.16.1.164上打开1521端口, 来映射本机的6300端口.</p>
-
-<p><strong>在树莓派上映射ssh到外网</strong></p>
-
-<pre><code>ssh -CfNg -R 2222:127.0.0.1:22 username@yourvps.com
-</code></pre>
-
-<p>这样就映射vps的2222端口到树莓派上了.但是这样映射的是服务器的127.0.0.1:2222,外网无法连接这个2222端口</p>
-
-<p>可以在服务器上执行<code>netstat -anltp</code>查看,这样要先登陆到自己的vps才能通过2222访问树莓派.</p>
-
-<p>可以使用</p>
-
-<pre><code>ssh -CfNg -R 0.0.0.0:2222:127.0.0.1:22 username@yourvps.com
-</code></pre>
-
-<p>再在服务器上配置<code>/etc/ssh/sshd_config</code></p>
-
-<pre><code>#增加下面一句
-GatewayPorts yes
-#如果有
-GatewayPorts no
-#则改为
-GatewayPorts yes
-#然后重启ssh
-#centos7： systemctl restart sshd
-#centos6： service sshd restart
-#ubuntu:   service ssh restart
-</code></pre>
-
-<p>使用<code>netstat -anltp</code>查看,监听的已经是<code>0.0.0.0</code>了,不过即使你指定-R参数<code>127.0.0.1:2222</code>,也不会监听<code>127.0.0.1</code>而始终是<code>0.0.0.0</code></p>
-
-<h3 id="使用socks5代理">使用socks5代理</h3>
-
-<pre><code>alias socksproxy=&quot;ssh -NT -f -D 0.0.0.0:1090  -p 1234 root@host&quot;;
-</code></pre>
-
-<p>-N 不打开远程的shell
--T 不分配tty
--f 后台运行</p>
-
-<p>执行<code>socksproxy</code>后就建立了一条ssh socks5 proxy,本地使用127.0.0.1:1090就可以使用服务器中转流量.</p>
 
 			</div>
 		</div>

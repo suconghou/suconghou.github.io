@@ -6,8 +6,133 @@
     <description>Recent content in Posts on 苏苏的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 16 May 2016 18:21:04 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 07 Jul 2016 15:46:03 +0800</lastBuildDate>
     <atom:link href="http://blog.suconghou.cn/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>都有哪些坑</title>
+      <link>http://blog.suconghou.cn/post/some-hole/</link>
+      <pubDate>Thu, 07 Jul 2016 15:46:03 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/some-hole/</guid>
+      <description>
+
+&lt;h2 id=&#34;总结一下遇到的坑&#34;&gt;总结一下遇到的坑&lt;/h2&gt;
+
+&lt;h3 id=&#34;微信&#34;&gt;微信&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;关于横竖屏的坑&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;css3可以使用媒体查询判断设备是横屏还是竖屏&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//横屏时显示
+@media all and (orientation : landscape) {
+#screenMask{display:block}
+}
+
+//竖屏时隐藏
+@media all and (orientation : portrait) {
+#screenMask{display:none}
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在手机浏览器中表现良好,微信中看样子也可以,但是微信网页中如果聚焦输入框,弹起键盘就有问题了.&lt;/p&gt;
+
+&lt;p&gt;软键盘弹起后,网页可用面积减小,安卓就自动识别为横屏了,原有的页面消失了,影响非常大.IOS则没有这个问题,媒体查询判断横竖屏在IOS上工作良好.&lt;/p&gt;
+
+&lt;p&gt;并且由此发现,css3媒体查询就是根据宽度是否比高度小来判断横竖屏的.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;解决方案1&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;使用&lt;code&gt;javascript&lt;/code&gt;的&lt;code&gt;orientation&lt;/code&gt;和&lt;code&gt;orientationchange&lt;/code&gt;判断&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;window.orientation   属于window对象上一个属性；共有三个值 ：0为竖屏模式（portrait）,90为向左反转变为横屏模式（landscape），-90为向右反转变为横屏模式（landscape），最后180就是设备上下互换还是竖屏模式。&lt;/li&gt;
+&lt;li&gt;orientationchange    是一个event，在设备旋转时，会触发此事件，如同PC上使用的resize事件。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;(function(){
+    var init = function(){
+        var updateOrientation = function(){
+            var orientation = window.orientation;
+            switch(orientation){
+                case 90:
+                case -90:
+                    orientation = &#39;landscape&#39;;
+                    break;
+                default:
+                    orientation = &#39;portrait&#39;;
+                    break;
+            }
+
+           //do something
+           //比如在html标签加一个状态
+            //然后根据不同状态，显示不同大小
+            document.body.parentNode.setAttribute(&#39;class&#39;,orientation);
+        };
+
+        window.addEventListener(&#39;orientationchange&#39;,updateOrientation,false);
+        updateOrientation();
+    };
+
+    window.addEventListener(&#39;DOMContentLoaded&#39;,init,false);
+})();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;经测试使用JS判断能够正确得出安卓微信客户端里输入框聚焦时的横竖屏状态.&lt;/p&gt;
+
+&lt;p&gt;orientation和orientationchange只有移动设备有这些属性和事件.&lt;/p&gt;
+
+&lt;p&gt;在不支持这种属性和事件的设备上使用宽高比来判断做一下兼容,这样在不支持&lt;code&gt;orientation&lt;/code&gt;的设备上就相当于使用了媒体查询&lt;/p&gt;
+
+&lt;p&gt;最终总结代码如下:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(function(w)
+{
+    var supportOrientation = (typeof w.orientation === &#39;number&#39; &amp;amp;&amp;amp; typeof w.onorientationchange === &#39;object&#39;);
+    var init = function()
+    {
+        var htmlNode = document.body.parentNode, orientation;
+        var updateOrientation = function()
+        {
+            if(supportOrientation)
+            {
+                orientation = w.orientation;
+                switch(orientation)
+                {
+                    case 90:
+                    case -90:
+                        orientation = &#39;landscape&#39;;
+                        break;
+                    default:
+                        orientation = &#39;portrait&#39;;
+                        break;
+                }
+            }
+            else
+            {
+                orientation = (w.innerWidth &amp;gt; w.innerHeight) ? &#39;landscape&#39; : &#39;portrait&#39;;
+            }
+            htmlNode.setAttribute(&#39;class&#39;,orientation);
+        };
+        if(supportOrientation)
+        {
+            w.addEventListener(&#39;orientationchange&#39;,updateOrientation,false);
+        }
+        else
+        {
+            //监听resize事件
+            w.addEventListener(&#39;resize&#39;,updateOrientation,false);
+        }
+        updateOrientation();
+    };
+    w.addEventListener(&#39;DOMContentLoaded&#39;,init,false);
+})(window);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以访问如下网址测试: /html/wx&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>使用tcpdump</title>
@@ -1628,178 +1753,6 @@ npm -v
 
 &lt;pre&gt;&lt;code&gt;sudo npm install -g less autoprefixer express jshint uglify-js webpack react-native-cli airs
 &lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>网摘</title>
-      <link>http://blog.suconghou.cn/post/some-good-useful-things/</link>
-      <pubDate>Wed, 06 Jan 2016 15:58:03 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/post/some-good-useful-things/</guid>
-      <description>
-
-&lt;h2 id=&#34;云计算-存储-分发等&#34;&gt;云计算,存储,分发等&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://baichuan.taobao.com/&#34;&gt;阿里百川&lt;/a&gt;
-&lt;a href=&#34;http://open.taobao.com/&#34;&gt;淘宝开放平台&lt;/a&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;包含容器引擎（TAE）, 多媒体存储处理分发, 可免费使用一年&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://c.163.com/&#34;&gt;网易的Docker服务&lt;/a&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;最近上线,价格略贵最低29/月&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://bmob.cn/&#34;&gt;bmob&lt;/a&gt;移动后端云,网友示例项目&lt;a href=&#34;https://github.com/bestony/BandwaghonhostAPP&#34;&gt;BandwaghonhostAPP&lt;/a&gt;,结合&lt;a href=&#34;http://dev.dcloud.net.cn/mui/&#34;&gt;mui移动开发框架&lt;/a&gt;开发手机APP&lt;/p&gt;
-
-&lt;h2 id=&#34;短信-推动消息等&#34;&gt;短信,推动消息等&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.alidayu.com/&#34;&gt;阿里大鱼&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;阿里巴巴旗下的短信验证码通知服务,价格实惠,短信通知≤0.045元／条,还有文本转语音通知≤0.055元／条&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://sendcloud.sohu.com/price.html&#34;&gt;SendCloud&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;短信和邮件发送服务,邮件有每日免费200封,短信5.5分每条&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&#34;图像压缩软件&#34;&gt;图像压缩软件&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://imageoptim.com/&#34;&gt;ImageOptim无损压缩&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://mozjpeg.codelove.de/&#34;&gt;mozjpeg&lt;/a&gt; Mozilla的jpg压缩技术,支持无损,有损压缩在线压缩,最大2M.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://tinypng.com/&#34;&gt;tinypng&lt;/a&gt; 众多压缩软件中压缩效果较好的,支持png,jpg在线批量压缩&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://kraken.io&#34;&gt;kraken&lt;/a&gt; 类似于tinypng,也提供在线压缩&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://pngquant.org/&#34;&gt;pngquant&lt;/a&gt; 开源的压缩png,据说tinypng基于此项目&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://www.npmjs.com/package/imagemin&#34;&gt;nodejs imagemin&lt;/a&gt; NodeJs模块,压缩jpg,png,压缩效果一般&lt;/p&gt;
-
-&lt;h2 id=&#34;移动混合应用-hhtml5开发&#34;&gt;移动混合应用/HHTML5开发&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://dev.dcloud.net.cn/mui/&#34;&gt;国产mui&lt;/a&gt; 最接近原生APP体验的高性能前端框架,不依赖任何第三方JS库,压缩后的JS和CSS文件仅有100+K和60+K&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://m.sui.taobao.org/&#34;&gt;SUI Mobile&lt;/a&gt; 淘宝移动UI框架,轻量，小巧且精美的UI库 方便迅速搭建手机H5应用,兼容iOS 6.0+ 和 Android 4.0+，非常适合开发跨平台Web App。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://mobiscroll.com/&#34;&gt;mobiscroll&lt;/a&gt; 移动开发UI,丰富的时间选择器控件还有一些WEBAPP展示,&lt;a href=&#34;https://github.com/acidb/mobiscroll&#34;&gt;https://github.com/acidb/mobiscroll&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;桌面开发&#34;&gt;桌面开发&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://nwjs.io/&#34;&gt;nwjs&lt;/a&gt; Mac版钉钉使用的就是这个技术,界面还算漂亮&lt;/p&gt;
-
-&lt;h2 id=&#34;网页动画&#34;&gt;网页动画&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://ecomfe.github.io/zrender/index.html&#34;&gt;百度zrender&lt;/a&gt; 基于Canvas的图形仓库交互工具,可以方便的画出很多图形&lt;/p&gt;
-
-&lt;h2 id=&#34;游戏引擎&#34;&gt;游戏引擎&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://hiloteam.github.io/&#34;&gt;阿里Hilo&lt;/a&gt; 游戏渲染引擎,实现2048,切水果等.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.egret.com/&#34;&gt;http://www.egret.com/&lt;/a&gt; 白鹭也是做这个的&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/iioinc/iio.js&#34;&gt;https://github.com/iioinc/iio.js&lt;/a&gt; 也是canvas的游戏&lt;/p&gt;
-
-&lt;h2 id=&#34;网页富文本编辑器&#34;&gt;网页富文本编辑器&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://wangeditor.github.io/&#34;&gt;wangeditor&lt;/a&gt; 轻量简介的富文本编辑器,使用容易,相比百度umeditor更简洁&lt;/p&gt;
-
-&lt;h2 id=&#34;网页markdown编辑器&#34;&gt;网页Markdown编辑器&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/pandao/editor.md&#34;&gt;Editor.md&lt;/a&gt; 一款开源的、可嵌入的 Markdown 在线编辑器（组件），基于 CodeMirror、jQuery 和 Marked 构建。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/tylingsoft/markdown-plus&#34;&gt;markdown-plus&lt;/a&gt; Markdown Plus,界面不是很漂亮,也有收费的桌面APP&lt;/p&gt;
-
-&lt;h2 id=&#34;字体相关&#34;&gt;字体相关&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.youziku.com/&#34;&gt;有字库中文字体&lt;/a&gt; 在线字体,CDN引用&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://font-spider.org/&#34;&gt;字蛛&lt;/a&gt; 中文字体压缩器,让网页自由引入中文字体成为可能&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.iconfont.cn/&#34;&gt;阿里iconfont&lt;/a&gt; 阿里巴巴的网页矢量图标在线生成工具,中文字体和矢量图标&lt;/p&gt;
-
-&lt;h2 id=&#34;镜像网站-cdn&#34;&gt;镜像网站/CDN&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://npm.taobao.org/&#34;&gt;淘宝NPM镜像&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://css.net/&#34;&gt;常用前端公共库css.net&lt;/a&gt; 包括Gravatar,Google 字体库等反代,支持https&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.bootcdn.cn/&#34;&gt;bootcdn&lt;/a&gt; 支持https&lt;/p&gt;
-
-&lt;h2 id=&#34;云端ide&#34;&gt;云端IDE&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://coderpad.io/&#34;&gt;coderpad&lt;/a&gt; 在线运行多种语言代码,保存分享,不过是收费的,我创建的&lt;a href=&#34;https://coderpad.io/GP2KRHQQ&#34;&gt;演示&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;视频解析&#34;&gt;视频解析&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://keepvid.com/&#34;&gt;keepvid&lt;/a&gt; 支持多种国外视频网站解析,转码&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.clipconverter.cc/&#34;&gt;clipconverter&lt;/a&gt; 支持youtube视频解析,转码,多分辨率,速度又快.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://www.tubeninja.net/en/&#34;&gt;tubeninja&lt;/a&gt; 支持多种国内外视频网站解析&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.youtube-dl.org/&#34;&gt;youtube-dl&lt;/a&gt; 全平台的YouTube视频下载工具&lt;/p&gt;
-
-&lt;h2 id=&#34;图床&#34;&gt;图床&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://sm.ms/&#34;&gt;smms&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://get-link.xyz/&#34;&gt;get-link&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://v2ex.com/t/278912#reply24&#34;&gt;two.yt&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://www.niupic.com/&#34;&gt;niupic&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;前端-node&#34;&gt;前端/Node&lt;/h2&gt;
-
-&lt;p&gt;Ajax库&lt;a href=&#34;https://github.com/visionmedia/superagent&#34;&gt;superagent&lt;/a&gt; 同时兼容IE9+和NodeJs的Ajax小工具,Gzip后仅为4.4kb&lt;/p&gt;
-
-&lt;p&gt;轮播图插件&lt;a href=&#34;http://slidesjs.com/&#34;&gt;slidesjs&lt;/a&gt; 纯js的jQuery轮播图插件,简单易用响应式支持触摸,压缩后大小仅12kb,Gzip后3.3kb,但是单张图片存在bug,很久没有更新&lt;/p&gt;
-
-&lt;p&gt;模板引擎&lt;a href=&#34;http://aui.github.io/artTemplate/&#34;&gt;artTemplate&lt;/a&gt; 性能卓越的Js模板引擎,同时有NodeJs版本,压缩后5kb大小,Gzip后2.9kb&lt;/p&gt;
-
-&lt;p&gt;url解析工具&lt;a href=&#34;https://github.com/websanova/js-url&#34;&gt;js-url&lt;/a&gt; 解析url的query_string hostname protocol 等等,~1.7 Kb minified, ~0.7Kb gzipped&lt;/p&gt;
-
-&lt;p&gt;获取你的内网IP和外网IP&lt;a href=&#34;https://github.com/diafygi/webrtc-ips&#34;&gt;webrtc-ips&lt;/a&gt; 通过Webrtc技术连接stun服务器,取得IP&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/amsul/pickadate.js&#34;&gt;https://github.com/amsul/pickadate.js&lt;/a&gt;
-&lt;a href=&#34;https://github.com/xdan/datetimepicker&#34;&gt;https://github.com/xdan/datetimepicker&lt;/a&gt;
-&lt;a href=&#34;https://github.com/rmm5t/jquery-timeago&#34;&gt;https://github.com/rmm5t/jquery-timeago&lt;/a&gt;
-&lt;a href=&#34;http://c3js.org/&#34;&gt;http://c3js.org/&lt;/a&gt;
-&lt;a href=&#34;https://github.com/datejs/Datejs/blob/master/build/date.js&#34;&gt;https://github.com/datejs/Datejs/blob/master/build/date.js&lt;/a&gt;
-&lt;a href=&#34;https://github.com/Teamweek/instadate&#34;&gt;https://github.com/Teamweek/instadate&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;js插件&#34;&gt;JS插件&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.swiper.com.cn/&#34;&gt;swiper滑动插件&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;测试工具&#34;&gt;测试工具&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.alibench.com/&#34;&gt;阿里测&lt;/a&gt; 测试你的服务器在全国各地的响应速度
-&lt;a href=&#34;http://www.cloudping.info/&#34;&gt;cloudping&lt;/a&gt; 测试亚马逊云各节点到你电脑的延时
-&lt;a href=&#34;http://requestb.in/&#34;&gt;requestb&lt;/a&gt; 测试你发送的HTTP请求&lt;/p&gt;
-
-&lt;h2 id=&#34;代码转换&#34;&gt;代码转换&lt;/h2&gt;
-
-&lt;p&gt;将python代码转化为可执行文件&lt;a href=&#34;http://nuitka.net/pages/download.html&#34;&gt;nuitka&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;服务器vps&#34;&gt;服务器VPS&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://cheapwindowsvps.com/&#34;&gt;cheapwindowsvps&lt;/a&gt; G口亚洲越南和新加坡不限流量支持Windows
-&lt;a href=&#34;https://dedistation.com/billing/order.php?step=0&amp;amp;productGroup=13&#34;&gt;dedistation&lt;/a&gt;
-&lt;a href=&#34;http://www.winode.org/cart.php?gid=15&amp;amp;language=chinese&#34;&gt;winode&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     
