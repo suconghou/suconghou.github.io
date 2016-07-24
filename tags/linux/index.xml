@@ -59,6 +59,28 @@ us, sy, id, wa, st：这些都是平均了所有 CPU 的 CPU 分解时间。它�
 
 &lt;p&gt;&lt;code&gt;ssh-copy-id -i ~/.ssh/id_rsa.pub -p 26671 root@host&lt;/code&gt;&lt;/p&gt;
 
+&lt;h2 id=&#34;pgrep&#34;&gt;pgrep&lt;/h2&gt;
+
+&lt;p&gt;根据名字或其他属性查询出进程的PID&lt;/p&gt;
+
+&lt;p&gt;如:&lt;code&gt;pgrep nginx -fl&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;pkill&#34;&gt;pkill&lt;/h2&gt;
+
+&lt;p&gt;和&lt;code&gt;pgrep&lt;/code&gt;类似,不同的是向进程发送信号,默认发送&lt;code&gt;SIGTERM&lt;/code&gt;信号,查看都有哪些信号可用,可以使用&lt;code&gt;kill -l&lt;/code&gt;查看&lt;/p&gt;
+
+&lt;h2 id=&#34;pstree&#34;&gt;pstree&lt;/h2&gt;
+
+&lt;p&gt;用树的形式显示正在运行的进程,树的节点为指定的PID(忽略则为init进程)&lt;/p&gt;
+
+&lt;h2 id=&#34;ss&#34;&gt;ss&lt;/h2&gt;
+
+&lt;p&gt;用于显示socket的统计信息,&lt;code&gt;-s&lt;/code&gt;用于显示汇总&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;-l&lt;/code&gt;用于列出正在监听的&lt;code&gt;socket&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;-p&lt;/code&gt;显示进程信息,&lt;code&gt;ss -pl&lt;/code&gt; 可以查看使用网络端口的进程名字&lt;/p&gt;
+
 &lt;h2 id=&#34;磁盘相关&#34;&gt;磁盘相关&lt;/h2&gt;
 
 &lt;h3 id=&#34;dd&#34;&gt;dd&lt;/h3&gt;
@@ -82,6 +104,16 @@ count = blocks 只拷贝输入的blocks块&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;du -h --max-depth=1 |sort&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;以上两条命令不适用于MacOs,可以使用&lt;code&gt;du -sh *&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;ps&#34;&gt;ps&lt;/h2&gt;
+
+&lt;p&gt;ps ef  查看进程的状态&lt;/p&gt;
+
+&lt;p&gt;ps auxw 查看进程的CPU,内存占用&lt;/p&gt;
+
+&lt;p&gt;ps 默认是按照PID排序的,若要按内存使用排序&lt;code&gt;ps auxw --sort=rss&lt;/code&gt;,同理按虚拟内存排序&lt;code&gt;ps auxw --sort=vsz&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;mac上无法使用&lt;code&gt;--sort&lt;/code&gt;,可以采用&lt;code&gt;sort&lt;/code&gt;排序,如rss在第六列,则&lt;code&gt;ps auxw | sort -k6,6n&lt;/code&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;一份linux别名和函数库&#34;&gt;一份Linux别名和函数库&lt;/h2&gt;
 

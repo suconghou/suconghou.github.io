@@ -86,6 +86,28 @@ us, sy, id, wa, st：这些都是平均了所有 CPU 的 CPU 分解时间。它�
 
 <p><code>ssh-copy-id -i ~/.ssh/id_rsa.pub -p 26671 root@host</code></p>
 
+<h2 id="pgrep">pgrep</h2>
+
+<p>根据名字或其他属性查询出进程的PID</p>
+
+<p>如:<code>pgrep nginx -fl</code></p>
+
+<h2 id="pkill">pkill</h2>
+
+<p>和<code>pgrep</code>类似,不同的是向进程发送信号,默认发送<code>SIGTERM</code>信号,查看都有哪些信号可用,可以使用<code>kill -l</code>查看</p>
+
+<h2 id="pstree">pstree</h2>
+
+<p>用树的形式显示正在运行的进程,树的节点为指定的PID(忽略则为init进程)</p>
+
+<h2 id="ss">ss</h2>
+
+<p>用于显示socket的统计信息,<code>-s</code>用于显示汇总</p>
+
+<p><code>-l</code>用于列出正在监听的<code>socket</code></p>
+
+<p><code>-p</code>显示进程信息,<code>ss -pl</code> 可以查看使用网络端口的进程名字</p>
+
 <h2 id="磁盘相关">磁盘相关</h2>
 
 <h3 id="dd">dd</h3>
@@ -109,6 +131,16 @@ count = blocks 只拷贝输入的blocks块</p>
 <p><code>du -h --max-depth=1 |sort</code></p>
 
 <p>以上两条命令不适用于MacOs,可以使用<code>du -sh *</code></p>
+
+<h2 id="ps">ps</h2>
+
+<p>ps ef  查看进程的状态</p>
+
+<p>ps auxw 查看进程的CPU,内存占用</p>
+
+<p>ps 默认是按照PID排序的,若要按内存使用排序<code>ps auxw --sort=rss</code>,同理按虚拟内存排序<code>ps auxw --sort=vsz</code></p>
+
+<p>mac上无法使用<code>--sort</code>,可以采用<code>sort</code>排序,如rss在第六列,则<code>ps auxw | sort -k6,6n</code></p>
 
 <h2 id="一份linux别名和函数库">一份Linux别名和函数库</h2>
 

@@ -63,7 +63,7 @@
 
 <h3 id="下载安装">下载安装</h3>
 
-<p><a href="http://www.oschina.net/news/73935/docker-v-1-11-2">各平台下载地址</a></p>
+<p><a href="http://www.oschina.net/news/75224/docker-v1-12-0-rc4">各平台下载地址</a></p>
 
 <p><a href="https://docs.docker.com/engine/installation/linux/centos/">官方安装教程</a></p>
 
@@ -349,7 +349,7 @@ docker run -it -p 8080:8000 --name vps vpsimage bash
 <p><code>docker pull</code> 默认采用https通信,国内一般提供镜像,或者自己的registry,可以采用
 例如<code>docker pull registry.aliyuncs.com/suconghou/http</code> 这种方式指明registry</p>
 
-<p><a href="https://dev.aliyun.com/search.html">阿里云的registry</a>,提供私有,公开docker镜像,但是并不是dockerhub的镜像</p>
+<p><a href="https://dev.aliyun.com/search.html">阿里云的registry</a>,提供私有,公开docker镜像,和docker官方的https加速镜像.</p>
 
 <p>Daocloud提供的Docker服务地址 daocloud.io
 并提供单独域名的加速器, <code>--registry-mirror=http://xxx.m.daocloud.io</code> 可以指定docker启动时使用的registry</p>
@@ -480,6 +480,26 @@ newgrp docker
 输入用户名,密码,邮箱登陆</p>
 
 <p><code>docker push yourname/imagename</code></p>
+
+<h2 id="技巧">技巧</h2>
+
+<h3 id="清除docker-container-log">清除docker container log</h3>
+
+<p>使用 <code>docker logs &lt;container_name_or_id&gt;</code> 可以查看容器的log,也可以将重定向到一个文件,可以类似于<code>tail -f</code>一样跟踪变化.</p>
+
+<p>但是未提供清空log的选项.</p>
+
+<p>其实可以使用<code>$(docker inspect --format='{{.LogPath}}' &lt;container_name_or_id&gt;)</code>得出此容器的日子存储文件.</p>
+
+<pre><code>sudo ls -lh $(docker inspect --format='{{.LogPath}}' &lt;container_name_or_id&gt;) //查看日志文件
+echo &quot;&quot; &gt; $(docker inspect --format='{{.LogPath}}' &lt;container_name_or_id&gt;) //可以清空日志文件
+</code></pre>
+
+<p>还可以使用<code>truncate -s 0 /var/lib/docker/containers/*/*-json.log</code>清空所有的日志文件.</p>
+
+<p>不过这个都是需要<code>docker daemon</code>和<code>docker client</code>在同一台机器上.</p>
+
+<p><code>docker 1.8</code>及以后版本可以使用参数<code>--log-opt max-size=50m</code>限制日志文件的大小,更多详细介绍 <a href="https://docs.docker.com/engine/admin/logging/overview/">https://docs.docker.com/engine/admin/logging/overview/</a></p>
 
 		</div>
 	</div>

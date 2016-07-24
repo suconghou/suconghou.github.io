@@ -6,8 +6,142 @@
     <description>Recent content in Posts on 苏苏的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 07 Jul 2016 15:46:03 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 11 Jul 2016 11:39:08 +0800</lastBuildDate>
     <atom:link href="http://blog.suconghou.cn/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>react native</title>
+      <link>http://blog.suconghou.cn/post/react-native/</link>
+      <pubDate>Mon, 11 Jul 2016 11:39:08 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/react-native/</guid>
+      <description>
+
+&lt;h2 id=&#34;react-native&#34;&gt;react native&lt;/h2&gt;
+
+&lt;h3 id=&#34;环境准备&#34;&gt;环境准备&lt;/h3&gt;
+
+&lt;p&gt;前提是需要node和npm,这里不在赘述.介绍一个npm加速的.&lt;/p&gt;
+
+&lt;p&gt;使用淘宝的npm镜像.控制台运行,或者加入你的bashrc中永久生效&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;alias cnpm=&amp;quot;npm --registry=https://registry.npm.taobao.org --cache=$HOME/.npm/.cache/cnpm --disturl=https://npm.taobao.org/dist --userconfig=$HOME/.cnpmrc&amp;quot;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;安装开发必备的一些package&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cnpm install -g react-native-cli webpack
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;react-native&lt;/code&gt;也调用了&lt;code&gt;npm&lt;/code&gt;命令,所以我们可以再来个alias加速&lt;code&gt;react-native init&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;alias npm=&#39;cnpm&#39;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;或者直接将仓库改为淘宝的NPM镜像&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;npm config set registry https://registry.npm.taobao.org
+npm config set disturl https://npm.taobao.org/dist
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在mac上还需要一些东西&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;brew install flow watchman
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;安装完以后可以开始helloworld了.&lt;/p&gt;
+
+&lt;h3 id=&#34;开始第一个例子&#34;&gt;开始第一个例子&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;cd /data/tmp
+react-native init HelloWorld
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后正在初始化大致如下&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;This will walk you through creating a new React Native project in /data/tmp/HelloWorld
+Installing react-native package from npm...
+Setting up new React Native app in /data/tmp/HelloWorld
+HelloWorld@0.0.1 /data/tmp/HelloWorld
+└── react@15.2.1
+
+To run your app on iOS:
+   cd /data/tmp/HelloWorld
+   react-native run-ios
+   - or -
+   Open /data/tmp/HelloWorld/ios/HelloWorld.xcodeproj in Xcode
+   Hit the Run button
+To run your app on Android:
+   Have an Android emulator running (quickest way to get started), or a device connected
+   cd /data/tmp/HelloWorld
+   react-native run-android
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;下面是一些针对开发IOS的教程&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;我们执行&lt;code&gt;react-native run-ios&lt;/code&gt;开始编译运行,前提是你必须安装了&lt;code&gt;xcode&lt;/code&gt;哦.&lt;/p&gt;
+
+&lt;p&gt;执行后,出现&lt;code&gt;BUILD SUCCEEDED&lt;/code&gt;,同时自动打开新的终端运行了一个server在8081端口.&lt;/p&gt;
+
+&lt;p&gt;模拟器中也会出现刚编译好的app的窗口,使用&lt;code&gt;cmd+r&lt;/code&gt;刷新,&lt;code&gt;cmd+d&lt;/code&gt;弹出开发菜单.&lt;/p&gt;
+
+&lt;p&gt;我们可以修改&lt;code&gt;index.ios.js&lt;/code&gt;开始开发了.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;下面是一些针对开发Android的教程&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;问题&#34;&gt;问题&lt;/h3&gt;
+
+&lt;p&gt;在使用&lt;code&gt;fetch&lt;/code&gt;调用接口时,可能会出现&lt;code&gt;The resource could not be loaded because the App Transport Security policy requires the use of a secure connection.&lt;/code&gt;错误&lt;/p&gt;
+
+&lt;p&gt;这是IOS9要求必须使用https通信,需要修改 &lt;a href=&#34;http://stackoverflow.com/questions/30731785/how-do-i-load-an-http-url-with-app-transport-security-enabled-in-ios-9&#34;&gt;http://stackoverflow.com/questions/30731785/how-do-i-load-an-http-url-with-app-transport-security-enabled-in-ios-9&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;其实&lt;code&gt;react native&lt;/code&gt;创建&lt;code&gt;Info.plist&lt;/code&gt;时就已经为我们说明了,在&lt;code&gt;NSExceptionDomains&lt;/code&gt;下面的&lt;code&gt;dict&lt;/code&gt;里添加一个排除域名就OK了.&lt;/p&gt;
+
+&lt;p&gt;注意,不能将默认的&lt;code&gt;localhost&lt;/code&gt;去掉,否则会出现&lt;code&gt;_fbBatchedBridge is undefined&lt;/code&gt;错误.&lt;/p&gt;
+
+&lt;h2 id=&#34;打包&#34;&gt;打包&lt;/h2&gt;
+
+&lt;h3 id=&#34;对android项目打包&#34;&gt;对android项目打包&lt;/h3&gt;
+
+&lt;p&gt;使用&lt;code&gt;keytool&lt;/code&gt;生成签名文件,在任意目录下执行&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;keytool -genkey -v -keystore my-release-key.keystore  -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;上面&lt;code&gt;my-release-key&lt;/code&gt;可以自己定义,后面的&lt;code&gt;my-key-alias&lt;/code&gt;也可以自己定义.运行后输入一下相关信息后,生成&lt;code&gt;my-release-key.keystore&lt;/code&gt;文件.&lt;/p&gt;
+
+&lt;p&gt;其中输入的两次密码,需要记住.将这个文件移动到&lt;code&gt;android/app&lt;/code&gt;目录下,编译&lt;code&gt;android/app&lt;/code&gt;里的&lt;code&gt;build.gradle&lt;/code&gt;,添加下面的内容&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;android {
+    ...
+    defaultConfig { ... }
+    signingConfigs {
+        release {
+            storeFile file(MYAPP_RELEASE_STORE_FILE)
+            storePassword MYAPP_RELEASE_STORE_PASSWORD
+            keyAlias MYAPP_RELEASE_KEY_ALIAS
+            keyPassword MYAPP_RELEASE_KEY_PASSWORD
+        }
+    }
+    ...
+    buildTypes {
+        release {
+              ...
+              signingConfig signingConfigs.release
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在&lt;code&gt;android&lt;/code&gt;目录下运行如下命令,就可以打包,安装到自己手机上,前提是手机已usb调试连接到电脑&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;./gradlew assembleRelease
+cd app/build/outputs/apk
+adb install -r app-release.apk
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;参考 &lt;a href=&#34;https://facebook.github.io/react-native/docs/signed-apk-android.html&#34;&gt;https://facebook.github.io/react-native/docs/signed-apk-android.html&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>都有哪些坑</title>
@@ -131,6 +265,36 @@
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;可以访问如下网址测试: /html/wx&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>PHP最佳实践</title>
+      <link>http://blog.suconghou.cn/post/php-best-way/</link>
+      <pubDate>Thu, 30 Jun 2016 16:40:13 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/php-best-way/</guid>
+      <description>
+
+&lt;h2 id=&#34;性能优化&#34;&gt;性能优化&lt;/h2&gt;
+
+&lt;h3 id=&#34;数组相关&#34;&gt;数组相关&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;in_array&lt;/code&gt;在大数据量(数万以上元素)下效率低下&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;在分析nginx log得出所有不重复IP时,采用&lt;code&gt;in_array&lt;/code&gt;判断,50多万的数据耗时需要五六分钟,而采用存键的方法,用&lt;code&gt;isset&lt;/code&gt;判断仅需要十几秒,效率差别非常大. [php7环境下]&lt;/p&gt;
+
+&lt;p&gt;判断一个数组是否存在某个元素,远比查找一个键消耗的要多.前者时间复杂度O(n),而后者O(1)&lt;/p&gt;
+
+&lt;p&gt;即时使用&lt;code&gt;in_array&lt;/code&gt;,也需要加上第三个参数,设置为严格模式,省略数据类型转化的开销,设置为&lt;code&gt;true&lt;/code&gt;比设置为&lt;code&gt;false&lt;/code&gt;性能要提升好几倍.&lt;/p&gt;
+
+&lt;p&gt;这种情况下使用&lt;code&gt;array_search&lt;/code&gt;情况比&lt;code&gt;in_array&lt;/code&gt;更加糟糕&lt;/p&gt;
+
+&lt;p&gt;如果条件允许使用&lt;code&gt;array_flip&lt;/code&gt;交换键值,在用&lt;code&gt;isset&lt;/code&gt;来判断要比&lt;code&gt;in_array&lt;/code&gt;好得多&lt;/p&gt;
+
+&lt;p&gt;同时,使用&lt;code&gt;isset&lt;/code&gt;来判断数组的键,也比使用&lt;code&gt;array_key_exists&lt;/code&gt;要好&lt;/p&gt;
+
+&lt;p&gt;而对于本题,还可以使用&lt;code&gt;array_unique&lt;/code&gt;最后去重,用空间换时间,效率仅次于用&lt;code&gt;isset&lt;/code&gt;&lt;/p&gt;
 </description>
     </item>
     
@@ -361,6 +525,28 @@ us, sy, id, wa, st：这些都是平均了所有 CPU 的 CPU 分解时间。它�
 
 &lt;p&gt;&lt;code&gt;ssh-copy-id -i ~/.ssh/id_rsa.pub -p 26671 root@host&lt;/code&gt;&lt;/p&gt;
 
+&lt;h2 id=&#34;pgrep&#34;&gt;pgrep&lt;/h2&gt;
+
+&lt;p&gt;根据名字或其他属性查询出进程的PID&lt;/p&gt;
+
+&lt;p&gt;如:&lt;code&gt;pgrep nginx -fl&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;pkill&#34;&gt;pkill&lt;/h2&gt;
+
+&lt;p&gt;和&lt;code&gt;pgrep&lt;/code&gt;类似,不同的是向进程发送信号,默认发送&lt;code&gt;SIGTERM&lt;/code&gt;信号,查看都有哪些信号可用,可以使用&lt;code&gt;kill -l&lt;/code&gt;查看&lt;/p&gt;
+
+&lt;h2 id=&#34;pstree&#34;&gt;pstree&lt;/h2&gt;
+
+&lt;p&gt;用树的形式显示正在运行的进程,树的节点为指定的PID(忽略则为init进程)&lt;/p&gt;
+
+&lt;h2 id=&#34;ss&#34;&gt;ss&lt;/h2&gt;
+
+&lt;p&gt;用于显示socket的统计信息,&lt;code&gt;-s&lt;/code&gt;用于显示汇总&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;-l&lt;/code&gt;用于列出正在监听的&lt;code&gt;socket&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;-p&lt;/code&gt;显示进程信息,&lt;code&gt;ss -pl&lt;/code&gt; 可以查看使用网络端口的进程名字&lt;/p&gt;
+
 &lt;h2 id=&#34;磁盘相关&#34;&gt;磁盘相关&lt;/h2&gt;
 
 &lt;h3 id=&#34;dd&#34;&gt;dd&lt;/h3&gt;
@@ -384,6 +570,16 @@ count = blocks 只拷贝输入的blocks块&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;du -h --max-depth=1 |sort&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;以上两条命令不适用于MacOs,可以使用&lt;code&gt;du -sh *&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;ps&#34;&gt;ps&lt;/h2&gt;
+
+&lt;p&gt;ps ef  查看进程的状态&lt;/p&gt;
+
+&lt;p&gt;ps auxw 查看进程的CPU,内存占用&lt;/p&gt;
+
+&lt;p&gt;ps 默认是按照PID排序的,若要按内存使用排序&lt;code&gt;ps auxw --sort=rss&lt;/code&gt;,同理按虚拟内存排序&lt;code&gt;ps auxw --sort=vsz&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;mac上无法使用&lt;code&gt;--sort&lt;/code&gt;,可以采用&lt;code&gt;sort&lt;/code&gt;排序,如rss在第六列,则&lt;code&gt;ps auxw | sort -k6,6n&lt;/code&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;一份linux别名和函数库&#34;&gt;一份Linux别名和函数库&lt;/h2&gt;
 
@@ -1603,155 +1799,6 @@ E1D0AE85 A0BBD039 0E9C8D55 E1B89D5D
 5CDB7036 E56DE1C0 EFCC0840 650CD3A6
 B98FC99C 8FAC73EE D2B95564 DF450523
 ------ END LICENSE ------
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>SSH</title>
-      <link>http://blog.suconghou.cn/post/linux-ssh/</link>
-      <pubDate>Thu, 07 Jan 2016 13:47:22 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/post/linux-ssh/</guid>
-      <description>
-
-&lt;h2 id=&#34;避免ssh自动断开连接&#34;&gt;避免SSH自动断开连接&lt;/h2&gt;
-
-&lt;p&gt;如果有一段时间在SSH连接上无数据传输，连接就会断开,以下设定可以解决这个问题&lt;/p&gt;
-
-&lt;p&gt;方案一：在客户端设置&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;sudo vim /etc/ssh/ssh_config&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;开启 &lt;code&gt;ServerAliveInterval 60&lt;/code&gt;
-开启 &lt;code&gt;TCPKeepAlive yes&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;此后该系统里的用户连接SSH时，每60秒会发一个KeepAlive请求，避免被踢。&lt;/p&gt;
-
-&lt;p&gt;方案二：在服务器端设置&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;sudo vim /etc/ssh/sshd_config&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;开启&lt;code&gt;ClientAliveInterval 60&lt;/code&gt;
-开启 &lt;code&gt;TCPKeepAlive yes&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;如果您只想让当前的 ssh 保持连接，可以使用以下的命令：&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;ssh -o ServerAliveInterval=60 user@sshserver&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;ssh隧道&#34;&gt;ssh隧道&lt;/h2&gt;
-
-&lt;h3 id=&#34;cfng&#34;&gt;-CfNg&lt;/h3&gt;
-
-&lt;p&gt;C表示压缩数据传输
-f表示后台用户验证,这个选项很有用,没有shell的不可登陆账号也能使用.
-N表示不执行脚本或命令
-g表示允许远程主机连接转发端口&lt;/p&gt;
-
-&lt;h3 id=&#34;l-本地转发&#34;&gt;-L 本地转发&lt;/h3&gt;
-
-&lt;p&gt;-L [本地监听IP:]本地监听端口号:目标主机IP:目标端口号
-(其中,“本地监听IP”可以省略，省略的话就认为是“0.0.0.0”，但为了安全性考虑，请务必使用“127.0.0.1”做为本地监听端口， 而不要使用默认的“0.0.0.0”。）&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;ssh -D 8080 user@host&lt;/code&gt;
-SSH会建立一个socket，去监听本地的8080端口。一旦有数据传向那个端口，就自动把它转移到SSH连接上面，发往远程主机。可以想象，如果8080端口原来是一个不加密端口，现在将变成一个加密端口。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;ssh -L 2121:host2:21 host3&lt;/code&gt;
-命令中的L参数一共接受三个值，分别是&amp;rdquo;本地端口:目标主机:目标主机端口&amp;rdquo;，它们之间用冒号分隔。这条命令的意思，就是指定SSH绑定本地端口2121，然后指定host3将所有的数据，转发到目标主机host2的21端口（假定host2运行FTP，默认端口为21）。
-这样一来，我们只要连接host1的2121端口，就等于连上了host2的21端口。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;ssh -CfNg -L 6300:127.0.0.1:1521 oracle@172.16.1.164
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;本机的6300端口就是远程主机172.16.1.164的1521端口&lt;/p&gt;
-
-&lt;h3 id=&#34;r-远程转发&#34;&gt;-R 远程转发&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt; ssh -CfNg -R 1521:127.0.0.1:6300 oracle@172.16.1.164
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;在远程主机172.16.1.164上打开1521端口, 来映射本机的6300端口.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;在树莓派上映射ssh到外网&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;ssh -CfNg -R 2222:127.0.0.1:22 username@yourvps.com
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这样就映射vps的2222端口到树莓派上了.但是这样映射的是服务器的127.0.0.1:2222,外网无法连接这个2222端口&lt;/p&gt;
-
-&lt;p&gt;可以在服务器上执行&lt;code&gt;netstat -anltp&lt;/code&gt;查看,这样要先登陆到自己的vps才能通过2222访问树莓派.&lt;/p&gt;
-
-&lt;p&gt;可以使用&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;ssh -CfNg -R 0.0.0.0:2222:127.0.0.1:22 username@yourvps.com
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;再在服务器上配置&lt;code&gt;/etc/ssh/sshd_config&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;#增加下面一句
-GatewayPorts yes
-#如果有
-GatewayPorts no
-#则改为
-GatewayPorts yes
-#然后重启ssh
-#centos7： systemctl restart sshd
-#centos6： service sshd restart
-#ubuntu:   service ssh restart
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;使用&lt;code&gt;netstat -anltp&lt;/code&gt;查看,监听的已经是&lt;code&gt;0.0.0.0&lt;/code&gt;了,不过即使你指定-R参数&lt;code&gt;127.0.0.1:2222&lt;/code&gt;,也不会监听&lt;code&gt;127.0.0.1&lt;/code&gt;而始终是&lt;code&gt;0.0.0.0&lt;/code&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;使用socks5代理&#34;&gt;使用socks5代理&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;alias socksproxy=&amp;quot;ssh -NT -f -D 0.0.0.0:1090  -p 1234 root@host&amp;quot;;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;-N 不打开远程的shell
--T 不分配tty
--f 后台运行&lt;/p&gt;
-
-&lt;p&gt;执行&lt;code&gt;socksproxy&lt;/code&gt;后就建立了一条ssh socks5 proxy,本地使用127.0.0.1:1090就可以使用服务器中转流量.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>安装NodeJs和npm</title>
-      <link>http://blog.suconghou.cn/post/install-nodejs/</link>
-      <pubDate>Thu, 07 Jan 2016 10:29:59 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/post/install-nodejs/</guid>
-      <description>
-
-&lt;h2 id=&#34;安装nodejs&#34;&gt;安装NodeJs&lt;/h2&gt;
-
-&lt;p&gt;nodejs官方提供了编译好的二进制的包,全平台都有,十分方便
-&lt;a href=&#34;https://nodejs.org/download/release/latest/&#34;&gt;最新版本NodeJs官方库&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;其他信息&lt;a href=&#34;http://www.oschina.net/news/73974/node-v6-2-1-current&#34;&gt;http://www.oschina.net/news/73974/node-v6-2-1-current&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;例如安装Linux版本&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;wget https://nodejs.org/dist/v6.0.0/node-v6.0.0-linux-x64.tar.xz
-tar -xJf node-v6.0.0-linux-x64.tar.xz
-sudo mv node-v6.0.0-linux-x64 /usr/local/nodejs
-sudo ln -s /usr/local/nodejs/bin/node /usr/local/bin/node
-sudo ln -s /usr/local/nodejs/bin/npm /usr/local/bin/npm
-node -v
-npm -v
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;单文件版node-exe单独安装npm&#34;&gt;单文件版node.exe单独安装npm&lt;/h2&gt;
-
-&lt;p&gt;1.clone npm 源码
-&lt;code&gt;git clone --recursive git://github.com/isaacs/npm.git&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;2.进入npm目录,安装npm
-&lt;code&gt;node cli.js install npm -gf&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;一些必备package&#34;&gt;一些必备package&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;sudo npm install -g less autoprefixer express jshint uglify-js webpack react-native-cli airs
 &lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>

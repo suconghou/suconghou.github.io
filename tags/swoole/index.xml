@@ -153,6 +153,16 @@ location @goapp {
 }
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;:&lt;code&gt;nginx&lt;/code&gt;的&lt;code&gt;proxy_pass&lt;/code&gt;后面带不带&lt;code&gt;/&lt;/code&gt;是有区别的.&lt;/p&gt;
+
+&lt;p&gt;不带&lt;code&gt;/&lt;/code&gt;,nginx将不会对请求做任何形式的修改,仅仅是分发到不同主机上.&lt;/p&gt;
+
+&lt;p&gt;带有&lt;code&gt;/&lt;/code&gt;,nginx会将你&lt;code&gt;location&lt;/code&gt;中匹配的东西略过.例如&lt;code&gt;location /service/&lt;/code&gt;对于请求&lt;code&gt;http://nginx/service/add.php&lt;/code&gt;将变为&lt;code&gt;http://proxy/add.php&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;如果还在&lt;code&gt;/&lt;/code&gt;后面添加&lt;code&gt;uri&lt;/code&gt;,&lt;code&gt;uri&lt;/code&gt;也会在之前拼入,如&lt;code&gt;proxy_pass http://proxy/request/&lt;/code&gt; 变为 &lt;code&gt;http://proxy/request/add.php&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;在使用正则匹配时,&lt;code&gt;proxy_pass&lt;/code&gt;后面是禁止添加&lt;code&gt;/&lt;/code&gt;或者&lt;code&gt;uri&lt;/code&gt;的,否则报错.&lt;/p&gt;
+
 &lt;h3 id=&#34;附上卸载apache方法&#34;&gt;附上卸载Apache方法&lt;/h3&gt;
 
 &lt;ul&gt;
@@ -200,8 +210,10 @@ rpm -e httpd-tools
 
 &lt;p&gt;下载PHP7最新版本,解压,有多种压缩格式可选,其中xz最小&lt;/p&gt;
 
+&lt;p&gt;如果你在国内下载,将&lt;code&gt;php.net&lt;/code&gt;改为&lt;code&gt;cn.php.net&lt;/code&gt;下载会更快&lt;/p&gt;
+
 &lt;pre&gt;&lt;code&gt;cd /tmp
-PHP_VERSION=php-7.0.8
+PHP_VERSION=php-7.0.9
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
 wget http://php.net/distributions/${PHP_VERSION}.tar.xz
 tar -xJf ${PHP_VERSION}.tar.xz
@@ -225,7 +237,7 @@ make -j$CPU_NUM &amp;amp;&amp;amp; make install
 make -j$CPU_NUM &amp;amp;&amp;amp; make install
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;安装过后就可以只用&lt;code&gt;php&lt;/code&gt;命令了,但是&lt;code&gt;php-fpm&lt;/code&gt;还需要配置一下&lt;/p&gt;
+&lt;p&gt;安装过后就可以使用&lt;code&gt;php&lt;/code&gt;命令了,但是&lt;code&gt;php-fpm&lt;/code&gt;还需要配置一下&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;php -v
 php -m
@@ -405,6 +417,37 @@ make -j$CPU_NUM  &amp;amp;&amp;amp; make install
 &lt;p&gt;PHP的数据库长连接有没有效,
 实际测试,采用香港服务器远程连接mysql,非长连接模式下耗时约600ms,使用PDO长连接,耗时下降到260ms左右,是有一定作用的.
 但是长连接不适用于CLI模式,CLI模式下,php进程退出,连接即断开.&lt;/p&gt;
+
+&lt;h2 id=&#34;安装redis&#34;&gt;安装redis&lt;/h2&gt;
+
+&lt;p&gt;所有redis版本的release见&lt;a href=&#34;http://download.redis.io/releases/&#34;&gt;http://download.redis.io/releases/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;redis编译时,不能使用&lt;code&gt;CFLAGS O3&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd /tmp
+REDIS_VERSION=redis-3.2.1
+CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
+wget http://download.redis.io/releases/${REDIS_VERSION}.tar.gz
+tar xzf ${REDIS_VERSION}.tar.gz
+cd ${REDIS_VERSION}
+make -j$CPU_NUM &amp;amp;&amp;amp; make install
+mv /tmp/${REDIS_VERSION}/redis.conf /etc/redis.conf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;安装memcached&#34;&gt;安装memcached&lt;/h2&gt;
+
+&lt;p&gt;memcached所有版本见&lt;a href=&#34;http://www.memcached.org/files/&#34;&gt;http://www.memcached.org/files/&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd /tmp
+MEMCACHE_VERSION=memcached-1.4.29
+CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
+wget http://www.memcached.org/files/${MEMCACHE_VERSION}.tar.gz
+tar xzf ${MEMCACHE_VERSION}.tar.gz
+cd ${MEMCACHE_VERSION}
+export CFLAGS=&amp;quot;-O3&amp;quot;
+./configure
+make -j$CPU_NUM &amp;amp;&amp;amp; make install
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;h2 id=&#34;安装一些其他扩展&#34;&gt;安装一些其他扩展&lt;/h2&gt;
 

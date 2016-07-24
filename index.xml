@@ -6,8 +6,267 @@
     <description>Recent content on 苏苏的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 07 Jul 2016 15:46:03 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 17 Jul 2016 20:48:49 +0800</lastBuildDate>
     <atom:link href="http://blog.suconghou.cn/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>some dev tools</title>
+      <link>http://blog.suconghou.cn/software/some-dev-tools/</link>
+      <pubDate>Sun, 17 Jul 2016 20:48:49 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/software/some-dev-tools/</guid>
+      <description>
+
+&lt;h2 id=&#34;一些开发会用到的小工具&#34;&gt;一些开发会用到的小工具&lt;/h2&gt;
+
+&lt;h3 id=&#34;编程字体&#34;&gt;编程字体&lt;/h3&gt;
+
+&lt;p&gt;苹果出品的&lt;code&gt;Monaco&lt;/code&gt;,看起来十分圆润,首选推荐的编程字体&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/fonts/monaco.ttf&#34;&gt;monaco&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;或许还有很多人喜欢&lt;code&gt;YaHei.Consolas&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/fonts/YaHei.Consolas.1.12.zip&#34;&gt;YaHei.Consolas.1.12.zip&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;一些从-linux-迁移到windows的东西&#34;&gt;一些从&lt;code&gt;Linux&lt;/code&gt;迁移到Windows的东西&lt;/h3&gt;
+
+&lt;p&gt;最常用的当属&lt;code&gt;bash&lt;/code&gt;了,包含&lt;code&gt;md5sum&lt;/code&gt;,&lt;code&gt;wget&lt;/code&gt;,&lt;code&gt;curl&lt;/code&gt;,&lt;code&gt;awk&lt;/code&gt;等等.&lt;/p&gt;
+
+&lt;p&gt;有两个比较好的项目在移植&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;unxutils&lt;/em&gt; &lt;a href=&#34;http://unxutils.sourceforge.net/&#34;&gt;http://unxutils.sourceforge.net/&lt;/a&gt;  源码 &lt;a href=&#34;https://sourceforge.net/projects/unxutils/&#34;&gt;https://sourceforge.net/projects/unxutils/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;win-bash&lt;/em&gt; &lt;a href=&#34;https://sourceforge.net/projects/win-bash/&#34;&gt;https://sourceforge.net/projects/win-bash/&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;code&gt;unxutils&lt;/code&gt;最后更新2014-04-03&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;win-bash&lt;/code&gt;最后更新2015-03-30&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;sourceforge&lt;/code&gt;上速度太慢,这里提供加速下载.&lt;/p&gt;
+
+&lt;p&gt;win-bash&lt;a href=&#34;http://share.suconghou.cn/tools/shell.w32-ix86.zip&#34;&gt;shell.w32-ix86.zip&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;我的github也收集了一些&lt;code&gt;windows&lt;/code&gt;上常用的小工具&lt;code&gt;axel&lt;/code&gt;,&lt;code&gt;putty&lt;/code&gt;,&lt;code&gt;ab&lt;/code&gt;,&lt;code&gt;hugo&lt;/code&gt;,&lt;code&gt;rsync&lt;/code&gt;等&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://github.com/suconghou/tools&#34;&gt;http://github.com/suconghou/tools&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Curl 官网 &lt;a href=&#34;https://curl.haxx.se/download.html&#34;&gt;https://curl.haxx.se/download.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Curl 这里可以下载windows版的
+&lt;a href=&#34;http://www.paehl.com/open_source/?CURL_7.49.1&#34;&gt;http://www.paehl.com/open_source/?CURL_7.49.1&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>shadowsocks client</title>
+      <link>http://blog.suconghou.cn/software/shadowsocks-client/</link>
+      <pubDate>Sun, 17 Jul 2016 20:37:31 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/software/shadowsocks-client/</guid>
+      <description>
+
+&lt;h2 id=&#34;shadowsocks-各平台客户端&#34;&gt;shadowsocks 各平台客户端&lt;/h2&gt;
+
+&lt;p&gt;文件来源于&lt;code&gt;github.com&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;windows平台&#34;&gt;windows平台&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/shadowsocks/Shadowsocks-3.0.zip&#34;&gt;Shadowsocks-3.0&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;mac平台&#34;&gt;mac平台&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/shadowsocks/ShadowsocksX-2.6.3.dmg&#34;&gt;ShadowsocksX-2.6.3&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;android平台&#34;&gt;android平台&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/shadowsocks/shadowsocks-nightly-2.10.7.apk&#34;&gt;shadowsocks-nightly-2.10.7&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;服务端可以使用docker更方便 &lt;a href=&#34;https://hub.docker.com/r/suconghou/shadowsocks/&#34;&gt;shadowsocks docker&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>picasa photo viewer</title>
+      <link>http://blog.suconghou.cn/software/picasa-photo-viewer/</link>
+      <pubDate>Sun, 17 Jul 2016 20:30:43 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/software/picasa-photo-viewer/</guid>
+      <description>
+
+&lt;h2 id=&#34;picasaphotoviewer-图片查看器-v3-9-136-9&#34;&gt;PicasaPhotoViewer(图片查看器) v3.9.136.9&lt;/h2&gt;
+
+&lt;p&gt;Picasa内置的图片浏览器,Google出品,此版本为独木成林提取出来的.&lt;/p&gt;
+
+&lt;p&gt;只有1.7MB,启动速度快,十分好用,有一个缺点是可能因为版权问题未对GIF做支持.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/ImageView/PicasaPhotoViewer_3.9.136.9.exe&#34;&gt;PicasaPhotoViewerv3.9.136.9&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>git for windows</title>
+      <link>http://blog.suconghou.cn/software/git-for-windows/</link>
+      <pubDate>Sun, 17 Jul 2016 20:11:26 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/software/git-for-windows/</guid>
+      <description>
+
+&lt;h2 id=&#34;git-for-windows-国内下载&#34;&gt;git for windows 国内下载&lt;/h2&gt;
+
+&lt;p&gt;所有资源均来源于官网&lt;code&gt;http://git-scm.com/download/win&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;最新版本2.9.2,发布于 2016-7-16.&lt;/p&gt;
+
+&lt;h3 id=&#34;32位资源&#34;&gt;32位资源&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/Git-2.9.2-32-bit.exe&#34;&gt;32位安装版&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/PortableGit-2.9.2-64-bit.7z.exe&#34;&gt;32位绿色版&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;64位资源&#34;&gt;64位资源&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/Git-2.9.2-64-bit.exe&#34;&gt;64位安装版&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/PortableGit-2.9.2-64-bit.7z.exe&#34;&gt;64位绿色版&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>react native</title>
+      <link>http://blog.suconghou.cn/post/react-native/</link>
+      <pubDate>Mon, 11 Jul 2016 11:39:08 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/react-native/</guid>
+      <description>
+
+&lt;h2 id=&#34;react-native&#34;&gt;react native&lt;/h2&gt;
+
+&lt;h3 id=&#34;环境准备&#34;&gt;环境准备&lt;/h3&gt;
+
+&lt;p&gt;前提是需要node和npm,这里不在赘述.介绍一个npm加速的.&lt;/p&gt;
+
+&lt;p&gt;使用淘宝的npm镜像.控制台运行,或者加入你的bashrc中永久生效&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;alias cnpm=&amp;quot;npm --registry=https://registry.npm.taobao.org --cache=$HOME/.npm/.cache/cnpm --disturl=https://npm.taobao.org/dist --userconfig=$HOME/.cnpmrc&amp;quot;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;安装开发必备的一些package&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cnpm install -g react-native-cli webpack
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;react-native&lt;/code&gt;也调用了&lt;code&gt;npm&lt;/code&gt;命令,所以我们可以再来个alias加速&lt;code&gt;react-native init&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;alias npm=&#39;cnpm&#39;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;或者直接将仓库改为淘宝的NPM镜像&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;npm config set registry https://registry.npm.taobao.org
+npm config set disturl https://npm.taobao.org/dist
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在mac上还需要一些东西&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;brew install flow watchman
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;安装完以后可以开始helloworld了.&lt;/p&gt;
+
+&lt;h3 id=&#34;开始第一个例子&#34;&gt;开始第一个例子&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;cd /data/tmp
+react-native init HelloWorld
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后正在初始化大致如下&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;This will walk you through creating a new React Native project in /data/tmp/HelloWorld
+Installing react-native package from npm...
+Setting up new React Native app in /data/tmp/HelloWorld
+HelloWorld@0.0.1 /data/tmp/HelloWorld
+└── react@15.2.1
+
+To run your app on iOS:
+   cd /data/tmp/HelloWorld
+   react-native run-ios
+   - or -
+   Open /data/tmp/HelloWorld/ios/HelloWorld.xcodeproj in Xcode
+   Hit the Run button
+To run your app on Android:
+   Have an Android emulator running (quickest way to get started), or a device connected
+   cd /data/tmp/HelloWorld
+   react-native run-android
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;下面是一些针对开发IOS的教程&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;我们执行&lt;code&gt;react-native run-ios&lt;/code&gt;开始编译运行,前提是你必须安装了&lt;code&gt;xcode&lt;/code&gt;哦.&lt;/p&gt;
+
+&lt;p&gt;执行后,出现&lt;code&gt;BUILD SUCCEEDED&lt;/code&gt;,同时自动打开新的终端运行了一个server在8081端口.&lt;/p&gt;
+
+&lt;p&gt;模拟器中也会出现刚编译好的app的窗口,使用&lt;code&gt;cmd+r&lt;/code&gt;刷新,&lt;code&gt;cmd+d&lt;/code&gt;弹出开发菜单.&lt;/p&gt;
+
+&lt;p&gt;我们可以修改&lt;code&gt;index.ios.js&lt;/code&gt;开始开发了.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;下面是一些针对开发Android的教程&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;问题&#34;&gt;问题&lt;/h3&gt;
+
+&lt;p&gt;在使用&lt;code&gt;fetch&lt;/code&gt;调用接口时,可能会出现&lt;code&gt;The resource could not be loaded because the App Transport Security policy requires the use of a secure connection.&lt;/code&gt;错误&lt;/p&gt;
+
+&lt;p&gt;这是IOS9要求必须使用https通信,需要修改 &lt;a href=&#34;http://stackoverflow.com/questions/30731785/how-do-i-load-an-http-url-with-app-transport-security-enabled-in-ios-9&#34;&gt;http://stackoverflow.com/questions/30731785/how-do-i-load-an-http-url-with-app-transport-security-enabled-in-ios-9&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;其实&lt;code&gt;react native&lt;/code&gt;创建&lt;code&gt;Info.plist&lt;/code&gt;时就已经为我们说明了,在&lt;code&gt;NSExceptionDomains&lt;/code&gt;下面的&lt;code&gt;dict&lt;/code&gt;里添加一个排除域名就OK了.&lt;/p&gt;
+
+&lt;p&gt;注意,不能将默认的&lt;code&gt;localhost&lt;/code&gt;去掉,否则会出现&lt;code&gt;_fbBatchedBridge is undefined&lt;/code&gt;错误.&lt;/p&gt;
+
+&lt;h2 id=&#34;打包&#34;&gt;打包&lt;/h2&gt;
+
+&lt;h3 id=&#34;对android项目打包&#34;&gt;对android项目打包&lt;/h3&gt;
+
+&lt;p&gt;使用&lt;code&gt;keytool&lt;/code&gt;生成签名文件,在任意目录下执行&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;keytool -genkey -v -keystore my-release-key.keystore  -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;上面&lt;code&gt;my-release-key&lt;/code&gt;可以自己定义,后面的&lt;code&gt;my-key-alias&lt;/code&gt;也可以自己定义.运行后输入一下相关信息后,生成&lt;code&gt;my-release-key.keystore&lt;/code&gt;文件.&lt;/p&gt;
+
+&lt;p&gt;其中输入的两次密码,需要记住.将这个文件移动到&lt;code&gt;android/app&lt;/code&gt;目录下,编译&lt;code&gt;android/app&lt;/code&gt;里的&lt;code&gt;build.gradle&lt;/code&gt;,添加下面的内容&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;android {
+    ...
+    defaultConfig { ... }
+    signingConfigs {
+        release {
+            storeFile file(MYAPP_RELEASE_STORE_FILE)
+            storePassword MYAPP_RELEASE_STORE_PASSWORD
+            keyAlias MYAPP_RELEASE_KEY_ALIAS
+            keyPassword MYAPP_RELEASE_KEY_PASSWORD
+        }
+    }
+    ...
+    buildTypes {
+        release {
+              ...
+              signingConfig signingConfigs.release
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在&lt;code&gt;android&lt;/code&gt;目录下运行如下命令,就可以打包,安装到自己手机上,前提是手机已usb调试连接到电脑&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;./gradlew assembleRelease
+cd app/build/outputs/apk
+adb install -r app-release.apk
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;参考 &lt;a href=&#34;https://facebook.github.io/react-native/docs/signed-apk-android.html&#34;&gt;https://facebook.github.io/react-native/docs/signed-apk-android.html&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>都有哪些坑</title>
@@ -131,6 +390,36 @@
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;可以访问如下网址测试: /html/wx&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>PHP最佳实践</title>
+      <link>http://blog.suconghou.cn/post/php-best-way/</link>
+      <pubDate>Thu, 30 Jun 2016 16:40:13 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/php-best-way/</guid>
+      <description>
+
+&lt;h2 id=&#34;性能优化&#34;&gt;性能优化&lt;/h2&gt;
+
+&lt;h3 id=&#34;数组相关&#34;&gt;数组相关&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;in_array&lt;/code&gt;在大数据量(数万以上元素)下效率低下&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;在分析nginx log得出所有不重复IP时,采用&lt;code&gt;in_array&lt;/code&gt;判断,50多万的数据耗时需要五六分钟,而采用存键的方法,用&lt;code&gt;isset&lt;/code&gt;判断仅需要十几秒,效率差别非常大. [php7环境下]&lt;/p&gt;
+
+&lt;p&gt;判断一个数组是否存在某个元素,远比查找一个键消耗的要多.前者时间复杂度O(n),而后者O(1)&lt;/p&gt;
+
+&lt;p&gt;即时使用&lt;code&gt;in_array&lt;/code&gt;,也需要加上第三个参数,设置为严格模式,省略数据类型转化的开销,设置为&lt;code&gt;true&lt;/code&gt;比设置为&lt;code&gt;false&lt;/code&gt;性能要提升好几倍.&lt;/p&gt;
+
+&lt;p&gt;这种情况下使用&lt;code&gt;array_search&lt;/code&gt;情况比&lt;code&gt;in_array&lt;/code&gt;更加糟糕&lt;/p&gt;
+
+&lt;p&gt;如果条件允许使用&lt;code&gt;array_flip&lt;/code&gt;交换键值,在用&lt;code&gt;isset&lt;/code&gt;来判断要比&lt;code&gt;in_array&lt;/code&gt;好得多&lt;/p&gt;
+
+&lt;p&gt;同时,使用&lt;code&gt;isset&lt;/code&gt;来判断数组的键,也比使用&lt;code&gt;array_key_exists&lt;/code&gt;要好&lt;/p&gt;
+
+&lt;p&gt;而对于本题,还可以使用&lt;code&gt;array_unique&lt;/code&gt;最后去重,用空间换时间,效率仅次于用&lt;code&gt;isset&lt;/code&gt;&lt;/p&gt;
 </description>
     </item>
     
@@ -321,15 +610,11 @@ passwd abc&lt;/p&gt;
 
 &lt;h2 id=&#34;下载-android-studio&#34;&gt;下载 Android Studio&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code&gt;
-Android Studio 2.1.1 各平台下载地址,http://www.oschina.net/news/73336/android-studio-2-1-1
+&lt;p&gt;&lt;a href=&#34;http://www.oschina.net/news/75353/android-studio-2-2-preview-6&#34;&gt;http://www.oschina.net/news/75353/android-studio-2-2-preview-6&lt;/a&gt;&lt;/p&gt;
 
-Windows: https://dl.google.com/dl/android/studio/ide-zips/2.1.1.0/android-studio-ide-143.2821654-windows.zip (286.7 MiB)
-
-Mac: https://dl.google.com/dl/android/studio/ide-zips/2.1.1.0/android-studio-ide-143.2821654-mac.zip (285.2 MiB)
-
-Linux: https://dl.google.com/dl/android/studio/ide-zips/2.1.1.0/android-studio-ide-143.2821654-linux.zip (284.3 MiB)
-
+&lt;pre&gt;&lt;code&gt;Windows: https://dl.google.com/dl/android/studio/ide-zips/2.2.0.5/android-studio-ide-145.3070098-windows.zip (449.3 MiB)
+Mac: https://dl.google.com/dl/android/studio/ide-zips/2.2.0.5/android-studio-ide-145.3070098-mac.zip  (449.8 MiB)
+Linux:  https://dl.google.com/dl/android/studio/ide-zips/2.2.0.5/android-studio-ide-145.3070098-linux.zip  (448.9 MiB)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;pre&gt;&lt;code&gt;root /home/demo/goproj/src/Test/public;
@@ -346,28 +631,6 @@ location @goapp {
 &lt;h2 id=&#34;安装android-sdk&#34;&gt;安装android-sdk&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;brew install android-sdk&lt;/code&gt; 或者使用Android Studio SDK Manager&lt;/p&gt;
-
-&lt;p&gt;从ElasticSearch官方的多份文档中可以看到，官方并不建议部署ES时为实例指定超过32GB的内存，但是现在内存的价格非常便宜，一台实体机服务器仅用32G内存显然是非常浪费的。所以我们要尝试在一个服务器上开多个ES实例，以便达到充分利用资源的目的。本文提供了一些ES单机双实例的配置要点，可扩展至单机多实例，供大家来实际参考。&lt;/p&gt;
-
-&lt;p&gt;突破32G&lt;/p&gt;
-
-&lt;p&gt;从ElasticSearch官方的多份文档中可以看到，官方并不建议部署ES时为实例指定超过32GB的内存，例如这些写着大字警告用户的文章： Don’t Cross 32 GB!&lt;/p&gt;
-
-&lt;p&gt;但是现在内存的价格非常便宜，一台实体机服务器仅用32G内存显然是非常浪费的。所以我们要尝试在一个服务器上开多个ES实例，以便达到充分利用资源的目的。&lt;/p&gt;
-
-&lt;p&gt;配置变更&lt;/p&gt;
-
-&lt;p&gt;要做到单机上开多个实例，需要修改ES的默认配置，以下是一些配置要点：&lt;/p&gt;
-
-&lt;p&gt;node.max_local_storage_nodes&lt;/p&gt;
-
-&lt;p&gt;这个配置限制了单节点上可以开启的ES存储实例的个数，我们需要开多个实例，因此需要把这个配置写到配置文件中，并为这个配置赋值为2或者更高。&lt;/p&gt;
-
-&lt;p&gt;http.port&lt;/p&gt;
-
-&lt;p&gt;这个配置是elasticsearch对外提供服务的http端口配置，默认情况下ES会取用9200~9299之间的端口，如果9200被占用就会自动使用9201，在单机多实例的配置中这个配置实际是不需要修改的。&lt;/p&gt;
-
-&lt;p&gt;但是为了更好地进行配置管理，以及和老的配置兼容，我们还是手动将第一个实例的http端口配置为9200，第二个实例配置为9201。&lt;/p&gt;
 </description>
     </item>
     
@@ -628,6 +891,28 @@ us, sy, id, wa, st：这些都是平均了所有 CPU 的 CPU 分解时间。它�
 
 &lt;p&gt;&lt;code&gt;ssh-copy-id -i ~/.ssh/id_rsa.pub -p 26671 root@host&lt;/code&gt;&lt;/p&gt;
 
+&lt;h2 id=&#34;pgrep&#34;&gt;pgrep&lt;/h2&gt;
+
+&lt;p&gt;根据名字或其他属性查询出进程的PID&lt;/p&gt;
+
+&lt;p&gt;如:&lt;code&gt;pgrep nginx -fl&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;pkill&#34;&gt;pkill&lt;/h2&gt;
+
+&lt;p&gt;和&lt;code&gt;pgrep&lt;/code&gt;类似,不同的是向进程发送信号,默认发送&lt;code&gt;SIGTERM&lt;/code&gt;信号,查看都有哪些信号可用,可以使用&lt;code&gt;kill -l&lt;/code&gt;查看&lt;/p&gt;
+
+&lt;h2 id=&#34;pstree&#34;&gt;pstree&lt;/h2&gt;
+
+&lt;p&gt;用树的形式显示正在运行的进程,树的节点为指定的PID(忽略则为init进程)&lt;/p&gt;
+
+&lt;h2 id=&#34;ss&#34;&gt;ss&lt;/h2&gt;
+
+&lt;p&gt;用于显示socket的统计信息,&lt;code&gt;-s&lt;/code&gt;用于显示汇总&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;-l&lt;/code&gt;用于列出正在监听的&lt;code&gt;socket&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;-p&lt;/code&gt;显示进程信息,&lt;code&gt;ss -pl&lt;/code&gt; 可以查看使用网络端口的进程名字&lt;/p&gt;
+
 &lt;h2 id=&#34;磁盘相关&#34;&gt;磁盘相关&lt;/h2&gt;
 
 &lt;h3 id=&#34;dd&#34;&gt;dd&lt;/h3&gt;
@@ -651,6 +936,16 @@ count = blocks 只拷贝输入的blocks块&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;du -h --max-depth=1 |sort&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;以上两条命令不适用于MacOs,可以使用&lt;code&gt;du -sh *&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;ps&#34;&gt;ps&lt;/h2&gt;
+
+&lt;p&gt;ps ef  查看进程的状态&lt;/p&gt;
+
+&lt;p&gt;ps auxw 查看进程的CPU,内存占用&lt;/p&gt;
+
+&lt;p&gt;ps 默认是按照PID排序的,若要按内存使用排序&lt;code&gt;ps auxw --sort=rss&lt;/code&gt;,同理按虚拟内存排序&lt;code&gt;ps auxw --sort=vsz&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;mac上无法使用&lt;code&gt;--sort&lt;/code&gt;,可以采用&lt;code&gt;sort&lt;/code&gt;排序,如rss在第六列,则&lt;code&gt;ps auxw | sort -k6,6n&lt;/code&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;一份linux别名和函数库&#34;&gt;一份Linux别名和函数库&lt;/h2&gt;
 
@@ -897,979 +1192,6 @@ brew update
 &lt;p&gt;一些必备的软件.&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt; brew install vim git git-lfs subversion node go python3 nginx hugo openssl htop ffmpeg xz aria2 wget axel memcached redis mcrypt md5sha1sum fswatch mpv
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Chrome浏览器安装</title>
-      <link>http://blog.suconghou.cn/post/broswer-chrome/</link>
-      <pubDate>Thu, 14 Jan 2016 17:11:34 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/post/broswer-chrome/</guid>
-      <description>
-
-&lt;h2 id=&#34;配置chrome跨域&#34;&gt;配置Chrome跨域&lt;/h2&gt;
-
-&lt;p&gt;Chrome 浏览器配置可以跨域&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --disable-web-security&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;或者&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;open -a &amp;quot;Google Chrome&amp;quot; --args --disable-web-security&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;必须完全退出Chrome,再使用上述方法.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Crontab与自动备份</title>
-      <link>http://blog.suconghou.cn/post/use-crontab-in-your-server/</link>
-      <pubDate>Tue, 12 Jan 2016 13:10:21 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/post/use-crontab-in-your-server/</guid>
-      <description>
-
-&lt;h2 id=&#34;crontab使用&#34;&gt;Crontab使用&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;crontab -l&lt;/code&gt; 查看当前用户的crontab列表
-使用&lt;code&gt;crontab -e&lt;/code&gt;开始编辑规则&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;基本格式 :
-*　　*　　*　　*　　*　　command
-分　 时 　日 　月　 周　 命令
-
-* 第1列表示分钟1～59 每分钟用*或者*/1表示
-* 第2列表示小时1～23（0表示0点）
-* 第3列表示日期1～31
-* 第4列表示月份1～12
-* 第5列标识号星期0～6（0表示星期天）
-* 第6列要运行的命令
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;禁止Crontab产生邮件:
-在crontab末尾加上&lt;code&gt;&amp;gt; /dev/null 2&amp;gt;&amp;amp;1&lt;/code&gt; 或者 &lt;code&gt;&amp;gt; &amp;amp;&amp;gt; /dev/null&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;例如&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;0 1 5 10 * /path/to/script.sh &amp;gt; /dev/null 2&amp;gt;&amp;amp;1
-0 1 5 10 * /path/to/script.sh &amp;gt; &amp;amp;&amp;gt; /dev/null
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;定时备份数据库&#34;&gt;定时备份数据库&lt;/h2&gt;
-
-&lt;p&gt;先写好shell脚本存入&lt;code&gt;/home/cron1.sh&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;user=&amp;quot;root&amp;quot;
-pass=&amp;quot;root&amp;quot;
-host=&amp;quot;127.0.0.1&amp;quot;
-port=&amp;quot;3306&amp;quot;
-dbs=&amp;quot;db1 db2 db3&amp;quot;
-dir=&amp;quot;/data/backup/&amp;quot;
-
-nowDate=`date &#39;+%Y%m%d&#39;`
-nowTime=`date &#39;+%H%M&#39;`
-backupdir=$dir$nowDate
-timeold=`date -d &amp;quot;-1 week&amp;quot; +%Y%m%d`
-delold=$dir$timeold
-if [ ! -d $backupdir ]; then
-  mkdir -p $backupdir
-fi
-if [ -d $delold ]; then
-  rm -rf $delold
-fi
-for i in $dbs
-	do
-		backupFile=$backupdir/$i-$nowTime.sql
-		mysqldump -u$user -p$pass -h$host -P$port --databases $i &amp;gt; $backupFile
-		xz $backupFile
-	done
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;然后定时任务&lt;code&gt;crontab -e&lt;/code&gt; 每5个小时备份一次数据库.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;0 */5 * * * sh /home/cron1.sh
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;使用此脚本建议每20个小时以内备份一次数据库,此脚本保留最近7天备份,删除过期备份&lt;/p&gt;
-
-&lt;h2 id=&#34;增量备份数据库&#34;&gt;增量备份数据库&lt;/h2&gt;
-
-&lt;p&gt;先写好shell脚本存入&lt;code&gt;/home/cron2.sh&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;user=&amp;quot;root&amp;quot;
-pass=&amp;quot;root&amp;quot;
-host=&amp;quot;127.0.0.1&amp;quot;
-port=&amp;quot;3306&amp;quot;
-storedb=&amp;quot;backup&amp;quot;
-backup=&amp;quot;db1.table1 db1.table2&amp;quot;
-
-mysql -u$user -p$pass -h$host -P$port -e &amp;quot;create database if not exists $storedb&amp;quot;
-for i in $backup
-	do
-		table=${i##*.}
-		sql=&amp;quot;create table if not exists $storedb.$table like $i;replace into $storedb.$table  select * from $i ;&amp;quot;
-		mysql -u$user -p$pass -h$host -P$port -e &amp;quot;$sql&amp;quot;
-	done
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;数据表从源数据库中增量备份至备份数据库中的同名数据表&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;0 */20 * * * sh /home/cron2.sh
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;每20个小时增量备份一次&lt;/p&gt;
-
-&lt;h2 id=&#34;更高级的文件实时同步&#34;&gt;更高级的文件实时同步&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;Mac&lt;/code&gt;上可以使用&lt;code&gt;fswatch + rsync&lt;/code&gt;进行实时同步&lt;/p&gt;
-
-&lt;p&gt;首先安装&lt;code&gt;fswatch&lt;/code&gt;,&lt;code&gt;rsync&lt;/code&gt;应该是自带了&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;brew install fswatch&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;!-- fswatch -o ./ | xargs -n1 -I{} md5 --&amp;gt;
-
-fswatch -0 /tmp | xargs -0 -n 1 echo $1
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;shell基本语法&#34;&gt;Shell基本语法&lt;/h2&gt;
-
-&lt;p&gt;声明数组&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;arr=(item1 item2 item3)&lt;/code&gt; 使用空格分开&lt;/p&gt;
-
-&lt;p&gt;使用&lt;code&gt;echo ${arr[*]}&lt;/code&gt; 或者 &lt;code&gt;echo ${arr[@]}&lt;/code&gt; 可以查看数组内的元素,&lt;code&gt;echo $arr&lt;/code&gt;只能取得第一个元素&lt;/p&gt;
-
-&lt;p&gt;要取得数组长度,只需在名字前面加一个#,如&lt;code&gt;echo ${#arr[*]}&lt;/code&gt; 或者 &lt;code&gt;echo ${#arr[@]}&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;数组下标以0开始,取得第二个元素为&lt;code&gt;echo ${arr[1]}&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;赋值使用&lt;code&gt;arr[5]=5555&lt;/code&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>MySQL性能优化</title>
-      <link>http://blog.suconghou.cn/post/improve-mysqldb/</link>
-      <pubDate>Mon, 11 Jan 2016 12:02:40 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/post/improve-mysqldb/</guid>
-      <description>
-
-&lt;h2 id=&#34;配置文件&#34;&gt;配置文件&lt;/h2&gt;
-
-&lt;p&gt;配置文件一般放在&lt;code&gt;/etc/my.cnf&lt;/code&gt; 或者 &lt;code&gt;/etc/mysql/my.cnf&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;默认的配置文件示例存放于&lt;code&gt;/usr/share/mysql&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;各个文件适配不同内存的配置&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;文件&lt;/th&gt;
-&lt;th&gt;内存大小&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;my-small.cnf&lt;/td&gt;
-&lt;td&gt;&amp;lt;= 64M 不经常开启mysql&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;my-medium.cnf&lt;/td&gt;
-&lt;td&gt;32M–64M 经常其他程序搭配mysql&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;my-large.cnf&lt;/td&gt;
-&lt;td&gt;512M&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;my-huge.cnf&lt;/td&gt;
-&lt;td&gt;1G-2G&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;my-innodb-heavy-4G.cnf&lt;/td&gt;
-&lt;td&gt;4GB 使用InnoDB&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;使用&lt;code&gt;SHOW VARIABLES&lt;/code&gt;来查看系统参数,通过&lt;code&gt;SHOW STATUS&lt;/code&gt;来判断系统状态&lt;/p&gt;
-
-&lt;p&gt;show 命令还有很多用途&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;命令&lt;/th&gt;
-&lt;th&gt;描述&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;show databases 或show tables from database_name&lt;/td&gt;
-&lt;td&gt;显示mysql中所有数据库的名称&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;show tables&lt;/td&gt;
-&lt;td&gt;显示当前数据库中所有表的名称&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;show columns from table_name from database_name&lt;/td&gt;
-&lt;td&gt;显示表中列名称&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;show grants for user_name&lt;/td&gt;
-&lt;td&gt;显示一个用户的权限，显示结果类似于grant命令&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;show table status&lt;/td&gt;
-&lt;td&gt;显示当前使用或者指定的database中的每个表的信息。&lt;br&gt;信息包括表类型和表的最新更新时间。&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;show index from table_name&lt;/td&gt;
-&lt;td&gt;显示表的索引&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;show status&lt;/td&gt;
-&lt;td&gt;显示一些系统特定资源的信息,例如,正在运行的线程数量&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;show variables&lt;/td&gt;
-&lt;td&gt;显示系统变量的名称和值&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;show processlist&lt;/td&gt;
-&lt;td&gt;显示系统中正在运行的所有进程，也就是当前正在执行的查询。&lt;br&gt;大多数用户可以查看他们自己的进程，但是如果他们拥有process权限，&lt;br&gt;就可以查看所有人的进程，包括密码&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;show engies&lt;/td&gt;
-&lt;td&gt;显示安装以后可用的存储引擎和默认引擎&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;show innodb status&lt;/td&gt;
-&lt;td&gt;显示innoDB存储引擎的状态&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;show logs&lt;/td&gt;
-&lt;td&gt;显示BDB存储引擎的日志&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;show warnings&lt;/td&gt;
-&lt;td&gt;显示最后一个执行的语句所产生的错误、警告和通知&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;show errors&lt;/td&gt;
-&lt;td&gt;只显示最后一个执行语句所产生的错误&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&#34;小内存优化&#34;&gt;小内存优化&lt;/h2&gt;
-
-&lt;p&gt;依据&lt;code&gt;my-small.cnf&lt;/code&gt;为模板&lt;/p&gt;
-
-&lt;p&gt;主要指标:存储引擎,key_buffer,table_cache,max_connections,thread_concurrency,query_cache,thread_stack&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;存储引擎&lt;/strong&gt;:
-如果不使用 BDB table 和 InnoDB table 的话，加入下面2行关闭不需要的表类型很有必要，关闭 innodb 可以省下大量内存，虽然 InnoDB 好处多多但是在一个64MB的 VPS 上并不能体现出来，并且很占内存。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;key_buffer&lt;/strong&gt;:
-用来缓存 tables keys 和 indexes，增加这个值可以更好的处理索引，读和写都需要索引,这里设置成16K足够了.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;table_cache&lt;/strong&gt;:
-所有线程打开的表的数量，增加值可以增大 MySQL 的文件描述符数量，避免频繁的打开表，原始 my-small.cnf 中 table_cache 设置成4有点小，一个 wordpress 的页面通常会涉及到10个左右的表，其他的程序比如 Drupal，MediaWiki 会涉及到更多，将table_cache改为8。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;max_connections&lt;/strong&gt;:
-数据库最大的连接数量，可以根据自己博客/网站的访问量来定这个值,如果博客/网站经常出现：Too many connections 错误的信息说明需要增大 max_connections 的值.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;thread_concurrency&lt;/strong&gt;:
-最大并发线程数，通常设置为 CPU核数量×2，在 VPS 宿主机上如果服务器有2颗物理 CPU，而每颗物理 CPU 又支持 H.T 超线程（一个处理器上整合了两个逻辑处理器单元），所以实际取值为4 × 2 ＝ 8。
-如果我们在优化 php.ini 的时候设置了同时只有2个 php-cgi 运行的话，那么我们也应该只设置2个 MySQL 线程同时运行。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;query_cache&lt;/strong&gt;:
-对于博客/新闻网站来说，用得最多的就是查询，所以需要加入 query cache 的设置。query_cache_size 是执行查询所使用的缓冲大小。
-query_cache_limit指定单个查询能够使用的缓冲区大小，缺省为1M,结果集超过这个大小将不会被缓存。&lt;/p&gt;
-
-&lt;p&gt;与查询缓冲有关的参数还有query_cache_type、query_cache_limit、query_cache_min_res_unit。&lt;/p&gt;
-
-&lt;p&gt;query_cache_type指定是否使用查询缓冲，可以设置为0、1、2,分别代表了off、on、demand,如果是0，那么query cache 是关闭的。如果是1，那么查询总是先到查询缓存中查找，除非使用了sql_no_cache。如果是2，那么，只有使用 sql_cache的查询，才会去查询缓存中查找.&lt;/p&gt;
-
-&lt;p&gt;query_cache_limit指定单个查询能够使用的缓冲区大小，缺省为1M。
-query_cache_min_res_unit是在4.1版本以后引入的，它指定分配缓冲区空间的最小单位，缺省为4K。
-检查状态值Qcache_free_blocks，如果该值非常大，则表明缓冲区中碎片很多，这就表明查询结果都比较小，此时需要减小 query_cache_min_res_unit。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;thread_stack&lt;/strong&gt;:
-用来存放每个线程的标识信息，如线程 id，线程运行时环境等，可以通过设置 thread_stack 来决定给每个线程分配多大的内存。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;sort_buffer_size&lt;/strong&gt;:
-每个需要排序的线程分配的缓冲区大小，增加该值可以加速 order by 和 group by 的操作。注意：该参数是以每个连接分配内存，也就是说，如果有16个连接，sort_buffer_size 为 64K，那么实际分配的内存为：16 × 64K = 1MB。如果设置的缓存大小无法满足需要，MySQL 会将数据写入磁盘来完成排序。因为磁盘操作和内存操作不在一个数量级，所以 sort_buffer_size 对排序的性能影响很大。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;read_buffer_size&lt;/strong&gt;:
-顺序读取数据时的缓冲区大小，与 sort_buffer_size 一样，该参数分配的内存也是以每连接为单位的。
-当需要顺序读取数据的时候，如无法使用索引的情况下的全表扫描，全索引扫描等。在这种时候，MySQL 按照数据的存储顺序依次读取数据块，每次读取的数据快首先会暂存在 read_buffer_size 中，当 buffer 空间被写满或者全部数据读取结束后，再将 buffer 中的数据返回给上层调用者，以提高效率。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;read_rnd_buffer_size&lt;/strong&gt;:
-随机读取数据时的缓冲区大小，与顺序读相对应。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;net_buffer_size&lt;/strong&gt;:
-用来存放客户端连接线程的连接信息和返回客户端的结果集的缓存大小。当 MySQL 接到请求后，产生返回结果集时，会在返回给请求线程之前暂存在在这个缓存中，等积累到一定大小的时候才开始向客户端发送，以提高网络效率。不 过，net_buffer_size 所设置的仅仅只是初始大小，MySQL 会根据实际需要自行申请更多的内存，但最大不会超过 max_allowed_packet。&lt;/p&gt;
-
-&lt;p&gt;skip-locking用来避免 MySQL 外部锁定，减少出错几率，增强稳定性。&lt;/p&gt;
-
-&lt;p&gt;以上: 64M VPS数据库配置&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;skip-bdb
-skip-innodb
-
-key_buffer = 16K
-table_cache = 8
-
-max_connections = 16
-thread_concurrency = 2
-
-query_cache_limit = 256K
-query_cache_size = 4M
-query_cache_type = 1
-
-sort_buffer_size = 64K
-read_buffer_size = 256K
-read_rnd_buffer_size = 256K
-net_buffer_length = 2K
-thread_stack = 64K
-skip-locking
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;thread_cache_size 优化配置&lt;/p&gt;
-
-&lt;h3 id=&#34;packet-for-query-is-too-large&#34;&gt;Packet for query is too large&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;show variables like &#39;%max%&#39;&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;当update或者insert的内容过大时,&lt;code&gt;max_allowed_packet&lt;/code&gt;的值过小,会引起sql异常,需要改大;其默认值为1048576(1M)，
-修改&lt;code&gt;my.cnf&lt;/code&gt;  &lt;code&gt;max_allowed_packet = 20M&lt;/code&gt;
-或者零时动态设置 &lt;code&gt;set global max_allowed_packet = 20*1024*1024&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;查看是否生效,零时修改一般断开后重新连接即可生效.
-&lt;code&gt;show variables like &#39;%max_allowed_packet%&#39;&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;1G  ---&amp;gt; 8
-2G  ---&amp;gt; 16
-3G  ---&amp;gt; 32
-4G  ---&amp;gt; 64
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;数据库优化&#34;&gt;数据库优化&lt;/h2&gt;
-
-&lt;p&gt;查看query_cache相关配置, 默认这个开关是关闭的,就是禁止使用query_cache
-query_cache_type 为0,是关闭的&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;show variables where variable_name like &#39;%query_cache%&#39;&lt;/code&gt; 单独查询一个使用 &lt;code&gt;select @@query_cache_type&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;+------------------------------+----------+
-| Variable_name                | Value    |
-+------------------------------+----------+
-| have_query_cache             | YES      |
-| query_cache_limit            | 262144   |
-| query_cache_min_res_unit     | 4096     |
-| query_cache_size             | 33554432 |
-| query_cache_strip_comments   | OFF      |
-| query_cache_type             | ON       |
-| query_cache_wlock_invalidate | OFF      |
-+------------------------------+----------+
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;query_cache_size&lt;/code&gt;为0,没有分配缓存空间,如果配置了&lt;code&gt;query_cache_size = 4M&lt;/code&gt;,这里会显示具体的字节&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;show status like &#39;%Qcache%&#39;&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;+-------------------------+----------+
-| Variable_name           | Value    |
-+-------------------------+----------+
-| Qcache_free_blocks      | 1        |
-| Qcache_free_memory      | 26444248 |
-| Qcache_hits             | 159619   |
-| Qcache_inserts          | 27496    |
-| Qcache_lowmem_prunes    | 0        |
-| Qcache_not_cached       | 180      |
-| Qcache_queries_in_cache | 6922     |
-| Qcache_total_blocks     | 13850    |
-+-------------------------+----------+
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;如果&lt;code&gt;Qcache_lowmem_prunes&lt;/code&gt;的值非常大，则表明经常出现缓冲不够的情况，如果&lt;code&gt;Qcache_hits&lt;/code&gt;的值也非常大，则表明查询缓冲使用非常频繁，此时需要增加缓冲大小；
-如果&lt;code&gt;Qcache_hits&lt;/code&gt;的值不大，则表明你的查询重复率很低，这种情况下使用查询缓冲反而会影响效率，那么可以考虑不用查询缓冲。此外，在SELECT语句中加入&lt;code&gt;SQL_NO_CACHE&lt;/code&gt;可以明确表示不使用查询缓冲。&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;查询缓存碎片率 = Qcache_free_blocks / Qcache_total_blocks * 100%&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;如果查询缓存碎片率超过20%，可以用FLUSH QUERY CACHE整理缓存碎片，或者试试减小query_cache_min_res_unit，如果你的查询都是小数据量的话.&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;查询缓存利用率 = (query_cache_size – Qcache_free_memory) / query_cache_size * 100%&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;查询缓存利用率在25%以下的话说明query_cache_size设置的过大，可适当减小;查询缓存利用率在80%以上而且Qcache_lowmem_prunes &amp;gt; 50的话说明query_cache_size可能有点小，要不就是碎片太多。&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;查询缓存命中率 = Qcache_hits / ( Qcache_hits + Qcache_inserts ) * 100%&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;命中率越高,效果越好&lt;/p&gt;
-
-&lt;h2 id=&#34;各个数据库引擎对比&#34;&gt;各个数据库引擎对比&lt;/h2&gt;
-
-&lt;p&gt;主要讨论引擎: MyISAM存储引擎 InnoDB存储引擎 Memory存储引擎&lt;/p&gt;
-
-&lt;h3 id=&#34;myisam存储引擎&#34;&gt;MyISAM存储引擎&lt;/h3&gt;
-
-&lt;p&gt;支持B-tree/FullText/R-tree索引类型
-锁级别是表锁,表锁的开销小，加锁快;锁粒度大，发生锁冲突的概率较高，并发度低；表锁适合查询
-不支持事务性，也不支持外键。&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;并发不高，不需要支持事务,需要进行全文搜索,读次数大于写次数,适合数据量不是特别大并发不太高的大部分场合&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&#34;innodb存储引擎&#34;&gt;InnoDB存储引擎&lt;/h3&gt;
-
-&lt;p&gt;支持事务性，支持回滚,支持Hash/B-tree索引类型
-锁级别是行锁，行锁在锁定上带来的消耗大于表锁，但是在系统并发访问量较高时，InnoDB整体性能远高于MyISAM。
-InnoDB的索引不仅缓存索引本身，也缓存数据，所以InnoDB需要更大的内存。&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;表数据量超过千万，高并发,频繁更新大字段,安全性和可用性要求高,更适合与大并发大数据量的场合，除了支持事务，在高并发时行级锁的优势就会发挥出来。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&#34;memory存储引擎&#34;&gt;Memory存储引擎&lt;/h3&gt;
-
-&lt;p&gt;内存级的存储引擎，它将所有数据都存储在内存中，所以它能够存储的数据量是比较小的
-Memory的锁级别和MyISAM一样，是表锁；并且不支持事务性。&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;适合与性能要求高数据量小的地方，和缓存的效果类似。&lt;/p&gt;
-
-&lt;p&gt;innodb查询表的行数需要全表扫描，速度会非常慢，查询1千万行数据的表最多时要6、7s,而myisam因为保存了总行数是极快的。
-在一个进程操作的情况下，myisam的更新和查询速度都会稍快于innodb。memory引擎插入和查询修改的速度都极快，但支持的数据量有限,不支持BLOB/TEXT数据类型,适用于单表几万行数据.&lt;/p&gt;
-
-&lt;p&gt;MEMORY表最大值受系统变量 max_heap_table_size 限制，默认为16MB，要改变MEMORY表大小限制，需要改变max_heap_table_size 的值。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&#34;锁&#34;&gt;锁&lt;/h3&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;读锁：读操作时增加锁，叫共享锁，S-lock特征是阻塞其他客户端的写操作，不阻塞读操作&lt;/p&gt;
-
-&lt;p&gt;写锁：写操作时增加锁，叫独占锁或排他锁，X-lock特征是阻塞其他客户端的读、写操作&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&#34;锁定粒度-范围&#34;&gt;锁定粒度（范围）&lt;/h3&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;行级：提升并发性，锁定开销大&lt;/p&gt;
-
-&lt;p&gt;表级：不利于并发性，锁定开销小&lt;/p&gt;
-&lt;/blockquote&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>ffmpeg安装使用</title>
-      <link>http://blog.suconghou.cn/post/ffmpeg-usage/</link>
-      <pubDate>Mon, 11 Jan 2016 10:19:20 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/post/ffmpeg-usage/</guid>
-      <description>
-
-&lt;h2 id=&#34;安装&#34;&gt;安装&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;yum install autoconf automake cmake freetype-devel gcc gcc-c++ git libtool make mercurial nasm pkgconfig zlib-devel
-mkdir ~/ffmpeg_sources
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Yasm is an assembler used by x264 and FFmpeg&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;cd ~/ffmpeg_sources
-git clone --depth 1 git://github.com/yasm/yasm.git
-cd yasm
-autoreconf -fiv
-./configure --prefix=&amp;quot;$HOME/ffmpeg_build&amp;quot; --bindir=&amp;quot;$HOME/bin&amp;quot;
-make
-make install
-make distclean
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;H.264 video encoder.
-Requires ffmpeg to be configured with &lt;code&gt;--enable-gpl --enable-libx264&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;cd ~/ffmpeg_sources
-git clone --depth 1 git://git.videolan.org/x264
-cd x264
-PKG_CONFIG_PATH=&amp;quot;$HOME/ffmpeg_build/lib/pkgconfig&amp;quot; ./configure --prefix=&amp;quot;$HOME/ffmpeg_build&amp;quot; --bindir=&amp;quot;$HOME/bin&amp;quot; --enable-static
-make
-make install
-make distclean
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;H.265/HEVC video encoder. Requires ffmpeg to be configured with &lt;code&gt;--enable-gpl --enable-libx265&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;cd ~/ffmpeg_sources
-hg clone https://bitbucket.org/multicoreware/x265
-cd ~/ffmpeg_sources/x265/build/linux
-cmake -G &amp;quot;Unix Makefiles&amp;quot; -DCMAKE_INSTALL_PREFIX=&amp;quot;$HOME/ffmpeg_build&amp;quot; -DENABLE_SHARED:bool=off ../../source
-make
-make install
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;AAC audio encoder. Requires ffmpeg to be configured with &lt;code&gt;--enable-libfdk-aac&lt;/code&gt; (and &lt;code&gt;--enable-nonfree&lt;/code&gt; if you also included &lt;code&gt;--enable-gpl&lt;/code&gt;)&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;cd ~/ffmpeg_sources
-git clone --depth 1 git://git.code.sf.net/p/opencore-amr/fdk-aac
-cd fdk-aac
-autoreconf -fiv
-./configure --prefix=&amp;quot;$HOME/ffmpeg_build&amp;quot; --disable-shared
-make
-make install
-make distclean
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;MP3 audio encoder. Requires ffmpeg to be configured with &lt;code&gt;--enable-libmp3lame&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;cd ~/ffmpeg_sources
-curl -L -O http://downloads.sourceforge.net/project/lame/lame/3.99/lame-3.99.5.tar.gz
-tar xzvf lame-3.99.5.tar.gz
-cd lame-3.99.5
-./configure --prefix=&amp;quot;$HOME/ffmpeg_build&amp;quot; --bindir=&amp;quot;$HOME/bin&amp;quot; --disable-shared --enable-nasm
-make
-make install
-make distclean
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Opus audio decoder and encoder. Requires ffmpeg to be configured with &lt;code&gt;--enable-libopus&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;cd ~/ffmpeg_sources
-git clone git://git.opus-codec.org/opus.git
-cd opus
-autoreconf -fiv
-./configure --prefix=&amp;quot;$HOME/ffmpeg_build&amp;quot; --disable-shared
-make
-make install
-make distclean
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Ogg bitstream library. Required by libtheora and libvorbis.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;cd ~/ffmpeg_sources
-curl -O http://downloads.xiph.org/releases/ogg/libogg-1.3.2.tar.gz
-tar xzvf libogg-1.3.2.tar.gz
-cd libogg-1.3.2
-./configure --prefix=&amp;quot;$HOME/ffmpeg_build&amp;quot; --disable-shared
-make
-make install
-make distclean
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Vorbis audio encoder. Requires libogg. Requires ffmpeg to be configured with &lt;code&gt;--enable-libvorbis&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;cd ~/ffmpeg_sources
-curl -O http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.4.tar.gz
-tar xzvf libvorbis-1.3.4.tar.gz
-cd libvorbis-1.3.4
-LDFLAGS=&amp;quot;-L$HOME/ffmeg_build/lib&amp;quot; CPPFLAGS=&amp;quot;-I$HOME/ffmpeg_build/include&amp;quot; ./configure --prefix=&amp;quot;$HOME/ffmpeg_build&amp;quot; --with-ogg=&amp;quot;$HOME/ffmpeg_build&amp;quot; --disable-shared
-make
-make install
-make distclean
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;VP8/VP9 video encoder. Requires ffmpeg to be configured with &lt;code&gt;--enable-libvpx&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;cd ~/ffmpeg_sources
-git clone --depth 1 https://chromium.googlesource.com/webm/libvpx.git
-cd libvpx
-./configure --prefix=&amp;quot;$HOME/ffmpeg_build&amp;quot; --disable-examples
-make
-make install
-make clean
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Compilation is now complete and ffmpeg (also ffprobe, ffserver, lame, and x264) should now be ready to use.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;cd ~/ffmpeg_sources
-git clone https://github.com/FFmpeg/FFmpeg ffmpeg
-cd ffmpeg
-PKG_CONFIG_PATH=&amp;quot;$HOME/ffmpeg_build/lib/pkgconfig&amp;quot; ./configure --prefix=&amp;quot;$HOME/ffmpeg_build&amp;quot; --extra-cflags=&amp;quot;-I$HOME/ffmpeg_build/include&amp;quot; --extra-ldflags=&amp;quot;-L$HOME/ffmpeg_build/lib&amp;quot; --bindir=&amp;quot;$HOME/bin&amp;quot; --pkg-config-flags=&amp;quot;--static&amp;quot; --enable-gpl --enable-nonfree --enable-libfdk-aac --enable-libfreetype --enable-libmp3lame --enable-libopus --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libx265
-make -j4
-make install
-make distclean
-hash -r
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;生成的可执行文件存放在&lt;code&gt;~/bin&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;下载官方的静态编译的linux通用二进制包&#34;&gt;下载官方的静态编译的Linux通用二进制包&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://johnvansickle.com/ffmpeg/&#34;&gt;ffmeg&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;3.1正式版已发布,&lt;a href=&#34;http://www.oschina.net/news/74702/ffmpeg-3-1&#34;&gt;查看详情&lt;/a&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>git基本使用</title>
-      <link>http://blog.suconghou.cn/post/git-usage/</link>
-      <pubDate>Fri, 08 Jan 2016 23:43:00 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/post/git-usage/</guid>
-      <description>
-
-&lt;h1 id=&#34;git配置&#34;&gt;git配置&lt;/h1&gt;
-
-&lt;pre&gt;&lt;code&gt;git config --global user.email &amp;quot;1126045770@qq.com&amp;quot;
-git config --global user.name &amp;quot;sucongohu&amp;quot;
-
-git config --global core.autocrlf false
-git config --global color.ui true
-git config --global credential.helper store
-
-git config --global alias.lg &amp;quot;log --graph --all --pretty=format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci,%cr) %C(bold blue)&amp;lt;%an&amp;gt;%Creset&#39; --abbrev-commit --date=relative&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;以上分别是设置用户信息,禁止转换换行符,颜色高亮,记住密码,设置别名列出分支图. 设置别名后,可以使用 &lt;code&gt;git lg&lt;/code&gt; 查看各个分支关系&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;参数  说明
-%H  commit hash
-%h  commit short hash
-%T  tree hash
-%t  tree short hash
-%P  parent hash
-%p  parent short hash
-%an 作者名字
-%aN .mailmap 中对应的作者名字
-%ae 作者邮箱
-%aE .mailmap 中对应的作者邮箱
-%ad –date=制定的日期格式
-%aD RFC2822 日期格式
-%ar 日期格式，例如：1 day ago
-%at UNIX timestamp 日期格式
-%ai ISO 8601 日期格式
-%cn 提交者名字
-%cN .mailmap 对应的提交的名字
-%ce 提交者邮箱
-%cE .mailmap 对应的提交者的邮箱
-%cd –data=制定的提交日期的格式
-%cD RFC2822 提交日期的格式
-%cr 提交日期的格式，例如：1day ago
-%ct UNIX timestamp 提交日期的格式
-%ci ISO 8601 提交日期的格式
-%d  ref 名称
-%e  encoding
-%s  commit 信息标题
-%f  过滤 commit 信息的标题使之可以作为文件名
-%b  commit 信息内容
-%N  commit notes
-%gD reflog selector, e.g., refs/stash@{1}
-%gd shortened reflog selector, e.g., stash@{1}
-%gs reflog subject
-%Cred   切换至红色
-%Cgreen 切换至绿色
-%Cblue  切换至蓝色
-%Creset 重设颜色
-%C(color)   制定颜色，as described in color.branch.* config option
-%m  left right or boundary mark
-%n  换行
-%%  a raw %
-%x00    print a byte from a hex code
-%w([[,[,]]])    switch line wrapping, like the -w option of git-shortlog(1).&lt;/p&gt;
-
-&lt;p&gt;一个命令推送到多个服务端&lt;code&gt;vim .git/config&lt;/code&gt; ,添加一个区段,例如:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;[remote &amp;quot;all&amp;quot;]
-        url = https://git.oschina.net/suconghou/mvc.git
-        url = https://suconghou@git.coding.net/suconghou/mvc.git
-        url = https://github.com/suconghou/mvc.git
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;以后可以使用&lt;code&gt;git push all master&lt;/code&gt;一次推送到多个后端&lt;/p&gt;
-
-&lt;h1 id=&#34;git分支管理&#34;&gt;git分支管理&lt;/h1&gt;
-
-&lt;h2 id=&#34;1-创建分支&#34;&gt;1.创建分支&lt;/h2&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;git branch &amp;lt;分支名&amp;gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&#34;2-切换到分支&#34;&gt;2.切换到分支&lt;/h2&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;git checkout &amp;lt;分支名&amp;gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&#34;3-创建一个分支并切换过去&#34;&gt;3.创建一个分支并切换过去&lt;/h2&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;git checkout -b &amp;lt;分支名&amp;gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;或者&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;git checkout -b &amp;lt;分支名&amp;gt; master&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;后面是跟一个master说明创建的develop分支是基于当前的master， 如果当前就在master分支，则可以不写。 如果当前分支HEAD指向的是别的分支，又想基于master分支创建，就必须写master&lt;/p&gt;
-
-&lt;h2 id=&#34;4-分支合并&#34;&gt;4.分支合并&lt;/h2&gt;
-
-&lt;p&gt;如:要将develop分支合并和master分支
-首先切换的master分支：&lt;code&gt;git checkout master&lt;/code&gt;
-然后执行合并操作：&lt;code&gt;git merge develop&lt;/code&gt;
-如果有冲突，会提示你，调用&lt;code&gt;git status&lt;/code&gt;查看冲突文件。
-解决冲突，然后调用&lt;code&gt;git add&lt;/code&gt;或&lt;code&gt;git rm&lt;/code&gt;将解决后的文件暂存。
-所有冲突解决后，&lt;code&gt;git commit&lt;/code&gt;提交更改。&lt;/p&gt;
-
-&lt;h2 id=&#34;5-删除分支&#34;&gt;5.删除分支&lt;/h2&gt;
-
-&lt;p&gt;删除本地分支,删除分支之前记得先合并,以免数据丢失&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;git branch -d &amp;lt;分支名&amp;gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;code&gt;git push [远程名] [本地分支]:[远程分支]&lt;/code&gt; 本地分支的数据推送到远程分支,如果远程分支不存在,将会自动创建&lt;/p&gt;
-
-&lt;p&gt;如果本地分支为空格,则将删除远程分支 &lt;code&gt;git push origin :deletebranch&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;6-显示所有分支&#34;&gt;6.显示所有分支&lt;/h2&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;git branch -a&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;显示远端分支&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;git branch -r&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;code&gt;git push -all&lt;/code&gt; 把所有本地分支都推到远端&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;git pull origin remotebranch:localbranch&lt;/code&gt;
-将远程某分支拉倒本地某分支,当本地分支和远程分支名称相同时，只写一个就可以&lt;/p&gt;
-
-&lt;h1 id=&#34;git-tag-管理&#34;&gt;git tag 管理&lt;/h1&gt;
-
-&lt;h2 id=&#34;1-git-tag&#34;&gt;1.git tag&lt;/h2&gt;
-
-&lt;p&gt;在控制台打印出当前仓库的所有标签&lt;/p&gt;
-
-&lt;h2 id=&#34;2-git-tag-l-v0-1&#34;&gt;2.git tag -l &amp;lsquo;v0.1.*&amp;rsquo;&lt;/h2&gt;
-
-&lt;p&gt;搜索符合模式的标签&lt;/p&gt;
-
-&lt;h2 id=&#34;3-git-tag-v0-1-2-light&#34;&gt;3.git tag v0.1.2-light&lt;/h2&gt;
-
-&lt;p&gt;创建轻量标签&lt;/p&gt;
-
-&lt;h2 id=&#34;4-git-tag-a-v0-1-2-m-0-1-2版本&#34;&gt;4.git tag -a v0.1.2 -m &amp;ldquo;0.1.2版本&amp;rdquo;&lt;/h2&gt;
-
-&lt;p&gt;创建附注标签&lt;/p&gt;
-
-&lt;p&gt;git标签分为两种类型：轻量标签和附注标签。轻量标签是指向提交对象的引用，附注标签则是仓库中的一个独立对象。建议使用附注标签。&lt;/p&gt;
-
-&lt;h2 id=&#34;5-git-tag-d-v0-1-2&#34;&gt;5.git tag -d v0.1.2&lt;/h2&gt;
-
-&lt;p&gt;删除标签&lt;/p&gt;
-
-&lt;h2 id=&#34;6-git-push-origin-v0-1-2&#34;&gt;6.git push origin v0.1.2&lt;/h2&gt;
-
-&lt;p&gt;将v0.1.2标签提交到git服务器
-git push origin –-tags
-将本地所有标签一次性提交到git服务器
-通常的git push不会将标签对象提交到git服务器，所以我们需要进行显式的操作：&lt;/p&gt;
-
-&lt;h1 id=&#34;git-stash-操作&#34;&gt;git stash 操作&lt;/h1&gt;
-
-&lt;p&gt;1.git stash 可用来暂存当前正在进行的工作， 比如想pull 最新代码， 又不想加新commit， 或者另外一种情况，为了fix 一个紧急的bug,  先stash, 使返回到自己上一个commit, 改完bug之后再stash pop, 继续原来的工作。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;git stash
-//do some work
-git stash pop
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;2.同样可以使用 git stash save &amp;ldquo;work in progress for foo feature&amp;rdquo; 添加标记&lt;/p&gt;
-
-&lt;p&gt;3.当你多次使用&lt;code&gt;git stash&lt;/code&gt;命令后，你的栈里将充满了未提交的代码，这时候你会对将哪个版本应用回来有些困惑，
-&lt;code&gt;git stash list&lt;/code&gt; 命令可以将当前的Git栈信息打印出来，你只需要将找到对应的版本号，例如使用&lt;code&gt;git stash apply stash@{1}&lt;/code&gt;就可以将你指定版本号为stash@{1}的工作取出来，当你将所有的栈都应用回来的时候，可以使用&lt;code&gt;git stash clear&lt;/code&gt;来将栈清空。&lt;/p&gt;
-
-&lt;h2 id=&#34;svn&#34;&gt;svn&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;svn revert xx.html&lt;/code&gt; 和&lt;code&gt;git checkout xx.html&lt;/code&gt; 类似,还原文件的更改&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Sublime使用和设置</title>
-      <link>http://blog.suconghou.cn/post/sublime-usage/</link>
-      <pubDate>Fri, 08 Jan 2016 23:21:12 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/post/sublime-usage/</guid>
-      <description>
-
-&lt;h2 id=&#34;配置文件&#34;&gt;配置文件&lt;/h2&gt;
-
-&lt;p&gt;最喜欢的字体&lt;code&gt;Monaco&lt;/code&gt;,&lt;a href=&#34;http://share.suconghou.cn/fonts/MONACO.TTF&#34;&gt;此处下载&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;配置文件
-&lt;code&gt;Preferences.sublime-settings&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;{
-	&amp;quot;close_windows_when_empty&amp;quot;: true,
-	&amp;quot;default_encoding&amp;quot;: &amp;quot;UTF-8&amp;quot;,
-	&amp;quot;default_line_ending&amp;quot;: &amp;quot;unix&amp;quot;,
-	&amp;quot;ensure_newline_at_eof_on_save&amp;quot;: true,
-	&amp;quot;font_face&amp;quot;: &amp;quot;Monaco&amp;quot;,
-	&amp;quot;font_size&amp;quot;: 13,
-	&amp;quot;highlight_line&amp;quot;: true,
-	&amp;quot;highlight_modified_tabs&amp;quot;: true,
-	&amp;quot;ignored_packages&amp;quot;:
-	[
-		&amp;quot;Vintage&amp;quot;
-	],
-	&amp;quot;show_encoding&amp;quot;: true,
-	&amp;quot;show_line_endings&amp;quot;: true,
-	&amp;quot;tab_size&amp;quot;: 4,
-	&amp;quot;translate_tabs_to_spaces&amp;quot;: false,
-	&amp;quot;trim_trailing_white_space_on_save&amp;quot;: true,
-	&amp;quot;update_check&amp;quot;: false,
-	&amp;quot;word_wrap&amp;quot;: false
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;插件&#34;&gt;插件&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;open_browser.py&lt;/code&gt; 插件&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;import sublime, sublime_plugin
-import webbrowser
-import os
-
-url_map = {
-    &#39;D:\\git\\bbs\\&#39; : &#39;http://127.0.0.3/&#39;,
-    &#39;D:\\php\\su\\&#39; : &#39;http://127.0.0.2/&#39;,
-    &#39;D:\\php\\htdocs\\&#39; : &#39;http://127.0.0.1/&#39;
-}
-
-class OpenBrowserCommand(sublime_plugin.TextCommand):
-    def run(self,edit):
-        window = sublime.active_window()
-        window.run_command(&#39;save&#39;)
-        url = self.view.file_name()
-        flag = False
-        for path, domain in url_map.items():
-            if url.startswith(path):
-                url = url.replace(path, domain).replace(&#39;\\&#39;, &#39;/&#39;)
-                flag = True
-                break
-        if not flag:
-            cmd1=&#39;taskkill /f /im php.exe&#39;
-            cmd2=&#39;php -S 0.0.0.0:8088 -t &#39;+os.path.abspath(os.path.dirname(self.view.file_name()))
-            os.system(cmd1)
-            os.popen(cmd2)
-            url =  &#39;http://127.0.0.1:8088/&#39;+os.path.basename(self.view.file_name())
-        webbrowser.open_new(url)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;编译系统&#34;&gt;编译系统&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;node.sublime-build&lt;/code&gt; 执行nodejs代码&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;{
-	&amp;quot;shell_cmd&amp;quot;: &amp;quot;node ${file}&amp;quot;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;快捷键配置&#34;&gt;快捷键配置&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;Default (OSX).sublime-keymap&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;[
-	{ &amp;quot;keys&amp;quot;: [&amp;quot;alt+d&amp;quot;], &amp;quot;command&amp;quot;: &amp;quot;open_dir&amp;quot;, &amp;quot;args&amp;quot;: {&amp;quot;dir&amp;quot;: &amp;quot;$file_path&amp;quot;, &amp;quot;file&amp;quot;: &amp;quot;$file_name&amp;quot;} },
-	{ &amp;quot;keys&amp;quot;: [&amp;quot;ctrl+shift+c&amp;quot;], &amp;quot;command&amp;quot;: &amp;quot;copy_path&amp;quot; },
-	{ &amp;quot;keys&amp;quot;: [&amp;quot;ctrl+f11&amp;quot;], &amp;quot;command&amp;quot;: &amp;quot;toggle_distraction_free&amp;quot; }
-]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;添加sublime到命令行&#34;&gt;添加sublime到命令行&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;MacOs&lt;/code&gt;下&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/local/bin/sublime
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;激活码&#34;&gt;激活码&lt;/h2&gt;
-
-&lt;p&gt;3103可用激活码&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;—– BEGIN LICENSE —–
-Ryan Clark
-Single User License
-EA7E-812479
-2158A7DE B690A7A3 8EC04710 006A5EEB
-34E77CA3 9C82C81F 0DB6371B 79704E6F
-93F36655 B031503A 03257CCC 01B20F60
-D304FA8D B1B4F0AF 8A76C7BA 0FA94D55
-56D46BCE 5237A341 CD837F30 4D60772D
-349B1179 A996F826 90CDB73C 24D41245
-FD032C30 AD5E7241 4EAA66ED 167D91FB
-55896B16 EA125C81 F550AF6B A6820916
-—— END LICENSE ——
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;3103之前版本可用&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;----- BEGIN LICENSE -----
-Andrew Weber
-Single User License
-EA7E-855605
-813A03DD 5E4AD9E6 6C0EEB94 BC99798F
-942194A6 02396E98 E62C9979 4BB979FE
-91424C9D A45400BF F6747D88 2FB88078
-90F5CC94 1CDC92DC 8457107A F151657B
-1D22E383 A997F016 42397640 33F41CFC
-E1D0AE85 A0BBD039 0E9C8D55 E1B89D5D
-5CDB7036 E56DE1C0 EFCC0840 650CD3A6
-B98FC99C 8FAC73EE D2B95564 DF450523
------- END LICENSE ------
 &lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>

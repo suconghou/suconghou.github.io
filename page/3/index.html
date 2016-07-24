@@ -34,955 +34,600 @@
 		
 		<div class="post">
 			<h1 class="post-title">
-				<a href="/post/use-crontab-in-your-server/"> Crontab与自动备份</a>
+				<a href="/software/android-studio/"> Android Studio</a>
 			</h1>
-			<p class="post-date">Tue, Jan 12, 2016</p>
+			<p class="post-date">Fri, Apr 8, 2016</p>
 			<div class="post-text">
 				
 
-<h2 id="crontab使用">Crontab使用</h2>
+<h2 id="下载-android-studio">下载 Android Studio</h2>
 
-<p><code>crontab -l</code> 查看当前用户的crontab列表
-使用<code>crontab -e</code>开始编辑规则</p>
+<p><a href="http://www.oschina.net/news/75353/android-studio-2-2-preview-6">http://www.oschina.net/news/75353/android-studio-2-2-preview-6</a></p>
 
-<pre><code>基本格式 :
-*　　*　　*　　*　　*　　command
-分　 时 　日 　月　 周　 命令
-
-* 第1列表示分钟1～59 每分钟用*或者*/1表示
-* 第2列表示小时1～23（0表示0点）
-* 第3列表示日期1～31
-* 第4列表示月份1～12
-* 第5列标识号星期0～6（0表示星期天）
-* 第6列要运行的命令
+<pre><code>Windows: https://dl.google.com/dl/android/studio/ide-zips/2.2.0.5/android-studio-ide-145.3070098-windows.zip (449.3 MiB)
+Mac: https://dl.google.com/dl/android/studio/ide-zips/2.2.0.5/android-studio-ide-145.3070098-mac.zip  (449.8 MiB)
+Linux:  https://dl.google.com/dl/android/studio/ide-zips/2.2.0.5/android-studio-ide-145.3070098-linux.zip  (448.9 MiB)
 </code></pre>
 
-<p>禁止Crontab产生邮件:
-在crontab末尾加上<code>&gt; /dev/null 2&gt;&amp;1</code> 或者 <code>&gt; &amp;&gt; /dev/null</code></p>
+<pre><code>root /home/demo/goproj/src/Test/public;
+try_files $uri/index.html $uri.html $uri @goapp;
 
-<p>例如</p>
-
-<pre><code>0 1 5 10 * /path/to/script.sh &gt; /dev/null 2&gt;&amp;1
-0 1 5 10 * /path/to/script.sh &gt; &amp;&gt; /dev/null
+location @goapp {
+	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+	proxy_set_header Host $http_host;
+	proxy_redirect off;
+	proxy_pass http://localhost:8080;
+}
 </code></pre>
 
-<h2 id="定时备份数据库">定时备份数据库</h2>
+<h2 id="安装android-sdk">安装android-sdk</h2>
 
-<p>先写好shell脚本存入<code>/home/cron1.sh</code></p>
-
-<pre><code>user=&quot;root&quot;
-pass=&quot;root&quot;
-host=&quot;127.0.0.1&quot;
-port=&quot;3306&quot;
-dbs=&quot;db1 db2 db3&quot;
-dir=&quot;/data/backup/&quot;
-
-nowDate=`date '+%Y%m%d'`
-nowTime=`date '+%H%M'`
-backupdir=$dir$nowDate
-timeold=`date -d &quot;-1 week&quot; +%Y%m%d`
-delold=$dir$timeold
-if [ ! -d $backupdir ]; then
-  mkdir -p $backupdir
-fi
-if [ -d $delold ]; then
-  rm -rf $delold
-fi
-for i in $dbs
-	do
-		backupFile=$backupdir/$i-$nowTime.sql
-		mysqldump -u$user -p$pass -h$host -P$port --databases $i &gt; $backupFile
-		xz $backupFile
-	done
-
-</code></pre>
-
-<p>然后定时任务<code>crontab -e</code> 每5个小时备份一次数据库.</p>
-
-<pre><code>0 */5 * * * sh /home/cron1.sh
-</code></pre>
-
-<p>使用此脚本建议每20个小时以内备份一次数据库,此脚本保留最近7天备份,删除过期备份</p>
-
-<h2 id="增量备份数据库">增量备份数据库</h2>
-
-<p>先写好shell脚本存入<code>/home/cron2.sh</code></p>
-
-<pre><code>user=&quot;root&quot;
-pass=&quot;root&quot;
-host=&quot;127.0.0.1&quot;
-port=&quot;3306&quot;
-storedb=&quot;backup&quot;
-backup=&quot;db1.table1 db1.table2&quot;
-
-mysql -u$user -p$pass -h$host -P$port -e &quot;create database if not exists $storedb&quot;
-for i in $backup
-	do
-		table=${i##*.}
-		sql=&quot;create table if not exists $storedb.$table like $i;replace into $storedb.$table  select * from $i ;&quot;
-		mysql -u$user -p$pass -h$host -P$port -e &quot;$sql&quot;
-	done
-
-</code></pre>
-
-<p>数据表从源数据库中增量备份至备份数据库中的同名数据表</p>
-
-<pre><code>0 */20 * * * sh /home/cron2.sh
-</code></pre>
-
-<p>每20个小时增量备份一次</p>
-
-<h2 id="更高级的文件实时同步">更高级的文件实时同步</h2>
-
-<p><code>Mac</code>上可以使用<code>fswatch + rsync</code>进行实时同步</p>
-
-<p>首先安装<code>fswatch</code>,<code>rsync</code>应该是自带了</p>
-
-<p><code>brew install fswatch</code></p>
-
-<pre><code>&lt;!-- fswatch -o ./ | xargs -n1 -I{} md5 --&gt;
-
-fswatch -0 /tmp | xargs -0 -n 1 echo $1
-
-</code></pre>
-
-<h2 id="shell基本语法">Shell基本语法</h2>
-
-<p>声明数组</p>
-
-<p><code>arr=(item1 item2 item3)</code> 使用空格分开</p>
-
-<p>使用<code>echo ${arr[*]}</code> 或者 <code>echo ${arr[@]}</code> 可以查看数组内的元素,<code>echo $arr</code>只能取得第一个元素</p>
-
-<p>要取得数组长度,只需在名字前面加一个#,如<code>echo ${#arr[*]}</code> 或者 <code>echo ${#arr[@]}</code></p>
-
-<p>数组下标以0开始,取得第二个元素为<code>echo ${arr[1]}</code></p>
-
-<p>赋值使用<code>arr[5]=5555</code></p>
+<p><code>brew install android-sdk</code> 或者使用Android Studio SDK Manager</p>
 
 			</div>
 		</div>
 		
 		<div class="post">
 			<h1 class="post-title">
-				<a href="/post/improve-mysqldb/"> MySQL性能优化</a>
+				<a href="/project/air/"> air</a>
 			</h1>
-			<p class="post-date">Mon, Jan 11, 2016</p>
+			<p class="post-date">Thu, Feb 18, 2016</p>
 			<div class="post-text">
 				
 
-<h2 id="配置文件">配置文件</h2>
+<h1 id="serve-static-files-in-the-air">serve static files in the air</h1>
 
-<p>配置文件一般放在<code>/etc/my.cnf</code> 或者 <code>/etc/mysql/my.cnf</code></p>
+<p>在线解析压缩合并Less,打包压缩Javascript.</p>
 
-<p>默认的配置文件示例存放于<code>/usr/share/mysql</code></p>
+<p>手动压缩打包,执行Lint,静态服务器,缓存版本控制,完美结合CDN</p>
 
-<p>各个文件适配不同内存的配置</p>
+<h1 id="安装">安装</h1>
 
-<table>
-<thead>
-<tr>
-<th>文件</th>
-<th>内存大小</th>
-</tr>
-</thead>
+<p><code>npm install airs -g</code></p>
 
-<tbody>
-<tr>
-<td>my-small.cnf</td>
-<td>&lt;= 64M 不经常开启mysql</td>
-</tr>
+<h1 id="基本参数">基本参数</h1>
 
-<tr>
-<td>my-medium.cnf</td>
-<td>32M–64M 经常其他程序搭配mysql</td>
-</tr>
-
-<tr>
-<td>my-large.cnf</td>
-<td>512M</td>
-</tr>
-
-<tr>
-<td>my-huge.cnf</td>
-<td>1G-2G</td>
-</tr>
-
-<tr>
-<td>my-innodb-heavy-4G.cnf</td>
-<td>4GB 使用InnoDB</td>
-</tr>
-</tbody>
-</table>
-
-<p>使用<code>SHOW VARIABLES</code>来查看系统参数,通过<code>SHOW STATUS</code>来判断系统状态</p>
-
-<p>show 命令还有很多用途</p>
-
-<table>
-<thead>
-<tr>
-<th>命令</th>
-<th>描述</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>show databases 或show tables from database_name</td>
-<td>显示mysql中所有数据库的名称</td>
-</tr>
-
-<tr>
-<td>show tables</td>
-<td>显示当前数据库中所有表的名称</td>
-</tr>
-
-<tr>
-<td>show columns from table_name from database_name</td>
-<td>显示表中列名称</td>
-</tr>
-
-<tr>
-<td>show grants for user_name</td>
-<td>显示一个用户的权限，显示结果类似于grant命令</td>
-</tr>
-
-<tr>
-<td>show table status</td>
-<td>显示当前使用或者指定的database中的每个表的信息。<br>信息包括表类型和表的最新更新时间。</td>
-</tr>
-
-<tr>
-<td>show index from table_name</td>
-<td>显示表的索引</td>
-</tr>
-
-<tr>
-<td>show status</td>
-<td>显示一些系统特定资源的信息,例如,正在运行的线程数量</td>
-</tr>
-
-<tr>
-<td>show variables</td>
-<td>显示系统变量的名称和值</td>
-</tr>
-
-<tr>
-<td>show processlist</td>
-<td>显示系统中正在运行的所有进程，也就是当前正在执行的查询。<br>大多数用户可以查看他们自己的进程，但是如果他们拥有process权限，<br>就可以查看所有人的进程，包括密码</td>
-</tr>
-
-<tr>
-<td>show engies</td>
-<td>显示安装以后可用的存储引擎和默认引擎</td>
-</tr>
-
-<tr>
-<td>show innodb status</td>
-<td>显示innoDB存储引擎的状态</td>
-</tr>
-
-<tr>
-<td>show logs</td>
-<td>显示BDB存储引擎的日志</td>
-</tr>
-
-<tr>
-<td>show warnings</td>
-<td>显示最后一个执行的语句所产生的错误、警告和通知</td>
-</tr>
-
-<tr>
-<td>show errors</td>
-<td>只显示最后一个执行语句所产生的错误</td>
-</tr>
-</tbody>
-</table>
-
-<h2 id="小内存优化">小内存优化</h2>
-
-<p>依据<code>my-small.cnf</code>为模板</p>
-
-<p>主要指标:存储引擎,key_buffer,table_cache,max_connections,thread_concurrency,query_cache,thread_stack</p>
-
-<p><strong>存储引擎</strong>:
-如果不使用 BDB table 和 InnoDB table 的话，加入下面2行关闭不需要的表类型很有必要，关闭 innodb 可以省下大量内存，虽然 InnoDB 好处多多但是在一个64MB的 VPS 上并不能体现出来，并且很占内存。</p>
-
-<p><strong>key_buffer</strong>:
-用来缓存 tables keys 和 indexes，增加这个值可以更好的处理索引，读和写都需要索引,这里设置成16K足够了.</p>
-
-<p><strong>table_cache</strong>:
-所有线程打开的表的数量，增加值可以增大 MySQL 的文件描述符数量，避免频繁的打开表，原始 my-small.cnf 中 table_cache 设置成4有点小，一个 wordpress 的页面通常会涉及到10个左右的表，其他的程序比如 Drupal，MediaWiki 会涉及到更多，将table_cache改为8。</p>
-
-<p><strong>max_connections</strong>:
-数据库最大的连接数量，可以根据自己博客/网站的访问量来定这个值,如果博客/网站经常出现：Too many connections 错误的信息说明需要增大 max_connections 的值.</p>
-
-<p><strong>thread_concurrency</strong>:
-最大并发线程数，通常设置为 CPU核数量×2，在 VPS 宿主机上如果服务器有2颗物理 CPU，而每颗物理 CPU 又支持 H.T 超线程（一个处理器上整合了两个逻辑处理器单元），所以实际取值为4 × 2 ＝ 8。
-如果我们在优化 php.ini 的时候设置了同时只有2个 php-cgi 运行的话，那么我们也应该只设置2个 MySQL 线程同时运行。</p>
-
-<p><strong>query_cache</strong>:
-对于博客/新闻网站来说，用得最多的就是查询，所以需要加入 query cache 的设置。query_cache_size 是执行查询所使用的缓冲大小。
-query_cache_limit指定单个查询能够使用的缓冲区大小，缺省为1M,结果集超过这个大小将不会被缓存。</p>
-
-<p>与查询缓冲有关的参数还有query_cache_type、query_cache_limit、query_cache_min_res_unit。</p>
-
-<p>query_cache_type指定是否使用查询缓冲，可以设置为0、1、2,分别代表了off、on、demand,如果是0，那么query cache 是关闭的。如果是1，那么查询总是先到查询缓存中查找，除非使用了sql_no_cache。如果是2，那么，只有使用 sql_cache的查询，才会去查询缓存中查找.</p>
-
-<p>query_cache_limit指定单个查询能够使用的缓冲区大小，缺省为1M。
-query_cache_min_res_unit是在4.1版本以后引入的，它指定分配缓冲区空间的最小单位，缺省为4K。
-检查状态值Qcache_free_blocks，如果该值非常大，则表明缓冲区中碎片很多，这就表明查询结果都比较小，此时需要减小 query_cache_min_res_unit。</p>
-
-<p><strong>thread_stack</strong>:
-用来存放每个线程的标识信息，如线程 id，线程运行时环境等，可以通过设置 thread_stack 来决定给每个线程分配多大的内存。</p>
-
-<p><strong>sort_buffer_size</strong>:
-每个需要排序的线程分配的缓冲区大小，增加该值可以加速 order by 和 group by 的操作。注意：该参数是以每个连接分配内存，也就是说，如果有16个连接，sort_buffer_size 为 64K，那么实际分配的内存为：16 × 64K = 1MB。如果设置的缓存大小无法满足需要，MySQL 会将数据写入磁盘来完成排序。因为磁盘操作和内存操作不在一个数量级，所以 sort_buffer_size 对排序的性能影响很大。</p>
-
-<p><strong>read_buffer_size</strong>:
-顺序读取数据时的缓冲区大小，与 sort_buffer_size 一样，该参数分配的内存也是以每连接为单位的。
-当需要顺序读取数据的时候，如无法使用索引的情况下的全表扫描，全索引扫描等。在这种时候，MySQL 按照数据的存储顺序依次读取数据块，每次读取的数据快首先会暂存在 read_buffer_size 中，当 buffer 空间被写满或者全部数据读取结束后，再将 buffer 中的数据返回给上层调用者，以提高效率。</p>
-
-<p><strong>read_rnd_buffer_size</strong>:
-随机读取数据时的缓冲区大小，与顺序读相对应。</p>
-
-<p><strong>net_buffer_size</strong>:
-用来存放客户端连接线程的连接信息和返回客户端的结果集的缓存大小。当 MySQL 接到请求后，产生返回结果集时，会在返回给请求线程之前暂存在在这个缓存中，等积累到一定大小的时候才开始向客户端发送，以提高网络效率。不 过，net_buffer_size 所设置的仅仅只是初始大小，MySQL 会根据实际需要自行申请更多的内存，但最大不会超过 max_allowed_packet。</p>
-
-<p>skip-locking用来避免 MySQL 外部锁定，减少出错几率，增强稳定性。</p>
-
-<p>以上: 64M VPS数据库配置</p>
-
-<pre><code>skip-bdb
-skip-innodb
-
-key_buffer = 16K
-table_cache = 8
-
-max_connections = 16
-thread_concurrency = 2
-
-query_cache_limit = 256K
-query_cache_size = 4M
-query_cache_type = 1
-
-sort_buffer_size = 64K
-read_buffer_size = 256K
-read_rnd_buffer_size = 256K
-net_buffer_length = 2K
-thread_stack = 64K
-skip-locking
-
-</code></pre>
-
-<p>thread_cache_size 优化配置</p>
-
-<h3 id="packet-for-query-is-too-large">Packet for query is too large</h3>
-
-<p><code>show variables like '%max%'</code></p>
-
-<p>当update或者insert的内容过大时,<code>max_allowed_packet</code>的值过小,会引起sql异常,需要改大;其默认值为1048576(1M)，
-修改<code>my.cnf</code>  <code>max_allowed_packet = 20M</code>
-或者零时动态设置 <code>set global max_allowed_packet = 20*1024*1024</code></p>
-
-<p>查看是否生效,零时修改一般断开后重新连接即可生效.
-<code>show variables like '%max_allowed_packet%'</code></p>
-
-<pre><code>1G  ---&gt; 8
-2G  ---&gt; 16
-3G  ---&gt; 32
-4G  ---&gt; 64
-</code></pre>
-
-<h2 id="数据库优化">数据库优化</h2>
-
-<p>查看query_cache相关配置, 默认这个开关是关闭的,就是禁止使用query_cache
-query_cache_type 为0,是关闭的</p>
-
-<p><code>show variables where variable_name like '%query_cache%'</code> 单独查询一个使用 <code>select @@query_cache_type</code></p>
-
-<pre><code>+------------------------------+----------+
-| Variable_name                | Value    |
-+------------------------------+----------+
-| have_query_cache             | YES      |
-| query_cache_limit            | 262144   |
-| query_cache_min_res_unit     | 4096     |
-| query_cache_size             | 33554432 |
-| query_cache_strip_comments   | OFF      |
-| query_cache_type             | ON       |
-| query_cache_wlock_invalidate | OFF      |
-+------------------------------+----------+
-</code></pre>
-
-<p><code>query_cache_size</code>为0,没有分配缓存空间,如果配置了<code>query_cache_size = 4M</code>,这里会显示具体的字节</p>
-
-<p><code>show status like '%Qcache%'</code></p>
-
-<pre><code>+-------------------------+----------+
-| Variable_name           | Value    |
-+-------------------------+----------+
-| Qcache_free_blocks      | 1        |
-| Qcache_free_memory      | 26444248 |
-| Qcache_hits             | 159619   |
-| Qcache_inserts          | 27496    |
-| Qcache_lowmem_prunes    | 0        |
-| Qcache_not_cached       | 180      |
-| Qcache_queries_in_cache | 6922     |
-| Qcache_total_blocks     | 13850    |
-+-------------------------+----------+
-</code></pre>
-
-<p>如果<code>Qcache_lowmem_prunes</code>的值非常大，则表明经常出现缓冲不够的情况，如果<code>Qcache_hits</code>的值也非常大，则表明查询缓冲使用非常频繁，此时需要增加缓冲大小；
-如果<code>Qcache_hits</code>的值不大，则表明你的查询重复率很低，这种情况下使用查询缓冲反而会影响效率，那么可以考虑不用查询缓冲。此外，在SELECT语句中加入<code>SQL_NO_CACHE</code>可以明确表示不使用查询缓冲。</p>
+<ul>
+<li>纯静态项目,在项目根目录直接执行<code>air</code></li>
+</ul>
 
 <blockquote>
-<p>查询缓存碎片率 = Qcache_free_blocks / Qcache_total_blocks * 100%</p>
+<p>即可开启http服务,直接输出编译后的结果</p>
 </blockquote>
 
-<p>如果查询缓存碎片率超过20%，可以用FLUSH QUERY CACHE整理缓存碎片，或者试试减小query_cache_min_res_unit，如果你的查询都是小数据量的话.</p>
+<ul>
+<li>PHP项目,项目根目录执行<code>air develop</code></li>
+</ul>
 
 <blockquote>
-<p>查询缓存利用率 = (query_cache_size – Qcache_free_memory) / query_cache_size * 100%</p>
+<p>会开启静态服务器,同时开启一个PHP Server</p>
+
+<p>PHP Server 端口号为静态服务器端口号+1</p>
 </blockquote>
 
-<p>查询缓存利用率在25%以下的话说明query_cache_size设置的过大，可适当减小;查询缓存利用率在80%以上而且Qcache_lowmem_prunes &gt; 50的话说明query_cache_size可能有点小，要不就是碎片太多。</p>
+<ul>
+<li>服务器模式 <code>air server</code></li>
+</ul>
 
 <blockquote>
-<p>查询缓存命中率 = Qcache_hits / ( Qcache_hits + Qcache_inserts ) * 100%</p>
+<p>编译将做优化和代码压缩</p>
 </blockquote>
 
-<p>命中率越高,效果越好</p>
-
-<h2 id="各个数据库引擎对比">各个数据库引擎对比</h2>
-
-<p>主要讨论引擎: MyISAM存储引擎 InnoDB存储引擎 Memory存储引擎</p>
-
-<h3 id="myisam存储引擎">MyISAM存储引擎</h3>
-
-<p>支持B-tree/FullText/R-tree索引类型
-锁级别是表锁,表锁的开销小，加锁快;锁粒度大，发生锁冲突的概率较高，并发度低；表锁适合查询
-不支持事务性，也不支持外键。</p>
+<p><strong>指令</strong></p>
 
 <blockquote>
-<p>并发不高，不需要支持事务,需要进行全文搜索,读次数大于写次数,适合数据量不是特别大并发不太高的大部分场合</p>
+<p>使用<code>air lint</code> 执行Jslint,而不开启http服务,文件修改实时触发</p>
+
+<p>使用<code>air lint jsfile1.js jsfile2.js jsfile3.js</code> 可对指定文件进行Jslint,可对一个或多个文件</p>
+
+<p>使用<code>air compress</code> 在static目录下执行,将会根据static.json文件描述,压缩合并输出到指定文件</p>
+
+<p>使用<code>air compress lessfile1.less lessfile2.less</code> 将对less文件解析压缩,多个less文件将会压缩合并为一个css文件</p>
+
+<p>使用<code>air compress jsfile1.js jsfile2.js</code> 将对js文件压缩,多个js文件将合并为一个js文件</p>
+
+<p>可以参数中同时存在less文件和js文件,<code>air compress less1.less file1.js file2.less file3.js</code>
+工具自动按类型分组,less文件和js文件,各自压缩合并,其他文件类型忽略.</p>
+
+<p>支持jpg,png图片压缩<code>air compress file1.jpg file2.png</code> 采用<code>tinypng</code>API接口压缩,效果出众
+使用参数<code>--key=your-tinypng-api-key</code>设定apikey,例如<code>air compress file1.png file2.png --key=abcedf</code></p>
+
+<p><code>air compress</code> 除了<code>--less</code>参数,可接受<code>--debug</code>参数,生成未压缩的代码方便调试</p>
+
+<p><code>air compress --debug</code> 以debug模式压缩,less文件只解析合并,并不压缩代码,JS文件压缩合并,并不混淆优化</p>
+
+<p><code>air compress --watch</code> 还可以监视文件变化,自动执行压缩合并</p>
+
+<p><code>air compress --o</code> 开启极限优化压缩,去除console,debugger,优化常量表达式,循环,条件表达式优化等,同样适用于server模式<code>air server --o</code></p>
 </blockquote>
 
-<h3 id="innodb存储引擎">InnoDB存储引擎</h3>
-
-<p>支持事务性，支持回滚,支持Hash/B-tree索引类型
-锁级别是行锁，行锁在锁定上带来的消耗大于表锁，但是在系统并发访问量较高时，InnoDB整体性能远高于MyISAM。
-InnoDB的索引不仅缓存索引本身，也缓存数据，所以InnoDB需要更大的内存。</p>
+<p><strong>参数</strong></p>
 
 <blockquote>
-<p>表数据量超过千万，高并发,频繁更新大字段,安全性和可用性要求高,更适合与大并发大数据量的场合，除了支持事务，在高并发时行级锁的优势就会发挥出来。</p>
+<p>参数-w,使用Jslint,文件修改实时触发,本地开发建议加上</p>
+
+<p>参数-g,每分钟定时拉取git更新,可用于测试服务器上</p>
+
+<p>参数-k,设定webhook的密码,服务器模式建议加上</p>
+
+<p>参数-p,指定服务监听的端口,PHP Server 端口号也会依此变化.</p>
+
+<p>参数-v,打印出版本并退出</p>
+
+<p>参数-d,以daemon模式运行</p>
+
+<p>同时可添加参数 <code>--less=/data/pathto/lesslib</code> 指定lessLib路径,可接受相对路径和绝对路径</p>
 </blockquote>
 
-<h3 id="memory存储引擎">Memory存储引擎</h3>
+<h1 id="目录结构">目录结构</h1>
 
-<p>内存级的存储引擎，它将所有数据都存储在内存中，所以它能够存储的数据量是比较小的
-Memory的锁级别和MyISAM一样，是表锁；并且不支持事务性。</p>
+<p>目录结构采用类似 <code>项目名/static/css/style.less</code></p>
 
-<blockquote>
-<p>适合与性能要求高数据量小的地方，和缓存的效果类似。</p>
+<p>项目名可选,Javascript路径类似 <code>项目名/static/js/main.js</code></p>
 
-<p>innodb查询表的行数需要全表扫描，速度会非常慢，查询1千万行数据的表最多时要6、7s,而myisam因为保存了总行数是极快的。
-在一个进程操作的情况下，myisam的更新和查询速度都会稍快于innodb。memory引擎插入和查询修改的速度都极快，但支持的数据量有限,不支持BLOB/TEXT数据类型,适用于单表几万行数据.</p>
+<p>Http访问 <code>/项目名/static/css/style.css</code> 即可得出style.less编译后的css.</p>
 
-<p>MEMORY表最大值受系统变量 max_heap_table_size 限制，默认为16MB，要改变MEMORY表大小限制，需要改变max_heap_table_size 的值。</p>
-</blockquote>
+<p>注意:如果文件夹内确实存在此文件,则此文件则会如实输出</p>
 
-<h3 id="锁">锁</h3>
+<p>因此Http直接访问 <code>/项目名/static/js/main.js</code> 则会如实输出main.js文件</p>
 
-<blockquote>
-<p>读锁：读操作时增加锁，叫共享锁，S-lock特征是阻塞其他客户端的写操作，不阻塞读操作</p>
+<p>工具支持<code>-连接符</code>配置,因此可以Http访问 <code>/项目名/static/js/main-page.js</code></p>
 
-<p>写锁：写操作时增加锁，叫独占锁或排他锁，X-lock特征是阻塞其他客户端的读、写操作</p>
-</blockquote>
+<p>则会按顺序合并main.js和page.js两个文件</p>
 
-<h3 id="锁定粒度-范围">锁定粒度（范围）</h3>
+<p>less文件同样可以按照此种模式,此外less文件还可以使用索引模式</p>
 
-<blockquote>
-<p>行级：提升并发性，锁定开销大</p>
+<p>使用less自身语法,style.less作为入口,import其他less文件</p>
 
-<p>表级：不利于并发性，锁定开销小</p>
-</blockquote>
+<p>此外,如果文件过多,使用连字符麻烦,工具还支持配置文件模式</p>
 
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/ffmpeg-usage/"> ffmpeg安装使用</a>
-			</h1>
-			<p class="post-date">Mon, Jan 11, 2016</p>
-			<div class="post-text">
-				
+<p>在static目录内建立static.json文件,配置Less和Javascript映射</p>
 
-<h2 id="安装">安装</h2>
-
-<pre><code>yum install autoconf automake cmake freetype-devel gcc gcc-c++ git libtool make mercurial nasm pkgconfig zlib-devel
-mkdir ~/ffmpeg_sources
-</code></pre>
-
-<p>Yasm is an assembler used by x264 and FFmpeg</p>
-
-<pre><code>cd ~/ffmpeg_sources
-git clone --depth 1 git://github.com/yasm/yasm.git
-cd yasm
-autoreconf -fiv
-./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --bindir=&quot;$HOME/bin&quot;
-make
-make install
-make distclean
-</code></pre>
-
-<p>H.264 video encoder.
-Requires ffmpeg to be configured with <code>--enable-gpl --enable-libx264</code></p>
-
-<pre><code>cd ~/ffmpeg_sources
-git clone --depth 1 git://git.videolan.org/x264
-cd x264
-PKG_CONFIG_PATH=&quot;$HOME/ffmpeg_build/lib/pkgconfig&quot; ./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --bindir=&quot;$HOME/bin&quot; --enable-static
-make
-make install
-make distclean
-</code></pre>
-
-<p>H.265/HEVC video encoder. Requires ffmpeg to be configured with <code>--enable-gpl --enable-libx265</code></p>
-
-<pre><code>cd ~/ffmpeg_sources
-hg clone https://bitbucket.org/multicoreware/x265
-cd ~/ffmpeg_sources/x265/build/linux
-cmake -G &quot;Unix Makefiles&quot; -DCMAKE_INSTALL_PREFIX=&quot;$HOME/ffmpeg_build&quot; -DENABLE_SHARED:bool=off ../../source
-make
-make install
-</code></pre>
-
-<p>AAC audio encoder. Requires ffmpeg to be configured with <code>--enable-libfdk-aac</code> (and <code>--enable-nonfree</code> if you also included <code>--enable-gpl</code>)</p>
-
-<pre><code>cd ~/ffmpeg_sources
-git clone --depth 1 git://git.code.sf.net/p/opencore-amr/fdk-aac
-cd fdk-aac
-autoreconf -fiv
-./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --disable-shared
-make
-make install
-make distclean
-</code></pre>
-
-<p>MP3 audio encoder. Requires ffmpeg to be configured with <code>--enable-libmp3lame</code></p>
-
-<pre><code>cd ~/ffmpeg_sources
-curl -L -O http://downloads.sourceforge.net/project/lame/lame/3.99/lame-3.99.5.tar.gz
-tar xzvf lame-3.99.5.tar.gz
-cd lame-3.99.5
-./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --bindir=&quot;$HOME/bin&quot; --disable-shared --enable-nasm
-make
-make install
-make distclean
-</code></pre>
-
-<p>Opus audio decoder and encoder. Requires ffmpeg to be configured with <code>--enable-libopus</code></p>
-
-<pre><code>cd ~/ffmpeg_sources
-git clone git://git.opus-codec.org/opus.git
-cd opus
-autoreconf -fiv
-./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --disable-shared
-make
-make install
-make distclean
-</code></pre>
-
-<p>Ogg bitstream library. Required by libtheora and libvorbis.</p>
-
-<pre><code>cd ~/ffmpeg_sources
-curl -O http://downloads.xiph.org/releases/ogg/libogg-1.3.2.tar.gz
-tar xzvf libogg-1.3.2.tar.gz
-cd libogg-1.3.2
-./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --disable-shared
-make
-make install
-make distclean
-</code></pre>
-
-<p>Vorbis audio encoder. Requires libogg. Requires ffmpeg to be configured with <code>--enable-libvorbis</code></p>
-
-<pre><code>cd ~/ffmpeg_sources
-curl -O http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.4.tar.gz
-tar xzvf libvorbis-1.3.4.tar.gz
-cd libvorbis-1.3.4
-LDFLAGS=&quot;-L$HOME/ffmeg_build/lib&quot; CPPFLAGS=&quot;-I$HOME/ffmpeg_build/include&quot; ./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --with-ogg=&quot;$HOME/ffmpeg_build&quot; --disable-shared
-make
-make install
-make distclean
-</code></pre>
-
-<p>VP8/VP9 video encoder. Requires ffmpeg to be configured with <code>--enable-libvpx</code></p>
-
-<pre><code>cd ~/ffmpeg_sources
-git clone --depth 1 https://chromium.googlesource.com/webm/libvpx.git
-cd libvpx
-./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --disable-examples
-make
-make install
-make clean
-</code></pre>
-
-<p>Compilation is now complete and ffmpeg (also ffprobe, ffserver, lame, and x264) should now be ready to use.</p>
-
-<pre><code>cd ~/ffmpeg_sources
-git clone https://github.com/FFmpeg/FFmpeg ffmpeg
-cd ffmpeg
-PKG_CONFIG_PATH=&quot;$HOME/ffmpeg_build/lib/pkgconfig&quot; ./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --extra-cflags=&quot;-I$HOME/ffmpeg_build/include&quot; --extra-ldflags=&quot;-L$HOME/ffmpeg_build/lib&quot; --bindir=&quot;$HOME/bin&quot; --pkg-config-flags=&quot;--static&quot; --enable-gpl --enable-nonfree --enable-libfdk-aac --enable-libfreetype --enable-libmp3lame --enable-libopus --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libx265
-make -j4
-make install
-make distclean
-hash -r
-</code></pre>
-
-<p>生成的可执行文件存放在<code>~/bin</code></p>
-
-<h2 id="下载官方的静态编译的linux通用二进制包">下载官方的静态编译的Linux通用二进制包</h2>
-
-<p><a href="http://johnvansickle.com/ffmpeg/">ffmeg</a></p>
-
-<p>3.1正式版已发布,<a href="http://www.oschina.net/news/74702/ffmpeg-3-1">查看详情</a></p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/git-usage/"> git基本使用</a>
-			</h1>
-			<p class="post-date">Fri, Jan 8, 2016</p>
-			<div class="post-text">
-				
-
-<h1 id="git配置">git配置</h1>
-
-<pre><code>git config --global user.email &quot;1126045770@qq.com&quot;
-git config --global user.name &quot;sucongohu&quot;
-
-git config --global core.autocrlf false
-git config --global color.ui true
-git config --global credential.helper store
-
-git config --global alias.lg &quot;log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci,%cr) %C(bold blue)&lt;%an&gt;%Creset' --abbrev-commit --date=relative&quot;
-</code></pre>
-
-<blockquote>
-<p>以上分别是设置用户信息,禁止转换换行符,颜色高亮,记住密码,设置别名列出分支图. 设置别名后,可以使用 <code>git lg</code> 查看各个分支关系</p>
-</blockquote>
-
-<p>参数  说明
-%H  commit hash
-%h  commit short hash
-%T  tree hash
-%t  tree short hash
-%P  parent hash
-%p  parent short hash
-%an 作者名字
-%aN .mailmap 中对应的作者名字
-%ae 作者邮箱
-%aE .mailmap 中对应的作者邮箱
-%ad –date=制定的日期格式
-%aD RFC2822 日期格式
-%ar 日期格式，例如：1 day ago
-%at UNIX timestamp 日期格式
-%ai ISO 8601 日期格式
-%cn 提交者名字
-%cN .mailmap 对应的提交的名字
-%ce 提交者邮箱
-%cE .mailmap 对应的提交者的邮箱
-%cd –data=制定的提交日期的格式
-%cD RFC2822 提交日期的格式
-%cr 提交日期的格式，例如：1day ago
-%ct UNIX timestamp 提交日期的格式
-%ci ISO 8601 提交日期的格式
-%d  ref 名称
-%e  encoding
-%s  commit 信息标题
-%f  过滤 commit 信息的标题使之可以作为文件名
-%b  commit 信息内容
-%N  commit notes
-%gD reflog selector, e.g., refs/stash@{1}
-%gd shortened reflog selector, e.g., stash@{1}
-%gs reflog subject
-%Cred   切换至红色
-%Cgreen 切换至绿色
-%Cblue  切换至蓝色
-%Creset 重设颜色
-%C(color)   制定颜色，as described in color.branch.* config option
-%m  left right or boundary mark
-%n  换行
-%%  a raw %
-%x00    print a byte from a hex code
-%w([[,[,]]])    switch line wrapping, like the -w option of git-shortlog(1).</p>
-
-<p>一个命令推送到多个服务端<code>vim .git/config</code> ,添加一个区段,例如:</p>
-
-<pre><code>[remote &quot;all&quot;]
-        url = https://git.oschina.net/suconghou/mvc.git
-        url = https://suconghou@git.coding.net/suconghou/mvc.git
-        url = https://github.com/suconghou/mvc.git
-</code></pre>
-
-<p>以后可以使用<code>git push all master</code>一次推送到多个后端</p>
-
-<h1 id="git分支管理">git分支管理</h1>
-
-<h2 id="1-创建分支">1.创建分支</h2>
-
-<blockquote>
-<p>git branch &lt;分支名&gt;</p>
-</blockquote>
-
-<h2 id="2-切换到分支">2.切换到分支</h2>
-
-<blockquote>
-<p>git checkout &lt;分支名&gt;</p>
-</blockquote>
-
-<h2 id="3-创建一个分支并切换过去">3.创建一个分支并切换过去</h2>
-
-<blockquote>
-<p>git checkout -b &lt;分支名&gt;</p>
-</blockquote>
-
-<p>或者</p>
-
-<blockquote>
-<p>git checkout -b &lt;分支名&gt; master</p>
-</blockquote>
-
-<p>后面是跟一个master说明创建的develop分支是基于当前的master， 如果当前就在master分支，则可以不写。 如果当前分支HEAD指向的是别的分支，又想基于master分支创建，就必须写master</p>
-
-<h2 id="4-分支合并">4.分支合并</h2>
-
-<p>如:要将develop分支合并和master分支
-首先切换的master分支：<code>git checkout master</code>
-然后执行合并操作：<code>git merge develop</code>
-如果有冲突，会提示你，调用<code>git status</code>查看冲突文件。
-解决冲突，然后调用<code>git add</code>或<code>git rm</code>将解决后的文件暂存。
-所有冲突解决后，<code>git commit</code>提交更改。</p>
-
-<h2 id="5-删除分支">5.删除分支</h2>
-
-<p>删除本地分支,删除分支之前记得先合并,以免数据丢失</p>
-
-<blockquote>
-<p>git branch -d &lt;分支名&gt;</p>
-</blockquote>
-
-<p><code>git push [远程名] [本地分支]:[远程分支]</code> 本地分支的数据推送到远程分支,如果远程分支不存在,将会自动创建</p>
-
-<p>如果本地分支为空格,则将删除远程分支 <code>git push origin :deletebranch</code></p>
-
-<h2 id="6-显示所有分支">6.显示所有分支</h2>
-
-<blockquote>
-<p>git branch -a</p>
-</blockquote>
-
-<p>显示远端分支</p>
-
-<blockquote>
-<p>git branch -r</p>
-</blockquote>
-
-<p><code>git push -all</code> 把所有本地分支都推到远端</p>
-
-<p><code>git pull origin remotebranch:localbranch</code>
-将远程某分支拉倒本地某分支,当本地分支和远程分支名称相同时，只写一个就可以</p>
-
-<h1 id="git-tag-管理">git tag 管理</h1>
-
-<h2 id="1-git-tag">1.git tag</h2>
-
-<p>在控制台打印出当前仓库的所有标签</p>
-
-<h2 id="2-git-tag-l-v0-1">2.git tag -l &lsquo;v0.1.*&rsquo;</h2>
-
-<p>搜索符合模式的标签</p>
-
-<h2 id="3-git-tag-v0-1-2-light">3.git tag v0.1.2-light</h2>
-
-<p>创建轻量标签</p>
-
-<h2 id="4-git-tag-a-v0-1-2-m-0-1-2版本">4.git tag -a v0.1.2 -m &ldquo;0.1.2版本&rdquo;</h2>
-
-<p>创建附注标签</p>
-
-<p>git标签分为两种类型：轻量标签和附注标签。轻量标签是指向提交对象的引用，附注标签则是仓库中的一个独立对象。建议使用附注标签。</p>
-
-<h2 id="5-git-tag-d-v0-1-2">5.git tag -d v0.1.2</h2>
-
-<p>删除标签</p>
-
-<h2 id="6-git-push-origin-v0-1-2">6.git push origin v0.1.2</h2>
-
-<p>将v0.1.2标签提交到git服务器
-git push origin –-tags
-将本地所有标签一次性提交到git服务器
-通常的git push不会将标签对象提交到git服务器，所以我们需要进行显式的操作：</p>
-
-<h1 id="git-stash-操作">git stash 操作</h1>
-
-<p>1.git stash 可用来暂存当前正在进行的工作， 比如想pull 最新代码， 又不想加新commit， 或者另外一种情况，为了fix 一个紧急的bug,  先stash, 使返回到自己上一个commit, 改完bug之后再stash pop, 继续原来的工作。</p>
-
-<pre><code>git stash
-//do some work
-git stash pop
-</code></pre>
-
-<p>2.同样可以使用 git stash save &ldquo;work in progress for foo feature&rdquo; 添加标记</p>
-
-<p>3.当你多次使用<code>git stash</code>命令后，你的栈里将充满了未提交的代码，这时候你会对将哪个版本应用回来有些困惑，
-<code>git stash list</code> 命令可以将当前的Git栈信息打印出来，你只需要将找到对应的版本号，例如使用<code>git stash apply stash@{1}</code>就可以将你指定版本号为stash@{1}的工作取出来，当你将所有的栈都应用回来的时候，可以使用<code>git stash clear</code>来将栈清空。</p>
-
-<h2 id="svn">svn</h2>
-
-<p><code>svn revert xx.html</code> 和<code>git checkout xx.html</code> 类似,还原文件的更改</p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/sublime-usage/"> Sublime使用和设置</a>
-			</h1>
-			<p class="post-date">Fri, Jan 8, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="配置文件">配置文件</h2>
-
-<p>最喜欢的字体<code>Monaco</code>,<a href="http://share.suconghou.cn/fonts/MONACO.TTF">此处下载</a></p>
-
-<p>配置文件
-<code>Preferences.sublime-settings</code></p>
+<p>static.json</p>
 
 <pre><code>{
-	&quot;close_windows_when_empty&quot;: true,
-	&quot;default_encoding&quot;: &quot;UTF-8&quot;,
-	&quot;default_line_ending&quot;: &quot;unix&quot;,
-	&quot;ensure_newline_at_eof_on_save&quot;: true,
-	&quot;font_face&quot;: &quot;Monaco&quot;,
-	&quot;font_size&quot;: 13,
-	&quot;highlight_line&quot;: true,
-	&quot;highlight_modified_tabs&quot;: true,
-	&quot;ignored_packages&quot;:
-	[
-		&quot;Vintage&quot;
-	],
-	&quot;show_encoding&quot;: true,
-	&quot;show_line_endings&quot;: true,
-	&quot;tab_size&quot;: 4,
-	&quot;translate_tabs_to_spaces&quot;: false,
-	&quot;trim_trailing_white_space_on_save&quot;: true,
-	&quot;update_check&quot;: false,
-	&quot;word_wrap&quot;: false
+	&quot;static&quot;:
+	{
+		&quot;js&quot;:
+		{
+			&quot;all&quot;:[&quot;jquery.min.js&quot;,&quot;etpl.js&quot;,&quot;tpl.js&quot;,&quot;iscroll.js&quot;,&quot;chat.js&quot;,&quot;aside.js&quot;]
+		}
+		&quot;css&quot;:
+		{
+			&quot;style&quot;:[&quot;page.less&quot;,&quot;less/admin.less&quot;]
+		}
+	}
 }
 </code></pre>
 
-<h2 id="插件">插件</h2>
+<p>此时,在static目录下执行<code>air compress</code> 将会将上述js文件压缩为all.min.js</p>
 
-<p><code>open_browser.py</code> 插件</p>
+<p>less文件解析合并压缩为style.min.css</p>
 
-<pre><code>import sublime, sublime_plugin
-import webbrowser
-import os
+<p>在static目录下执行<code>air server</code>,http访问<code>/static/js/all.js</code> <code>/static/css/style.css</code> 同样得出上述压缩合并的结果</p>
 
-url_map = {
-    'D:\\git\\bbs\\' : 'http://127.0.0.3/',
-    'D:\\php\\su\\' : 'http://127.0.0.2/',
-    'D:\\php\\htdocs\\' : 'http://127.0.0.1/'
+<pre><code>.
+|____blog
+| |____static
+| | |____css
+| | | |____less
+| | | |____style.less
+| | |____img
+| | |____js
+| | | |____lib
+|____less
+| |____base.less
+| |____mixins.less
+</code></pre>
+
+<h1 id="webhook">Webhook</h1>
+
+<ul>
+<li><code>/webhook/gitpull</code> 执行 <code>git pull origin master</code> 立刻拉取代码更新.</li>
+<li><code>/webhook/viewlog</code> 查看运行日志</li>
+<li><code>/webhook/clear</code> 执行清理内存操作,立即清除所有日志和编译缓存</li>
+</ul>
+
+<blockquote>
+<p>添加-k参数后,webhook需要密码才能查看.</p>
+
+<p>在网址后面添加?key=密码即可</p>
+</blockquote>
+
+<h1 id="性能">性能</h1>
+
+<p>所有的Less编译和压缩,Javascript合并与压缩均在第一次访问的时候执行</p>
+
+<p>并且结果被缓存到内存,下次直接内存读取并输出,直到有文件发生修改才会再次执行编译.</p>
+
+<p>编译缓存储存到一定数量将会执行GC,存储了2000个编译后的文件后,再次存储将会清除旧的缓存以释放内存</p>
+
+<p>运行日志积累到一定数量也会清除旧的日志,以节省内存.</p>
+
+<p>本地开发和线上服务都完全无需担心.</p>
+
+<h1 id="缓存">缓存</h1>
+
+<p>内存缓存保存最近一次编译的版本号.</p>
+
+<p>资源版本号以类似<code>style.css?ver=v1</code>的形式.</p>
+
+<p>修改版本号后,less内部所有引用资源如<code>background-image</code>等,都会立即更新引用地址,防止旧的缓存.</p>
+
+<p>可以放心开启强缓存.</p>
+
+<h1 id="共享">共享</h1>
+
+<p>根目录下<code>less</code>文件夹作为共享文件夹.</p>
+
+<p>其他任何项目里的less文件都可以任意 <code>@import</code> 此文件夹下的文件,无需指明具体路径.</p>
+
+<p>可放置mixins等.</p>
+
+<h1 id="示例">示例</h1>
+
+<blockquote>
+<p>本地开发 <code>air develop -w</code></p>
+
+<p>服务器模式 <code>air server -k 123456 -d</code></p>
+</blockquote>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
+				<a href="/post/linux/"> linux相关操作</a>
+			</h1>
+			<p class="post-date">Thu, Jan 21, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="linux实用命令">Linux实用命令</h2>
+
+<h2 id="w">w</h2>
+
+<p><code>w</code>命令能容清晰的显示,服务器在线时间,负载以及当前登陆的用户</p>
+
+<h2 id="vmstat">vmstat</h2>
+
+<p><code>vmstat</code> 显示开机以来的平均值，而不是前一秒的值
+<code>vmstat 1</code>命令指定一个参数 1 运行，来打印每一秒的统计摘要.
+这些列代表的信息:</p>
+
+<blockquote>
+<p>r：CPU 中正在运行和等待运行的进程的数量。其提供了一个比平均负载更好的信号来确定 CPU 是否饱和，因为其不包含 I/O。解释：&rdquo;r&rdquo;的值大于了 CPU 的数量就表示已经饱和了。
+free：以 kb 为单位显式的空闲内存。如果数字位数很多，说明你有足够的空闲内存。&rdquo;free -m&rdquo; 命令，是下面的第七个命令，其可以更好的说明空闲内存的状态。
+si, so：Swap-ins 和 swap-outs。如果它们不是零，则代表你的内存不足了。
+us, sy, id, wa, st：这些都是平均了所有 CPU 的 CPU 分解时间。它们分别是用户时间（user）、系统时间（内核）（system）、空闲（idle）、等待 I/O（wait）、以及占用时间（stolen）（被其他访客，或使用 Xen，访客自己独立的驱动域）。</p>
+</blockquote>
+
+<p>CPU 分解时间将会通过用户时间加系统时间确认 CPU 是否为忙碌状态。等待 I/O 的时间一直不变则表明了一个磁盘瓶颈；这就是 CPU 的闲置，因为任务都阻塞在等待挂起磁盘 I/O 上了。你可以把等待 I/O 当成是 CPU 闲置的另一种形式，其给出了为什么 CPU 闲置的一个线索。
+对于 I/O 处理来说，系统时间是很重要的。一个高于 20% 的平均系统时间，可以值得进一步的探讨：也许内核在处理 I/O 时效率太低了。</p>
+
+<p>SIZE(VIRT): 进程使用的地址空间, 如果进程映射了100M的内存, 进程的地址空间将报告为100M内存. 事实上, 这个大小不是一个程序实际使用的内存数.</p>
+
+<p>RSS(RES): &ldquo;Resident Set Size&rdquo;, 实际驻留&rdquo;在内存中&rdquo;的内存数. 不包括已经交换出去的代码. 举一个例子: 如果你有一个程序使用了100K内存, 操作系统交换出40K内存, 那么RSS为60K. RSS还包括了与其它进程共享的内存区域. 这些区域通常用于libc库等.</p>
+
+<p>SHARE(SHR): RSS中与其它进程共享的内存部分大小.</p>
+
+<p>VMSIZE: 一个进程占用的总的地址空间大小. 它包括了没有映射到内存中的页面。</p>
+
+<p>SZ（DATA）: 映射到内存中的页面, 这些页面仅由进程单独使用. 这也是我们最关心地方: 进程实际占用的内存数。</p>
+
+<h2 id="top">top</h2>
+
+<h2 id="free">free</h2>
+
+<h2 id="ssh">ssh</h2>
+
+<p><code>ssh-copy-id -i ~/.ssh/id_rsa.pub root@host</code></p>
+
+<p><code>ssh-copy-id -i ~/.ssh/id_rsa.pub -p 26671 root@host</code></p>
+
+<h2 id="pgrep">pgrep</h2>
+
+<p>根据名字或其他属性查询出进程的PID</p>
+
+<p>如:<code>pgrep nginx -fl</code></p>
+
+<h2 id="pkill">pkill</h2>
+
+<p>和<code>pgrep</code>类似,不同的是向进程发送信号,默认发送<code>SIGTERM</code>信号,查看都有哪些信号可用,可以使用<code>kill -l</code>查看</p>
+
+<h2 id="pstree">pstree</h2>
+
+<p>用树的形式显示正在运行的进程,树的节点为指定的PID(忽略则为init进程)</p>
+
+<h2 id="ss">ss</h2>
+
+<p>用于显示socket的统计信息,<code>-s</code>用于显示汇总</p>
+
+<p><code>-l</code>用于列出正在监听的<code>socket</code></p>
+
+<p><code>-p</code>显示进程信息,<code>ss -pl</code> 可以查看使用网络端口的进程名字</p>
+
+<h2 id="磁盘相关">磁盘相关</h2>
+
+<h3 id="dd">dd</h3>
+
+<p><code>dd</code>把指定的输入文件拷贝到指定的输出文件中,并且在拷贝的过程中可以进行格式转换。</p>
+
+<p>if =输入文件(或设备名称)
+of =输出文件(或设备名称)
+bs = bytes 同时设置读/写缓冲区的字节数(等于设置obs和obs)
+count = blocks 只拷贝输入的blocks块</p>
+
+<p>创建一个100M的空文件
+<code>dd if=/dev/zero of=hello.txt bs=100m count=1</code></p>
+
+<h2 id="查看当前目录下所有一级子目录文件夹大小">查看当前目录下所有一级子目录文件夹大小</h2>
+
+<p><code>du -h --max-depth=1</code></p>
+
+<h2 id="查看当前目录下所有一级子目录文件夹大小-并排序">查看当前目录下所有一级子目录文件夹大小 并排序</h2>
+
+<p><code>du -h --max-depth=1 |sort</code></p>
+
+<p>以上两条命令不适用于MacOs,可以使用<code>du -sh *</code></p>
+
+<h2 id="ps">ps</h2>
+
+<p>ps ef  查看进程的状态</p>
+
+<p>ps auxw 查看进程的CPU,内存占用</p>
+
+<p>ps 默认是按照PID排序的,若要按内存使用排序<code>ps auxw --sort=rss</code>,同理按虚拟内存排序<code>ps auxw --sort=vsz</code></p>
+
+<p>mac上无法使用<code>--sort</code>,可以采用<code>sort</code>排序,如rss在第六列,则<code>ps auxw | sort -k6,6n</code></p>
+
+<h2 id="一份linux别名和函数库">一份Linux别名和函数库</h2>
+
+<pre><code>alias tree=&quot;find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g' &quot;;
+alias cls=&quot;cd $1;ls -lh;&quot;;
+# 获得你的公网IP地址和主机名。
+alias ipinfo=&quot;curl ifconfig.me &amp;&amp; curl ifconfig.me/host&quot;;
+# 显示出哪个应用程序连接到网络。
+alias listen=&quot;lsof -P -i -n&quot;;
+# 显示出活动的端口。
+alias port='netstat -tulanp'
+# 统计TCP连接个数
+alias tcpstatus=&quot;netstat -n|awk '/^tcp/{++S[\$NF]} END {for(a in S) print a,S[a]}'&quot;
+# 回到上层目录
+alias ..='cd ..'
+# 去到上两层目录
+alias ...='cd ../..'
+# 按列格式化输出mount信息。
+alias cmount=&quot;mount | column -t&quot;
+# 查看你还有剩下多少内存
+alias meminfo='free -m -l -t'
+# 按照文件在磁盘存储的大小排序，显示当前目录的文件列表。
+sbs() { du -b --max-depth 1 | sort -nr | perl -pe 's{([0-9]+)}{sprintf &quot;%.1f%s&quot;, $1&gt;=2**30? ($1/2**30, &quot;G&quot;): $1&gt;=2**20? ($1/2**20, &quot;M&quot;): $1&gt;=2**10? ($1/2**10, &quot;K&quot;): ($1, &quot;&quot;)}e';}
+# 找出指定目录中最大的10个文件
+largefile() { find . -type f -exec du -k {} \; | sort  -nrk 1 | head; }
+# 查看当前目录大于[多少]kb的文件,速度更快
+bigfile() { size=${1:-100}; find . -type f -size +&quot;$size&quot;k |xargs  ls  -lh ; }
+# 返回你的当前IP地址的地理位置。
+getlocation() { lynx -dump http://www.ip-adress.com/ip_tracer/?QRY=$1|grep address|egrep 'city|state|country'|awk '{print $3,$4,$5,$6,$7,$8}'|sed 's\ip address flag \\'|sed 's\My\\';}
+# 删除.log.1.gz 或者 .log.1.bz2
+delog(){ ls | grep &quot;log.\d\+.\(bz2\|gz\)&quot; | xargs rm}
+
+</code></pre>
+
+<pre><code># 这几个Mac不兼容
+# 查看最占用内存的前五个进程
+topmem()
+{
+	ps aux | sort -k4nr | head -n5;
+}
+# 查看某一程序占用的内存
+mem()
+{
+    top -n1 -b | head -n7 | sed '1,6d' &amp;&amp; top -n1 -b | sed '1,7d' | grep --color=auto $1;
+    ps aux | grep --color=auto $1 | grep --color=auto -v grep | awk -F &quot; &quot; '{ sum += $6 } END { printf &quot;Total Memory Usage: %.1f MB\n&quot;, sum/1024 }'
+}
+</code></pre>
+
+<pre><code># 查看你机器的CPU个数,超线程信息
+sysinfo() {
+physicalNumber=0
+coreNumber=0
+logicalNumber=0
+HTNumber=0
+logicalNumber=$(grep &quot;processor&quot; /proc/cpuinfo|sort -u|wc -l)
+physicalNumber=$(grep &quot;physical id&quot; /proc/cpuinfo|sort -u|wc -l)
+coreNumber=$(grep &quot;cpu cores&quot; /proc/cpuinfo|uniq|awk -F':' '{print $2}'|xargs)
+HTNumber=$((logicalNumber / (physicalNumber * coreNumber)))
+echo &quot;****** CPU Information ******&quot;
+echo &quot;Logical CPU Number  : ${logicalNumber}&quot;
+echo &quot;Physical CPU Number : ${physicalNumber}&quot;
+echo &quot;CPU Core Number     : ${coreNumber}&quot;
+echo &quot;HT Number           : ${HTNumber}&quot;
+echo &quot;*****************************&quot;
 }
 
-class OpenBrowserCommand(sublime_plugin.TextCommand):
-    def run(self,edit):
-        window = sublime.active_window()
-        window.run_command('save')
-        url = self.view.file_name()
-        flag = False
-        for path, domain in url_map.items():
-            if url.startswith(path):
-                url = url.replace(path, domain).replace('\\', '/')
-                flag = True
-                break
-        if not flag:
-            cmd1='taskkill /f /im php.exe'
-            cmd2='php -S 0.0.0.0:8088 -t '+os.path.abspath(os.path.dirname(self.view.file_name()))
-            os.system(cmd1)
-            os.popen(cmd2)
-            url =  'http://127.0.0.1:8088/'+os.path.basename(self.view.file_name())
-        webbrowser.open_new(url)
 </code></pre>
 
-<h2 id="编译系统">编译系统</h2>
+<h2 id="解决can-t-set-the-locale-make-sure-lc-and-lang-are-correct">解决can&rsquo;t set the locale; make sure $LC_* and $LANG are correct</h2>
 
-<p><code>node.sublime-build</code> 执行nodejs代码</p>
+<p><a href="https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian">https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian</a>
+<code>照着全部做下来</code></p>
 
-<pre><code>{
-	&quot;shell_cmd&quot;: &quot;node ${file}&quot;
-}
+<h2 id="vim乱码解决">Vim乱码解决</h2>
+
+<p><code>vim ~/.vimrc</code></p>
+
+<pre><code>set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
+set termencoding=utf-8
+set encoding=utf-8
 </code></pre>
 
-<h2 id="快捷键配置">快捷键配置</h2>
+<p>检视和控制systemd的主要命令是systemctl</p>
 
-<p><code>Default (OSX).sublime-keymap</code></p>
+<p>详细使用见<a href="https://wiki.archlinux.org/index.php/systemd_(简体中文)">https://wiki.archlinux.org/index.php/systemd_(简体中文)</a></p>
 
-<pre><code>[
-	{ &quot;keys&quot;: [&quot;alt+d&quot;], &quot;command&quot;: &quot;open_dir&quot;, &quot;args&quot;: {&quot;dir&quot;: &quot;$file_path&quot;, &quot;file&quot;: &quot;$file_name&quot;} },
-	{ &quot;keys&quot;: [&quot;ctrl+shift+c&quot;], &quot;command&quot;: &quot;copy_path&quot; },
-	{ &quot;keys&quot;: [&quot;ctrl+f11&quot;], &quot;command&quot;: &quot;toggle_distraction_free&quot; }
-]
+<p>Centos7 用<code>systemctl</code>取代了<code>service</code>
+旧版本的 <code>service docker start</code> 改为<code>systemctl start docker</code>
+设置开机启动
+旧版本的 <code>chkconfig docker on</code> 改为 <code>systemctl enable docker</code></p>
+
+<p><code>/usr/lib/systemd/system/</code>
+<code>/etc/systemd/system/</code>
+后者有较高优先级会覆盖前者</p>
+
+<p>一般来说著名的linux系统基本上分两大类：</p>
+
+<p>1.RedHat系列：Redhat、Centos、Fedora等</p>
+
+<p>2.Debian系列：Debian、Ubuntu等
+RedHat 系列
+1 常见的安装包格式 rpm包,安装rpm包的命令是“rpm -参数”</p>
+
+<p>2 包管理工具 yum</p>
+
+<p>3 支持tar包</p>
+
+<p>Debian系列
+1 常见的安装包格式 deb包,安装deb包的命令是“dpkg -参数”</p>
+
+<p>2 包管理工具 apt-get</p>
+
+<p>3 支持tar包</p>
+
+<p><code>soft rlimits too low. Number of files is 256, should be at least 1000</code></p>
+
+<p><code>ulimit -n 1024</code></p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
+				<a href="/post/play-with-raspberrypi/"> 玩转树莓派</a>
+			</h1>
+			<p class="post-date">Sun, Jan 17, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="安装其他操作系统">安装其他操作系统</h2>
+
+<h3 id="centos">CentOS</h3>
+
+<p>CentOS7官方支持了AMRV7发布了树莓派2、香蕉派、以及CubitTruck单片机的版本</p>
+
+<p><a href="http://mirror.centos.org/altarch/7/isos/armhfp/">CentOS7官方下载</a>
+root 密码 centos</p>
+
+<h3 id="archlinux">ArchLinux</h3>
+
+<p><a href="http://archlinuxarm.org/platforms/armv7/broadcom/raspberry-pi-2">armv7 raspberry-pi-2</a></p>
+
+<p><a href="http://archlinuxarm.org/platforms/armv6/raspberry-pi">armv6 raspberry-pi</a></p>
+
+<h2 id="安装osmc">安装OSMC</h2>
+
+<p><a href="http://software.opensuse.org/download.html?project=home:osmc&amp;package=osmc-installer&amp;hcolor=17394a&amp;fcolor=17394a&amp;acolor=17394a">osmc-installer</a></p>
+
+<p>或者安装OSMC转为树莓派制作的系统</p>
+
+<p><a href="https://osmc.tv/download/">下载一览</a>,选择<code>Disk images</code>,此系统较省资源,默认开机进入OSMC,img.gz 大小约160M</p>
+
+<pre><code>OSMC_FILE=OSMC_TGT_rbp2_20160621.img.gz
+cd /data/tmp
+axel -n 20 http://download.osmc.tv/installers/diskimages/$OSMC_FILE
+md5sum $OSMC_FILE
+ls -lh
 </code></pre>
 
-<h2 id="添加sublime到命令行">添加sublime到命令行</h2>
+<blockquote>
+<p>使用清华大学镜像站国内下载速度更快: <a href="https://mirrors.tuna.tsinghua.edu.cn/osmc/osmc/download/installers/">https://mirrors.tuna.tsinghua.edu.cn/osmc/osmc/download/installers/</a></p>
+</blockquote>
 
-<p><code>MacOs</code>下</p>
+<p>插入内存卡,开始烧写到内存卡中.烧写之前需要取消挂载</p>
 
-<pre><code>ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/local/bin/sublime
+<p><code>diskutil list</code> 查看你的内存卡的挂载位置,取消挂载</p>
+
+<p>执行<code>diskutil unmountdisk /dev/disk2</code> 取消挂载,需要稍等一小会.</p>
+
+<p>烧写,烧写过程中读卡器不断闪烁.</p>
+
+<pre><code>gzip -dc /data/tmp/$OSMC_FILE | sudo dd of=/dev/disk2 bs=8k
 </code></pre>
 
-<h2 id="激活码">激活码</h2>
+<p>dd的用法: <code>dd if=/dev/zero of=hello.txt bs=1024</code></p>
 
-<p>3103可用激活码</p>
+<p>除了OSMC默认皮肤,还有一些好看的皮肤推荐</p>
 
-<pre><code>—– BEGIN LICENSE —–
-Ryan Clark
-Single User License
-EA7E-812479
-2158A7DE B690A7A3 8EC04710 006A5EEB
-34E77CA3 9C82C81F 0DB6371B 79704E6F
-93F36655 B031503A 03257CCC 01B20F60
-D304FA8D B1B4F0AF 8A76C7BA 0FA94D55
-56D46BCE 5237A341 CD837F30 4D60772D
-349B1179 A996F826 90CDB73C 24D41245
-FD032C30 AD5E7241 4EAA66ED 167D91FB
-55896B16 EA125C81 F550AF6B A6820916
-—— END LICENSE ——
+<p>1.<a href="http://forum.kodi.tv/showthread.php?tid=187071">Eminence</a></p>
+
+<p>2.<a href="http://forum.kodi.tv/showthread.php?tid=214146">Bello</a> 看github,支持中文</p>
+
+<p><a href="http://forum.kodi.tv/forumdisplay.php?fid=26">官方论坛</a></p>
+
+<p>OSMC默认的ssh连接用户是 osmc 密码 osmc</p>
+
+<h2 id="安装openelec">安装openelec</h2>
+
+<p><a href="http://openelec.tv/get-openelec">openelec</a> 镜像下载,osmc是基于debain的,系统更加完善.此系统相比osmc更加精简,是专为跑kodi精简的系统. img.gz 大小约102M</p>
+
+<h2 id="安装xbian">安装xbian</h2>
+
+<p><a href="http://www.xbian.org/">http://www.xbian.org/</a></p>
+
+<p>与openelec,osmc都是类似,img.gz较大,大约316MB</p>
+
+<h2 id="安装chromeos">安装ChromeOs</h2>
+
+<p>ChromeOs已经有支持树莓派的版本了,<a href="www.chromiumosforsbc.org">www.chromiumosforsbc.org</a></p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
+				<a href="/post/homebrew-speedup/"> 使用镜像加速homebrew</a>
+			</h1>
+			<p class="post-date">Fri, Jan 15, 2016</p>
+			<div class="post-text">
+				<p><a href="http://mirrors.ustc.edu.cn/">中国科大镜像站</a> 提供 Debian, Ubuntu, Fedora, Archlinux, CentOS 等多个发行版的官方源.
+还有brew 的二进制源,brew使用此配置能大大提升速度.</p>
+
+<pre><code>cd /usr/local
+git remote set-url origin git://mirrors.ustc.edu.cn/brew.git
+git remote -v
+brew update
 </code></pre>
 
-<p>3103之前版本可用</p>
+<p>修改二进制源见<a href="https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-bottles">https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-bottles</a></p>
 
-<pre><code>----- BEGIN LICENSE -----
-Andrew Weber
-Single User License
-EA7E-855605
-813A03DD 5E4AD9E6 6C0EEB94 BC99798F
-942194A6 02396E98 E62C9979 4BB979FE
-91424C9D A45400BF F6747D88 2FB88078
-90F5CC94 1CDC92DC 8457107A F151657B
-1D22E383 A997F016 42397640 33F41CFC
-E1D0AE85 A0BBD039 0E9C8D55 E1B89D5D
-5CDB7036 E56DE1C0 EFCC0840 650CD3A6
-B98FC99C 8FAC73EE D2B95564 DF450523
------- END LICENSE ------
+<p>即<code>export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles</code></p>
+
+<p>使用<code>brew config</code> 查看<code>ORIGIN</code>和<code>HOMEBREW_BOTTLE_DOMAIN</code>已经是新的<code>mirrors.ustc.edu.cn</code>即为配置成功</p>
+
+<p><code>brew list</code> 列出所有安装的模块</p>
+
+<p><code>brew search mysql</code> 查找</p>
+
+<p><code>brew commands</code> 查看所有命令</p>
+
+<p>安装（需要 Ruby）：
+<code>ruby -e &quot;$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)&quot;</code></p>
+
+<p>搜索：<code>brew search mysql</code></p>
+
+<p>查询：<code>brew info mysql</code> 主要看具体的信息，比如目前的版本，依赖，安装后注意事项等</p>
+
+<p>更新：<code>brew update</code> 这会更新 Homebrew 自己，并且使得接下来的两个操作有意义——</p>
+
+<p>检查过时（是否有新版本）：<code>brew outdated</code> 这回列出所有安装的软件里可以升级的那些</p>
+
+<p>升级：<code>brew upgrade</code> 升级所有可以升级的软件们</p>
+
+<p>清理：<code>brew cleanup</code> 清理不需要的版本极其安装包缓存</p>
+
+<p>一些必备的软件.</p>
+
+<pre><code> brew install vim git git-lfs subversion node go python3 nginx hugo openssl htop ffmpeg xz aria2 wget axel memcached redis mcrypt md5sha1sum fswatch mpv
 </code></pre>
 
 			</div>
@@ -1019,12 +664,15 @@ B98FC99C 8FAC73EE D2B95564 DF450523
         ><a href="/page/5/">5</a></li>
         
         <li
+        ><a href="/page/6/">6</a></li>
+        
+        <li
         >
         <a href="/page/4/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
         </li>
         
         <li>
-            <a href="/page/5/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+            <a href="/page/6/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
         </li>
         
     </ul>
