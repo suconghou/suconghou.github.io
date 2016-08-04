@@ -186,6 +186,28 @@
 
 <p>而对于本题,还可以使用<code>array_unique</code>最后去重,用空间换时间,效率仅次于用<code>isset</code></p>
 
+<h2 id="bugs">Bugs</h2>
+
+<h3 id="php-pdo-mysql-server-has-gone-away">php pdo <code>MySQL server has gone away</code></h3>
+
+<p>在使用PDO长连接时,执行过一次PDO初始化后,php-fpm进程会与mysql server开启一条TCP长连接,下次连接数据库就能加快速度.</p>
+
+<p>但是却存在一定问题,PDO维持了长连接并没有较好的检测其可用性,如果mysql server kill 掉这个连接,或者mysql重启,都会造成</p>
+
+<p>重新实例化PDO时得到旧的链接,导致出现<code>MySQL server has gone away</code>,更让人郁闷的是这个错误并不是一个Exception,无法被catch捕获,即使设置<code>PDO::ATTR_ERRMODE=&gt;PDO::ERRMODE_EXCEPTION</code>,也不行,还是直接在页面上提示.</p>
+
+<p>如果你使用了<code>set_error_handler</code>,那么这个<code>Warning</code>将会被捕捉,不会直接显示在页面上,但也改变了程序的原有执行逻辑.</p>
+
+<p>如果你不使用<code>set_error_handler</code>,页面上报出<code>Warning</code>,但其实PDO已经返回一个可用的链接了.</p>
+
+<p>猜测可能是PDO首先得到了不可用的然后报警告,然后又创建了一个新的.</p>
+
+<p>较好的解决方法是设置<code>set_error_handler</code>若捕获了这个<code>MySQL server has gone away</code>,则返回null,程序继续按原有逻辑执行.</p>
+
+<p>或者不使用PDO长连接.</p>
+
+<p>注意,<code>set_error_handler</code>返回false的话,这个错误还是会被交到上一级错误程序处理的.</p>
+
 			</div>
 		</div>
 		

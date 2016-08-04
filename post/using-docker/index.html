@@ -63,39 +63,48 @@
 
 <h3 id="下载安装">下载安装</h3>
 
-<p><a href="http://www.oschina.net/news/75224/docker-v1-12-0-rc4">各平台下载地址</a></p>
+<p>Ubuntu/Debian: curl -fsSL <a href="https://get.docker.com/">https://get.docker.com/</a> | sh
+Linux 64bit binary: <a href="https://get.docker.com/builds/Linux/x86_64/docker">https://get.docker.com/builds/Linux/x86_64/docker</a>
+Darwin/OSX 64bit client binary: <a href="https://get.docker.com/builds/Darwin/x86_64/docker-1.12.0.tgz">https://get.docker.com/builds/Darwin/x86_64/docker-1.12.0.tgz</a>
+Linux 64bit tgz: <a href="https://get.docker.com/builds/Linux/x86_64/docker-1.12.0.tgz">https://get.docker.com/builds/Linux/x86_64/docker-1.12.0.tgz</a>
+Windows 64bit: <a href="https://get.docker.com/builds/Windows/x86_64/docker-1.12.0.zip">https://get.docker.com/builds/Windows/x86_64/docker-1.12.0.zip</a>
+Windows 32bit client binary: <a href="https://get.docker.com/builds/Windows/i386/docker-1.12.0.zip">https://get.docker.com/builds/Windows/i386/docker-1.12.0.zip</a></p>
 
 <p><a href="https://docs.docker.com/engine/installation/linux/centos/">官方安装教程</a></p>
 
 <p>或者<code>http://get.daocloud.io/docker/builds/</code>查看</p>
 
+<p>以上<code>get.docker.com</code>都可以使用<code>get.daocloud.io/docker</code>代替,使用国内镜像加速</p>
+
 <p>docker采用Go语言编写,编译以后生成一个无依赖的可执行文件.</p>
 
-<p>安装完整以后,可以移动到<code>/usr/bin</code>,即可使用<code>docker</code>和<code>sudo docker</code>命令</p>
-
-<pre><code>wget https://get.docker.com/builds/Linux/x86_64/docker-1.11.2.tgz
-tar zxvf docker-1.11.2.tgz
+<pre><code>DOCKER_VERSION=docker-1.12.0
+wget https://get.docker.com/builds/Linux/x86_64/${DOCKER_VERSION}.tgz
+tar zxvf ${DOCKER_VERSION}.tgz
 cd docker
 ls -lh
 </code></pre>
 
 <p>得到如下:</p>
 
-<pre><code>total 66M
--rwxr-xr-x 1 root root  34M Apr 27 08:38 docker
--rwxr-xr-x 1 root root  12M Apr 27 08:38 docker-containerd
--rwxr-xr-x 1 root root 9.1M Apr 27 08:38 docker-containerd-ctr
--rwxr-xr-x 1 root root 3.6M Apr 27 08:38 docker-containerd-shim
--rwxr-xr-x 1 root root 8.2M Apr 27 08:38 docker-runc
+<pre><code>total 94M
+-rwxr-xr-x 1 root root  15M Jul 29 07:59 docker
+-rwxr-xr-x 1 root root  11M Jul 29 07:59 docker-containerd
+-rwxr-xr-x 1 root root  11M Jul 29 07:59 docker-containerd-ctr
+-rwxr-xr-x 1 root root 3.6M Jul 29 07:59 docker-containerd-shim
+-rwxr-xr-x 1 root root  44M Jul 29 07:59 dockerd
+-rwxr-xr-x 1 root root 2.8M Jul 29 07:59 docker-proxy
+-rwxr-xr-x 1 root root 8.4M Jul 29 07:59 docker-runc
 </code></pre>
 
-<p>移动到<code>/usr/bin/</code> 即可替换旧版本 <code>mv * /usr/bin/</code></p>
+<p>移动到<code>/usr/local/bin/</code>,即可使用<code>docker</code>命令,<code>mv * /usr/local/bin/</code>即可替换旧版本</p>
 
 <h2 id="基本使用">基本使用</h2>
 
 <p>运行<code>docker -v</code>即可查看当前docker版本
-docker 分为两部分,一分部是docker server , 一部分是docker client
-在Linux下是一个可执行文件,在Windows上则是分开的.</p>
+docker 分为两部分,一分部是docker daemon , 一部分是docker client</p>
+
+<p>1.12.0及以后版本,采用<code>dockerd</code>启动<code>daemon</code>服务,之前版本采用<code>docker daemon</code>启动<code>daemon</code>服务.</p>
 
 <p>搜索 <code>docker search 镜像名字</code>
 下载 <code>docker pull learn/tutorial</code>, 下载时要写完整名字</p>
@@ -130,12 +139,15 @@ EOF
 <p>运行完以后docker容器就退出了.</p>
 
 <p>进入此ubuntu的shell
-<code>docker run -i -t ubuntu /bin/bash</code> 也可以写为 <code>docker run -it ubuntu /bin/bash</code>
-期间如果有需要退出按 <code>Ctrl+P+Q</code>,退出后,容器任然是运行的,<code>Ctrl+D</code>退出后容器停止</p>
+<code>docker run -i -t ubuntu /bin/bash</code> 也可以写为 <code>docker run -it ubuntu /bin/bash</code></p>
 
-<p><code>docker ps</code> 查看正在运行的docker容器,可以看到后台的docker
-重新进入容器需要<code>docker attach CONTAINER</code> 此命令代表<code>Attach to a running container</code>.
-CONTAINER可以是最前面的CONTAINER ID ,也可以是最后面的NAMES</p>
+<p>期间如果有需要退出按 <code>Ctrl+P+Q</code>,退出后,容器任然是运行的,<code>Ctrl+D</code>退出后容器停止</p>
+
+<p><code>docker ps</code> 查看正在运行的docker容器,可以看到后台的docker</p>
+
+<p>重新进入容器需要<code>docker attach CONTAINER</code> 此命令代表<code>Attach to a running container</code>.</p>
+
+<p>CONTAINER可以是最前面的CONTAINER ID ,也可以是最后面的NAMES</p>
 
 <p>你还可以使用 <code>docker run -it --name myname ubuntu /bin/bash</code> 来指定它使用的名字,否则名字的随机的</p>
 
@@ -154,11 +166,13 @@ CONTAINER可以是最前面的CONTAINER ID ,也可以是最后面的NAMES</p>
 <p>使用 <code>docker ps -a</code> 查看所有的容器,将会看到很多容器,因为每次执行<code>docker run</code>命令都是<code>Run a command in a new container</code>新建了一个容器,
 可以考虑使用 <code>docker start 容器名称</code> 然后再<code>docker attach</code> 进去,你上次的改动依然在那.</p>
 
-<p>也可以考虑使用<code>docker rm 容器名称</code> 删除容器以节约资源,rm后可用空格分隔多个容器名称,此命令执行较慢
-也可以在创建的时候指明结束运行时清除docker容器<code>docker run --rm ubuntu echo &quot;hello&quot;</code>
-或者将要执行的命令附加到正在运行的容器上<code>docker exec hello2  echo &quot;hihi&quot;</code></p>
+<p>也可以考虑使用<code>docker rm 容器名称</code> 删除容器以节约资源,rm后可用空格分隔多个容器名称,此命令执行较慢</p>
 
-<p>使用<code>docker start -ia vps</code> 当<code>docker start</code>后立即退出,来不及attach时,采用这种方式</p>
+<p>也可以在创建的时候指明结束运行时清除docker容器<code>docker run --rm ubuntu echo &quot;hello&quot;</code></p>
+
+<p>或者将要执行的命令附加到正在运行的容器上<code>docker exec hello2  echo &quot;hihi&quot;</code></p>
+
+<p>当<code>docker start</code>后立即退出,来不及attach时,使用<code>docker start -ia vps</code> 这种方式</p>
 
 <p>使用<code>docker rmi</code>来删除镜像
 <code>docker ps</code> 默认显示当前正在运行中的container
@@ -257,7 +271,7 @@ attach是可以带上<code>--sig-proxy=false</code>来确保<code>CTRL-D</code>�
 
 <p><strong>通过volume方式(建议使用这种最新的方式)</strong></p>
 
-<p>docker1.9可以使用<code>docker volume create --name datafs</code>创建<code>volume</code>
+<p>docker1.9及以上可以使用<code>docker volume create --name datafs</code>创建<code>volume</code>
 使用时类似<code>docker run --name=yourcontainername -p 10022:22 -p 10080:3000 -v datafs:/data ubuntu</code></p>
 
 <p><code>docker volume ls</code> 查看创建的<code>volume</code></p>
@@ -300,11 +314,15 @@ docker run -it -p 8080:8000 --name vps vpsimage bash
 
 <p><code>docker export</code> <code>docker import</code>  与  <code>docker save</code>  <code>docker load</code></p>
 
-<p>导出后再导入<code>exported-imported</code>的镜像会丢失所有的历史.
-而保存后再加载<code>saveed-loaded</code>的镜像没有丢失历史和层(layer).
-这意味着使用导出后再导入的方式,你将无法回滚到之前的层(layer),
-同时,使用保存后再加载的方式持久化整个镜像,就可以做到层回滚（可以执行<code>docker tag &lt;LAYER ID&gt; &lt;IMAGE NAME&gt;</code>来回滚之前的层）
-<code>docker history vpsimage</code> 查看镜像的变迁历史</p>
+<p>导出后再导入<code>exported-imported</code>的镜像会丢失所有的历史.</p>
+
+<p>而保存后再加载<code>saveed-loaded</code>的镜像没有丢失历史和层(layer).</p>
+
+<p>这意味着使用导出后再导入的方式,你将无法回滚到之前的层(layer),</p>
+
+<p>同时,使用保存后再加载的方式持久化整个镜像,就可以做到层回滚（可以执行<code>docker tag &lt;LAYER ID&gt; &lt;IMAGE NAME&gt;</code>来回滚之前的层）</p>
+
+<p><code>docker history vpsimage</code> 查看镜像的变迁历史</p>
 
 <blockquote>
 <p>Export命令用于持久化容器[Export a container&rsquo;s filesystem as a tar archive]</p>
@@ -489,7 +507,7 @@ newgrp docker
 
 <p>但是未提供清空log的选项.</p>
 
-<p>其实可以使用<code>$(docker inspect --format='{{.LogPath}}' &lt;container_name_or_id&gt;)</code>得出此容器的日子存储文件.</p>
+<p>其实可以使用<code>$(docker inspect --format='{{.LogPath}}' &lt;container_name_or_id&gt;)</code>得出此容器的日志存储文件.</p>
 
 <pre><code>sudo ls -lh $(docker inspect --format='{{.LogPath}}' &lt;container_name_or_id&gt;) //查看日志文件
 echo &quot;&quot; &gt; $(docker inspect --format='{{.LogPath}}' &lt;container_name_or_id&gt;) //可以清空日志文件
@@ -499,7 +517,7 @@ echo &quot;&quot; &gt; $(docker inspect --format='{{.LogPath}}' &lt;container_na
 
 <p>不过这个都是需要<code>docker daemon</code>和<code>docker client</code>在同一台机器上.</p>
 
-<p><code>docker 1.8</code>及以后版本可以使用参数<code>--log-opt max-size=50m</code>限制日志文件的大小,更多详细介绍 <a href="https://docs.docker.com/engine/admin/logging/overview/">https://docs.docker.com/engine/admin/logging/overview/</a></p>
+<p><code>docker 1.8</code>及以后版本可以使用参数<code>--log-opt max-size=10m</code>限制日志文件的大小,更多详细介绍 <a href="https://docs.docker.com/engine/admin/logging/overview/">https://docs.docker.com/engine/admin/logging/overview/</a></p>
 
 		</div>
 	</div>

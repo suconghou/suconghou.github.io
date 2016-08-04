@@ -90,7 +90,7 @@ openssl version
 
 <p>编译nginx</p>
 
-<pre><code>NGINX_VERSION=nginx-1.11.2
+<pre><code>NGINX_VERSION=nginx-1.11.3
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
 cd /tmp
 wget http://nginx.org/download/${NGINX_VERSION}.tar.gz
@@ -462,7 +462,7 @@ make -j$CPU_NUM  &amp;&amp; make install
 <p>redis编译时,不能使用<code>CFLAGS O3</code></p>
 
 <pre><code>cd /tmp
-REDIS_VERSION=redis-3.2.1
+REDIS_VERSION=redis-3.2.2
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
 wget http://download.redis.io/releases/${REDIS_VERSION}.tar.gz
 tar xzf ${REDIS_VERSION}.tar.gz

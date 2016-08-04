@@ -53,7 +53,7 @@ openssl version
 
 &lt;p&gt;编译nginx&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;NGINX_VERSION=nginx-1.11.2
+&lt;pre&gt;&lt;code&gt;NGINX_VERSION=nginx-1.11.3
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
 cd /tmp
 wget http://nginx.org/download/${NGINX_VERSION}.tar.gz
@@ -425,7 +425,7 @@ make -j$CPU_NUM  &amp;amp;&amp;amp; make install
 &lt;p&gt;redis编译时,不能使用&lt;code&gt;CFLAGS O3&lt;/code&gt;&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;cd /tmp
-REDIS_VERSION=redis-3.2.1
+REDIS_VERSION=redis-3.2.2
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
 wget http://download.redis.io/releases/${REDIS_VERSION}.tar.gz
 tar xzf ${REDIS_VERSION}.tar.gz

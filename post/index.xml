@@ -76,6 +76,8 @@ To run your app on Android:
    react-native run-android
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;p&gt;使用&lt;code&gt;React&lt;/code&gt;类名(组件名)必须首字母大写才会被认为是一个组件,否则在JSX里只会当做普通标签&lt;/p&gt;
+
 &lt;p&gt;&lt;strong&gt;下面是一些针对开发IOS的教程&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;我们执行&lt;code&gt;react-native run-ios&lt;/code&gt;开始编译运行,前提是你必须安装了&lt;code&gt;xcode&lt;/code&gt;哦.&lt;/p&gt;
@@ -295,6 +297,28 @@ adb install -r app-release.apk
 &lt;p&gt;同时,使用&lt;code&gt;isset&lt;/code&gt;来判断数组的键,也比使用&lt;code&gt;array_key_exists&lt;/code&gt;要好&lt;/p&gt;
 
 &lt;p&gt;而对于本题,还可以使用&lt;code&gt;array_unique&lt;/code&gt;最后去重,用空间换时间,效率仅次于用&lt;code&gt;isset&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;bugs&#34;&gt;Bugs&lt;/h2&gt;
+
+&lt;h3 id=&#34;php-pdo-mysql-server-has-gone-away&#34;&gt;php pdo &lt;code&gt;MySQL server has gone away&lt;/code&gt;&lt;/h3&gt;
+
+&lt;p&gt;在使用PDO长连接时,执行过一次PDO初始化后,php-fpm进程会与mysql server开启一条TCP长连接,下次连接数据库就能加快速度.&lt;/p&gt;
+
+&lt;p&gt;但是却存在一定问题,PDO维持了长连接并没有较好的检测其可用性,如果mysql server kill 掉这个连接,或者mysql重启,都会造成&lt;/p&gt;
+
+&lt;p&gt;重新实例化PDO时得到旧的链接,导致出现&lt;code&gt;MySQL server has gone away&lt;/code&gt;,更让人郁闷的是这个错误并不是一个Exception,无法被catch捕获,即使设置&lt;code&gt;PDO::ATTR_ERRMODE=&amp;gt;PDO::ERRMODE_EXCEPTION&lt;/code&gt;,也不行,还是直接在页面上提示.&lt;/p&gt;
+
+&lt;p&gt;如果你使用了&lt;code&gt;set_error_handler&lt;/code&gt;,那么这个&lt;code&gt;Warning&lt;/code&gt;将会被捕捉,不会直接显示在页面上,但也改变了程序的原有执行逻辑.&lt;/p&gt;
+
+&lt;p&gt;如果你不使用&lt;code&gt;set_error_handler&lt;/code&gt;,页面上报出&lt;code&gt;Warning&lt;/code&gt;,但其实PDO已经返回一个可用的链接了.&lt;/p&gt;
+
+&lt;p&gt;猜测可能是PDO首先得到了不可用的然后报警告,然后又创建了一个新的.&lt;/p&gt;
+
+&lt;p&gt;较好的解决方法是设置&lt;code&gt;set_error_handler&lt;/code&gt;若捕获了这个&lt;code&gt;MySQL server has gone away&lt;/code&gt;,则返回null,程序继续按原有逻辑执行.&lt;/p&gt;
+
+&lt;p&gt;或者不使用PDO长连接.&lt;/p&gt;
+
+&lt;p&gt;注意,&lt;code&gt;set_error_handler&lt;/code&gt;返回false的话,这个错误还是会被交到上一级错误程序处理的.&lt;/p&gt;
 </description>
     </item>
     
@@ -1494,50 +1518,53 @@ git config --global alias.lg &amp;quot;log --graph --all --pretty=format:&#39;%C
 &lt;p&gt;以上分别是设置用户信息,禁止转换换行符,颜色高亮,记住密码,设置别名列出分支图. 设置别名后,可以使用 &lt;code&gt;git lg&lt;/code&gt; 查看各个分支关系&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;参数  说明
-%H  commit hash
-%h  commit short hash
-%T  tree hash
-%t  tree short hash
-%P  parent hash
-%p  parent short hash
-%an 作者名字
-%aN .mailmap 中对应的作者名字
-%ae 作者邮箱
-%aE .mailmap 中对应的作者邮箱
-%ad –date=制定的日期格式
-%aD RFC2822 日期格式
-%ar 日期格式，例如：1 day ago
-%at UNIX timestamp 日期格式
-%ai ISO 8601 日期格式
-%cn 提交者名字
-%cN .mailmap 对应的提交的名字
-%ce 提交者邮箱
-%cE .mailmap 对应的提交者的邮箱
-%cd –data=制定的提交日期的格式
-%cD RFC2822 提交日期的格式
-%cr 提交日期的格式，例如：1day ago
-%ct UNIX timestamp 提交日期的格式
-%ci ISO 8601 提交日期的格式
-%d  ref 名称
-%e  encoding
-%s  commit 信息标题
-%f  过滤 commit 信息的标题使之可以作为文件名
-%b  commit 信息内容
-%N  commit notes
-%gD reflog selector, e.g., refs/stash@{1}
-%gd shortened reflog selector, e.g., stash@{1}
-%gs reflog subject
-%Cred   切换至红色
-%Cgreen 切换至绿色
-%Cblue  切换至蓝色
-%Creset 重设颜色
-%C(color)   制定颜色，as described in color.branch.* config option
-%m  left right or boundary mark
-%n  换行
-%%  a raw %
-%x00    print a byte from a hex code
-%w([[,[,]]])    switch line wrapping, like the -w option of git-shortlog(1).&lt;/p&gt;
+&lt;p&gt;参数  说明&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+%H	commit hash
+%h	commit short hash
+%T	tree hash
+%t	tree short hash
+%P	parent hash
+%p	parent short hash
+%an	作者名字
+%aN	.mailmap 中对应的作者名字
+%ae	作者邮箱
+%aE	.mailmap 中对应的作者邮箱
+%ad	–date=制定的日期格式
+%aD	RFC2822 日期格式
+%ar	日期格式，例如：1 day ago
+%at	UNIX timestamp 日期格式
+%ai	ISO 8601 日期格式
+%cn	提交者名字
+%cN	.mailmap 对应的提交的名字
+%ce	提交者邮箱
+%cE	.mailmap 对应的提交者的邮箱
+%cd	–data=制定的提交日期的格式
+%cD	RFC2822 提交日期的格式
+%cr	提交日期的格式，例如：1day ago
+%ct	UNIX timestamp 提交日期的格式
+%ci	ISO 8601 提交日期的格式
+%d	ref 名称
+%e	encoding
+%s	commit 信息标题
+%f	过滤 commit 信息的标题使之可以作为文件名
+%b	commit 信息内容
+%N	commit notes
+%gD	reflog selector, e.g., refs/stash@{1}
+%gd	shortened reflog selector, e.g., stash@{1}
+%gs	reflog subject
+%Cred	切换至红色
+%Cgreen	切换至绿色
+%Cblue	切换至蓝色
+%Creset	重设颜色
+%C(color)	制定颜色，as described in color.branch.* config option
+%m	left right or boundary mark
+%n	换行
+%%	a raw %
+%x00	print a byte from a hex code
+%w([[,[,]]])	switch line wrapping, like the -w option of git-shortlog(1).
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;一个命令推送到多个服务端&lt;code&gt;vim .git/config&lt;/code&gt; ,添加一个区段,例如:&lt;/p&gt;
 
