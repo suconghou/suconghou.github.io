@@ -54,6 +54,17 @@ git config --global alias.lg &quot;log --graph --all --pretty=format:'%Cred%h%Cr
 <p>以上分别是设置用户信息,禁止转换换行符,颜色高亮,记住密码,设置别名列出分支图. 设置别名后,可以使用 <code>git lg</code> 查看各个分支关系</p>
 </blockquote>
 
+<p>使用git还经常碰到文件权限发生变化,也显示文件变动了,需要提交,如果你不想将文件权限的变动纳入版本控制可以</p>
+
+<pre><code>git config core.filemode false
+</code></pre>
+
+<p>对于一些本地和服务器不一致的配置文件,<code>git status</code>每次查看都显示出来,<code>git add -u</code>又会一不小心提交,可以使用
+<em>忽略已追踪文件的变动</em></p>
+
+<pre><code>git update-index --assume-unchanged PATH_TO_FILE
+</code></pre>
+
 <p>参数  说明</p>
 
 <pre><code>
@@ -223,7 +234,50 @@ git stash pop
 <p>3.当你多次使用<code>git stash</code>命令后，你的栈里将充满了未提交的代码，这时候你会对将哪个版本应用回来有些困惑，
 <code>git stash list</code> 命令可以将当前的Git栈信息打印出来，你只需要将找到对应的版本号，例如使用<code>git stash apply stash@{1}</code>就可以将你指定版本号为stash@{1}的工作取出来，当你将所有的栈都应用回来的时候，可以使用<code>git stash clear</code>来将栈清空。</p>
 
-<h2 id="svn">svn</h2>
+<h1 id="给git仓库瘦身">给Git仓库瘦身</h1>
+
+<p>使用<code>git gc --aggressive</code>来整理仓库,压缩合并碎片文件能减小仓库大小.</p>
+
+<p>使用<code>git prune</code> 删除一些不会被使用的残留数据,使用<code>git prune -n</code>可以查看将要被删除的数据.</p>
+
+<p>如果想要更加暴力的操作git减小仓库大小,一般使用<code>git-filter-branch</code>,不过操作比较麻烦,这里提供一个工具<a href="https://rtyley.github.io/bfg-repo-cleaner/">https://rtyley.github.io/bfg-repo-cleaner/</a></p>
+
+<p>使用这个操作更加方便</p>
+
+<p>下载<code>bfg</code>jar文件,使用<code>java -jar bfg.jar</code>运行,也可以自己写一个<code>alias</code></p>
+
+<p>首先<code>git clone --mirror 地址</code></p>
+
+<pre><code>bfg --strip-blobs-bigger-than 10M .
+</code></pre>
+
+<p><code>bfg --strip-blobs-bigger-than 1M --delete-files '{*.jar,*.zip,*.gz,*.war,*.jpg,*.png,*.jpeg}'</code></p>
+
+<p>最后执行<code>git reflog expire --expire=now --all &amp;&amp; git gc --prune=now --aggressive</code></p>
+
+<p>使用<code>du -sh</code>查看最终文件夹大小.</p>
+
+<h1 id="git打包">git打包</h1>
+
+<p>时常我们会使用<code>github</code>或者其他git托管网站的下载zip包功能,下载的压缩包仅包含仓库里的现有文件,不含<code>.git</code>文件夹</p>
+
+<p>那么我们本地的仓库如何做到呢,需要自己使用<code>zip</code>命令自己压缩排除文件吗.</p>
+
+<p>其实git已经自带这个功能了,可以将任意版本的数据导出为压缩包.</p>
+
+<p>将 master以zip格式打包到指定文件<code>git archive --format zip --output /path/to/file.zip master</code></p>
+
+<pre><code>git archive v0.1 | gzip &gt; site.tgz
+git archive master &gt; ./fds.zip
+</code></pre>
+
+<p>最快捷的直接使用<code>git archive master -o a.tgz</code></p>
+
+<p>使用 -o a.tgz 或者 a.tar.gz 生成gzip格式的, -o a.zip 生成zip格式的.</p>
+
+<p><img src="http://static.suconghou.cn/document/git-usage.jpg" alt="git-usage" /></p>
+
+<h1 id="svn">svn</h1>
 
 <p><code>svn revert xx.html</code> 和<code>git checkout xx.html</code> 类似,还原文件的更改</p>
 

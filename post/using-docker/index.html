@@ -74,6 +74,10 @@ Windows 32bit client binary: <a href="https://get.docker.com/builds/Windows/i386
 
 <p>或者<code>http://get.daocloud.io/docker/builds/</code>查看</p>
 
+<p>阿里云也提供安装脚本 见<code>http://mirrors.aliyun.com/help/docker-engine</code>,</p>
+
+<p>阿里云的软件源可以使用内网源不占用外网流量</p>
+
 <p>以上<code>get.docker.com</code>都可以使用<code>get.daocloud.io/docker</code>代替,使用国内镜像加速</p>
 
 <p>docker采用Go语言编写,编译以后生成一个无依赖的可执行文件.</p>
@@ -156,6 +160,8 @@ EOF
 <p>使用 <code>docker rename hello hello2</code> 将原先名字为hello的容器改名为hello2</p>
 
 <p>使用 <code>docker top hello2</code> 查看运行在hello2中的所有进程</p>
+
+<p>使用<code>docker stats</code> 查看容器运行的CPU,内存,网络等消耗统计</p>
 
 <p>使用 <code>docker pause hello2</code> 将docker hello2 中的所有进程暂停,使用<code>docker ps</code> 可以看到容器已经暂停了</p>
 
@@ -367,12 +373,16 @@ docker run -it -p 8080:8000 --name vps vpsimage bash
 <p><code>docker pull</code> 默认采用https通信,国内一般提供镜像,或者自己的registry,可以采用
 例如<code>docker pull registry.aliyuncs.com/suconghou/http</code> 这种方式指明registry</p>
 
-<p><a href="https://dev.aliyun.com/search.html">阿里云的registry</a>,提供私有,公开docker镜像,和docker官方的https加速镜像.</p>
+<p><strong><a href="https://dev.aliyun.com/search.html">阿里云的registry</a>,提供私有,公开docker镜像,单独https域名官方镜像加速</strong></p>
 
-<p>Daocloud提供的Docker服务地址 daocloud.io
-并提供单独域名的加速器, <code>--registry-mirror=http://xxx.m.daocloud.io</code> 可以指定docker启动时使用的registry</p>
+<p><strong>Daocloud提供的Docker服务地址 daocloud.io</strong>
+并提供单独域名的加速器, 还有写好的脚本可以指定docker启动时使用的registry</p>
 
-<p>网易提供的镜像 <a href="https://hub-mirror.c.163.com/">https://hub-mirror.c.163.com/</a></p>
+<p>网易提供的镜像 <code>https://hub-mirror.c.163.com/</code></p>
+
+<p>同时中科大USTC也提供镜像加速 <code>https://docker.mirrors.ustc.edu.cn/</code> 见 <a href="https://servers.ustclug.org/2015/05/new-docker-hub-registry-mirror/">https://servers.ustclug.org/2015/05/new-docker-hub-registry-mirror/</a></p>
+
+<p><code>ps -ef</code>查看进程<code>/usr/bin/dockerd --registry-mirror=...</code>即代表使用了镜像</p>
 
 <h2 id="使用流程">使用流程</h2>
 

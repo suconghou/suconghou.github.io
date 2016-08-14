@@ -96,6 +96,8 @@ us, sy, id, wa, st：这些都是平均了所有 CPU 的 CPU 分解时间。它�
 
 <p>和<code>pgrep</code>类似,不同的是向进程发送信号,默认发送<code>SIGTERM</code>信号,查看都有哪些信号可用,可以使用<code>kill -l</code>查看</p>
 
+<p>类似<code>pkill</code>的命令是<code>killall</code>,后面都是可以直接加进程名字批量杀死进程</p>
+
 <h2 id="pstree">pstree</h2>
 
 <p>用树的形式显示正在运行的进程,树的节点为指定的PID(忽略则为init进程)</p>
@@ -151,7 +153,7 @@ alias ipinfo=&quot;curl ifconfig.me &amp;&amp; curl ifconfig.me/host&quot;;
 # 显示出哪个应用程序连接到网络。
 alias listen=&quot;lsof -P -i -n&quot;;
 # 显示出活动的端口。
-alias port='netstat -tulanp'
+alias port='netstat -uanltp'
 # 统计TCP连接个数
 alias tcpstatus=&quot;netstat -n|awk '/^tcp/{++S[\$NF]} END {for(a in S) print a,S[a]}'&quot;
 # 回到上层目录
@@ -209,6 +211,36 @@ echo &quot;*****************************&quot;
 
 </code></pre>
 
+<h2 id="使用脚本清理一些文件">使用脚本清理一些文件</h2>
+
+<p>删除当前目录超过30天未变动过的log文件</p>
+
+<pre><code>find . -mtime +30 -type f -name '*.log*' | xargs rm
+</code></pre>
+
+<p>或者</p>
+
+<pre><code>find . -mtime +30 -type f -name '*.log*' -exec rm -i {} \;
+</code></pre>
+
+<p>所有的操作都包含子目录</p>
+
+<p>-exec  参数后面跟的是command命令，它的终止是以;为结束标志的，所以这句命令后面的分号是不可缺少的，考虑到各个系统中分号会有不同的意义，所以前面加反斜杠。</p>
+
+<p>{}   花括号代表前面find查找出来的文件名。</p>
+
+<p>如<code>find . -type f -exec ls -l {} \;</code></p>
+
+<p>使用-exec选项的安全模式。它将在对每个匹配到的文件进行操作之前提示你。</p>
+
+<p>如<code>find . -name &quot;*.log&quot; -mtime +60 -ok rm {} \;</code></p>
+
+<p>-mtime +30 设定时间为30天前</p>
+
+<p>-type f 查找的类型为文件</p>
+
+<p>-name 文件路径需要匹配的</p>
+
 <h2 id="解决can-t-set-the-locale-make-sure-lc-and-lang-are-correct">解决can&rsquo;t set the locale; make sure $LC_* and $LANG are correct</h2>
 
 <p><a href="https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian">https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian</a>
@@ -236,6 +268,8 @@ set encoding=utf-8
 <code>/etc/systemd/system/</code>
 后者有较高优先级会覆盖前者</p>
 
+<h2 id="linux-家族">Linux 家族</h2>
+
 <p>一般来说著名的linux系统基本上分两大类：</p>
 
 <p>1.RedHat系列：Redhat、Centos、Fedora等</p>
@@ -257,7 +291,9 @@ RedHat 系列
 
 <p><code>soft rlimits too low. Number of files is 256, should be at least 1000</code></p>
 
-<p><code>ulimit -n 1024</code></p>
+<p>见 <a href="https://www.fdzh.org/slides/2015/06/20/linux-distr/">https://www.fdzh.org/slides/2015/06/20/linux-distr/</a></p>
+
+<p><img src="https://dn-copr.qbox.me/49d503bf47879ffe8a169dd81c744d83_b.jpg" alt="家族示意图" /></p>
 
 		</div>
 	</div>

@@ -6,8 +6,472 @@
     <description>Recent content in Posts on 苏苏的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 11 Jul 2016 11:39:08 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 11 Aug 2016 10:27:18 +0800</lastBuildDate>
     <atom:link href="http://blog.suconghou.cn/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>javascript code snippet</title>
+      <link>http://blog.suconghou.cn/post/javascript-code-snippet/</link>
+      <pubDate>Thu, 11 Aug 2016 10:27:18 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/javascript-code-snippet/</guid>
+      <description>
+
+&lt;h2 id=&#34;实用的javascript代码锦集&#34;&gt;实用的Javascript代码锦集&lt;/h2&gt;
+
+&lt;h3 id=&#34;获取查询查询字符串get参数值&#34;&gt;获取查询查询字符串get参数值&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;function getParam()
+{
+	var data = decodeURIComponent(location.href).split(&amp;quot;?&amp;quot;)[1].split(&amp;quot;&amp;amp;&amp;quot;);
+	var param = {};
+	for(var i = 0; i&amp;lt;data .length; i++)
+	{
+		param[data [i].split(&amp;quot;=&amp;quot;)[0]] = data [i].split(&amp;quot;=&amp;quot;)[1];
+	}
+	return param;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;类似于PHP中的&lt;code&gt;$_GET&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var $_GET = (function()
+{
+	var url = decodeURIComponent(location.href);
+	var u = url.split( &amp;quot;?&amp;quot; );
+	if ( typeof (u[1]) == &amp;quot;string&amp;quot; )
+	{
+		u = u[1].split( &amp;quot;&amp;amp;&amp;quot; );
+		var get = {};
+		for ( var i in u)
+		{
+			var j = u[i].split( &amp;quot;=&amp;quot; );
+			get[j[0]] = j[1];
+		}
+		return get;
+	}
+	else
+	{
+		return {};
+	}
+})();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;给出要获取的参数,每次都会解析一遍&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function getPar(par)
+{
+	//获取当前URL
+	var local_url = decodeURIComponent(location.href);
+	//获取要取得的get参数位置
+	var get = local_url.indexOf(par + &amp;quot;=&amp;quot; );
+	if (get == -1)
+	{
+		return false ;
+	}
+	//截取字符串
+	var get_par = local_url.slice(par.length + get + 1);
+	//判断截取后的字符串是否还有其他get参数
+	var nextPar = get_par.indexOf( &amp;quot;&amp;amp;&amp;quot; );
+	if (nextPar != -1)
+	{
+		get_par = get_par.slice(0, nextPar);
+	}
+	return get_par;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;QueryString&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function QueryString(item)
+{
+	var value = location.search.match(new RegExp(&#39;[\?\&amp;amp;]&#39; + item + &#39;=([^\&amp;amp;]*)(\&amp;amp;?)&#39;,&#39;i&#39;));
+	return value ? value[1] : value;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;取得cookie中某个键的值&#34;&gt;取得Cookie中某个键的值&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;$.getCookie = function(name)
+{
+	 if(document.cookie.indexOf(name)!=-1) return document.cookie.split(name+&#39;=&#39;)[1].split(&#39;;&#39;)[0]
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;另一个&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function getcookie(cookieid)
+{
+	//获取cookie字符串
+	var strCookie=document.cookie;
+	//将多cookie切割为多个名/值对
+	var arrCookie=strCookie.split(&amp;quot;; &amp;quot;);
+	var cookieval;
+	//遍历cookie数组，处理每个cookie对
+	for(var i=0;i&amp;lt;arrCookie.length;i++)
+	{
+		var arr=arrCookie[i].split(&amp;quot;=&amp;quot;);
+		//找到名称为userId的cookie，并返回它的值
+		if(cookieid==arr[0])
+		{
+			cookieval=arr[1];
+			break;
+		}
+	}
+	return(cookieval);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;进入全屏&#34;&gt;进入全屏&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;function gofull()
+{
+	var el=document.documentElement;
+	el.webkitRequestFullScreen&amp;amp;&amp;amp;el.webkitRequestFullScreen();
+	el.mozRequestFullScreen&amp;amp;&amp;amp;el.mozRequestFullScreen();
+	el.requestFullscreen&amp;amp;&amp;amp;el.requestFullscreen();
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;字符串去空格&#34;&gt;字符串去空格&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;String.prototype.trim=function() {return this.replace(/(^\s*)|(\s*$)/g,&amp;quot;&amp;quot;); }
+String.prototype.ltrim=function(){return this.replace(/(^\s*)/g,&amp;quot;&amp;quot;); }
+String.prototype.rtrim=function(){return this.replace(/(\s*$)/g,&amp;quot;&amp;quot;); }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;字节格式化&#34;&gt;字节格式化&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;function size(size)
+{
+	var name=[&#39;B&#39;,&#39;KB&#39;,&#39;MB&#39;,&#39;GB&#39;,&#39;TB&#39;,&#39;PB&#39;];
+	var pos=0;
+	while(size&amp;gt;=1204)
+	{
+	    size/=1024;
+	    pos++;
+	}
+	return size.toFixed(2)+&amp;quot; &amp;quot;+name[pos];
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;一些正则验证&#34;&gt;一些正则验证&lt;/h3&gt;
+
+&lt;p&gt;验证邮箱&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function is_mail(str)
+{
+	return(new RegExp(/^[0-9a-zA-Z]+@(([0-9a-zA-Z]+)[.])+[a-z]{2,4}$/i).test(str));
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;验证手机号&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function is_tel(str)
+{
+	return(new RegExp(/^1[34578][0-9]{9}$/).test(str));
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;base64的1x1像素间隔gif&#34;&gt;Base64的1x1像素间隔gif&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;img src=&amp;quot;data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7&amp;quot;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;一个range函数&#34;&gt;一个range函数&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;function range(start, count)
+{
+	return Array.apply(0, Array(count)).map(function (element, index)
+	{
+		return index + start;
+	});
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;简化-console-log&#34;&gt;简化&lt;code&gt;console.log&lt;/code&gt;&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;var log = console.log.bind(console);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;生成较短的唯一id&#34;&gt;生成较短的唯一ID&lt;/h3&gt;
+
+&lt;p&gt;一定年限内单线程非连续调用唯一&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function shortId()
+{
+	var time=Date.now()+&#39;&#39;;
+	time=parseInt(time.substr(1));
+	return time.toString(36);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;生成随机短ID,仅具备较低的不重复性&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var t=(((1+Math.random())*0x10000000)|0).toString(16);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;给jquery的form添加-serializeobject&#34;&gt;给jQuery的form添加&lt;code&gt;serializeObject&lt;/code&gt;&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;jQuery.prototype.serializeObject=function()
+{
+	var a,o,h,i,e;
+	a=this.serializeArray();
+	o={};
+	h=o.hasOwnProperty;
+	for(i=0;i&amp;lt;a.length;i++)
+	{
+		e=a[i];
+		if(!h.call(o,e.name))
+		{
+			o[e.name]=e.value;
+		}
+	}
+	return o;
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使用效果如下&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;jQuery(&amp;quot;form&amp;quot;).serialize(); //&amp;quot;username=&amp;amp;password=&amp;quot;
+jQuery(&amp;quot;form&amp;quot;).serializeArray(); //[{name:&amp;quot;username&amp;quot;,value:&amp;quot;&amp;quot;},{name:&amp;quot;password&amp;quot;,value:&amp;quot;&amp;quot;}]
+jQuery(&amp;quot;form&amp;quot;).serializeObject(); //{username:&amp;quot;&amp;quot;,password:&amp;quot;&amp;quot;}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>javascript senior</title>
+      <link>http://blog.suconghou.cn/post/javascript-senior/</link>
+      <pubDate>Tue, 09 Aug 2016 21:27:39 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/javascript-senior/</guid>
+      <description>
+
+&lt;h2 id=&#34;javascript-参数传递&#34;&gt;Javascript 参数传递&lt;/h2&gt;
+
+&lt;p&gt;说起参数传递,首先需要弄清楚javascript里的数据类型&lt;/p&gt;
+
+&lt;p&gt;原始数据类型
+&lt;code&gt;Undefined&lt;/code&gt; &lt;code&gt;Null&lt;/code&gt; &lt;code&gt;Boolean&lt;/code&gt; &lt;code&gt;Number&lt;/code&gt; &lt;code&gt;String&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;引用数据类型&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Object&lt;/code&gt; &lt;code&gt;Array&lt;/code&gt; &lt;code&gt;Function&lt;/code&gt; &lt;code&gt;Date&lt;/code&gt; 等&lt;/p&gt;
+
+&lt;p&gt;原始数据类型存储在栈的简单数据段,他们的值直接存储在变量访问的位置(因原始数据类型占据的空间是固定的,可以存储在较小的内存区域&lt;code&gt;栈&lt;/code&gt;中)&lt;/p&gt;
+
+&lt;p&gt;引用数据类型是存储在堆中的对象,存储在变量处的值只是一个指针,指向存储对象的内存地址,这是因为引用类型的大小会改变.&lt;/p&gt;
+
+&lt;p&gt;不同的内存分配机制带来不同的访问机制&lt;/p&gt;
+
+&lt;p&gt;在JavaScript中,是不允许直接访问保存在堆内存中的对象的,访问对象时必须取得对象在堆内存中的地址,然后按地址去取得对象中的值.&lt;/p&gt;
+
+&lt;p&gt;这便是传说中的按引用访问.&lt;/p&gt;
+
+&lt;p&gt;而原始类型则是直接访问到的.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;复制变量时的不同&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;原始值:&lt;/p&gt;
+
+&lt;p&gt;会将原始值的副本赋值给新变量.此后两个变量完全独立.&lt;/p&gt;
+
+&lt;p&gt;引用值:&lt;/p&gt;
+
+&lt;p&gt;会把内存地址赋值给新变量,也就是说两个变量都指向堆内存中的同一个对象.
+他们中任何一个改变都会反映到另一个身上.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;参数传递的不同&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;最重要的一点:&lt;code&gt;ECMAScript&lt;/code&gt;中所有函数的参数都是按值传递的.&lt;/p&gt;
+
+&lt;p&gt;但原始值和引用值仍会造成不同的后果.&lt;/p&gt;
+
+&lt;p&gt;原始值:&lt;/p&gt;
+
+&lt;p&gt;把变量里的值传递给参数,之后两个变量互不影响.(就是把实参复制给形参的过程)&lt;/p&gt;
+
+&lt;p&gt;引用值:&lt;/p&gt;
+
+&lt;p&gt;任然是将实参里面的值复制到形参,但是注意&lt;em&gt;对象变量它里面的值是这个对象的堆内存地址&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;也就是说形参和实参都是指向同一个堆内存对象.&lt;/p&gt;
+
+&lt;p&gt;但是也要记住另外一点:如果形参被赋值为另外一个对象时,那么这个形参将会丢弃对上次指向的堆内存地址,而指向新对象的堆内存地址.&lt;/p&gt;
+
+&lt;p&gt;此时,形参和实参相互脱离,互不影响,原先的实参任然指向原先对象的堆内存地址.&lt;/p&gt;
+
+&lt;p&gt;如果是添加修改形参的属性,那么就是修改堆内存中的对象,形参和实参将同时得到反映,因为他们指向的是同一个堆内存对象.&lt;/p&gt;
+
+&lt;p&gt;这种传递方式被称为&lt;code&gt;Call By Sharing&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function box(obj)
+{
+	obj.name=&#39;hello&#39;;
+	var obj=new Object();
+	obj.name=&#39;world&#39;;
+}
+var obj=new Object();
+box(obj);
+console.log(obj.name);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;注意两点:
+1. &lt;code&gt;var obj=new Object()&lt;/code&gt; 声明提升&lt;/p&gt;
+
+&lt;p&gt;变为&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var obj;
+obj.name=&#39;hello&#39;;
+obj=new Object();
+obj.name=&#39;world&#39;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;函数的已存在一个变量形参&lt;code&gt;obj&lt;/code&gt;,再次的变量申明会忽略&lt;/p&gt;
+
+&lt;p&gt;2.&lt;code&gt;obj=new Object()&lt;/code&gt; 时,obj的修改就不会影响外层obj变量了,因为他此时已经脱离执行那个堆内存对象了.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;参考 &lt;a href=&#34;http://www.zhihu.com/question/27114726&#34;&gt;http://www.zhihu.com/question/27114726&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&#34;object-create&#34;&gt;Object.create&lt;/h2&gt;
+
+&lt;p&gt;简单来讲，new Object()是一种通过构造函数来创建object的方式，而Object.create(proto, [ propertiesObject ])
+不需要通过构造函数就可以创建一个object，Object.create()的第一个参数是必须要的，第二个参数可选。其实Object.create()内部依然是通过new一个构造函数的方式来实现的，它有构造函数，不过这个构造函数是隐式存在的，看一下使老旧浏览器支持Object.create方法的“polyfill”就可以对它们之间的区别一目了然了：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if (!Object.create) {
+    Object.create = function (o) {
+    function F() {}  //定义了一个隐式的构造函数
+    F.prototype = o;
+    return new F();  //其实还是通过new来实现的
+    };
+  }
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>HAProxy优化应用程序速度</title>
+      <link>http://blog.suconghou.cn/post/use-haproxy/</link>
+      <pubDate>Fri, 29 Jul 2016 14:27:54 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/use-haproxy/</guid>
+      <description>
+
+&lt;h2 id=&#34;haproxy&#34;&gt;HAProxy&lt;/h2&gt;
+
+&lt;p&gt;HAProxy高性能的反向代理软件,更专注于TCP,HTTP处理,它可以基于四层或七层进行反向代理,尤其适合于高负载且需要进行七层处理的 Web 站点.&lt;/p&gt;
+
+&lt;p&gt;单进程、事件驱动模型,通常用于超高流量的负载均衡.&lt;/p&gt;
+
+&lt;p&gt;我们也可以使用它来作为中转站,使直连连通率不好的请求进过中转提升速度.&lt;/p&gt;
+
+&lt;h3 id=&#34;编译安装&#34;&gt;编译安装&lt;/h3&gt;
+
+&lt;p&gt;编译haproxy时必须制定target,不能直接make&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Due to too many reports of suboptimized setups, building without
+specifying the target is no longer supported. Please specify the
+target OS in the TARGET variable, in the following form:
+
+   make TARGET=xxx
+
+Please choose the target among the following supported list :
+
+   linux2628, linux26, linux24, linux24e, linux22, solaris
+   freebsd, openbsd, cygwin, custom, generic
+
+Use &amp;quot;generic&amp;quot; if you don&#39;t want any optimization, &amp;quot;custom&amp;quot; if you
+want to precisely tweak every option, or choose the target which
+matches your OS the most in order to gain the maximum performance
+out of it. Please check the Makefile in case of doubts.
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;linux2628 表示  内核版本&amp;gt;=2.6.28&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;HAPROXY_VERSION=haproxy-1.6.7
+CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
+wget http://www.haproxy.org/download/1.6/src/${HAPROXY_VERSION}.tar.gz
+tar zxf ${HAPROXY_VERSION}.tar.gz
+cd ${HAPROXY_VERSION}
+export CFLAGS=&amp;quot;-O3&amp;quot;
+make TARGET=linux2628 ARCH=X86_64 -j$CPU_NUM &amp;amp;&amp;amp; make install
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;使用docker版本的haproxy&#34;&gt;使用Docker版本的HAProxy&lt;/h3&gt;
+
+&lt;p&gt;这里提供一份编译好的最新版HAProxy镜像 &lt;a href=&#34;https://hub.docker.com/r/suconghou/haproxy/&#34;&gt;https://hub.docker.com/r/suconghou/haproxy/&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;优化国外主机速度&#34;&gt;优化国外主机速度&lt;/h3&gt;
+
+&lt;p&gt;HAProxy有多种连接模型,还有多种负载均衡算法,由于只有一台机器,我们主要侧重于使用它的反向代理.&lt;/p&gt;
+
+&lt;p&gt;HAProxy可以一边保持与代理后端的长连接,一边又保持对客户端的连接.
+这样双向保持持久连接,省去了中间反复创建连接可以在一定程度上优化速度.&lt;/p&gt;
+
+&lt;p&gt;其只需要一个配置文件,配置主要有以下几部分功能&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;default&lt;/code&gt;：用于为所有其它配置段提供默认参数&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;frontend&lt;/code&gt;：用于定义一系列监听的套接字，这些套接字可接受客户端请求并与之建立连接&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;backend&lt;/code&gt;：用于定义一系列后端服务器，代理将会将对应客户端的请求转发至这些服务器&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;listen&lt;/code&gt;： 通过关联前端和后端定义了一个完整的代理&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;配置写在&lt;code&gt;haproxy.cfg&lt;/code&gt;文件中,启动的时候指定使用的配置文件.&lt;/p&gt;
+
+&lt;p&gt;如&lt;code&gt;haproxy -c -f /etc/haproxy/haproxy.cfg&lt;/code&gt;检查配置文件,&lt;code&gt;haproxy -f /etc/haproxy/haproxy.cfg&lt;/code&gt;使用此配置文件启动&lt;/p&gt;
+
+&lt;p&gt;一个简单的配置文件如下&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;global
+    log         127.0.0.1 local3
+    pidfile     /var/run/haproxy.pid
+    user        haproxy
+    group       haproxy
+    daemon
+
+defaults
+    mode                    http
+    log                     global
+    retries                 3
+    timeout http-request    10s
+    timeout queue           1m
+    timeout connect         10s
+    timeout client          1m
+    timeout server          1m
+    timeout http-keep-alive 10s
+    timeout check           10s
+    maxconn                 30000
+
+frontend http-in
+    mode http
+    bind 0.0.0.0:1080
+    option http-keep-alive
+    default_backend  servers
+
+backend servers
+	option http-keep-alive
+    server myserver 192.243.115.210:80 check maxconn 6000
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;还有一个在应对高并发时通常都需要改的
+&lt;code&gt;ulimit -n 8192&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ulimit -n&lt;/code&gt; 可以查看当前的&lt;/p&gt;
+
+&lt;p&gt;重启HAProxy&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;haproxy -f /etc/haproxy/haproxy.cfg -st `cat /var/run/haproxy.pid`
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
     
     <item>
       <title>react native</title>
@@ -323,6 +787,33 @@ adb install -r app-release.apk
     </item>
     
     <item>
+      <title>shadowsocks libev</title>
+      <link>http://blog.suconghou.cn/post/shadowsocks-libev/</link>
+      <pubDate>Wed, 18 May 2016 17:37:16 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/shadowsocks-libev/</guid>
+      <description>
+
+&lt;h2 id=&#34;编译&#34;&gt;编译&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;yum update &amp;amp;&amp;amp; yum install -y zip unzip xz curl wget git gcc make zlib zlib-devel openssl openssl-devel
+git clone https://github.com/shadowsocks/shadowsocks-libev.git
+cd shadowsocks-libev
+./configure --enable-static=yes
+export CFLAGS=&amp;quot;-O3&amp;quot;
+make -j4 &amp;amp;&amp;amp; make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;GO语言版本的也十分方便哦&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;这里提供一个基于&lt;code&gt;docker&lt;/code&gt;的go语言版本,&lt;a href=&#34;https://hub.docker.com/r/suconghou/shadowsocks/&#34;&gt;docker go shadowsocks&lt;/a&gt;,只有3.3MB
+十分方便&lt;/p&gt;
+
+&lt;p&gt;同时也含有libev版本的可供选择&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>使用tcpdump</title>
       <link>http://blog.suconghou.cn/post/tcpdump/</link>
       <pubDate>Mon, 16 May 2016 18:21:04 +0800</pubDate>
@@ -559,6 +1050,8 @@ us, sy, id, wa, st：这些都是平均了所有 CPU 的 CPU 分解时间。它�
 
 &lt;p&gt;和&lt;code&gt;pgrep&lt;/code&gt;类似,不同的是向进程发送信号,默认发送&lt;code&gt;SIGTERM&lt;/code&gt;信号,查看都有哪些信号可用,可以使用&lt;code&gt;kill -l&lt;/code&gt;查看&lt;/p&gt;
 
+&lt;p&gt;类似&lt;code&gt;pkill&lt;/code&gt;的命令是&lt;code&gt;killall&lt;/code&gt;,后面都是可以直接加进程名字批量杀死进程&lt;/p&gt;
+
 &lt;h2 id=&#34;pstree&#34;&gt;pstree&lt;/h2&gt;
 
 &lt;p&gt;用树的形式显示正在运行的进程,树的节点为指定的PID(忽略则为init进程)&lt;/p&gt;
@@ -614,7 +1107,7 @@ alias ipinfo=&amp;quot;curl ifconfig.me &amp;amp;&amp;amp; curl ifconfig.me/host
 # 显示出哪个应用程序连接到网络。
 alias listen=&amp;quot;lsof -P -i -n&amp;quot;;
 # 显示出活动的端口。
-alias port=&#39;netstat -tulanp&#39;
+alias port=&#39;netstat -uanltp&#39;
 # 统计TCP连接个数
 alias tcpstatus=&amp;quot;netstat -n|awk &#39;/^tcp/{++S[\$NF]} END {for(a in S) print a,S[a]}&#39;&amp;quot;
 # 回到上层目录
@@ -672,6 +1165,36 @@ echo &amp;quot;*****************************&amp;quot;
 
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;h2 id=&#34;使用脚本清理一些文件&#34;&gt;使用脚本清理一些文件&lt;/h2&gt;
+
+&lt;p&gt;删除当前目录超过30天未变动过的log文件&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;find . -mtime +30 -type f -name &#39;*.log*&#39; | xargs rm
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;或者&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;find . -mtime +30 -type f -name &#39;*.log*&#39; -exec rm -i {} \;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;所有的操作都包含子目录&lt;/p&gt;
+
+&lt;p&gt;-exec  参数后面跟的是command命令，它的终止是以;为结束标志的，所以这句命令后面的分号是不可缺少的，考虑到各个系统中分号会有不同的意义，所以前面加反斜杠。&lt;/p&gt;
+
+&lt;p&gt;{}   花括号代表前面find查找出来的文件名。&lt;/p&gt;
+
+&lt;p&gt;如&lt;code&gt;find . -type f -exec ls -l {} \;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;使用-exec选项的安全模式。它将在对每个匹配到的文件进行操作之前提示你。&lt;/p&gt;
+
+&lt;p&gt;如&lt;code&gt;find . -name &amp;quot;*.log&amp;quot; -mtime +60 -ok rm {} \;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;-mtime +30 设定时间为30天前&lt;/p&gt;
+
+&lt;p&gt;-type f 查找的类型为文件&lt;/p&gt;
+
+&lt;p&gt;-name 文件路径需要匹配的&lt;/p&gt;
+
 &lt;h2 id=&#34;解决can-t-set-the-locale-make-sure-lc-and-lang-are-correct&#34;&gt;解决can&amp;rsquo;t set the locale; make sure $LC_* and $LANG are correct&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian&#34;&gt;https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian&lt;/a&gt;
@@ -699,6 +1222,8 @@ set encoding=utf-8
 &lt;code&gt;/etc/systemd/system/&lt;/code&gt;
 后者有较高优先级会覆盖前者&lt;/p&gt;
 
+&lt;h2 id=&#34;linux-家族&#34;&gt;Linux 家族&lt;/h2&gt;
+
 &lt;p&gt;一般来说著名的linux系统基本上分两大类：&lt;/p&gt;
 
 &lt;p&gt;1.RedHat系列：Redhat、Centos、Fedora等&lt;/p&gt;
@@ -720,7 +1245,9 @@ RedHat 系列
 
 &lt;p&gt;&lt;code&gt;soft rlimits too low. Number of files is 256, should be at least 1000&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;ulimit -n 1024&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;见 &lt;a href=&#34;https://www.fdzh.org/slides/2015/06/20/linux-distr/&#34;&gt;https://www.fdzh.org/slides/2015/06/20/linux-distr/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://dn-copr.qbox.me/49d503bf47879ffe8a169dd81c744d83_b.jpg&#34; alt=&#34;家族示意图&#34; /&gt;&lt;/p&gt;
 </description>
     </item>
     
@@ -778,6 +1305,8 @@ ls -lh
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;dd的用法: &lt;code&gt;dd if=/dev/zero of=hello.txt bs=1024&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;dd过程中看不到进度,如果确实想要了解进度,可以再开一个终端&lt;code&gt;pkill -USR1 -n -x dd&lt;/code&gt;查看进度.&lt;/p&gt;
 
 &lt;p&gt;除了OSMC默认皮肤,还有一些好看的皮肤推荐&lt;/p&gt;
 
@@ -1003,830 +1532,6 @@ fswatch -0 /tmp | xargs -0 -n 1 echo $1
 &lt;p&gt;数组下标以0开始,取得第二个元素为&lt;code&gt;echo ${arr[1]}&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;赋值使用&lt;code&gt;arr[5]=5555&lt;/code&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>MySQL性能优化</title>
-      <link>http://blog.suconghou.cn/post/improve-mysqldb/</link>
-      <pubDate>Mon, 11 Jan 2016 12:02:40 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/post/improve-mysqldb/</guid>
-      <description>
-
-&lt;h2 id=&#34;配置文件&#34;&gt;配置文件&lt;/h2&gt;
-
-&lt;p&gt;配置文件一般放在&lt;code&gt;/etc/my.cnf&lt;/code&gt; 或者 &lt;code&gt;/etc/mysql/my.cnf&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;默认的配置文件示例存放于&lt;code&gt;/usr/share/mysql&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;各个文件适配不同内存的配置&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;文件&lt;/th&gt;
-&lt;th&gt;内存大小&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;my-small.cnf&lt;/td&gt;
-&lt;td&gt;&amp;lt;= 64M 不经常开启mysql&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;my-medium.cnf&lt;/td&gt;
-&lt;td&gt;32M–64M 经常其他程序搭配mysql&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;my-large.cnf&lt;/td&gt;
-&lt;td&gt;512M&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;my-huge.cnf&lt;/td&gt;
-&lt;td&gt;1G-2G&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;my-innodb-heavy-4G.cnf&lt;/td&gt;
-&lt;td&gt;4GB 使用InnoDB&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;使用&lt;code&gt;SHOW VARIABLES&lt;/code&gt;来查看系统参数,通过&lt;code&gt;SHOW STATUS&lt;/code&gt;来判断系统状态&lt;/p&gt;
-
-&lt;p&gt;show 命令还有很多用途&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;命令&lt;/th&gt;
-&lt;th&gt;描述&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;show databases 或show tables from database_name&lt;/td&gt;
-&lt;td&gt;显示mysql中所有数据库的名称&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;show tables&lt;/td&gt;
-&lt;td&gt;显示当前数据库中所有表的名称&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;show columns from table_name from database_name&lt;/td&gt;
-&lt;td&gt;显示表中列名称&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;show grants for user_name&lt;/td&gt;
-&lt;td&gt;显示一个用户的权限，显示结果类似于grant命令&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;show table status&lt;/td&gt;
-&lt;td&gt;显示当前使用或者指定的database中的每个表的信息。&lt;br&gt;信息包括表类型和表的最新更新时间。&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;show index from table_name&lt;/td&gt;
-&lt;td&gt;显示表的索引&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;show status&lt;/td&gt;
-&lt;td&gt;显示一些系统特定资源的信息,例如,正在运行的线程数量&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;show variables&lt;/td&gt;
-&lt;td&gt;显示系统变量的名称和值&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;show processlist&lt;/td&gt;
-&lt;td&gt;显示系统中正在运行的所有进程，也就是当前正在执行的查询。&lt;br&gt;大多数用户可以查看他们自己的进程，但是如果他们拥有process权限，&lt;br&gt;就可以查看所有人的进程，包括密码&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;show engies&lt;/td&gt;
-&lt;td&gt;显示安装以后可用的存储引擎和默认引擎&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;show innodb status&lt;/td&gt;
-&lt;td&gt;显示innoDB存储引擎的状态&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;show logs&lt;/td&gt;
-&lt;td&gt;显示BDB存储引擎的日志&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;show warnings&lt;/td&gt;
-&lt;td&gt;显示最后一个执行的语句所产生的错误、警告和通知&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;show errors&lt;/td&gt;
-&lt;td&gt;只显示最后一个执行语句所产生的错误&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&#34;小内存优化&#34;&gt;小内存优化&lt;/h2&gt;
-
-&lt;p&gt;依据&lt;code&gt;my-small.cnf&lt;/code&gt;为模板&lt;/p&gt;
-
-&lt;p&gt;主要指标:存储引擎,key_buffer,table_cache,max_connections,thread_concurrency,query_cache,thread_stack&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;存储引擎&lt;/strong&gt;:
-如果不使用 BDB table 和 InnoDB table 的话，加入下面2行关闭不需要的表类型很有必要，关闭 innodb 可以省下大量内存，虽然 InnoDB 好处多多但是在一个64MB的 VPS 上并不能体现出来，并且很占内存。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;key_buffer&lt;/strong&gt;:
-用来缓存 tables keys 和 indexes，增加这个值可以更好的处理索引，读和写都需要索引,这里设置成16K足够了.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;table_cache&lt;/strong&gt;:
-所有线程打开的表的数量，增加值可以增大 MySQL 的文件描述符数量，避免频繁的打开表，原始 my-small.cnf 中 table_cache 设置成4有点小，一个 wordpress 的页面通常会涉及到10个左右的表，其他的程序比如 Drupal，MediaWiki 会涉及到更多，将table_cache改为8。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;max_connections&lt;/strong&gt;:
-数据库最大的连接数量，可以根据自己博客/网站的访问量来定这个值,如果博客/网站经常出现：Too many connections 错误的信息说明需要增大 max_connections 的值.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;thread_concurrency&lt;/strong&gt;:
-最大并发线程数，通常设置为 CPU核数量×2，在 VPS 宿主机上如果服务器有2颗物理 CPU，而每颗物理 CPU 又支持 H.T 超线程（一个处理器上整合了两个逻辑处理器单元），所以实际取值为4 × 2 ＝ 8。
-如果我们在优化 php.ini 的时候设置了同时只有2个 php-cgi 运行的话，那么我们也应该只设置2个 MySQL 线程同时运行。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;query_cache&lt;/strong&gt;:
-对于博客/新闻网站来说，用得最多的就是查询，所以需要加入 query cache 的设置。query_cache_size 是执行查询所使用的缓冲大小。
-query_cache_limit指定单个查询能够使用的缓冲区大小，缺省为1M,结果集超过这个大小将不会被缓存。&lt;/p&gt;
-
-&lt;p&gt;与查询缓冲有关的参数还有query_cache_type、query_cache_limit、query_cache_min_res_unit。&lt;/p&gt;
-
-&lt;p&gt;query_cache_type指定是否使用查询缓冲，可以设置为0、1、2,分别代表了off、on、demand,如果是0，那么query cache 是关闭的。如果是1，那么查询总是先到查询缓存中查找，除非使用了sql_no_cache。如果是2，那么，只有使用 sql_cache的查询，才会去查询缓存中查找.&lt;/p&gt;
-
-&lt;p&gt;query_cache_limit指定单个查询能够使用的缓冲区大小，缺省为1M。
-query_cache_min_res_unit是在4.1版本以后引入的，它指定分配缓冲区空间的最小单位，缺省为4K。
-检查状态值Qcache_free_blocks，如果该值非常大，则表明缓冲区中碎片很多，这就表明查询结果都比较小，此时需要减小 query_cache_min_res_unit。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;thread_stack&lt;/strong&gt;:
-用来存放每个线程的标识信息，如线程 id，线程运行时环境等，可以通过设置 thread_stack 来决定给每个线程分配多大的内存。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;sort_buffer_size&lt;/strong&gt;:
-每个需要排序的线程分配的缓冲区大小，增加该值可以加速 order by 和 group by 的操作。注意：该参数是以每个连接分配内存，也就是说，如果有16个连接，sort_buffer_size 为 64K，那么实际分配的内存为：16 × 64K = 1MB。如果设置的缓存大小无法满足需要，MySQL 会将数据写入磁盘来完成排序。因为磁盘操作和内存操作不在一个数量级，所以 sort_buffer_size 对排序的性能影响很大。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;read_buffer_size&lt;/strong&gt;:
-顺序读取数据时的缓冲区大小，与 sort_buffer_size 一样，该参数分配的内存也是以每连接为单位的。
-当需要顺序读取数据的时候，如无法使用索引的情况下的全表扫描，全索引扫描等。在这种时候，MySQL 按照数据的存储顺序依次读取数据块，每次读取的数据快首先会暂存在 read_buffer_size 中，当 buffer 空间被写满或者全部数据读取结束后，再将 buffer 中的数据返回给上层调用者，以提高效率。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;read_rnd_buffer_size&lt;/strong&gt;:
-随机读取数据时的缓冲区大小，与顺序读相对应。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;net_buffer_size&lt;/strong&gt;:
-用来存放客户端连接线程的连接信息和返回客户端的结果集的缓存大小。当 MySQL 接到请求后，产生返回结果集时，会在返回给请求线程之前暂存在在这个缓存中，等积累到一定大小的时候才开始向客户端发送，以提高网络效率。不 过，net_buffer_size 所设置的仅仅只是初始大小，MySQL 会根据实际需要自行申请更多的内存，但最大不会超过 max_allowed_packet。&lt;/p&gt;
-
-&lt;p&gt;skip-locking用来避免 MySQL 外部锁定，减少出错几率，增强稳定性。&lt;/p&gt;
-
-&lt;p&gt;以上: 64M VPS数据库配置&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;skip-bdb
-skip-innodb
-
-key_buffer = 16K
-table_cache = 8
-
-max_connections = 16
-thread_concurrency = 2
-
-query_cache_limit = 256K
-query_cache_size = 4M
-query_cache_type = 1
-
-sort_buffer_size = 64K
-read_buffer_size = 256K
-read_rnd_buffer_size = 256K
-net_buffer_length = 2K
-thread_stack = 64K
-skip-locking
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;thread_cache_size 优化配置&lt;/p&gt;
-
-&lt;h3 id=&#34;packet-for-query-is-too-large&#34;&gt;Packet for query is too large&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;show variables like &#39;%max%&#39;&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;当update或者insert的内容过大时,&lt;code&gt;max_allowed_packet&lt;/code&gt;的值过小,会引起sql异常,需要改大;其默认值为1048576(1M)，
-修改&lt;code&gt;my.cnf&lt;/code&gt;  &lt;code&gt;max_allowed_packet = 20M&lt;/code&gt;
-或者零时动态设置 &lt;code&gt;set global max_allowed_packet = 20*1024*1024&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;查看是否生效,零时修改一般断开后重新连接即可生效.
-&lt;code&gt;show variables like &#39;%max_allowed_packet%&#39;&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;1G  ---&amp;gt; 8
-2G  ---&amp;gt; 16
-3G  ---&amp;gt; 32
-4G  ---&amp;gt; 64
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;数据库优化&#34;&gt;数据库优化&lt;/h2&gt;
-
-&lt;p&gt;查看query_cache相关配置, 默认这个开关是关闭的,就是禁止使用query_cache
-query_cache_type 为0,是关闭的&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;show variables where variable_name like &#39;%query_cache%&#39;&lt;/code&gt; 单独查询一个使用 &lt;code&gt;select @@query_cache_type&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;+------------------------------+----------+
-| Variable_name                | Value    |
-+------------------------------+----------+
-| have_query_cache             | YES      |
-| query_cache_limit            | 262144   |
-| query_cache_min_res_unit     | 4096     |
-| query_cache_size             | 33554432 |
-| query_cache_strip_comments   | OFF      |
-| query_cache_type             | ON       |
-| query_cache_wlock_invalidate | OFF      |
-+------------------------------+----------+
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;query_cache_size&lt;/code&gt;为0,没有分配缓存空间,如果配置了&lt;code&gt;query_cache_size = 4M&lt;/code&gt;,这里会显示具体的字节&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;show status like &#39;%Qcache%&#39;&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;+-------------------------+----------+
-| Variable_name           | Value    |
-+-------------------------+----------+
-| Qcache_free_blocks      | 1        |
-| Qcache_free_memory      | 26444248 |
-| Qcache_hits             | 159619   |
-| Qcache_inserts          | 27496    |
-| Qcache_lowmem_prunes    | 0        |
-| Qcache_not_cached       | 180      |
-| Qcache_queries_in_cache | 6922     |
-| Qcache_total_blocks     | 13850    |
-+-------------------------+----------+
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;如果&lt;code&gt;Qcache_lowmem_prunes&lt;/code&gt;的值非常大，则表明经常出现缓冲不够的情况，如果&lt;code&gt;Qcache_hits&lt;/code&gt;的值也非常大，则表明查询缓冲使用非常频繁，此时需要增加缓冲大小；
-如果&lt;code&gt;Qcache_hits&lt;/code&gt;的值不大，则表明你的查询重复率很低，这种情况下使用查询缓冲反而会影响效率，那么可以考虑不用查询缓冲。此外，在SELECT语句中加入&lt;code&gt;SQL_NO_CACHE&lt;/code&gt;可以明确表示不使用查询缓冲。&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;查询缓存碎片率 = Qcache_free_blocks / Qcache_total_blocks * 100%&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;如果查询缓存碎片率超过20%，可以用FLUSH QUERY CACHE整理缓存碎片，或者试试减小query_cache_min_res_unit，如果你的查询都是小数据量的话.&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;查询缓存利用率 = (query_cache_size – Qcache_free_memory) / query_cache_size * 100%&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;查询缓存利用率在25%以下的话说明query_cache_size设置的过大，可适当减小;查询缓存利用率在80%以上而且Qcache_lowmem_prunes &amp;gt; 50的话说明query_cache_size可能有点小，要不就是碎片太多。&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;查询缓存命中率 = Qcache_hits / ( Qcache_hits + Qcache_inserts ) * 100%&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;命中率越高,效果越好&lt;/p&gt;
-
-&lt;h2 id=&#34;各个数据库引擎对比&#34;&gt;各个数据库引擎对比&lt;/h2&gt;
-
-&lt;p&gt;主要讨论引擎: MyISAM存储引擎 InnoDB存储引擎 Memory存储引擎&lt;/p&gt;
-
-&lt;h3 id=&#34;myisam存储引擎&#34;&gt;MyISAM存储引擎&lt;/h3&gt;
-
-&lt;p&gt;支持B-tree/FullText/R-tree索引类型
-锁级别是表锁,表锁的开销小，加锁快;锁粒度大，发生锁冲突的概率较高，并发度低；表锁适合查询
-不支持事务性，也不支持外键。&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;并发不高，不需要支持事务,需要进行全文搜索,读次数大于写次数,适合数据量不是特别大并发不太高的大部分场合&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&#34;innodb存储引擎&#34;&gt;InnoDB存储引擎&lt;/h3&gt;
-
-&lt;p&gt;支持事务性，支持回滚,支持Hash/B-tree索引类型
-锁级别是行锁，行锁在锁定上带来的消耗大于表锁，但是在系统并发访问量较高时，InnoDB整体性能远高于MyISAM。
-InnoDB的索引不仅缓存索引本身，也缓存数据，所以InnoDB需要更大的内存。&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;表数据量超过千万，高并发,频繁更新大字段,安全性和可用性要求高,更适合与大并发大数据量的场合，除了支持事务，在高并发时行级锁的优势就会发挥出来。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&#34;memory存储引擎&#34;&gt;Memory存储引擎&lt;/h3&gt;
-
-&lt;p&gt;内存级的存储引擎，它将所有数据都存储在内存中，所以它能够存储的数据量是比较小的
-Memory的锁级别和MyISAM一样，是表锁；并且不支持事务性。&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;适合与性能要求高数据量小的地方，和缓存的效果类似。&lt;/p&gt;
-
-&lt;p&gt;innodb查询表的行数需要全表扫描，速度会非常慢，查询1千万行数据的表最多时要6、7s,而myisam因为保存了总行数是极快的。
-在一个进程操作的情况下，myisam的更新和查询速度都会稍快于innodb。memory引擎插入和查询修改的速度都极快，但支持的数据量有限,不支持BLOB/TEXT数据类型,适用于单表几万行数据.&lt;/p&gt;
-
-&lt;p&gt;MEMORY表最大值受系统变量 max_heap_table_size 限制，默认为16MB，要改变MEMORY表大小限制，需要改变max_heap_table_size 的值。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&#34;锁&#34;&gt;锁&lt;/h3&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;读锁：读操作时增加锁，叫共享锁，S-lock特征是阻塞其他客户端的写操作，不阻塞读操作&lt;/p&gt;
-
-&lt;p&gt;写锁：写操作时增加锁，叫独占锁或排他锁，X-lock特征是阻塞其他客户端的读、写操作&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&#34;锁定粒度-范围&#34;&gt;锁定粒度（范围）&lt;/h3&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;行级：提升并发性，锁定开销大&lt;/p&gt;
-
-&lt;p&gt;表级：不利于并发性，锁定开销小&lt;/p&gt;
-&lt;/blockquote&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>ffmpeg安装使用</title>
-      <link>http://blog.suconghou.cn/post/ffmpeg-usage/</link>
-      <pubDate>Mon, 11 Jan 2016 10:19:20 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/post/ffmpeg-usage/</guid>
-      <description>
-
-&lt;h2 id=&#34;安装&#34;&gt;安装&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;yum install autoconf automake cmake freetype-devel gcc gcc-c++ git libtool make mercurial nasm pkgconfig zlib-devel
-mkdir ~/ffmpeg_sources
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Yasm is an assembler used by x264 and FFmpeg&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;cd ~/ffmpeg_sources
-git clone --depth 1 git://github.com/yasm/yasm.git
-cd yasm
-autoreconf -fiv
-./configure --prefix=&amp;quot;$HOME/ffmpeg_build&amp;quot; --bindir=&amp;quot;$HOME/bin&amp;quot;
-make
-make install
-make distclean
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;H.264 video encoder.
-Requires ffmpeg to be configured with &lt;code&gt;--enable-gpl --enable-libx264&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;cd ~/ffmpeg_sources
-git clone --depth 1 git://git.videolan.org/x264
-cd x264
-PKG_CONFIG_PATH=&amp;quot;$HOME/ffmpeg_build/lib/pkgconfig&amp;quot; ./configure --prefix=&amp;quot;$HOME/ffmpeg_build&amp;quot; --bindir=&amp;quot;$HOME/bin&amp;quot; --enable-static
-make
-make install
-make distclean
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;H.265/HEVC video encoder. Requires ffmpeg to be configured with &lt;code&gt;--enable-gpl --enable-libx265&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;cd ~/ffmpeg_sources
-hg clone https://bitbucket.org/multicoreware/x265
-cd ~/ffmpeg_sources/x265/build/linux
-cmake -G &amp;quot;Unix Makefiles&amp;quot; -DCMAKE_INSTALL_PREFIX=&amp;quot;$HOME/ffmpeg_build&amp;quot; -DENABLE_SHARED:bool=off ../../source
-make
-make install
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;AAC audio encoder. Requires ffmpeg to be configured with &lt;code&gt;--enable-libfdk-aac&lt;/code&gt; (and &lt;code&gt;--enable-nonfree&lt;/code&gt; if you also included &lt;code&gt;--enable-gpl&lt;/code&gt;)&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;cd ~/ffmpeg_sources
-git clone --depth 1 git://git.code.sf.net/p/opencore-amr/fdk-aac
-cd fdk-aac
-autoreconf -fiv
-./configure --prefix=&amp;quot;$HOME/ffmpeg_build&amp;quot; --disable-shared
-make
-make install
-make distclean
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;MP3 audio encoder. Requires ffmpeg to be configured with &lt;code&gt;--enable-libmp3lame&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;cd ~/ffmpeg_sources
-curl -L -O http://downloads.sourceforge.net/project/lame/lame/3.99/lame-3.99.5.tar.gz
-tar xzvf lame-3.99.5.tar.gz
-cd lame-3.99.5
-./configure --prefix=&amp;quot;$HOME/ffmpeg_build&amp;quot; --bindir=&amp;quot;$HOME/bin&amp;quot; --disable-shared --enable-nasm
-make
-make install
-make distclean
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Opus audio decoder and encoder. Requires ffmpeg to be configured with &lt;code&gt;--enable-libopus&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;cd ~/ffmpeg_sources
-git clone git://git.opus-codec.org/opus.git
-cd opus
-autoreconf -fiv
-./configure --prefix=&amp;quot;$HOME/ffmpeg_build&amp;quot; --disable-shared
-make
-make install
-make distclean
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Ogg bitstream library. Required by libtheora and libvorbis.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;cd ~/ffmpeg_sources
-curl -O http://downloads.xiph.org/releases/ogg/libogg-1.3.2.tar.gz
-tar xzvf libogg-1.3.2.tar.gz
-cd libogg-1.3.2
-./configure --prefix=&amp;quot;$HOME/ffmpeg_build&amp;quot; --disable-shared
-make
-make install
-make distclean
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Vorbis audio encoder. Requires libogg. Requires ffmpeg to be configured with &lt;code&gt;--enable-libvorbis&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;cd ~/ffmpeg_sources
-curl -O http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.4.tar.gz
-tar xzvf libvorbis-1.3.4.tar.gz
-cd libvorbis-1.3.4
-LDFLAGS=&amp;quot;-L$HOME/ffmeg_build/lib&amp;quot; CPPFLAGS=&amp;quot;-I$HOME/ffmpeg_build/include&amp;quot; ./configure --prefix=&amp;quot;$HOME/ffmpeg_build&amp;quot; --with-ogg=&amp;quot;$HOME/ffmpeg_build&amp;quot; --disable-shared
-make
-make install
-make distclean
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;VP8/VP9 video encoder. Requires ffmpeg to be configured with &lt;code&gt;--enable-libvpx&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;cd ~/ffmpeg_sources
-git clone --depth 1 https://chromium.googlesource.com/webm/libvpx.git
-cd libvpx
-./configure --prefix=&amp;quot;$HOME/ffmpeg_build&amp;quot; --disable-examples
-make
-make install
-make clean
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Compilation is now complete and ffmpeg (also ffprobe, ffserver, lame, and x264) should now be ready to use.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;cd ~/ffmpeg_sources
-git clone https://github.com/FFmpeg/FFmpeg ffmpeg
-cd ffmpeg
-PKG_CONFIG_PATH=&amp;quot;$HOME/ffmpeg_build/lib/pkgconfig&amp;quot; ./configure --prefix=&amp;quot;$HOME/ffmpeg_build&amp;quot; --extra-cflags=&amp;quot;-I$HOME/ffmpeg_build/include&amp;quot; --extra-ldflags=&amp;quot;-L$HOME/ffmpeg_build/lib&amp;quot; --bindir=&amp;quot;$HOME/bin&amp;quot; --pkg-config-flags=&amp;quot;--static&amp;quot; --enable-gpl --enable-nonfree --enable-libfdk-aac --enable-libfreetype --enable-libmp3lame --enable-libopus --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libx265
-make -j4
-make install
-make distclean
-hash -r
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;生成的可执行文件存放在&lt;code&gt;~/bin&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;下载官方的静态编译的linux通用二进制包&#34;&gt;下载官方的静态编译的Linux通用二进制包&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://johnvansickle.com/ffmpeg/&#34;&gt;ffmeg&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;3.1正式版已发布,&lt;a href=&#34;http://www.oschina.net/news/74702/ffmpeg-3-1&#34;&gt;查看详情&lt;/a&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>git基本使用</title>
-      <link>http://blog.suconghou.cn/post/git-usage/</link>
-      <pubDate>Fri, 08 Jan 2016 23:43:00 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/post/git-usage/</guid>
-      <description>
-
-&lt;h1 id=&#34;git配置&#34;&gt;git配置&lt;/h1&gt;
-
-&lt;pre&gt;&lt;code&gt;git config --global user.email &amp;quot;1126045770@qq.com&amp;quot;
-git config --global user.name &amp;quot;sucongohu&amp;quot;
-
-git config --global core.autocrlf false
-git config --global color.ui true
-git config --global credential.helper store
-
-git config --global alias.lg &amp;quot;log --graph --all --pretty=format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci,%cr) %C(bold blue)&amp;lt;%an&amp;gt;%Creset&#39; --abbrev-commit --date=relative&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;以上分别是设置用户信息,禁止转换换行符,颜色高亮,记住密码,设置别名列出分支图. 设置别名后,可以使用 &lt;code&gt;git lg&lt;/code&gt; 查看各个分支关系&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;参数  说明&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;
-%H	commit hash
-%h	commit short hash
-%T	tree hash
-%t	tree short hash
-%P	parent hash
-%p	parent short hash
-%an	作者名字
-%aN	.mailmap 中对应的作者名字
-%ae	作者邮箱
-%aE	.mailmap 中对应的作者邮箱
-%ad	–date=制定的日期格式
-%aD	RFC2822 日期格式
-%ar	日期格式，例如：1 day ago
-%at	UNIX timestamp 日期格式
-%ai	ISO 8601 日期格式
-%cn	提交者名字
-%cN	.mailmap 对应的提交的名字
-%ce	提交者邮箱
-%cE	.mailmap 对应的提交者的邮箱
-%cd	–data=制定的提交日期的格式
-%cD	RFC2822 提交日期的格式
-%cr	提交日期的格式，例如：1day ago
-%ct	UNIX timestamp 提交日期的格式
-%ci	ISO 8601 提交日期的格式
-%d	ref 名称
-%e	encoding
-%s	commit 信息标题
-%f	过滤 commit 信息的标题使之可以作为文件名
-%b	commit 信息内容
-%N	commit notes
-%gD	reflog selector, e.g., refs/stash@{1}
-%gd	shortened reflog selector, e.g., stash@{1}
-%gs	reflog subject
-%Cred	切换至红色
-%Cgreen	切换至绿色
-%Cblue	切换至蓝色
-%Creset	重设颜色
-%C(color)	制定颜色，as described in color.branch.* config option
-%m	left right or boundary mark
-%n	换行
-%%	a raw %
-%x00	print a byte from a hex code
-%w([[,[,]]])	switch line wrapping, like the -w option of git-shortlog(1).
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;一个命令推送到多个服务端&lt;code&gt;vim .git/config&lt;/code&gt; ,添加一个区段,例如:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;[remote &amp;quot;all&amp;quot;]
-        url = https://git.oschina.net/suconghou/mvc.git
-        url = https://suconghou@git.coding.net/suconghou/mvc.git
-        url = https://github.com/suconghou/mvc.git
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;以后可以使用&lt;code&gt;git push all master&lt;/code&gt;一次推送到多个后端&lt;/p&gt;
-
-&lt;h1 id=&#34;git分支管理&#34;&gt;git分支管理&lt;/h1&gt;
-
-&lt;h2 id=&#34;1-创建分支&#34;&gt;1.创建分支&lt;/h2&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;git branch &amp;lt;分支名&amp;gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&#34;2-切换到分支&#34;&gt;2.切换到分支&lt;/h2&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;git checkout &amp;lt;分支名&amp;gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&#34;3-创建一个分支并切换过去&#34;&gt;3.创建一个分支并切换过去&lt;/h2&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;git checkout -b &amp;lt;分支名&amp;gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;或者&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;git checkout -b &amp;lt;分支名&amp;gt; master&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;后面是跟一个master说明创建的develop分支是基于当前的master， 如果当前就在master分支，则可以不写。 如果当前分支HEAD指向的是别的分支，又想基于master分支创建，就必须写master&lt;/p&gt;
-
-&lt;h2 id=&#34;4-分支合并&#34;&gt;4.分支合并&lt;/h2&gt;
-
-&lt;p&gt;如:要将develop分支合并和master分支
-首先切换的master分支：&lt;code&gt;git checkout master&lt;/code&gt;
-然后执行合并操作：&lt;code&gt;git merge develop&lt;/code&gt;
-如果有冲突，会提示你，调用&lt;code&gt;git status&lt;/code&gt;查看冲突文件。
-解决冲突，然后调用&lt;code&gt;git add&lt;/code&gt;或&lt;code&gt;git rm&lt;/code&gt;将解决后的文件暂存。
-所有冲突解决后，&lt;code&gt;git commit&lt;/code&gt;提交更改。&lt;/p&gt;
-
-&lt;h2 id=&#34;5-删除分支&#34;&gt;5.删除分支&lt;/h2&gt;
-
-&lt;p&gt;删除本地分支,删除分支之前记得先合并,以免数据丢失&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;git branch -d &amp;lt;分支名&amp;gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;code&gt;git push [远程名] [本地分支]:[远程分支]&lt;/code&gt; 本地分支的数据推送到远程分支,如果远程分支不存在,将会自动创建&lt;/p&gt;
-
-&lt;p&gt;如果本地分支为空格,则将删除远程分支 &lt;code&gt;git push origin :deletebranch&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;6-显示所有分支&#34;&gt;6.显示所有分支&lt;/h2&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;git branch -a&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;显示远端分支&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;git branch -r&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;code&gt;git push -all&lt;/code&gt; 把所有本地分支都推到远端&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;git pull origin remotebranch:localbranch&lt;/code&gt;
-将远程某分支拉倒本地某分支,当本地分支和远程分支名称相同时，只写一个就可以&lt;/p&gt;
-
-&lt;h1 id=&#34;git-tag-管理&#34;&gt;git tag 管理&lt;/h1&gt;
-
-&lt;h2 id=&#34;1-git-tag&#34;&gt;1.git tag&lt;/h2&gt;
-
-&lt;p&gt;在控制台打印出当前仓库的所有标签&lt;/p&gt;
-
-&lt;h2 id=&#34;2-git-tag-l-v0-1&#34;&gt;2.git tag -l &amp;lsquo;v0.1.*&amp;rsquo;&lt;/h2&gt;
-
-&lt;p&gt;搜索符合模式的标签&lt;/p&gt;
-
-&lt;h2 id=&#34;3-git-tag-v0-1-2-light&#34;&gt;3.git tag v0.1.2-light&lt;/h2&gt;
-
-&lt;p&gt;创建轻量标签&lt;/p&gt;
-
-&lt;h2 id=&#34;4-git-tag-a-v0-1-2-m-0-1-2版本&#34;&gt;4.git tag -a v0.1.2 -m &amp;ldquo;0.1.2版本&amp;rdquo;&lt;/h2&gt;
-
-&lt;p&gt;创建附注标签&lt;/p&gt;
-
-&lt;p&gt;git标签分为两种类型：轻量标签和附注标签。轻量标签是指向提交对象的引用，附注标签则是仓库中的一个独立对象。建议使用附注标签。&lt;/p&gt;
-
-&lt;h2 id=&#34;5-git-tag-d-v0-1-2&#34;&gt;5.git tag -d v0.1.2&lt;/h2&gt;
-
-&lt;p&gt;删除标签&lt;/p&gt;
-
-&lt;h2 id=&#34;6-git-push-origin-v0-1-2&#34;&gt;6.git push origin v0.1.2&lt;/h2&gt;
-
-&lt;p&gt;将v0.1.2标签提交到git服务器
-git push origin –-tags
-将本地所有标签一次性提交到git服务器
-通常的git push不会将标签对象提交到git服务器，所以我们需要进行显式的操作：&lt;/p&gt;
-
-&lt;h1 id=&#34;git-stash-操作&#34;&gt;git stash 操作&lt;/h1&gt;
-
-&lt;p&gt;1.git stash 可用来暂存当前正在进行的工作， 比如想pull 最新代码， 又不想加新commit， 或者另外一种情况，为了fix 一个紧急的bug,  先stash, 使返回到自己上一个commit, 改完bug之后再stash pop, 继续原来的工作。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;git stash
-//do some work
-git stash pop
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;2.同样可以使用 git stash save &amp;ldquo;work in progress for foo feature&amp;rdquo; 添加标记&lt;/p&gt;
-
-&lt;p&gt;3.当你多次使用&lt;code&gt;git stash&lt;/code&gt;命令后，你的栈里将充满了未提交的代码，这时候你会对将哪个版本应用回来有些困惑，
-&lt;code&gt;git stash list&lt;/code&gt; 命令可以将当前的Git栈信息打印出来，你只需要将找到对应的版本号，例如使用&lt;code&gt;git stash apply stash@{1}&lt;/code&gt;就可以将你指定版本号为stash@{1}的工作取出来，当你将所有的栈都应用回来的时候，可以使用&lt;code&gt;git stash clear&lt;/code&gt;来将栈清空。&lt;/p&gt;
-
-&lt;h2 id=&#34;svn&#34;&gt;svn&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;svn revert xx.html&lt;/code&gt; 和&lt;code&gt;git checkout xx.html&lt;/code&gt; 类似,还原文件的更改&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Sublime使用和设置</title>
-      <link>http://blog.suconghou.cn/post/sublime-usage/</link>
-      <pubDate>Fri, 08 Jan 2016 23:21:12 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/post/sublime-usage/</guid>
-      <description>
-
-&lt;h2 id=&#34;配置文件&#34;&gt;配置文件&lt;/h2&gt;
-
-&lt;p&gt;最喜欢的字体&lt;code&gt;Monaco&lt;/code&gt;,&lt;a href=&#34;http://share.suconghou.cn/fonts/MONACO.TTF&#34;&gt;此处下载&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;配置文件
-&lt;code&gt;Preferences.sublime-settings&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;{
-	&amp;quot;close_windows_when_empty&amp;quot;: true,
-	&amp;quot;default_encoding&amp;quot;: &amp;quot;UTF-8&amp;quot;,
-	&amp;quot;default_line_ending&amp;quot;: &amp;quot;unix&amp;quot;,
-	&amp;quot;ensure_newline_at_eof_on_save&amp;quot;: true,
-	&amp;quot;font_face&amp;quot;: &amp;quot;Monaco&amp;quot;,
-	&amp;quot;font_size&amp;quot;: 13,
-	&amp;quot;highlight_line&amp;quot;: true,
-	&amp;quot;highlight_modified_tabs&amp;quot;: true,
-	&amp;quot;ignored_packages&amp;quot;:
-	[
-		&amp;quot;Vintage&amp;quot;
-	],
-	&amp;quot;show_encoding&amp;quot;: true,
-	&amp;quot;show_line_endings&amp;quot;: true,
-	&amp;quot;tab_size&amp;quot;: 4,
-	&amp;quot;translate_tabs_to_spaces&amp;quot;: false,
-	&amp;quot;trim_trailing_white_space_on_save&amp;quot;: true,
-	&amp;quot;update_check&amp;quot;: false,
-	&amp;quot;word_wrap&amp;quot;: false
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;插件&#34;&gt;插件&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;open_browser.py&lt;/code&gt; 插件&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;import sublime, sublime_plugin
-import webbrowser
-import os
-
-url_map = {
-    &#39;D:\\git\\bbs\\&#39; : &#39;http://127.0.0.3/&#39;,
-    &#39;D:\\php\\su\\&#39; : &#39;http://127.0.0.2/&#39;,
-    &#39;D:\\php\\htdocs\\&#39; : &#39;http://127.0.0.1/&#39;
-}
-
-class OpenBrowserCommand(sublime_plugin.TextCommand):
-    def run(self,edit):
-        window = sublime.active_window()
-        window.run_command(&#39;save&#39;)
-        url = self.view.file_name()
-        flag = False
-        for path, domain in url_map.items():
-            if url.startswith(path):
-                url = url.replace(path, domain).replace(&#39;\\&#39;, &#39;/&#39;)
-                flag = True
-                break
-        if not flag:
-            cmd1=&#39;taskkill /f /im php.exe&#39;
-            cmd2=&#39;php -S 0.0.0.0:8088 -t &#39;+os.path.abspath(os.path.dirname(self.view.file_name()))
-            os.system(cmd1)
-            os.popen(cmd2)
-            url =  &#39;http://127.0.0.1:8088/&#39;+os.path.basename(self.view.file_name())
-        webbrowser.open_new(url)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;编译系统&#34;&gt;编译系统&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;node.sublime-build&lt;/code&gt; 执行nodejs代码&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;{
-	&amp;quot;shell_cmd&amp;quot;: &amp;quot;node ${file}&amp;quot;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;快捷键配置&#34;&gt;快捷键配置&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;Default (OSX).sublime-keymap&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;[
-	{ &amp;quot;keys&amp;quot;: [&amp;quot;alt+d&amp;quot;], &amp;quot;command&amp;quot;: &amp;quot;open_dir&amp;quot;, &amp;quot;args&amp;quot;: {&amp;quot;dir&amp;quot;: &amp;quot;$file_path&amp;quot;, &amp;quot;file&amp;quot;: &amp;quot;$file_name&amp;quot;} },
-	{ &amp;quot;keys&amp;quot;: [&amp;quot;ctrl+shift+c&amp;quot;], &amp;quot;command&amp;quot;: &amp;quot;copy_path&amp;quot; },
-	{ &amp;quot;keys&amp;quot;: [&amp;quot;ctrl+f11&amp;quot;], &amp;quot;command&amp;quot;: &amp;quot;toggle_distraction_free&amp;quot; }
-]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;添加sublime到命令行&#34;&gt;添加sublime到命令行&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;MacOs&lt;/code&gt;下&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/local/bin/sublime
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;激活码&#34;&gt;激活码&lt;/h2&gt;
-
-&lt;p&gt;3103可用激活码&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;—– BEGIN LICENSE —–
-Ryan Clark
-Single User License
-EA7E-812479
-2158A7DE B690A7A3 8EC04710 006A5EEB
-34E77CA3 9C82C81F 0DB6371B 79704E6F
-93F36655 B031503A 03257CCC 01B20F60
-D304FA8D B1B4F0AF 8A76C7BA 0FA94D55
-56D46BCE 5237A341 CD837F30 4D60772D
-349B1179 A996F826 90CDB73C 24D41245
-FD032C30 AD5E7241 4EAA66ED 167D91FB
-55896B16 EA125C81 F550AF6B A6820916
-—— END LICENSE ——
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;3103之前版本可用&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;----- BEGIN LICENSE -----
-Andrew Weber
-Single User License
-EA7E-855605
-813A03DD 5E4AD9E6 6C0EEB94 BC99798F
-942194A6 02396E98 E62C9979 4BB979FE
-91424C9D A45400BF F6747D88 2FB88078
-90F5CC94 1CDC92DC 8457107A F151657B
-1D22E383 A997F016 42397640 33F41CFC
-E1D0AE85 A0BBD039 0E9C8D55 E1B89D5D
-5CDB7036 E56DE1C0 EFCC0840 650CD3A6
-B98FC99C 8FAC73EE D2B95564 DF450523
------- END LICENSE ------
-&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     

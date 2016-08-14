@@ -82,7 +82,7 @@
 
 &lt;h3 id=&#34;android平台&#34;&gt;android平台&lt;/h3&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/shadowsocks/shadowsocks-nightly-2.10.7.apk&#34;&gt;shadowsocks-nightly-2.10.7&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/shadowsocks/shadowsocks-nightly-3.0.3.apk&#34;&gt;shadowsocks-nightly-3.0.3&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;服务端可以使用docker更方便 &lt;a href=&#34;https://hub.docker.com/r/suconghou/shadowsocks/&#34;&gt;shadowsocks docker&lt;/a&gt;&lt;/p&gt;
 </description>
@@ -118,15 +118,29 @@
 
 &lt;p&gt;所有资源均来源于官网&lt;code&gt;http://git-scm.com/download/win&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;最新版本2.9.2,发布于 2016-7-16.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;最新版本2.9.3,发布于2016-08-13&lt;/strong&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;32位资源&#34;&gt;32位资源&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/Git-2.9.3-32-bit.exe&#34;&gt;32位安装版&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/PortableGit-2.9.3-64-bit.7z.exe&#34;&gt;32位绿色版&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;64位资源&#34;&gt;64位资源&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/Git-2.9.3-64-bit.exe&#34;&gt;64位安装版&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/PortableGit-2.9.3-64-bit.7z.exe&#34;&gt;64位绿色版&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;版本2.9.2,发布于2016-7-16&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;32位资源-1&#34;&gt;32位资源&lt;/h3&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/Git-2.9.2-32-bit.exe&#34;&gt;32位安装版&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/PortableGit-2.9.2-64-bit.7z.exe&#34;&gt;32位绿色版&lt;/a&gt;&lt;/p&gt;
 
-&lt;h3 id=&#34;64位资源&#34;&gt;64位资源&lt;/h3&gt;
+&lt;h3 id=&#34;64位资源-1&#34;&gt;64位资源&lt;/h3&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/Git-2.9.2-64-bit.exe&#34;&gt;64位安装版&lt;/a&gt;&lt;/p&gt;
 
@@ -144,22 +158,13 @@
 
 &lt;h2 id=&#34;下载-android-studio&#34;&gt;下载 Android Studio&lt;/h2&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://www.oschina.net/news/75353/android-studio-2-2-preview-6&#34;&gt;http://www.oschina.net/news/75353/android-studio-2-2-preview-6&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.oschina.net/news/75991/android-studio-2-2-beta&#34;&gt;http://www.oschina.net/news/75991/android-studio-2-2-beta&lt;/a&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;Windows: https://dl.google.com/dl/android/studio/ide-zips/2.2.0.5/android-studio-ide-145.3070098-windows.zip (449.3 MiB)
-Mac: https://dl.google.com/dl/android/studio/ide-zips/2.2.0.5/android-studio-ide-145.3070098-mac.zip  (449.8 MiB)
-Linux:  https://dl.google.com/dl/android/studio/ide-zips/2.2.0.5/android-studio-ide-145.3070098-linux.zip  (448.9 MiB)
-&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Windows: https://dl.google.com/dl/android/studio/ide-zips/2.2.0.7/android-studio-ide-145.3128856-windows.zip (461.5 MiB)
 
-&lt;pre&gt;&lt;code&gt;root /home/demo/goproj/src/Test/public;
-try_files $uri/index.html $uri.html $uri @goapp;
+Mac: https://dl.google.com/dl/android/studio/ide-zips/2.2.0.7/android-studio-ide-145.3128856-mac.zip (462.1 MiB)
 
-location @goapp {
-	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-	proxy_set_header Host $http_host;
-	proxy_redirect off;
-	proxy_pass http://localhost:8080;
-}
+Linux: https://dl.google.com/dl/android/studio/ide-zips/2.2.0.7/android-studio-ide-145.3128856-linux.zip (461.2 MiB)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h2 id=&#34;安装android-sdk&#34;&gt;安装android-sdk&lt;/h2&gt;

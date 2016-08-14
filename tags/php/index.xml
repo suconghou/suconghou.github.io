@@ -163,6 +163,10 @@ location @goapp {
 
 &lt;p&gt;在使用正则匹配时,&lt;code&gt;proxy_pass&lt;/code&gt;后面是禁止添加&lt;code&gt;/&lt;/code&gt;或者&lt;code&gt;uri&lt;/code&gt;的,否则报错.&lt;/p&gt;
 
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;使用if判断时,if和括号之间是必须要加空格的,判断文件,目录是否存在&lt;code&gt;!-f&lt;/code&gt;,&lt;code&gt;!-d&lt;/code&gt;也是连起来的不能有空格&lt;/p&gt;
+
 &lt;h3 id=&#34;附上卸载apache方法&#34;&gt;附上卸载Apache方法&lt;/h3&gt;
 
 &lt;ul&gt;

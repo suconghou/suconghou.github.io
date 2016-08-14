@@ -34,6 +34,473 @@
 		
 		<div class="post">
 			<h1 class="post-title">
+				<a href="/post/javascript-code-snippet/"> javascript code snippet</a>
+			</h1>
+			<p class="post-date">Thu, Aug 11, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="实用的javascript代码锦集">实用的Javascript代码锦集</h2>
+
+<h3 id="获取查询查询字符串get参数值">获取查询查询字符串get参数值</h3>
+
+<pre><code>function getParam()
+{
+	var data = decodeURIComponent(location.href).split(&quot;?&quot;)[1].split(&quot;&amp;&quot;);
+	var param = {};
+	for(var i = 0; i&lt;data .length; i++)
+	{
+		param[data [i].split(&quot;=&quot;)[0]] = data [i].split(&quot;=&quot;)[1];
+	}
+	return param;
+}
+</code></pre>
+
+<p>类似于PHP中的<code>$_GET</code></p>
+
+<pre><code>var $_GET = (function()
+{
+	var url = decodeURIComponent(location.href);
+	var u = url.split( &quot;?&quot; );
+	if ( typeof (u[1]) == &quot;string&quot; )
+	{
+		u = u[1].split( &quot;&amp;&quot; );
+		var get = {};
+		for ( var i in u)
+		{
+			var j = u[i].split( &quot;=&quot; );
+			get[j[0]] = j[1];
+		}
+		return get;
+	}
+	else
+	{
+		return {};
+	}
+})();
+</code></pre>
+
+<p>给出要获取的参数,每次都会解析一遍</p>
+
+<pre><code>function getPar(par)
+{
+	//获取当前URL
+	var local_url = decodeURIComponent(location.href);
+	//获取要取得的get参数位置
+	var get = local_url.indexOf(par + &quot;=&quot; );
+	if (get == -1)
+	{
+		return false ;
+	}
+	//截取字符串
+	var get_par = local_url.slice(par.length + get + 1);
+	//判断截取后的字符串是否还有其他get参数
+	var nextPar = get_par.indexOf( &quot;&amp;&quot; );
+	if (nextPar != -1)
+	{
+		get_par = get_par.slice(0, nextPar);
+	}
+	return get_par;
+}
+</code></pre>
+
+<p>QueryString</p>
+
+<pre><code>function QueryString(item)
+{
+	var value = location.search.match(new RegExp('[\?\&amp;]' + item + '=([^\&amp;]*)(\&amp;?)','i'));
+	return value ? value[1] : value;
+}
+</code></pre>
+
+<h3 id="取得cookie中某个键的值">取得Cookie中某个键的值</h3>
+
+<pre><code>$.getCookie = function(name)
+{
+	 if(document.cookie.indexOf(name)!=-1) return document.cookie.split(name+'=')[1].split(';')[0]
+}
+</code></pre>
+
+<p>另一个</p>
+
+<pre><code>function getcookie(cookieid)
+{
+	//获取cookie字符串
+	var strCookie=document.cookie;
+	//将多cookie切割为多个名/值对
+	var arrCookie=strCookie.split(&quot;; &quot;);
+	var cookieval;
+	//遍历cookie数组，处理每个cookie对
+	for(var i=0;i&lt;arrCookie.length;i++)
+	{
+		var arr=arrCookie[i].split(&quot;=&quot;);
+		//找到名称为userId的cookie，并返回它的值
+		if(cookieid==arr[0])
+		{
+			cookieval=arr[1];
+			break;
+		}
+	}
+	return(cookieval);
+}
+</code></pre>
+
+<h3 id="进入全屏">进入全屏</h3>
+
+<pre><code>function gofull()
+{
+	var el=document.documentElement;
+	el.webkitRequestFullScreen&amp;&amp;el.webkitRequestFullScreen();
+	el.mozRequestFullScreen&amp;&amp;el.mozRequestFullScreen();
+	el.requestFullscreen&amp;&amp;el.requestFullscreen();
+}
+</code></pre>
+
+<h3 id="字符串去空格">字符串去空格</h3>
+
+<pre><code>String.prototype.trim=function() {return this.replace(/(^\s*)|(\s*$)/g,&quot;&quot;); }
+String.prototype.ltrim=function(){return this.replace(/(^\s*)/g,&quot;&quot;); }
+String.prototype.rtrim=function(){return this.replace(/(\s*$)/g,&quot;&quot;); }
+</code></pre>
+
+<h3 id="字节格式化">字节格式化</h3>
+
+<pre><code>function size(size)
+{
+	var name=['B','KB','MB','GB','TB','PB'];
+	var pos=0;
+	while(size&gt;=1204)
+	{
+	    size/=1024;
+	    pos++;
+	}
+	return size.toFixed(2)+&quot; &quot;+name[pos];
+}
+</code></pre>
+
+<h3 id="一些正则验证">一些正则验证</h3>
+
+<p>验证邮箱</p>
+
+<pre><code>function is_mail(str)
+{
+	return(new RegExp(/^[0-9a-zA-Z]+@(([0-9a-zA-Z]+)[.])+[a-z]{2,4}$/i).test(str));
+}
+</code></pre>
+
+<p>验证手机号</p>
+
+<pre><code>function is_tel(str)
+{
+	return(new RegExp(/^1[34578][0-9]{9}$/).test(str));
+}
+</code></pre>
+
+<h3 id="base64的1x1像素间隔gif">Base64的1x1像素间隔gif</h3>
+
+<pre><code>&lt;img src=&quot;data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7&quot;&gt;
+</code></pre>
+
+<h3 id="一个range函数">一个range函数</h3>
+
+<pre><code>function range(start, count)
+{
+	return Array.apply(0, Array(count)).map(function (element, index)
+	{
+		return index + start;
+	});
+}
+</code></pre>
+
+<h3 id="简化-console-log">简化<code>console.log</code></h3>
+
+<pre><code>var log = console.log.bind(console);
+</code></pre>
+
+<h3 id="生成较短的唯一id">生成较短的唯一ID</h3>
+
+<p>一定年限内单线程非连续调用唯一</p>
+
+<pre><code>function shortId()
+{
+	var time=Date.now()+'';
+	time=parseInt(time.substr(1));
+	return time.toString(36);
+}
+</code></pre>
+
+<p>生成随机短ID,仅具备较低的不重复性</p>
+
+<pre><code>var t=(((1+Math.random())*0x10000000)|0).toString(16);
+</code></pre>
+
+<h3 id="给jquery的form添加-serializeobject">给jQuery的form添加<code>serializeObject</code></h3>
+
+<pre><code>jQuery.prototype.serializeObject=function()
+{
+	var a,o,h,i,e;
+	a=this.serializeArray();
+	o={};
+	h=o.hasOwnProperty;
+	for(i=0;i&lt;a.length;i++)
+	{
+		e=a[i];
+		if(!h.call(o,e.name))
+		{
+			o[e.name]=e.value;
+		}
+	}
+	return o;
+};
+</code></pre>
+
+<p>使用效果如下</p>
+
+<pre><code>jQuery(&quot;form&quot;).serialize(); //&quot;username=&amp;password=&quot;
+jQuery(&quot;form&quot;).serializeArray(); //[{name:&quot;username&quot;,value:&quot;&quot;},{name:&quot;password&quot;,value:&quot;&quot;}]
+jQuery(&quot;form&quot;).serializeObject(); //{username:&quot;&quot;,password:&quot;&quot;}
+</code></pre>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
+				<a href="/post/javascript-senior/"> javascript senior</a>
+			</h1>
+			<p class="post-date">Tue, Aug 9, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="javascript-参数传递">Javascript 参数传递</h2>
+
+<p>说起参数传递,首先需要弄清楚javascript里的数据类型</p>
+
+<p>原始数据类型
+<code>Undefined</code> <code>Null</code> <code>Boolean</code> <code>Number</code> <code>String</code></p>
+
+<p>引用数据类型</p>
+
+<p><code>Object</code> <code>Array</code> <code>Function</code> <code>Date</code> 等</p>
+
+<p>原始数据类型存储在栈的简单数据段,他们的值直接存储在变量访问的位置(因原始数据类型占据的空间是固定的,可以存储在较小的内存区域<code>栈</code>中)</p>
+
+<p>引用数据类型是存储在堆中的对象,存储在变量处的值只是一个指针,指向存储对象的内存地址,这是因为引用类型的大小会改变.</p>
+
+<p>不同的内存分配机制带来不同的访问机制</p>
+
+<p>在JavaScript中,是不允许直接访问保存在堆内存中的对象的,访问对象时必须取得对象在堆内存中的地址,然后按地址去取得对象中的值.</p>
+
+<p>这便是传说中的按引用访问.</p>
+
+<p>而原始类型则是直接访问到的.</p>
+
+<p><strong>复制变量时的不同</strong></p>
+
+<p>原始值:</p>
+
+<p>会将原始值的副本赋值给新变量.此后两个变量完全独立.</p>
+
+<p>引用值:</p>
+
+<p>会把内存地址赋值给新变量,也就是说两个变量都指向堆内存中的同一个对象.
+他们中任何一个改变都会反映到另一个身上.</p>
+
+<p><strong>参数传递的不同</strong></p>
+
+<p>最重要的一点:<code>ECMAScript</code>中所有函数的参数都是按值传递的.</p>
+
+<p>但原始值和引用值仍会造成不同的后果.</p>
+
+<p>原始值:</p>
+
+<p>把变量里的值传递给参数,之后两个变量互不影响.(就是把实参复制给形参的过程)</p>
+
+<p>引用值:</p>
+
+<p>任然是将实参里面的值复制到形参,但是注意<em>对象变量它里面的值是这个对象的堆内存地址</em></p>
+
+<p>也就是说形参和实参都是指向同一个堆内存对象.</p>
+
+<p>但是也要记住另外一点:如果形参被赋值为另外一个对象时,那么这个形参将会丢弃对上次指向的堆内存地址,而指向新对象的堆内存地址.</p>
+
+<p>此时,形参和实参相互脱离,互不影响,原先的实参任然指向原先对象的堆内存地址.</p>
+
+<p>如果是添加修改形参的属性,那么就是修改堆内存中的对象,形参和实参将同时得到反映,因为他们指向的是同一个堆内存对象.</p>
+
+<p>这种传递方式被称为<code>Call By Sharing</code></p>
+
+<pre><code>function box(obj)
+{
+	obj.name='hello';
+	var obj=new Object();
+	obj.name='world';
+}
+var obj=new Object();
+box(obj);
+console.log(obj.name);
+</code></pre>
+
+<p>注意两点:
+1. <code>var obj=new Object()</code> 声明提升</p>
+
+<p>变为</p>
+
+<pre><code>var obj;
+obj.name='hello';
+obj=new Object();
+obj.name='world';
+</code></pre>
+
+<p>函数的已存在一个变量形参<code>obj</code>,再次的变量申明会忽略</p>
+
+<p>2.<code>obj=new Object()</code> 时,obj的修改就不会影响外层obj变量了,因为他此时已经脱离执行那个堆内存对象了.</p>
+
+<blockquote>
+<p>参考 <a href="http://www.zhihu.com/question/27114726">http://www.zhihu.com/question/27114726</a></p>
+</blockquote>
+
+<h2 id="object-create">Object.create</h2>
+
+<p>简单来讲，new Object()是一种通过构造函数来创建object的方式，而Object.create(proto, [ propertiesObject ])
+不需要通过构造函数就可以创建一个object，Object.create()的第一个参数是必须要的，第二个参数可选。其实Object.create()内部依然是通过new一个构造函数的方式来实现的，它有构造函数，不过这个构造函数是隐式存在的，看一下使老旧浏览器支持Object.create方法的“polyfill”就可以对它们之间的区别一目了然了：</p>
+
+<pre><code>if (!Object.create) {
+    Object.create = function (o) {
+    function F() {}  //定义了一个隐式的构造函数
+    F.prototype = o;
+    return new F();  //其实还是通过new来实现的
+    };
+  }
+</code></pre>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
+				<a href="/post/use-haproxy/"> HAProxy优化应用程序速度</a>
+			</h1>
+			<p class="post-date">Fri, Jul 29, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="haproxy">HAProxy</h2>
+
+<p>HAProxy高性能的反向代理软件,更专注于TCP,HTTP处理,它可以基于四层或七层进行反向代理,尤其适合于高负载且需要进行七层处理的 Web 站点.</p>
+
+<p>单进程、事件驱动模型,通常用于超高流量的负载均衡.</p>
+
+<p>我们也可以使用它来作为中转站,使直连连通率不好的请求进过中转提升速度.</p>
+
+<h3 id="编译安装">编译安装</h3>
+
+<p>编译haproxy时必须制定target,不能直接make</p>
+
+<pre><code>Due to too many reports of suboptimized setups, building without
+specifying the target is no longer supported. Please specify the
+target OS in the TARGET variable, in the following form:
+
+   make TARGET=xxx
+
+Please choose the target among the following supported list :
+
+   linux2628, linux26, linux24, linux24e, linux22, solaris
+   freebsd, openbsd, cygwin, custom, generic
+
+Use &quot;generic&quot; if you don't want any optimization, &quot;custom&quot; if you
+want to precisely tweak every option, or choose the target which
+matches your OS the most in order to gain the maximum performance
+out of it. Please check the Makefile in case of doubts.
+
+</code></pre>
+
+<blockquote>
+<p>linux2628 表示  内核版本&gt;=2.6.28</p>
+</blockquote>
+
+<pre><code>HAPROXY_VERSION=haproxy-1.6.7
+CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
+wget http://www.haproxy.org/download/1.6/src/${HAPROXY_VERSION}.tar.gz
+tar zxf ${HAPROXY_VERSION}.tar.gz
+cd ${HAPROXY_VERSION}
+export CFLAGS=&quot;-O3&quot;
+make TARGET=linux2628 ARCH=X86_64 -j$CPU_NUM &amp;&amp; make install
+
+</code></pre>
+
+<h3 id="使用docker版本的haproxy">使用Docker版本的HAProxy</h3>
+
+<p>这里提供一份编译好的最新版HAProxy镜像 <a href="https://hub.docker.com/r/suconghou/haproxy/">https://hub.docker.com/r/suconghou/haproxy/</a></p>
+
+<h3 id="优化国外主机速度">优化国外主机速度</h3>
+
+<p>HAProxy有多种连接模型,还有多种负载均衡算法,由于只有一台机器,我们主要侧重于使用它的反向代理.</p>
+
+<p>HAProxy可以一边保持与代理后端的长连接,一边又保持对客户端的连接.
+这样双向保持持久连接,省去了中间反复创建连接可以在一定程度上优化速度.</p>
+
+<p>其只需要一个配置文件,配置主要有以下几部分功能</p>
+
+<ul>
+<li><code>default</code>：用于为所有其它配置段提供默认参数</li>
+<li><code>frontend</code>：用于定义一系列监听的套接字，这些套接字可接受客户端请求并与之建立连接</li>
+<li><code>backend</code>：用于定义一系列后端服务器，代理将会将对应客户端的请求转发至这些服务器</li>
+<li><code>listen</code>： 通过关联前端和后端定义了一个完整的代理</li>
+</ul>
+
+<p>配置写在<code>haproxy.cfg</code>文件中,启动的时候指定使用的配置文件.</p>
+
+<p>如<code>haproxy -c -f /etc/haproxy/haproxy.cfg</code>检查配置文件,<code>haproxy -f /etc/haproxy/haproxy.cfg</code>使用此配置文件启动</p>
+
+<p>一个简单的配置文件如下</p>
+
+<pre><code>global
+    log         127.0.0.1 local3
+    pidfile     /var/run/haproxy.pid
+    user        haproxy
+    group       haproxy
+    daemon
+
+defaults
+    mode                    http
+    log                     global
+    retries                 3
+    timeout http-request    10s
+    timeout queue           1m
+    timeout connect         10s
+    timeout client          1m
+    timeout server          1m
+    timeout http-keep-alive 10s
+    timeout check           10s
+    maxconn                 30000
+
+frontend http-in
+    mode http
+    bind 0.0.0.0:1080
+    option http-keep-alive
+    default_backend  servers
+
+backend servers
+	option http-keep-alive
+    server myserver 192.243.115.210:80 check maxconn 6000
+</code></pre>
+
+<p>还有一个在应对高并发时通常都需要改的
+<code>ulimit -n 8192</code></p>
+
+<p><code>ulimit -n</code> 可以查看当前的</p>
+
+<p>重启HAProxy</p>
+
+<pre><code>haproxy -f /etc/haproxy/haproxy.cfg -st `cat /var/run/haproxy.pid`
+</code></pre>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
 				<a href="/software/some-dev-tools/"> some dev tools</a>
 			</h1>
 			<p class="post-date">Sun, Jul 17, 2016</p>
@@ -106,194 +573,9 @@
 
 <h3 id="android平台">android平台</h3>
 
-<p><a href="http://share.suconghou.cn/shadowsocks/shadowsocks-nightly-2.10.7.apk">shadowsocks-nightly-2.10.7</a></p>
+<p><a href="http://share.suconghou.cn/shadowsocks/shadowsocks-nightly-3.0.3.apk">shadowsocks-nightly-3.0.3</a></p>
 
 <p>服务端可以使用docker更方便 <a href="https://hub.docker.com/r/suconghou/shadowsocks/">shadowsocks docker</a></p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/software/picasa-photo-viewer/"> picasa photo viewer</a>
-			</h1>
-			<p class="post-date">Sun, Jul 17, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="picasaphotoviewer-图片查看器-v3-9-136-9">PicasaPhotoViewer(图片查看器) v3.9.136.9</h2>
-
-<p>Picasa内置的图片浏览器,Google出品,此版本为独木成林提取出来的.</p>
-
-<p>只有1.7MB,启动速度快,十分好用,有一个缺点是可能因为版权问题未对GIF做支持.</p>
-
-<p><a href="http://share.suconghou.cn/ImageView/PicasaPhotoViewer_3.9.136.9.exe">PicasaPhotoViewerv3.9.136.9</a></p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/software/git-for-windows/"> git for windows</a>
-			</h1>
-			<p class="post-date">Sun, Jul 17, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="git-for-windows-国内下载">git for windows 国内下载</h2>
-
-<p>所有资源均来源于官网<code>http://git-scm.com/download/win</code></p>
-
-<p>最新版本2.9.2,发布于 2016-7-16.</p>
-
-<h3 id="32位资源">32位资源</h3>
-
-<p><a href="http://share.suconghou.cn/git/Git-2.9.2-32-bit.exe">32位安装版</a></p>
-
-<p><a href="http://share.suconghou.cn/git/PortableGit-2.9.2-64-bit.7z.exe">32位绿色版</a></p>
-
-<h3 id="64位资源">64位资源</h3>
-
-<p><a href="http://share.suconghou.cn/git/Git-2.9.2-64-bit.exe">64位安装版</a></p>
-
-<p><a href="http://share.suconghou.cn/git/PortableGit-2.9.2-64-bit.7z.exe">64位绿色版</a></p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/react-native/"> react native</a>
-			</h1>
-			<p class="post-date">Mon, Jul 11, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="react-native">react native</h2>
-
-<h3 id="环境准备">环境准备</h3>
-
-<p>前提是需要node和npm,这里不在赘述.介绍一个npm加速的.</p>
-
-<p>使用淘宝的npm镜像.控制台运行,或者加入你的bashrc中永久生效</p>
-
-<pre><code>alias cnpm=&quot;npm --registry=https://registry.npm.taobao.org --cache=$HOME/.npm/.cache/cnpm --disturl=https://npm.taobao.org/dist --userconfig=$HOME/.cnpmrc&quot;;
-</code></pre>
-
-<p>安装开发必备的一些package</p>
-
-<pre><code>cnpm install -g react-native-cli webpack
-</code></pre>
-
-<p><code>react-native</code>也调用了<code>npm</code>命令,所以我们可以再来个alias加速<code>react-native init</code></p>
-
-<p><code>alias npm='cnpm'</code></p>
-
-<p>或者直接将仓库改为淘宝的NPM镜像</p>
-
-<pre><code>npm config set registry https://registry.npm.taobao.org
-npm config set disturl https://npm.taobao.org/dist
-</code></pre>
-
-<p>在mac上还需要一些东西</p>
-
-<pre><code>brew install flow watchman
-</code></pre>
-
-<p>安装完以后可以开始helloworld了.</p>
-
-<h3 id="开始第一个例子">开始第一个例子</h3>
-
-<pre><code>cd /data/tmp
-react-native init HelloWorld
-</code></pre>
-
-<p>然后正在初始化大致如下</p>
-
-<pre><code>This will walk you through creating a new React Native project in /data/tmp/HelloWorld
-Installing react-native package from npm...
-Setting up new React Native app in /data/tmp/HelloWorld
-HelloWorld@0.0.1 /data/tmp/HelloWorld
-└── react@15.2.1
-
-To run your app on iOS:
-   cd /data/tmp/HelloWorld
-   react-native run-ios
-   - or -
-   Open /data/tmp/HelloWorld/ios/HelloWorld.xcodeproj in Xcode
-   Hit the Run button
-To run your app on Android:
-   Have an Android emulator running (quickest way to get started), or a device connected
-   cd /data/tmp/HelloWorld
-   react-native run-android
-</code></pre>
-
-<p>使用<code>React</code>类名(组件名)必须首字母大写才会被认为是一个组件,否则在JSX里只会当做普通标签</p>
-
-<p><strong>下面是一些针对开发IOS的教程</strong></p>
-
-<p>我们执行<code>react-native run-ios</code>开始编译运行,前提是你必须安装了<code>xcode</code>哦.</p>
-
-<p>执行后,出现<code>BUILD SUCCEEDED</code>,同时自动打开新的终端运行了一个server在8081端口.</p>
-
-<p>模拟器中也会出现刚编译好的app的窗口,使用<code>cmd+r</code>刷新,<code>cmd+d</code>弹出开发菜单.</p>
-
-<p>我们可以修改<code>index.ios.js</code>开始开发了.</p>
-
-<p><strong>下面是一些针对开发Android的教程</strong></p>
-
-<h3 id="问题">问题</h3>
-
-<p>在使用<code>fetch</code>调用接口时,可能会出现<code>The resource could not be loaded because the App Transport Security policy requires the use of a secure connection.</code>错误</p>
-
-<p>这是IOS9要求必须使用https通信,需要修改 <a href="http://stackoverflow.com/questions/30731785/how-do-i-load-an-http-url-with-app-transport-security-enabled-in-ios-9">http://stackoverflow.com/questions/30731785/how-do-i-load-an-http-url-with-app-transport-security-enabled-in-ios-9</a></p>
-
-<p>其实<code>react native</code>创建<code>Info.plist</code>时就已经为我们说明了,在<code>NSExceptionDomains</code>下面的<code>dict</code>里添加一个排除域名就OK了.</p>
-
-<p>注意,不能将默认的<code>localhost</code>去掉,否则会出现<code>_fbBatchedBridge is undefined</code>错误.</p>
-
-<h2 id="打包">打包</h2>
-
-<h3 id="对android项目打包">对android项目打包</h3>
-
-<p>使用<code>keytool</code>生成签名文件,在任意目录下执行</p>
-
-<pre><code>keytool -genkey -v -keystore my-release-key.keystore  -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
-</code></pre>
-
-<p>上面<code>my-release-key</code>可以自己定义,后面的<code>my-key-alias</code>也可以自己定义.运行后输入一下相关信息后,生成<code>my-release-key.keystore</code>文件.</p>
-
-<p>其中输入的两次密码,需要记住.将这个文件移动到<code>android/app</code>目录下,编译<code>android/app</code>里的<code>build.gradle</code>,添加下面的内容</p>
-
-<pre><code>android {
-    ...
-    defaultConfig { ... }
-    signingConfigs {
-        release {
-            storeFile file(MYAPP_RELEASE_STORE_FILE)
-            storePassword MYAPP_RELEASE_STORE_PASSWORD
-            keyAlias MYAPP_RELEASE_KEY_ALIAS
-            keyPassword MYAPP_RELEASE_KEY_PASSWORD
-        }
-    }
-    ...
-    buildTypes {
-        release {
-              ...
-              signingConfig signingConfigs.release
-        }
-    }
-}
-</code></pre>
-
-<p>在<code>android</code>目录下运行如下命令,就可以打包,安装到自己手机上,前提是手机已usb调试连接到电脑</p>
-
-<pre><code>./gradlew assembleRelease
-cd app/build/outputs/apk
-adb install -r app-release.apk
-</code></pre>
-
-<p>参考 <a href="https://facebook.github.io/react-native/docs/signed-apk-android.html">https://facebook.github.io/react-native/docs/signed-apk-android.html</a></p>
 
 			</div>
 		</div>
@@ -332,12 +614,15 @@ adb install -r app-release.apk
         ><a href="/page/6/">6</a></li>
         
         <li
+        ><a href="/page/7/">7</a></li>
+        
+        <li
         >
         <a href="/page/2/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
         </li>
         
         <li>
-            <a href="/page/6/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+            <a href="/page/7/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
         </li>
         
     </ul>

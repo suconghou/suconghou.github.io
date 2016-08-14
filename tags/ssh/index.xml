@@ -81,6 +81,8 @@ SSH会建立一个socket，去监听本地的8080端口。一旦有数据传向�
 
 &lt;p&gt;这样就映射vps的2222端口到树莓派上了.但是这样映射的是服务器的127.0.0.1:2222,外网无法连接这个2222端口&lt;/p&gt;
 
+&lt;p&gt;如果你自己的服务器连接时需要端口可以在最后加上 &lt;code&gt;-p port&lt;/code&gt; 指定ssh的端口&lt;/p&gt;
+
 &lt;p&gt;可以在服务器上执行&lt;code&gt;netstat -anltp&lt;/code&gt;查看,这样要先登陆到自己的vps才能通过2222访问树莓派.&lt;/p&gt;
 
 &lt;p&gt;可以使用&lt;/p&gt;

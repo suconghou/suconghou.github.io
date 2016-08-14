@@ -34,6 +34,883 @@
 		
 		<div class="post">
 			<h1 class="post-title">
+				<a href="/post/use-crontab-in-your-server/"> Crontab与自动备份</a>
+			</h1>
+			<p class="post-date">Tue, Jan 12, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="crontab使用">Crontab使用</h2>
+
+<p><code>crontab -l</code> 查看当前用户的crontab列表
+使用<code>crontab -e</code>开始编辑规则</p>
+
+<pre><code>基本格式 :
+*　　*　　*　　*　　*　　command
+分　 时 　日 　月　 周　 命令
+
+* 第1列表示分钟1～59 每分钟用*或者*/1表示
+* 第2列表示小时1～23（0表示0点）
+* 第3列表示日期1～31
+* 第4列表示月份1～12
+* 第5列标识号星期0～6（0表示星期天）
+* 第6列要运行的命令
+</code></pre>
+
+<p>禁止Crontab产生邮件:
+在crontab末尾加上<code>&gt; /dev/null 2&gt;&amp;1</code> 或者 <code>&gt; &amp;&gt; /dev/null</code></p>
+
+<p>例如</p>
+
+<pre><code>0 1 5 10 * /path/to/script.sh &gt; /dev/null 2&gt;&amp;1
+0 1 5 10 * /path/to/script.sh &gt; &amp;&gt; /dev/null
+</code></pre>
+
+<h2 id="定时备份数据库">定时备份数据库</h2>
+
+<p>先写好shell脚本存入<code>/home/cron1.sh</code></p>
+
+<pre><code>user=&quot;root&quot;
+pass=&quot;root&quot;
+host=&quot;127.0.0.1&quot;
+port=&quot;3306&quot;
+dbs=&quot;db1 db2 db3&quot;
+dir=&quot;/data/backup/&quot;
+
+nowDate=`date '+%Y%m%d'`
+nowTime=`date '+%H%M'`
+backupdir=$dir$nowDate
+timeold=`date -d &quot;-1 week&quot; +%Y%m%d`
+delold=$dir$timeold
+if [ ! -d $backupdir ]; then
+  mkdir -p $backupdir
+fi
+if [ -d $delold ]; then
+  rm -rf $delold
+fi
+for i in $dbs
+	do
+		backupFile=$backupdir/$i-$nowTime.sql
+		mysqldump -u$user -p$pass -h$host -P$port --databases $i &gt; $backupFile
+		xz $backupFile
+	done
+
+</code></pre>
+
+<p>然后定时任务<code>crontab -e</code> 每5个小时备份一次数据库.</p>
+
+<pre><code>0 */5 * * * sh /home/cron1.sh
+</code></pre>
+
+<p>使用此脚本建议每20个小时以内备份一次数据库,此脚本保留最近7天备份,删除过期备份</p>
+
+<h2 id="增量备份数据库">增量备份数据库</h2>
+
+<p>先写好shell脚本存入<code>/home/cron2.sh</code></p>
+
+<pre><code>user=&quot;root&quot;
+pass=&quot;root&quot;
+host=&quot;127.0.0.1&quot;
+port=&quot;3306&quot;
+storedb=&quot;backup&quot;
+backup=&quot;db1.table1 db1.table2&quot;
+
+mysql -u$user -p$pass -h$host -P$port -e &quot;create database if not exists $storedb&quot;
+for i in $backup
+	do
+		table=${i##*.}
+		sql=&quot;create table if not exists $storedb.$table like $i;replace into $storedb.$table  select * from $i ;&quot;
+		mysql -u$user -p$pass -h$host -P$port -e &quot;$sql&quot;
+	done
+
+</code></pre>
+
+<p>数据表从源数据库中增量备份至备份数据库中的同名数据表</p>
+
+<pre><code>0 */20 * * * sh /home/cron2.sh
+</code></pre>
+
+<p>每20个小时增量备份一次</p>
+
+<h2 id="更高级的文件实时同步">更高级的文件实时同步</h2>
+
+<p><code>Mac</code>上可以使用<code>fswatch + rsync</code>进行实时同步</p>
+
+<p>首先安装<code>fswatch</code>,<code>rsync</code>应该是自带了</p>
+
+<p><code>brew install fswatch</code></p>
+
+<pre><code>&lt;!-- fswatch -o ./ | xargs -n1 -I{} md5 --&gt;
+
+fswatch -0 /tmp | xargs -0 -n 1 echo $1
+
+</code></pre>
+
+<h2 id="shell基本语法">Shell基本语法</h2>
+
+<p>声明数组</p>
+
+<p><code>arr=(item1 item2 item3)</code> 使用空格分开</p>
+
+<p>使用<code>echo ${arr[*]}</code> 或者 <code>echo ${arr[@]}</code> 可以查看数组内的元素,<code>echo $arr</code>只能取得第一个元素</p>
+
+<p>要取得数组长度,只需在名字前面加一个#,如<code>echo ${#arr[*]}</code> 或者 <code>echo ${#arr[@]}</code></p>
+
+<p>数组下标以0开始,取得第二个元素为<code>echo ${arr[1]}</code></p>
+
+<p>赋值使用<code>arr[5]=5555</code></p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
+				<a href="/post/improve-mysqldb/"> MySQL性能优化</a>
+			</h1>
+			<p class="post-date">Mon, Jan 11, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="配置文件">配置文件</h2>
+
+<p>配置文件一般放在<code>/etc/my.cnf</code> 或者 <code>/etc/mysql/my.cnf</code></p>
+
+<p>默认的配置文件示例存放于<code>/usr/share/mysql</code></p>
+
+<p>各个文件适配不同内存的配置</p>
+
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>内存大小</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>my-small.cnf</td>
+<td>&lt;= 64M 不经常开启mysql</td>
+</tr>
+
+<tr>
+<td>my-medium.cnf</td>
+<td>32M–64M 经常其他程序搭配mysql</td>
+</tr>
+
+<tr>
+<td>my-large.cnf</td>
+<td>512M</td>
+</tr>
+
+<tr>
+<td>my-huge.cnf</td>
+<td>1G-2G</td>
+</tr>
+
+<tr>
+<td>my-innodb-heavy-4G.cnf</td>
+<td>4GB 使用InnoDB</td>
+</tr>
+</tbody>
+</table>
+
+<p>使用<code>SHOW VARIABLES</code>来查看系统参数,通过<code>SHOW STATUS</code>来判断系统状态</p>
+
+<p>show 命令还有很多用途</p>
+
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>show databases 或show tables from database_name</td>
+<td>显示mysql中所有数据库的名称</td>
+</tr>
+
+<tr>
+<td>show tables</td>
+<td>显示当前数据库中所有表的名称</td>
+</tr>
+
+<tr>
+<td>show columns from table_name from database_name</td>
+<td>显示表中列名称</td>
+</tr>
+
+<tr>
+<td>show grants for user_name</td>
+<td>显示一个用户的权限，显示结果类似于grant命令</td>
+</tr>
+
+<tr>
+<td>show table status</td>
+<td>显示当前使用或者指定的database中的每个表的信息。<br>信息包括表类型和表的最新更新时间。</td>
+</tr>
+
+<tr>
+<td>show index from table_name</td>
+<td>显示表的索引</td>
+</tr>
+
+<tr>
+<td>show status</td>
+<td>显示一些系统特定资源的信息,例如,正在运行的线程数量</td>
+</tr>
+
+<tr>
+<td>show variables</td>
+<td>显示系统变量的名称和值</td>
+</tr>
+
+<tr>
+<td>show processlist</td>
+<td>显示系统中正在运行的所有进程，也就是当前正在执行的查询。<br>大多数用户可以查看他们自己的进程，但是如果他们拥有process权限，<br>就可以查看所有人的进程，包括密码</td>
+</tr>
+
+<tr>
+<td>show engies</td>
+<td>显示安装以后可用的存储引擎和默认引擎</td>
+</tr>
+
+<tr>
+<td>show innodb status</td>
+<td>显示innoDB存储引擎的状态</td>
+</tr>
+
+<tr>
+<td>show logs</td>
+<td>显示BDB存储引擎的日志</td>
+</tr>
+
+<tr>
+<td>show warnings</td>
+<td>显示最后一个执行的语句所产生的错误、警告和通知</td>
+</tr>
+
+<tr>
+<td>show errors</td>
+<td>只显示最后一个执行语句所产生的错误</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="小内存优化">小内存优化</h2>
+
+<p>依据<code>my-small.cnf</code>为模板</p>
+
+<p>主要指标:存储引擎,key_buffer,table_cache,max_connections,thread_concurrency,query_cache,thread_stack</p>
+
+<p><strong>存储引擎</strong>:
+如果不使用 BDB table 和 InnoDB table 的话，加入下面2行关闭不需要的表类型很有必要，关闭 innodb 可以省下大量内存，虽然 InnoDB 好处多多但是在一个64MB的 VPS 上并不能体现出来，并且很占内存。</p>
+
+<p><strong>key_buffer</strong>:
+用来缓存 tables keys 和 indexes，增加这个值可以更好的处理索引，读和写都需要索引,这里设置成16K足够了.</p>
+
+<p><strong>table_cache</strong>:
+所有线程打开的表的数量，增加值可以增大 MySQL 的文件描述符数量，避免频繁的打开表，原始 my-small.cnf 中 table_cache 设置成4有点小，一个 wordpress 的页面通常会涉及到10个左右的表，其他的程序比如 Drupal，MediaWiki 会涉及到更多，将table_cache改为8。</p>
+
+<p><strong>max_connections</strong>:
+数据库最大的连接数量，可以根据自己博客/网站的访问量来定这个值,如果博客/网站经常出现：Too many connections 错误的信息说明需要增大 max_connections 的值.</p>
+
+<p><strong>thread_concurrency</strong>:
+最大并发线程数，通常设置为 CPU核数量×2，在 VPS 宿主机上如果服务器有2颗物理 CPU，而每颗物理 CPU 又支持 H.T 超线程（一个处理器上整合了两个逻辑处理器单元），所以实际取值为4 × 2 ＝ 8。
+如果我们在优化 php.ini 的时候设置了同时只有2个 php-cgi 运行的话，那么我们也应该只设置2个 MySQL 线程同时运行。</p>
+
+<p><strong>query_cache</strong>:
+对于博客/新闻网站来说，用得最多的就是查询，所以需要加入 query cache 的设置。query_cache_size 是执行查询所使用的缓冲大小。
+query_cache_limit指定单个查询能够使用的缓冲区大小，缺省为1M,结果集超过这个大小将不会被缓存。</p>
+
+<p>与查询缓冲有关的参数还有query_cache_type、query_cache_limit、query_cache_min_res_unit。</p>
+
+<p>query_cache_type指定是否使用查询缓冲，可以设置为0、1、2,分别代表了off、on、demand,如果是0，那么query cache 是关闭的。如果是1，那么查询总是先到查询缓存中查找，除非使用了sql_no_cache。如果是2，那么，只有使用 sql_cache的查询，才会去查询缓存中查找.</p>
+
+<p>query_cache_limit指定单个查询能够使用的缓冲区大小，缺省为1M。
+query_cache_min_res_unit是在4.1版本以后引入的，它指定分配缓冲区空间的最小单位，缺省为4K。
+检查状态值Qcache_free_blocks，如果该值非常大，则表明缓冲区中碎片很多，这就表明查询结果都比较小，此时需要减小 query_cache_min_res_unit。</p>
+
+<p><strong>thread_stack</strong>:
+用来存放每个线程的标识信息，如线程 id，线程运行时环境等，可以通过设置 thread_stack 来决定给每个线程分配多大的内存。</p>
+
+<p><strong>sort_buffer_size</strong>:
+每个需要排序的线程分配的缓冲区大小，增加该值可以加速 order by 和 group by 的操作。注意：该参数是以每个连接分配内存，也就是说，如果有16个连接，sort_buffer_size 为 64K，那么实际分配的内存为：16 × 64K = 1MB。如果设置的缓存大小无法满足需要，MySQL 会将数据写入磁盘来完成排序。因为磁盘操作和内存操作不在一个数量级，所以 sort_buffer_size 对排序的性能影响很大。</p>
+
+<p><strong>read_buffer_size</strong>:
+顺序读取数据时的缓冲区大小，与 sort_buffer_size 一样，该参数分配的内存也是以每连接为单位的。
+当需要顺序读取数据的时候，如无法使用索引的情况下的全表扫描，全索引扫描等。在这种时候，MySQL 按照数据的存储顺序依次读取数据块，每次读取的数据快首先会暂存在 read_buffer_size 中，当 buffer 空间被写满或者全部数据读取结束后，再将 buffer 中的数据返回给上层调用者，以提高效率。</p>
+
+<p><strong>read_rnd_buffer_size</strong>:
+随机读取数据时的缓冲区大小，与顺序读相对应。</p>
+
+<p><strong>net_buffer_size</strong>:
+用来存放客户端连接线程的连接信息和返回客户端的结果集的缓存大小。当 MySQL 接到请求后，产生返回结果集时，会在返回给请求线程之前暂存在在这个缓存中，等积累到一定大小的时候才开始向客户端发送，以提高网络效率。不 过，net_buffer_size 所设置的仅仅只是初始大小，MySQL 会根据实际需要自行申请更多的内存，但最大不会超过 max_allowed_packet。</p>
+
+<p>skip-locking用来避免 MySQL 外部锁定，减少出错几率，增强稳定性。</p>
+
+<p>以上: 64M VPS数据库配置</p>
+
+<pre><code>skip-bdb
+skip-innodb
+
+key_buffer = 16K
+table_cache = 8
+
+max_connections = 16
+thread_concurrency = 2
+
+query_cache_limit = 256K
+query_cache_size = 4M
+query_cache_type = 1
+
+sort_buffer_size = 64K
+read_buffer_size = 256K
+read_rnd_buffer_size = 256K
+net_buffer_length = 2K
+thread_stack = 64K
+skip-locking
+
+</code></pre>
+
+<p>thread_cache_size 优化配置</p>
+
+<h3 id="packet-for-query-is-too-large">Packet for query is too large</h3>
+
+<p><code>show variables like '%max%'</code></p>
+
+<p>当update或者insert的内容过大时,<code>max_allowed_packet</code>的值过小,会引起sql异常,需要改大;其默认值为1048576(1M)，
+修改<code>my.cnf</code>  <code>max_allowed_packet = 20M</code>
+或者零时动态设置 <code>set global max_allowed_packet = 20*1024*1024</code></p>
+
+<p>查看是否生效,零时修改一般断开后重新连接即可生效.
+<code>show variables like '%max_allowed_packet%'</code></p>
+
+<pre><code>1G  ---&gt; 8
+2G  ---&gt; 16
+3G  ---&gt; 32
+4G  ---&gt; 64
+</code></pre>
+
+<h2 id="数据库优化">数据库优化</h2>
+
+<p>查看query_cache相关配置, 默认这个开关是关闭的,就是禁止使用query_cache
+query_cache_type 为0,是关闭的</p>
+
+<p><code>show variables where variable_name like '%query_cache%'</code> 单独查询一个使用 <code>select @@query_cache_type</code></p>
+
+<pre><code>+------------------------------+----------+
+| Variable_name                | Value    |
++------------------------------+----------+
+| have_query_cache             | YES      |
+| query_cache_limit            | 262144   |
+| query_cache_min_res_unit     | 4096     |
+| query_cache_size             | 33554432 |
+| query_cache_strip_comments   | OFF      |
+| query_cache_type             | ON       |
+| query_cache_wlock_invalidate | OFF      |
++------------------------------+----------+
+</code></pre>
+
+<p><code>query_cache_size</code>为0,没有分配缓存空间,如果配置了<code>query_cache_size = 4M</code>,这里会显示具体的字节</p>
+
+<p><code>show status like '%Qcache%'</code></p>
+
+<pre><code>+-------------------------+----------+
+| Variable_name           | Value    |
++-------------------------+----------+
+| Qcache_free_blocks      | 1        |
+| Qcache_free_memory      | 26444248 |
+| Qcache_hits             | 159619   |
+| Qcache_inserts          | 27496    |
+| Qcache_lowmem_prunes    | 0        |
+| Qcache_not_cached       | 180      |
+| Qcache_queries_in_cache | 6922     |
+| Qcache_total_blocks     | 13850    |
++-------------------------+----------+
+</code></pre>
+
+<p>如果<code>Qcache_lowmem_prunes</code>的值非常大，则表明经常出现缓冲不够的情况，如果<code>Qcache_hits</code>的值也非常大，则表明查询缓冲使用非常频繁，此时需要增加缓冲大小；
+如果<code>Qcache_hits</code>的值不大，则表明你的查询重复率很低，这种情况下使用查询缓冲反而会影响效率，那么可以考虑不用查询缓冲。此外，在SELECT语句中加入<code>SQL_NO_CACHE</code>可以明确表示不使用查询缓冲。</p>
+
+<blockquote>
+<p>查询缓存碎片率 = Qcache_free_blocks / Qcache_total_blocks * 100%</p>
+</blockquote>
+
+<p>如果查询缓存碎片率超过20%，可以用FLUSH QUERY CACHE整理缓存碎片，或者试试减小query_cache_min_res_unit，如果你的查询都是小数据量的话.</p>
+
+<blockquote>
+<p>查询缓存利用率 = (query_cache_size – Qcache_free_memory) / query_cache_size * 100%</p>
+</blockquote>
+
+<p>查询缓存利用率在25%以下的话说明query_cache_size设置的过大，可适当减小;查询缓存利用率在80%以上而且Qcache_lowmem_prunes &gt; 50的话说明query_cache_size可能有点小，要不就是碎片太多。</p>
+
+<blockquote>
+<p>查询缓存命中率 = Qcache_hits / ( Qcache_hits + Qcache_inserts ) * 100%</p>
+</blockquote>
+
+<p>命中率越高,效果越好</p>
+
+<h2 id="各个数据库引擎对比">各个数据库引擎对比</h2>
+
+<p>主要讨论引擎: MyISAM存储引擎 InnoDB存储引擎 Memory存储引擎</p>
+
+<h3 id="myisam存储引擎">MyISAM存储引擎</h3>
+
+<p>支持B-tree/FullText/R-tree索引类型
+锁级别是表锁,表锁的开销小，加锁快;锁粒度大，发生锁冲突的概率较高，并发度低；表锁适合查询
+不支持事务性，也不支持外键。</p>
+
+<blockquote>
+<p>并发不高，不需要支持事务,需要进行全文搜索,读次数大于写次数,适合数据量不是特别大并发不太高的大部分场合</p>
+</blockquote>
+
+<h3 id="innodb存储引擎">InnoDB存储引擎</h3>
+
+<p>支持事务性，支持回滚,支持Hash/B-tree索引类型
+锁级别是行锁，行锁在锁定上带来的消耗大于表锁，但是在系统并发访问量较高时，InnoDB整体性能远高于MyISAM。
+InnoDB的索引不仅缓存索引本身，也缓存数据，所以InnoDB需要更大的内存。</p>
+
+<blockquote>
+<p>表数据量超过千万，高并发,频繁更新大字段,安全性和可用性要求高,更适合与大并发大数据量的场合，除了支持事务，在高并发时行级锁的优势就会发挥出来。</p>
+</blockquote>
+
+<h3 id="memory存储引擎">Memory存储引擎</h3>
+
+<p>内存级的存储引擎，它将所有数据都存储在内存中，所以它能够存储的数据量是比较小的
+Memory的锁级别和MyISAM一样，是表锁；并且不支持事务性。</p>
+
+<blockquote>
+<p>适合与性能要求高数据量小的地方，和缓存的效果类似。</p>
+
+<p>innodb查询表的行数需要全表扫描，速度会非常慢，查询1千万行数据的表最多时要6、7s,而myisam因为保存了总行数是极快的。
+在一个进程操作的情况下，myisam的更新和查询速度都会稍快于innodb。memory引擎插入和查询修改的速度都极快，但支持的数据量有限,不支持BLOB/TEXT数据类型,适用于单表几万行数据.</p>
+
+<p>MEMORY表最大值受系统变量 max_heap_table_size 限制，默认为16MB，要改变MEMORY表大小限制，需要改变max_heap_table_size 的值。</p>
+</blockquote>
+
+<h3 id="锁">锁</h3>
+
+<blockquote>
+<p>读锁：读操作时增加锁，叫共享锁，S-lock特征是阻塞其他客户端的写操作，不阻塞读操作</p>
+
+<p>写锁：写操作时增加锁，叫独占锁或排他锁，X-lock特征是阻塞其他客户端的读、写操作</p>
+</blockquote>
+
+<h3 id="锁定粒度-范围">锁定粒度（范围）</h3>
+
+<blockquote>
+<p>行级：提升并发性，锁定开销大</p>
+
+<p>表级：不利于并发性，锁定开销小</p>
+</blockquote>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
+				<a href="/post/ffmpeg-usage/"> ffmpeg安装使用</a>
+			</h1>
+			<p class="post-date">Mon, Jan 11, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="安装">安装</h2>
+
+<pre><code>yum install autoconf automake cmake freetype-devel gcc gcc-c++ git libtool make mercurial nasm pkgconfig zlib-devel
+mkdir ~/ffmpeg_sources
+</code></pre>
+
+<p>Yasm is an assembler used by x264 and FFmpeg</p>
+
+<pre><code>cd ~/ffmpeg_sources
+git clone --depth 1 git://github.com/yasm/yasm.git
+cd yasm
+autoreconf -fiv
+./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --bindir=&quot;$HOME/bin&quot;
+make
+make install
+make distclean
+</code></pre>
+
+<p>H.264 video encoder.
+Requires ffmpeg to be configured with <code>--enable-gpl --enable-libx264</code></p>
+
+<pre><code>cd ~/ffmpeg_sources
+git clone --depth 1 git://git.videolan.org/x264
+cd x264
+PKG_CONFIG_PATH=&quot;$HOME/ffmpeg_build/lib/pkgconfig&quot; ./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --bindir=&quot;$HOME/bin&quot; --enable-static
+make
+make install
+make distclean
+</code></pre>
+
+<p>H.265/HEVC video encoder. Requires ffmpeg to be configured with <code>--enable-gpl --enable-libx265</code></p>
+
+<pre><code>cd ~/ffmpeg_sources
+hg clone https://bitbucket.org/multicoreware/x265
+cd ~/ffmpeg_sources/x265/build/linux
+cmake -G &quot;Unix Makefiles&quot; -DCMAKE_INSTALL_PREFIX=&quot;$HOME/ffmpeg_build&quot; -DENABLE_SHARED:bool=off ../../source
+make
+make install
+</code></pre>
+
+<p>AAC audio encoder. Requires ffmpeg to be configured with <code>--enable-libfdk-aac</code> (and <code>--enable-nonfree</code> if you also included <code>--enable-gpl</code>)</p>
+
+<pre><code>cd ~/ffmpeg_sources
+git clone --depth 1 git://git.code.sf.net/p/opencore-amr/fdk-aac
+cd fdk-aac
+autoreconf -fiv
+./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --disable-shared
+make
+make install
+make distclean
+</code></pre>
+
+<p>MP3 audio encoder. Requires ffmpeg to be configured with <code>--enable-libmp3lame</code></p>
+
+<pre><code>cd ~/ffmpeg_sources
+curl -L -O http://downloads.sourceforge.net/project/lame/lame/3.99/lame-3.99.5.tar.gz
+tar xzvf lame-3.99.5.tar.gz
+cd lame-3.99.5
+./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --bindir=&quot;$HOME/bin&quot; --disable-shared --enable-nasm
+make
+make install
+make distclean
+</code></pre>
+
+<p>Opus audio decoder and encoder. Requires ffmpeg to be configured with <code>--enable-libopus</code></p>
+
+<pre><code>cd ~/ffmpeg_sources
+git clone git://git.opus-codec.org/opus.git
+cd opus
+autoreconf -fiv
+./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --disable-shared
+make
+make install
+make distclean
+</code></pre>
+
+<p>Ogg bitstream library. Required by libtheora and libvorbis.</p>
+
+<pre><code>cd ~/ffmpeg_sources
+curl -O http://downloads.xiph.org/releases/ogg/libogg-1.3.2.tar.gz
+tar xzvf libogg-1.3.2.tar.gz
+cd libogg-1.3.2
+./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --disable-shared
+make
+make install
+make distclean
+</code></pre>
+
+<p>Vorbis audio encoder. Requires libogg. Requires ffmpeg to be configured with <code>--enable-libvorbis</code></p>
+
+<pre><code>cd ~/ffmpeg_sources
+curl -O http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.4.tar.gz
+tar xzvf libvorbis-1.3.4.tar.gz
+cd libvorbis-1.3.4
+LDFLAGS=&quot;-L$HOME/ffmeg_build/lib&quot; CPPFLAGS=&quot;-I$HOME/ffmpeg_build/include&quot; ./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --with-ogg=&quot;$HOME/ffmpeg_build&quot; --disable-shared
+make
+make install
+make distclean
+</code></pre>
+
+<p>VP8/VP9 video encoder. Requires ffmpeg to be configured with <code>--enable-libvpx</code></p>
+
+<pre><code>cd ~/ffmpeg_sources
+git clone --depth 1 https://chromium.googlesource.com/webm/libvpx.git
+cd libvpx
+./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --disable-examples
+make
+make install
+make clean
+</code></pre>
+
+<p>Compilation is now complete and ffmpeg (also ffprobe, ffserver, lame, and x264) should now be ready to use.</p>
+
+<pre><code>cd ~/ffmpeg_sources
+git clone https://github.com/FFmpeg/FFmpeg ffmpeg
+cd ffmpeg
+PKG_CONFIG_PATH=&quot;$HOME/ffmpeg_build/lib/pkgconfig&quot; ./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --extra-cflags=&quot;-I$HOME/ffmpeg_build/include&quot; --extra-ldflags=&quot;-L$HOME/ffmpeg_build/lib&quot; --bindir=&quot;$HOME/bin&quot; --pkg-config-flags=&quot;--static&quot; --enable-gpl --enable-nonfree --enable-libfdk-aac --enable-libfreetype --enable-libmp3lame --enable-libopus --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libx265
+make -j4
+make install
+make distclean
+hash -r
+</code></pre>
+
+<p>生成的可执行文件存放在<code>~/bin</code></p>
+
+<h2 id="下载官方的静态编译的linux通用二进制包">下载官方的静态编译的Linux通用二进制包</h2>
+
+<p><a href="http://johnvansickle.com/ffmpeg/">ffmeg</a></p>
+
+<p>3.1正式版已发布,<a href="http://www.oschina.net/news/74702/ffmpeg-3-1">查看详情</a></p>
+
+<p>3.1.2 <a href="http://www.oschina.net/news/75969/ffmpeg-3-1-2">http://www.oschina.net/news/75969/ffmpeg-3-1-2</a></p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
+				<a href="/post/git-usage/"> git基本使用</a>
+			</h1>
+			<p class="post-date">Fri, Jan 8, 2016</p>
+			<div class="post-text">
+				
+
+<h1 id="git配置">git配置</h1>
+
+<pre><code>git config --global user.email &quot;1126045770@qq.com&quot;
+git config --global user.name &quot;sucongohu&quot;
+
+git config --global core.autocrlf false
+git config --global color.ui true
+git config --global credential.helper store
+
+git config --global alias.lg &quot;log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci,%cr) %C(bold blue)&lt;%an&gt;%Creset' --abbrev-commit --date=relative&quot;
+</code></pre>
+
+<blockquote>
+<p>以上分别是设置用户信息,禁止转换换行符,颜色高亮,记住密码,设置别名列出分支图. 设置别名后,可以使用 <code>git lg</code> 查看各个分支关系</p>
+</blockquote>
+
+<p>使用git还经常碰到文件权限发生变化,也显示文件变动了,需要提交,如果你不想将文件权限的变动纳入版本控制可以</p>
+
+<pre><code>git config core.filemode false
+</code></pre>
+
+<p>对于一些本地和服务器不一致的配置文件,<code>git status</code>每次查看都显示出来,<code>git add -u</code>又会一不小心提交,可以使用
+<em>忽略已追踪文件的变动</em></p>
+
+<pre><code>git update-index --assume-unchanged PATH_TO_FILE
+</code></pre>
+
+<p>参数  说明</p>
+
+<pre><code>
+%H	commit hash
+%h	commit short hash
+%T	tree hash
+%t	tree short hash
+%P	parent hash
+%p	parent short hash
+%an	作者名字
+%aN	.mailmap 中对应的作者名字
+%ae	作者邮箱
+%aE	.mailmap 中对应的作者邮箱
+%ad	–date=制定的日期格式
+%aD	RFC2822 日期格式
+%ar	日期格式，例如：1 day ago
+%at	UNIX timestamp 日期格式
+%ai	ISO 8601 日期格式
+%cn	提交者名字
+%cN	.mailmap 对应的提交的名字
+%ce	提交者邮箱
+%cE	.mailmap 对应的提交者的邮箱
+%cd	–data=制定的提交日期的格式
+%cD	RFC2822 提交日期的格式
+%cr	提交日期的格式，例如：1day ago
+%ct	UNIX timestamp 提交日期的格式
+%ci	ISO 8601 提交日期的格式
+%d	ref 名称
+%e	encoding
+%s	commit 信息标题
+%f	过滤 commit 信息的标题使之可以作为文件名
+%b	commit 信息内容
+%N	commit notes
+%gD	reflog selector, e.g., refs/stash@{1}
+%gd	shortened reflog selector, e.g., stash@{1}
+%gs	reflog subject
+%Cred	切换至红色
+%Cgreen	切换至绿色
+%Cblue	切换至蓝色
+%Creset	重设颜色
+%C(color)	制定颜色，as described in color.branch.* config option
+%m	left right or boundary mark
+%n	换行
+%%	a raw %
+%x00	print a byte from a hex code
+%w([[,[,]]])	switch line wrapping, like the -w option of git-shortlog(1).
+</code></pre>
+
+<p>一个命令推送到多个服务端<code>vim .git/config</code> ,添加一个区段,例如:</p>
+
+<pre><code>[remote &quot;all&quot;]
+        url = https://git.oschina.net/suconghou/mvc.git
+        url = https://suconghou@git.coding.net/suconghou/mvc.git
+        url = https://github.com/suconghou/mvc.git
+</code></pre>
+
+<p>以后可以使用<code>git push all master</code>一次推送到多个后端</p>
+
+<h1 id="git分支管理">git分支管理</h1>
+
+<h2 id="1-创建分支">1.创建分支</h2>
+
+<blockquote>
+<p>git branch &lt;分支名&gt;</p>
+</blockquote>
+
+<h2 id="2-切换到分支">2.切换到分支</h2>
+
+<blockquote>
+<p>git checkout &lt;分支名&gt;</p>
+</blockquote>
+
+<h2 id="3-创建一个分支并切换过去">3.创建一个分支并切换过去</h2>
+
+<blockquote>
+<p>git checkout -b &lt;分支名&gt;</p>
+</blockquote>
+
+<p>或者</p>
+
+<blockquote>
+<p>git checkout -b &lt;分支名&gt; master</p>
+</blockquote>
+
+<p>后面是跟一个master说明创建的develop分支是基于当前的master， 如果当前就在master分支，则可以不写。 如果当前分支HEAD指向的是别的分支，又想基于master分支创建，就必须写master</p>
+
+<h2 id="4-分支合并">4.分支合并</h2>
+
+<p>如:要将develop分支合并和master分支
+首先切换的master分支：<code>git checkout master</code>
+然后执行合并操作：<code>git merge develop</code>
+如果有冲突，会提示你，调用<code>git status</code>查看冲突文件。
+解决冲突，然后调用<code>git add</code>或<code>git rm</code>将解决后的文件暂存。
+所有冲突解决后，<code>git commit</code>提交更改。</p>
+
+<h2 id="5-删除分支">5.删除分支</h2>
+
+<p>删除本地分支,删除分支之前记得先合并,以免数据丢失</p>
+
+<blockquote>
+<p>git branch -d &lt;分支名&gt;</p>
+</blockquote>
+
+<p><code>git push [远程名] [本地分支]:[远程分支]</code> 本地分支的数据推送到远程分支,如果远程分支不存在,将会自动创建</p>
+
+<p>如果本地分支为空格,则将删除远程分支 <code>git push origin :deletebranch</code></p>
+
+<h2 id="6-显示所有分支">6.显示所有分支</h2>
+
+<blockquote>
+<p>git branch -a</p>
+</blockquote>
+
+<p>显示远端分支</p>
+
+<blockquote>
+<p>git branch -r</p>
+</blockquote>
+
+<p><code>git push -all</code> 把所有本地分支都推到远端</p>
+
+<p><code>git pull origin remotebranch:localbranch</code>
+将远程某分支拉倒本地某分支,当本地分支和远程分支名称相同时，只写一个就可以</p>
+
+<h1 id="git-tag-管理">git tag 管理</h1>
+
+<h2 id="1-git-tag">1.git tag</h2>
+
+<p>在控制台打印出当前仓库的所有标签</p>
+
+<h2 id="2-git-tag-l-v0-1">2.git tag -l &lsquo;v0.1.*&rsquo;</h2>
+
+<p>搜索符合模式的标签</p>
+
+<h2 id="3-git-tag-v0-1-2-light">3.git tag v0.1.2-light</h2>
+
+<p>创建轻量标签</p>
+
+<h2 id="4-git-tag-a-v0-1-2-m-0-1-2版本">4.git tag -a v0.1.2 -m &ldquo;0.1.2版本&rdquo;</h2>
+
+<p>创建附注标签</p>
+
+<p>git标签分为两种类型：轻量标签和附注标签。轻量标签是指向提交对象的引用，附注标签则是仓库中的一个独立对象。建议使用附注标签。</p>
+
+<h2 id="5-git-tag-d-v0-1-2">5.git tag -d v0.1.2</h2>
+
+<p>删除标签</p>
+
+<h2 id="6-git-push-origin-v0-1-2">6.git push origin v0.1.2</h2>
+
+<p>将v0.1.2标签提交到git服务器
+git push origin –-tags
+将本地所有标签一次性提交到git服务器
+通常的git push不会将标签对象提交到git服务器，所以我们需要进行显式的操作：</p>
+
+<h1 id="git-stash-操作">git stash 操作</h1>
+
+<p>1.git stash 可用来暂存当前正在进行的工作， 比如想pull 最新代码， 又不想加新commit， 或者另外一种情况，为了fix 一个紧急的bug,  先stash, 使返回到自己上一个commit, 改完bug之后再stash pop, 继续原来的工作。</p>
+
+<pre><code>git stash
+//do some work
+git stash pop
+</code></pre>
+
+<p>2.同样可以使用 git stash save &ldquo;work in progress for foo feature&rdquo; 添加标记</p>
+
+<p>3.当你多次使用<code>git stash</code>命令后，你的栈里将充满了未提交的代码，这时候你会对将哪个版本应用回来有些困惑，
+<code>git stash list</code> 命令可以将当前的Git栈信息打印出来，你只需要将找到对应的版本号，例如使用<code>git stash apply stash@{1}</code>就可以将你指定版本号为stash@{1}的工作取出来，当你将所有的栈都应用回来的时候，可以使用<code>git stash clear</code>来将栈清空。</p>
+
+<h1 id="给git仓库瘦身">给Git仓库瘦身</h1>
+
+<p>使用<code>git gc --aggressive</code>来整理仓库,压缩合并碎片文件能减小仓库大小.</p>
+
+<p>使用<code>git prune</code> 删除一些不会被使用的残留数据,使用<code>git prune -n</code>可以查看将要被删除的数据.</p>
+
+<p>如果想要更加暴力的操作git减小仓库大小,一般使用<code>git-filter-branch</code>,不过操作比较麻烦,这里提供一个工具<a href="https://rtyley.github.io/bfg-repo-cleaner/">https://rtyley.github.io/bfg-repo-cleaner/</a></p>
+
+<p>使用这个操作更加方便</p>
+
+<p>下载<code>bfg</code>jar文件,使用<code>java -jar bfg.jar</code>运行,也可以自己写一个<code>alias</code></p>
+
+<p>首先<code>git clone --mirror 地址</code></p>
+
+<pre><code>bfg --strip-blobs-bigger-than 10M .
+</code></pre>
+
+<p><code>bfg --strip-blobs-bigger-than 1M --delete-files '{*.jar,*.zip,*.gz,*.war,*.jpg,*.png,*.jpeg}'</code></p>
+
+<p>最后执行<code>git reflog expire --expire=now --all &amp;&amp; git gc --prune=now --aggressive</code></p>
+
+<p>使用<code>du -sh</code>查看最终文件夹大小.</p>
+
+<h1 id="git打包">git打包</h1>
+
+<p>时常我们会使用<code>github</code>或者其他git托管网站的下载zip包功能,下载的压缩包仅包含仓库里的现有文件,不含<code>.git</code>文件夹</p>
+
+<p>那么我们本地的仓库如何做到呢,需要自己使用<code>zip</code>命令自己压缩排除文件吗.</p>
+
+<p>其实git已经自带这个功能了,可以将任意版本的数据导出为压缩包.</p>
+
+<p>将 master以zip格式打包到指定文件<code>git archive --format zip --output /path/to/file.zip master</code></p>
+
+<pre><code>git archive v0.1 | gzip &gt; site.tgz
+git archive master &gt; ./fds.zip
+</code></pre>
+
+<p>最快捷的直接使用<code>git archive master -o a.tgz</code></p>
+
+<p>使用 -o a.tgz 或者 a.tar.gz 生成gzip格式的, -o a.zip 生成zip格式的.</p>
+
+<p><img src="http://static.suconghou.cn/document/git-usage.jpg" alt="git-usage" /></p>
+
+<h1 id="svn">svn</h1>
+
+<p><code>svn revert xx.html</code> 和<code>git checkout xx.html</code> 类似,还原文件的更改</p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
 				<a href="/post/sublime-usage/"> Sublime使用和设置</a>
 			</h1>
 			<p class="post-date">Fri, Jan 8, 2016</p>
@@ -170,407 +1047,6 @@ B98FC99C 8FAC73EE D2B95564 DF450523
 			</div>
 		</div>
 		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/linux-ssh/"> SSH</a>
-			</h1>
-			<p class="post-date">Thu, Jan 7, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="避免ssh自动断开连接">避免SSH自动断开连接</h2>
-
-<p>如果有一段时间在SSH连接上无数据传输，连接就会断开,以下设定可以解决这个问题</p>
-
-<p>方案一：在客户端设置</p>
-
-<p><code>sudo vim /etc/ssh/ssh_config</code></p>
-
-<p>开启 <code>ServerAliveInterval 60</code>
-开启 <code>TCPKeepAlive yes</code></p>
-
-<p>此后该系统里的用户连接SSH时，每60秒会发一个KeepAlive请求，避免被踢。</p>
-
-<p>方案二：在服务器端设置</p>
-
-<p><code>sudo vim /etc/ssh/sshd_config</code></p>
-
-<p>开启<code>ClientAliveInterval 60</code>
-开启 <code>TCPKeepAlive yes</code></p>
-
-<p>如果您只想让当前的 ssh 保持连接，可以使用以下的命令：</p>
-
-<p><code>ssh -o ServerAliveInterval=60 user@sshserver</code></p>
-
-<h2 id="ssh隧道">ssh隧道</h2>
-
-<h3 id="cfng">-CfNg</h3>
-
-<p>C表示压缩数据传输
-f表示后台用户验证,这个选项很有用,没有shell的不可登陆账号也能使用.
-N表示不执行脚本或命令
-g表示允许远程主机连接转发端口</p>
-
-<h3 id="l-本地转发">-L 本地转发</h3>
-
-<p>-L [本地监听IP:]本地监听端口号:目标主机IP:目标端口号
-(其中,“本地监听IP”可以省略，省略的话就认为是“0.0.0.0”，但为了安全性考虑，请务必使用“127.0.0.1”做为本地监听端口， 而不要使用默认的“0.0.0.0”。）</p>
-
-<p><code>ssh -D 8080 user@host</code>
-SSH会建立一个socket，去监听本地的8080端口。一旦有数据传向那个端口，就自动把它转移到SSH连接上面，发往远程主机。可以想象，如果8080端口原来是一个不加密端口，现在将变成一个加密端口。</p>
-
-<p><code>ssh -L 2121:host2:21 host3</code>
-命令中的L参数一共接受三个值，分别是&rdquo;本地端口:目标主机:目标主机端口&rdquo;，它们之间用冒号分隔。这条命令的意思，就是指定SSH绑定本地端口2121，然后指定host3将所有的数据，转发到目标主机host2的21端口（假定host2运行FTP，默认端口为21）。
-这样一来，我们只要连接host1的2121端口，就等于连上了host2的21端口。</p>
-
-<pre><code>ssh -CfNg -L 6300:127.0.0.1:1521 oracle@172.16.1.164
-</code></pre>
-
-<p>本机的6300端口就是远程主机172.16.1.164的1521端口</p>
-
-<h3 id="r-远程转发">-R 远程转发</h3>
-
-<pre><code> ssh -CfNg -R 1521:127.0.0.1:6300 oracle@172.16.1.164
-</code></pre>
-
-<p>在远程主机172.16.1.164上打开1521端口, 来映射本机的6300端口.</p>
-
-<p><strong>在树莓派上映射ssh到外网</strong></p>
-
-<pre><code>ssh -CfNg -R 2222:127.0.0.1:22 username@yourvps.com
-</code></pre>
-
-<p>这样就映射vps的2222端口到树莓派上了.但是这样映射的是服务器的127.0.0.1:2222,外网无法连接这个2222端口</p>
-
-<p>可以在服务器上执行<code>netstat -anltp</code>查看,这样要先登陆到自己的vps才能通过2222访问树莓派.</p>
-
-<p>可以使用</p>
-
-<pre><code>ssh -CfNg -R 0.0.0.0:2222:127.0.0.1:22 username@yourvps.com
-</code></pre>
-
-<p>再在服务器上配置<code>/etc/ssh/sshd_config</code></p>
-
-<pre><code>#增加下面一句
-GatewayPorts yes
-#如果有
-GatewayPorts no
-#则改为
-GatewayPorts yes
-#然后重启ssh
-#centos7： systemctl restart sshd
-#centos6： service sshd restart
-#ubuntu:   service ssh restart
-</code></pre>
-
-<p>使用<code>netstat -anltp</code>查看,监听的已经是<code>0.0.0.0</code>了,不过即使你指定-R参数<code>127.0.0.1:2222</code>,也不会监听<code>127.0.0.1</code>而始终是<code>0.0.0.0</code></p>
-
-<h3 id="使用socks5代理">使用socks5代理</h3>
-
-<pre><code>alias socksproxy=&quot;ssh -NT -f -D 0.0.0.0:1090  -p 1234 root@host&quot;;
-</code></pre>
-
-<p>-N 不打开远程的shell
--T 不分配tty
--f 后台运行</p>
-
-<p>执行<code>socksproxy</code>后就建立了一条ssh socks5 proxy,本地使用127.0.0.1:1090就可以使用服务器中转流量.</p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/install-nodejs/"> 安装NodeJs和npm</a>
-			</h1>
-			<p class="post-date">Thu, Jan 7, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="安装nodejs">安装NodeJs</h2>
-
-<p>nodejs官方提供了编译好的二进制的包,全平台都有,十分方便
-<a href="https://nodejs.org/download/release/latest/">最新版本NodeJs官方库</a></p>
-
-<p>其他信息<a href="http://www.oschina.net/news/73974/node-v6-2-1-current">http://www.oschina.net/news/73974/node-v6-2-1-current</a></p>
-
-<p>例如安装Linux版本</p>
-
-<pre><code>wget https://nodejs.org/dist/v6.0.0/node-v6.0.0-linux-x64.tar.xz
-tar -xJf node-v6.0.0-linux-x64.tar.xz
-sudo mv node-v6.0.0-linux-x64 /usr/local/nodejs
-sudo ln -s /usr/local/nodejs/bin/node /usr/local/bin/node
-sudo ln -s /usr/local/nodejs/bin/npm /usr/local/bin/npm
-node -v
-npm -v
-</code></pre>
-
-<h2 id="单文件版node-exe单独安装npm">单文件版node.exe单独安装npm</h2>
-
-<p>1.clone npm 源码
-<code>git clone --recursive git://github.com/isaacs/npm.git</code></p>
-
-<p>2.进入npm目录,安装npm
-<code>node cli.js install npm -gf</code></p>
-
-<h2 id="一些必备package">一些必备package</h2>
-
-<pre><code>sudo npm install -g less autoprefixer express jshint uglify-js webpack react-native-cli airs
-</code></pre>
-
-<p>** npm加速 **</p>
-
-<p>使用淘宝的npm镜像.控制台运行,或者加入你的bashrc中永久生效</p>
-
-<pre><code>alias cnpm=&quot;npm --registry=https://registry.npm.taobao.org --cache=$HOME/.npm/.cache/cnpm --disturl=https://npm.taobao.org/dist --userconfig=$HOME/.cnpmrc&quot;;
-</code></pre>
-
-<h2 id="安装-mongodb">安装 MongoDb</h2>
-
-<p>在<code>CentOs</code>上,yum 没有自带mongodb的源,首先我们需要添加源.</p>
-
-<p>例如在<code>CentOs6</code>或者<code>CentOs7</code> 上,<code>vim /etc/yum.repos.d/mongodb.repo</code>
-64位系统</p>
-
-<pre><code>[mongodb]
-name=MongoDB Repository
-baseurl=http://downloads-distro.mongodb.org/repo/redhat/os/x86_64/
-gpgcheck=0
-enabled=1
-</code></pre>
-
-<p>如果是32位系统,则为</p>
-
-<pre><code>[mongodb]
-name=MongoDB Repository
-baseurl=http://downloads-distro.mongodb.org/repo/redhat/os/i686/
-gpgcheck=0
-enabled=1
-</code></pre>
-
-<p>然后执行<code>yum update</code> 然后 <code>yum install -y mongodb-org mongodb-org-server</code></p>
-
-<p>安装完后就有了<code>mongo</code>和<code>mongod</code>命令了</p>
-
-<p><code>mongostat</code></p>
-
-<p>CentOs6上</p>
-
-<p>启动 <code>service mongod start</code></p>
-
-<p>查看状态 <code>service mongod status</code></p>
-
-<p>停止 <code>service mongod stop</code></p>
-
-<p>CentOs7上</p>
-
-<p>启动 <code>systemctl start mongod</code></p>
-
-<p>查看状态 <code>systemctl status mongod</code></p>
-
-<p>停止 <code>systemctl stop mongod</code></p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/some-good-useful-things/"> 网摘</a>
-			</h1>
-			<p class="post-date">Wed, Jan 6, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="云计算-存储-分发等">云计算,存储,分发等</h2>
-
-<p><a href="http://baichuan.taobao.com/">阿里百川</a>
-<a href="http://open.taobao.com/">淘宝开放平台</a></p>
-
-<blockquote>
-<p>包含容器引擎（TAE）, 多媒体存储处理分发, 可免费使用一年</p>
-</blockquote>
-
-<p><a href="https://c.163.com/">网易的Docker服务</a></p>
-
-<blockquote>
-<p>最近上线,价格略贵最低29/月</p>
-</blockquote>
-
-<p><a href="http://bmob.cn/">bmob</a>移动后端云,网友示例项目<a href="https://github.com/bestony/BandwaghonhostAPP">BandwaghonhostAPP</a>,结合<a href="http://dev.dcloud.net.cn/mui/">mui移动开发框架</a>开发手机APP</p>
-
-<h2 id="短信-推动消息等">短信,推动消息等</h2>
-
-<ul>
-<li><a href="http://www.alidayu.com/">阿里大鱼</a></li>
-</ul>
-
-<blockquote>
-<p>阿里巴巴旗下的短信验证码通知服务,价格实惠,短信通知≤0.045元／条,还有文本转语音通知≤0.055元／条</p>
-</blockquote>
-
-<ul>
-<li><a href="http://sendcloud.sohu.com/price.html">SendCloud</a></li>
-</ul>
-
-<blockquote>
-<p>短信和邮件发送服务,邮件有每日免费200封,短信5.5分每条</p>
-</blockquote>
-
-<h2 id="图像压缩软件">图像压缩软件</h2>
-
-<p><a href="https://imageoptim.com/">ImageOptim无损压缩</a></p>
-
-<p><a href="http://mozjpeg.codelove.de/">mozjpeg</a> Mozilla的jpg压缩技术,支持无损,有损压缩在线压缩,最大2M.</p>
-
-<p><a href="https://tinypng.com/">tinypng</a> 众多压缩软件中压缩效果较好的,支持png,jpg在线批量压缩</p>
-
-<p><a href="https://kraken.io">kraken</a> 类似于tinypng,也提供在线压缩</p>
-
-<p><a href="https://pngquant.org/">pngquant</a> 开源的压缩png,据说tinypng基于此项目</p>
-
-<p><a href="https://www.npmjs.com/package/imagemin">nodejs imagemin</a> NodeJs模块,压缩jpg,png,压缩效果一般</p>
-
-<h2 id="移动混合应用-hhtml5开发">移动混合应用/HHTML5开发</h2>
-
-<p><a href="http://dev.dcloud.net.cn/mui/">国产mui</a> 最接近原生APP体验的高性能前端框架,不依赖任何第三方JS库,压缩后的JS和CSS文件仅有100+K和60+K</p>
-
-<p><a href="http://m.sui.taobao.org/">SUI Mobile</a> 淘宝移动UI框架,轻量，小巧且精美的UI库 方便迅速搭建手机H5应用,兼容iOS 6.0+ 和 Android 4.0+，非常适合开发跨平台Web App。</p>
-
-<p><a href="http://mobiscroll.com/">mobiscroll</a> 移动开发UI,丰富的时间选择器控件还有一些WEBAPP展示,<a href="https://github.com/acidb/mobiscroll">https://github.com/acidb/mobiscroll</a></p>
-
-<h2 id="桌面开发">桌面开发</h2>
-
-<p><a href="http://nwjs.io/">nwjs</a> Mac版钉钉使用的就是这个技术,界面还算漂亮</p>
-
-<h2 id="网页动画">网页动画</h2>
-
-<p><a href="http://ecomfe.github.io/zrender/index.html">百度zrender</a> 基于Canvas的图形仓库交互工具,可以方便的画出很多图形</p>
-
-<h2 id="游戏引擎">游戏引擎</h2>
-
-<p><a href="http://hiloteam.github.io/">阿里Hilo</a> 游戏渲染引擎,实现2048,切水果等.</p>
-
-<p><a href="http://www.egret.com/">http://www.egret.com/</a> 白鹭也是做这个的</p>
-
-<p><a href="https://github.com/iioinc/iio.js">https://github.com/iioinc/iio.js</a> 也是canvas的游戏</p>
-
-<h2 id="网页富文本编辑器">网页富文本编辑器</h2>
-
-<p><a href="http://wangeditor.github.io/">wangeditor</a> 轻量简介的富文本编辑器,使用容易,相比百度umeditor更简洁</p>
-
-<h2 id="网页markdown编辑器">网页Markdown编辑器</h2>
-
-<p><a href="https://github.com/pandao/editor.md">Editor.md</a> 一款开源的、可嵌入的 Markdown 在线编辑器（组件），基于 CodeMirror、jQuery 和 Marked 构建。</p>
-
-<p><a href="https://github.com/tylingsoft/markdown-plus">markdown-plus</a> Markdown Plus,界面不是很漂亮,也有收费的桌面APP</p>
-
-<h2 id="字体相关">字体相关</h2>
-
-<p><a href="http://www.youziku.com/">有字库中文字体</a> 在线字体,CDN引用</p>
-
-<p><a href="http://font-spider.org/">字蛛</a> 中文字体压缩器,让网页自由引入中文字体成为可能</p>
-
-<p><a href="http://www.iconfont.cn/">阿里iconfont</a> 阿里巴巴的网页矢量图标在线生成工具,中文字体和矢量图标</p>
-
-<h2 id="镜像网站-cdn">镜像网站/CDN</h2>
-
-<p><a href="http://npm.taobao.org/">淘宝NPM镜像</a></p>
-
-<p><a href="https://css.net/">常用前端公共库css.net</a> 包括Gravatar,Google 字体库等反代,支持https</p>
-
-<p><a href="http://www.bootcdn.cn/">bootcdn</a> 支持https</p>
-
-<h2 id="云端ide">云端IDE</h2>
-
-<p><a href="https://coderpad.io/">coderpad</a> 在线运行多种语言代码,保存分享,不过是收费的,我创建的<a href="https://coderpad.io/GP2KRHQQ">演示</a></p>
-
-<h2 id="视频解析">视频解析</h2>
-
-<p><a href="http://keepvid.com/">keepvid</a> 支持多种国外视频网站解析,转码</p>
-
-<p><a href="http://www.clipconverter.cc/">clipconverter</a> 支持youtube视频解析,转码,多分辨率,速度又快.</p>
-
-<p><a href="https://www.tubeninja.net/en/">tubeninja</a> 支持多种国内外视频网站解析</p>
-
-<p><a href="http://www.youtube-dl.org/">youtube-dl</a> 全平台的YouTube视频下载工具</p>
-
-<h2 id="图床">图床</h2>
-
-<p><a href="https://sm.ms/">smms</a></p>
-
-<p><a href="https://get-link.xyz/">get-link</a></p>
-
-<p><a href="http://v2ex.com/t/278912#reply24">two.yt</a></p>
-
-<p><a href="https://www.niupic.com/">niupic</a></p>
-
-<h2 id="前端-node">前端/Node</h2>
-
-<p>Ajax库<a href="https://github.com/visionmedia/superagent">superagent</a> 同时兼容IE9+和NodeJs的Ajax小工具,Gzip后仅为4.4kb</p>
-
-<p>轮播图插件<a href="http://slidesjs.com/">slidesjs</a> 纯js的jQuery轮播图插件,简单易用响应式支持触摸,压缩后大小仅12kb,Gzip后3.3kb,但是单张图片存在bug,很久没有更新</p>
-
-<p>模板引擎<a href="http://aui.github.io/artTemplate/">artTemplate</a> 性能卓越的Js模板引擎,同时有NodeJs版本,压缩后5kb大小,Gzip后2.9kb</p>
-
-<p>url解析工具<a href="https://github.com/websanova/js-url">js-url</a> 解析url的query_string hostname protocol 等等,~1.7 Kb minified, ~0.7Kb gzipped</p>
-
-<p>获取你的内网IP和外网IP<a href="https://github.com/diafygi/webrtc-ips">webrtc-ips</a> 通过Webrtc技术连接stun服务器,取得IP</p>
-
-<p><a href="https://github.com/amsul/pickadate.js">https://github.com/amsul/pickadate.js</a>
-<a href="https://github.com/xdan/datetimepicker">https://github.com/xdan/datetimepicker</a>
-<a href="https://github.com/rmm5t/jquery-timeago">https://github.com/rmm5t/jquery-timeago</a>
-<a href="http://c3js.org/">http://c3js.org/</a>
-<a href="https://github.com/datejs/Datejs/blob/master/build/date.js">https://github.com/datejs/Datejs/blob/master/build/date.js</a>
-<a href="https://github.com/Teamweek/instadate">https://github.com/Teamweek/instadate</a></p>
-
-<h2 id="js插件">JS插件</h2>
-
-<p><a href="http://www.swiper.com.cn/">swiper滑动插件</a></p>
-
-<h2 id="测试工具">测试工具</h2>
-
-<p><a href="http://www.alibench.com/">阿里测</a> 测试你的服务器在全国各地的响应速度
-<a href="http://www.cloudping.info/">cloudping</a> 测试亚马逊云各节点到你电脑的延时
-<a href="http://requestb.in/">requestb</a> 测试你发送的HTTP请求</p>
-
-<h2 id="代码转换">代码转换</h2>
-
-<p>将python代码转化为可执行文件<a href="http://nuitka.net/pages/download.html">nuitka</a></p>
-
-<h2 id="服务器vps">服务器VPS</h2>
-
-<p><a href="http://cheapwindowsvps.com/">cheapwindowsvps</a> G口亚洲越南和新加坡不限流量支持Windows
-<a href="https://dedistation.com/billing/order.php?step=0&amp;productGroup=13">dedistation</a>
-<a href="http://www.winode.org/cart.php?gid=15&amp;language=chinese">winode</a></p>
-
-<h2 id="内网穿透">内网穿透</h2>
-
-<p><a href="https://github.com/fatedier/frp">frp</a> 由于ngrok2不开源,ngrok1不在维护而新创建的项目,使用GO编写
-<a href="https://natapp.cn/">natapp</a> 国内服务提供商,基于ngrok
-<a href="https://pc5s.com/">pc5s</a> 使用java编写的,需要jre
-<a href="http://qydev.com/">qydev.com</a> 国内服务商基于ngrok
-<a href="https://github.com/vzex/dog-tunnel">dog-tunnel</a> 使用GO编写的功能更加丰富,有一些不同之处,<a href="http://dog-tunnel.tk/">http://dog-tunnel.tk/</a>
-<a href="http://www.luyouxia.com/">路由侠</a> 是一个GUI客户端,貌似只有Windows</p>
-
-<h2 id="博客工具">博客工具</h2>
-
-<p><a href="http://www.inkpaper.io/index-zh.html">纸小墨</a> 和<code>hugo</code>类似的静态网站生成器,也是GO语言编写,<a href="https://github.com/InkProject/ink">https://github.com/InkProject/ink</a></p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/mac-chrome-input-submit/"> MacOs上Chrome中的submit按钮默认样式问题</a>
-			</h1>
-			<p class="post-date">Tue, Jan 5, 2016</p>
-			<div class="post-text">
-				<p>发现MacOs的Chrome中,input为submit的按钮,添加其他样式不生效,任然是默认样式,
-解决方法是为其添加一个border或者backgroud就好了</p>
-
-			</div>
-		</div>
-		
 	</div>
 	<nav>
 		
@@ -605,12 +1081,15 @@ enabled=1
         ><a href="/page/6/">6</a></li>
         
         <li
+        ><a href="/page/7/">7</a></li>
+        
+        <li
         >
         <a href="/page/6/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
         </li>
         
         <li>
-            <a href="/page/6/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+            <a href="/page/7/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
         </li>
         
     </ul>
