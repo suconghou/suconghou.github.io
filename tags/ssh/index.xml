@@ -116,6 +116,19 @@ GatewayPorts yes
 -f 后台运行&lt;/p&gt;
 
 &lt;p&gt;执行&lt;code&gt;socksproxy&lt;/code&gt;后就建立了一条ssh socks5 proxy,本地使用127.0.0.1:1090就可以使用服务器中转流量.&lt;/p&gt;
+
+&lt;h3 id=&#34;ssh-服务&#34;&gt;ssh 服务&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;chkconfig --list&lt;/code&gt;可以查看所有服务是否开机启动等.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;chkconfig --list sshd&lt;/code&gt;可以单独查看sshd服务的启动状态&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;/var/empty/sshd&lt;/code&gt;文件夹是sshd所必须的,不能被删除否则ssh服务将无法启动&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;chkconfig sshd on&lt;/code&gt;将其设置为开机启动&lt;/p&gt;
+
+&lt;p&gt;CentOS7 用&lt;code&gt;systemctl&lt;/code&gt;取代了&lt;code&gt;service&lt;/code&gt;
+旧版本的 &lt;code&gt;chkconfig docker on&lt;/code&gt; 改为 &lt;code&gt;systemctl enable docker&lt;/code&gt;&lt;/p&gt;
 </description>
     </item>
     

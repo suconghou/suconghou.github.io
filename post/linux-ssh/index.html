@@ -146,6 +146,19 @@ GatewayPorts yes
 
 <p>执行<code>socksproxy</code>后就建立了一条ssh socks5 proxy,本地使用127.0.0.1:1090就可以使用服务器中转流量.</p>
 
+<h3 id="ssh-服务">ssh 服务</h3>
+
+<p><code>chkconfig --list</code>可以查看所有服务是否开机启动等.</p>
+
+<p><code>chkconfig --list sshd</code>可以单独查看sshd服务的启动状态</p>
+
+<p><code>/var/empty/sshd</code>文件夹是sshd所必须的,不能被删除否则ssh服务将无法启动</p>
+
+<p><code>chkconfig sshd on</code>将其设置为开机启动</p>
+
+<p>CentOS7 用<code>systemctl</code>取代了<code>service</code>
+旧版本的 <code>chkconfig docker on</code> 改为 <code>systemctl enable docker</code></p>
+
 		</div>
 	</div>
 </div>

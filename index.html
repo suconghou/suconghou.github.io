@@ -261,6 +261,32 @@ jQuery(&quot;form&quot;).serializeArray(); //[{name:&quot;username&quot;,value:&
 jQuery(&quot;form&quot;).serializeObject(); //{username:&quot;&quot;,password:&quot;&quot;}
 </code></pre>
 
+<h3 id="资源预取">资源预取</h3>
+
+<pre><code>function prefetch(url)
+{
+	var link = document.createElement(&quot;link&quot;);
+	link.href = url;
+	link.rel=&quot;prefetch&quot;;
+	var s = document.getElementsByTagName(&quot;head&quot;)[0];
+	s.appendChild(link);
+}
+</code></pre>
+
+<h3 id="用-google-analytics-统计js错误">用<code>Google Analytics</code>统计JS错误</h3>
+
+<pre><code>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+window.addEventListener('error', function (err)
+{
+	ga('create', 'UA-xxx-1', 'auto');
+    var lineAndColumnInfo = err.colno ? ' line:' + err.lineno +', column:'+ err.colno : ' line:' + err.lineno;
+    ga('send', 'event', 'JavaScript Error', err.message, location.href+' =&gt; '+err.filename + lineAndColumnInfo + ' -&gt; ' +  navigator.userAgent, 0, true );
+});
+
+</code></pre>
+
+<p><code>UA-xxx-1</code>使用自己的统计ID</p>
+
 			</div>
 		</div>
 		

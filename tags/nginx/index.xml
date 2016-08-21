@@ -153,6 +153,18 @@ location @goapp {
 }
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;p&gt;nginx 301 重定向&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;server{
+    listen 80;
+    server_name xxx.com;
+    rewrite ^(.*) https://xxx.com$1 permanent;
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使用匹配跳转后也加上之前访问的路径和&lt;code&gt;query_string&lt;/code&gt;,可以转为https协议,也可以让多个域名301到一个域名&lt;/p&gt;
+
 &lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;:&lt;code&gt;nginx&lt;/code&gt;的&lt;code&gt;proxy_pass&lt;/code&gt;后面带不带&lt;code&gt;/&lt;/code&gt;是有区别的.&lt;/p&gt;
 
 &lt;p&gt;不带&lt;code&gt;/&lt;/code&gt;,nginx将不会对请求做任何形式的修改,仅仅是分发到不同主机上.&lt;/p&gt;
@@ -429,7 +441,7 @@ make -j$CPU_NUM  &amp;amp;&amp;amp; make install
 &lt;p&gt;redis编译时,不能使用&lt;code&gt;CFLAGS O3&lt;/code&gt;&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;cd /tmp
-REDIS_VERSION=redis-3.2.2
+REDIS_VERSION=redis-3.2.3
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
 wget http://download.redis.io/releases/${REDIS_VERSION}.tar.gz
 tar xzf ${REDIS_VERSION}.tar.gz
@@ -443,7 +455,7 @@ mv /tmp/${REDIS_VERSION}/redis.conf /etc/redis.conf
 &lt;p&gt;memcached所有版本见&lt;a href=&#34;http://www.memcached.org/files/&#34;&gt;http://www.memcached.org/files/&lt;/a&gt;&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;cd /tmp
-MEMCACHE_VERSION=memcached-1.4.29
+MEMCACHE_VERSION=memcached-1.4.30
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
 wget http://www.memcached.org/files/${MEMCACHE_VERSION}.tar.gz
 tar xzf ${MEMCACHE_VERSION}.tar.gz
@@ -639,6 +651,84 @@ group = www-data
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;安装过程中要求设定一个root密码,安装完&lt;code&gt;service mysql status&lt;/code&gt;查看运行状态,&lt;code&gt;sudo service mysql restart&lt;/code&gt;可以重启&lt;/p&gt;
+
+&lt;p&gt;添加MySql用户&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;insert into mysql.user (host,user,password) values(&#39;%&#39;,&#39;user&#39;,PASSWORD(&#39;user&#39;));
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;修改密码&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;update mysql.user set password=PASSWORD(&#39;123456&#39;) where user=&#39;root&#39;;
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;show status; // 显示一些系统特定资源的信息，例如，正在运行的线程数量&lt;/p&gt;
+
+&lt;p&gt;show variables; // 显示系统变量的名称和值&lt;/p&gt;
+
+&lt;p&gt;show table status; // 显示当前使用或者指定的database中的每个表的信息。信息包括表类型和表的最新更新时间&lt;/p&gt;
+
+&lt;p&gt;如:&lt;code&gt;show table status like &#39;user_%&#39; \G&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;show warnings;&lt;/code&gt; 查看最后一条警告&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;show errors;&lt;/code&gt; 查看最后一条错误&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;show full processlist;&lt;/code&gt;查看mysql服务器当前的所有连接&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;show status like &#39;uptime&#39;;&lt;/code&gt; 查看在线时间&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;show status like &#39;com_%&#39;;&lt;/code&gt;查看使用这些指令的计数,如查看MySQL启动后执行的SELECT语句的次数&lt;code&gt;show status like &#39;com_select&#39;;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;show status like &#39;Thread_%&#39;;&lt;/code&gt;查看当前的线程状态&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;--查看MySQL本次启动后的运行时间(单位：秒)
+show status like &#39;uptime&#39;;
+
+--查看select语句的执行数
+show [global] status like &#39;com_select&#39;;
+
+--查看insert语句的执行数
+show [global] status like &#39;com_insert&#39;;
+
+--查看update语句的执行数
+show [global] status like &#39;com_update&#39;;
+
+--查看delete语句的执行数
+show [global] status like &#39;com_delete&#39;;
+
+--查看试图连接到MySQL(不管是否连接成功)的连接数
+show status like &#39;connections&#39;;
+
+--查看线程缓存内的线程的数量。
+show status like &#39;threads_cached&#39;;
+
+--查看当前打开的连接的数量。
+show status like &#39;threads_connected&#39;;
+
+--查看当前打开的连接的数量。
+show status like &#39;threads_connected&#39;;
+
+--查看创建用来处理连接的线程数。如果Threads_created较大，你可能要增加thread_cache_size值。
+show status like &#39;threads_created&#39;;
+
+--查看激活的(非睡眠状态)线程数。
+show status like &#39;threads_running&#39;;
+
+
+--查看立即获得的表的锁的次数。
+show status like &#39;table_locks_immediate&#39;;
+
+--查看不能立即获得的表的锁的次数。如果该值较高，并且有性能问题，你应首先优化查询，然后拆分表或使用复制。
+show status like &#39;table_locks_waited&#39;;
+
+--查看创建时间超过slow_launch_time秒的线程数。
+show status like &#39;slow_launch_threads&#39;;
+
+--查看查询时间超过long_query_time秒的查询的个数。
+show status like &#39;slow_queries&#39;;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;h2 id=&#34;开机启动脚本&#34;&gt;开机启动脚本&lt;/h2&gt;
 

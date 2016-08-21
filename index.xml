@@ -237,6 +237,32 @@ String.prototype.rtrim=function(){return this.replace(/(\s*$)/g,&amp;quot;&amp;q
 jQuery(&amp;quot;form&amp;quot;).serializeArray(); //[{name:&amp;quot;username&amp;quot;,value:&amp;quot;&amp;quot;},{name:&amp;quot;password&amp;quot;,value:&amp;quot;&amp;quot;}]
 jQuery(&amp;quot;form&amp;quot;).serializeObject(); //{username:&amp;quot;&amp;quot;,password:&amp;quot;&amp;quot;}
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;资源预取&#34;&gt;资源预取&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;function prefetch(url)
+{
+	var link = document.createElement(&amp;quot;link&amp;quot;);
+	link.href = url;
+	link.rel=&amp;quot;prefetch&amp;quot;;
+	var s = document.getElementsByTagName(&amp;quot;head&amp;quot;)[0];
+	s.appendChild(link);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;用-google-analytics-统计js错误&#34;&gt;用&lt;code&gt;Google Analytics&lt;/code&gt;统计JS错误&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;(function(i,s,o,g,r,a,m){i[&#39;GoogleAnalyticsObject&#39;]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,&#39;script&#39;,&#39;https://www.google-analytics.com/analytics.js&#39;,&#39;ga&#39;);
+window.addEventListener(&#39;error&#39;, function (err)
+{
+	ga(&#39;create&#39;, &#39;UA-xxx-1&#39;, &#39;auto&#39;);
+    var lineAndColumnInfo = err.colno ? &#39; line:&#39; + err.lineno +&#39;, column:&#39;+ err.colno : &#39; line:&#39; + err.lineno;
+    ga(&#39;send&#39;, &#39;event&#39;, &#39;JavaScript Error&#39;, err.message, location.href+&#39; =&amp;gt; &#39;+err.filename + lineAndColumnInfo + &#39; -&amp;gt; &#39; +  navigator.userAgent, 0, true );
+});
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;UA-xxx-1&lt;/code&gt;使用自己的统计ID&lt;/p&gt;
 </description>
     </item>
     
@@ -1139,13 +1165,14 @@ passwd abc&lt;/p&gt;
 
 &lt;h2 id=&#34;下载-android-studio&#34;&gt;下载 Android Studio&lt;/h2&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://www.oschina.net/news/75991/android-studio-2-2-beta&#34;&gt;http://www.oschina.net/news/75991/android-studio-2-2-beta&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.oschina.net/news/76307/android-studio-2-2-beta-2&#34;&gt;http://www.oschina.net/news/76307/android-studio-2-2-beta-2&lt;/a&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;Windows: https://dl.google.com/dl/android/studio/ide-zips/2.2.0.7/android-studio-ide-145.3128856-windows.zip (461.5 MiB)
+&lt;pre&gt;&lt;code&gt;Windows: https://dl.google.com/dl/android/studio/ide-zips/2.2.0.8/android-studio-ide-145.3200535-windows.zip (461.5 MIB）
 
-Mac: https://dl.google.com/dl/android/studio/ide-zips/2.2.0.7/android-studio-ide-145.3128856-mac.zip (462.1 MiB)
+Mac: https://dl.google.com/dl/android/studio/ide-zips/2.2.0.8/android-studio-ide-145.3200535-mac.zip  (462.1 MIB）
 
-Linux: https://dl.google.com/dl/android/studio/ide-zips/2.2.0.7/android-studio-ide-145.3128856-linux.zip (461.2 MiB)
+Linux:   https://dl.google.com/dl/android/studio/ide-zips/2.2.0.8/android-studio-ide-145.3200535-linux.zip  (461.2 MIB）
+
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h2 id=&#34;安装android-sdk&#34;&gt;安装android-sdk&lt;/h2&gt;

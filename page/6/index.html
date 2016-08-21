@@ -140,6 +140,19 @@ GatewayPorts yes
 
 <p>执行<code>socksproxy</code>后就建立了一条ssh socks5 proxy,本地使用127.0.0.1:1090就可以使用服务器中转流量.</p>
 
+<h3 id="ssh-服务">ssh 服务</h3>
+
+<p><code>chkconfig --list</code>可以查看所有服务是否开机启动等.</p>
+
+<p><code>chkconfig --list sshd</code>可以单独查看sshd服务的启动状态</p>
+
+<p><code>/var/empty/sshd</code>文件夹是sshd所必须的,不能被删除否则ssh服务将无法启动</p>
+
+<p><code>chkconfig sshd on</code>将其设置为开机启动</p>
+
+<p>CentOS7 用<code>systemctl</code>取代了<code>service</code>
+旧版本的 <code>chkconfig docker on</code> 改为 <code>systemctl enable docker</code></p>
+
 			</div>
 		</div>
 		
@@ -257,7 +270,7 @@ enabled=1
 <p><a href="https://c.163.com/">网易的Docker服务</a></p>
 
 <blockquote>
-<p>最近上线,价格略贵最低29/月</p>
+<p>价格略贵最低29/月</p>
 </blockquote>
 
 <p><a href="http://bmob.cn/">bmob</a>移动后端云,网友示例项目<a href="https://github.com/bestony/BandwaghonhostAPP">BandwaghonhostAPP</a>,结合<a href="http://dev.dcloud.net.cn/mui/">mui移动开发框架</a>开发手机APP</p>
@@ -324,6 +337,8 @@ enabled=1
 
 <p><a href="https://github.com/yabwe/medium-editor">medium-editor</a> 一个非常简洁的输入框,支持很多插件扩充</p>
 
+<p><a href="https://github.com/quilljs/quill">quill</a> 功能丰富,样式简介</p>
+
 <h2 id="网页markdown编辑器">网页Markdown编辑器</h2>
 
 <p><a href="https://github.com/pandao/editor.md">Editor.md</a> 一款开源的、可嵌入的 Markdown 在线编辑器（组件），基于 CodeMirror、jQuery 和 Marked 构建。</p>
@@ -348,7 +363,7 @@ enabled=1
 
 <h2 id="云端ide">云端IDE</h2>
 
-<p><a href="https://coderpad.io/">coderpad</a> 在线运行多种语言代码,保存分享,不过是收费的,我创建的<a href="https://coderpad.io/GP2KRHQQ">演示</a></p>
+<p><a href="https://coderpad.io/">coderpad</a> 在线运行多种语言代码,保存分享,不过是收费的</p>
 
 <h2 id="视频解析">视频解析</h2>
 
@@ -395,32 +410,51 @@ enabled=1
 
 <h2 id="测试工具">测试工具</h2>
 
-<p><a href="http://www.alibench.com/">阿里测</a> 测试你的服务器在全国各地的响应速度
-<a href="http://www.cloudping.info/">cloudping</a> 测试亚马逊云各节点到你电脑的延时
-<a href="http://requestb.in/">requestb</a> 测试你发送的HTTP请求</p>
+<p><a href="http://www.alibench.com/">阿里测</a> 测试你的服务器在全国各地的响应速度</p>
+
+<p><a href="http://www.cloudping.info/">cloudping</a> 测试亚马逊云各节点到你电脑的延时</p>
+
+<p><a href="http://requestb.in/">requestb</a> 测试你发送的HTTP请求</p>
 
 <h2 id="代码转换">代码转换</h2>
 
 <p>将python代码转化为可执行文件<a href="http://nuitka.net/pages/download.html">nuitka</a></p>
 
-<h2 id="服务器vps">服务器VPS</h2>
+<h2 id="便宜服务器vps">便宜服务器VPS</h2>
 
-<p><a href="http://cheapwindowsvps.com/">cheapwindowsvps</a> G口亚洲越南和新加坡不限流量支持Windows
-<a href="https://dedistation.com/billing/order.php?step=0&amp;productGroup=13">dedistation</a>
-<a href="http://www.winode.org/cart.php?gid=15&amp;language=chinese">winode</a></p>
+<p><a href="http://cheapwindowsvps.com/">cheapwindowsvps</a> G口亚洲越南和新加坡不限流量支持Windows,较贵</p>
+
+<p><a href="https://dedistation.com/billing/order.php?step=0&amp;productGroup=13">dedistation</a></p>
+
+<p><a href="http://www.winode.org/cart.php?gid=15&amp;language=chinese">winode</a></p>
+
+<p><a href="http://www.50kvm.com/new_index/vps.php">50kvm</a> kvm最低20人民币每月(512MB),旗下openvzvps即为下面的连接</p>
+
+<p><a href="https://www.openvzvps.cc/cart.php?gid=10">openvzvps</a> 最低配年付48人民币(64M),中文,集成锐速</p>
+
+<p><a href="http://www.idcbuster.com/specials.html">idcbuster</a> 最低年付39人民币(128M),支持支付宝</p>
 
 <h2 id="内网穿透">内网穿透</h2>
 
-<p><a href="https://github.com/fatedier/frp">frp</a> 由于ngrok2不开源,ngrok1不在维护而新创建的项目,使用GO编写
-<a href="https://natapp.cn/">natapp</a> 国内服务提供商,基于ngrok
-<a href="https://pc5s.com/">pc5s</a> 使用java编写的,需要jre
-<a href="http://qydev.com/">qydev.com</a> 国内服务商基于ngrok
-<a href="https://github.com/vzex/dog-tunnel">dog-tunnel</a> 使用GO编写的功能更加丰富,有一些不同之处,<a href="http://dog-tunnel.tk/">http://dog-tunnel.tk/</a>
-<a href="http://www.luyouxia.com/">路由侠</a> 是一个GUI客户端,貌似只有Windows</p>
+<p><a href="https://github.com/fatedier/frp">frp</a> 由于ngrok2不开源,ngrok1不在维护而新创建的项目,使用GO编写</p>
+
+<p><a href="https://natapp.cn/">natapp</a> 国内服务提供商,基于ngrok</p>
+
+<p><a href="https://pc5s.com/">pc5s</a> 使用java编写的,需要jre</p>
+
+<p><a href="http://qydev.com/">qydev.com</a> 国内服务商基于ngrok</p>
+
+<p><a href="https://github.com/vzex/dog-tunnel">dog-tunnel</a> 使用GO编写的功能更加丰富,有一些不同之处,<a href="http://dog-tunnel.tk/">http://dog-tunnel.tk/</a></p>
+
+<p><a href="http://www.luyouxia.com/">路由侠</a> 是一个GUI客户端,貌似只有Windows</p>
 
 <h2 id="博客工具">博客工具</h2>
 
 <p><a href="http://www.inkpaper.io/index-zh.html">纸小墨</a> 和<code>hugo</code>类似的静态网站生成器,也是GO语言编写,<a href="https://github.com/InkProject/ink">https://github.com/InkProject/ink</a></p>
+
+<h2 id="html5播放器">HTML5播放器</h2>
+
+<p><a href="https://github.com/Copay/cPlayer">https://github.com/Copay/cPlayer</a></p>
 
 			</div>
 		</div>
@@ -908,6 +942,12 @@ newgrp docker
 
 <p>-t 指明tag
 后面的.指明Dockerfile所在的目录</p>
+
+<p>如果想要使用非Dockerfile为名字的构建文件可以使用-f参数指定构建文件</p>
+
+<p><code>docker build -t=myimage -f mydockerfile .</code></p>
+
+<p>还可以使用<code>docker build -t=myimage - &lt; mydockerfile</code> , 不过尝试发现这种方式好像对路径处理有问题,还是推荐上面一种自定义的方式.</p>
 
 <h2 id="关联远端docker-hub仓库">关联远端Docker Hub仓库</h2>
 

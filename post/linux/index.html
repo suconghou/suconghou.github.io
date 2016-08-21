@@ -169,7 +169,7 @@ sbs() { du -b --max-depth 1 | sort -nr | perl -pe 's{([0-9]+)}{sprintf &quot;%.1
 # 找出指定目录中最大的10个文件
 largefile() { find . -type f -exec du -k {} \; | sort  -nrk 1 | head; }
 # 查看当前目录大于[多少]kb的文件,速度更快
-bigfile() { size=${1:-100}; find . -type f -size +&quot;$size&quot;k |xargs  ls  -lh ; }
+bigthan() { size=${1:-100}; find . -type f -size +&quot;$size&quot;k |xargs  ls  -lh ; }
 # 返回你的当前IP地址的地理位置。
 getlocation() { lynx -dump http://www.ip-adress.com/ip_tracer/?QRY=$1|grep address|egrep 'city|state|country'|awk '{print $3,$4,$5,$6,$7,$8}'|sed 's\ip address flag \\'|sed 's\My\\';}
 # 删除.log.1.gz 或者 .log.1.bz2
@@ -241,6 +241,16 @@ echo &quot;*****************************&quot;
 
 <p>-name 文件路径需要匹配的</p>
 
+<p><strong>使用全文查找</strong></p>
+
+<p>grep -lr &lsquo;string&rsquo; /etc/</p>
+
+<p>这个命令就可以搞定。搜索etc下面的文件，包含所有目录下的文件。这样就搞定了。</p>
+
+<p>-i，乎略大小写
+-l，找出含有这个字符串的文件
+-r，不放过子目录</p>
+
 <h2 id="解决can-t-set-the-locale-make-sure-lc-and-lang-are-correct">解决can&rsquo;t set the locale; make sure $LC_* and $LANG are correct</h2>
 
 <p><a href="https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian">https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian</a>
@@ -255,11 +265,13 @@ set termencoding=utf-8
 set encoding=utf-8
 </code></pre>
 
+<h2 id="开机启动的">开机启动的</h2>
+
 <p>检视和控制systemd的主要命令是systemctl</p>
 
 <p>详细使用见<a href="https://wiki.archlinux.org/index.php/systemd_(简体中文)">https://wiki.archlinux.org/index.php/systemd_(简体中文)</a></p>
 
-<p>Centos7 用<code>systemctl</code>取代了<code>service</code>
+<p>CentOS7 用<code>systemctl</code>取代了<code>service</code>
 旧版本的 <code>service docker start</code> 改为<code>systemctl start docker</code>
 设置开机启动
 旧版本的 <code>chkconfig docker on</code> 改为 <code>systemctl enable docker</code></p>
@@ -267,6 +279,13 @@ set encoding=utf-8
 <p><code>/usr/lib/systemd/system/</code>
 <code>/etc/systemd/system/</code>
 后者有较高优先级会覆盖前者</p>
+
+<p>/etc/profile 和 ~/.bash_profile 是在启动 一个交互登陆shell的时候 被调用。
+/etc/bashrc 和 ~/.bashrc 是在一个交互的非登陆shell启动 的时候 被调用。
+~/.bash_logout 在用户注销登陆的时候 被读取</p>
+
+<p>系统脚本 可以放置在/etc/rc.d/init.d中并建立/etc/rc.d/rc?.d链接，也可以直接放置在/etc/rc.d/rc.local中。
+init.d脚本 包含完整的start,stop,status,reload等参数，是标准做法，推荐使用。</p>
 
 <h2 id="linux-家族">Linux 家族</h2>
 
@@ -294,6 +313,50 @@ RedHat 系列
 <p>见 <a href="https://www.fdzh.org/slides/2015/06/20/linux-distr/">https://www.fdzh.org/slides/2015/06/20/linux-distr/</a></p>
 
 <p><img src="https://dn-copr.qbox.me/49d503bf47879ffe8a169dd81c744d83_b.jpg" alt="家族示意图" /></p>
+
+<h2 id="判断一个命令是否存在">判断一个命令是否存在</h2>
+
+<p>如判断<code>nc</code>是否存在</p>
+
+<pre><code>command -v nc &gt;/dev/null 2&gt;&amp;1 || { echo &gt;&amp;2 &quot;I require nc but it's not installed.  Aborting.&quot;; exit 1; }
+
+</code></pre>
+
+<pre><code>if ! command -v pip &gt; /dev/null 2&gt;&amp;1;then
+    echo &quot;YES&quot;
+fi
+</code></pre>
+
+<pre><code>PIP=$(which pip)
+if [ ! -x &quot;${PIP}&quot; ];then
+	echo &quot;NO&quot;
+else
+	echo &quot;YES&quot;
+fi
+</code></pre>
+
+<pre><code>[[ ! -x $(which pip) ]] &amp;&amp; echo &quot;No&quot; || echo &quot;Yes&quot;
+
+</code></pre>
+
+<pre><code>if (( ${+commands[pip]} )); then
+	echo &quot;YES&quot;
+fi
+</code></pre>
+
+<h2 id="shell基本语法">Shell基本语法</h2>
+
+<p>声明数组</p>
+
+<p><code>arr=(item1 item2 item3)</code> 使用空格分开</p>
+
+<p>使用<code>echo ${arr[*]}</code> 或者 <code>echo ${arr[@]}</code> 可以查看数组内的元素,<code>echo $arr</code>只能取得第一个元素</p>
+
+<p>要取得数组长度,只需在名字前面加一个#,如<code>echo ${#arr[*]}</code> 或者 <code>echo ${#arr[@]}</code></p>
+
+<p>数组下标以0开始,取得第二个元素为<code>echo ${arr[1]}</code></p>
+
+<p>赋值使用<code>arr[5]=5555</code></p>
 
 		</div>
 	</div>

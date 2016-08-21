@@ -144,20 +144,6 @@ fswatch -0 /tmp | xargs -0 -n 1 echo $1
 
 </code></pre>
 
-<h2 id="shell基本语法">Shell基本语法</h2>
-
-<p>声明数组</p>
-
-<p><code>arr=(item1 item2 item3)</code> 使用空格分开</p>
-
-<p>使用<code>echo ${arr[*]}</code> 或者 <code>echo ${arr[@]}</code> 可以查看数组内的元素,<code>echo $arr</code>只能取得第一个元素</p>
-
-<p>要取得数组长度,只需在名字前面加一个#,如<code>echo ${#arr[*]}</code> 或者 <code>echo ${#arr[@]}</code></p>
-
-<p>数组下标以0开始,取得第二个元素为<code>echo ${arr[1]}</code></p>
-
-<p>赋值使用<code>arr[5]=5555</code></p>
-
 		</div>
 	</div>
 </div>

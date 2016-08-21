@@ -89,6 +89,16 @@ echo www.example.com/${i}.jpg;
 done
 </code></pre>
 
+<h3 id="下载一个压缩包-不存储直接解压">下载一个压缩包,不存储直接解压</h3>
+
+<p><code>curl -sSL http://www.memcached.org/files/memcached-1.4.30.tar.gz | tar xz</code></p>
+
+<p>其中<code>-L</code>表示更随重定向<code>-s</code>为安静模式,不输出任何信息,<code>-S</code>为在安静模式下出错的话要输出错误信息.</p>
+
+<p>要解压到指定目录,后面的可以使用 tar xzC ./path/to/dir ,当然这个路径要存在</p>
+
+<p>用curl下载的好处是不会像wget那样出现多个已下载的重复文件</p>
+
 <h2 id="axel">Axel</h2>
 
 <p>下载速度最快,分段下载速度优异

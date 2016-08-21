@@ -142,7 +142,7 @@ sbs() { du -b --max-depth 1 | sort -nr | perl -pe &#39;s{([0-9]+)}{sprintf &amp;
 # 找出指定目录中最大的10个文件
 largefile() { find . -type f -exec du -k {} \; | sort  -nrk 1 | head; }
 # 查看当前目录大于[多少]kb的文件,速度更快
-bigfile() { size=${1:-100}; find . -type f -size +&amp;quot;$size&amp;quot;k |xargs  ls  -lh ; }
+bigthan() { size=${1:-100}; find . -type f -size +&amp;quot;$size&amp;quot;k |xargs  ls  -lh ; }
 # 返回你的当前IP地址的地理位置。
 getlocation() { lynx -dump http://www.ip-adress.com/ip_tracer/?QRY=$1|grep address|egrep &#39;city|state|country&#39;|awk &#39;{print $3,$4,$5,$6,$7,$8}&#39;|sed &#39;s\ip address flag \\&#39;|sed &#39;s\My\\&#39;;}
 # 删除.log.1.gz 或者 .log.1.bz2
@@ -214,6 +214,16 @@ echo &amp;quot;*****************************&amp;quot;
 
 &lt;p&gt;-name 文件路径需要匹配的&lt;/p&gt;
 
+&lt;p&gt;&lt;strong&gt;使用全文查找&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;grep -lr &amp;lsquo;string&amp;rsquo; /etc/&lt;/p&gt;
+
+&lt;p&gt;这个命令就可以搞定。搜索etc下面的文件，包含所有目录下的文件。这样就搞定了。&lt;/p&gt;
+
+&lt;p&gt;-i，乎略大小写
+-l，找出含有这个字符串的文件
+-r，不放过子目录&lt;/p&gt;
+
 &lt;h2 id=&#34;解决can-t-set-the-locale-make-sure-lc-and-lang-are-correct&#34;&gt;解决can&amp;rsquo;t set the locale; make sure $LC_* and $LANG are correct&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian&#34;&gt;https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian&lt;/a&gt;
@@ -228,11 +238,13 @@ set termencoding=utf-8
 set encoding=utf-8
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;h2 id=&#34;开机启动的&#34;&gt;开机启动的&lt;/h2&gt;
+
 &lt;p&gt;检视和控制systemd的主要命令是systemctl&lt;/p&gt;
 
 &lt;p&gt;详细使用见&lt;a href=&#34;https://wiki.archlinux.org/index.php/systemd_(简体中文)&#34;&gt;https://wiki.archlinux.org/index.php/systemd_(简体中文)&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;Centos7 用&lt;code&gt;systemctl&lt;/code&gt;取代了&lt;code&gt;service&lt;/code&gt;
+&lt;p&gt;CentOS7 用&lt;code&gt;systemctl&lt;/code&gt;取代了&lt;code&gt;service&lt;/code&gt;
 旧版本的 &lt;code&gt;service docker start&lt;/code&gt; 改为&lt;code&gt;systemctl start docker&lt;/code&gt;
 设置开机启动
 旧版本的 &lt;code&gt;chkconfig docker on&lt;/code&gt; 改为 &lt;code&gt;systemctl enable docker&lt;/code&gt;&lt;/p&gt;
@@ -240,6 +252,13 @@ set encoding=utf-8
 &lt;p&gt;&lt;code&gt;/usr/lib/systemd/system/&lt;/code&gt;
 &lt;code&gt;/etc/systemd/system/&lt;/code&gt;
 后者有较高优先级会覆盖前者&lt;/p&gt;
+
+&lt;p&gt;/etc/profile 和 ~/.bash_profile 是在启动 一个交互登陆shell的时候 被调用。
+/etc/bashrc 和 ~/.bashrc 是在一个交互的非登陆shell启动 的时候 被调用。
+~/.bash_logout 在用户注销登陆的时候 被读取&lt;/p&gt;
+
+&lt;p&gt;系统脚本 可以放置在/etc/rc.d/init.d中并建立/etc/rc.d/rc?.d链接，也可以直接放置在/etc/rc.d/rc.local中。
+init.d脚本 包含完整的start,stop,status,reload等参数，是标准做法，推荐使用。&lt;/p&gt;
 
 &lt;h2 id=&#34;linux-家族&#34;&gt;Linux 家族&lt;/h2&gt;
 
@@ -267,6 +286,50 @@ RedHat 系列
 &lt;p&gt;见 &lt;a href=&#34;https://www.fdzh.org/slides/2015/06/20/linux-distr/&#34;&gt;https://www.fdzh.org/slides/2015/06/20/linux-distr/&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://dn-copr.qbox.me/49d503bf47879ffe8a169dd81c744d83_b.jpg&#34; alt=&#34;家族示意图&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;判断一个命令是否存在&#34;&gt;判断一个命令是否存在&lt;/h2&gt;
+
+&lt;p&gt;如判断&lt;code&gt;nc&lt;/code&gt;是否存在&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;command -v nc &amp;gt;/dev/null 2&amp;gt;&amp;amp;1 || { echo &amp;gt;&amp;amp;2 &amp;quot;I require nc but it&#39;s not installed.  Aborting.&amp;quot;; exit 1; }
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;if ! command -v pip &amp;gt; /dev/null 2&amp;gt;&amp;amp;1;then
+    echo &amp;quot;YES&amp;quot;
+fi
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;PIP=$(which pip)
+if [ ! -x &amp;quot;${PIP}&amp;quot; ];then
+	echo &amp;quot;NO&amp;quot;
+else
+	echo &amp;quot;YES&amp;quot;
+fi
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;[[ ! -x $(which pip) ]] &amp;amp;&amp;amp; echo &amp;quot;No&amp;quot; || echo &amp;quot;Yes&amp;quot;
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;if (( ${+commands[pip]} )); then
+	echo &amp;quot;YES&amp;quot;
+fi
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;shell基本语法&#34;&gt;Shell基本语法&lt;/h2&gt;
+
+&lt;p&gt;声明数组&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;arr=(item1 item2 item3)&lt;/code&gt; 使用空格分开&lt;/p&gt;
+
+&lt;p&gt;使用&lt;code&gt;echo ${arr[*]}&lt;/code&gt; 或者 &lt;code&gt;echo ${arr[@]}&lt;/code&gt; 可以查看数组内的元素,&lt;code&gt;echo $arr&lt;/code&gt;只能取得第一个元素&lt;/p&gt;
+
+&lt;p&gt;要取得数组长度,只需在名字前面加一个#,如&lt;code&gt;echo ${#arr[*]}&lt;/code&gt; 或者 &lt;code&gt;echo ${#arr[@]}&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;数组下标以0开始,取得第二个元素为&lt;code&gt;echo ${arr[1]}&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;赋值使用&lt;code&gt;arr[5]=5555&lt;/code&gt;&lt;/p&gt;
 </description>
     </item>
     
@@ -377,6 +440,19 @@ GatewayPorts yes
 -f 后台运行&lt;/p&gt;
 
 &lt;p&gt;执行&lt;code&gt;socksproxy&lt;/code&gt;后就建立了一条ssh socks5 proxy,本地使用127.0.0.1:1090就可以使用服务器中转流量.&lt;/p&gt;
+
+&lt;h3 id=&#34;ssh-服务&#34;&gt;ssh 服务&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;chkconfig --list&lt;/code&gt;可以查看所有服务是否开机启动等.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;chkconfig --list sshd&lt;/code&gt;可以单独查看sshd服务的启动状态&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;/var/empty/sshd&lt;/code&gt;文件夹是sshd所必须的,不能被删除否则ssh服务将无法启动&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;chkconfig sshd on&lt;/code&gt;将其设置为开机启动&lt;/p&gt;
+
+&lt;p&gt;CentOS7 用&lt;code&gt;systemctl&lt;/code&gt;取代了&lt;code&gt;service&lt;/code&gt;
+旧版本的 &lt;code&gt;chkconfig docker on&lt;/code&gt; 改为 &lt;code&gt;systemctl enable docker&lt;/code&gt;&lt;/p&gt;
 </description>
     </item>
     
@@ -430,6 +506,16 @@ done
 echo www.example.com/${i}.jpg;
 done
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;下载一个压缩包-不存储直接解压&#34;&gt;下载一个压缩包,不存储直接解压&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;curl -sSL http://www.memcached.org/files/memcached-1.4.30.tar.gz | tar xz&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;其中&lt;code&gt;-L&lt;/code&gt;表示更随重定向&lt;code&gt;-s&lt;/code&gt;为安静模式,不输出任何信息,&lt;code&gt;-S&lt;/code&gt;为在安静模式下出错的话要输出错误信息.&lt;/p&gt;
+
+&lt;p&gt;要解压到指定目录,后面的可以使用 tar xzC ./path/to/dir ,当然这个路径要存在&lt;/p&gt;
+
+&lt;p&gt;用curl下载的好处是不会像wget那样出现多个已下载的重复文件&lt;/p&gt;
 
 &lt;h2 id=&#34;axel&#34;&gt;Axel&lt;/h2&gt;
 

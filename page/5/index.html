@@ -146,20 +146,6 @@ fswatch -0 /tmp | xargs -0 -n 1 echo $1
 
 </code></pre>
 
-<h2 id="shell基本语法">Shell基本语法</h2>
-
-<p>声明数组</p>
-
-<p><code>arr=(item1 item2 item3)</code> 使用空格分开</p>
-
-<p>使用<code>echo ${arr[*]}</code> 或者 <code>echo ${arr[@]}</code> 可以查看数组内的元素,<code>echo $arr</code>只能取得第一个元素</p>
-
-<p>要取得数组长度,只需在名字前面加一个#,如<code>echo ${#arr[*]}</code> 或者 <code>echo ${#arr[@]}</code></p>
-
-<p>数组下标以0开始,取得第二个元素为<code>echo ${arr[1]}</code></p>
-
-<p>赋值使用<code>arr[5]=5555</code></p>
-
 			</div>
 		</div>
 		
@@ -304,13 +290,13 @@ fswatch -0 /tmp | xargs -0 -n 1 echo $1
 
 <p>依据<code>my-small.cnf</code>为模板</p>
 
-<p>主要指标:存储引擎,key_buffer,table_cache,max_connections,thread_concurrency,query_cache,thread_stack</p>
+<p>主要指标:存储引擎,key_buffer_size,table_cache,max_connections,thread_concurrency,query_cache,thread_stack</p>
 
 <p><strong>存储引擎</strong>:
 如果不使用 BDB table 和 InnoDB table 的话，加入下面2行关闭不需要的表类型很有必要，关闭 innodb 可以省下大量内存，虽然 InnoDB 好处多多但是在一个64MB的 VPS 上并不能体现出来，并且很占内存。</p>
 
-<p><strong>key_buffer</strong>:
-用来缓存 tables keys 和 indexes，增加这个值可以更好的处理索引，读和写都需要索引,这里设置成16K足够了.</p>
+<p><strong>key_buffer_size</strong>:
+用来缓存 tables keys 和 indexes，增加这个值可以更好的处理索引，读和写都需要索引,这里设置成16K足够了.优化性能需要<code>key_reads / key_read_requests</code>应该尽可能的低，至少是1:100，1:1000更好,使用<code>show status like 'key_%';</code>查看</p>
 
 <p><strong>table_cache</strong>:
 所有线程打开的表的数量，增加值可以增大 MySQL 的文件描述符数量，避免频繁的打开表，原始 my-small.cnf 中 table_cache 设置成4有点小，一个 wordpress 的页面通常会涉及到10个左右的表，其他的程序比如 Drupal，MediaWiki 会涉及到更多，将table_cache改为8。</p>
@@ -320,22 +306,26 @@ fswatch -0 /tmp | xargs -0 -n 1 echo $1
 
 <p><strong>thread_concurrency</strong>:
 最大并发线程数，通常设置为 CPU核数量×2，在 VPS 宿主机上如果服务器有2颗物理 CPU，而每颗物理 CPU 又支持 H.T 超线程（一个处理器上整合了两个逻辑处理器单元），所以实际取值为4 × 2 ＝ 8。
-如果我们在优化 php.ini 的时候设置了同时只有2个 php-cgi 运行的话，那么我们也应该只设置2个 MySQL 线程同时运行。</p>
+如果我们在优化 php.ini 的时候设置了同时只有2个 php-cgi 运行的话，那么我们也应该只设置2个 MySQL 线程同时运行,设置过大导致线程之间的频繁切换。</p>
+
+<p><em>这个参数在mysql 5.6.1中已经被标记为过时，在5.7.2版本的mysql中被移除</em></p>
 
 <p><strong>query_cache</strong>:
 对于博客/新闻网站来说，用得最多的就是查询，所以需要加入 query cache 的设置。query_cache_size 是执行查询所使用的缓冲大小。
 query_cache_limit指定单个查询能够使用的缓冲区大小，缺省为1M,结果集超过这个大小将不会被缓存。</p>
 
-<p>与查询缓冲有关的参数还有query_cache_type、query_cache_limit、query_cache_min_res_unit。</p>
+<p>与查询缓存有关的参数还有query_cache_type、query_cache_limit、query_cache_min_res_unit。</p>
 
-<p>query_cache_type指定是否使用查询缓冲，可以设置为0、1、2,分别代表了off、on、demand,如果是0，那么query cache 是关闭的。如果是1，那么查询总是先到查询缓存中查找，除非使用了sql_no_cache。如果是2，那么，只有使用 sql_cache的查询，才会去查询缓存中查找.</p>
+<p>query_cache_type指定是否使用查询缓存，可以设置为0、1、2,分别代表了off、on、demand,如果是0，那么query cache 是关闭的。如果是1，那么查询总是先到查询缓存中查找，除非使用了sql_no_cache。如果是2，那么，只有使用 sql_cache的查询，才会去查询缓存中查找.</p>
 
-<p>query_cache_limit指定单个查询能够使用的缓冲区大小，缺省为1M。
-query_cache_min_res_unit是在4.1版本以后引入的，它指定分配缓冲区空间的最小单位，缺省为4K。
-检查状态值Qcache_free_blocks，如果该值非常大，则表明缓冲区中碎片很多，这就表明查询结果都比较小，此时需要减小 query_cache_min_res_unit。</p>
+<p>query_cache_limit指定单个查询能够使用的缓冲区大小，缺省为1M。</p>
+
+<p>query_cache_min_res_unit是在4.1版本以后引入的，它指定分配缓冲区空间的最小单位，缺省为4K。</p>
+
+<p>检查状态值Qcache_free_blocks，如果该值非常大，则表明缓冲区中碎片很多，这就表明查询结果都比较小，此时需要减小 query_cache_min_res_unit。</p>
 
 <p><strong>thread_stack</strong>:
-用来存放每个线程的标识信息，如线程 id，线程运行时环境等，可以通过设置 thread_stack 来决定给每个线程分配多大的内存。</p>
+每个线程被创建的时候,mysql分配给它的内存,每个连接使用一个线程,用来存放每个线程的标识信息，如线程id，线程运行时环境等。</p>
 
 <p><strong>sort_buffer_size</strong>:
 每个需要排序的线程分配的缓冲区大小，增加该值可以加速 order by 和 group by 的操作。注意：该参数是以每个连接分配内存，也就是说，如果有16个连接，sort_buffer_size 为 64K，那么实际分配的内存为：16 × 64K = 1MB。如果设置的缓存大小无法满足需要，MySQL 会将数据写入磁盘来完成排序。因为磁盘操作和内存操作不在一个数量级，所以 sort_buffer_size 对排序的性能影响很大。</p>
@@ -352,42 +342,12 @@ query_cache_min_res_unit是在4.1版本以后引入的，它指定分配缓冲�
 
 <p>skip-locking用来避免 MySQL 外部锁定，减少出错几率，增强稳定性。</p>
 
-<p>以上: 64M VPS数据库配置</p>
+<p><strong>thread_cache_size 优化配置</strong></p>
 
-<pre><code>skip-bdb
-skip-innodb
+<p>Thread_Cache是mysql自己维护的连接池,将空闲的连接线程放在连接池中,而不是立即销毁.这样的好处就是,当又有一个新的请求的时候,mysql不会立即去创建连接 线程,而是先去Thread_Cache中去查找空闲的连接线程,如果存在则直接使用,不存在才创建新的连接线程.</p>
 
-key_buffer = 16K
-table_cache = 8
-
-max_connections = 16
-thread_concurrency = 2
-
-query_cache_limit = 256K
-query_cache_size = 4M
-query_cache_type = 1
-
-sort_buffer_size = 64K
-read_buffer_size = 256K
-read_rnd_buffer_size = 256K
-net_buffer_length = 2K
-thread_stack = 64K
-skip-locking
-
-</code></pre>
-
-<p>thread_cache_size 优化配置</p>
-
-<h3 id="packet-for-query-is-too-large">Packet for query is too large</h3>
-
-<p><code>show variables like '%max%'</code></p>
-
-<p>当update或者insert的内容过大时,<code>max_allowed_packet</code>的值过小,会引起sql异常,需要改大;其默认值为1048576(1M)，
-修改<code>my.cnf</code>  <code>max_allowed_packet = 20M</code>
-或者零时动态设置 <code>set global max_allowed_packet = 20*1024*1024</code></p>
-
-<p>查看是否生效,零时修改一般断开后重新连接即可生效.
-<code>show variables like '%max_allowed_packet%'</code></p>
+<p>thread_cache_size为连接池里最大连接线程数,在短连接的应用中Thread_Cache的功效非常明显,因为在应用中数据库的连接和创建是非常频繁的,如果不使用 Thread_Cache那么消耗的资源是非常可观的!在长连接中虽然带来的改善没有短连接的那么明显,但是好处是显而易见的.但并不是越大越好大了反而浪费资源
+依据内存</p>
 
 <pre><code>1G  ---&gt; 8
 2G  ---&gt; 16
@@ -395,12 +355,87 @@ skip-locking
 4G  ---&gt; 64
 </code></pre>
 
+<p><code>show variables like 'thread%';show variables like &quot;max_connections&quot;;show status like '%connections%';show status like 'thread%';</code></p>
+
+<p>表3中<code>Connections</code>表示服务器总共服务了多少次连接,<code>Max_used_connections</code>为实际达到的最大并发连接数</p>
+
+<p>表4中<code>Threads_cached</code>是处于连接池中的连接数(休眠的),从表1可以知道连接池允许的最大数量(<code>thread_cache_size</code>)</p>
+
+<p><code>Threads_connected</code>为当前的连接数,也可以从<code>show full processlist;</code>得知当前的连接数,他的最大值即为<code>Max_used_connections</code></p>
+
+<p><code>Threads_running</code>为此时刻正在进行SQL操作的线程,这个值必定是小于等于<code>Threads_connected</code></p>
+
+<p><code>Threads_created</code>为总共执行了多少次创建线程的操作,改数定大于等于<code>Max_used_connections</code>,一个线程创建后用于服务,客户端断开后并不会被销毁,而是放入连接池(只有连接池的数量大于设定值才会被抛弃),当创建的时候也会检查连接池内有没有,没有才会创建新的.</p>
+
+<p>配置项<code>max_connections</code>为允许的最大并发连接数,也可以依据<code>Max_used_connections</code>作为参考,增加该值不会占用系统资源,只有实际使用到的才会占用,但设置过小会出现<code>Too many connections</code>,默认值为100,须大于<code>Max_used_connections</code>,根据网站的并发量来设定.</p>
+
+<p>每一个连接都需要一个线程服务,每个线程初始分配<code>thread_stack</code>字节的内存,连接池的利用率为</p>
+
+<pre><code>Thread_Cache_Hit=(Connections-Thread_created)/Connections*100%
+</code></pre>
+
+<p>即尽量减少线程创建操作.</p>
+
+<p><code>show variables like '%timeout%';</code></p>
+
+<p><code>wait_timeout</code>参数有时也是什么有用,该值为客户端已连接但是未活动,最多等待的秒数,超过此时间将主动断开连接.默认是28800(8小时)</p>
+
+<p>执行<code>show full processlist;</code>可以查看所有连接的状态及空闲时间等.</p>
+
+<p>大量长期<code>Sleep</code>的连接,也是在白白消耗内存,该数量被记为<code>Threads_connected</code>,如果大量创建连接而又不断开不使用,会导致改值增加,达到<code>max_connections</code>上限后会报错<code>too many connections</code></p>
+
+<p>要改变他,要同时设置interactive_timeout和wait_timeout才会生效</p>
+
+<p>以上: 64M VPS数据库配置</p>
+
+<pre><code>skip-bdb
+skip-innodb
+
+key_buffer_size = 16K
+table_cache = 8
+
+thread_stack = 64K
+
+max_connections = 16
+thread_cache_size = 8
+thread_concurrency = 2
+
+query_cache_type = 1
+query_cache_size = 4M
+query_cache_limit = 128K
+query_cache_strip_comments = 1
+
+sort_buffer_size = 64K
+read_buffer_size = 256K
+read_rnd_buffer_size = 256K
+net_buffer_length = 2K
+skip-locking
+
+wait_timeout=3600
+interactive_timeout=3600
+
+</code></pre>
+
+<h3 id="packet-for-query-is-too-large">Packet for query is too large</h3>
+
+<p><code>show variables like '%max%'</code></p>
+
+<p>当update或者insert的内容过大时,<code>max_allowed_packet</code>的值过小,会引起sql异常,需要改大;其默认值为1048576(1M)，</p>
+
+<p>修改<code>my.cnf</code>  <code>max_allowed_packet = 20M</code></p>
+
+<p>或者零时动态设置 <code>set global max_allowed_packet = 20*1024*1024</code></p>
+
+<p>查看是否生效,零时修改一般断开后重新连接即可生效. <code>show variables like '%max_allowed_packet%'</code></p>
+
 <h2 id="数据库优化">数据库优化</h2>
 
 <p>查看query_cache相关配置, 默认这个开关是关闭的,就是禁止使用query_cache
 query_cache_type 为0,是关闭的</p>
 
-<p><code>show variables where variable_name like '%query_cache%'</code> 单独查询一个使用 <code>select @@query_cache_type</code></p>
+<p>查看当前的配置 <code>show variables like '%query_cache%';</code></p>
+
+<p>单独查询一个可以使用 <code>select @@query_cache_type;</code></p>
 
 <pre><code>+------------------------------+----------+
 | Variable_name                | Value    |
@@ -415,9 +450,17 @@ query_cache_type 为0,是关闭的</p>
 +------------------------------+----------+
 </code></pre>
 
+<p>上述开启<code>query_cache</code> 32MB</p>
+
+<p>(OFF)如果设置为0，那么可以说，你的缓存根本就没有用，相当于禁用了。</p>
+
+<p>(ON)如果设置为1，将会缓存所有的结果，除非你的select语句使用SQL_NO_CACHE禁用了查询缓存。</p>
+
+<p>(DEMAND)如果设置为2，则只缓存在select语句中通过SQL_CACHE指定需要缓存的查询。</p>
+
 <p><code>query_cache_size</code>为0,没有分配缓存空间,如果配置了<code>query_cache_size = 4M</code>,这里会显示具体的字节</p>
 
-<p><code>show status like '%Qcache%'</code></p>
+<p>查看运行的状态 <code>show status like '%Qcache%';</code></p>
 
 <pre><code>+-------------------------+----------+
 | Variable_name           | Value    |
@@ -433,8 +476,13 @@ query_cache_type 为0,是关闭的</p>
 +-------------------------+----------+
 </code></pre>
 
-<p>如果<code>Qcache_lowmem_prunes</code>的值非常大，则表明经常出现缓冲不够的情况，如果<code>Qcache_hits</code>的值也非常大，则表明查询缓冲使用非常频繁，此时需要增加缓冲大小；
-如果<code>Qcache_hits</code>的值不大，则表明你的查询重复率很低，这种情况下使用查询缓冲反而会影响效率，那么可以考虑不用查询缓冲。此外，在SELECT语句中加入<code>SQL_NO_CACHE</code>可以明确表示不使用查询缓冲。</p>
+<p>如果<code>Qcache_lowmem_prunes</code>的值非常大，则表明经常出现缓冲不够的情况</p>
+
+<p>如果<code>Qcache_hits</code>的值也非常大，则表明查询缓存使用非常频繁，此时需要增加缓冲大小；</p>
+
+<p>如果<code>Qcache_hits</code>的值不大，则表明你的查询重复率很低，这种情况下使用查询缓存反而会影响效率，那么可以考虑不用查询缓存。</p>
+
+<p>此外，在SELECT语句中加入<code>SQL_NO_CACHE</code>可以明确表示不使用查询缓存。</p>
 
 <blockquote>
 <p>查询缓存碎片率 = Qcache_free_blocks / Qcache_total_blocks * 100%</p>
@@ -453,6 +501,20 @@ query_cache_type 为0,是关闭的</p>
 </blockquote>
 
 <p>命中率越高,效果越好</p>
+
+<p>要开启<code>Query Cache</code>可以执行如下,注意<code>Query Cache</code>对于读多写少的场景才会有优势</p>
+
+<p>query_cache_type:开启缓存</p>
+
+<p>query_cache_size:总的缓存大小16Mb</p>
+
+<p>query_cache_limit:结果集超过256KB则不缓存</p>
+
+<pre><code>SET GLOBAL query_cache_type = 1;
+SET GLOBAL query_cache_size = 16777216;
+SET GLOBAL query_cache_limit = 262144;
+SET GLOBAL query_cache_strip_comments = 1;
+</code></pre>
 
 <h2 id="各个数据库引擎对比">各个数据库引擎对比</h2>
 
@@ -507,6 +569,31 @@ Memory的锁级别和MyISAM一样，是表锁；并且不支持事务性。</p>
 
 <p>表级：不利于并发性，锁定开销小</p>
 </blockquote>
+
+<p><code>show status like '%cost%';</code> 查看上一次查询的代价</p>
+
+<p><code>show variables like 'long_query_time';</code> 查看长查询设定的时间</p>
+
+<p><code>show status like 'slow_queries';</code> &ndash;查看查询时间超过long_query_time秒的查询的个数。</p>
+
+<h3 id="查看最近执行的sql">查看最近执行的sql</h3>
+
+<p>1) If general mysql logging is enabled then we can check the queries in the log file or table based what we have mentioned in the config. Check what is enabled with the following command</p>
+
+<p>mysql&gt; show variables like &lsquo;general_log%&lsquo;;
+mysql&gt; show variables like &lsquo;log_output%&lsquo;;
+If we need query history in table then</p>
+
+<p>Execute SET GLOBAL log_output = &lsquo;TABLE&rsquo;;
+Execute SET GLOBAL general_log = &lsquo;ON&rsquo;;
+Take a look at the table mysql.general_log</p>
+
+<p>If you prefer to output to a file:</p>
+
+<p>SET GLOBAL log_output = &ldquo;FILE&rdquo;; which is set by default.
+SET GLOBAL general_log_file = &ldquo;/path/to/your/logfile.log&rdquo;;
+SET GLOBAL general_log = &lsquo;ON&rsquo;;
+2) We can also check the queries in the .mysql_history file cat ~/.mysql_history</p>
 
 			</div>
 		</div>

@@ -83,6 +83,16 @@ echo www.example.com/${i}.jpg;
 done
 </code></pre>
 
+<h3 id="下载一个压缩包-不存储直接解压">下载一个压缩包,不存储直接解压</h3>
+
+<p><code>curl -sSL http://www.memcached.org/files/memcached-1.4.30.tar.gz | tar xz</code></p>
+
+<p>其中<code>-L</code>表示更随重定向<code>-s</code>为安静模式,不输出任何信息,<code>-S</code>为在安静模式下出错的话要输出错误信息.</p>
+
+<p>要解压到指定目录,后面的可以使用 tar xzC ./path/to/dir ,当然这个路径要存在</p>
+
+<p>用curl下载的好处是不会像wget那样出现多个已下载的重复文件</p>
+
 <h2 id="axel">Axel</h2>
 
 <p>下载速度最快,分段下载速度优异
@@ -248,6 +258,18 @@ location @goapp {
 	proxy_pass http://localhost:8080;
 }
 </code></pre>
+
+<p>nginx 301 重定向</p>
+
+<pre><code>server{
+    listen 80;
+    server_name xxx.com;
+    rewrite ^(.*) https://xxx.com$1 permanent;
+}
+
+</code></pre>
+
+<p>使用匹配跳转后也加上之前访问的路径和<code>query_string</code>,可以转为https协议,也可以让多个域名301到一个域名</p>
 
 <p><strong>注意</strong>:<code>nginx</code>的<code>proxy_pass</code>后面带不带<code>/</code>是有区别的.</p>
 
@@ -525,7 +547,7 @@ make -j$CPU_NUM  &amp;&amp; make install
 <p>redis编译时,不能使用<code>CFLAGS O3</code></p>
 
 <pre><code>cd /tmp
-REDIS_VERSION=redis-3.2.2
+REDIS_VERSION=redis-3.2.3
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
 wget http://download.redis.io/releases/${REDIS_VERSION}.tar.gz
 tar xzf ${REDIS_VERSION}.tar.gz
@@ -539,7 +561,7 @@ mv /tmp/${REDIS_VERSION}/redis.conf /etc/redis.conf
 <p>memcached所有版本见<a href="http://www.memcached.org/files/">http://www.memcached.org/files/</a></p>
 
 <pre><code>cd /tmp
-MEMCACHE_VERSION=memcached-1.4.29
+MEMCACHE_VERSION=memcached-1.4.30
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
 wget http://www.memcached.org/files/${MEMCACHE_VERSION}.tar.gz
 tar xzf ${MEMCACHE_VERSION}.tar.gz
@@ -735,6 +757,84 @@ group = www-data
 </code></pre>
 
 <p>安装过程中要求设定一个root密码,安装完<code>service mysql status</code>查看运行状态,<code>sudo service mysql restart</code>可以重启</p>
+
+<p>添加MySql用户</p>
+
+<pre><code>insert into mysql.user (host,user,password) values('%','user',PASSWORD('user'));
+</code></pre>
+
+<p>修改密码</p>
+
+<pre><code>update mysql.user set password=PASSWORD('123456') where user='root';
+
+</code></pre>
+
+<p>show status; // 显示一些系统特定资源的信息，例如，正在运行的线程数量</p>
+
+<p>show variables; // 显示系统变量的名称和值</p>
+
+<p>show table status; // 显示当前使用或者指定的database中的每个表的信息。信息包括表类型和表的最新更新时间</p>
+
+<p>如:<code>show table status like 'user_%' \G</code></p>
+
+<p><code>show warnings;</code> 查看最后一条警告</p>
+
+<p><code>show errors;</code> 查看最后一条错误</p>
+
+<p><code>show full processlist;</code>查看mysql服务器当前的所有连接</p>
+
+<p><code>show status like 'uptime';</code> 查看在线时间</p>
+
+<p><code>show status like 'com_%';</code>查看使用这些指令的计数,如查看MySQL启动后执行的SELECT语句的次数<code>show status like 'com_select';</code></p>
+
+<p><code>show status like 'Thread_%';</code>查看当前的线程状态</p>
+
+<pre><code>--查看MySQL本次启动后的运行时间(单位：秒)
+show status like 'uptime';
+
+--查看select语句的执行数
+show [global] status like 'com_select';
+
+--查看insert语句的执行数
+show [global] status like 'com_insert';
+
+--查看update语句的执行数
+show [global] status like 'com_update';
+
+--查看delete语句的执行数
+show [global] status like 'com_delete';
+
+--查看试图连接到MySQL(不管是否连接成功)的连接数
+show status like 'connections';
+
+--查看线程缓存内的线程的数量。
+show status like 'threads_cached';
+
+--查看当前打开的连接的数量。
+show status like 'threads_connected';
+
+--查看当前打开的连接的数量。
+show status like 'threads_connected';
+
+--查看创建用来处理连接的线程数。如果Threads_created较大，你可能要增加thread_cache_size值。
+show status like 'threads_created';
+
+--查看激活的(非睡眠状态)线程数。
+show status like 'threads_running';
+
+
+--查看立即获得的表的锁的次数。
+show status like 'table_locks_immediate';
+
+--查看不能立即获得的表的锁的次数。如果该值较高，并且有性能问题，你应首先优化查询，然后拆分表或使用复制。
+show status like 'table_locks_waited';
+
+--查看创建时间超过slow_launch_time秒的线程数。
+show status like 'slow_launch_threads';
+
+--查看查询时间超过long_query_time秒的查询的个数。
+show status like 'slow_queries';
+</code></pre>
 
 <h2 id="开机启动脚本">开机启动脚本</h2>
 

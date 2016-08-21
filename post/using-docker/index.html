@@ -502,6 +502,12 @@ newgrp docker
 <p>-t 指明tag
 后面的.指明Dockerfile所在的目录</p>
 
+<p>如果想要使用非Dockerfile为名字的构建文件可以使用-f参数指定构建文件</p>
+
+<p><code>docker build -t=myimage -f mydockerfile .</code></p>
+
+<p>还可以使用<code>docker build -t=myimage - &lt; mydockerfile</code> , 不过尝试发现这种方式好像对路径处理有问题,还是推荐上面一种自定义的方式.</p>
+
 <h2 id="关联远端docker-hub仓库">关联远端Docker Hub仓库</h2>
 
 <p><code>docker login</code>
