@@ -34,6 +34,33 @@
 		
 		<div class="post">
 			<h1 class="post-title">
+				<a href="/software/android-studio/"> Android Studio</a>
+			</h1>
+			<p class="post-date">Fri, Apr 8, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="下载-android-studio">下载 Android Studio</h2>
+
+<p><a href="http://www.oschina.net/news/76307/android-studio-2-2-beta-2">http://www.oschina.net/news/76307/android-studio-2-2-beta-2</a></p>
+
+<pre><code>Windows: https://dl.google.com/dl/android/studio/ide-zips/2.2.0.8/android-studio-ide-145.3200535-windows.zip (461.5 MIB）
+
+Mac: https://dl.google.com/dl/android/studio/ide-zips/2.2.0.8/android-studio-ide-145.3200535-mac.zip  (462.1 MIB）
+
+Linux:   https://dl.google.com/dl/android/studio/ide-zips/2.2.0.8/android-studio-ide-145.3200535-linux.zip  (461.2 MIB）
+
+</code></pre>
+
+<h2 id="安装android-sdk">安装android-sdk</h2>
+
+<p><code>brew install android-sdk</code> 或者使用Android Studio SDK Manager</p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
 				<a href="/project/air/"> air</a>
 			</h1>
 			<p class="post-date">Thu, Feb 18, 2016</p>
@@ -382,10 +409,10 @@ delog(){ ls | grep &quot;log.\d\+.\(bz2\|gz\)&quot; | xargs rm}
 </code></pre>
 
 <pre><code># 这几个Mac不兼容
-# 查看最占用内存的前五个进程
+# 查看最占用内存的前五个进程(根据第几列可修改k6)
 topmem()
 {
-	ps aux | sort -k4nr | head -n5;
+	ps aux | sort -k6nr | head -n5;
 }
 # 查看某一程序占用的内存
 mem()
@@ -394,6 +421,10 @@ mem()
     ps aux | grep --color=auto $1 | grep --color=auto -v grep | awk -F &quot; &quot; '{ sum += $6 } END { printf &quot;Total Memory Usage: %.1f MB\n&quot;, sum/1024 }'
 }
 </code></pre>
+
+<p>压缩率 xz &gt; bzip2 &gt; gzip &gt; zip</p>
+
+<p>gzexe 创建自解压文件</p>
 
 <pre><code># 查看你机器的CPU个数,超线程信息
 sysinfo() {
@@ -622,6 +653,15 @@ ls -lh
 
 <p>dd过程中看不到进度,如果确实想要了解进度,可以再开一个终端<code>pkill -USR1 -n -x dd</code>查看进度.</p>
 
+<p>如果是iso文件,需要装换为img文件,</p>
+
+<pre><code>hdiutil convert -format UDRW -o /path/to/generate/img/file /path/to/your/iso/file
+</code></pre>
+
+<p>mac osx会默认追加一个.dmg,这个没有影响,然后就可以使用dd写入这个img文件了.</p>
+
+<p><code>diskutil eject /dev/disk1</code> 弹出USB,注意和卸载(<code>unmountdisk</code>)是不同的</p>
+
 <p>除了OSMC默认皮肤,还有一些好看的皮肤推荐</p>
 
 <p>1.<a href="http://forum.kodi.tv/showthread.php?tid=187071">Eminence</a></p>
@@ -695,29 +735,6 @@ brew update
 
 <pre><code> brew install vim git git-lfs subversion node go python3 nginx hugo openssl htop ffmpeg xz aria2 wget axel memcached redis mcrypt md5sha1sum fswatch mpv
 </code></pre>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/broswer-chrome/"> Chrome浏览器安装</a>
-			</h1>
-			<p class="post-date">Thu, Jan 14, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="配置chrome跨域">配置Chrome跨域</h2>
-
-<p>Chrome 浏览器配置可以跨域</p>
-
-<p><code>/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --disable-web-security</code></p>
-
-<p>或者</p>
-
-<p><code>open -a &quot;Google Chrome&quot; --args --disable-web-security</code></p>
-
-<p>必须完全退出Chrome,再使用上述方法.</p>
 
 			</div>
 		</div>

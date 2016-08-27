@@ -151,10 +151,10 @@ delog(){ ls | grep &amp;quot;log.\d\+.\(bz2\|gz\)&amp;quot; | xargs rm}
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;pre&gt;&lt;code&gt;# 这几个Mac不兼容
-# 查看最占用内存的前五个进程
+# 查看最占用内存的前五个进程(根据第几列可修改k6)
 topmem()
 {
-	ps aux | sort -k4nr | head -n5;
+	ps aux | sort -k6nr | head -n5;
 }
 # 查看某一程序占用的内存
 mem()
@@ -163,6 +163,10 @@ mem()
     ps aux | grep --color=auto $1 | grep --color=auto -v grep | awk -F &amp;quot; &amp;quot; &#39;{ sum += $6 } END { printf &amp;quot;Total Memory Usage: %.1f MB\n&amp;quot;, sum/1024 }&#39;
 }
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;压缩率 xz &amp;gt; bzip2 &amp;gt; gzip &amp;gt; zip&lt;/p&gt;
+
+&lt;p&gt;gzexe 创建自解压文件&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;# 查看你机器的CPU个数,超线程信息
 sysinfo() {

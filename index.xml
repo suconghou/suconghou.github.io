@@ -6,8 +6,63 @@
     <description>Recent content on 苏苏的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 11 Aug 2016 10:27:18 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 24 Aug 2016 14:44:23 +0800</lastBuildDate>
     <atom:link href="http://blog.suconghou.cn/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>memcached usage</title>
+      <link>http://blog.suconghou.cn/post/memcached-usage/</link>
+      <pubDate>Wed, 24 Aug 2016 14:44:23 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/memcached-usage/</guid>
+      <description>
+
+&lt;h2 id=&#34;安装memcached&#34;&gt;安装memcached&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://memcached.org/downloads&#34;&gt;http://memcached.org/downloads&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;memcached所有版本见&lt;a href=&#34;http://www.memcached.org/files/&#34;&gt;http://www.memcached.org/files/&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd /tmp
+MEMCACHE_VERSION=memcached-1.4.31
+CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
+wget http://www.memcached.org/files/${MEMCACHE_VERSION}.tar.gz
+tar xzf ${MEMCACHE_VERSION}.tar.gz
+cd ${MEMCACHE_VERSION}
+export CFLAGS=&amp;quot;-O3&amp;quot;
+./configure
+make -j$CPU_NUM &amp;amp;&amp;amp; make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;docker版本见:&lt;a href=&#34;https://hub.docker.com/r/suconghou/memcached/&#34;&gt;https://hub.docker.com/r/suconghou/memcached/&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;启动memcached&#34;&gt;启动Memcached&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;memcached -d -u memcached -p 11211 -m 8 -P /var/run/memcached/memcached.pid
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;说明&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;-d 以daemon方式运行&lt;/li&gt;
+&lt;li&gt;-u 绑定使用指定用户运行进程(仅在以root运行的时候有效)&lt;/li&gt;
+&lt;li&gt;-p 设置TCP端口号(默认11211)&lt;/li&gt;
+&lt;li&gt;-m 允许最大内存用量，单位M (默认: 64 MB)&lt;/li&gt;
+&lt;li&gt;-M 内存耗尽时返回错误，而不是删除项&lt;/li&gt;
+&lt;li&gt;-l 是监听的服务器IP地址，默认应该是本机&lt;/li&gt;
+&lt;li&gt;-P 将PID写入文件&lt;file&gt;，这样可以使得后边进行快速进程终止, 需要与-d 一起使用&lt;/li&gt;
+&lt;li&gt;-c 最大同时连接数，默认是1024&lt;/li&gt;
+&lt;li&gt;-t 线程数,默认为4&lt;/li&gt;
+&lt;li&gt;-v 输出警告和错误信息&lt;/li&gt;
+&lt;li&gt;-vv 打印客户端的请求和返回信息&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;默认情况下是不限制访问IP的,相当于是外网和内网都能访问,-l 使只有这个IP能访问&lt;/p&gt;
+
+&lt;p&gt;尽量不要用root用户运行.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>javascript code snippet</title>
@@ -209,6 +264,16 @@ String.prototype.rtrim=function(){return this.replace(/(\s*$)/g,&amp;quot;&amp;q
 &lt;p&gt;生成随机短ID,仅具备较低的不重复性&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;var t=(((1+Math.random())*0x10000000)|0).toString(16);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;生成指定长度随机字符串&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function code($nc, $a=&#39;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&#39;)
+{
+    $l=strlen($a)-1; $r=&#39;&#39;;
+    while($nc--&amp;gt;0) $r.=$a{mt_rand(0,$l)};
+    return $r;
+}
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h3 id=&#34;给jquery的form添加-serializeobject&#34;&gt;给jQuery的form添加&lt;code&gt;serializeObject&lt;/code&gt;&lt;/h3&gt;
@@ -420,15 +485,30 @@ out of it. Please check the Makefile in case of doubts.
 &lt;p&gt;linux2628 表示  内核版本&amp;gt;=2.6.28&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;pre&gt;&lt;code&gt;HAPROXY_VERSION=haproxy-1.6.7
+&lt;pre&gt;&lt;code&gt;apt-get update &amp;amp;&amp;amp; apt-get install -y wget gcc g++ make libpcre++0v5 libpcre++-dev
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;HAPROXY_VERSION=haproxy-1.6.8
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
 wget http://www.haproxy.org/download/1.6/src/${HAPROXY_VERSION}.tar.gz
 tar zxf ${HAPROXY_VERSION}.tar.gz
 cd ${HAPROXY_VERSION}
 export CFLAGS=&amp;quot;-O3&amp;quot;
-make TARGET=linux2628 ARCH=X86_64 -j$CPU_NUM &amp;amp;&amp;amp; make install
+make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 -j$CPU_NUM &amp;amp;&amp;amp; make install
 
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编译32位版本&lt;code&gt;make TARGET=linux26 ARCH=i686 USE_STATIC_PCRE=1 -j$CPU_NUM&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;在64位系统下编译32位需要&lt;code&gt;apt-get install gcc-multilib g++-multilib&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;我编译好的haproxy version 1.6.8&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;64位 &lt;a href=&#34;http://share.suconghou.cn/bin/haproxy.xz&#34;&gt;http://share.suconghou.cn/bin/haproxy.xz&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;32位 &lt;a href=&#34;http://share.suconghou.cn/bin/haproxy.gz&#34;&gt;http://share.suconghou.cn/bin/haproxy.gz&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;h3 id=&#34;使用docker版本的haproxy&#34;&gt;使用Docker版本的HAProxy&lt;/h3&gt;
 
@@ -496,6 +576,26 @@ backend servers
 
 &lt;pre&gt;&lt;code&gt;haproxy -f /etc/haproxy/haproxy.cfg -st `cat /var/run/haproxy.pid`
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;升级-glibc-版本-最新发布-http-www-gnu-org-software-libc&#34;&gt;升级&lt;code&gt;glibc&lt;/code&gt;版本,最新发布 &lt;a href=&#34;http://www.gnu.org/software/libc/&#34;&gt;http://www.gnu.org/software/libc/&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;所有版本见&lt;code&gt;http://mirror.hust.edu.cn/gnu/libc/&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;错误 &lt;code&gt;libc.so.6: version GLIBC_2.14 not found&lt;/code&gt; 表明当前系统的glibc版本较低&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;strings libc.so.6 |grep GLIBC_&lt;/code&gt;可以查看当前系统支持的版本&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;wget http://mirror.hust.edu.cn/gnu/libc/glibc-2.19.tar.xz
+tar Jxf glibc-2.19.tar.xz
+cd glibc-2.19
+mkdir build
+cd build
+../configure
+make -j4&amp;amp;&amp;amp; make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;见 &lt;a href=&#34;https://cnodejs.org/topic/56dc21f1502596633dc2c3dc&#34;&gt;https://cnodejs.org/topic/56dc21f1502596633dc2c3dc&lt;/a&gt;
+此编译需要较长时间&lt;/p&gt;
 </description>
     </item>
     
@@ -608,15 +708,29 @@ backend servers
 
 &lt;p&gt;所有资源均来源于官网&lt;code&gt;http://git-scm.com/download/win&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;最新版本2.9.3,发布于2016-08-13&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;最新版本2.9.3.2,发布于2016-08-25&lt;/strong&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;32位资源&#34;&gt;32位资源&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/Git-2.9.3.2-32-bit.exe&#34;&gt;32位安装版&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/PortableGit-2.9.3.2-64-bit.7z.exe&#34;&gt;32位绿色版&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;64位资源&#34;&gt;64位资源&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/Git-2.9.3.2-64-bit.exe&#34;&gt;64位安装版&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/PortableGit-2.9.3.2-64-bit.7z.exe&#34;&gt;64位绿色版&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;版本2.9.3,发布于2016-08-13&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;32位资源-1&#34;&gt;32位资源&lt;/h3&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/Git-2.9.3-32-bit.exe&#34;&gt;32位安装版&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/PortableGit-2.9.3-64-bit.7z.exe&#34;&gt;32位绿色版&lt;/a&gt;&lt;/p&gt;
 
-&lt;h3 id=&#34;64位资源&#34;&gt;64位资源&lt;/h3&gt;
+&lt;h3 id=&#34;64位资源-1&#34;&gt;64位资源&lt;/h3&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/Git-2.9.3-64-bit.exe&#34;&gt;64位安装版&lt;/a&gt;&lt;/p&gt;
 
@@ -624,13 +738,13 @@ backend servers
 
 &lt;p&gt;&lt;strong&gt;版本2.9.2,发布于2016-7-16&lt;/strong&gt;&lt;/p&gt;
 
-&lt;h3 id=&#34;32位资源-1&#34;&gt;32位资源&lt;/h3&gt;
+&lt;h3 id=&#34;32位资源-2&#34;&gt;32位资源&lt;/h3&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/Git-2.9.2-32-bit.exe&#34;&gt;32位安装版&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/PortableGit-2.9.2-64-bit.7z.exe&#34;&gt;32位绿色版&lt;/a&gt;&lt;/p&gt;
 
-&lt;h3 id=&#34;64位资源-1&#34;&gt;64位资源&lt;/h3&gt;
+&lt;h3 id=&#34;64位资源-2&#34;&gt;64位资源&lt;/h3&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/Git-2.9.2-64-bit.exe&#34;&gt;64位安装版&lt;/a&gt;&lt;/p&gt;
 
@@ -948,6 +1062,33 @@ adb install -r app-release.apk
 &lt;p&gt;或者不使用PDO长连接.&lt;/p&gt;
 
 &lt;p&gt;注意,&lt;code&gt;set_error_handler&lt;/code&gt;返回false的话,这个错误还是会被交到上一级错误程序处理的.&lt;/p&gt;
+
+&lt;h3 id=&#34;编码转换中的若干问题&#34;&gt;编码转换中的若干问题&lt;/h3&gt;
+
+&lt;p&gt;我们经常会遇到将utf8编码字符转化为gbk编码的字符,例如生成csv表格,在windows上的cmd窗口输出文字,以及操作windows上的有关文件路径的操作都需要使用gbk编码.&lt;/p&gt;
+
+&lt;p&gt;常使用&lt;code&gt;iconv(&#39;utf-8&#39;, &#39;gbk&#39;, $str);&lt;/code&gt;将utf8字符转为gbk&lt;/p&gt;
+
+&lt;p&gt;这里 utf gbk 不区分大小写,也可以混写,不区分是&lt;code&gt;utf8&lt;/code&gt;还是&lt;code&gt;utf-8&lt;/code&gt;,都能都正常使用&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;iconv(&#39;utf-8&#39;, &#39;gbk//ignore&#39;, $str);&lt;/code&gt; 加上&lt;code&gt;//ignore&lt;/code&gt;使有些字符无法装换时略过.&lt;/p&gt;
+
+&lt;p&gt;但是&lt;code&gt;//ignore&lt;/code&gt;在php5.4及以下,和个别php5.6版本上无效,任然是报NOTICE错误.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+	echo iconv(&#39;UTF8&#39;, &#39;GBK//IGNORE&#39;, &#39;l l l&#39;);
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;见 &lt;code&gt;https://3v4l.org/7vCFW&lt;/code&gt; 和 &lt;code&gt;http://www.php.net/manual/en/function.iconv.php&lt;/code&gt;第一条评论&lt;/p&gt;
+
+&lt;p&gt;可以考虑使用&lt;code&gt;$content = mb_convert_encoding($content, &amp;quot;GBK&amp;quot;,&amp;quot;UTF-8&amp;quot;);&lt;/code&gt; 从UTF8转为GBK&lt;/p&gt;
+
+&lt;p&gt;这样不会报错,不能装换的被替换为?,参数也是不区分大小写,utf8和utf-8&lt;/p&gt;
+
+&lt;h3 id=&#34;filter-var-filter-validate-url&#34;&gt;filter_var FILTER_VALIDATE_URL&lt;/h3&gt;
+
+&lt;p&gt;filter_var FILTER_VALIDATE_URL 中不能包含中文,包含中文被判定为false&lt;/p&gt;
 </description>
     </item>
     
@@ -975,40 +1116,100 @@ make -j4 &amp;amp;&amp;amp; make install
 十分方便&lt;/p&gt;
 
 &lt;p&gt;同时也含有libev版本的可供选择&lt;/p&gt;
+
+&lt;h2 id=&#34;网络内核参数优化&#34;&gt;网络内核参数优化&lt;/h2&gt;
+
+&lt;p&gt;修改&lt;code&gt;ulimit&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ulimit -n&lt;/code&gt; 可以查看当前的&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;vim /etc/security/limits.conf&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;添加一下两行&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;* soft nofile 51200
+* hard nofile 51200
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
     <item>
-      <title>使用tcpdump</title>
+      <title>使用tcpdump与ngrep</title>
       <link>http://blog.suconghou.cn/post/tcpdump/</link>
       <pubDate>Mon, 16 May 2016 18:21:04 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/tcpdump/</guid>
-      <description>&lt;p&gt;各版本 &lt;code&gt;http://www.tcpdump.org/release/&lt;/code&gt;&lt;/p&gt;
+      <description>
 
-&lt;p&gt;安装依赖 &lt;code&gt;yum install -y flex gcc make byacc&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;各版本 &lt;code&gt;http://www.tcpdump.org/release/&lt;/code&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;export CFLAGS=&amp;quot;-O3&amp;quot;
-cd /tmp
+&lt;p&gt;安装依赖 &lt;code&gt;yum install -y flex gcc make byacc&lt;/code&gt; or &lt;code&gt;apt-get install flex gcc make byacc wget bzip2&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd /tmp
 wget http://www.tcpdump.org/release/libpcap-1.7.4.tar.gz
-tar zxvf libpcap-1.7.4.tar.gz
+tar zxf libpcap-1.7.4.tar.gz
 cd libpcap-1.7.4
-./configure
-make -j4
+./configure --prefix=/tmp/lib
+make -j4 &amp;amp;&amp;amp; make install
 cd ../
 wget http://www.tcpdump.org/release/tcpdump-4.7.4.tar.gz
-tar zxvf tcpdump-4.7.4.tar.gz
+tar zxf tcpdump-4.7.4.tar.gz
 cd tcpdump-4.7.4
-./configure
+./configure --prefix=/tmp  --disable-ipv6 CFLAGS=&#39;-O3 -I/tmp/lib/include&#39; LDFLAGS=&#39;-L/tmp/lib/lib/libpcap.a&#39;
 make -j4
 make install
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;安装成功后,位于&lt;code&gt;ls -lh /usr/local/sbin/tcpdump&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;安装成功后,位于&lt;code&gt;ls -lh /tmp/sbin/tcpdump&lt;/code&gt; &lt;code&gt;ldd&lt;/code&gt;查看此文件依赖较少,可直接复制到其他Linux上使用.&lt;/p&gt;
 
-&lt;p&gt;不采用&lt;code&gt;CFLAGS=&amp;quot;-O3&amp;quot;&lt;/code&gt;编译为4.3MB,采用&lt;code&gt;CFLAGS=&amp;quot;-O3&amp;quot;&lt;/code&gt;编译后为1.3MB&lt;/p&gt;
+&lt;p&gt;采用&lt;code&gt;CFLAGS=&amp;quot;-O3&amp;quot;&lt;/code&gt;编译后为1.2MB&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;tcpdump -h&lt;/code&gt; 查看版本号以及用法&lt;/p&gt;
+
+&lt;p&gt;我编译好的tcpdump version 4.7.4&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;64位 &lt;a href=&#34;http://share.suconghou.cn/bin/tcpdump.xz&#34;&gt;http://share.suconghou.cn/bin/tcpdump.xz&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;也可以直接&lt;code&gt;yum install tcpdump&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;使用tcpdump&#34;&gt;使用tcpdump&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;-a 　　　将网络地址和广播地址转变成名字；
+-d 　　　将匹配信息包的代码以人们能够理解的汇编格式给出；
+-dd 　　 将匹配信息包的代码以c语言程序段的格式给出；
+-ddd 　　将匹配信息包的代码以十进制的形式给出；
+-e 　　　在输出行打印出数据链路层的头部信息；
+-f 　　　将外部的Internet地址以数字的形式打印出来；
+-l 　　　使标准输出变为缓冲行形式；
+-n 　　　不把网络地址转换成名字；
+-t 　　　在输出的每一行不打印时间戳；
+-v 　　　输出一个稍微详细的信息，例如在ip包中可以包括ttl和服务类型的信息；
+-vv 　　 输出详细的报文信息；
+-c 　　　在收到指定的包的数目后，tcpdump就会停止；
+-F 　　　从指定的文件中读取表达式,忽略其它的表达式；
+-i 　　　指定监听的网络接口；
+-r 　　　从指定的文件中读取包(这些包一般通过-w选项产生)；
+-w 　　　直接将包写入文件中，并不分析和打印出来；
+-T 　　　将监听到的包直接解释为指定的类型的报文，常见的类型有rpc （远程过程调用）和snmp（简单网络管理协议；&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;code&gt;tcpdump host 210.27.48.1&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;-A&lt;/code&gt;和&lt;code&gt;-X&lt;/code&gt;有助于你查看详细的报文数据&lt;/p&gt;
+
+&lt;h2 id=&#34;ngrep&#34;&gt;ngrep&lt;/h2&gt;
+
+&lt;p&gt;ngrep 编译总是出问题,建议直接安装:&lt;code&gt;apt-get install ngrep&lt;/code&gt; &lt;code&gt;yum install ngrep&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;如果更关注于TCP流量内容,可以使用&lt;code&gt;ngrep&lt;/code&gt;,他是grep命令的网络版,同样需要libpcap库,能识别TCP、UDP和ICMP包，理解bpf的过滤机制&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ngrep -W byline -d eno1 port 80&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;具体使用见
+&lt;a href=&#34;http://man.linuxde.net/ngrep&#34;&gt;http://man.linuxde.net/ngrep&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     
@@ -1152,32 +1353,6 @@ diskutil unmountdisk /dev/disk2
 passwd abc&lt;/p&gt;
 
 &lt;p&gt;获得sudo权限:编辑&lt;code&gt;/etc/sudoers&lt;/code&gt; 加入新添加的用户名&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Android Studio</title>
-      <link>http://blog.suconghou.cn/software/android-studio/</link>
-      <pubDate>Fri, 08 Apr 2016 10:08:24 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/software/android-studio/</guid>
-      <description>
-
-&lt;h2 id=&#34;下载-android-studio&#34;&gt;下载 Android Studio&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.oschina.net/news/76307/android-studio-2-2-beta-2&#34;&gt;http://www.oschina.net/news/76307/android-studio-2-2-beta-2&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Windows: https://dl.google.com/dl/android/studio/ide-zips/2.2.0.8/android-studio-ide-145.3200535-windows.zip (461.5 MIB）
-
-Mac: https://dl.google.com/dl/android/studio/ide-zips/2.2.0.8/android-studio-ide-145.3200535-mac.zip  (462.1 MIB）
-
-Linux:   https://dl.google.com/dl/android/studio/ide-zips/2.2.0.8/android-studio-ide-145.3200535-linux.zip  (461.2 MIB）
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;安装android-sdk&#34;&gt;安装android-sdk&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;brew install android-sdk&lt;/code&gt; 或者使用Android Studio SDK Manager&lt;/p&gt;
 </description>
     </item>
     

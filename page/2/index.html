@@ -34,6 +34,35 @@
 		
 		<div class="post">
 			<h1 class="post-title">
+				<a href="/software/shadowsocks-client/"> shadowsocks client</a>
+			</h1>
+			<p class="post-date">Sun, Jul 17, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="shadowsocks-各平台客户端">shadowsocks 各平台客户端</h2>
+
+<p>文件来源于<code>github.com</code></p>
+
+<h3 id="windows平台">windows平台</h3>
+
+<p><a href="http://share.suconghou.cn/shadowsocks/Shadowsocks-3.0.zip">Shadowsocks-3.0</a></p>
+
+<h3 id="mac平台">mac平台</h3>
+
+<p><a href="http://share.suconghou.cn/shadowsocks/ShadowsocksX-2.6.3.dmg">ShadowsocksX-2.6.3</a></p>
+
+<h3 id="android平台">android平台</h3>
+
+<p><a href="http://share.suconghou.cn/shadowsocks/shadowsocks-nightly-3.0.3.apk">shadowsocks-nightly-3.0.3</a></p>
+
+<p>服务端可以使用docker更方便 <a href="https://hub.docker.com/r/suconghou/shadowsocks/">shadowsocks docker</a></p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
 				<a href="/software/picasa-photo-viewer/"> picasa photo viewer</a>
 			</h1>
 			<p class="post-date">Sun, Jul 17, 2016</p>
@@ -63,15 +92,29 @@
 
 <p>所有资源均来源于官网<code>http://git-scm.com/download/win</code></p>
 
-<p><strong>最新版本2.9.3,发布于2016-08-13</strong></p>
+<p><strong>最新版本2.9.3.2,发布于2016-08-25</strong></p>
 
 <h3 id="32位资源">32位资源</h3>
+
+<p><a href="http://share.suconghou.cn/git/Git-2.9.3.2-32-bit.exe">32位安装版</a></p>
+
+<p><a href="http://share.suconghou.cn/git/PortableGit-2.9.3.2-64-bit.7z.exe">32位绿色版</a></p>
+
+<h3 id="64位资源">64位资源</h3>
+
+<p><a href="http://share.suconghou.cn/git/Git-2.9.3.2-64-bit.exe">64位安装版</a></p>
+
+<p><a href="http://share.suconghou.cn/git/PortableGit-2.9.3.2-64-bit.7z.exe">64位绿色版</a></p>
+
+<p><strong>版本2.9.3,发布于2016-08-13</strong></p>
+
+<h3 id="32位资源-1">32位资源</h3>
 
 <p><a href="http://share.suconghou.cn/git/Git-2.9.3-32-bit.exe">32位安装版</a></p>
 
 <p><a href="http://share.suconghou.cn/git/PortableGit-2.9.3-64-bit.7z.exe">32位绿色版</a></p>
 
-<h3 id="64位资源">64位资源</h3>
+<h3 id="64位资源-1">64位资源</h3>
 
 <p><a href="http://share.suconghou.cn/git/Git-2.9.3-64-bit.exe">64位安装版</a></p>
 
@@ -79,13 +122,13 @@
 
 <p><strong>版本2.9.2,发布于2016-7-16</strong></p>
 
-<h3 id="32位资源-1">32位资源</h3>
+<h3 id="32位资源-2">32位资源</h3>
 
 <p><a href="http://share.suconghou.cn/git/Git-2.9.2-32-bit.exe">32位安装版</a></p>
 
 <p><a href="http://share.suconghou.cn/git/PortableGit-2.9.2-64-bit.7z.exe">32位绿色版</a></p>
 
-<h3 id="64位资源-1">64位资源</h3>
+<h3 id="64位资源-2">64位资源</h3>
 
 <p><a href="http://share.suconghou.cn/git/Git-2.9.2-64-bit.exe">64位安装版</a></p>
 
@@ -353,59 +396,6 @@ adb install -r app-release.apk
 </code></pre>
 
 <p>可以访问如下网址测试: /html/wx</p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/php-best-way/"> PHP最佳实践</a>
-			</h1>
-			<p class="post-date">Thu, Jun 30, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="性能优化">性能优化</h2>
-
-<h3 id="数组相关">数组相关</h3>
-
-<p><strong><code>in_array</code>在大数据量(数万以上元素)下效率低下</strong></p>
-
-<p>在分析nginx log得出所有不重复IP时,采用<code>in_array</code>判断,50多万的数据耗时需要五六分钟,而采用存键的方法,用<code>isset</code>判断仅需要十几秒,效率差别非常大. [php7环境下]</p>
-
-<p>判断一个数组是否存在某个元素,远比查找一个键消耗的要多.前者时间复杂度O(n),而后者O(1)</p>
-
-<p>即时使用<code>in_array</code>,也需要加上第三个参数,设置为严格模式,省略数据类型转化的开销,设置为<code>true</code>比设置为<code>false</code>性能要提升好几倍.</p>
-
-<p>这种情况下使用<code>array_search</code>情况比<code>in_array</code>更加糟糕</p>
-
-<p>如果条件允许使用<code>array_flip</code>交换键值,在用<code>isset</code>来判断要比<code>in_array</code>好得多</p>
-
-<p>同时,使用<code>isset</code>来判断数组的键,也比使用<code>array_key_exists</code>要好</p>
-
-<p>而对于本题,还可以使用<code>array_unique</code>最后去重,用空间换时间,效率仅次于用<code>isset</code></p>
-
-<h2 id="bugs">Bugs</h2>
-
-<h3 id="php-pdo-mysql-server-has-gone-away">php pdo <code>MySQL server has gone away</code></h3>
-
-<p>在使用PDO长连接时,执行过一次PDO初始化后,php-fpm进程会与mysql server开启一条TCP长连接,下次连接数据库就能加快速度.</p>
-
-<p>但是却存在一定问题,PDO维持了长连接并没有较好的检测其可用性,如果mysql server kill 掉这个连接,或者mysql重启,都会造成</p>
-
-<p>重新实例化PDO时得到旧的链接,导致出现<code>MySQL server has gone away</code>,更让人郁闷的是这个错误并不是一个Exception,无法被catch捕获,即使设置<code>PDO::ATTR_ERRMODE=&gt;PDO::ERRMODE_EXCEPTION</code>,也不行,还是直接在页面上提示.</p>
-
-<p>如果你使用了<code>set_error_handler</code>,那么这个<code>Warning</code>将会被捕捉,不会直接显示在页面上,但也改变了程序的原有执行逻辑.</p>
-
-<p>如果你不使用<code>set_error_handler</code>,页面上报出<code>Warning</code>,但其实PDO已经返回一个可用的链接了.</p>
-
-<p>猜测可能是PDO首先得到了不可用的然后报警告,然后又创建了一个新的.</p>
-
-<p>较好的解决方法是设置<code>set_error_handler</code>若捕获了这个<code>MySQL server has gone away</code>,则返回null,程序继续按原有逻辑执行.</p>
-
-<p>或者不使用PDO长连接.</p>
-
-<p>注意,<code>set_error_handler</code>返回false的话,这个错误还是会被交到上一级错误程序处理的.</p>
 
 			</div>
 		</div>

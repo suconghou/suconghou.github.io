@@ -45,8 +45,6 @@
 			
 				<a href="/tags/redis">#redis</a>
 			
-				<a href="/tags/memcached">#memcached</a>
-			
 				<a href="/tags/swoole">#swoole</a>
 			
 			</p>
@@ -335,7 +333,7 @@ alias errorlog='tail -f /var/log/nginx/error.log  /var/log/php-fpm/* ';
 fi
 </code></pre>
 
-<p><code>su</code>一下就可以使用了.</p>
+<p><code>source</code>一下就可以使用了.</p>
 
 <p>其中部分步骤可能需要root权限</p>
 
@@ -467,6 +465,20 @@ make -j$CPU_NUM  &amp;&amp; make install
 只需<code>kill -USR2 php-fpm master 进程的PID</code>,向<code>php-fpm master</code>进程发送重启指令,php-fpm的master和worker都会重新加载配置,重新运行起来.
 <code>curl -I 127.0.0.1</code>查看,新版本的fpm已经在工作了.</p>
 
+<p><code>ps -ylC php-fpm --sort:rss</code>可以查看所有php-fpm进程的内存消耗.</p>
+
+<p><code>ps --no-headers -o &quot;rss,cmd&quot; -C php-fpm | awk '{ sum+=$1 } END { printf (&quot;%d%s\n&quot;, sum/NR/1024,&quot;M&quot;) }'</code>
+得出平均每进程消耗的内存.</p>
+
+<p>8G以上内存生产服务器可以加大子进程数量.</p>
+
+<pre><code>pm.max_children = 70
+pm.start_servers = 20
+pm.min_spare_servers = 20
+pm.max_spare_servers = 35
+pm.max_requests = 500
+</code></pre>
+
 <p>PHP的数据库长连接有没有效,
 实际测试,采用香港服务器远程连接mysql,非长连接模式下耗时约600ms,使用PDO长连接,耗时下降到260ms左右,是有一定作用的.
 但是长连接不适用于CLI模式,CLI模式下,php进程退出,连接即断开.</p>
@@ -485,21 +497,6 @@ tar xzf ${REDIS_VERSION}.tar.gz
 cd ${REDIS_VERSION}
 make -j$CPU_NUM &amp;&amp; make install
 mv /tmp/${REDIS_VERSION}/redis.conf /etc/redis.conf
-</code></pre>
-
-<h2 id="安装memcached">安装memcached</h2>
-
-<p>memcached所有版本见<a href="http://www.memcached.org/files/">http://www.memcached.org/files/</a></p>
-
-<pre><code>cd /tmp
-MEMCACHE_VERSION=memcached-1.4.30
-CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
-wget http://www.memcached.org/files/${MEMCACHE_VERSION}.tar.gz
-tar xzf ${MEMCACHE_VERSION}.tar.gz
-cd ${MEMCACHE_VERSION}
-export CFLAGS=&quot;-O3&quot;
-./configure
-make -j$CPU_NUM &amp;&amp; make install
 </code></pre>
 
 <h2 id="安装一些其他扩展">安装一些其他扩展</h2>
@@ -531,14 +528,6 @@ unzip php-memcached.zip
 cd php-memcached-php7
 phpize
 make -j$CPU_NUM  &amp;&amp; make install
-</code></pre>
-
-<p>安装memcached,见<a href="http://memcached.org/downloads">http://memcached.org/downloads</a></p>
-
-<pre><code>wget http://memcached.org/latest
-tar -zxvf memcached-1.x.x.tar.gz
-cd memcached-1.x.x
-./configure &amp;&amp; make -j$CPU_NUM  &amp;&amp; make test &amp;&amp; sudo make install
 </code></pre>
 
 <p>安装swoole扩展</p>
@@ -763,7 +752,7 @@ show status like 'table_locks_waited';
 --查看创建时间超过slow_launch_time秒的线程数。
 show status like 'slow_launch_threads';
 
---查看查询时间超过long_query_time秒的查询的个数。
+--查看查询时间超过long_query_time秒的查询的个数。返回的是当前session的,要查看全局的加上`global`
 show status like 'slow_queries';
 </code></pre>
 

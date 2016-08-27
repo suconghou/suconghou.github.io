@@ -34,6 +34,62 @@
 		
 		<div class="post">
 			<h1 class="post-title">
+				<a href="/post/memcached-usage/"> memcached usage</a>
+			</h1>
+			<p class="post-date">Wed, Aug 24, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="安装memcached">安装memcached</h2>
+
+<p><a href="http://memcached.org/downloads">http://memcached.org/downloads</a></p>
+
+<p>memcached所有版本见<a href="http://www.memcached.org/files/">http://www.memcached.org/files/</a></p>
+
+<pre><code>cd /tmp
+MEMCACHE_VERSION=memcached-1.4.31
+CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
+wget http://www.memcached.org/files/${MEMCACHE_VERSION}.tar.gz
+tar xzf ${MEMCACHE_VERSION}.tar.gz
+cd ${MEMCACHE_VERSION}
+export CFLAGS=&quot;-O3&quot;
+./configure
+make -j$CPU_NUM &amp;&amp; make install
+</code></pre>
+
+<p>docker版本见:<a href="https://hub.docker.com/r/suconghou/memcached/">https://hub.docker.com/r/suconghou/memcached/</a></p>
+
+<h2 id="启动memcached">启动Memcached</h2>
+
+<pre><code>memcached -d -u memcached -p 11211 -m 8 -P /var/run/memcached/memcached.pid
+
+</code></pre>
+
+<p>说明</p>
+
+<ul>
+<li>-d 以daemon方式运行</li>
+<li>-u 绑定使用指定用户运行进程(仅在以root运行的时候有效)</li>
+<li>-p 设置TCP端口号(默认11211)</li>
+<li>-m 允许最大内存用量，单位M (默认: 64 MB)</li>
+<li>-M 内存耗尽时返回错误，而不是删除项</li>
+<li>-l 是监听的服务器IP地址，默认应该是本机</li>
+<li>-P 将PID写入文件<file>，这样可以使得后边进行快速进程终止, 需要与-d 一起使用</li>
+<li>-c 最大同时连接数，默认是1024</li>
+<li>-t 线程数,默认为4</li>
+<li>-v 输出警告和错误信息</li>
+<li>-vv 打印客户端的请求和返回信息</li>
+</ul>
+
+<p>默认情况下是不限制访问IP的,相当于是外网和内网都能访问,-l 使只有这个IP能访问</p>
+
+<p>尽量不要用root用户运行.</p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
 				<a href="/post/javascript-code-snippet/"> javascript code snippet</a>
 			</h1>
 			<p class="post-date">Thu, Aug 11, 2016</p>
@@ -232,6 +288,16 @@ String.prototype.rtrim=function(){return this.replace(/(\s*$)/g,&quot;&quot;); }
 <p>生成随机短ID,仅具备较低的不重复性</p>
 
 <pre><code>var t=(((1+Math.random())*0x10000000)|0).toString(16);
+</code></pre>
+
+<p>生成指定长度随机字符串</p>
+
+<pre><code>function code($nc, $a='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
+{
+    $l=strlen($a)-1; $r='';
+    while($nc--&gt;0) $r.=$a{mt_rand(0,$l)};
+    return $r;
+}
 </code></pre>
 
 <h3 id="给jquery的form添加-serializeobject">给jQuery的form添加<code>serializeObject</code></h3>
@@ -445,15 +511,30 @@ out of it. Please check the Makefile in case of doubts.
 <p>linux2628 表示  内核版本&gt;=2.6.28</p>
 </blockquote>
 
-<pre><code>HAPROXY_VERSION=haproxy-1.6.7
+<pre><code>apt-get update &amp;&amp; apt-get install -y wget gcc g++ make libpcre++0v5 libpcre++-dev
+</code></pre>
+
+<pre><code>HAPROXY_VERSION=haproxy-1.6.8
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
 wget http://www.haproxy.org/download/1.6/src/${HAPROXY_VERSION}.tar.gz
 tar zxf ${HAPROXY_VERSION}.tar.gz
 cd ${HAPROXY_VERSION}
 export CFLAGS=&quot;-O3&quot;
-make TARGET=linux2628 ARCH=X86_64 -j$CPU_NUM &amp;&amp; make install
+make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 -j$CPU_NUM &amp;&amp; make install
 
 </code></pre>
+
+<p>编译32位版本<code>make TARGET=linux26 ARCH=i686 USE_STATIC_PCRE=1 -j$CPU_NUM</code></p>
+
+<p>在64位系统下编译32位需要<code>apt-get install gcc-multilib g++-multilib</code></p>
+
+<p>我编译好的haproxy version 1.6.8</p>
+
+<blockquote>
+<p>64位 <a href="http://share.suconghou.cn/bin/haproxy.xz">http://share.suconghou.cn/bin/haproxy.xz</a></p>
+
+<p>32位 <a href="http://share.suconghou.cn/bin/haproxy.gz">http://share.suconghou.cn/bin/haproxy.gz</a></p>
+</blockquote>
 
 <h3 id="使用docker版本的haproxy">使用Docker版本的HAProxy</h3>
 
@@ -522,6 +603,26 @@ backend servers
 <pre><code>haproxy -f /etc/haproxy/haproxy.cfg -st `cat /var/run/haproxy.pid`
 </code></pre>
 
+<h2 id="升级-glibc-版本-最新发布-http-www-gnu-org-software-libc">升级<code>glibc</code>版本,最新发布 <a href="http://www.gnu.org/software/libc/">http://www.gnu.org/software/libc/</a></h2>
+
+<p>所有版本见<code>http://mirror.hust.edu.cn/gnu/libc/</code></p>
+
+<p>错误 <code>libc.so.6: version GLIBC_2.14 not found</code> 表明当前系统的glibc版本较低</p>
+
+<p><code>strings libc.so.6 |grep GLIBC_</code>可以查看当前系统支持的版本</p>
+
+<pre><code>wget http://mirror.hust.edu.cn/gnu/libc/glibc-2.19.tar.xz
+tar Jxf glibc-2.19.tar.xz
+cd glibc-2.19
+mkdir build
+cd build
+../configure
+make -j4&amp;&amp; make install
+</code></pre>
+
+<p>见 <a href="https://cnodejs.org/topic/56dc21f1502596633dc2c3dc">https://cnodejs.org/topic/56dc21f1502596633dc2c3dc</a>
+此编译需要较长时间</p>
+
 			</div>
 		</div>
 		
@@ -573,35 +674,6 @@ backend servers
 
 <p>Curl 这里可以下载windows版的
 <a href="http://www.paehl.com/open_source/?CURL_7.49.1">http://www.paehl.com/open_source/?CURL_7.49.1</a></p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/software/shadowsocks-client/"> shadowsocks client</a>
-			</h1>
-			<p class="post-date">Sun, Jul 17, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="shadowsocks-各平台客户端">shadowsocks 各平台客户端</h2>
-
-<p>文件来源于<code>github.com</code></p>
-
-<h3 id="windows平台">windows平台</h3>
-
-<p><a href="http://share.suconghou.cn/shadowsocks/Shadowsocks-3.0.zip">Shadowsocks-3.0</a></p>
-
-<h3 id="mac平台">mac平台</h3>
-
-<p><a href="http://share.suconghou.cn/shadowsocks/ShadowsocksX-2.6.3.dmg">ShadowsocksX-2.6.3</a></p>
-
-<h3 id="android平台">android平台</h3>
-
-<p><a href="http://share.suconghou.cn/shadowsocks/shadowsocks-nightly-3.0.3.apk">shadowsocks-nightly-3.0.3</a></p>
-
-<p>服务端可以使用docker更方便 <a href="https://hub.docker.com/r/suconghou/shadowsocks/">shadowsocks docker</a></p>
 
 			</div>
 		</div>

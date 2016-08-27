@@ -80,6 +80,33 @@
 
 <p>注意,<code>set_error_handler</code>返回false的话,这个错误还是会被交到上一级错误程序处理的.</p>
 
+<h3 id="编码转换中的若干问题">编码转换中的若干问题</h3>
+
+<p>我们经常会遇到将utf8编码字符转化为gbk编码的字符,例如生成csv表格,在windows上的cmd窗口输出文字,以及操作windows上的有关文件路径的操作都需要使用gbk编码.</p>
+
+<p>常使用<code>iconv('utf-8', 'gbk', $str);</code>将utf8字符转为gbk</p>
+
+<p>这里 utf gbk 不区分大小写,也可以混写,不区分是<code>utf8</code>还是<code>utf-8</code>,都能都正常使用</p>
+
+<p><code>iconv('utf-8', 'gbk//ignore', $str);</code> 加上<code>//ignore</code>使有些字符无法装换时略过.</p>
+
+<p>但是<code>//ignore</code>在php5.4及以下,和个别php5.6版本上无效,任然是报NOTICE错误.</p>
+
+<pre><code>&lt;?php
+	echo iconv('UTF8', 'GBK//IGNORE', 'l l l');
+?&gt;
+</code></pre>
+
+<p>见 <code>https://3v4l.org/7vCFW</code> 和 <code>http://www.php.net/manual/en/function.iconv.php</code>第一条评论</p>
+
+<p>可以考虑使用<code>$content = mb_convert_encoding($content, &quot;GBK&quot;,&quot;UTF-8&quot;);</code> 从UTF8转为GBK</p>
+
+<p>这样不会报错,不能装换的被替换为?,参数也是不区分大小写,utf8和utf-8</p>
+
+<h3 id="filter-var-filter-validate-url">filter_var FILTER_VALIDATE_URL</h3>
+
+<p>filter_var FILTER_VALIDATE_URL 中不能包含中文,包含中文被判定为false</p>
+
 		</div>
 	</div>
 </div>

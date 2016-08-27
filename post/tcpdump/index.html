@@ -7,7 +7,7 @@
 	<meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
 	<meta name='description' content='记录学习的点点滴滴'>
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
-	<title>使用tcpdump &middot; 苏苏的博客</title>
+	<title>使用tcpdump与ngrep &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.min.css">
 	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
@@ -31,36 +31,82 @@
 <div class="content container">
 	<div class="post">
 		<h1 class="post-title">
-			<a href="javascript:void(0)"> 使用tcpdump</a>
+			<a href="javascript:void(0)"> 使用tcpdump与ngrep</a>
 		</h1>
 		<p class="post-date">Mon, May 16, 2016</p>
 		
 		<div class="post-text">
-			<p>各版本 <code>http://www.tcpdump.org/release/</code></p>
+			
 
-<p>安装依赖 <code>yum install -y flex gcc make byacc</code></p>
+<p>各版本 <code>http://www.tcpdump.org/release/</code></p>
 
-<pre><code>export CFLAGS=&quot;-O3&quot;
-cd /tmp
+<p>安装依赖 <code>yum install -y flex gcc make byacc</code> or <code>apt-get install flex gcc make byacc wget bzip2</code></p>
+
+<pre><code>cd /tmp
 wget http://www.tcpdump.org/release/libpcap-1.7.4.tar.gz
-tar zxvf libpcap-1.7.4.tar.gz
+tar zxf libpcap-1.7.4.tar.gz
 cd libpcap-1.7.4
-./configure
-make -j4
+./configure --prefix=/tmp/lib
+make -j4 &amp;&amp; make install
 cd ../
 wget http://www.tcpdump.org/release/tcpdump-4.7.4.tar.gz
-tar zxvf tcpdump-4.7.4.tar.gz
+tar zxf tcpdump-4.7.4.tar.gz
 cd tcpdump-4.7.4
-./configure
+./configure --prefix=/tmp  --disable-ipv6 CFLAGS='-O3 -I/tmp/lib/include' LDFLAGS='-L/tmp/lib/lib/libpcap.a'
 make -j4
 make install
 </code></pre>
 
-<p>安装成功后,位于<code>ls -lh /usr/local/sbin/tcpdump</code></p>
+<p>安装成功后,位于<code>ls -lh /tmp/sbin/tcpdump</code> <code>ldd</code>查看此文件依赖较少,可直接复制到其他Linux上使用.</p>
 
-<p>不采用<code>CFLAGS=&quot;-O3&quot;</code>编译为4.3MB,采用<code>CFLAGS=&quot;-O3&quot;</code>编译后为1.3MB</p>
+<p>采用<code>CFLAGS=&quot;-O3&quot;</code>编译后为1.2MB</p>
 
 <p><code>tcpdump -h</code> 查看版本号以及用法</p>
+
+<p>我编译好的tcpdump version 4.7.4</p>
+
+<blockquote>
+<p>64位 <a href="http://share.suconghou.cn/bin/tcpdump.xz">http://share.suconghou.cn/bin/tcpdump.xz</a></p>
+</blockquote>
+
+<p>也可以直接<code>yum install tcpdump</code></p>
+
+<h2 id="使用tcpdump">使用tcpdump</h2>
+
+<blockquote>
+<p>-a 　　　将网络地址和广播地址转变成名字；
+-d 　　　将匹配信息包的代码以人们能够理解的汇编格式给出；
+-dd 　　 将匹配信息包的代码以c语言程序段的格式给出；
+-ddd 　　将匹配信息包的代码以十进制的形式给出；
+-e 　　　在输出行打印出数据链路层的头部信息；
+-f 　　　将外部的Internet地址以数字的形式打印出来；
+-l 　　　使标准输出变为缓冲行形式；
+-n 　　　不把网络地址转换成名字；
+-t 　　　在输出的每一行不打印时间戳；
+-v 　　　输出一个稍微详细的信息，例如在ip包中可以包括ttl和服务类型的信息；
+-vv 　　 输出详细的报文信息；
+-c 　　　在收到指定的包的数目后，tcpdump就会停止；
+-F 　　　从指定的文件中读取表达式,忽略其它的表达式；
+-i 　　　指定监听的网络接口；
+-r 　　　从指定的文件中读取包(这些包一般通过-w选项产生)；
+-w 　　　直接将包写入文件中，并不分析和打印出来；
+-T 　　　将监听到的包直接解释为指定的类型的报文，常见的类型有rpc （远程过程调用）和snmp（简单网络管理协议；</p>
+</blockquote>
+
+<p><code>tcpdump host 210.27.48.1</code></p>
+
+<p><code>-A</code>和<code>-X</code>有助于你查看详细的报文数据</p>
+
+<h2 id="ngrep">ngrep</h2>
+
+<p>ngrep 编译总是出问题,建议直接安装:<code>apt-get install ngrep</code> <code>yum install ngrep</code></p>
+
+<p>如果更关注于TCP流量内容,可以使用<code>ngrep</code>,他是grep命令的网络版,同样需要libpcap库,能识别TCP、UDP和ICMP包，理解bpf的过滤机制</p>
+
+<p><code>ngrep -W byline -d eno1 port 80</code></p>
+
+<p>具体使用见
+<a href="http://man.linuxde.net/ngrep">http://man.linuxde.net/ngrep</a></p>
 
 		</div>
 	</div>

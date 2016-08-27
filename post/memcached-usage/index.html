@@ -7,7 +7,7 @@
 	<meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
 	<meta name='description' content='记录学习的点点滴滴'>
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
-	<title>shadowsocks libev &middot; 苏苏的博客</title>
+	<title>memcached usage &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.min.css">
 	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
@@ -31,43 +31,57 @@
 <div class="content container">
 	<div class="post">
 		<h1 class="post-title">
-			<a href="javascript:void(0)"> shadowsocks libev</a>
+			<a href="javascript:void(0)"> memcached usage</a>
 		</h1>
-		<p class="post-date">Wed, May 18, 2016</p>
+		<p class="post-date">Wed, Aug 24, 2016</p>
 		
 		<div class="post-text">
 			
 
-<h2 id="编译">编译</h2>
+<h2 id="安装memcached">安装memcached</h2>
 
-<pre><code>yum update &amp;&amp; yum install -y zip unzip xz curl wget git gcc make zlib zlib-devel openssl openssl-devel
-git clone https://github.com/shadowsocks/shadowsocks-libev.git
-cd shadowsocks-libev
-./configure --enable-static=yes
+<p><a href="http://memcached.org/downloads">http://memcached.org/downloads</a></p>
+
+<p>memcached所有版本见<a href="http://www.memcached.org/files/">http://www.memcached.org/files/</a></p>
+
+<pre><code>cd /tmp
+MEMCACHE_VERSION=memcached-1.4.31
+CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
+wget http://www.memcached.org/files/${MEMCACHE_VERSION}.tar.gz
+tar xzf ${MEMCACHE_VERSION}.tar.gz
+cd ${MEMCACHE_VERSION}
 export CFLAGS=&quot;-O3&quot;
-make -j4 &amp;&amp; make install
+./configure
+make -j$CPU_NUM &amp;&amp; make install
 </code></pre>
 
-<p><strong>GO语言版本的也十分方便哦</strong></p>
+<p>docker版本见:<a href="https://hub.docker.com/r/suconghou/memcached/">https://hub.docker.com/r/suconghou/memcached/</a></p>
 
-<p>这里提供一个基于<code>docker</code>的go语言版本,<a href="https://hub.docker.com/r/suconghou/shadowsocks/">docker go shadowsocks</a>,只有3.3MB
-十分方便</p>
+<h2 id="启动memcached">启动Memcached</h2>
 
-<p>同时也含有libev版本的可供选择</p>
+<pre><code>memcached -d -u memcached -p 11211 -m 8 -P /var/run/memcached/memcached.pid
 
-<h2 id="网络内核参数优化">网络内核参数优化</h2>
-
-<p>修改<code>ulimit</code></p>
-
-<p><code>ulimit -n</code> 可以查看当前的</p>
-
-<p><code>vim /etc/security/limits.conf</code></p>
-
-<p>添加一下两行</p>
-
-<pre><code>* soft nofile 51200
-* hard nofile 51200
 </code></pre>
+
+<p>说明</p>
+
+<ul>
+<li>-d 以daemon方式运行</li>
+<li>-u 绑定使用指定用户运行进程(仅在以root运行的时候有效)</li>
+<li>-p 设置TCP端口号(默认11211)</li>
+<li>-m 允许最大内存用量，单位M (默认: 64 MB)</li>
+<li>-M 内存耗尽时返回错误，而不是删除项</li>
+<li>-l 是监听的服务器IP地址，默认应该是本机</li>
+<li>-P 将PID写入文件<file>，这样可以使得后边进行快速进程终止, 需要与-d 一起使用</li>
+<li>-c 最大同时连接数，默认是1024</li>
+<li>-t 线程数,默认为4</li>
+<li>-v 输出警告和错误信息</li>
+<li>-vv 打印客户端的请求和返回信息</li>
+</ul>
+
+<p>默认情况下是不限制访问IP的,相当于是外网和内网都能访问,-l 使只有这个IP能访问</p>
+
+<p>尽量不要用root用户运行.</p>
 
 		</div>
 	</div>

@@ -341,7 +341,7 @@ query_cache_type 为0,是关闭的</p>
 
 <p><code>query_cache_size</code>为0,没有分配缓存空间,如果配置了<code>query_cache_size = 4M</code>,这里会显示具体的字节</p>
 
-<p>查看运行的状态 <code>show status like '%Qcache%';</code></p>
+<p>查看配置及运行的状态 <code>show global variables like '%query_cache%';show global status like '%Qcache%';</code></p>
 
 <pre><code>+-------------------------+----------+
 | Variable_name           | Value    |
@@ -385,17 +385,19 @@ query_cache_type 为0,是关闭的</p>
 
 <p>要开启<code>Query Cache</code>可以执行如下,注意<code>Query Cache</code>对于读多写少的场景才会有优势</p>
 
-<p>query_cache_type:开启缓存</p>
-
-<p>query_cache_size:总的缓存大小16Mb</p>
-
-<p>query_cache_limit:结果集超过256KB则不缓存</p>
-
 <pre><code>SET GLOBAL query_cache_type = 1;
 SET GLOBAL query_cache_size = 16777216;
 SET GLOBAL query_cache_limit = 262144;
 SET GLOBAL query_cache_strip_comments = 1;
 </code></pre>
+
+<blockquote>
+<p>query_cache_type:开启缓存</p>
+
+<p>query_cache_size:总的缓存大小16Mb</p>
+
+<p>query_cache_limit:结果集超过256KB则不缓存</p>
+</blockquote>
 
 <h2 id="各个数据库引擎对比">各个数据库引擎对比</h2>
 
@@ -451,11 +453,11 @@ Memory的锁级别和MyISAM一样，是表锁；并且不支持事务性。</p>
 <p>表级：不利于并发性，锁定开销小</p>
 </blockquote>
 
-<p><code>show status like '%cost%';</code> 查看上一次查询的代价</p>
+<p><code>show global status like '%cost%';</code> 查看上一次查询的代价</p>
 
-<p><code>show variables like 'long_query_time';</code> 查看长查询设定的时间</p>
+<p><code>show global variables like 'long_query_time';</code> 查看长查询设定的时间</p>
 
-<p><code>show status like 'slow_queries';</code> &ndash;查看查询时间超过long_query_time秒的查询的个数。</p>
+<p><code>show global status like 'slow_queries';</code> &ndash;查看查询时间超过long_query_time秒的查询的个数。</p>
 
 <h3 id="查看最近执行的sql">查看最近执行的sql</h3>
 

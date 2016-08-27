@@ -232,6 +232,16 @@ String.prototype.rtrim=function(){return this.replace(/(\s*$)/g,&quot;&quot;); }
 <pre><code>var t=(((1+Math.random())*0x10000000)|0).toString(16);
 </code></pre>
 
+<p>生成指定长度随机字符串</p>
+
+<pre><code>function code($nc, $a='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
+{
+    $l=strlen($a)-1; $r='';
+    while($nc--&gt;0) $r.=$a{mt_rand(0,$l)};
+    return $r;
+}
+</code></pre>
+
 <h3 id="给jquery的form添加-serializeobject">给jQuery的form添加<code>serializeObject</code></h3>
 
 <pre><code>jQuery.prototype.serializeObject=function()

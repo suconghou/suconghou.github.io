@@ -197,7 +197,7 @@ InstantClick.on('change', function()
 	{
 		hljs.highlightBlock(block);
 	});
-	window.loader = new SVGLoader( document.getElementById( 'loader' ), { speedIn : 300, easingIn : mina.easeinout } );
+	window.loader = new SVGLoader(document.getElementById( 'loader' ), { speedIn : 300, easingIn : mina.easeinout } );
 	ga('create', 'UA-78443985-1', 'auto');
 	ga('set', 'location', document.location.origin + document.location.pathname + document.location.search);
 	ga('send', 'pageview');

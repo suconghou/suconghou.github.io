@@ -34,6 +34,86 @@
 		
 		<div class="post">
 			<h1 class="post-title">
+				<a href="/post/php-best-way/"> PHP最佳实践</a>
+			</h1>
+			<p class="post-date">Thu, Jun 30, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="性能优化">性能优化</h2>
+
+<h3 id="数组相关">数组相关</h3>
+
+<p><strong><code>in_array</code>在大数据量(数万以上元素)下效率低下</strong></p>
+
+<p>在分析nginx log得出所有不重复IP时,采用<code>in_array</code>判断,50多万的数据耗时需要五六分钟,而采用存键的方法,用<code>isset</code>判断仅需要十几秒,效率差别非常大. [php7环境下]</p>
+
+<p>判断一个数组是否存在某个元素,远比查找一个键消耗的要多.前者时间复杂度O(n),而后者O(1)</p>
+
+<p>即时使用<code>in_array</code>,也需要加上第三个参数,设置为严格模式,省略数据类型转化的开销,设置为<code>true</code>比设置为<code>false</code>性能要提升好几倍.</p>
+
+<p>这种情况下使用<code>array_search</code>情况比<code>in_array</code>更加糟糕</p>
+
+<p>如果条件允许使用<code>array_flip</code>交换键值,在用<code>isset</code>来判断要比<code>in_array</code>好得多</p>
+
+<p>同时,使用<code>isset</code>来判断数组的键,也比使用<code>array_key_exists</code>要好</p>
+
+<p>而对于本题,还可以使用<code>array_unique</code>最后去重,用空间换时间,效率仅次于用<code>isset</code></p>
+
+<h2 id="bugs">Bugs</h2>
+
+<h3 id="php-pdo-mysql-server-has-gone-away">php pdo <code>MySQL server has gone away</code></h3>
+
+<p>在使用PDO长连接时,执行过一次PDO初始化后,php-fpm进程会与mysql server开启一条TCP长连接,下次连接数据库就能加快速度.</p>
+
+<p>但是却存在一定问题,PDO维持了长连接并没有较好的检测其可用性,如果mysql server kill 掉这个连接,或者mysql重启,都会造成</p>
+
+<p>重新实例化PDO时得到旧的链接,导致出现<code>MySQL server has gone away</code>,更让人郁闷的是这个错误并不是一个Exception,无法被catch捕获,即使设置<code>PDO::ATTR_ERRMODE=&gt;PDO::ERRMODE_EXCEPTION</code>,也不行,还是直接在页面上提示.</p>
+
+<p>如果你使用了<code>set_error_handler</code>,那么这个<code>Warning</code>将会被捕捉,不会直接显示在页面上,但也改变了程序的原有执行逻辑.</p>
+
+<p>如果你不使用<code>set_error_handler</code>,页面上报出<code>Warning</code>,但其实PDO已经返回一个可用的链接了.</p>
+
+<p>猜测可能是PDO首先得到了不可用的然后报警告,然后又创建了一个新的.</p>
+
+<p>较好的解决方法是设置<code>set_error_handler</code>若捕获了这个<code>MySQL server has gone away</code>,则返回null,程序继续按原有逻辑执行.</p>
+
+<p>或者不使用PDO长连接.</p>
+
+<p>注意,<code>set_error_handler</code>返回false的话,这个错误还是会被交到上一级错误程序处理的.</p>
+
+<h3 id="编码转换中的若干问题">编码转换中的若干问题</h3>
+
+<p>我们经常会遇到将utf8编码字符转化为gbk编码的字符,例如生成csv表格,在windows上的cmd窗口输出文字,以及操作windows上的有关文件路径的操作都需要使用gbk编码.</p>
+
+<p>常使用<code>iconv('utf-8', 'gbk', $str);</code>将utf8字符转为gbk</p>
+
+<p>这里 utf gbk 不区分大小写,也可以混写,不区分是<code>utf8</code>还是<code>utf-8</code>,都能都正常使用</p>
+
+<p><code>iconv('utf-8', 'gbk//ignore', $str);</code> 加上<code>//ignore</code>使有些字符无法装换时略过.</p>
+
+<p>但是<code>//ignore</code>在php5.4及以下,和个别php5.6版本上无效,任然是报NOTICE错误.</p>
+
+<pre><code>&lt;?php
+	echo iconv('UTF8', 'GBK//IGNORE', 'l l l');
+?&gt;
+</code></pre>
+
+<p>见 <code>https://3v4l.org/7vCFW</code> 和 <code>http://www.php.net/manual/en/function.iconv.php</code>第一条评论</p>
+
+<p>可以考虑使用<code>$content = mb_convert_encoding($content, &quot;GBK&quot;,&quot;UTF-8&quot;);</code> 从UTF8转为GBK</p>
+
+<p>这样不会报错,不能装换的被替换为?,参数也是不区分大小写,utf8和utf-8</p>
+
+<h3 id="filter-var-filter-validate-url">filter_var FILTER_VALIDATE_URL</h3>
+
+<p>filter_var FILTER_VALIDATE_URL 中不能包含中文,包含中文被判定为false</p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
 				<a href="/post/shadowsocks-libev/"> shadowsocks libev</a>
 			</h1>
 			<p class="post-date">Wed, May 18, 2016</p>
@@ -57,40 +137,100 @@ make -j4 &amp;&amp; make install
 
 <p>同时也含有libev版本的可供选择</p>
 
+<h2 id="网络内核参数优化">网络内核参数优化</h2>
+
+<p>修改<code>ulimit</code></p>
+
+<p><code>ulimit -n</code> 可以查看当前的</p>
+
+<p><code>vim /etc/security/limits.conf</code></p>
+
+<p>添加一下两行</p>
+
+<pre><code>* soft nofile 51200
+* hard nofile 51200
+</code></pre>
+
 			</div>
 		</div>
 		
 		<div class="post">
 			<h1 class="post-title">
-				<a href="/post/tcpdump/"> 使用tcpdump</a>
+				<a href="/post/tcpdump/"> 使用tcpdump与ngrep</a>
 			</h1>
 			<p class="post-date">Mon, May 16, 2016</p>
 			<div class="post-text">
-				<p>各版本 <code>http://www.tcpdump.org/release/</code></p>
+				
 
-<p>安装依赖 <code>yum install -y flex gcc make byacc</code></p>
+<p>各版本 <code>http://www.tcpdump.org/release/</code></p>
 
-<pre><code>export CFLAGS=&quot;-O3&quot;
-cd /tmp
+<p>安装依赖 <code>yum install -y flex gcc make byacc</code> or <code>apt-get install flex gcc make byacc wget bzip2</code></p>
+
+<pre><code>cd /tmp
 wget http://www.tcpdump.org/release/libpcap-1.7.4.tar.gz
-tar zxvf libpcap-1.7.4.tar.gz
+tar zxf libpcap-1.7.4.tar.gz
 cd libpcap-1.7.4
-./configure
-make -j4
+./configure --prefix=/tmp/lib
+make -j4 &amp;&amp; make install
 cd ../
 wget http://www.tcpdump.org/release/tcpdump-4.7.4.tar.gz
-tar zxvf tcpdump-4.7.4.tar.gz
+tar zxf tcpdump-4.7.4.tar.gz
 cd tcpdump-4.7.4
-./configure
+./configure --prefix=/tmp  --disable-ipv6 CFLAGS='-O3 -I/tmp/lib/include' LDFLAGS='-L/tmp/lib/lib/libpcap.a'
 make -j4
 make install
 </code></pre>
 
-<p>安装成功后,位于<code>ls -lh /usr/local/sbin/tcpdump</code></p>
+<p>安装成功后,位于<code>ls -lh /tmp/sbin/tcpdump</code> <code>ldd</code>查看此文件依赖较少,可直接复制到其他Linux上使用.</p>
 
-<p>不采用<code>CFLAGS=&quot;-O3&quot;</code>编译为4.3MB,采用<code>CFLAGS=&quot;-O3&quot;</code>编译后为1.3MB</p>
+<p>采用<code>CFLAGS=&quot;-O3&quot;</code>编译后为1.2MB</p>
 
 <p><code>tcpdump -h</code> 查看版本号以及用法</p>
+
+<p>我编译好的tcpdump version 4.7.4</p>
+
+<blockquote>
+<p>64位 <a href="http://share.suconghou.cn/bin/tcpdump.xz">http://share.suconghou.cn/bin/tcpdump.xz</a></p>
+</blockquote>
+
+<p>也可以直接<code>yum install tcpdump</code></p>
+
+<h2 id="使用tcpdump">使用tcpdump</h2>
+
+<blockquote>
+<p>-a 　　　将网络地址和广播地址转变成名字；
+-d 　　　将匹配信息包的代码以人们能够理解的汇编格式给出；
+-dd 　　 将匹配信息包的代码以c语言程序段的格式给出；
+-ddd 　　将匹配信息包的代码以十进制的形式给出；
+-e 　　　在输出行打印出数据链路层的头部信息；
+-f 　　　将外部的Internet地址以数字的形式打印出来；
+-l 　　　使标准输出变为缓冲行形式；
+-n 　　　不把网络地址转换成名字；
+-t 　　　在输出的每一行不打印时间戳；
+-v 　　　输出一个稍微详细的信息，例如在ip包中可以包括ttl和服务类型的信息；
+-vv 　　 输出详细的报文信息；
+-c 　　　在收到指定的包的数目后，tcpdump就会停止；
+-F 　　　从指定的文件中读取表达式,忽略其它的表达式；
+-i 　　　指定监听的网络接口；
+-r 　　　从指定的文件中读取包(这些包一般通过-w选项产生)；
+-w 　　　直接将包写入文件中，并不分析和打印出来；
+-T 　　　将监听到的包直接解释为指定的类型的报文，常见的类型有rpc （远程过程调用）和snmp（简单网络管理协议；</p>
+</blockquote>
+
+<p><code>tcpdump host 210.27.48.1</code></p>
+
+<p><code>-A</code>和<code>-X</code>有助于你查看详细的报文数据</p>
+
+<h2 id="ngrep">ngrep</h2>
+
+<p>ngrep 编译总是出问题,建议直接安装:<code>apt-get install ngrep</code> <code>yum install ngrep</code></p>
+
+<p>如果更关注于TCP流量内容,可以使用<code>ngrep</code>,他是grep命令的网络版,同样需要libpcap库,能识别TCP、UDP和ICMP包，理解bpf的过滤机制</p>
+
+<p><code>ngrep -W byline -d eno1 port 80</code></p>
+
+<p>具体使用见
+<a href="http://man.linuxde.net/ngrep">http://man.linuxde.net/ngrep</a></p>
 
 			</div>
 		</div>
@@ -236,33 +376,6 @@ diskutil unmountdisk /dev/disk2
 passwd abc</p>
 
 <p>获得sudo权限:编辑<code>/etc/sudoers</code> 加入新添加的用户名</p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/software/android-studio/"> Android Studio</a>
-			</h1>
-			<p class="post-date">Fri, Apr 8, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="下载-android-studio">下载 Android Studio</h2>
-
-<p><a href="http://www.oschina.net/news/76307/android-studio-2-2-beta-2">http://www.oschina.net/news/76307/android-studio-2-2-beta-2</a></p>
-
-<pre><code>Windows: https://dl.google.com/dl/android/studio/ide-zips/2.2.0.8/android-studio-ide-145.3200535-windows.zip (461.5 MIB）
-
-Mac: https://dl.google.com/dl/android/studio/ide-zips/2.2.0.8/android-studio-ide-145.3200535-mac.zip  (462.1 MIB）
-
-Linux:   https://dl.google.com/dl/android/studio/ide-zips/2.2.0.8/android-studio-ide-145.3200535-linux.zip  (461.2 MIB）
-
-</code></pre>
-
-<h2 id="安装android-sdk">安装android-sdk</h2>
-
-<p><code>brew install android-sdk</code> 或者使用Android Studio SDK Manager</p>
 
 			</div>
 		</div>
