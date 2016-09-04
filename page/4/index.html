@@ -275,6 +275,18 @@ Linux:   https://dl.google.com/dl/android/studio/ide-zips/2.2.0.8/android-studio
 			<div class="post-text">
 				
 
+<h2 id="linux用户管理">Linux用户管理</h2>
+
+<h3 id="添加用户adduser">添加用户adduser</h3>
+
+<p>假如用户名为<code>work</code></p>
+
+<p><code>adduser work -M</code></p>
+
+<h3 id="修改密码">修改密码</h3>
+
+<p><code>passwd work</code></p>
+
 <h2 id="linux实用命令">Linux实用命令</h2>
 
 <h2 id="w">w</h2>
@@ -375,6 +387,49 @@ count = blocks 只拷贝输入的blocks块</p>
 
 <p>mac上无法使用<code>--sort</code>,可以采用<code>sort</code>排序,如rss在第六列,则<code>ps auxw | sort -k6,6n</code></p>
 
+<h2 id="nc">nc</h2>
+
+<p>nc 命令默认没有安装,需要自己安装,<code>yum install nc</code></p>
+
+<p><strong>传送字符与文件</strong></p>
+
+<p>一端<code>nc -l 9090</code>监听端口9090</p>
+
+<p>一端<code>nc host 9090</code>连接host的9090端口,通信建立后,可以双向通信,实现文字聊天等,也可以传送文件</p>
+
+<p>一端<code>nc -l 9090 &gt; file</code> ,另一端发送文件<code>nc host 9090 &lt; file</code></p>
+
+<p>传送文件夹(压缩文件) <code>nc -l 9090 |tar xzvf -</code> , 另一端发送文件<code>tar czvf – dir | nc host 9090</code></p>
+
+<p>同样可以拷贝硬盘 <code>nc -l 9090 | dd of=/dev/sda</code>,另一端发送<code>dd if=/dev/sda | nc host 9090</code></p>
+
+<p><strong>端口扫描</strong></p>
+
+<p><code>nc -vz -w 1 someIp 1-1000</code></p>
+
+<p><strong>模拟调试http请求</strong></p>
+
+<p><code>GET / HTTP/1.0</code></p>
+
+<p><strong>端口转发</strong></p>
+
+<p>使用之前需要了解其他的命令</p>
+
+<p><code>tee</code>命令将标准输入的数据写入标准输出和tee命令指定的文件参数</p>
+
+<p><code>mkfifo</code>命令用于创建一个FIFO（先进先出）方式的命名管道</p>
+
+<p>标准流:</p>
+
+<pre><code>stdin	0
+stdout	1
+stderr	2
+</code></pre>
+
+<p>** listener-to-client模式(用于外网访问内网) **</p>
+
+<p>见 <a href="http://onestraw.net/cybersecurity/netcat-advanced-usage/">http://onestraw.net/cybersecurity/netcat-advanced-usage/</a></p>
+
 <h2 id="一份linux别名和函数库">一份Linux别名和函数库</h2>
 
 <pre><code>alias tree=&quot;find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g' &quot;;
@@ -420,6 +475,31 @@ mem()
     top -n1 -b | head -n7 | sed '1,6d' &amp;&amp; top -n1 -b | sed '1,7d' | grep --color=auto $1;
     ps aux | grep --color=auto $1 | grep --color=auto -v grep | awk -F &quot; &quot; '{ sum += $6 } END { printf &quot;Total Memory Usage: %.1f MB\n&quot;, sum/1024 }'
 }
+</code></pre>
+
+<p>部分快捷键</p>
+
+<pre><code>
+CTRL + U -剪切光标前的内容
+
+CTRL + K -剪切光标至行末的内容
+
+CTRL + Y -粘贴
+
+CTRL + E -移动光标到行末
+
+CTRL + A -移动光标到行首
+
+ALT + F -跳向下一个空格
+
+ALT + B -跳回上一个空格
+
+ALT + Backspace -删除前一个单词
+
+CTRL + W -剪切光标后一个单词
+
+Shift + Insert -向终端内粘贴文本
+
 </code></pre>
 
 <p>压缩率 xz &gt; bzip2 &gt; gzip &gt; zip</p>
@@ -578,6 +658,10 @@ fi
 	echo &quot;YES&quot;
 fi
 </code></pre>
+
+<h2 id="判断一个进程pid是否还存在">判断一个进程PID是否还存在</h2>
+
+<p>例如检查pid为143的进程 <code>ps ax | awk '{ print $1 }' | grep -e &quot;^143$&quot;</code></p>
 
 <h2 id="shell基本语法">Shell基本语法</h2>
 

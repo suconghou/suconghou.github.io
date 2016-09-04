@@ -107,6 +107,39 @@
 
 <p>filter_var FILTER_VALIDATE_URL 中不能包含中文,包含中文被判定为false</p>
 
+<h3 id="内存是拷贝还是内存引用">内存是拷贝还是内存引用</h3>
+
+<p>例1</p>
+
+<pre><code>$a=str_repeat('hello world',81920);
+echo intval(memory_get_usage()/1024);
+</code></pre>
+
+<p>例2</p>
+
+<pre><code>$a=str_repeat('hello world',81920);
+$b=$a;
+$c=$a;
+$d=$a;
+echo intval(memory_get_usage()/1024);
+
+</code></pre>
+
+<p>例3</p>
+
+<pre><code>$a=str_repeat('hello world',81920);
+$b=$a.'';
+$c=$a.'';
+$d=$a.'';
+echo intval(memory_get_usage()/1024);
+</code></pre>
+
+<p>例1与例2,内存差距基本不大,例2与例3有较大差距,例3约为例2的3倍,但小于3倍</p>
+
+<p>一般数据类型</p>
+
+<p>php在内存上是写时拷贝,一个变量复制多份内存不会占用多份,只有变量被改变时才会新申请一份内存给此变量.</p>
+
 		</div>
 	</div>
 </div>

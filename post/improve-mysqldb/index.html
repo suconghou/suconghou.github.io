@@ -434,7 +434,8 @@ Memory的锁级别和MyISAM一样，是表锁；并且不支持事务性。</p>
 <p>innodb查询表的行数需要全表扫描，速度会非常慢，查询1千万行数据的表最多时要6、7s,而myisam因为保存了总行数是极快的。
 在一个进程操作的情况下，myisam的更新和查询速度都会稍快于innodb。memory引擎插入和查询修改的速度都极快，但支持的数据量有限,不支持BLOB/TEXT数据类型,适用于单表几万行数据.</p>
 
-<p>MEMORY表最大值受系统变量 max_heap_table_size 限制，默认为16MB，要改变MEMORY表大小限制，需要改变max_heap_table_size 的值。</p>
+<p>MEMORY表最大值受系统变量 max_heap_table_size 限制，默认为16MB，要改变MEMORY表大小限制，需要改变max_heap_table_size 的值。
+MEMORY表写入性能不如InnoDB,读取优于Redis, 更多相关阅读 <a href="https://www.v2ex.com/t/303137">https://www.v2ex.com/t/303137</a></p>
 </blockquote>
 
 <h3 id="锁">锁</h3>

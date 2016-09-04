@@ -86,6 +86,12 @@ openssl version
 
 <p>最后一句查看版本是否更新了</p>
 
+<p>如果没有<code>www-data</code>用户和组,可以先创建</p>
+
+<pre><code>groupadd www-data
+adduser -M -s /sbin/nologin www-data -g www-data
+</code></pre>
+
 <p>编译nginx</p>
 
 <pre><code>NGINX_VERSION=nginx-1.11.3
@@ -199,6 +205,45 @@ location @goapp {
 </code></pre>
 
 <p>使用匹配跳转后也加上之前访问的路径和<code>query_string</code>,可以转为https协议,也可以让多个域名301到一个域名</p>
+
+<h3 id="代理与后端保持长连接">代理与后端保持长连接</h3>
+
+<pre><code>
+keepalive_timeout 75 75;
+keepalive_requests 1024;
+location / {
+	proxy_pass http://backend;
+	proxy_http_version 1.1;
+	proxy_set_header Connection &quot;&quot;;
+	proxy_set_header Host $host;
+	proxy_set_header X-Forwarded-Ssl off;
+	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+	proxy_set_header X-Forwarded-Port 80;
+	proxy_redirect off;
+}
+
+upstream backend {
+    server 127.0.0.1:8084;
+    keepalive 64;
+}
+
+</code></pre>
+
+<p><code>keepalive_timeout 75 75; keepalive_requests 1024;</code> 用于与浏览器端保持长连接,时间为timeout参数.</p>
+
+<p><code>keepalive_requests</code>是与客户端在同一个长连接中服务的请求次数,一个长连接服务次数超过限定,nginx将会强行关闭,在客户端请求密集时提高此参数有助于性能提升.</p>
+
+<p>nginx代理模式使用http1.0,<code>proxy_http_version 1.1;</code>指明需要使用http1.1协议</p>
+
+<p><code>proxy_set_header Connection &quot;&quot;;</code> 清除向后端传送的Connection字段,http1.1 默认就是keepalive, 重置此字段是忽略客户端此字段的值,不将其发送到后端.</p>
+
+<p>upstream中<code>keepalive 64</code>参数十分关键,他表明nginx连接池内最多保留的空闲长连接数.此值设置过小会导致nginx频繁关闭空闲连接,需要时又创建长连接,创建多了超过指定又会关闭.</p>
+
+<p>若服务器每秒仅收到20个请求,每个请求后端要300ms处理,则这20个请求始终会使用到长连接,此场景下最多64个空闲长连接已经足够.</p>
+
+<p>请求处理时间小于1秒,每秒请求数小于设定的<code>keepalive</code>,那么这些请求就是线程池长连接服务的,没有额外开销.</p>
+
+<p>更多长连接详细使用见 <a href="http://skyao.github.io/leaning-nginx/documentation/keep_alive.html">http://skyao.github.io/leaning-nginx/documentation/keep_alive.html</a></p>
 
 <p><strong>注意</strong>:<code>nginx</code>的<code>proxy_pass</code>后面带不带<code>/</code>是有区别的.</p>
 
@@ -677,6 +722,52 @@ group = www-data
 </code></pre>
 
 <p>安装过程中要求设定一个root密码,安装完<code>service mysql status</code>查看运行状态,<code>sudo service mysql restart</code>可以重启</p>
+
+<h3 id="编译安装">编译安装</h3>
+
+<p>源码下载页 <a href="http://dev.mysql.com/downloads/mysql/">http://dev.mysql.com/downloads/mysql/</a> 选择<code>source code</code>下载</p>
+
+<p><strong>Alpine下编译</strong></p>
+
+<p>先为mysql添加一个用户运行 <code>addgroup mysql; adduser -H -D -s /sbin/nologin mysql -G mysql</code></p>
+
+<p>删除此用户的命令是 <code>deluser mysql</code></p>
+
+<pre><code>apk update &amp;&amp; apk upgrade
+apk --update add cmake gcc g++
+MYSQL_VERSION=mysql-5.7.14
+wget http://cdn.mysql.com/Downloads/MySQL-5.7/${MYSQL_VERSION}.tar.gz
+tar zxf ${MYSQL_VERSION}.tar.gz
+cd ${MYSQL_VERSION}
+cmake  -DCMAKE_INSTALL_PREFIX=/usr/local/mysql -DCMAKE_C_FLAGS_RELWITHDEBINFO=&quot;-O3 -g&quot; -DCMAKE_CXX_FLAGS_RELWITHDEBINFO=&quot;-O3 -g&quot; -DCMAKE_C_FLAGS=&quot;-O3 -g&quot; -DCMAKE_CXX_FLAGS=&quot;-O3 -g&quot; -DDEFAULT_CHARSET=utf8mb4 -DDEFAULT_COLLATION=utf8mb4_general_ci -DMYSQL_DATADIR=/usr/local/mysql/data -DSYSCONFDIR=/etc -DDOWNLOAD_BOOST=1 -DWITH_BOOST=/tmp -DWITH_INNOBASE_STORAGE_ENGINE=1 -DWITH_ARCHIVE_STORAGE_ENGINE=0 -DWITH_BLACKHOLE_STORAGE_ENGINE=0 -DWITH_EXAMPLE_STORAGE_ENGINE=0 -DWITH_FEDERATED_STORAGE_ENGINE=0 -DWITH_NDB_STORAGE_ENGINE=0 -DWITH_NDBCLUSTER_STORAGE_ENGINE=0  -DWITH_PARTITION_STORAGE_ENGINE=0 -DWITH_PERFSCHEMA_STORAGE_ENGINE=0
+
+</code></pre>
+
+<p>mysql5.7 编译时的参数 <a href="http://dev.mysql.com/doc/refman/5.7/en/source-configuration-options.html">http://dev.mysql.com/doc/refman/5.7/en/source-configuration-options.html</a></p>
+
+<p>Alpine中mysql无法编译,报错<code>No mysys timer support detected!</code></p>
+
+<p>下面尝试编译mariadb</p>
+
+<p>mariadb官网 <a href="https://downloads.mariadb.org/mariadb/">https://downloads.mariadb.org/mariadb/</a></p>
+
+<pre><code>apk update &amp;&amp; apk upgrade
+apk --update add curl cmake gcc g++ ncurses-dev pcre-dev xz-dev linux-headers
+MARIADB_VERSION=mariadb-10.1.17
+curl https://mirrors.tuna.tsinghua.edu.cn/mariadb/${MARIADB_VERSION}/source/${MARIADB_VERSION}.tar.gz | tar xz
+cd ${MARIADB_VERSION}
+cmake  -DCMAKE_INSTALL_PREFIX=/usr/local/mysql -DDEFAULT_CHARSET=utf8mb4 -DDEFAULT_COLLATION=utf8mb4_general_ci -DMYSQL_DATADIR=/usr/local/mysql/data -DSYSCONFDIR=/etc -DWITHOUT_TOKUDB=1 -DWITHOUT_MROONGA=1 -DWITHOUT_SPIDER=1 -DWITHOUT_PERFSCHEMA=1  -DWITHOUT_CONNECT=1 -DWITHOUT_XTRADB=1 -DWITHOUT_INNOBASE=1 -DWITHOUT_MYISAMMRG=1 -DWITHOUT_HEAP=1 -DWITHOUT_MYISAM=1 -DWITHOUT_SPHINX=1  -DWITHOUT_FEDERATEDX=1 -DWITHOUT_SEQUENCE=1 -DWITHOUT_CSV=1 -DWITHOUT_MARIA=1
+make -j `grep processor /proc/cpuinfo | wc -l`
+make install
+</code></pre>
+
+<p>修改了cmake参数后需要清除编译缓存 <code>make clean;rm CMakeCache.txt</code></p>
+
+<p>这些引擎是必须编译的</p>
+
+<p>xtradb
+myisam
+perfschema</p>
 
 <p>添加MySql用户</p>
 

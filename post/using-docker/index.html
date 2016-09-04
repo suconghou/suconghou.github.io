@@ -366,6 +366,8 @@ docker run -it -p 8080:8000 --name vps vpsimage bash
 <p><code>docker rmi $(docker images -q)</code> 一次性删除所有的镜像</p>
 
 <p><code>docker ps -l -q</code> 获取最后(-l)一个启动的容器id(-q)</p>
+
+<p><code>docker rmi $(docker images | grep &quot;^&lt;none&gt;&quot; | awk &quot;{print \$3}&quot;)</code> 清除none标签的镜像</p>
 </blockquote>
 
 <h2 id="国内加速">国内加速</h2>
@@ -534,6 +536,10 @@ echo &quot;&quot; &gt; $(docker inspect --format='{{.LogPath}}' &lt;container_na
 <p>不过这个都是需要<code>docker daemon</code>和<code>docker client</code>在同一台机器上.</p>
 
 <p><code>docker 1.8</code>及以后版本可以使用参数<code>--log-opt max-size=10m</code>限制日志文件的大小,更多详细介绍 <a href="https://docs.docker.com/engine/admin/logging/overview/">https://docs.docker.com/engine/admin/logging/overview/</a></p>
+
+<p>使用<code>docker -m</code>可以限制内存的使用,这个是直到程序内存使用超过此限定的2倍,才会因OOM而被进程杀掉.容器仍会正常运行.</p>
+
+<p>要使超过限定大小如100,就杀死,可以 <code>-m 100m --memory-swap=100m</code></p>
 
 		</div>
 	</div>

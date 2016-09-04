@@ -291,6 +291,73 @@ GatewayPorts yes
 <p>CentOS7 用<code>systemctl</code>取代了<code>service</code>
 旧版本的 <code>chkconfig docker on</code> 改为 <code>systemctl enable docker</code></p>
 
+<h3 id="编译openssh">编译openssh</h3>
+
+<p>在alpine中编译openssh,镜像地址 <a href="http://ftp.jaist.ac.jp/pub/OpenBSD/OpenSSH/portable/">http://ftp.jaist.ac.jp/pub/OpenBSD/OpenSSH/portable/</a></p>
+
+<p>编译完成后得到一些工具,如<code>scp</code>,<code>sftp-server</code>,<code>ssh</code>,<code>sshd</code>等等</p>
+
+<pre><code>apk update &amp;&amp; apk upgrade
+apk --update add make gcc g++ zlib-dev openssl-dev
+cd /tmp
+OPENSSH_VERSION=openssh-7.3p1
+CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
+curl http://ftp.jaist.ac.jp/pub/OpenBSD/OpenSSH/portable/${OPENSSH_VERSION}.tar.gz | tar xz
+cd ${OPENSSH_VERSION}
+export CFLAGS=&quot;-O3&quot;
+./configure
+make -j$CPU_NUM &amp;&amp; make install
+</code></pre>
+
+<p>我编译好的二进制文件,能直接用于alpine系统</p>
+
+<p><a href="http://share.suconghou.cn/bin/ssh.xz">ssh</a></p>
+
+<p><a href="http://share.suconghou.cn/bin/sshd.xz">sshd</a></p>
+
+<p>编译出来的这些工具的合集</p>
+
+<p><a href="http://share.suconghou.cn/bin/sshbin.tar.gz">sshbin</a></p>
+
+<p><a href="http://share.suconghou.cn/bin/sshtool.tar.gz">sshtool</a></p>
+
+<p>配合Linux<code>adduser</code>,可以ssh到docker中</p>
+
+<p><code>curl -o /usr/local/bin/sshd.xz http://share.suconghou.cn/bin/sshd.xz</code></p>
+
+<p>sshd运行不能直接执行sshd,需要执行<code>/usr/local/bin/sshd</code></p>
+
+<p>配置文件为<code>/usr/local/etc/sshd_config</code>,同时还需要几个密匙文件.</p>
+
+<pre><code>curl -o /usr/local/bin/sshd.xz http://share.suconghou.cn/bin/sshd.xz
+xz -d /usr/local/bin/sshd.xz
+chmod +x /usr/local/bin/sshd
+mkdir -p /usr/local/etc/
+touch /usr/local/etc/sshd_config
+ssh-keygen -t dsa -f /usr/local/etc/ssh_host_dsa_key -N ''
+ssh-keygen -t rsa -f /usr/local/etc/ssh_host_rsa_key -N ''
+ssh-keygen -t ecdsa -f /usr/local/etc/ssh_host_ecdsa_key -N ''
+ssh-keygen -t ed25519 -f /usr/local/etc/ssh_host_ed25519_key -N ''
+</code></pre>
+
+<p>添加一个用户:<code>adduser work</code> ,Alpine里是<code>adduser</code>,Linux发行版里是<code>useradd</code></p>
+
+<p>cat /etc/passwd 可以查看所有用户的列表,只输出用户名可以<code>cat /etc/passwd |cut -f 1 -d :</code></p>
+
+<p>看第三个参数:500以上的,就是后面建的用户了.其它则为系统的用户.</p>
+
+<p>cat /etc/group 查看用户组</p>
+
+<p>w 可以查看当前活跃的用户列表</p>
+
+<p>删除用户<code>userdel</code> , 用户<code>userdel -r 用户名</code>,删除用户账户及用户主目录文件</p>
+
+<p>没有外网IP还可以使用ssh建立一个隧道</p>
+
+<pre><code>ssh -CfNg -R 0.0.0.0:2233:127.0.0.1:22 root@yourvps.com -p 27558
+
+</code></pre>
+
 			</div>
 		</div>
 		
@@ -489,6 +556,12 @@ enabled=1
 
 <p><a href="https://github.com/tylingsoft/markdown-plus">markdown-plus</a> Markdown Plus,界面不是很漂亮,也有收费的桌面APP</p>
 
+<h2 id="markdown解析库">Markdown解析库</h2>
+
+<p><a href="https://github.com/chjj/marked">marked</a> 支持nodejs 和浏览器端</p>
+
+<p><a href="https://github.com/evilstreak/markdown-js">markdown-js</a> 支持nodejs 和浏览器端</p>
+
 <h2 id="字体相关">字体相关</h2>
 
 <p><a href="http://www.youziku.com/">有字库中文字体</a> 在线字体,CDN引用</p>
@@ -572,11 +645,15 @@ enabled=1
 
 <p><a href="http://www.winode.org/cart.php?gid=15&amp;language=chinese">winode</a></p>
 
-<p><a href="http://www.50kvm.com/new_index/vps.php">50kvm</a> kvm最低20人民币每月(512MB),旗下openvzvps即为下面的连接</p>
+<p><a href="http://www.50kvm.com/new_index/vps.php">50kvm</a> kvm最低20人民币每月(512MB),支持支付宝,旗下openvzvps即为下面的连接</p>
 
-<p><a href="https://www.openvzvps.cc/cart.php?gid=10">openvzvps</a> 最低配年付48人民币(64M),中文,集成锐速</p>
+<p><a href="https://www.openvzvps.cc/cart.php?gid=10">openvzvps</a> 最低48年付(openvz 64M),中文,集成锐速,可支付宝</p>
 
-<p><a href="http://www.idcbuster.com/specials.html">idcbuster</a> 最低年付39人民币(128M),支持支付宝</p>
+<p><a href="http://www.idcbuster.com/specials.html">idcbuster</a> 最低39年付(openvz 128M),99年付kvm 256M 支持支付宝</p>
+
+<p><a href="http://technetcal.com/us-vps/">technetcal</a> 最低60年付(openvz 128M),支持支付宝,香港虚拟主机最低28年付,<a href="http://technetcal.com/the-regius/">http://technetcal.com/the-regius/</a></p>
+
+<p><a href="http://weedhost.biz/loskvm.php">weedhost</a> 最低99年付(kvm 128M)</p>
 
 <h2 id="内网穿透">内网穿透</h2>
 

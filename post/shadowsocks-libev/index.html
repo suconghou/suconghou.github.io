@@ -69,6 +69,17 @@ make -j4 &amp;&amp; make install
 * hard nofile 51200
 </code></pre>
 
+<p>KVM 和 XEN 可以修改内核,明显提升网络环境差的情况下的表现,使用<code>hybla</code>控制算法,效果明显,能提速30%</p>
+
+<p><a href="https://www.zoakerc.com/archives/optimize-shadowsocks-server-in-kvm-or-xen/">https://www.zoakerc.com/archives/optimize-shadowsocks-server-in-kvm-or-xen/</a></p>
+
+<p>OPENVZ只能修改</p>
+
+<pre><code>net.core.somaxconn = 4096
+net.ipv4.tcp_syncookies = 1
+net.netfilter.nf_conntrack_max = 64000
+</code></pre>
+
 		</div>
 	</div>
 </div>

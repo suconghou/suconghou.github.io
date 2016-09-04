@@ -17,6 +17,18 @@
       <guid>http://blog.suconghou.cn/post/linux/</guid>
       <description>
 
+&lt;h2 id=&#34;linux用户管理&#34;&gt;Linux用户管理&lt;/h2&gt;
+
+&lt;h3 id=&#34;添加用户adduser&#34;&gt;添加用户adduser&lt;/h3&gt;
+
+&lt;p&gt;假如用户名为&lt;code&gt;work&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;adduser work -M&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;修改密码&#34;&gt;修改密码&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;passwd work&lt;/code&gt;&lt;/p&gt;
+
 &lt;h2 id=&#34;linux实用命令&#34;&gt;Linux实用命令&lt;/h2&gt;
 
 &lt;h2 id=&#34;w&#34;&gt;w&lt;/h2&gt;
@@ -117,6 +129,49 @@ count = blocks 只拷贝输入的blocks块&lt;/p&gt;
 
 &lt;p&gt;mac上无法使用&lt;code&gt;--sort&lt;/code&gt;,可以采用&lt;code&gt;sort&lt;/code&gt;排序,如rss在第六列,则&lt;code&gt;ps auxw | sort -k6,6n&lt;/code&gt;&lt;/p&gt;
 
+&lt;h2 id=&#34;nc&#34;&gt;nc&lt;/h2&gt;
+
+&lt;p&gt;nc 命令默认没有安装,需要自己安装,&lt;code&gt;yum install nc&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;传送字符与文件&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;一端&lt;code&gt;nc -l 9090&lt;/code&gt;监听端口9090&lt;/p&gt;
+
+&lt;p&gt;一端&lt;code&gt;nc host 9090&lt;/code&gt;连接host的9090端口,通信建立后,可以双向通信,实现文字聊天等,也可以传送文件&lt;/p&gt;
+
+&lt;p&gt;一端&lt;code&gt;nc -l 9090 &amp;gt; file&lt;/code&gt; ,另一端发送文件&lt;code&gt;nc host 9090 &amp;lt; file&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;传送文件夹(压缩文件) &lt;code&gt;nc -l 9090 |tar xzvf -&lt;/code&gt; , 另一端发送文件&lt;code&gt;tar czvf – dir | nc host 9090&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;同样可以拷贝硬盘 &lt;code&gt;nc -l 9090 | dd of=/dev/sda&lt;/code&gt;,另一端发送&lt;code&gt;dd if=/dev/sda | nc host 9090&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;端口扫描&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;nc -vz -w 1 someIp 1-1000&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;模拟调试http请求&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;GET / HTTP/1.0&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;端口转发&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;使用之前需要了解其他的命令&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;tee&lt;/code&gt;命令将标准输入的数据写入标准输出和tee命令指定的文件参数&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;mkfifo&lt;/code&gt;命令用于创建一个FIFO（先进先出）方式的命名管道&lt;/p&gt;
+
+&lt;p&gt;标准流:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;stdin	0
+stdout	1
+stderr	2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;** listener-to-client模式(用于外网访问内网) **&lt;/p&gt;
+
+&lt;p&gt;见 &lt;a href=&#34;http://onestraw.net/cybersecurity/netcat-advanced-usage/&#34;&gt;http://onestraw.net/cybersecurity/netcat-advanced-usage/&lt;/a&gt;&lt;/p&gt;
+
 &lt;h2 id=&#34;一份linux别名和函数库&#34;&gt;一份Linux别名和函数库&lt;/h2&gt;
 
 &lt;pre&gt;&lt;code&gt;alias tree=&amp;quot;find . -print | sed -e &#39;s;[^/]*/;|____;g;s;____|; |;g&#39; &amp;quot;;
@@ -162,6 +217,31 @@ mem()
     top -n1 -b | head -n7 | sed &#39;1,6d&#39; &amp;amp;&amp;amp; top -n1 -b | sed &#39;1,7d&#39; | grep --color=auto $1;
     ps aux | grep --color=auto $1 | grep --color=auto -v grep | awk -F &amp;quot; &amp;quot; &#39;{ sum += $6 } END { printf &amp;quot;Total Memory Usage: %.1f MB\n&amp;quot;, sum/1024 }&#39;
 }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;部分快捷键&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+CTRL + U -剪切光标前的内容
+
+CTRL + K -剪切光标至行末的内容
+
+CTRL + Y -粘贴
+
+CTRL + E -移动光标到行末
+
+CTRL + A -移动光标到行首
+
+ALT + F -跳向下一个空格
+
+ALT + B -跳回上一个空格
+
+ALT + Backspace -删除前一个单词
+
+CTRL + W -剪切光标后一个单词
+
+Shift + Insert -向终端内粘贴文本
+
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;压缩率 xz &amp;gt; bzip2 &amp;gt; gzip &amp;gt; zip&lt;/p&gt;
@@ -321,6 +401,10 @@ fi
 fi
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;h2 id=&#34;判断一个进程pid是否还存在&#34;&gt;判断一个进程PID是否还存在&lt;/h2&gt;
+
+&lt;p&gt;例如检查pid为143的进程 &lt;code&gt;ps ax | awk &#39;{ print $1 }&#39; | grep -e &amp;quot;^143$&amp;quot;&lt;/code&gt;&lt;/p&gt;
+
 &lt;h2 id=&#34;shell基本语法&#34;&gt;Shell基本语法&lt;/h2&gt;
 
 &lt;p&gt;声明数组&lt;/p&gt;
@@ -457,6 +541,73 @@ GatewayPorts yes
 
 &lt;p&gt;CentOS7 用&lt;code&gt;systemctl&lt;/code&gt;取代了&lt;code&gt;service&lt;/code&gt;
 旧版本的 &lt;code&gt;chkconfig docker on&lt;/code&gt; 改为 &lt;code&gt;systemctl enable docker&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;编译openssh&#34;&gt;编译openssh&lt;/h3&gt;
+
+&lt;p&gt;在alpine中编译openssh,镜像地址 &lt;a href=&#34;http://ftp.jaist.ac.jp/pub/OpenBSD/OpenSSH/portable/&#34;&gt;http://ftp.jaist.ac.jp/pub/OpenBSD/OpenSSH/portable/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;编译完成后得到一些工具,如&lt;code&gt;scp&lt;/code&gt;,&lt;code&gt;sftp-server&lt;/code&gt;,&lt;code&gt;ssh&lt;/code&gt;,&lt;code&gt;sshd&lt;/code&gt;等等&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;apk update &amp;amp;&amp;amp; apk upgrade
+apk --update add make gcc g++ zlib-dev openssl-dev
+cd /tmp
+OPENSSH_VERSION=openssh-7.3p1
+CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
+curl http://ftp.jaist.ac.jp/pub/OpenBSD/OpenSSH/portable/${OPENSSH_VERSION}.tar.gz | tar xz
+cd ${OPENSSH_VERSION}
+export CFLAGS=&amp;quot;-O3&amp;quot;
+./configure
+make -j$CPU_NUM &amp;amp;&amp;amp; make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;我编译好的二进制文件,能直接用于alpine系统&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/bin/ssh.xz&#34;&gt;ssh&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/bin/sshd.xz&#34;&gt;sshd&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;编译出来的这些工具的合集&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/bin/sshbin.tar.gz&#34;&gt;sshbin&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/bin/sshtool.tar.gz&#34;&gt;sshtool&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;配合Linux&lt;code&gt;adduser&lt;/code&gt;,可以ssh到docker中&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;curl -o /usr/local/bin/sshd.xz http://share.suconghou.cn/bin/sshd.xz&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;sshd运行不能直接执行sshd,需要执行&lt;code&gt;/usr/local/bin/sshd&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;配置文件为&lt;code&gt;/usr/local/etc/sshd_config&lt;/code&gt;,同时还需要几个密匙文件.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;curl -o /usr/local/bin/sshd.xz http://share.suconghou.cn/bin/sshd.xz
+xz -d /usr/local/bin/sshd.xz
+chmod +x /usr/local/bin/sshd
+mkdir -p /usr/local/etc/
+touch /usr/local/etc/sshd_config
+ssh-keygen -t dsa -f /usr/local/etc/ssh_host_dsa_key -N &#39;&#39;
+ssh-keygen -t rsa -f /usr/local/etc/ssh_host_rsa_key -N &#39;&#39;
+ssh-keygen -t ecdsa -f /usr/local/etc/ssh_host_ecdsa_key -N &#39;&#39;
+ssh-keygen -t ed25519 -f /usr/local/etc/ssh_host_ed25519_key -N &#39;&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;添加一个用户:&lt;code&gt;adduser work&lt;/code&gt; ,Alpine里是&lt;code&gt;adduser&lt;/code&gt;,Linux发行版里是&lt;code&gt;useradd&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;cat /etc/passwd 可以查看所有用户的列表,只输出用户名可以&lt;code&gt;cat /etc/passwd |cut -f 1 -d :&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;看第三个参数:500以上的,就是后面建的用户了.其它则为系统的用户.&lt;/p&gt;
+
+&lt;p&gt;cat /etc/group 查看用户组&lt;/p&gt;
+
+&lt;p&gt;w 可以查看当前活跃的用户列表&lt;/p&gt;
+
+&lt;p&gt;删除用户&lt;code&gt;userdel&lt;/code&gt; , 用户&lt;code&gt;userdel -r 用户名&lt;/code&gt;,删除用户账户及用户主目录文件&lt;/p&gt;
+
+&lt;p&gt;没有外网IP还可以使用ssh建立一个隧道&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ssh -CfNg -R 0.0.0.0:2233:127.0.0.1:22 root@yourvps.com -p 27558
+
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     

@@ -138,11 +138,24 @@ for i in $backup
 
 <p><code>brew install fswatch</code></p>
 
-<pre><code>&lt;!-- fswatch -o ./ | xargs -n1 -I{} md5 --&gt;
+<p>监视目录输出有变动的文件 <code>fswatch -0 /tmp | xargs -0 -n 1 echo $1</code></p>
 
-fswatch -0 /tmp | xargs -0 -n 1 echo $1
+<p><strong>文件变化自动同步函数</strong></p>
 
+<pre><code>sync1()
+{
+    dir=/data/project/21textv3/
+    while true
+    do
+        rsync -arvuzpt --progress --exclude=&quot;.git&quot; /data/project/21textv3/  root@172.168.1.3:/data/web/21textv3/
+        echo &quot;start morniting folder $dir&quot;
+        fswatch -1 $dir
+        sleep 2
+    done
+}
 </code></pre>
+
+<h3 id="全功能文件备份脚本">全功能文件备份脚本</h3>
 
 		</div>
 	</div>

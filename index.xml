@@ -637,7 +637,7 @@ make -j4&amp;amp;&amp;amp; make install
 
 &lt;p&gt;&lt;code&gt;sourceforge&lt;/code&gt;上速度太慢,这里提供加速下载.&lt;/p&gt;
 
-&lt;p&gt;win-bash&lt;a href=&#34;http://share.suconghou.cn/tools/shell.w32-ix86.zip&#34;&gt;shell.w32-ix86.zip&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;win-bash下载&lt;a href=&#34;http://share.suconghou.cn/Windows/shell.w32-ix86.zip&#34;&gt;shell.w32-ix86.zip&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;我的github也收集了一些&lt;code&gt;windows&lt;/code&gt;上常用的小工具&lt;code&gt;axel&lt;/code&gt;,&lt;code&gt;putty&lt;/code&gt;,&lt;code&gt;ab&lt;/code&gt;,&lt;code&gt;hugo&lt;/code&gt;,&lt;code&gt;rsync&lt;/code&gt;等&lt;/p&gt;
 
@@ -708,47 +708,33 @@ make -j4&amp;amp;&amp;amp; make install
 
 &lt;p&gt;所有资源均来源于官网&lt;code&gt;http://git-scm.com/download/win&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;最新版本2.9.3.2,发布于2016-08-25&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;最新版本2.10.0,发布于2016-09-03&lt;/strong&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;32位资源&#34;&gt;32位资源&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/Git-2.10.0-32-bit.exe&#34;&gt;32位安装版&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/PortableGit-2.10.0-64-bit.7z.exe&#34;&gt;32位绿色版&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;64位资源&#34;&gt;64位资源&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/Git-2.10.0-64-bit.exe&#34;&gt;64位安装版&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/PortableGit-2.10.0-64-bit.7z.exe&#34;&gt;64位绿色版&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;版本2.9.3.2,发布于2016-08-25&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;32位资源-1&#34;&gt;32位资源&lt;/h3&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/Git-2.9.3.2-32-bit.exe&#34;&gt;32位安装版&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/PortableGit-2.9.3.2-64-bit.7z.exe&#34;&gt;32位绿色版&lt;/a&gt;&lt;/p&gt;
 
-&lt;h3 id=&#34;64位资源&#34;&gt;64位资源&lt;/h3&gt;
+&lt;h3 id=&#34;64位资源-1&#34;&gt;64位资源&lt;/h3&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/Git-2.9.3.2-64-bit.exe&#34;&gt;64位安装版&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/PortableGit-2.9.3.2-64-bit.7z.exe&#34;&gt;64位绿色版&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;版本2.9.3,发布于2016-08-13&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;32位资源-1&#34;&gt;32位资源&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/Git-2.9.3-32-bit.exe&#34;&gt;32位安装版&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/PortableGit-2.9.3-64-bit.7z.exe&#34;&gt;32位绿色版&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;64位资源-1&#34;&gt;64位资源&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/Git-2.9.3-64-bit.exe&#34;&gt;64位安装版&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/PortableGit-2.9.3-64-bit.7z.exe&#34;&gt;64位绿色版&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;版本2.9.2,发布于2016-7-16&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;32位资源-2&#34;&gt;32位资源&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/Git-2.9.2-32-bit.exe&#34;&gt;32位安装版&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/PortableGit-2.9.2-64-bit.7z.exe&#34;&gt;32位绿色版&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;64位资源-2&#34;&gt;64位资源&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/Git-2.9.2-64-bit.exe&#34;&gt;64位安装版&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/PortableGit-2.9.2-64-bit.7z.exe&#34;&gt;64位绿色版&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     
@@ -1089,6 +1075,39 @@ adb install -r app-release.apk
 &lt;h3 id=&#34;filter-var-filter-validate-url&#34;&gt;filter_var FILTER_VALIDATE_URL&lt;/h3&gt;
 
 &lt;p&gt;filter_var FILTER_VALIDATE_URL 中不能包含中文,包含中文被判定为false&lt;/p&gt;
+
+&lt;h3 id=&#34;内存是拷贝还是内存引用&#34;&gt;内存是拷贝还是内存引用&lt;/h3&gt;
+
+&lt;p&gt;例1&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$a=str_repeat(&#39;hello world&#39;,81920);
+echo intval(memory_get_usage()/1024);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;例2&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$a=str_repeat(&#39;hello world&#39;,81920);
+$b=$a;
+$c=$a;
+$d=$a;
+echo intval(memory_get_usage()/1024);
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;例3&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$a=str_repeat(&#39;hello world&#39;,81920);
+$b=$a.&#39;&#39;;
+$c=$a.&#39;&#39;;
+$d=$a.&#39;&#39;;
+echo intval(memory_get_usage()/1024);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;例1与例2,内存差距基本不大,例2与例3有较大差距,例3约为例2的3倍,但小于3倍&lt;/p&gt;
+
+&lt;p&gt;一般数据类型&lt;/p&gt;
+
+&lt;p&gt;php在内存上是写时拷贝,一个变量复制多份内存不会占用多份,只有变量被改变时才会新申请一份内存给此变量.&lt;/p&gt;
 </description>
     </item>
     
@@ -1129,6 +1148,17 @@ make -j4 &amp;amp;&amp;amp; make install
 
 &lt;pre&gt;&lt;code&gt;* soft nofile 51200
 * hard nofile 51200
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;KVM 和 XEN 可以修改内核,明显提升网络环境差的情况下的表现,使用&lt;code&gt;hybla&lt;/code&gt;控制算法,效果明显,能提速30%&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://www.zoakerc.com/archives/optimize-shadowsocks-server-in-kvm-or-xen/&#34;&gt;https://www.zoakerc.com/archives/optimize-shadowsocks-server-in-kvm-or-xen/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;OPENVZ只能修改&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;net.core.somaxconn = 4096
+net.ipv4.tcp_syncookies = 1
+net.netfilter.nf_conntrack_max = 64000
 &lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
