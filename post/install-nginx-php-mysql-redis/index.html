@@ -711,6 +711,13 @@ access_log off;
 group = www-data
 </code></pre>
 
+<p>nginx日志分析工具 <a href="https://goaccess.io/">https://goaccess.io/</a>  <a href="https://github.com/allinurl/goaccess/">https://github.com/allinurl/goaccess/</a> 采用c语言编写,还能生成网页</p>
+
+<pre><code>GOACCESS_VERSION=goaccess-1.0.2
+wget http://tar.goaccess.io/${GOACCESS_VERSION}.tar.gz
+tar xzf ${GOACCESS_VERSION}.tar.gz
+</code></pre>
+
 <h2 id="安装mariadb">安装MariaDB</h2>
 
 <pre><code>apt-get install mariadb-server
@@ -768,6 +775,8 @@ make install
 <p>xtradb
 myisam
 perfschema</p>
+
+<p>失败..</p>
 
 <p>添加MySql用户</p>
 

@@ -131,6 +131,28 @@ CONFIG proxy.config.cluster.ethernet_interface STRING eth0                # 修�
 
 <p>启动<code>trafficserver start</code></p>
 
+<h3 id="varnish编译">varnish编译</h3>
+
+<p>alpine中编译</p>
+
+<pre><code>apk update &amp;&amp; apk upgrade
+apk --update add gcc g++ make wget curl m4 automake autoconf libtool linux-headers py-docutils ncurses-dev pcre-dev libedit-dev
+cd /tmp
+VARNISH_VERSION=varnish-4.1.3
+CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
+wget https://repo.varnish-cache.org/source/${VARNISH_VERSION}.tar.gz
+tar xzf ${VARNISH_VERSION}.tar.gz
+cd ${VARNISH_VERSION}
+./configure
+make CFLAGS=&quot;-Os&quot; CPPFLAGS=-D__NEED_mode_t -j$CPU_NUM &amp;&amp; make install
+strip -s /usr/local/bin/* /usr/local/sbin/* /usr/local/lib/varnish/*.so /usr/local/lib/varnish/vmods/*.so
+varnishd  -V
+</code></pre>
+
+<h4 id="varnish基本使用">varnish基本使用</h4>
+
+<p>varnish / squid / nginx 优缺点讨论 见 <a href="http://www.zhihu.com/question/20143441">http://www.zhihu.com/question/20143441</a></p>
+
 		</div>
 	</div>
 </div>

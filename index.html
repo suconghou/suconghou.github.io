@@ -34,6 +34,63 @@
 		
 		<div class="post">
 			<h1 class="post-title">
+				<a href="/post/pc-hardware/"> pc hardware</a>
+			</h1>
+			<p class="post-date">Sun, Sep 4, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="修电脑相关知识">修电脑相关知识</h2>
+
+<h3 id="较好的pe">较好的PE</h3>
+
+<p><strong>微PE</strong></p>
+
+<p><a href="http://www.wepe.com.cn/">http://www.wepe.com.cn/</a> 自带刻录,可以一键安装到U盘,硬盘等,支持UEFI,CMS等多种启动方式.</p>
+
+<blockquote>
+<p>一般的BIOS里找不到UEFI/CMS的切换设置,可能是<code>security boot</code>的配置,禁用<code>security boot</code>试试</p>
+
+<p>如果在BIOS里找不到U盘,可能是<code>fastboot</code>的问题,可以禁用fastboot,安装好系统后在开启.</p>
+
+<p>硬盘的设置模式里,找不到U盘或者硬盘,可以尝试切换<code>AHCI/IDE</code>,注意安装好系统后,此选项不能够再随意切换,否知导致系统进不去.</p>
+</blockquote>
+
+<p>休眠能将现有所有工作保存到硬盘,下次开机恢复上次的会话,Windows8及以后采用了混合休眠机制</p>
+
+<p>你可能找不到单纯的休眠按钮.</p>
+
+<p>可以使用<code>shutdown -h</code>休眠</p>
+
+<p>其他一些补充</p>
+
+<pre><code>关机计算机：shutdown.exe -s -t 00
+重启计算机：shutdown.exe -r -t 00
+注销计算机：shutdown.exe -l -t 00
+锁定计算机：rundll32.exe user32.dll,LockWorkStation
+休眠计算机：rundll32.exe powrProf.dll,SetSuspendState
+睡眠计算机：rundll32.exe powrprof.dll,SetSuspendState 0,1,0,
+</code></pre>
+
+<h2 id="性能天梯图">性能天梯图</h2>
+
+<p>CPU天梯图</p>
+
+<p><img src="http://suconghou.sinaapp.com/e7d6741f4b703c5057fa6c4f0f3cf971.jpg" alt="CPU天梯图简化版" /></p>
+
+<p>CPU天梯图详细</p>
+
+<p><img src="http://suconghou.sinaapp.com/33f41a782ceddd3a78a7f40321329777.jpg" alt="CPU天梯图详细" /></p>
+
+<p>显卡天梯图</p>
+
+<p><img src="http://suconghou.sinaapp.com/14db00815cebc3e46f9647515b384815.jpg" alt="显卡天梯图" /></p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
 				<a href="/post/memcached-usage/"> memcached usage</a>
 			</h1>
 			<p class="post-date">Wed, Aug 24, 2016</p>
@@ -84,6 +141,21 @@ make -j$CPU_NUM &amp;&amp; make install
 <p>默认情况下是不限制访问IP的,相当于是外网和内网都能访问,-l 使只有这个IP能访问</p>
 
 <p>尽量不要用root用户运行.</p>
+
+<p><strong>状态查看</strong></p>
+
+<p>使用 telnet 连接 memcached
+<code>stats settings</code>可以查看所有参数设置</p>
+
+<p>memcached状态和性能查看</p>
+
+<p>stats命令</p>
+
+<p><img src="http://static.suconghou.cn/document/memcached.jpg" alt="memcached stats命令" /></p>
+
+<p>官方也提供监控工具</p>
+
+<p><a href="https://github.com/memcached/memcached/blob/master/scripts/memcached-tool">https://github.com/memcached/memcached/blob/master/scripts/memcached-tool</a></p>
 
 			</div>
 		</div>
@@ -626,58 +698,6 @@ make -j4&amp;&amp; make install
 			</div>
 		</div>
 		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/software/some-dev-tools/"> some dev tools</a>
-			</h1>
-			<p class="post-date">Sun, Jul 17, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="一些开发会用到的小工具">一些开发会用到的小工具</h2>
-
-<h3 id="编程字体">编程字体</h3>
-
-<p>苹果出品的<code>Monaco</code>,看起来十分圆润,首选推荐的编程字体</p>
-
-<p><a href="http://share.suconghou.cn/fonts/monaco.ttf">monaco</a></p>
-
-<p>或许还有很多人喜欢<code>YaHei.Consolas</code></p>
-
-<p><a href="http://share.suconghou.cn/fonts/YaHei.Consolas.1.12.zip">YaHei.Consolas.1.12.zip</a></p>
-
-<h3 id="一些从-linux-迁移到windows的东西">一些从<code>Linux</code>迁移到Windows的东西</h3>
-
-<p>最常用的当属<code>bash</code>了,包含<code>md5sum</code>,<code>wget</code>,<code>curl</code>,<code>awk</code>等等.</p>
-
-<p>有两个比较好的项目在移植</p>
-
-<blockquote>
-<p><em>unxutils</em> <a href="http://unxutils.sourceforge.net/">http://unxutils.sourceforge.net/</a>  源码 <a href="https://sourceforge.net/projects/unxutils/">https://sourceforge.net/projects/unxutils/</a></p>
-
-<p><em>win-bash</em> <a href="https://sourceforge.net/projects/win-bash/">https://sourceforge.net/projects/win-bash/</a></p>
-</blockquote>
-
-<p><code>unxutils</code>最后更新2014-04-03</p>
-
-<p><code>win-bash</code>最后更新2015-03-30</p>
-
-<p><code>sourceforge</code>上速度太慢,这里提供加速下载.</p>
-
-<p>win-bash下载<a href="http://share.suconghou.cn/Windows/shell.w32-ix86.zip">shell.w32-ix86.zip</a></p>
-
-<p>我的github也收集了一些<code>windows</code>上常用的小工具<code>axel</code>,<code>putty</code>,<code>ab</code>,<code>hugo</code>,<code>rsync</code>等</p>
-
-<p><a href="http://github.com/suconghou/tools">http://github.com/suconghou/tools</a></p>
-
-<p>Curl 官网 <a href="https://curl.haxx.se/download.html">https://curl.haxx.se/download.html</a></p>
-
-<p>Curl 这里可以下载windows版的
-<a href="http://www.paehl.com/open_source/?CURL_7.49.1">http://www.paehl.com/open_source/?CURL_7.49.1</a></p>
-
-			</div>
-		</div>
-		
 	</div>
 	<nav>
 		
@@ -715,12 +735,15 @@ make -j4&amp;&amp; make install
         ><a href="/page/7/">7</a></li>
         
         <li
+        ><a href="/page/8/">8</a></li>
+        
+        <li
         >
         <a href="/page/2/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
         </li>
         
         <li>
-            <a href="/page/7/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+            <a href="/page/8/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
         </li>
         
     </ul>

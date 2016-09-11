@@ -187,6 +187,8 @@ ssh-keygen -t ed25519 -f /usr/local/etc/ssh_host_ed25519_key -N &#39;&#39;
 
 &lt;p&gt;cat /etc/group 查看用户组&lt;/p&gt;
 
+&lt;p&gt;非交互式修改密码可以使用 chpasswd &lt;code&gt;echo &amp;quot;1234&amp;quot; | chpasswd&lt;/code&gt;&lt;/p&gt;
+
 &lt;p&gt;w 可以查看当前活跃的用户列表&lt;/p&gt;
 
 &lt;p&gt;删除用户&lt;code&gt;userdel&lt;/code&gt; , 用户&lt;code&gt;userdel -r 用户名&lt;/code&gt;,删除用户账户及用户主目录文件&lt;/p&gt;

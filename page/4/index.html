@@ -34,6 +34,47 @@
 		
 		<div class="post">
 			<h1 class="post-title">
+				<a href="/post/use-docker-on-raspberry/"> 在树莓派上使用Docker</a>
+			</h1>
+			<p class="post-date">Sun, May 8, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="安装支持docker的系统">安装支持Docker的系统</h2>
+
+<p>树莓派官方系统并不支持Docker,需要安装.</p>
+
+<p>查看 <a href="http://blog.hypriot.com/downloads/">集成Dcoker的树莓派系统</a></p>
+
+<pre><code>aria2c -s 50 -c https://downloads.hypriot.com/hypriotos-rpi-v0.8.0.img.zip
+
+
+diskutil list
+diskutil unmountdisk /dev/disk2
+</code></pre>
+
+<p>用以下命令前必须卸载u盘<code>diskutil unmountdisk /dev/disk2</code></p>
+
+<pre><code>sudo dd if=hypriotos-rpi-v0.8.0.img of=/dev/disk2 bs=8k
+</code></pre>
+
+<p>安装完成重启就可以啦,启动后登陆的用户是pirate,密码hypriot</p>
+
+<p>修改密码:执行<code>passwd</code>,输入当前密码,输入新密码,再输入新密码,更新完成</p>
+
+<p>执行<code>exit</code>退出,或者<code>sudo reboot</code>重启</p>
+
+<p>创建用户:<code>useradd -g test -d /home/test1 -s /etc/bash -m test1</code>
+注解：-g 所属组 -d 家目录 -s 所用的SHELL
+passwd abc</p>
+
+<p>获得sudo权限:编辑<code>/etc/sudoers</code> 加入新添加的用户名</p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
 				<a href="/software/android-studio/"> Android Studio</a>
 			</h1>
 			<p class="post-date">Fri, Apr 8, 2016</p>
@@ -502,9 +543,13 @@ Shift + Insert -向终端内粘贴文本
 
 </code></pre>
 
-<p>压缩率 xz &gt; bzip2 &gt; gzip &gt; zip</p>
+<p>压缩率 xz &gt; 7z &gt; bzip2 &gt; gzip &gt; zip</p>
 
 <p>gzexe 创建自解压文件</p>
+
+<p>xz5.2以上版本支持多线程压缩,xz -T0 就可以自动按机器线程数多线程执行了,xz 支持 env 环境变量，XZ_OPT=-T0 xz xxx.file 就行啦</p>
+
+<p>多线程的压缩速度几乎与gzip相当</p>
 
 <pre><code># 查看你机器的CPU个数,超线程信息
 sysinfo() {
@@ -627,7 +672,7 @@ RedHat 系列
 
 <p>见 <a href="https://www.fdzh.org/slides/2015/06/20/linux-distr/">https://www.fdzh.org/slides/2015/06/20/linux-distr/</a></p>
 
-<p><img src="https://dn-copr.qbox.me/49d503bf47879ffe8a169dd81c744d83_b.jpg" alt="家族示意图" /></p>
+<p><img src="http://static.suconghou.cn/document/linux.jpg" alt="家族示意图" /></p>
 
 <h2 id="判断一个命令是否存在">判断一个命令是否存在</h2>
 
@@ -773,56 +818,6 @@ ls -lh
 			</div>
 		</div>
 		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/homebrew-speedup/"> 使用镜像加速homebrew</a>
-			</h1>
-			<p class="post-date">Fri, Jan 15, 2016</p>
-			<div class="post-text">
-				<p><a href="http://mirrors.ustc.edu.cn/">中国科大镜像站</a> 提供 Debian, Ubuntu, Fedora, Archlinux, CentOS 等多个发行版的官方源.
-还有brew 的二进制源,brew使用此配置能大大提升速度.</p>
-
-<pre><code>cd /usr/local
-git remote set-url origin git://mirrors.ustc.edu.cn/brew.git
-git remote -v
-brew update
-</code></pre>
-
-<p>修改二进制源见<a href="https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-bottles">https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-bottles</a></p>
-
-<p>即<code>export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles</code></p>
-
-<p>使用<code>brew config</code> 查看<code>ORIGIN</code>和<code>HOMEBREW_BOTTLE_DOMAIN</code>已经是新的<code>mirrors.ustc.edu.cn</code>即为配置成功</p>
-
-<p><code>brew list</code> 列出所有安装的模块</p>
-
-<p><code>brew search mysql</code> 查找</p>
-
-<p><code>brew commands</code> 查看所有命令</p>
-
-<p>安装（需要 Ruby）：
-<code>ruby -e &quot;$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)&quot;</code></p>
-
-<p>搜索：<code>brew search mysql</code></p>
-
-<p>查询：<code>brew info mysql</code> 主要看具体的信息，比如目前的版本，依赖，安装后注意事项等</p>
-
-<p>更新：<code>brew update</code> 这会更新 Homebrew 自己，并且使得接下来的两个操作有意义——</p>
-
-<p>检查过时（是否有新版本）：<code>brew outdated</code> 这回列出所有安装的软件里可以升级的那些</p>
-
-<p>升级：<code>brew upgrade</code> 升级所有可以升级的软件们</p>
-
-<p>清理：<code>brew cleanup</code> 清理不需要的版本极其安装包缓存</p>
-
-<p>一些必备的软件.</p>
-
-<pre><code> brew install vim git git-lfs subversion node go python3 nginx hugo openssl htop ffmpeg xz aria2 wget axel memcached redis mcrypt md5sha1sum fswatch mpv
-</code></pre>
-
-			</div>
-		</div>
-		
 	</div>
 	<nav>
 		
@@ -860,12 +855,15 @@ brew update
         ><a href="/page/7/">7</a></li>
         
         <li
+        ><a href="/page/8/">8</a></li>
+        
+        <li
         >
         <a href="/page/5/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
         </li>
         
         <li>
-            <a href="/page/7/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+            <a href="/page/8/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
         </li>
         
     </ul>

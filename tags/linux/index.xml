@@ -244,9 +244,13 @@ Shift + Insert -向终端内粘贴文本
 
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;压缩率 xz &amp;gt; bzip2 &amp;gt; gzip &amp;gt; zip&lt;/p&gt;
+&lt;p&gt;压缩率 xz &amp;gt; 7z &amp;gt; bzip2 &amp;gt; gzip &amp;gt; zip&lt;/p&gt;
 
 &lt;p&gt;gzexe 创建自解压文件&lt;/p&gt;
+
+&lt;p&gt;xz5.2以上版本支持多线程压缩,xz -T0 就可以自动按机器线程数多线程执行了,xz 支持 env 环境变量，XZ_OPT=-T0 xz xxx.file 就行啦&lt;/p&gt;
+
+&lt;p&gt;多线程的压缩速度几乎与gzip相当&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;# 查看你机器的CPU个数,超线程信息
 sysinfo() {
@@ -369,7 +373,7 @@ RedHat 系列
 
 &lt;p&gt;见 &lt;a href=&#34;https://www.fdzh.org/slides/2015/06/20/linux-distr/&#34;&gt;https://www.fdzh.org/slides/2015/06/20/linux-distr/&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://dn-copr.qbox.me/49d503bf47879ffe8a169dd81c744d83_b.jpg&#34; alt=&#34;家族示意图&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://static.suconghou.cn/document/linux.jpg&#34; alt=&#34;家族示意图&#34; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;判断一个命令是否存在&#34;&gt;判断一个命令是否存在&lt;/h2&gt;
 
@@ -598,6 +602,8 @@ ssh-keygen -t ed25519 -f /usr/local/etc/ssh_host_ed25519_key -N &#39;&#39;
 &lt;p&gt;看第三个参数:500以上的,就是后面建的用户了.其它则为系统的用户.&lt;/p&gt;
 
 &lt;p&gt;cat /etc/group 查看用户组&lt;/p&gt;
+
+&lt;p&gt;非交互式修改密码可以使用 chpasswd &lt;code&gt;echo &amp;quot;1234&amp;quot; | chpasswd&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;w 可以查看当前活跃的用户列表&lt;/p&gt;
 

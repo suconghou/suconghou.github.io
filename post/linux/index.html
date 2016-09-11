@@ -271,9 +271,13 @@ Shift + Insert -向终端内粘贴文本
 
 </code></pre>
 
-<p>压缩率 xz &gt; bzip2 &gt; gzip &gt; zip</p>
+<p>压缩率 xz &gt; 7z &gt; bzip2 &gt; gzip &gt; zip</p>
 
 <p>gzexe 创建自解压文件</p>
+
+<p>xz5.2以上版本支持多线程压缩,xz -T0 就可以自动按机器线程数多线程执行了,xz 支持 env 环境变量，XZ_OPT=-T0 xz xxx.file 就行啦</p>
+
+<p>多线程的压缩速度几乎与gzip相当</p>
 
 <pre><code># 查看你机器的CPU个数,超线程信息
 sysinfo() {
@@ -396,7 +400,7 @@ RedHat 系列
 
 <p>见 <a href="https://www.fdzh.org/slides/2015/06/20/linux-distr/">https://www.fdzh.org/slides/2015/06/20/linux-distr/</a></p>
 
-<p><img src="https://dn-copr.qbox.me/49d503bf47879ffe8a169dd81c744d83_b.jpg" alt="家族示意图" /></p>
+<p><img src="http://static.suconghou.cn/document/linux.jpg" alt="家族示意图" /></p>
 
 <h2 id="判断一个命令是否存在">判断一个命令是否存在</h2>
 

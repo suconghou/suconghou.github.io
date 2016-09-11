@@ -171,6 +171,20 @@ hash -r
 
 <p>3.1.2 <a href="http://www.oschina.net/news/75969/ffmpeg-3-1-2">http://www.oschina.net/news/75969/ffmpeg-3-1-2</a></p>
 
+<p>让ffmpeg转为MP4边下边播</p>
+
+<p><code>ffmpeg -i input.xxoo -c copy -movflags faststart output.mp4</code></p>
+
+<p>flv to mp4</p>
+
+<p><code>ffmpeg -i input.flv -codec copy output.mp4</code> 快速转化flv到mp4,高质量转化( only changes container without reencoding )</p>
+
+<p><code>ffmpeg -i input.flv -c copy -copyts output.mp4</code> 也比较快,高质量转化</p>
+
+<p><code>ffmpeg -i aaa.flv -c:v libx264 -crf 28 output.mp4</code> 带压缩的转换,非常消耗CPU和时间</p>
+
+<p>更多用法可以参考 <a href="http://www.jianshu.com/p/053665062f22">http://www.jianshu.com/p/053665062f22</a></p>
+
 		</div>
 	</div>
 </div>

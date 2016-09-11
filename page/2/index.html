@@ -34,6 +34,58 @@
 		
 		<div class="post">
 			<h1 class="post-title">
+				<a href="/software/some-dev-tools/"> some dev tools</a>
+			</h1>
+			<p class="post-date">Sun, Jul 17, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="一些开发会用到的小工具">一些开发会用到的小工具</h2>
+
+<h3 id="编程字体">编程字体</h3>
+
+<p>苹果出品的<code>Monaco</code>,看起来十分圆润,首选推荐的编程字体</p>
+
+<p><a href="http://share.suconghou.cn/fonts/monaco.ttf">monaco</a></p>
+
+<p>或许还有很多人喜欢<code>YaHei.Consolas</code></p>
+
+<p><a href="http://share.suconghou.cn/fonts/YaHei.Consolas.1.12.zip">YaHei.Consolas.1.12.zip</a></p>
+
+<h3 id="一些从-linux-迁移到windows的东西">一些从<code>Linux</code>迁移到Windows的东西</h3>
+
+<p>最常用的当属<code>bash</code>了,包含<code>md5sum</code>,<code>wget</code>,<code>curl</code>,<code>awk</code>等等.</p>
+
+<p>有两个比较好的项目在移植</p>
+
+<blockquote>
+<p><em>unxutils</em> <a href="http://unxutils.sourceforge.net/">http://unxutils.sourceforge.net/</a>  源码 <a href="https://sourceforge.net/projects/unxutils/">https://sourceforge.net/projects/unxutils/</a></p>
+
+<p><em>win-bash</em> <a href="https://sourceforge.net/projects/win-bash/">https://sourceforge.net/projects/win-bash/</a></p>
+</blockquote>
+
+<p><code>unxutils</code>最后更新2014-04-03</p>
+
+<p><code>win-bash</code>最后更新2015-03-30</p>
+
+<p><code>sourceforge</code>上速度太慢,这里提供加速下载.</p>
+
+<p>win-bash下载<a href="http://share.suconghou.cn/Windows/shell.w32-ix86.zip">shell.w32-ix86.zip</a></p>
+
+<p>我的github也收集了一些<code>windows</code>上常用的小工具<code>axel</code>,<code>putty</code>,<code>ab</code>,<code>hugo</code>,<code>rsync</code>等</p>
+
+<p><a href="http://github.com/suconghou/tools">http://github.com/suconghou/tools</a></p>
+
+<p>Curl 官网 <a href="https://curl.haxx.se/download.html">https://curl.haxx.se/download.html</a></p>
+
+<p>Curl 这里可以下载windows版的
+<a href="http://www.paehl.com/open_source/?CURL_7.49.1">http://www.paehl.com/open_source/?CURL_7.49.1</a></p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
 				<a href="/software/shadowsocks-client/"> shadowsocks client</a>
 			</h1>
 			<p class="post-date">Sun, Jul 17, 2016</p>
@@ -260,132 +312,6 @@ adb install -r app-release.apk
 			</div>
 		</div>
 		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/some-hole/"> 都有哪些坑</a>
-			</h1>
-			<p class="post-date">Thu, Jul 7, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="总结一下遇到的坑">总结一下遇到的坑</h2>
-
-<h3 id="微信">微信</h3>
-
-<p><strong>关于横竖屏的坑</strong></p>
-
-<p>css3可以使用媒体查询判断设备是横屏还是竖屏</p>
-
-<pre><code>//横屏时显示
-@media all and (orientation : landscape) {
-#screenMask{display:block}
-}
-
-//竖屏时隐藏
-@media all and (orientation : portrait) {
-#screenMask{display:none}
-}
-</code></pre>
-
-<p>在手机浏览器中表现良好,微信中看样子也可以,但是微信网页中如果聚焦输入框,弹起键盘就有问题了.</p>
-
-<p>软键盘弹起后,网页可用面积减小,安卓就自动识别为横屏了,原有的页面消失了,影响非常大.IOS则没有这个问题,媒体查询判断横竖屏在IOS上工作良好.</p>
-
-<p>并且由此发现,css3媒体查询就是根据宽度是否比高度小来判断横竖屏的.</p>
-
-<p><strong>解决方案1</strong></p>
-
-<p>使用<code>javascript</code>的<code>orientation</code>和<code>orientationchange</code>判断</p>
-
-<ul>
-<li>window.orientation   属于window对象上一个属性；共有三个值 ：0为竖屏模式（portrait）,90为向左反转变为横屏模式（landscape），-90为向右反转变为横屏模式（landscape），最后180就是设备上下互换还是竖屏模式。</li>
-<li>orientationchange    是一个event，在设备旋转时，会触发此事件，如同PC上使用的resize事件。</li>
-</ul>
-
-<pre><code>(function(){
-    var init = function(){
-        var updateOrientation = function(){
-            var orientation = window.orientation;
-            switch(orientation){
-                case 90:
-                case -90:
-                    orientation = 'landscape';
-                    break;
-                default:
-                    orientation = 'portrait';
-                    break;
-            }
-
-           //do something
-           //比如在html标签加一个状态
-            //然后根据不同状态，显示不同大小
-            document.body.parentNode.setAttribute('class',orientation);
-        };
-
-        window.addEventListener('orientationchange',updateOrientation,false);
-        updateOrientation();
-    };
-
-    window.addEventListener('DOMContentLoaded',init,false);
-})();
-</code></pre>
-
-<p>经测试使用JS判断能够正确得出安卓微信客户端里输入框聚焦时的横竖屏状态.</p>
-
-<p>orientation和orientationchange只有移动设备有这些属性和事件.</p>
-
-<p>在不支持这种属性和事件的设备上使用宽高比来判断做一下兼容,这样在不支持<code>orientation</code>的设备上就相当于使用了媒体查询</p>
-
-<p>最终总结代码如下:</p>
-
-<pre><code>(function(w)
-{
-    var supportOrientation = (typeof w.orientation === 'number' &amp;&amp; typeof w.onorientationchange === 'object');
-    var init = function()
-    {
-        var htmlNode = document.body.parentNode, orientation;
-        var updateOrientation = function()
-        {
-            if(supportOrientation)
-            {
-                orientation = w.orientation;
-                switch(orientation)
-                {
-                    case 90:
-                    case -90:
-                        orientation = 'landscape';
-                        break;
-                    default:
-                        orientation = 'portrait';
-                        break;
-                }
-            }
-            else
-            {
-                orientation = (w.innerWidth &gt; w.innerHeight) ? 'landscape' : 'portrait';
-            }
-            htmlNode.setAttribute('class',orientation);
-        };
-        if(supportOrientation)
-        {
-            w.addEventListener('orientationchange',updateOrientation,false);
-        }
-        else
-        {
-            //监听resize事件
-            w.addEventListener('resize',updateOrientation,false);
-        }
-        updateOrientation();
-    };
-    w.addEventListener('DOMContentLoaded',init,false);
-})(window);
-</code></pre>
-
-<p>可以访问如下网址测试: /html/wx</p>
-
-			</div>
-		</div>
-		
 	</div>
 	<nav>
 		
@@ -423,12 +349,15 @@ adb install -r app-release.apk
         ><a href="/page/7/">7</a></li>
         
         <li
+        ><a href="/page/8/">8</a></li>
+        
+        <li
         >
         <a href="/page/3/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
         </li>
         
         <li>
-            <a href="/page/7/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+            <a href="/page/8/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
         </li>
         
     </ul>

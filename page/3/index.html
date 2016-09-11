@@ -34,6 +34,132 @@
 		
 		<div class="post">
 			<h1 class="post-title">
+				<a href="/post/some-hole/"> 都有哪些坑</a>
+			</h1>
+			<p class="post-date">Thu, Jul 7, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="总结一下遇到的坑">总结一下遇到的坑</h2>
+
+<h3 id="微信">微信</h3>
+
+<p><strong>关于横竖屏的坑</strong></p>
+
+<p>css3可以使用媒体查询判断设备是横屏还是竖屏</p>
+
+<pre><code>//横屏时显示
+@media all and (orientation : landscape) {
+#screenMask{display:block}
+}
+
+//竖屏时隐藏
+@media all and (orientation : portrait) {
+#screenMask{display:none}
+}
+</code></pre>
+
+<p>在手机浏览器中表现良好,微信中看样子也可以,但是微信网页中如果聚焦输入框,弹起键盘就有问题了.</p>
+
+<p>软键盘弹起后,网页可用面积减小,安卓就自动识别为横屏了,原有的页面消失了,影响非常大.IOS则没有这个问题,媒体查询判断横竖屏在IOS上工作良好.</p>
+
+<p>并且由此发现,css3媒体查询就是根据宽度是否比高度小来判断横竖屏的.</p>
+
+<p><strong>解决方案1</strong></p>
+
+<p>使用<code>javascript</code>的<code>orientation</code>和<code>orientationchange</code>判断</p>
+
+<ul>
+<li>window.orientation   属于window对象上一个属性；共有三个值 ：0为竖屏模式（portrait）,90为向左反转变为横屏模式（landscape），-90为向右反转变为横屏模式（landscape），最后180就是设备上下互换还是竖屏模式。</li>
+<li>orientationchange    是一个event，在设备旋转时，会触发此事件，如同PC上使用的resize事件。</li>
+</ul>
+
+<pre><code>(function(){
+    var init = function(){
+        var updateOrientation = function(){
+            var orientation = window.orientation;
+            switch(orientation){
+                case 90:
+                case -90:
+                    orientation = 'landscape';
+                    break;
+                default:
+                    orientation = 'portrait';
+                    break;
+            }
+
+           //do something
+           //比如在html标签加一个状态
+            //然后根据不同状态，显示不同大小
+            document.body.parentNode.setAttribute('class',orientation);
+        };
+
+        window.addEventListener('orientationchange',updateOrientation,false);
+        updateOrientation();
+    };
+
+    window.addEventListener('DOMContentLoaded',init,false);
+})();
+</code></pre>
+
+<p>经测试使用JS判断能够正确得出安卓微信客户端里输入框聚焦时的横竖屏状态.</p>
+
+<p>orientation和orientationchange只有移动设备有这些属性和事件.</p>
+
+<p>在不支持这种属性和事件的设备上使用宽高比来判断做一下兼容,这样在不支持<code>orientation</code>的设备上就相当于使用了媒体查询</p>
+
+<p>最终总结代码如下:</p>
+
+<pre><code>(function(w)
+{
+    var supportOrientation = (typeof w.orientation === 'number' &amp;&amp; typeof w.onorientationchange === 'object');
+    var init = function()
+    {
+        var htmlNode = document.body.parentNode, orientation;
+        var updateOrientation = function()
+        {
+            if(supportOrientation)
+            {
+                orientation = w.orientation;
+                switch(orientation)
+                {
+                    case 90:
+                    case -90:
+                        orientation = 'landscape';
+                        break;
+                    default:
+                        orientation = 'portrait';
+                        break;
+                }
+            }
+            else
+            {
+                orientation = (w.innerWidth &gt; w.innerHeight) ? 'landscape' : 'portrait';
+            }
+            htmlNode.setAttribute('class',orientation);
+        };
+        if(supportOrientation)
+        {
+            w.addEventListener('orientationchange',updateOrientation,false);
+        }
+        else
+        {
+            //监听resize事件
+            w.addEventListener('resize',updateOrientation,false);
+        }
+        updateOrientation();
+    };
+    w.addEventListener('DOMContentLoaded',init,false);
+})(window);
+</code></pre>
+
+<p>可以访问如下网址测试: /html/wx</p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
 				<a href="/post/php-best-way/"> PHP最佳实践</a>
 			</h1>
 			<p class="post-date">Thu, Jun 30, 2016</p>
@@ -141,6 +267,26 @@ echo intval(memory_get_usage()/1024);
 <p>一般数据类型</p>
 
 <p>php在内存上是写时拷贝,一个变量复制多份内存不会占用多份,只有变量被改变时才会新申请一份内存给此变量.</p>
+
+<h3 id="memcached-中的问题">Memcached 中的问题</h3>
+
+<p>如果你安装了php的<code>memcached</code>扩展,但是<code>igbinary</code>扩展没有被启用,</p>
+
+<p>会使得memcache存储简单数据类型没有问题,但是存储复杂数据类型,如数组等,便会出现问题,</p>
+
+<p>对一个复杂数据类型的set将会导致php worker进程崩溃,类似<code>[pool www] child 4573 exited on signal 5 (SIGTRAP) after 20.831438 seconds from start</code></p>
+
+<p>nginx将会收到类似<code>upstream prematurely closed connection while reading response header from upstream</code>,用户看到的将是502错误.</p>
+
+<p>故启用<code>memcached</code>时最好启用<code>igbinary</code></p>
+
+<h3 id="php-worker">php worker</h3>
+
+<p>python 简单的空worker 消耗内存比php空worker更少,但是随着python<code>import</code>的模块增加,消耗的内存也随之上升,</p>
+
+<p><code>import</code>大多数常用模块后,内存消耗较php稍大,php进程只有业务处理会波动内存,python的CPU占用明显比php高.</p>
+
+<p>但python有多线程,多线程下内存消耗也较少,都适合写一些worker,相比之下,node的worker占用较多内存,引入常用模块后内存更是占用更大,CPU占用也比PHP多,优点是异步可以媲美多线程</p>
 
 			</div>
 		</div>
@@ -273,6 +419,46 @@ make install
 
 <p><code>ngrep -W byline -d eno1 port 80</code></p>
 
+<p>用-d指定网卡,使用<code>ifconfig</code>可以查看网卡信息</p>
+
+<pre><code>-e ：显示空数据包
+-i ：忽略大小写
+-v ：反转匹配
+-R ：don't do privilege revocation logic
+-x ：以16进制格式显示
+-X ：以16进制格式匹配
+-w ：整字匹配
+-p ：不使用混杂模式
+-l ：make stdout line buffered
+-D ：replay pcap_dumps with their recorded time intervals
+-t ：在每个匹配的包之前显示时间戳
+-T ：显示上一个匹配的数据包之间的时间间隔
+-M ：仅进行单行匹配
+-I ：从文件中读取数据进行匹配
+-O ：将匹配的数据保存到文件
+-n ：仅捕获指定数目的数据包进行查看
+-A ：匹配到数据包后dump随后的指定数目的数据包
+-s ：set the bpf caplen
+-S ：set the limitlen on matched packets
+-W ：设置显示格式byline将解析包中的换行符
+-c ：强制显示列的宽度
+-q is be quiet (don’t print packet reception hash marks)静默模式，如果没有此开关，未匹配的数据包都以&quot;#&quot;显示
+-P ：set the non-printable display char to what is specified
+-F ：使用文件中定义的bpf(Berkeley Packet Filter)
+-N ：显示由IANA定义的子协议号
+-d ：使用哪个网卡，可以用-L选项查询
+-L ：查询网卡接口
+
+</code></pre>
+
+<p>如果需要匹配关键字可以在-d参数之后, port 参数之前添加字符串匹配</p>
+
+<p>同时可以使用-i忽略大小写,-w整字匹配等</p>
+
+<p><code>sudo ngrep  -W byline -d en0 -iw &quot;easy&quot;  port 80</code></p>
+
+<p>还可以使用这种过滤 <code>host www.google.com and port 80</code></p>
+
 <p>具体使用见
 <a href="http://man.linuxde.net/ngrep">http://man.linuxde.net/ngrep</a></p>
 
@@ -380,46 +566,27 @@ CONFIG proxy.config.cluster.ethernet_interface STRING eth0                # 修�
 
 <p>启动<code>trafficserver start</code></p>
 
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/use-docker-on-raspberry/"> 在树莓派上使用Docker</a>
-			</h1>
-			<p class="post-date">Sun, May 8, 2016</p>
-			<div class="post-text">
-				
+<h3 id="varnish编译">varnish编译</h3>
 
-<h2 id="安装支持docker的系统">安装支持Docker的系统</h2>
+<p>alpine中编译</p>
 
-<p>树莓派官方系统并不支持Docker,需要安装.</p>
-
-<p>查看 <a href="http://blog.hypriot.com/downloads/">集成Dcoker的树莓派系统</a></p>
-
-<pre><code>aria2c -s 50 -c https://downloads.hypriot.com/hypriotos-rpi-v0.8.0.img.zip
-
-
-diskutil list
-diskutil unmountdisk /dev/disk2
+<pre><code>apk update &amp;&amp; apk upgrade
+apk --update add gcc g++ make wget curl m4 automake autoconf libtool linux-headers py-docutils ncurses-dev pcre-dev libedit-dev
+cd /tmp
+VARNISH_VERSION=varnish-4.1.3
+CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
+wget https://repo.varnish-cache.org/source/${VARNISH_VERSION}.tar.gz
+tar xzf ${VARNISH_VERSION}.tar.gz
+cd ${VARNISH_VERSION}
+./configure
+make CFLAGS=&quot;-Os&quot; CPPFLAGS=-D__NEED_mode_t -j$CPU_NUM &amp;&amp; make install
+strip -s /usr/local/bin/* /usr/local/sbin/* /usr/local/lib/varnish/*.so /usr/local/lib/varnish/vmods/*.so
+varnishd  -V
 </code></pre>
 
-<p>用以下命令前必须卸载u盘<code>diskutil unmountdisk /dev/disk2</code></p>
+<h4 id="varnish基本使用">varnish基本使用</h4>
 
-<pre><code>sudo dd if=hypriotos-rpi-v0.8.0.img of=/dev/disk2 bs=8k
-</code></pre>
-
-<p>安装完成重启就可以啦,启动后登陆的用户是pirate,密码hypriot</p>
-
-<p>修改密码:执行<code>passwd</code>,输入当前密码,输入新密码,再输入新密码,更新完成</p>
-
-<p>执行<code>exit</code>退出,或者<code>sudo reboot</code>重启</p>
-
-<p>创建用户:<code>useradd -g test -d /home/test1 -s /etc/bash -m test1</code>
-注解：-g 所属组 -d 家目录 -s 所用的SHELL
-passwd abc</p>
-
-<p>获得sudo权限:编辑<code>/etc/sudoers</code> 加入新添加的用户名</p>
+<p>varnish / squid / nginx 优缺点讨论 见 <a href="http://www.zhihu.com/question/20143441">http://www.zhihu.com/question/20143441</a></p>
 
 			</div>
 		</div>
@@ -461,12 +628,15 @@ passwd abc</p>
         ><a href="/page/7/">7</a></li>
         
         <li
+        ><a href="/page/8/">8</a></li>
+        
+        <li
         >
         <a href="/page/4/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
         </li>
         
         <li>
-            <a href="/page/7/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+            <a href="/page/8/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
         </li>
         
     </ul>

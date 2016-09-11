@@ -7,7 +7,7 @@
 	<meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
 	<meta name='description' content='记录学习的点点滴滴'>
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
-	<title>使用镜像加速homebrew &middot; 苏苏的博客</title>
+	<title>pc hardware &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.min.css">
 	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
@@ -31,51 +31,58 @@
 <div class="content container">
 	<div class="post">
 		<h1 class="post-title">
-			<a href="javascript:void(0)"> 使用镜像加速homebrew</a>
+			<a href="javascript:void(0)"> pc hardware</a>
 		</h1>
-		<p class="post-date">Fri, Jan 15, 2016</p>
+		<p class="post-date">Sun, Sep 4, 2016</p>
 		
 		<div class="post-text">
-			<p><a href="http://mirrors.ustc.edu.cn/">中国科大镜像站</a> 提供 Debian, Ubuntu, Fedora, Archlinux, CentOS 等多个发行版的官方源.
-还有brew 的二进制源,brew使用此配置能大大提升速度.</p>
+			
 
-<pre><code>cd /usr/local
-git remote set-url origin git://mirrors.ustc.edu.cn/brew.git
-git remote -v
-brew update
+<h2 id="修电脑相关知识">修电脑相关知识</h2>
+
+<h3 id="较好的pe">较好的PE</h3>
+
+<p><strong>微PE</strong></p>
+
+<p><a href="http://www.wepe.com.cn/">http://www.wepe.com.cn/</a> 自带刻录,可以一键安装到U盘,硬盘等,支持UEFI,CMS等多种启动方式.</p>
+
+<blockquote>
+<p>一般的BIOS里找不到UEFI/CMS的切换设置,可能是<code>security boot</code>的配置,禁用<code>security boot</code>试试</p>
+
+<p>如果在BIOS里找不到U盘,可能是<code>fastboot</code>的问题,可以禁用fastboot,安装好系统后在开启.</p>
+
+<p>硬盘的设置模式里,找不到U盘或者硬盘,可以尝试切换<code>AHCI/IDE</code>,注意安装好系统后,此选项不能够再随意切换,否知导致系统进不去.</p>
+</blockquote>
+
+<p>休眠能将现有所有工作保存到硬盘,下次开机恢复上次的会话,Windows8及以后采用了混合休眠机制</p>
+
+<p>你可能找不到单纯的休眠按钮.</p>
+
+<p>可以使用<code>shutdown -h</code>休眠</p>
+
+<p>其他一些补充</p>
+
+<pre><code>关机计算机：shutdown.exe -s -t 00
+重启计算机：shutdown.exe -r -t 00
+注销计算机：shutdown.exe -l -t 00
+锁定计算机：rundll32.exe user32.dll,LockWorkStation
+休眠计算机：rundll32.exe powrProf.dll,SetSuspendState
+睡眠计算机：rundll32.exe powrprof.dll,SetSuspendState 0,1,0,
 </code></pre>
 
-<p>修改二进制源见<a href="https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-bottles">https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-bottles</a></p>
+<h2 id="性能天梯图">性能天梯图</h2>
 
-<p>即<code>export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles</code></p>
+<p>CPU天梯图</p>
 
-<p>使用<code>brew config</code> 查看<code>ORIGIN</code>和<code>HOMEBREW_BOTTLE_DOMAIN</code>已经是新的<code>mirrors.ustc.edu.cn</code>即为配置成功</p>
+<p><img src="http://suconghou.sinaapp.com/e7d6741f4b703c5057fa6c4f0f3cf971.jpg" alt="CPU天梯图简化版" /></p>
 
-<p><code>brew list</code> 列出所有安装的模块</p>
+<p>CPU天梯图详细</p>
 
-<p><code>brew search mysql</code> 查找</p>
+<p><img src="http://suconghou.sinaapp.com/33f41a782ceddd3a78a7f40321329777.jpg" alt="CPU天梯图详细" /></p>
 
-<p><code>brew commands</code> 查看所有命令</p>
+<p>显卡天梯图</p>
 
-<p>安装（需要 Ruby）：
-<code>ruby -e &quot;$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)&quot;</code></p>
-
-<p>搜索：<code>brew search mysql</code></p>
-
-<p>查询：<code>brew info mysql</code> 主要看具体的信息，比如目前的版本，依赖，安装后注意事项等</p>
-
-<p>更新：<code>brew update</code> 这会更新 Homebrew 自己，并且使得接下来的两个操作有意义——</p>
-
-<p>检查过时（是否有新版本）：<code>brew outdated</code> 这回列出所有安装的软件里可以升级的那些</p>
-
-<p>升级：<code>brew upgrade</code> 升级所有可以升级的软件们</p>
-
-<p>清理：<code>brew cleanup</code> 清理不需要的版本极其安装包缓存</p>
-
-<p>一些必备的软件.</p>
-
-<pre><code> brew install vim git subversion node go python3 lua nginx hugo openssl htop ffmpeg xz aria2 wget axel memcached redis mcrypt md5sha1sum fswatch mpv
-</code></pre>
+<p><img src="http://suconghou.sinaapp.com/14db00815cebc3e46f9647515b384815.jpg" alt="显卡天梯图" /></p>
 
 		</div>
 	</div>

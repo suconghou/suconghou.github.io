@@ -6,8 +6,64 @@
     <description>Recent content on 苏苏的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 24 Aug 2016 14:44:23 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 04 Sep 2016 14:37:51 +0800</lastBuildDate>
     <atom:link href="http://blog.suconghou.cn/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>pc hardware</title>
+      <link>http://blog.suconghou.cn/post/pc-hardware/</link>
+      <pubDate>Sun, 04 Sep 2016 14:37:51 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/pc-hardware/</guid>
+      <description>
+
+&lt;h2 id=&#34;修电脑相关知识&#34;&gt;修电脑相关知识&lt;/h2&gt;
+
+&lt;h3 id=&#34;较好的pe&#34;&gt;较好的PE&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;微PE&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.wepe.com.cn/&#34;&gt;http://www.wepe.com.cn/&lt;/a&gt; 自带刻录,可以一键安装到U盘,硬盘等,支持UEFI,CMS等多种启动方式.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;一般的BIOS里找不到UEFI/CMS的切换设置,可能是&lt;code&gt;security boot&lt;/code&gt;的配置,禁用&lt;code&gt;security boot&lt;/code&gt;试试&lt;/p&gt;
+
+&lt;p&gt;如果在BIOS里找不到U盘,可能是&lt;code&gt;fastboot&lt;/code&gt;的问题,可以禁用fastboot,安装好系统后在开启.&lt;/p&gt;
+
+&lt;p&gt;硬盘的设置模式里,找不到U盘或者硬盘,可以尝试切换&lt;code&gt;AHCI/IDE&lt;/code&gt;,注意安装好系统后,此选项不能够再随意切换,否知导致系统进不去.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;休眠能将现有所有工作保存到硬盘,下次开机恢复上次的会话,Windows8及以后采用了混合休眠机制&lt;/p&gt;
+
+&lt;p&gt;你可能找不到单纯的休眠按钮.&lt;/p&gt;
+
+&lt;p&gt;可以使用&lt;code&gt;shutdown -h&lt;/code&gt;休眠&lt;/p&gt;
+
+&lt;p&gt;其他一些补充&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;关机计算机：shutdown.exe -s -t 00
+重启计算机：shutdown.exe -r -t 00
+注销计算机：shutdown.exe -l -t 00
+锁定计算机：rundll32.exe user32.dll,LockWorkStation
+休眠计算机：rundll32.exe powrProf.dll,SetSuspendState
+睡眠计算机：rundll32.exe powrprof.dll,SetSuspendState 0,1,0,
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;性能天梯图&#34;&gt;性能天梯图&lt;/h2&gt;
+
+&lt;p&gt;CPU天梯图&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://suconghou.sinaapp.com/e7d6741f4b703c5057fa6c4f0f3cf971.jpg&#34; alt=&#34;CPU天梯图简化版&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;CPU天梯图详细&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://suconghou.sinaapp.com/33f41a782ceddd3a78a7f40321329777.jpg&#34; alt=&#34;CPU天梯图详细&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;显卡天梯图&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://suconghou.sinaapp.com/14db00815cebc3e46f9647515b384815.jpg&#34; alt=&#34;显卡天梯图&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>memcached usage</title>
@@ -61,6 +117,21 @@ make -j$CPU_NUM &amp;amp;&amp;amp; make install
 &lt;p&gt;默认情况下是不限制访问IP的,相当于是外网和内网都能访问,-l 使只有这个IP能访问&lt;/p&gt;
 
 &lt;p&gt;尽量不要用root用户运行.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;状态查看&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;使用 telnet 连接 memcached
+&lt;code&gt;stats settings&lt;/code&gt;可以查看所有参数设置&lt;/p&gt;
+
+&lt;p&gt;memcached状态和性能查看&lt;/p&gt;
+
+&lt;p&gt;stats命令&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://static.suconghou.cn/document/memcached.jpg&#34; alt=&#34;memcached stats命令&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;官方也提供监控工具&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/memcached/memcached/blob/master/scripts/memcached-tool&#34;&gt;https://github.com/memcached/memcached/blob/master/scripts/memcached-tool&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     
@@ -1108,6 +1179,26 @@ echo intval(memory_get_usage()/1024);
 &lt;p&gt;一般数据类型&lt;/p&gt;
 
 &lt;p&gt;php在内存上是写时拷贝,一个变量复制多份内存不会占用多份,只有变量被改变时才会新申请一份内存给此变量.&lt;/p&gt;
+
+&lt;h3 id=&#34;memcached-中的问题&#34;&gt;Memcached 中的问题&lt;/h3&gt;
+
+&lt;p&gt;如果你安装了php的&lt;code&gt;memcached&lt;/code&gt;扩展,但是&lt;code&gt;igbinary&lt;/code&gt;扩展没有被启用,&lt;/p&gt;
+
+&lt;p&gt;会使得memcache存储简单数据类型没有问题,但是存储复杂数据类型,如数组等,便会出现问题,&lt;/p&gt;
+
+&lt;p&gt;对一个复杂数据类型的set将会导致php worker进程崩溃,类似&lt;code&gt;[pool www] child 4573 exited on signal 5 (SIGTRAP) after 20.831438 seconds from start&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;nginx将会收到类似&lt;code&gt;upstream prematurely closed connection while reading response header from upstream&lt;/code&gt;,用户看到的将是502错误.&lt;/p&gt;
+
+&lt;p&gt;故启用&lt;code&gt;memcached&lt;/code&gt;时最好启用&lt;code&gt;igbinary&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;php-worker&#34;&gt;php worker&lt;/h3&gt;
+
+&lt;p&gt;python 简单的空worker 消耗内存比php空worker更少,但是随着python&lt;code&gt;import&lt;/code&gt;的模块增加,消耗的内存也随之上升,&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;import&lt;/code&gt;大多数常用模块后,内存消耗较php稍大,php进程只有业务处理会波动内存,python的CPU占用明显比php高.&lt;/p&gt;
+
+&lt;p&gt;但python有多线程,多线程下内存消耗也较少,都适合写一些worker,相比之下,node的worker占用较多内存,引入常用模块后内存更是占用更大,CPU占用也比PHP多,优点是异步可以媲美多线程&lt;/p&gt;
 </description>
     </item>
     
@@ -1238,6 +1329,46 @@ make install
 
 &lt;p&gt;&lt;code&gt;ngrep -W byline -d eno1 port 80&lt;/code&gt;&lt;/p&gt;
 
+&lt;p&gt;用-d指定网卡,使用&lt;code&gt;ifconfig&lt;/code&gt;可以查看网卡信息&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;-e ：显示空数据包
+-i ：忽略大小写
+-v ：反转匹配
+-R ：don&#39;t do privilege revocation logic
+-x ：以16进制格式显示
+-X ：以16进制格式匹配
+-w ：整字匹配
+-p ：不使用混杂模式
+-l ：make stdout line buffered
+-D ：replay pcap_dumps with their recorded time intervals
+-t ：在每个匹配的包之前显示时间戳
+-T ：显示上一个匹配的数据包之间的时间间隔
+-M ：仅进行单行匹配
+-I ：从文件中读取数据进行匹配
+-O ：将匹配的数据保存到文件
+-n ：仅捕获指定数目的数据包进行查看
+-A ：匹配到数据包后dump随后的指定数目的数据包
+-s ：set the bpf caplen
+-S ：set the limitlen on matched packets
+-W ：设置显示格式byline将解析包中的换行符
+-c ：强制显示列的宽度
+-q is be quiet (don’t print packet reception hash marks)静默模式，如果没有此开关，未匹配的数据包都以&amp;quot;#&amp;quot;显示
+-P ：set the non-printable display char to what is specified
+-F ：使用文件中定义的bpf(Berkeley Packet Filter)
+-N ：显示由IANA定义的子协议号
+-d ：使用哪个网卡，可以用-L选项查询
+-L ：查询网卡接口
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果需要匹配关键字可以在-d参数之后, port 参数之前添加字符串匹配&lt;/p&gt;
+
+&lt;p&gt;同时可以使用-i忽略大小写,-w整字匹配等&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;sudo ngrep  -W byline -d en0 -iw &amp;quot;easy&amp;quot;  port 80&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;还可以使用这种过滤 &lt;code&gt;host www.google.com and port 80&lt;/code&gt;&lt;/p&gt;
+
 &lt;p&gt;具体使用见
 &lt;a href=&#34;http://man.linuxde.net/ngrep&#34;&gt;http://man.linuxde.net/ngrep&lt;/a&gt;&lt;/p&gt;
 </description>
@@ -1343,46 +1474,28 @@ CONFIG proxy.config.cluster.ethernet_interface STRING eth0                # 修�
 &lt;p&gt;&lt;code&gt;storage.config&lt;/code&gt; 用于指定磁盘存储&lt;/p&gt;
 
 &lt;p&gt;启动&lt;code&gt;trafficserver start&lt;/code&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>在树莓派上使用Docker</title>
-      <link>http://blog.suconghou.cn/post/use-docker-on-raspberry/</link>
-      <pubDate>Sun, 08 May 2016 20:01:56 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/post/use-docker-on-raspberry/</guid>
-      <description>
 
-&lt;h2 id=&#34;安装支持docker的系统&#34;&gt;安装支持Docker的系统&lt;/h2&gt;
+&lt;h3 id=&#34;varnish编译&#34;&gt;varnish编译&lt;/h3&gt;
 
-&lt;p&gt;树莓派官方系统并不支持Docker,需要安装.&lt;/p&gt;
+&lt;p&gt;alpine中编译&lt;/p&gt;
 
-&lt;p&gt;查看 &lt;a href=&#34;http://blog.hypriot.com/downloads/&#34;&gt;集成Dcoker的树莓派系统&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;aria2c -s 50 -c https://downloads.hypriot.com/hypriotos-rpi-v0.8.0.img.zip
-
-
-diskutil list
-diskutil unmountdisk /dev/disk2
+&lt;pre&gt;&lt;code&gt;apk update &amp;amp;&amp;amp; apk upgrade
+apk --update add gcc g++ make wget curl m4 automake autoconf libtool linux-headers py-docutils ncurses-dev pcre-dev libedit-dev
+cd /tmp
+VARNISH_VERSION=varnish-4.1.3
+CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
+wget https://repo.varnish-cache.org/source/${VARNISH_VERSION}.tar.gz
+tar xzf ${VARNISH_VERSION}.tar.gz
+cd ${VARNISH_VERSION}
+./configure
+make CFLAGS=&amp;quot;-Os&amp;quot; CPPFLAGS=-D__NEED_mode_t -j$CPU_NUM &amp;amp;&amp;amp; make install
+strip -s /usr/local/bin/* /usr/local/sbin/* /usr/local/lib/varnish/*.so /usr/local/lib/varnish/vmods/*.so
+varnishd  -V
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;用以下命令前必须卸载u盘&lt;code&gt;diskutil unmountdisk /dev/disk2&lt;/code&gt;&lt;/p&gt;
+&lt;h4 id=&#34;varnish基本使用&#34;&gt;varnish基本使用&lt;/h4&gt;
 
-&lt;pre&gt;&lt;code&gt;sudo dd if=hypriotos-rpi-v0.8.0.img of=/dev/disk2 bs=8k
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;安装完成重启就可以啦,启动后登陆的用户是pirate,密码hypriot&lt;/p&gt;
-
-&lt;p&gt;修改密码:执行&lt;code&gt;passwd&lt;/code&gt;,输入当前密码,输入新密码,再输入新密码,更新完成&lt;/p&gt;
-
-&lt;p&gt;执行&lt;code&gt;exit&lt;/code&gt;退出,或者&lt;code&gt;sudo reboot&lt;/code&gt;重启&lt;/p&gt;
-
-&lt;p&gt;创建用户:&lt;code&gt;useradd -g test -d /home/test1 -s /etc/bash -m test1&lt;/code&gt;
-注解：-g 所属组 -d 家目录 -s 所用的SHELL
-passwd abc&lt;/p&gt;
-
-&lt;p&gt;获得sudo权限:编辑&lt;code&gt;/etc/sudoers&lt;/code&gt; 加入新添加的用户名&lt;/p&gt;
+&lt;p&gt;varnish / squid / nginx 优缺点讨论 见 &lt;a href=&#34;http://www.zhihu.com/question/20143441&#34;&gt;http://www.zhihu.com/question/20143441&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     

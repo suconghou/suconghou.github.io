@@ -140,6 +140,26 @@ echo intval(memory_get_usage()/1024);
 
 <p>php在内存上是写时拷贝,一个变量复制多份内存不会占用多份,只有变量被改变时才会新申请一份内存给此变量.</p>
 
+<h3 id="memcached-中的问题">Memcached 中的问题</h3>
+
+<p>如果你安装了php的<code>memcached</code>扩展,但是<code>igbinary</code>扩展没有被启用,</p>
+
+<p>会使得memcache存储简单数据类型没有问题,但是存储复杂数据类型,如数组等,便会出现问题,</p>
+
+<p>对一个复杂数据类型的set将会导致php worker进程崩溃,类似<code>[pool www] child 4573 exited on signal 5 (SIGTRAP) after 20.831438 seconds from start</code></p>
+
+<p>nginx将会收到类似<code>upstream prematurely closed connection while reading response header from upstream</code>,用户看到的将是502错误.</p>
+
+<p>故启用<code>memcached</code>时最好启用<code>igbinary</code></p>
+
+<h3 id="php-worker">php worker</h3>
+
+<p>python 简单的空worker 消耗内存比php空worker更少,但是随着python<code>import</code>的模块增加,消耗的内存也随之上升,</p>
+
+<p><code>import</code>大多数常用模块后,内存消耗较php稍大,php进程只有业务处理会波动内存,python的CPU占用明显比php高.</p>
+
+<p>但python有多线程,多线程下内存消耗也较少,都适合写一些worker,相比之下,node的worker占用较多内存,引入常用模块后内存更是占用更大,CPU占用也比PHP多,优点是异步可以媲美多线程</p>
+
 		</div>
 	</div>
 </div>
