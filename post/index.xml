@@ -1060,6 +1060,14 @@ echo intval(memory_get_usage()/1024);
 &lt;p&gt;&lt;code&gt;import&lt;/code&gt;大多数常用模块后,内存消耗较php稍大,php进程只有业务处理会波动内存,python的CPU占用明显比php高.&lt;/p&gt;
 
 &lt;p&gt;但python有多线程,多线程下内存消耗也较少,都适合写一些worker,相比之下,node的worker占用较多内存,引入常用模块后内存更是占用更大,CPU占用也比PHP多,优点是异步可以媲美多线程&lt;/p&gt;
+
+&lt;h3 id=&#34;domdocument-loadhtml-内存泄漏&#34;&gt;DOMDocument loadHTML 内存泄漏&lt;/h3&gt;
+
+&lt;p&gt;在大量使用DOMDocument的loadHTML后,php的进程占用内存不断增长,最终内存泄漏被强行杀死.&lt;/p&gt;
+
+&lt;p&gt;其实这是&lt;code&gt;libxml_use_internal_errors&lt;/code&gt;所引起的问题,&lt;code&gt;loadHTML&lt;/code&gt;产生的警告被内部收集,但没有清楚,所以一直堆积.&lt;/p&gt;
+
+&lt;p&gt;见 &lt;a href=&#34;http://stackoverflow.com/questions/8379829/domdocument-php-memory-leak&#34;&gt;http://stackoverflow.com/questions/8379829/domdocument-php-memory-leak&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     
@@ -1159,23 +1167,39 @@ make install
 &lt;h2 id=&#34;使用tcpdump&#34;&gt;使用tcpdump&lt;/h2&gt;
 
 &lt;blockquote&gt;
-&lt;p&gt;-a 　　　将网络地址和广播地址转变成名字；
--d 　　　将匹配信息包的代码以人们能够理解的汇编格式给出；
--dd 　　 将匹配信息包的代码以c语言程序段的格式给出；
--ddd 　　将匹配信息包的代码以十进制的形式给出；
--e 　　　在输出行打印出数据链路层的头部信息；
--f 　　　将外部的Internet地址以数字的形式打印出来；
--l 　　　使标准输出变为缓冲行形式；
--n 　　　不把网络地址转换成名字；
--t 　　　在输出的每一行不打印时间戳；
--v 　　　输出一个稍微详细的信息，例如在ip包中可以包括ttl和服务类型的信息；
--vv 　　 输出详细的报文信息；
--c 　　　在收到指定的包的数目后，tcpdump就会停止；
--F 　　　从指定的文件中读取表达式,忽略其它的表达式；
--i 　　　指定监听的网络接口；
--r 　　　从指定的文件中读取包(这些包一般通过-w选项产生)；
--w 　　　直接将包写入文件中，并不分析和打印出来；
--T 　　　将监听到的包直接解释为指定的类型的报文，常见的类型有rpc （远程过程调用）和snmp（简单网络管理协议；&lt;/p&gt;
+&lt;p&gt;-a 　　　将网络地址和广播地址转变成名字；&lt;/p&gt;
+
+&lt;p&gt;-d 　　　将匹配信息包的代码以人们能够理解的汇编格式给出；&lt;/p&gt;
+
+&lt;p&gt;-dd 　　 将匹配信息包的代码以c语言程序段的格式给出；&lt;/p&gt;
+
+&lt;p&gt;-ddd 　　将匹配信息包的代码以十进制的形式给出；&lt;/p&gt;
+
+&lt;p&gt;-e 　　　在输出行打印出数据链路层的头部信息；&lt;/p&gt;
+
+&lt;p&gt;-f 　　　将外部的Internet地址以数字的形式打印出来；&lt;/p&gt;
+
+&lt;p&gt;-l 　　　使标准输出变为缓冲行形式；&lt;/p&gt;
+
+&lt;p&gt;-n 　　　不把网络地址转换成名字；&lt;/p&gt;
+
+&lt;p&gt;-t 　　　在输出的每一行不打印时间戳；&lt;/p&gt;
+
+&lt;p&gt;-v 　　　输出一个稍微详细的信息，例如在ip包中可以包括ttl和服务类型的信息；&lt;/p&gt;
+
+&lt;p&gt;-vv 　　 输出详细的报文信息；&lt;/p&gt;
+
+&lt;p&gt;-c 　　　在收到指定的包的数目后，tcpdump就会停止；&lt;/p&gt;
+
+&lt;p&gt;-F 　　　从指定的文件中读取表达式,忽略其它的表达式；&lt;/p&gt;
+
+&lt;p&gt;-i 　　　指定监听的网络接口；&lt;/p&gt;
+
+&lt;p&gt;-r 　　　从指定的文件中读取包(这些包一般通过-w选项产生)；&lt;/p&gt;
+
+&lt;p&gt;-w 　　　直接将包写入文件中，并不分析和打印出来；&lt;/p&gt;
+
+&lt;p&gt;-T 　　　将监听到的包直接解释为指定的类型的报文，常见的类型有rpc （远程过程调用）和snmp（简单网络管理协议；&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;&lt;code&gt;tcpdump host 210.27.48.1&lt;/code&gt;&lt;/p&gt;
@@ -1213,7 +1237,7 @@ make install
 -S ：set the limitlen on matched packets
 -W ：设置显示格式byline将解析包中的换行符
 -c ：强制显示列的宽度
--q is be quiet (don’t print packet reception hash marks)静默模式，如果没有此开关，未匹配的数据包都以&amp;quot;#&amp;quot;显示
+-q ：is be quiet (don’t print packet reception hash marks)静默模式，如果没有此开关，未匹配的数据包都以&amp;quot;#&amp;quot;显示
 -P ：set the non-printable display char to what is specified
 -F ：使用文件中定义的bpf(Berkeley Packet Filter)
 -N ：显示由IANA定义的子协议号

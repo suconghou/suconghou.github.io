@@ -160,6 +160,14 @@ echo intval(memory_get_usage()/1024);
 
 <p>但python有多线程,多线程下内存消耗也较少,都适合写一些worker,相比之下,node的worker占用较多内存,引入常用模块后内存更是占用更大,CPU占用也比PHP多,优点是异步可以媲美多线程</p>
 
+<h3 id="domdocument-loadhtml-内存泄漏">DOMDocument loadHTML 内存泄漏</h3>
+
+<p>在大量使用DOMDocument的loadHTML后,php的进程占用内存不断增长,最终内存泄漏被强行杀死.</p>
+
+<p>其实这是<code>libxml_use_internal_errors</code>所引起的问题,<code>loadHTML</code>产生的警告被内部收集,但没有清楚,所以一直堆积.</p>
+
+<p>见 <a href="http://stackoverflow.com/questions/8379829/domdocument-php-memory-leak">http://stackoverflow.com/questions/8379829/domdocument-php-memory-leak</a></p>
+
 		</div>
 	</div>
 </div>

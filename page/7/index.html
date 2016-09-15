@@ -124,6 +124,27 @@ docker 分为两部分,一分部是docker daemon , 一部分是docker client</p>
 
 <p>1.12.0及以后版本,采用<code>dockerd</code>启动<code>daemon</code>服务,之前版本采用<code>docker daemon</code>启动<code>daemon</code>服务.</p>
 
+<p>docker daemon 与 client 可分离部署运行,如</p>
+
+<p><code>docker daemon -H=unix:///var/run/docker.sock -H=0.0.0.0:4243 --default-ulimit nofile=1024:4096</code></p>
+
+<p>服务器同时监听unixsocket和tcp端口,然后客户端设置远端服务变量<code>export DOCKER_HOST=tcp://1.1.1.1:4243</code>,就可以使用docker client,不过这种没有认证,适合局域网玩.</p>
+
+<p>如果是在公网上,最好做一些身份认证</p>
+
+<p>生成证书可参考官网 <a href="https://docs.docker.com/engine/security/https/">https://docs.docker.com/engine/security/https/</a></p>
+
+<p><code>docker daemon --tlsverify -H=unix:///var/run/docker.sock -H=0.0.0.0:4243 --tlscacert=/root/.docker/ca.pem --tlscert=/root/.docker/cert.pem --tlskey=/root/.docker/key.pem</code></p>
+
+<p>client端配置下面这几个变量就好,不过需要注意tls加密的只能用端口2376.</p>
+
+<pre><code>export DOCKER_HOST=tcp://1.1.1.1:2376
+export DOCKER_TLS_VERIFY=1
+export DOCKER_CERT_PATH=$DIR
+</code></pre>
+
+<p><code>mkdir -pv ~/.docker;cp -v {ca,cert,key}.pem ~/.docker</code>,将证书放在<code>~/.docker</code>目录下可以免去设置<code>DOCKER_CERT_PATH</code></p>
+
 <p>搜索 <code>docker search 镜像名字</code>
 下载 <code>docker pull learn/tutorial</code>, 下载时要写完整名字</p>
 
