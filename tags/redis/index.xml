@@ -274,7 +274,7 @@ rpm -e httpd-tools
 &lt;p&gt;如果你在国内下载,将&lt;code&gt;php.net&lt;/code&gt;改为&lt;code&gt;cn.php.net&lt;/code&gt;下载会更快&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;cd /tmp
-PHP_VERSION=php-7.0.9
+PHP_VERSION=php-7.0.11
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
 wget http://php.net/distributions/${PHP_VERSION}.tar.xz
 tar -xJf ${PHP_VERSION}.tar.xz
@@ -286,15 +286,15 @@ export CFLAGS=&amp;quot;-O3&amp;quot;
 
 &lt;p&gt;包含部分常用扩展的编译&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;./configure --enable-inline-optimization --enable-static=yes --prefix=/tmp --with-config-file-path=/etc --disable-cgi  --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath --enable-zip --enable-mbstring --enable-gd-native-ttf --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd --with-freetype-dir=/usr/include/freetype2 --with-png-dir=/usr/include --with-jpeg-dir=/usr/include --with-openssl --with-mcrypt
+&lt;pre&gt;&lt;code&gt;./configure --enable-inline-optimization --enable-static=yes --prefix=/tmp --with-config-file-path=/etc --without-pear --disable-cgi --disable-opcache --disable-fpm --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath --enable-zip --enable-mbstring --enable-gd-native-ttf --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd --with-freetype-dir=/usr/include/freetype2 --with-png-dir=/usr/include --with-jpeg-dir=/usr/include --with-openssl --with-mcrypt
 make -j$CPU_NUM &amp;amp;&amp;amp; make install
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;功能更全的编译&lt;/p&gt;
 
-&lt;p&gt;包含&lt;code&gt;php-fpm&lt;/code&gt;和&lt;code&gt;opcache&lt;/code&gt;,添加其他常用扩展&lt;code&gt;--enable-exif --enable-calendar  --with-xsl --with-bz2&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;包含&lt;code&gt;php-fpm&lt;/code&gt;和&lt;code&gt;opcache&lt;/code&gt;,添加其他常用扩展&lt;code&gt;--enable-exif --enable-calendar --with-xsl --with-bz2&lt;/code&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;./configure --enable-inline-optimization --enable-static=yes --prefix=/usr/local --with-config-file-path=/etc --disable-cgi --enable-opcache --enable-fpm  --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath  --enable-zip --enable-mbstring --enable-gd-native-ttf --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd --with-freetype-dir=/usr/include/freetype2 --with-png-dir=/usr/include --with-jpeg-dir=/usr/include --with-openssl --with-mcrypt --enable-exif --enable-calendar  --with-xsl --with-bz2
+&lt;pre&gt;&lt;code&gt;./configure --enable-inline-optimization --enable-static=yes --prefix=/usr/local --with-config-file-path=/etc --disable-cgi --enable-opcache --enable-fpm  --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath --enable-zip --enable-mbstring --enable-gd-native-ttf --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd --with-freetype-dir=/usr/include/freetype2 --with-png-dir=/usr/include --with-jpeg-dir=/usr/include --with-openssl --with-mcrypt --enable-exif --enable-calendar  --with-xsl --with-bz2
 make -j$CPU_NUM &amp;amp;&amp;amp; make install
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -409,6 +409,10 @@ Linux上 &lt;code&gt;yum install openssl openssl-devel&lt;/code&gt;&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;apt-get install libxml2 libxml2-dev libmcrypt-dev openssl libssl-dev libcurl4-openssl-dev
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;mac 用户&lt;code&gt;brew install libxml2&lt;/code&gt; 然后配置时指定 &lt;code&gt;--with-libxml-dir=/usr/local/opt/libxml2/&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;可以使用&lt;code&gt;brew info libxml2&lt;/code&gt;查看brew把它安装在哪里&lt;/p&gt;
 
 &lt;p&gt;5.Cannot find OpenSSL&amp;rsquo;s libraries&lt;/p&gt;
 

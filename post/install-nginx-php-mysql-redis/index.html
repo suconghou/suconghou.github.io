@@ -309,7 +309,7 @@ rpm -e httpd-tools
 <p>如果你在国内下载,将<code>php.net</code>改为<code>cn.php.net</code>下载会更快</p>
 
 <pre><code>cd /tmp
-PHP_VERSION=php-7.0.9
+PHP_VERSION=php-7.0.11
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
 wget http://php.net/distributions/${PHP_VERSION}.tar.xz
 tar -xJf ${PHP_VERSION}.tar.xz
@@ -321,15 +321,15 @@ export CFLAGS=&quot;-O3&quot;
 
 <p>包含部分常用扩展的编译</p>
 
-<pre><code>./configure --enable-inline-optimization --enable-static=yes --prefix=/tmp --with-config-file-path=/etc --disable-cgi  --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath --enable-zip --enable-mbstring --enable-gd-native-ttf --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd --with-freetype-dir=/usr/include/freetype2 --with-png-dir=/usr/include --with-jpeg-dir=/usr/include --with-openssl --with-mcrypt
+<pre><code>./configure --enable-inline-optimization --enable-static=yes --prefix=/tmp --with-config-file-path=/etc --without-pear --disable-cgi --disable-opcache --disable-fpm --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath --enable-zip --enable-mbstring --enable-gd-native-ttf --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd --with-freetype-dir=/usr/include/freetype2 --with-png-dir=/usr/include --with-jpeg-dir=/usr/include --with-openssl --with-mcrypt
 make -j$CPU_NUM &amp;&amp; make install
 </code></pre>
 
 <p>功能更全的编译</p>
 
-<p>包含<code>php-fpm</code>和<code>opcache</code>,添加其他常用扩展<code>--enable-exif --enable-calendar  --with-xsl --with-bz2</code></p>
+<p>包含<code>php-fpm</code>和<code>opcache</code>,添加其他常用扩展<code>--enable-exif --enable-calendar --with-xsl --with-bz2</code></p>
 
-<pre><code>./configure --enable-inline-optimization --enable-static=yes --prefix=/usr/local --with-config-file-path=/etc --disable-cgi --enable-opcache --enable-fpm  --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath  --enable-zip --enable-mbstring --enable-gd-native-ttf --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd --with-freetype-dir=/usr/include/freetype2 --with-png-dir=/usr/include --with-jpeg-dir=/usr/include --with-openssl --with-mcrypt --enable-exif --enable-calendar  --with-xsl --with-bz2
+<pre><code>./configure --enable-inline-optimization --enable-static=yes --prefix=/usr/local --with-config-file-path=/etc --disable-cgi --enable-opcache --enable-fpm  --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath --enable-zip --enable-mbstring --enable-gd-native-ttf --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd --with-freetype-dir=/usr/include/freetype2 --with-png-dir=/usr/include --with-jpeg-dir=/usr/include --with-openssl --with-mcrypt --enable-exif --enable-calendar  --with-xsl --with-bz2
 make -j$CPU_NUM &amp;&amp; make install
 </code></pre>
 
@@ -444,6 +444,10 @@ Linux上 <code>yum install openssl openssl-devel</code></p>
 
 <pre><code>apt-get install libxml2 libxml2-dev libmcrypt-dev openssl libssl-dev libcurl4-openssl-dev
 </code></pre>
+
+<p>mac 用户<code>brew install libxml2</code> 然后配置时指定 <code>--with-libxml-dir=/usr/local/opt/libxml2/</code></p>
+
+<p>可以使用<code>brew info libxml2</code>查看brew把它安装在哪里</p>
 
 <p>5.Cannot find OpenSSL&rsquo;s libraries</p>
 

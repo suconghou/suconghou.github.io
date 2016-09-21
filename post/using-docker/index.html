@@ -405,6 +405,8 @@ docker run -it -p 8080:8000 --name vps vpsimage bash
 
 <p>同时中科大USTC也提供镜像加速 <code>https://docker.mirrors.ustc.edu.cn/</code> 见 <a href="https://servers.ustclug.org/2015/05/new-docker-hub-registry-mirror/">https://servers.ustclug.org/2015/05/new-docker-hub-registry-mirror/</a></p>
 
+<p>最新的配置帮助 <a href="https://lug.ustc.edu.cn/wiki/mirrors/help/docker">https://lug.ustc.edu.cn/wiki/mirrors/help/docker</a></p>
+
 <p><code>ps -ef</code>查看进程<code>/usr/bin/dockerd --registry-mirror=...</code>即代表使用了镜像</p>
 
 <h2 id="使用流程">使用流程</h2>
@@ -563,6 +565,15 @@ echo &quot;&quot; &gt; $(docker inspect --format='{{.LogPath}}' &lt;container_na
 <p>使用<code>docker -m</code>可以限制内存的使用,这个是直到程序内存使用超过此限定的2倍,才会因OOM而被进程杀掉.容器仍会正常运行.</p>
 
 <p>要使超过限定大小如100,就杀死,可以 <code>-m 100m --memory-swap=100m</code></p>
+
+<h2 id="coreos">CoreOs</h2>
+
+<p>docker 配置远程访问.</p>
+
+<pre><code>sudo touch /run/flannel_docker_opts.env &amp;&amp; sudo chmod 777 /run/flannel_docker_opts.env
+sudo echo 'DOCKER_OPTS=&quot; -H=unix:///var/run/docker.sock -H=0.0.0.0:4243  --registry-mirror=https://docker.mirrors.ustc.edu.cn&quot;' &gt; /run/flannel_docker_opts.env
+sudo systemctl restart docker
+</code></pre>
 
 		</div>
 	</div>

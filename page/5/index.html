@@ -684,6 +684,18 @@ SET GLOBAL general_log_file = &ldquo;/path/to/your/logfile.log&rdquo;;
 SET GLOBAL general_log = &lsquo;ON&rsquo;;
 2) We can also check the queries in the .mysql_history file cat ~/.mysql_history</p>
 
+<h3 id="ibdata1文件过大">ibdata1文件过大</h3>
+
+<ol>
+<li>需要指定<code>innodb_file_per_table=1</code>参数,单独保存每个表的数据,否则MySQL的数据都会存放在ibdata1文件里，时间久了这个文件就会变的非常大。</li>
+</ol>
+
+<p><code>show variables like '%innodb%';</code>查看目前innodb的配置</p>
+
+<ol>
+<li>可能有长时间执行但未提交的事务.</li>
+</ol>
+
 			</div>
 		</div>
 		

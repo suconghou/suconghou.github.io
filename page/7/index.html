@@ -419,6 +419,8 @@ docker run -it -p 8080:8000 --name vps vpsimage bash
 
 <p>同时中科大USTC也提供镜像加速 <code>https://docker.mirrors.ustc.edu.cn/</code> 见 <a href="https://servers.ustclug.org/2015/05/new-docker-hub-registry-mirror/">https://servers.ustclug.org/2015/05/new-docker-hub-registry-mirror/</a></p>
 
+<p>最新的配置帮助 <a href="https://lug.ustc.edu.cn/wiki/mirrors/help/docker">https://lug.ustc.edu.cn/wiki/mirrors/help/docker</a></p>
+
 <p><code>ps -ef</code>查看进程<code>/usr/bin/dockerd --registry-mirror=...</code>即代表使用了镜像</p>
 
 <h2 id="使用流程">使用流程</h2>
@@ -577,6 +579,15 @@ echo &quot;&quot; &gt; $(docker inspect --format='{{.LogPath}}' &lt;container_na
 <p>使用<code>docker -m</code>可以限制内存的使用,这个是直到程序内存使用超过此限定的2倍,才会因OOM而被进程杀掉.容器仍会正常运行.</p>
 
 <p>要使超过限定大小如100,就杀死,可以 <code>-m 100m --memory-swap=100m</code></p>
+
+<h2 id="coreos">CoreOs</h2>
+
+<p>docker 配置远程访问.</p>
+
+<pre><code>sudo touch /run/flannel_docker_opts.env &amp;&amp; sudo chmod 777 /run/flannel_docker_opts.env
+sudo echo 'DOCKER_OPTS=&quot; -H=unix:///var/run/docker.sock -H=0.0.0.0:4243  --registry-mirror=https://docker.mirrors.ustc.edu.cn&quot;' &gt; /run/flannel_docker_opts.env
+sudo systemctl restart docker
+</code></pre>
 
 			</div>
 		</div>
@@ -929,7 +940,7 @@ rpm -e httpd-tools
 <p>如果你在国内下载,将<code>php.net</code>改为<code>cn.php.net</code>下载会更快</p>
 
 <pre><code>cd /tmp
-PHP_VERSION=php-7.0.9
+PHP_VERSION=php-7.0.11
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
 wget http://php.net/distributions/${PHP_VERSION}.tar.xz
 tar -xJf ${PHP_VERSION}.tar.xz
@@ -941,15 +952,15 @@ export CFLAGS=&quot;-O3&quot;
 
 <p>包含部分常用扩展的编译</p>
 
-<pre><code>./configure --enable-inline-optimization --enable-static=yes --prefix=/tmp --with-config-file-path=/etc --disable-cgi  --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath --enable-zip --enable-mbstring --enable-gd-native-ttf --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd --with-freetype-dir=/usr/include/freetype2 --with-png-dir=/usr/include --with-jpeg-dir=/usr/include --with-openssl --with-mcrypt
+<pre><code>./configure --enable-inline-optimization --enable-static=yes --prefix=/tmp --with-config-file-path=/etc --without-pear --disable-cgi --disable-opcache --disable-fpm --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath --enable-zip --enable-mbstring --enable-gd-native-ttf --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd --with-freetype-dir=/usr/include/freetype2 --with-png-dir=/usr/include --with-jpeg-dir=/usr/include --with-openssl --with-mcrypt
 make -j$CPU_NUM &amp;&amp; make install
 </code></pre>
 
 <p>功能更全的编译</p>
 
-<p>包含<code>php-fpm</code>和<code>opcache</code>,添加其他常用扩展<code>--enable-exif --enable-calendar  --with-xsl --with-bz2</code></p>
+<p>包含<code>php-fpm</code>和<code>opcache</code>,添加其他常用扩展<code>--enable-exif --enable-calendar --with-xsl --with-bz2</code></p>
 
-<pre><code>./configure --enable-inline-optimization --enable-static=yes --prefix=/usr/local --with-config-file-path=/etc --disable-cgi --enable-opcache --enable-fpm  --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath  --enable-zip --enable-mbstring --enable-gd-native-ttf --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd --with-freetype-dir=/usr/include/freetype2 --with-png-dir=/usr/include --with-jpeg-dir=/usr/include --with-openssl --with-mcrypt --enable-exif --enable-calendar  --with-xsl --with-bz2
+<pre><code>./configure --enable-inline-optimization --enable-static=yes --prefix=/usr/local --with-config-file-path=/etc --disable-cgi --enable-opcache --enable-fpm  --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath --enable-zip --enable-mbstring --enable-gd-native-ttf --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd --with-freetype-dir=/usr/include/freetype2 --with-png-dir=/usr/include --with-jpeg-dir=/usr/include --with-openssl --with-mcrypt --enable-exif --enable-calendar  --with-xsl --with-bz2
 make -j$CPU_NUM &amp;&amp; make install
 </code></pre>
 
@@ -1064,6 +1075,10 @@ Linux上 <code>yum install openssl openssl-devel</code></p>
 
 <pre><code>apt-get install libxml2 libxml2-dev libmcrypt-dev openssl libssl-dev libcurl4-openssl-dev
 </code></pre>
+
+<p>mac 用户<code>brew install libxml2</code> 然后配置时指定 <code>--with-libxml-dir=/usr/local/opt/libxml2/</code></p>
+
+<p>可以使用<code>brew info libxml2</code>查看brew把它安装在哪里</p>
 
 <p>5.Cannot find OpenSSL&rsquo;s libraries</p>
 
