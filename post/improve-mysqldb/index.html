@@ -482,7 +482,7 @@ SET GLOBAL general_log = &lsquo;ON&rsquo;;
 <h3 id="ibdata1文件过大">ibdata1文件过大</h3>
 
 <ol>
-<li>需要指定<code>innodb_file_per_table=1</code>参数,单独保存每个表的数据,否则MySQL的数据都会存放在ibdata1文件里，时间久了这个文件就会变的非常大。</li>
+<li>需要指定<code>innodb_file_per_table=1</code>参数,单独保存每个表的数据,否则MySQL的数据都会存放在ibdata1文件里，文件只增加不减小,时间久了这个文件就会变的非常大。</li>
 </ol>
 
 <p><code>show variables like '%innodb%';</code>查看目前innodb的配置</p>
@@ -490,6 +490,44 @@ SET GLOBAL general_log = &lsquo;ON&rsquo;;
 <ol>
 <li>可能有长时间执行但未提交的事务.</li>
 </ol>
+
+<p>解决方法可参见 <a href="http://blog.fens.me/mysql-ibdata1/">http://blog.fens.me/mysql-ibdata1/</a></p>
+
+<h2 id="mysql导出数据">mysql导出数据</h2>
+
+<p>命令行下具体用法如下：  mysqldump -u用戶名 -p密码 -d 數據库名 表名 脚本名;</p>
+
+<p>1、导出數據库為dbname的表结构（其中用戶名為root,密码為dbpasswd,生成的脚本名為db.sql）
+mysqldump -uroot -pdbpasswd -d dbname &gt;db.sql;</p>
+
+<p>2、导出數據库為dbname某张表(test)结构
+mysqldump -uroot -pdbpasswd -d dbname test&gt;db.sql;</p>
+
+<p>3、导出數據库為dbname所有表结构及表數據（不加-d）
+mysqldump -uroot -pdbpasswd  dbname &gt;db.sql;</p>
+
+<p>4、导出數據库為dbname某张表(test)结构及表數據（不加-d）
+mysqldump -uroot -pdbpasswd dbname test&gt;db.sql;</p>
+
+<p>5.导出数据中dbname多张表（test1,test2,test3）结构及表数据用用空格隔开</p>
+
+<p>mysqldump -uroot -pdbpasswd dbname test1 test2 test3&gt;db.sql;</p>
+
+<p><strong>使用gzip压缩</strong></p>
+
+<p>导出时: <code>mysqldump -uroot -pdbpasswd dbname | gzip &gt; backupfile.sql.gz</code></p>
+
+<p>导入时: <code>gunzip &lt; backupfile.sql.gz | mysql -uroot -pdbpasswd dbname</code></p>
+
+<p><strong>使用xz压缩</strong></p>
+
+<p>导出时: <code>mysqldump -uroot -pdbpasswd dbname | xz &gt; backupfile.sql.xz</code></p>
+
+<p>导入时: <code>unxz -c backupfile.sql.xz | mysql -uroot -pdbpasswd dbname</code></p>
+
+<p>gzip和xz压缩时后面都可以使用参数<code>-9</code>加大压缩率.但也更耗时.</p>
+
+<p>同理还可以使用<code>bzip2</code>和<code>bzip2 -dc</code>压缩和解压</p>
 
 		</div>
 	</div>

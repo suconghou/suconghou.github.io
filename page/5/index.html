@@ -38,16 +38,19 @@
 			</h1>
 			<p class="post-date">Fri, Jan 15, 2016</p>
 			<div class="post-text">
-				<p><a href="http://mirrors.ustc.edu.cn/">中国科大镜像站</a> 提供 Debian, Ubuntu, Fedora, Archlinux, CentOS 等多个发行版的官方源.
+				
+
+<p><a href="http://mirrors.ustc.edu.cn/">中国科大镜像站</a> 提供 Debian, Ubuntu, Fedora, Archlinux, CentOS 等多个发行版的官方源.
 还有brew 的二进制源,brew使用此配置能大大提升速度.</p>
 
-<pre><code>cd /usr/local
+<pre><code>cd /usr/local/Homebrew
 git remote set-url origin git://mirrors.ustc.edu.cn/brew.git
 git remote -v
 brew update
 </code></pre>
 
-<p>修改二进制源见<a href="https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-bottles">https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-bottles</a></p>
+<p>修改源：<a href="https://lug.ustc.edu.cn/wiki/mirrors/help/brew.git">https://lug.ustc.edu.cn/wiki/mirrors/help/brew.git</a> 和 <a href="https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-core.git">https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-core.git</a>
+修改二进制源见<a href="https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-bottles">https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-bottles</a></p>
 
 <p>即<code>export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles</code></p>
 
@@ -74,9 +77,19 @@ brew update
 
 <p>清理：<code>brew cleanup</code> 清理不需要的版本极其安装包缓存</p>
 
+<h2 id="其他镜像源">其他镜像源</h2>
+
+<p><a href="http://ban.ninja/">http://ban.ninja/</a></p>
+
+<p><a href="http://homebrew-mirror-china.tycdn.net/">http://homebrew-mirror-china.tycdn.net/</a></p>
+
+<p>清华大学镜像 <a href="https://mirrors.tuna.tsinghua.edu.cn/help/homebrew/">https://mirrors.tuna.tsinghua.edu.cn/help/homebrew/</a></p>
+
+<p>相对来说中国科大镜像站更新的更及时</p>
+
 <p>一些必备的软件.</p>
 
-<pre><code> brew install vim git subversion node go python3 lua nginx hugo openssl htop ffmpeg xz aria2 wget axel memcached redis mcrypt md5sha1sum fswatch mpv
+<pre><code> brew install vim git subversion node go python3 lua nginx hugo openssl htop ngrep ffmpeg xz aria2 wget axel memcached redis mcrypt md5sha1sum fswatch mpv pv
 </code></pre>
 
 			</div>
@@ -138,6 +151,8 @@ brew update
 <pre><code>0 1 5 10 * /path/to/script.sh &gt; /dev/null 2&gt;&amp;1
 0 1 5 10 * /path/to/script.sh &gt; &amp;&gt; /dev/null
 </code></pre>
+
+<p>你也可以将<code>/dev/null</code>换成你想要存储日志的文件地址</p>
 
 <h2 id="定时备份数据库">定时备份数据库</h2>
 
@@ -687,7 +702,7 @@ SET GLOBAL general_log = &lsquo;ON&rsquo;;
 <h3 id="ibdata1文件过大">ibdata1文件过大</h3>
 
 <ol>
-<li>需要指定<code>innodb_file_per_table=1</code>参数,单独保存每个表的数据,否则MySQL的数据都会存放在ibdata1文件里，时间久了这个文件就会变的非常大。</li>
+<li>需要指定<code>innodb_file_per_table=1</code>参数,单独保存每个表的数据,否则MySQL的数据都会存放在ibdata1文件里，文件只增加不减小,时间久了这个文件就会变的非常大。</li>
 </ol>
 
 <p><code>show variables like '%innodb%';</code>查看目前innodb的配置</p>
@@ -695,6 +710,44 @@ SET GLOBAL general_log = &lsquo;ON&rsquo;;
 <ol>
 <li>可能有长时间执行但未提交的事务.</li>
 </ol>
+
+<p>解决方法可参见 <a href="http://blog.fens.me/mysql-ibdata1/">http://blog.fens.me/mysql-ibdata1/</a></p>
+
+<h2 id="mysql导出数据">mysql导出数据</h2>
+
+<p>命令行下具体用法如下：  mysqldump -u用戶名 -p密码 -d 數據库名 表名 脚本名;</p>
+
+<p>1、导出數據库為dbname的表结构（其中用戶名為root,密码為dbpasswd,生成的脚本名為db.sql）
+mysqldump -uroot -pdbpasswd -d dbname &gt;db.sql;</p>
+
+<p>2、导出數據库為dbname某张表(test)结构
+mysqldump -uroot -pdbpasswd -d dbname test&gt;db.sql;</p>
+
+<p>3、导出數據库為dbname所有表结构及表數據（不加-d）
+mysqldump -uroot -pdbpasswd  dbname &gt;db.sql;</p>
+
+<p>4、导出數據库為dbname某张表(test)结构及表數據（不加-d）
+mysqldump -uroot -pdbpasswd dbname test&gt;db.sql;</p>
+
+<p>5.导出数据中dbname多张表（test1,test2,test3）结构及表数据用用空格隔开</p>
+
+<p>mysqldump -uroot -pdbpasswd dbname test1 test2 test3&gt;db.sql;</p>
+
+<p><strong>使用gzip压缩</strong></p>
+
+<p>导出时: <code>mysqldump -uroot -pdbpasswd dbname | gzip &gt; backupfile.sql.gz</code></p>
+
+<p>导入时: <code>gunzip &lt; backupfile.sql.gz | mysql -uroot -pdbpasswd dbname</code></p>
+
+<p><strong>使用xz压缩</strong></p>
+
+<p>导出时: <code>mysqldump -uroot -pdbpasswd dbname | xz &gt; backupfile.sql.xz</code></p>
+
+<p>导入时: <code>unxz -c backupfile.sql.xz | mysql -uroot -pdbpasswd dbname</code></p>
+
+<p>gzip和xz压缩时后面都可以使用参数<code>-9</code>加大压缩率.但也更耗时.</p>
+
+<p>同理还可以使用<code>bzip2</code>和<code>bzip2 -dc</code>压缩和解压</p>
 
 			</div>
 		</div>
@@ -853,6 +906,10 @@ hash -r
 <p><code>ffmpeg -i aaa.flv -c:v libx264 -crf 28 output.mp4</code> 带压缩的转换,非常消耗CPU和时间</p>
 
 <p>更多用法可以参考 <a href="http://www.jianshu.com/p/053665062f22">http://www.jianshu.com/p/053665062f22</a></p>
+
+<p>处理m3u8地址视频</p>
+
+<p>下载转码 <code>ffmpeg -i &quot;http://m3u8的地址&quot;&quot; -c copy -bsf:a aac_adtstoasc output.mp4</code></p>
 
 			</div>
 		</div>

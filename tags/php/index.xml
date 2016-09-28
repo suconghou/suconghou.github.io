@@ -497,6 +497,14 @@ pm.max_requests = 500
 实际测试,采用香港服务器远程连接mysql,非长连接模式下耗时约600ms,使用PDO长连接,耗时下降到260ms左右,是有一定作用的.
 但是长连接不适用于CLI模式,CLI模式下,php进程退出,连接即断开.&lt;/p&gt;
 
+&lt;h2 id=&#34;通过yum安装php5-6或php7&#34;&gt;通过Yum安装PHP5.6或PHP7&lt;/h2&gt;
+
+&lt;p&gt;安装PHP7 &lt;a href=&#34;https://webtatic.com/packages/php70/&#34;&gt;https://webtatic.com/packages/php70/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;安装PHP5.6 &lt;a href=&#34;https://webtatic.com/packages/php56/&#34;&gt;https://webtatic.com/packages/php56/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;其他 &lt;a href=&#34;https://webtatic.com/news/2016/09/latest-updates-php-7-0-11-5-6-26-mysql-5-5-52/&#34;&gt;https://webtatic.com/news/2016/09/latest-updates-php-7-0-11-5-6-26-mysql-5-5-52/&lt;/a&gt;&lt;/p&gt;
+
 &lt;h2 id=&#34;安装redis&#34;&gt;安装redis&lt;/h2&gt;
 
 &lt;p&gt;所有redis版本的release见&lt;a href=&#34;http://download.redis.io/releases/&#34;&gt;http://download.redis.io/releases/&lt;/a&gt;&lt;/p&gt;

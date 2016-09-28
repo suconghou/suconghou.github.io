@@ -164,9 +164,45 @@ echo intval(memory_get_usage()/1024);
 
 <p>在大量使用DOMDocument的loadHTML后,php的进程占用内存不断增长,最终内存泄漏被强行杀死.</p>
 
-<p>其实这是<code>libxml_use_internal_errors</code>所引起的问题,<code>loadHTML</code>产生的警告被内部收集,但没有清楚,所以一直堆积.</p>
+<p>其实这是<code>libxml_use_internal_errors</code>所引起的问题,<code>loadHTML</code>产生的警告被内部收集,但没有清除,所以一直堆积.</p>
 
 <p>见 <a href="http://stackoverflow.com/questions/8379829/domdocument-php-memory-leak">http://stackoverflow.com/questions/8379829/domdocument-php-memory-leak</a></p>
+
+<h3 id="php-gzip-压缩">php gzip 压缩</h3>
+
+<p>压缩函数：gzcompress gzdeflate gzencode</p>
+
+<p>解压函数：gzuncompress gzinflate gzdecode</p>
+
+<p>他们都有第三个参数,并且第三个参数相同时,产生的结果也相同,其实他们都是使用了DEFLATE压缩算法,第三个参数控制他们压缩后添加的一些其他信息,只不过默认参数不同.</p>
+
+<p>ZLIB_ENCODING_RAW 对应于纯DEFLATE格式；
+ZLIB_ENCODING_GZIP 对应于GZIP格式；
+ZLIB_ENCODING_DEFLATE 对应于ZLIB格式（注意不是纯DEFLATE格式）</p>
+
+<p>默认配置下压缩后大小 gzdeflate &lt; gzcompress &lt; gzencode</p>
+
+<p>大小差别是6字节,12字节,18字节</p>
+
+<p>函数 <code>readgzfile</code>类似于<code>readfile</code>但是可以在输出之前解压然后输出</p>
+
+<p>Content-Encoding:deflate  对应于 gzdeflate</p>
+
+<h2 id="foreach-vs-array-filter">foreach vs array_filter</h2>
+
+<p>大数据量下,使用foreach过滤数组控制不如用array_filter,array_filter不加第二个参数,默认就是返回值,</p>
+
+<p>array_filter加上array_values也要比foreach快,在php7下更加明显</p>
+
+<h2 id="php5-与-php7">php5 与 php7</h2>
+
+<p>php5下关键字<code>list</code>既不能作为一个函数也不能作为一个方法,也不能作为一个类.</p>
+
+<p>在php7下有了改善,能作为一个类中的方法了.</p>
+
+<h2 id="array-merge-vs-array-array">array_merge vs array+array</h2>
+
+<p><a href="http://stackoverflow.com/questions/7059721/array-merge-versus">http://stackoverflow.com/questions/7059721/array-merge-versus</a></p>
 
 		</div>
 	</div>

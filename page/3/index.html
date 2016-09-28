@@ -292,9 +292,45 @@ echo intval(memory_get_usage()/1024);
 
 <p>在大量使用DOMDocument的loadHTML后,php的进程占用内存不断增长,最终内存泄漏被强行杀死.</p>
 
-<p>其实这是<code>libxml_use_internal_errors</code>所引起的问题,<code>loadHTML</code>产生的警告被内部收集,但没有清楚,所以一直堆积.</p>
+<p>其实这是<code>libxml_use_internal_errors</code>所引起的问题,<code>loadHTML</code>产生的警告被内部收集,但没有清除,所以一直堆积.</p>
 
 <p>见 <a href="http://stackoverflow.com/questions/8379829/domdocument-php-memory-leak">http://stackoverflow.com/questions/8379829/domdocument-php-memory-leak</a></p>
+
+<h3 id="php-gzip-压缩">php gzip 压缩</h3>
+
+<p>压缩函数：gzcompress gzdeflate gzencode</p>
+
+<p>解压函数：gzuncompress gzinflate gzdecode</p>
+
+<p>他们都有第三个参数,并且第三个参数相同时,产生的结果也相同,其实他们都是使用了DEFLATE压缩算法,第三个参数控制他们压缩后添加的一些其他信息,只不过默认参数不同.</p>
+
+<p>ZLIB_ENCODING_RAW 对应于纯DEFLATE格式；
+ZLIB_ENCODING_GZIP 对应于GZIP格式；
+ZLIB_ENCODING_DEFLATE 对应于ZLIB格式（注意不是纯DEFLATE格式）</p>
+
+<p>默认配置下压缩后大小 gzdeflate &lt; gzcompress &lt; gzencode</p>
+
+<p>大小差别是6字节,12字节,18字节</p>
+
+<p>函数 <code>readgzfile</code>类似于<code>readfile</code>但是可以在输出之前解压然后输出</p>
+
+<p>Content-Encoding:deflate  对应于 gzdeflate</p>
+
+<h2 id="foreach-vs-array-filter">foreach vs array_filter</h2>
+
+<p>大数据量下,使用foreach过滤数组控制不如用array_filter,array_filter不加第二个参数,默认就是返回值,</p>
+
+<p>array_filter加上array_values也要比foreach快,在php7下更加明显</p>
+
+<h2 id="php5-与-php7">php5 与 php7</h2>
+
+<p>php5下关键字<code>list</code>既不能作为一个函数也不能作为一个方法,也不能作为一个类.</p>
+
+<p>在php7下有了改善,能作为一个类中的方法了.</p>
+
+<h2 id="array-merge-vs-array-array">array_merge vs array+array</h2>
+
+<p><a href="http://stackoverflow.com/questions/7059721/array-merge-versus">http://stackoverflow.com/questions/7059721/array-merge-versus</a></p>
 
 			</div>
 		</div>
@@ -340,7 +376,46 @@ make -j4 &amp;&amp; make install
 
 <p>KVM 和 XEN 可以修改内核,明显提升网络环境差的情况下的表现,使用<code>hybla</code>控制算法,效果明显,能提速30%</p>
 
-<p><a href="https://www.zoakerc.com/archives/optimize-shadowsocks-server-in-kvm-or-xen/">https://www.zoakerc.com/archives/optimize-shadowsocks-server-in-kvm-or-xen/</a></p>
+<p><code>/etc/sysctl.conf</code></p>
+
+<pre><code>net.core.somaxconn = 4096
+net.netfilter.nf_conntrack_max = 64000
+fs.file-max = 51200
+#提高整个系统的文件限制
+net.ipv4.tcp_syncookies = 1
+#表示开启SYN Cookies。当出现SYN等待队列溢出时，启用cookies来处理，可防范少量SYN攻击，默认为0，表示关闭；
+net.ipv4.tcp_tw_reuse = 1
+#表示开启重用。允许将TIME-WAIT sockets重新用于新的TCP连接，默认为0，表示关闭；
+net.ipv4.tcp_tw_recycle = 0
+#表示开启TCP连接中TIME-WAIT sockets的快速回收，默认为0，表示关闭；
+#为了对NAT设备更友好，建议设置为0。
+net.ipv4.tcp_fin_timeout = 30
+#修改系統默认的 TIMEOUT 时间。
+net.ipv4.tcp_keepalive_time = 1200
+#表示当keepalive起用的时候，TCP发送keepalive消息的频度。缺省是2小时，改为20分钟。
+net.ipv4.ip_local_port_range = 10000 65000 #表示用于向外连接的端口范围。缺省情况下很小：32768到61000，改为10000到65000。（注意：这里不要将最低值设的太低，否则可能会占用掉正常的端口！）
+net.ipv4.tcp_max_syn_backlog = 8192
+#表示SYN队列的长度，默认为1024，加大队列长度为8192，可以容纳更多等待连接的网络连接数。
+net.ipv4.tcp_max_tw_buckets = 5000
+#表示系统同时保持TIME_WAIT的最大数量，如果超过这个数字，TIME_WAIT将立刻被清除并打印警告信息。
+#额外的，对于内核版本新于**3.7.1**的，我们可以开启tcp_fastopen：
+net.ipv4.tcp_fastopen = 3
+
+#increase TCP max buffer size settable using setsockopt()
+net.core.rmem_max = 67108864
+net.core.wmem_max = 67108864
+#increase Linux autotuning TCP buffer limit
+net.ipv4.tcp_rmem = 4096 87380 67108864
+net.ipv4.tcp_wmem = 4096 65536 67108864
+#increase the length of the processor input queue
+net.core.netdev_max_backlog = 250000
+#recommended for hosts with jumbo frames enabled
+net.ipv4.tcp_mtu_probing=1
+#使用拥塞算法Hybla
+net.ipv4.tcp_congestion_control = hybla
+</code></pre>
+
+<p>然后<code>sysctl -p</code>使之生效</p>
 
 <p>OPENVZ只能修改</p>
 
