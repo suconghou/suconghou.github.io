@@ -120,19 +120,46 @@ docker 分为两部分,一分部是docker daemon , 一部分是docker client</p>
 
 <p>生成证书可参考官网 <a href="https://docs.docker.com/engine/security/https/">https://docs.docker.com/engine/security/https/</a></p>
 
-<p><code>docker daemon --tlsverify -H=unix:///var/run/docker.sock -H=0.0.0.0:4243 --tlscacert=/root/.docker/ca.pem --tlscert=/root/.docker/cert.pem --tlskey=/root/.docker/key.pem</code></p>
+<p>这里一份脚本可以快速生成证书,只需修改DOMAIN变量即可. <a href="https://gist.github.com/suconghou/707d9c61367c4bb91e8ed2585b094853">https://gist.github.com/suconghou/707d9c61367c4bb91e8ed2585b094853</a></p>
 
-<p>client端配置下面这几个变量就好,不过需要注意tls加密的只能用端口2376.</p>
+<p><code>docker service</code>的配置<code>vim /usr/lib/systemd/system/docker.service</code></p>
 
-<pre><code>export DOCKER_HOST=tcp://1.1.1.1:2376
+<pre><code>ExecStart=/usr/bin/dockerd -H unix:///var/run/docker.sock -H tcp://0.0.0.0:2376 --tlsverify --tlscacert=/root/.docker/ca.pem --tlscert=/root/.docker/cert.pem --tlskey=/root/.docker/key.pem -s devicemapper --storage-opt dm.datadev=/dev/centos/docker-data --storage-opt dm.metadatadev=/dev/centos/docker-metadata
+</code></pre>
+
+<p>client端配置下面这几个变量就好</p>
+
+<pre><code>export DOCKER_HOST=tcp://some.domain:2376
 export DOCKER_TLS_VERIFY=1
 export DOCKER_CERT_PATH=$DIR
 </code></pre>
+
+<p>动态设置$DIR,将你的docker.env和证书放在相同文件夹下.</p>
+
+<pre><code>export DOCKER_HOST=tcp://some.domain:2376
+export DOCKER_TLS_VERIFY=1
+export DOCKER_CERT_PATH=$(cd `dirname $0`; pwd)
+</code></pre>
+
+<p>其他脚本参考</p>
+
+<p><a href="https://gist.github.com/bradrydzewski/a6090115b3fecfc25280">https://gist.github.com/bradrydzewski/a6090115b3fecfc25280</a></p>
+
+<p><a href="https://gist.github.com/cameron/10797040">https://gist.github.com/cameron/10797040</a></p>
 
 <p><code>mkdir -pv ~/.docker;cp -v {ca,cert,key}.pem ~/.docker</code>,将证书放在<code>~/.docker</code>目录下可以免去设置<code>DOCKER_CERT_PATH</code></p>
 
 <p>搜索 <code>docker search 镜像名字</code>
 下载 <code>docker pull learn/tutorial</code>, 下载时要写完整名字</p>
+
+<p>若证书始终验证不通过可能是两者的时间不一致
+<code>ntpdate cn.pool.ntp.org</code> 同步一下服务器时间.</p>
+
+<p>改动后,重启docker服务生效.</p>
+
+<pre><code>sudo systemctl daemon-reload
+sudo systemctl restart docker
+</code></pre>
 
 <p><a href="https://hub.docker.com/explore/">官方Docker镜像一览</a></p>
 
@@ -407,66 +434,28 @@ docker run -it -p 8080:8000 --name vps vpsimage bash
 
 <p>最新的配置帮助 <a href="https://lug.ustc.edu.cn/wiki/mirrors/help/docker">https://lug.ustc.edu.cn/wiki/mirrors/help/docker</a></p>
 
-<p><code>ps -ef</code>查看进程<code>/usr/bin/dockerd --registry-mirror=...</code>即代表使用了镜像</p>
+<p>docker 配置文件 <code>/etc/docker/daemon.json</code></p>
+
+<p>配置镜像加速.</p>
+
+<pre><code>{
+  &quot;registry-mirrors&quot;: [&quot;https://docker.mirrors.ustc.edu.cn&quot;]
+}
+</code></pre>
+
+<p>配置文件介绍见 <a href="https://docs.docker.com/engine/reference/commandline/dockerd/">https://docs.docker.com/engine/reference/commandline/dockerd/</a></p>
 
 <h2 id="使用流程">使用流程</h2>
-
-<p>配置为<code>service</code> 见
-<a href="https://docs.docker.com/v1.7/articles/systemd/">https://docs.docker.com/v1.7/articles/systemd/</a></p>
-
-<p><a href="https://github.com/docker/docker/tree/master/contrib/init/systemd">https://github.com/docker/docker/tree/master/contrib/init/systemd</a></p>
-
-<p><code>vim /etc/systemd/system/docker.service</code></p>
-
-<pre><code>[Unit]
-Description=Docker Application Container Engine
-Documentation=https://docs.docker.com
-After=network.target docker.socket
-Requires=docker.socket
-
-[Service]
-Type=notify
-# the default is not to use systemd for cgroups because the delegate issues still
-# exists and systemd currently does not support the cgroup feature set required
-# for containers run by docker
-ExecStart=/usr/bin/docker daemon -H fd://
-MountFlags=slave
-LimitNOFILE=1048576
-LimitNPROC=1048576
-LimitCORE=infinity
-# Uncomment TasksMax if your systemd version supports it.
-# Only systemd 226 and above support this version.
-#TasksMax=infinity
-TimeoutStartSec=0
-# set delegate yes so that systemd does not reset the cgroups of docker containers
-Delegate=yes
-
-[Install]
-WantedBy=multi-user.target
-</code></pre>
-
-<p><code>vim /etc/systemd/system/docker.socket</code></p>
-
-<pre><code>[Unit]
-Description=Docker Socket for the API
-PartOf=docker.service
-
-[Socket]
-ListenStream=/var/run/docker.sock
-SocketMode=0660
-SocketUser=root
-SocketGroup=docker
-
-[Install]
-WantedBy=sockets.target
-</code></pre>
 
 <pre><code>sudo groupadd docker
 </code></pre>
 
-<p>重新加载配置 <code>sudo systemctl daemon-reload</code>
-<code>sudo systemctl restart docker</code>
-当你的docker不支持<code>devicemapper</code>存储驱动时,会报错
+<p>重新加载配置</p>
+
+<p><code>sudo systemctl daemon-reload</code>
+<code>sudo systemctl restart docker</code></p>
+
+<p>当你的docker不支持<code>devicemapper</code>存储驱动时,会报错
 可以使用<code>-s overlay</code> 参数指定存储驱动</p>
 
 <p><code>ExecStart=/usr/bin/docker daemon -s overlay -H fd://</code></p>
@@ -574,6 +563,9 @@ echo &quot;&quot; &gt; $(docker inspect --format='{{.LogPath}}' &lt;container_na
 sudo echo 'DOCKER_OPTS=&quot; -H=unix:///var/run/docker.sock -H=0.0.0.0:4243  --registry-mirror=https://docker.mirrors.ustc.edu.cn&quot;' &gt; /run/flannel_docker_opts.env
 sudo systemctl restart docker
 </code></pre>
+
+<p>解决
+<code>Usage of loopback devices is strongly discouraged for production use. Use</code>&ndash;storage-opt dm.thinpooldev<code>to specify a custom block storage device.</code></p>
 
 		</div>
 	</div>

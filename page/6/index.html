@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.16" />
+	<meta name="generator" content="Hugo 0.17" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -31,6 +31,175 @@
 
 <div class="content container">
 	<div class="posts">
+		
+		<div class="post">
+			<h1 class="post-title">
+				<a href="/post/ffmpeg-usage/"> ffmpeg安装使用</a>
+			</h1>
+			<p class="post-date">Mon, Jan 11, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="编译安装">编译安装</h2>
+
+<pre><code>yum install autoconf automake cmake freetype-devel gcc gcc-c++ git libtool make mercurial nasm pkgconfig zlib-devel
+mkdir ~/ffmpeg_sources
+</code></pre>
+
+<p>Yasm is an assembler used by x264 and FFmpeg</p>
+
+<pre><code>cd ~/ffmpeg_sources
+git clone --depth 1 git://github.com/yasm/yasm.git
+cd yasm
+autoreconf -fiv
+./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --bindir=&quot;$HOME/bin&quot;
+make
+make install
+make distclean
+</code></pre>
+
+<p>H.264 video encoder.
+Requires ffmpeg to be configured with <code>--enable-gpl --enable-libx264</code></p>
+
+<pre><code>cd ~/ffmpeg_sources
+git clone --depth 1 git://git.videolan.org/x264
+cd x264
+PKG_CONFIG_PATH=&quot;$HOME/ffmpeg_build/lib/pkgconfig&quot; ./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --bindir=&quot;$HOME/bin&quot; --enable-static
+make
+make install
+make distclean
+</code></pre>
+
+<p>H.265/HEVC video encoder. Requires ffmpeg to be configured with <code>--enable-gpl --enable-libx265</code></p>
+
+<pre><code>cd ~/ffmpeg_sources
+hg clone https://bitbucket.org/multicoreware/x265
+cd ~/ffmpeg_sources/x265/build/linux
+cmake -G &quot;Unix Makefiles&quot; -DCMAKE_INSTALL_PREFIX=&quot;$HOME/ffmpeg_build&quot; -DENABLE_SHARED:bool=off ../../source
+make
+make install
+</code></pre>
+
+<p>AAC audio encoder. Requires ffmpeg to be configured with <code>--enable-libfdk-aac</code> (and <code>--enable-nonfree</code> if you also included <code>--enable-gpl</code>)</p>
+
+<pre><code>cd ~/ffmpeg_sources
+git clone --depth 1 git://git.code.sf.net/p/opencore-amr/fdk-aac
+cd fdk-aac
+autoreconf -fiv
+./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --disable-shared
+make
+make install
+make distclean
+</code></pre>
+
+<p>MP3 audio encoder. Requires ffmpeg to be configured with <code>--enable-libmp3lame</code></p>
+
+<pre><code>cd ~/ffmpeg_sources
+curl -L -O http://downloads.sourceforge.net/project/lame/lame/3.99/lame-3.99.5.tar.gz
+tar xzvf lame-3.99.5.tar.gz
+cd lame-3.99.5
+./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --bindir=&quot;$HOME/bin&quot; --disable-shared --enable-nasm
+make
+make install
+make distclean
+</code></pre>
+
+<p>Opus audio decoder and encoder. Requires ffmpeg to be configured with <code>--enable-libopus</code></p>
+
+<pre><code>cd ~/ffmpeg_sources
+git clone git://git.opus-codec.org/opus.git
+cd opus
+autoreconf -fiv
+./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --disable-shared
+make
+make install
+make distclean
+</code></pre>
+
+<p>Ogg bitstream library. Required by libtheora and libvorbis.</p>
+
+<pre><code>cd ~/ffmpeg_sources
+curl -O http://downloads.xiph.org/releases/ogg/libogg-1.3.2.tar.gz
+tar xzvf libogg-1.3.2.tar.gz
+cd libogg-1.3.2
+./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --disable-shared
+make
+make install
+make distclean
+</code></pre>
+
+<p>Vorbis audio encoder. Requires libogg. Requires ffmpeg to be configured with <code>--enable-libvorbis</code></p>
+
+<pre><code>cd ~/ffmpeg_sources
+curl -O http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.4.tar.gz
+tar xzvf libvorbis-1.3.4.tar.gz
+cd libvorbis-1.3.4
+LDFLAGS=&quot;-L$HOME/ffmeg_build/lib&quot; CPPFLAGS=&quot;-I$HOME/ffmpeg_build/include&quot; ./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --with-ogg=&quot;$HOME/ffmpeg_build&quot; --disable-shared
+make
+make install
+make distclean
+</code></pre>
+
+<p>VP8/VP9 video encoder. Requires ffmpeg to be configured with <code>--enable-libvpx</code></p>
+
+<pre><code>cd ~/ffmpeg_sources
+git clone --depth 1 https://chromium.googlesource.com/webm/libvpx.git
+cd libvpx
+./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --disable-examples
+make
+make install
+make clean
+</code></pre>
+
+<p>Compilation is now complete and ffmpeg (also ffprobe, ffserver, lame, and x264) should now be ready to use.</p>
+
+<pre><code>cd ~/ffmpeg_sources
+git clone https://github.com/FFmpeg/FFmpeg ffmpeg
+cd ffmpeg
+PKG_CONFIG_PATH=&quot;$HOME/ffmpeg_build/lib/pkgconfig&quot; ./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --extra-cflags=&quot;-I$HOME/ffmpeg_build/include&quot; --extra-ldflags=&quot;-L$HOME/ffmpeg_build/lib&quot; --bindir=&quot;$HOME/bin&quot; --pkg-config-flags=&quot;--static&quot; --enable-gpl --enable-nonfree --enable-libfdk-aac --enable-libfreetype --enable-libmp3lame --enable-libopus --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libx265
+make -j4
+make install
+make distclean
+hash -r
+</code></pre>
+
+<p>生成的可执行文件存放在<code>~/bin</code></p>
+
+<h2 id="下载官方的静态编译的linux通用二进制包-同时也包含arm版本的">下载官方的静态编译的Linux通用二进制包,同时也包含ARM版本的</h2>
+
+<p><a href="http://johnvansickle.com/ffmpeg/">ffmpeg</a></p>
+
+<p>Windows版本也提供编译好的下载</p>
+
+<p><a href="https://ffmpeg.zeranoe.com/builds/">https://ffmpeg.zeranoe.com/builds/</a></p>
+
+<p>Mac编译好的下载(FFmpeg,FFserver,FFprobe,FFplay)</p>
+
+<p><a href="http://evermeet.cx/ffmpeg/">http://evermeet.cx/ffmpeg/</a></p>
+
+<p>使用brew安装
+<code>brew install ffmpeg --with-ffplay</code></p>
+
+<p>让ffmpeg转为MP4边下边播</p>
+
+<p><code>ffmpeg -i input.xxoo -c copy -movflags faststart output.mp4</code></p>
+
+<p>flv to mp4</p>
+
+<p><code>ffmpeg -i input.flv -codec copy output.mp4</code> 快速转化flv到mp4,高质量转化( only changes container without reencoding )</p>
+
+<p><code>ffmpeg -i input.flv -c copy -copyts output.mp4</code> 也比较快,高质量转化</p>
+
+<p><code>ffmpeg -i aaa.flv -c:v libx264 -crf 28 output.mp4</code> 带压缩的转换,非常消耗CPU和时间</p>
+
+<p>更多用法可以参考 <a href="http://www.jianshu.com/p/053665062f22">http://www.jianshu.com/p/053665062f22</a></p>
+
+<p>处理m3u8地址视频</p>
+
+<p>下载转码 <code>ffmpeg -i &quot;http://m3u8的地址&quot;&quot; -c copy -bsf:a aac_adtstoasc output.mp4</code></p>
+
+			</div>
+		</div>
 		
 		<div class="post">
 			<h1 class="post-title">
@@ -458,14 +627,16 @@ B98FC99C 8FAC73EE D2B95564 DF450523
 
 <h2 id="ssh隧道">ssh隧道</h2>
 
-<h3 id="cfng">-CfNg</h3>
+<h3 id="cfng参数">CfNg参数</h3>
 
-<p>C表示压缩数据传输
-f表示后台用户验证,这个选项很有用,没有shell的不可登陆账号也能使用.
-N表示不执行脚本或命令
-g表示允许远程主机连接转发端口</p>
+<ul>
+<li>C表示压缩数据传输</li>
+<li>f表示后台用户验证,这个选项很有用,没有shell的不可登陆账号也能使用.</li>
+<li>N表示不执行脚本或命令</li>
+<li>g表示允许远程主机连接转发端口,往往会没有效果,需要修改<code>/etc/ssh/sshd_config</code>添加<code>gatewayports yes</code></li>
+</ul>
 
-<h3 id="l-本地转发">-L 本地转发</h3>
+<h3 id="l本地转发">-L本地转发</h3>
 
 <p>-L [本地监听IP:]本地监听端口号:目标主机IP:目标端口号
 (其中,“本地监听IP”可以省略，省略的话就认为是“0.0.0.0”，但为了安全性考虑，请务必使用“127.0.0.1”做为本地监听端口， 而不要使用默认的“0.0.0.0”。）</p>
@@ -482,7 +653,7 @@ SSH会建立一个socket，去监听本地的8080端口。一旦有数据传向�
 
 <p>本机的6300端口就是远程主机172.16.1.164的1521端口</p>
 
-<h3 id="r-远程转发">-R 远程转发</h3>
+<h3 id="r远程转发">-R远程转发</h3>
 
 <pre><code> ssh -CfNg -R 1521:127.0.0.1:6300 oracle@172.16.1.164
 </code></pre>
@@ -520,6 +691,8 @@ GatewayPorts yes
 </code></pre>
 
 <p>使用<code>netstat -anltp</code>查看,监听的已经是<code>0.0.0.0</code>了,不过即使你指定-R参数<code>127.0.0.1:2222</code>,也不会监听<code>127.0.0.1</code>而始终是<code>0.0.0.0</code></p>
+
+<p>若没有<code>netstat</code>可考虑安装<code>yum install lsof net-tools</code></p>
 
 <h3 id="使用socks5代理">使用socks5代理</h3>
 
@@ -613,6 +786,20 @@ ssh-keygen -t ed25519 -f /usr/local/etc/ssh_host_ed25519_key -N ''
 <pre><code>ssh -CfNg -R 0.0.0.0:2233:127.0.0.1:22 root@yourvps.com -p 27558
 
 </code></pre>
+
+<h3 id="centos7修改ssh端口">CentOS7修改ssh端口</h3>
+
+<p>注意:修改ssh端口后,可能还是不能使用,主要原因可能是semanage</p>
+
+<p>使用以下命令查看当前SElinux 允许的ssh端口：
+semanage port -l | grep ssh</p>
+
+<p>添加xxxx端口到 SELinux
+semanage port -a -t ssh_port_t -p tcp xxxx
+然后确认一下是否添加进去
+semanage port -l | grep ssh
+如果成功会输出
+ssh_port_t                    tcp    xxxx, 22</p>
 
 			</div>
 		</div>
@@ -713,239 +900,6 @@ enabled=1
 <p>查看状态 <code>systemctl status mongod</code></p>
 
 <p>停止 <code>systemctl stop mongod</code></p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/some-good-useful-things/"> 网摘</a>
-			</h1>
-			<p class="post-date">Wed, Jan 6, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="云计算-存储-分发等">云计算,存储,分发等</h2>
-
-<p><a href="http://baichuan.taobao.com/">阿里百川</a>
-<a href="http://open.taobao.com/">淘宝开放平台</a></p>
-
-<blockquote>
-<p>包含容器引擎（TAE）, 多媒体存储处理分发, 可免费使用一年</p>
-</blockquote>
-
-<p><a href="https://c.163.com/">网易的Docker服务</a></p>
-
-<blockquote>
-<p>价格略贵最低29/月</p>
-</blockquote>
-
-<p><a href="http://bmob.cn/">bmob</a>移动后端云,网友示例项目<a href="https://github.com/bestony/BandwaghonhostAPP">BandwaghonhostAPP</a>,结合<a href="http://dev.dcloud.net.cn/mui/">mui移动开发框架</a>开发手机APP</p>
-
-<h2 id="短信-推动消息等">短信,推动消息等</h2>
-
-<ul>
-<li><a href="http://www.alidayu.com/">阿里大鱼</a></li>
-</ul>
-
-<blockquote>
-<p>阿里巴巴旗下的短信验证码通知服务,价格实惠,短信通知≤0.045元／条,还有文本转语音通知≤0.055元／条</p>
-</blockquote>
-
-<ul>
-<li><a href="http://sendcloud.sohu.com/price.html">SendCloud</a></li>
-</ul>
-
-<blockquote>
-<p>短信和邮件发送服务,邮件有每日免费200封,短信5.5分每条</p>
-</blockquote>
-
-<h2 id="图像压缩软件">图像压缩软件</h2>
-
-<p><a href="https://imageoptim.com/">ImageOptim无损压缩</a></p>
-
-<p><a href="http://mozjpeg.codelove.de/">mozjpeg</a> Mozilla的jpg压缩技术,支持无损,有损压缩在线压缩,最大2M.</p>
-
-<p><a href="https://tinypng.com/">tinypng</a> 众多压缩软件中压缩效果较好的,支持png,jpg在线批量压缩</p>
-
-<p><a href="https://kraken.io">kraken</a> 类似于tinypng,也提供在线压缩</p>
-
-<p><a href="https://pngquant.org/">pngquant</a> 开源的压缩png,据说tinypng基于此项目</p>
-
-<p><a href="https://www.npmjs.com/package/imagemin">nodejs imagemin</a> NodeJs模块,压缩jpg,png,压缩效果一般</p>
-
-<h2 id="移动混合应用-hhtml5开发">移动混合应用/HHTML5开发</h2>
-
-<p><a href="http://dev.dcloud.net.cn/mui/">国产mui</a> 最接近原生APP体验的高性能前端框架,不依赖任何第三方JS库,压缩后的JS和CSS文件仅有100+K和60+K</p>
-
-<p><a href="http://m.sui.taobao.org/">SUI Mobile</a> 淘宝移动UI框架,轻量，小巧且精美的UI库 方便迅速搭建手机H5应用,兼容iOS 6.0+ 和 Android 4.0+，非常适合开发跨平台Web App。</p>
-
-<p><a href="http://mobiscroll.com/">mobiscroll</a> 移动开发UI,丰富的时间选择器控件还有一些WEBAPP展示,<a href="https://github.com/acidb/mobiscroll">https://github.com/acidb/mobiscroll</a></p>
-
-<h2 id="桌面开发">桌面开发</h2>
-
-<p><a href="http://nwjs.io/">nwjs</a> Mac版钉钉使用的就是这个技术,界面还算漂亮</p>
-
-<h2 id="网页动画">网页动画</h2>
-
-<p><a href="http://ecomfe.github.io/zrender/index.html">百度zrender</a> 基于Canvas的图形仓库交互工具,可以方便的画出很多图形</p>
-
-<h2 id="游戏引擎">游戏引擎</h2>
-
-<p><a href="http://hiloteam.github.io/">阿里Hilo</a> 游戏渲染引擎,实现2048,切水果等.</p>
-
-<p><a href="http://www.egret.com/">http://www.egret.com/</a> 白鹭也是做这个的</p>
-
-<p><a href="https://github.com/iioinc/iio.js">https://github.com/iioinc/iio.js</a> 也是canvas的游戏</p>
-
-<h2 id="网页富文本编辑器">网页富文本编辑器</h2>
-
-<p><a href="http://wangeditor.github.io/">wangeditor</a> 轻量简介的富文本编辑器,使用容易,相比百度umeditor更简洁</p>
-
-<p><a href="https://github.com/yabwe/medium-editor">medium-editor</a> 一个非常简洁的输入框,支持很多插件扩充</p>
-
-<p><a href="https://github.com/quilljs/quill">quill</a> 功能丰富,样式简介</p>
-
-<h2 id="网页markdown编辑器">网页Markdown编辑器</h2>
-
-<p><a href="https://github.com/pandao/editor.md">Editor.md</a> 一款开源的、可嵌入的 Markdown 在线编辑器（组件），基于 CodeMirror、jQuery 和 Marked 构建。</p>
-
-<p><a href="https://github.com/tylingsoft/markdown-plus">markdown-plus</a> Markdown Plus,界面不是很漂亮,也有收费的桌面APP</p>
-
-<h2 id="markdown解析库">Markdown解析库</h2>
-
-<p><a href="https://github.com/chjj/marked">marked</a> 支持nodejs 和浏览器端</p>
-
-<p><a href="https://github.com/evilstreak/markdown-js">markdown-js</a> 支持nodejs 和浏览器端</p>
-
-<h2 id="字体相关">字体相关</h2>
-
-<p><a href="http://www.youziku.com/">有字库中文字体</a> 在线字体,CDN引用</p>
-
-<p><a href="http://font-spider.org/">字蛛</a> 中文字体压缩器,让网页自由引入中文字体成为可能</p>
-
-<p><a href="http://www.iconfont.cn/">阿里iconfont</a> 阿里巴巴的网页矢量图标在线生成工具,中文字体和矢量图标</p>
-
-<h2 id="镜像网站-cdn">镜像网站/CDN</h2>
-
-<p><a href="http://npm.taobao.org/">淘宝NPM镜像</a></p>
-
-<p><a href="https://css.net/">常用前端公共库css.net</a> 包括Gravatar,Google 字体库等反代,支持https</p>
-
-<p><a href="http://www.bootcdn.cn/">bootcdn</a> 支持https</p>
-
-<h2 id="云端ide">云端IDE</h2>
-
-<p><a href="https://coderpad.io/">coderpad</a> 在线运行多种语言代码,保存分享,不过是收费的</p>
-
-<h2 id="视频解析">视频解析</h2>
-
-<p><a href="http://keepvid.com/">keepvid</a> 支持多种国外视频网站解析,转码</p>
-
-<p><a href="http://www.clipconverter.cc/">clipconverter</a> 支持youtube视频解析,转码,多分辨率,速度又快.</p>
-
-<p><a href="https://www.tubeninja.net/en/">tubeninja</a> 支持多种国内外视频网站解析</p>
-
-<p><a href="http://www.youtube-dl.org/">youtube-dl</a> 全平台的YouTube视频下载工具</p>
-
-<h2 id="图床">图床</h2>
-
-<p><a href="https://sm.ms/">smms</a></p>
-
-<p><a href="https://get-link.xyz/">get-link</a></p>
-
-<p><a href="http://v2ex.com/t/278912#reply24">two.yt</a></p>
-
-<p><a href="https://www.niupic.com/">niupic</a></p>
-
-<h2 id="前端-node">前端/Node</h2>
-
-<p>Ajax库<a href="https://github.com/visionmedia/superagent">superagent</a> 同时兼容IE9+和NodeJs的Ajax小工具,Gzip后仅为4.4kb</p>
-
-<p>轮播图插件<a href="http://slidesjs.com/">slidesjs</a> 纯js的jQuery轮播图插件,简单易用响应式支持触摸,压缩后大小仅12kb,Gzip后3.3kb,但是单张图片存在bug,很久没有更新</p>
-
-<p>模板引擎<a href="http://aui.github.io/artTemplate/">artTemplate</a> 性能卓越的Js模板引擎,同时有NodeJs版本,压缩后5kb大小,Gzip后2.9kb</p>
-
-<p>url解析工具<a href="https://github.com/websanova/js-url">js-url</a> 解析url的query_string hostname protocol 等等,~1.7 Kb minified, ~0.7Kb gzipped</p>
-
-<p>获取你的内网IP和外网IP<a href="https://github.com/diafygi/webrtc-ips">webrtc-ips</a> 通过Webrtc技术连接stun服务器,取得IP</p>
-
-<p><a href="https://github.com/amsul/pickadate.js">https://github.com/amsul/pickadate.js</a>
-<a href="https://github.com/xdan/datetimepicker">https://github.com/xdan/datetimepicker</a>
-<a href="https://github.com/rmm5t/jquery-timeago">https://github.com/rmm5t/jquery-timeago</a>
-<a href="http://c3js.org/">http://c3js.org/</a>
-<a href="https://github.com/datejs/Datejs/blob/master/build/date.js">https://github.com/datejs/Datejs/blob/master/build/date.js</a>
-<a href="https://github.com/Teamweek/instadate">https://github.com/Teamweek/instadate</a></p>
-
-<h2 id="js插件">JS插件</h2>
-
-<p><a href="http://www.swiper.com.cn/">swiper滑动插件</a></p>
-
-<h2 id="测试工具">测试工具</h2>
-
-<p><a href="http://www.alibench.com/">阿里测</a> 测试你的服务器在全国各地的响应速度</p>
-
-<p><a href="http://www.cloudping.info/">cloudping</a> 测试亚马逊云各节点到你电脑的延时</p>
-
-<p><a href="http://requestb.in/">requestb</a> 测试你发送的HTTP请求</p>
-
-<h2 id="代码转换">代码转换</h2>
-
-<p>将python代码转化为可执行文件<a href="http://nuitka.net/pages/download.html">nuitka</a></p>
-
-<h2 id="便宜服务器vps">便宜服务器VPS</h2>
-
-<p><a href="http://cheapwindowsvps.com/">cheapwindowsvps</a> G口亚洲越南和新加坡不限流量支持Windows,较贵</p>
-
-<p><a href="https://dedistation.com/billing/order.php?step=0&amp;productGroup=13">dedistation</a></p>
-
-<p><a href="http://www.winode.org/cart.php?gid=15&amp;language=chinese">winode</a></p>
-
-<p><a href="http://www.50kvm.com/new_index/vps.php">50kvm</a> kvm最低20人民币每月(512MB),支持支付宝,旗下openvzvps即为下面的连接</p>
-
-<p><a href="https://www.openvzvps.cc/cart.php?gid=10">openvzvps</a> 最低48年付(openvz 64M),中文,集成锐速,可支付宝</p>
-
-<p><a href="http://www.idcbuster.com/specials.html">idcbuster</a> 最低39年付(openvz 128M),99年付kvm 256M 支持支付宝</p>
-
-<p><a href="http://technetcal.com/us-vps/">technetcal</a> 最低60年付(openvz 128M),支持支付宝,香港虚拟主机最低28年付,<a href="http://technetcal.com/the-regius/">http://technetcal.com/the-regius/</a></p>
-
-<p><a href="http://yecaoyun.com/Service/vps_servers.html">yecaoyun</a> 美国最低10元每月(kvm 128M)</p>
-
-<p><a href="https://my.hostus.us/cart.php?a=confproduct&amp;i=0">hostus</a> 最低16美元(约106人民币)每年(768M)</p>
-
-<h2 id="内网穿透">内网穿透</h2>
-
-<p><a href="https://github.com/fatedier/frp">frp</a> 由于ngrok2不开源,ngrok1不在维护而新创建的项目,使用GO编写</p>
-
-<p><a href="https://natapp.cn/">natapp</a> 国内服务提供商,基于ngrok</p>
-
-<p><a href="https://pc5s.com/">pc5s</a> 使用java编写的,需要jre</p>
-
-<p><a href="http://qydev.com/">qydev.com</a> 国内服务商基于ngrok</p>
-
-<p><a href="https://github.com/vzex/dog-tunnel">dog-tunnel</a> 使用GO编写的功能更加丰富,有一些不同之处,<a href="http://dog-tunnel.tk/">http://dog-tunnel.tk/</a></p>
-
-<p><a href="http://www.luyouxia.com/">路由侠</a> 是一个GUI客户端,貌似只有Windows</p>
-
-<h2 id="博客工具">博客工具</h2>
-
-<p><a href="http://www.inkpaper.io/index-zh.html">纸小墨</a> 和<code>hugo</code>类似的静态网站生成器,也是GO语言编写,<a href="https://github.com/InkProject/ink">https://github.com/InkProject/ink</a></p>
-
-<h2 id="html5播放器">HTML5播放器</h2>
-
-<p><a href="https://github.com/wangpengfei15975/ktPlayer/">ktPlayer视频播放器</a> 简介</p>
-
-<p><a href="https://github.com/Copay/cPlayer">cPlayer音乐播放器</a> 简介,支持歌词</p>
-
-<p><a href="https://github.com/DIYgod/DPlayer">DPlayer视频播放器</a> 支持弹幕</p>
-
-<p><a href="http://www.chengfeilong.com/skPlayer-info">skPlayer音乐播放器</a> 支持拉取网易云音乐歌单</p>
-
-<h2 id="pdf-to-images">pdf to images</h2>
-
-<p>imagemagick 可以转,各种图片格式也很容易转</p>
-
-<p>xpdf,各种平台都支持,只需一个文件,提供编译好的文件 <a href="https://mirrors.tuna.tsinghua.edu.cn/CTAN/support/xpdf/">https://mirrors.tuna.tsinghua.edu.cn/CTAN/support/xpdf/</a></p>
 
 			</div>
 		</div>

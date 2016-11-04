@@ -204,6 +204,18 @@ ZLIB_ENCODING_DEFLATE 对应于ZLIB格式（注意不是纯DEFLATE格式）</p>
 
 <p><a href="http://stackoverflow.com/questions/7059721/array-merge-versus">http://stackoverflow.com/questions/7059721/array-merge-versus</a></p>
 
+<h2 id="正则-w匹不匹配中文">正则\w匹不匹配中文</h2>
+
+<p>\w在ASCII下等价于[A-Za-z0-9_],在Unicode下表示字符(包括汉字)和数字和下划线.</p>
+
+<p><code>/\w+/u</code> 不添加u修饰符是不能匹配汉字的.</p>
+
+<p>匹配全是汉字的正则<code>/^[\x{4e00}-\x{9fa5}]+$/u</code></p>
+
+<p>Unicode的中文字范围是u4e00-u9fa5，4e00对应的字是&rdquo;一&rdquo;,9fa5对应的汉字是&rdquo;龥&rdquo;</p>
+
+<p><code>/[\x{4e00}-\x{9fa5}]/u</code> 等同于 <code>/[一-龥]/u</code></p>
+
 		</div>
 	</div>
 </div>

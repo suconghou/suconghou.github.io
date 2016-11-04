@@ -52,9 +52,62 @@
 
 <p><code>adduser work -M</code></p>
 
+<pre><code># add rslsync user without home dir and cannot login
+sudo adduser --shell /bin/nologin --no-create-home --group rslsync
+</code></pre>
+
+<p>-M, &ndash;no-create-home        不创建用户的主目录
+-s, &ndash;shell SHELL       新账户的登录 shell,nologin就是登陆不了
+-G, &ndash;groups GROUPS 新账户的附加组列表</p>
+
+<p><code>adduser -h</code>查看完整帮助</p>
+
+<pre><code>用法：adduser [选项] 登录
+      adduser -D
+      adduser -D [选项]
+
+选项：
+  -b, --base-dir BASE_DIR	新账户的主目录的基目录
+  -c, --comment COMMENT         新账户的 GECOS 字段
+  -d, --home-dir HOME_DIR       新账户的主目录
+  -D, --defaults		显示或更改默认的 useradd 配置
+  -e, --expiredate EXPIRE_DATE  新账户的过期日期
+  -f, --inactive INACTIVE       新账户的密码不活动期
+  -g, --gid GROUP		新账户主组的名称或 ID
+  -G, --groups GROUPS	新账户的附加组列表
+  -h, --help                    显示此帮助信息并推出
+  -k, --skel SKEL_DIR	使用此目录作为骨架目录
+  -K, --key KEY=VALUE           不使用 /etc/login.defs 中的默认值
+  -l, --no-log-init	不要将此用户添加到最近登录和登录失败数据库
+  -m, --create-home	创建用户的主目录
+  -M, --no-create-home		不创建用户的主目录
+  -N, --no-user-group	不创建同名的组
+  -o, --non-unique		允许使用重复的 UID 创建用户
+  -p, --password PASSWORD		加密后的新账户密码
+  -r, --system                  创建一个系统账户
+  -R, --root CHROOT_DIR         chroot 到的目录
+  -s, --shell SHELL		新账户的登录 shell
+  -u, --uid UID			新账户的用户 ID
+  -U, --user-group		创建与用户同名的组
+  -Z, --selinux-user SEUSER		为 SELinux 用户映射使用指定 SEUSER
+</code></pre>
+
 <h3 id="修改密码">修改密码</h3>
 
 <p><code>passwd work</code></p>
+
+<h3 id="修改用户名">修改用户名</h3>
+
+<p>alarm为旧用户名</p>
+
+<pre><code>new_user=lao
+# change user name
+usermod -l $new_user -d /home/$new_user -m alarm
+# chenge user group
+groupmod -n $new_user alarm
+</code></pre>
+
+<p><a href="http://www.cnblogs.com/xd502djj/archive/2011/11/23/2260094.html">http://www.cnblogs.com/xd502djj/archive/2011/11/23/2260094.html</a></p>
 
 <h2 id="linux实用命令">Linux实用命令</h2>
 
@@ -90,7 +143,25 @@ us, sy, id, wa, st：这些都是平均了所有 CPU 的 CPU 分解时间。它�
 
 <h2 id="top">top</h2>
 
+<p><code>top -b -n1</code> 可以只执行一次,用于将结果重定向到文件.</p>
+
 <h2 id="free">free</h2>
+
+<p><code>free -m</code> <code>free -h</code></p>
+
+<p>按内存占用排序</p>
+
+<pre><code>
+ps -eo rss,vsz,pid,ppid,time,etime,command --sort=rss   # 按内存
+ps -eo rss,vsz,pid,ppid,time,etime,command --sort=time  # 按CPU时间,etime启动时间,comm等都可以.
+
+# MAC无法使用`--sort`上需要使用`| sort -n`
+
+ps -eo rss,vsz,pid,ppid,time,etime,command |sort -n
+
+# alpine 里这样用,不支持--sort, 同样也可以 `top -b -n1`
+ps -o rss,vsz,pid,ppid,time,etime,args
+</code></pre>
 
 <h2 id="ssh">ssh</h2>
 
@@ -155,6 +226,8 @@ count = blocks 只拷贝输入的blocks块</p>
 <p>ps 默认是按照PID排序的,若要按内存使用排序<code>ps auxw --sort=rss</code>,同理按虚拟内存排序<code>ps auxw --sort=vsz</code></p>
 
 <p>mac上无法使用<code>--sort</code>,可以采用<code>sort</code>排序,如rss在第六列,则<code>ps auxw | sort -k6,6n</code></p>
+
+<p>lscpu</p>
 
 <h2 id="nc">nc</h2>
 
@@ -230,20 +303,13 @@ getlocation() { lynx -dump http://www.ip-adress.com/ip_tracer/?QRY=$1|grep addre
 # 删除.log.1.gz 或者 .log.1.bz2
 delog(){ ls | grep &quot;log.\d\+.\(bz2\|gz\)&quot; | xargs rm}
 
-</code></pre>
-
-<pre><code># 这几个Mac不兼容
 # 查看最占用内存的前五个进程(根据第几列可修改k6)
 topmem()
 {
 	ps aux | sort -k6nr | head -n5;
 }
-# 查看某一程序占用的内存
-mem()
-{
-    top -n1 -b | head -n7 | sed '1,6d' &amp;&amp; top -n1 -b | sed '1,7d' | grep --color=auto $1;
-    ps aux | grep --color=auto $1 | grep --color=auto -v grep | awk -F &quot; &quot; '{ sum += $6 } END { printf &quot;Total Memory Usage: %.1f MB\n&quot;, sum/1024 }'
-}
+
+
 </code></pre>
 
 <p>部分快捷键</p>
@@ -344,6 +410,16 @@ echo &quot;*****************************&quot;
 <p><a href="https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian">https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian</a>
 <code>照着全部做下来</code></p>
 
+<h2 id="sed使用">sed使用</h2>
+
+<p>更新版本号</p>
+
+<pre><code>sed -i &quot;s/?ver=\w\+/?ver=`date +%s`/g&quot; *.html
+</code></pre>
+
+<pre><code>o=http://cdn.ourwill.cn/fed-static r=http://cdn.ourwill.cn/fed-static/fedv2 sed -i &quot;s#$o#$r#g&quot; *.html
+</code></pre>
+
 <h2 id="vim乱码解决">Vim乱码解决</h2>
 
 <p><code>vim ~/.vimrc</code></p>
@@ -381,9 +457,11 @@ init.d脚本 包含完整的start,stop,status,reload等参数，是标准做法�
 
 <p>1.RedHat系列：Redhat、Centos、Fedora等</p>
 
-<p>2.Debian系列：Debian、Ubuntu等
-RedHat 系列
-1 常见的安装包格式 rpm包,安装rpm包的命令是“rpm -参数”</p>
+<p>2.Debian系列：Debian、Ubuntu等</p>
+
+<p>RedHat 系列</p>
+
+<p>1 常见的安装包格式 rpm包,安装rpm包的命令是“rpm -参数”</p>
 
 <p>2 包管理工具 yum</p>
 
@@ -449,6 +527,118 @@ fi
 <p>数组下标以0开始,取得第二个元素为<code>echo ${arr[1]}</code></p>
 
 <p>赋值使用<code>arr[5]=5555</code></p>
+
+<h2 id="测试vps宽带">测试VPS宽带</h2>
+
+<p><a href="https://github.com/sivel/speedtest-cli">https://github.com/sivel/speedtest-cli</a></p>
+
+<p><a href="http://man.linuxde.net/speedtest-cli">http://man.linuxde.net/speedtest-cli</a></p>
+
+<p>还可以使用wget下载各大型机房的测试文件</p>
+
+<p>芝加哥机房/100M测试包</p>
+
+<p><code>wget http://cachefly.cachefly.net/100mb.test</code></p>
+
+<p><code>wget http://cachefly.cachefly.net/10mb.test</code></p>
+
+<p>directspace机房/10M.100M测试包</p>
+
+<p>Portland, Oregon Data Center</p>
+
+<p><code>wget http://bandwidth.directspace.net/100MBtest.zip</code></p>
+
+<p><code>wget http://bandwidth.directspace.net/10MBtest.zip</code></p>
+
+<p>Los Angeles, California Data Center</p>
+
+<p><code>wget http://45.34.158.82/speedtest/100MBtest.zip</code></p>
+
+<p>访问 cachefly.cachefly.net 可以测试你电脑当前的网络速度</p>
+
+<p><a href="http://www.fyzhuji.com/speed.html">http://www.fyzhuji.com/speed.html</a> 提供的测速文件.</p>
+
+<p>香港SV新力讯机房,测试20M光纤能跑满2.6MB/s</p>
+
+<p><a href="https://www.starrydns.com/tc/speedtest">https://www.starrydns.com/tc/speedtest</a></p>
+
+<p>Mega-I, Hong Kong,测试能跑到3MB/s</p>
+
+<h2 id="lvm">LVM</h2>
+
+<p>使用<code>pvcreate</code>创建PV</p>
+
+<p>pvcreate 物理分区名字</p>
+
+<p>使用<code>vgcreate</code>创建VG</p>
+
+<p>vgcreate vgname pv1 pv2 pv3</p>
+
+<p>pvdisplay 查看当前的PV</p>
+
+<p>vgdisplay 查看VG</p>
+
+<p>lvdisplay 查看LV</p>
+
+<p>-L：指定LV的大小 -n：指定LV的名。Vo1Group00：表示从这个VG中划分LV；</p>
+
+<p>LV创建好后格式化为想要的格式,然后挂载指定目录,就能使用了.(可以使用<code>df -lhT</code>查看了)</p>
+
+<p><code>lsblk</code></p>
+
+<pre><code>[root@will ~]# lsblk
+NAME            MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+sda               8:0    0 931.5G  0 disk
+├─sda1            8:1    0   200M  0 part /boot/efi
+├─sda2            8:2    0   500M  0 part /boot
+└─sda3            8:3    0 930.8G  0 part
+  ├─centos-root 253:0    0    50G  0 lvm  /
+  ├─centos-swap 253:1    0   5.9G  0 lvm  [SWAP]
+  └─centos-home 253:2    0 874.9G  0 lvm  /home
+sr0              11:0    1  1024M  0 rom
+
+</code></pre>
+
+<p>##</p>
+
+<p><a href="http://home.tiscali.cz/~cz210552/webbench.html">http://home.tiscali.cz/~cz210552/webbench.html</a></p>
+
+<p><a href="http://www.cppblog.com/merlinfang/archive/2014/12/26/209311.html">http://www.cppblog.com/merlinfang/archive/2014/12/26/209311.html</a></p>
+
+<p><a href="http://cloudwu.github.io/lua53doc/">http://cloudwu.github.io/lua53doc/</a></p>
+
+<pre><code>cd /tmp
+LUA_VERSION=lua-5.3.3
+CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
+wget http://www.lua.org/ftp/${LUA_VERSION}.tar.gz
+tar zxf ${LUA_VERSION}.tar.gz
+cd ${LUA_VERSION}
+make linux
+</code></pre>
+
+<p><a href="http://webserver2.tecgraf.puc-rio.br/~lhf/ftp/lua/#srlua">http://webserver2.tecgraf.puc-rio.br/~lhf/ftp/lua/#srlua</a></p>
+
+<p><a href="http://luabinaries.sourceforge.net/download.html">http://luabinaries.sourceforge.net/download.html</a></p>
+
+<p><a href="http://cloudwu.github.io/lua53doc/manual.html">http://cloudwu.github.io/lua53doc/manual.html</a></p>
+
+<p>socat是一個netcat(nc)的替代產品，可以稱得上nc++。
+<a href="http://www.dest-unreach.org/socat/">http://www.dest-unreach.org/socat/</a></p>
+
+<p><a href="http://www.dest-unreach.org/socat/download/">http://www.dest-unreach.org/socat/download/</a></p>
+
+<p>iotop htop
+mtr</p>
+
+<p>netpipes 和socat一样，主要是用来在命令行来进行socket操作的命令，这样你就可以在Shell脚本下行进socket网络通讯了。</p>
+
+<p>iftop和iptraf可以用来查看当前网络链接的一些流量情况。</p>
+
+<p>iostat, vmstat, ifstat 三合一的工具，用来查看系统性能。</p>
+
+<p>rtorrent aria2c
+lftp
+ack是一个perl脚本，是grep的一个可选替换品</p>
 
 		</div>
 	</div>

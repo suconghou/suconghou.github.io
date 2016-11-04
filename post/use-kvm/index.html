@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+	<meta name='renderer' content='webkit'>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
+	<meta name='description' content='记录学习的点点滴滴'>
+	<meta name='keywords' content='前端,PHP,GO,编程博客'>
+	<title>use kvm &middot; 苏苏的博客</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.min.css">
+	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+	<link rel="shortcut icon" href="/favicon.png">
+</head>
+<body>
+<header class="header">
+	<div class="header-main">
+		<a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
+		<h1>苏苏的博客</h1>
+		<p class="sub-title">简约至极</p>
+		<ul class="contact">
+			<a href="https://github.com/suconghou" target="_blank"><i class="fa fa-github"></i></a>
+			<a href="javascript:music.show(1)"><i class="fa fa-music"></i></a>
+		</ul>
+	</div>
+</header>
+
+<aside></aside>
+
+<div class="content container">
+	<div class="post">
+		<h1 class="post-title">
+			<a href="javascript:void(0)"> use kvm</a>
+		</h1>
+		<p class="post-date">Tue, Oct 18, 2016</p>
+		
+		<div class="post-text">
+			
+
+<h1 id="安装和配置kvm">安装和配置KVM</h1>
+
+<h2 id="kvm与xen区别">KVM与XEN区别</h2>
+
+<p>OPENVZ就不说了,是半虚拟化,不能安装Windows操作系统</p>
+
+<p>KVM是内核模块,从2.6.20内核开始,kvm模块就包含在Linux内核中,只需加载此模块即可</p>
+
+<pre><code>#查看宿主机CPU是否在硬件上支持虚拟化扩展特性
+cat /proc/cpuinfo | grep -E &quot;(vmx|svm)&quot;
+
+#加载kvm模块（Intel VT）
+modprobe kvm
+modprobe kvm-intel
+#注意：如果加载失败，说明服务器硬件不支持或BIOS中未开启虚拟化扩展
+</code></pre>
+
+<p>运行命令<code>lsmod | grep kvm</code>检查 KVM 模块是否成功安装</p>
+
+<p>XEN是一套虚拟化方案,可以直接安装,不需要先安装操作系统.</p>
+
+<p>KVM起步较晚,XEN起步早发展成熟,但目前KVM潜力较大.</p>
+
+<h2 id="kvm-与-qemu">KVM 与 qemu</h2>
+
+<p><code>yum install qemu-kvm libvirt virt-install bridge-utils</code></p>
+
+<p>qemu-kvm 该软件包主要包含KVM内核模块和适用于KVM的QEMU模拟器。KVM模块负责CPU和内存的调度，QEMU负责虚拟机I/O设备的模拟。</p>
+
+<p>libvirt 提供Hypervisor和虚拟机的管理功能。</p>
+
+<p>virt-install 创建和克隆虚拟机的命令行工具包。</p>
+
+<p>bridge-utils 网桥管理工具包，负责桥接网络的创建、配置和管理等工作。</p>
+
+<h2 id="激活并启动libvirtd服务">激活并启动libvirtd服务</h2>
+
+<pre><code>systemctl enable libvirtd
+systemctl start libvirtd
+</code></pre>
+
+<h2 id="安装centos7">安装CentOS7</h2>
+
+<p><code>diskutil list</code>查看所有磁盘</p>
+
+<p><code>diskutil unmountdisk /dev/disk1</code> 解除其挂载</p>
+
+<p>用dd将ISO文件写入</p>
+
+<p><code>sudo dd if=/data/files/iso/CentOS-7-x86_64-Minimal-1511.iso of=/dev/disk2 bs=1m</code></p>
+
+<p>安装好系统后,更换网易的源 <a href="http://mirrors.163.com/.help/centos.html">http://mirrors.163.com/.help/centos.html</a></p>
+
+<pre><code>mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
+cd /etc/yum.repos.d
+wget http://mirrors.163.com/.help/CentOS7-Base-163.repo
+yum clean all
+yum makecache
+</code></pre>
+
+<p>搜狐也有,但版本太老 <a href="http://mirrors.sohu.com/help/centos.html">http://mirrors.sohu.com/help/centos.html</a></p>
+
+<p>可以使用清华大学的. <a href="https://lug.ustc.edu.cn/wiki/mirrors/help/centos">https://lug.ustc.edu.cn/wiki/mirrors/help/centos</a> 速度都十分快.</p>
+
+<h2 id="启用kvm后-需要配置网卡">启用KVM后,需要配置网卡</h2>
+
+<p><code>cd /etc/sysconfig/network-scripts/</code></p>
+
+<p>桥接网卡</p>
+
+<p><code>brctl addbr br0</code> 添加一个虚拟网卡</p>
+
+<p><code>brctl addif br0 em2</code> 将网卡<code>br0</code>桥接到<code>em2</code> ,这一步将会导致em2断网,远程ssh将会断开</p>
+
+<p><code>brctl stp br0 on</code> 将br0设置为启用STP协议</p>
+
+<p><code>ifconfig em2 0</code> #将em2的IP设置为0</p>
+
+<p><code>dhclient br0</code> #将br0网络配置好</p>
+
+<p><code>brctl show</code></p>
+
+<p>然后<code>systemctl restart network</code></p>
+
+<p><code>route</code> 查看默认网关</p>
+
+<h2 id="创建虚拟机磁盘镜像文件">创建虚拟机磁盘镜像文件</h2>
+
+<p>不能创建太小,建议5G-50G</p>
+
+<p>qcow2格式是kvm支持的标准格式，raw格式为虚拟磁盘文件通用格式。有测试数据表明raw格式的I/O性能略高于qcow2格式，但是在加密，容量，快照方面qcow2格式有优势</p>
+
+<pre><code>qemu-img create -f qcow2 test.qcow2 20G  //建立qcow2格式磁盘文件
+qemu-img create -f raw test.raw 20G      //建立raw格式磁盘文件
+qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文件
+
+</code></pre>
+
+<p>创建虚拟机</p>
+
+<p>创建 Ubuntu</p>
+
+<pre><code>virt-install \
+--name ubuntu \
+--ram 512 --vcpus 1 \
+--boot network,cdrom,menu=on \
+--disk path=/disk/kvm/disk1,size=10,format=qcow2,bus=virtio \
+--os-type linux \
+--os-variant generic \
+--nographics --accelerate \
+--bridge=br0,model=virtio --keymap=en-us \
+--console pty,target_type=serial \
+--cdrom=/data/iso/ubuntu-16.04.1-server-amd64.iso \
+--extra-args='console=tty0 console=ttyS0,115200n8 serial' \
+--hvm --dry-run
+</code></pre>
+
+<p>创建CentOS</p>
+
+<pre><code>virt-install \
+--name centos \
+--ram 512 --vcpus 1 \
+--disk path=/disk/kvm/disk1,size=10,format=qcow2,bus=virtio \
+--os-type linux \
+--os-variant generic \
+--accelerate \
+--bridge=br0,model=virtio --keymap=en-us \
+--console pty,target_type=serial \
+--location=/data/iso/CentOS-7-x86_64-Minimal-1511.iso \
+--extra-args='console=tty0 console=ttyS0,115200n8 serial' \
+--hvm --dry-run
+</code></pre>
+
+<p>virsh &ndash;connect qemu:///system</p>
+
+<p>创建Debain</p>
+
+<p>先挂载 <code>sudo mount -o loop,unhide -t iso9660 -r /data/iso/debian-8.6.0-amd64-CD-1.iso /mnt/cdrom</code></p>
+
+<p>需要nfs启动 <code>service nfs start</code></p>
+
+<p>添加<code>/mnt/cdrom    *(ro,insecure,all_squash)</code>到文件<code>/etc/exports</code></p>
+
+<p>并刷新<code>exportfs -r</code></p>
+
+<pre><code>virt-install \
+--name debain \
+--ram 512 --vcpus 1 \
+--boot network,cdrom,menu=on \
+--disk path=/disk/kvm/disk4,size=10,format=qcow2,bus=virtio \
+--os-type linux \
+--os-variant generic \
+--bridge=br0,model=virtio --keymap=en-us \
+--console pty,target_type=serial \
+--accelerate \
+--location=/mnt/cdrom \
+--extra-args='console=tty0 console=ttyS0,115200n8 serial' \
+--vnc --vncport=5911 --vnclisten=0.0.0.0 \
+--hvm --dry-run
+</code></pre>
+
+<blockquote>
+<p>disk属性就是指虚拟机使用哪一个磁盘镜像文件作为存储地方，指定刚才创建的镜像文件位置即可，size=10,format=qcow2,bus=virtio分别是指大小，格式（跟镜像格式一致），磁盘总线类型（指Value can be ’ide’, ’scsi’, ’usb’, ’virtio’ or ’xen’，virtio是专门为kvm制定的bus，比较常用），大小需要比镜像文件大小要小，相当于镜像是容器，这个disk是里面的水，水太多就溢出了。</p>
+
+<p>bridge=br0,model=virtio –keymap=en-us分别指网卡使用，网卡模式即驱动模式，和键盘制式，桥接模式都使用br0，而虚拟机需要使用virtio这个驱动才能使用虚拟网卡，这个虚拟网卡驱动在linux下支持很好，在windows下支持一般，键盘制式如果不指定的话会出现键位错乱的情况，一般我们使用英式。</p>
+</blockquote>
+
+<p>使用<code>virsh</code>可以管理已创建的虚拟机</p>
+
+<p>virsh shutdown demo 正常关闭虚拟机</p>
+
+<p>virsh destroy demo 直接销毁虚拟机</p>
+
+<p>可见 <a href="http://www.cnblogs.com/lin1/p/5776280.html">http://www.cnblogs.com/lin1/p/5776280.html</a></p>
+
+<p>启动并进入虚拟机</p>
+
+<pre><code>virsh start 域名 --console
+</code></pre>
+
+<p>10，彻底删除虚拟机</p>
+
+<p>1,删除虚拟机   virsh destroy +域名</p>
+
+<p>2，解除标记     virsh undefine +域名</p>
+
+<p>3，删除虚拟机文件</p>
+
+<p><code>virsh destroy debain &amp;&amp;  virsh undefine debain</code></p>
+
+<p>通过virt-clone命令克隆虚拟机</p>
+
+<p><code>virt-clone -o centos -n centos2 -f /disk/kvm/disk2</code></p>
+
+		</div>
+	</div>
+</div>
+	<div class="music-container">
+	<div class="music-header">
+	    <a class="fa-button home" href="javascript:music.show(0)"><i class="fa fa-home" title="Home"></i></a>
+	    <a class="fa-button next" href="javascript:music.next()"><i class="fa fa-chevron-right" title="Next"></i></a>
+	</div>
+	<div class="backdrop"></div>
+	<div class="music-player">
+		<div class="cover">
+            <img src="http://p4.music.126.net/ckfEE9UUGcnGHylQJ12ENA==/670702092966093.jpg?param=350y350">
+            <div class="foredrag"><i class="fa fa-play"></i></div>
+        </div>
+        <div class="progress">
+            <div class="elapse"></div>
+        </div>
+        <div class="detail">
+            <div class="title">音乐标题</div>
+            <div class="artist">歌手</div>
+        </div>
+	</div>
+</div>
+<div id="loader" style="z-index:99999;" class="pageload-overlay" data-opening="M 40 -21.875 C 11.356078 -21.875 -11.875 1.3560784 -11.875 30 C -11.875 58.643922 11.356078 81.875 40 81.875 C 68.643922 81.875 91.875 58.643922 91.875 30 C 91.875 1.3560784 68.643922 -21.875 40 -21.875 Z">
+    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 80 60" preserveAspectRatio="xMidYMid slice"> <path d="M40,30 c 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 Z"/></svg>
+</div>
+
+	<footer class="footer">
+		<div class="footer-nav">
+			<ul>
+				<li><a href="/post/">归档</a></li>
+				<li><a href="/">专题</a></li>
+				<li><a href="/life/">生活</a></li>
+				<li><a href="/about/">关于</a></li>
+			</ul>
+		</div>
+	</footer>
+	<script type="text/javascript" src="/js/main.min.js" data-no-instant></script>
+</body>
+</html>
+
+

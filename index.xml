@@ -2,12 +2,216 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>苏苏的博客</title>
-    <link>http://blog.suconghou.cn/</link>
+    <link>http://blog.suconghou.cn/index.xml</link>
     <description>Recent content on 苏苏的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 04 Sep 2016 14:37:51 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 18 Oct 2016 19:18:24 +0800</lastBuildDate>
     <atom:link href="http://blog.suconghou.cn/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>use kvm</title>
+      <link>http://blog.suconghou.cn/post/use-kvm/</link>
+      <pubDate>Tue, 18 Oct 2016 19:18:24 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/use-kvm/</guid>
+      <description>
+
+&lt;h1 id=&#34;安装和配置kvm&#34;&gt;安装和配置KVM&lt;/h1&gt;
+
+&lt;h2 id=&#34;kvm与xen区别&#34;&gt;KVM与XEN区别&lt;/h2&gt;
+
+&lt;p&gt;OPENVZ就不说了,是半虚拟化,不能安装Windows操作系统&lt;/p&gt;
+
+&lt;p&gt;KVM是内核模块,从2.6.20内核开始,kvm模块就包含在Linux内核中,只需加载此模块即可&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#查看宿主机CPU是否在硬件上支持虚拟化扩展特性
+cat /proc/cpuinfo | grep -E &amp;quot;(vmx|svm)&amp;quot;
+
+#加载kvm模块（Intel VT）
+modprobe kvm
+modprobe kvm-intel
+#注意：如果加载失败，说明服务器硬件不支持或BIOS中未开启虚拟化扩展
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;运行命令&lt;code&gt;lsmod | grep kvm&lt;/code&gt;检查 KVM 模块是否成功安装&lt;/p&gt;
+
+&lt;p&gt;XEN是一套虚拟化方案,可以直接安装,不需要先安装操作系统.&lt;/p&gt;
+
+&lt;p&gt;KVM起步较晚,XEN起步早发展成熟,但目前KVM潜力较大.&lt;/p&gt;
+
+&lt;h2 id=&#34;kvm-与-qemu&#34;&gt;KVM 与 qemu&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;yum install qemu-kvm libvirt virt-install bridge-utils&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;qemu-kvm 该软件包主要包含KVM内核模块和适用于KVM的QEMU模拟器。KVM模块负责CPU和内存的调度，QEMU负责虚拟机I/O设备的模拟。&lt;/p&gt;
+
+&lt;p&gt;libvirt 提供Hypervisor和虚拟机的管理功能。&lt;/p&gt;
+
+&lt;p&gt;virt-install 创建和克隆虚拟机的命令行工具包。&lt;/p&gt;
+
+&lt;p&gt;bridge-utils 网桥管理工具包，负责桥接网络的创建、配置和管理等工作。&lt;/p&gt;
+
+&lt;h2 id=&#34;激活并启动libvirtd服务&#34;&gt;激活并启动libvirtd服务&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;systemctl enable libvirtd
+systemctl start libvirtd
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;安装centos7&#34;&gt;安装CentOS7&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;diskutil list&lt;/code&gt;查看所有磁盘&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;diskutil unmountdisk /dev/disk1&lt;/code&gt; 解除其挂载&lt;/p&gt;
+
+&lt;p&gt;用dd将ISO文件写入&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;sudo dd if=/data/files/iso/CentOS-7-x86_64-Minimal-1511.iso of=/dev/disk2 bs=1m&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;安装好系统后,更换网易的源 &lt;a href=&#34;http://mirrors.163.com/.help/centos.html&#34;&gt;http://mirrors.163.com/.help/centos.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
+cd /etc/yum.repos.d
+wget http://mirrors.163.com/.help/CentOS7-Base-163.repo
+yum clean all
+yum makecache
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;搜狐也有,但版本太老 &lt;a href=&#34;http://mirrors.sohu.com/help/centos.html&#34;&gt;http://mirrors.sohu.com/help/centos.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;可以使用清华大学的. &lt;a href=&#34;https://lug.ustc.edu.cn/wiki/mirrors/help/centos&#34;&gt;https://lug.ustc.edu.cn/wiki/mirrors/help/centos&lt;/a&gt; 速度都十分快.&lt;/p&gt;
+
+&lt;h2 id=&#34;启用kvm后-需要配置网卡&#34;&gt;启用KVM后,需要配置网卡&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;cd /etc/sysconfig/network-scripts/&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;桥接网卡&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;brctl addbr br0&lt;/code&gt; 添加一个虚拟网卡&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;brctl addif br0 em2&lt;/code&gt; 将网卡&lt;code&gt;br0&lt;/code&gt;桥接到&lt;code&gt;em2&lt;/code&gt; ,这一步将会导致em2断网,远程ssh将会断开&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;brctl stp br0 on&lt;/code&gt; 将br0设置为启用STP协议&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ifconfig em2 0&lt;/code&gt; #将em2的IP设置为0&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;dhclient br0&lt;/code&gt; #将br0网络配置好&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;brctl show&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;然后&lt;code&gt;systemctl restart network&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;route&lt;/code&gt; 查看默认网关&lt;/p&gt;
+
+&lt;h2 id=&#34;创建虚拟机磁盘镜像文件&#34;&gt;创建虚拟机磁盘镜像文件&lt;/h2&gt;
+
+&lt;p&gt;不能创建太小,建议5G-50G&lt;/p&gt;
+
+&lt;p&gt;qcow2格式是kvm支持的标准格式，raw格式为虚拟磁盘文件通用格式。有测试数据表明raw格式的I/O性能略高于qcow2格式，但是在加密，容量，快照方面qcow2格式有优势&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;qemu-img create -f qcow2 test.qcow2 20G  //建立qcow2格式磁盘文件
+qemu-img create -f raw test.raw 20G      //建立raw格式磁盘文件
+qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文件
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;创建虚拟机&lt;/p&gt;
+
+&lt;p&gt;创建 Ubuntu&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;virt-install \
+--name ubuntu \
+--ram 512 --vcpus 1 \
+--boot network,cdrom,menu=on \
+--disk path=/disk/kvm/disk1,size=10,format=qcow2,bus=virtio \
+--os-type linux \
+--os-variant generic \
+--nographics --accelerate \
+--bridge=br0,model=virtio --keymap=en-us \
+--console pty,target_type=serial \
+--cdrom=/data/iso/ubuntu-16.04.1-server-amd64.iso \
+--extra-args=&#39;console=tty0 console=ttyS0,115200n8 serial&#39; \
+--hvm --dry-run
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;创建CentOS&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;virt-install \
+--name centos \
+--ram 512 --vcpus 1 \
+--disk path=/disk/kvm/disk1,size=10,format=qcow2,bus=virtio \
+--os-type linux \
+--os-variant generic \
+--accelerate \
+--bridge=br0,model=virtio --keymap=en-us \
+--console pty,target_type=serial \
+--location=/data/iso/CentOS-7-x86_64-Minimal-1511.iso \
+--extra-args=&#39;console=tty0 console=ttyS0,115200n8 serial&#39; \
+--hvm --dry-run
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;virsh &amp;ndash;connect qemu:///system&lt;/p&gt;
+
+&lt;p&gt;创建Debain&lt;/p&gt;
+
+&lt;p&gt;先挂载 &lt;code&gt;sudo mount -o loop,unhide -t iso9660 -r /data/iso/debian-8.6.0-amd64-CD-1.iso /mnt/cdrom&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;需要nfs启动 &lt;code&gt;service nfs start&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;添加&lt;code&gt;/mnt/cdrom    *(ro,insecure,all_squash)&lt;/code&gt;到文件&lt;code&gt;/etc/exports&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;并刷新&lt;code&gt;exportfs -r&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;virt-install \
+--name debain \
+--ram 512 --vcpus 1 \
+--boot network,cdrom,menu=on \
+--disk path=/disk/kvm/disk4,size=10,format=qcow2,bus=virtio \
+--os-type linux \
+--os-variant generic \
+--bridge=br0,model=virtio --keymap=en-us \
+--console pty,target_type=serial \
+--accelerate \
+--location=/mnt/cdrom \
+--extra-args=&#39;console=tty0 console=ttyS0,115200n8 serial&#39; \
+--vnc --vncport=5911 --vnclisten=0.0.0.0 \
+--hvm --dry-run
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;disk属性就是指虚拟机使用哪一个磁盘镜像文件作为存储地方，指定刚才创建的镜像文件位置即可，size=10,format=qcow2,bus=virtio分别是指大小，格式（跟镜像格式一致），磁盘总线类型（指Value can be ’ide’, ’scsi’, ’usb’, ’virtio’ or ’xen’，virtio是专门为kvm制定的bus，比较常用），大小需要比镜像文件大小要小，相当于镜像是容器，这个disk是里面的水，水太多就溢出了。&lt;/p&gt;
+
+&lt;p&gt;bridge=br0,model=virtio –keymap=en-us分别指网卡使用，网卡模式即驱动模式，和键盘制式，桥接模式都使用br0，而虚拟机需要使用virtio这个驱动才能使用虚拟网卡，这个虚拟网卡驱动在linux下支持很好，在windows下支持一般，键盘制式如果不指定的话会出现键位错乱的情况，一般我们使用英式。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;使用&lt;code&gt;virsh&lt;/code&gt;可以管理已创建的虚拟机&lt;/p&gt;
+
+&lt;p&gt;virsh shutdown demo 正常关闭虚拟机&lt;/p&gt;
+
+&lt;p&gt;virsh destroy demo 直接销毁虚拟机&lt;/p&gt;
+
+&lt;p&gt;可见 &lt;a href=&#34;http://www.cnblogs.com/lin1/p/5776280.html&#34;&gt;http://www.cnblogs.com/lin1/p/5776280.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;启动并进入虚拟机&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;virsh start 域名 --console
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;10，彻底删除虚拟机&lt;/p&gt;
+
+&lt;p&gt;1,删除虚拟机   virsh destroy +域名&lt;/p&gt;
+
+&lt;p&gt;2，解除标记     virsh undefine +域名&lt;/p&gt;
+
+&lt;p&gt;3，删除虚拟机文件&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;virsh destroy debain &amp;amp;&amp;amp;  virsh undefine debain&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;通过virt-clone命令克隆虚拟机&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;virt-clone -o centos -n centos2 -f /disk/kvm/disk2&lt;/code&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>pc hardware</title>
@@ -399,6 +603,16 @@ window.addEventListener(&#39;error&#39;, function (err)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;code&gt;UA-xxx-1&lt;/code&gt;使用自己的统计ID&lt;/p&gt;
+
+&lt;h3 id=&#34;fetch跨域带cookie&#34;&gt;Fetch跨域带cookie&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;fetch(url, {credentials: &#39;include&#39;})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;jQuery ajax 跨域带 cookie&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$.ajaxSetup({xhrFields: {withCredentials: true }});
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
@@ -559,7 +773,7 @@ out of it. Please check the Makefile in case of doubts.
 &lt;pre&gt;&lt;code&gt;apt-get update &amp;amp;&amp;amp; apt-get install -y wget gcc g++ make libpcre++0v5 libpcre++-dev
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;pre&gt;&lt;code&gt;HAPROXY_VERSION=haproxy-1.6.8
+&lt;pre&gt;&lt;code&gt;HAPROXY_VERSION=haproxy-1.6.9
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
 wget http://www.haproxy.org/download/1.6/src/${HAPROXY_VERSION}.tar.gz
 tar zxf ${HAPROXY_VERSION}.tar.gz
@@ -585,6 +799,12 @@ make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 -j$CPU_NUM &amp;amp;&amp;amp
 
 &lt;p&gt;这里提供一份编译好的最新版HAProxy镜像 &lt;a href=&#34;https://hub.docker.com/r/suconghou/haproxy/&#34;&gt;https://hub.docker.com/r/suconghou/haproxy/&lt;/a&gt;&lt;/p&gt;
 
+&lt;p&gt;&lt;code&gt;useradd -M -s /sbin/nologin haproxy&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;-M：不创建家目录&lt;/p&gt;
+
+&lt;p&gt;-s：指定用户登陆时使用的shell，nologin就是登陆不了&lt;/p&gt;
+
 &lt;h3 id=&#34;优化国外主机速度&#34;&gt;优化国外主机速度&lt;/h3&gt;
 
 &lt;p&gt;HAProxy有多种连接模型,还有多种负载均衡算法,由于只有一台机器,我们主要侧重于使用它的反向代理.&lt;/p&gt;
@@ -608,7 +828,6 @@ make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 -j$CPU_NUM &amp;amp;&amp;amp
 &lt;p&gt;一个简单的配置文件如下&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;global
-    log         127.0.0.1 local3
     pidfile     /var/run/haproxy.pid
     user        haproxy
     group       haproxy
@@ -643,10 +862,26 @@ backend servers
 
 &lt;p&gt;&lt;code&gt;ulimit -n&lt;/code&gt; 可以查看当前的&lt;/p&gt;
 
+&lt;p&gt;&lt;code&gt;-st&lt;/code&gt; 是立即结束原有进程(SIGTERM,立即重启)&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;-sf&lt;/code&gt; 是原有进程执行完后退出(SIGUSR1,平滑重启)&lt;/p&gt;
+
 &lt;p&gt;重启HAProxy&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;haproxy -f /etc/haproxy/haproxy.cfg -st `cat /var/run/haproxy.pid`
+
+# 不能放入.bashrc,``会立即执行的
+# haproxy-reload
+haproxy -f /etc/haproxy/haproxy.cfg -st `cat /var/run/haproxy.pid`
+# haproxy-hot-reload
+haproxy -f /etc/haproxy/haproxy.cfg -sf `cat /var/run/haproxy.pid`
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;/etc/rc.local&lt;/code&gt;(软连接到&lt;code&gt;/etc/rc.d/rc.local&lt;/code&gt;)是开机后自动执行的脚本&lt;/p&gt;
+
+&lt;p&gt;可以加入&lt;code&gt;haproxy -f /etc/haproxy/haproxy.cfg&lt;/code&gt;到其中实现开机启动.&lt;/p&gt;
+
+&lt;p&gt;配置文件参考 &lt;a href=&#34;https://github.com/chenzhiwei/linux/tree/master/haproxy&#34;&gt;https://github.com/chenzhiwei/linux/tree/master/haproxy&lt;/a&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;升级-glibc-版本-最新发布-http-www-gnu-org-software-libc&#34;&gt;升级&lt;code&gt;glibc&lt;/code&gt;版本,最新发布 &lt;a href=&#34;http://www.gnu.org/software/libc/&#34;&gt;http://www.gnu.org/software/libc/&lt;/a&gt;&lt;/h2&gt;
 
@@ -667,6 +902,47 @@ make -j4&amp;amp;&amp;amp; make install
 
 &lt;p&gt;见 &lt;a href=&#34;https://cnodejs.org/topic/56dc21f1502596633dc2c3dc&#34;&gt;https://cnodejs.org/topic/56dc21f1502596633dc2c3dc&lt;/a&gt;
 此编译需要较长时间&lt;/p&gt;
+
+&lt;h2 id=&#34;dog-tunnel端口映射&#34;&gt;dog-tunnel端口映射&lt;/h2&gt;
+
+&lt;p&gt;开启服务器端(须有外网IP)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;dtunnel_lite -service 0.0.0.0:1234 -v -tcp -xor 121333 &amp;gt; /tmp/dog.log 2&amp;gt;&amp;amp;1 &amp;amp;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;开启客户端(任意一台可联网的机器)&lt;/p&gt;
+
+&lt;p&gt;反向映射客户机22端口到服务器的30222端口,代理ssh建议使用tcp,pipe通道为1&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;dtunnel_lite -service 服务器端IP:1234 -v -action 127.0.0.1:22 -encrypt -tcp -xor 121333 -local 172.168.1.99:30222 -r &amp;gt; /tmp/dog.log 2&amp;gt;&amp;amp;1 &amp;amp;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以使用客户端连接多个服务器,将22端口映射到多个服务器端.&lt;/p&gt;
+
+&lt;p&gt;用&lt;code&gt;crontab&lt;/code&gt;守护进程,每5分钟检查一次&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;*/5 * * * * sh /data/bin/connect.sh &amp;gt; /tmp/dog.log 2&amp;gt;&amp;amp;1&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/bin/bash
+echo &amp;quot;`date` start shell process &amp;quot;&amp;gt;&amp;gt; /tmp/connect.log
+if test $( pgrep -f dtunnel_lite | wc -l ) -eq 0
+then
+    while true
+    do
+        echo &amp;quot;`date` dtunnel_lite process is starting...&amp;quot;&amp;gt;&amp;gt; /tmp/connect.log
+        touch /run/connect.lock
+        dtunnel_lite -service 114.242.25.173:1234 -v -action 127.0.0.1:22 -encrypt -tcp -xor 121333 -local 172.168.1.99:30222  -r
+        echo &amp;quot;`date` dtunnel_lite process killed,todo restart &amp;quot;&amp;gt;&amp;gt; /tmp/connect.log
+        sleep 5
+    done
+else
+    touch /run/connect.lock
+    echo &amp;quot;`date` dtunnel_lite process is already running &amp;quot;&amp;gt;&amp;gt; /tmp/connect.log
+fi
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;先手动启动一次 &lt;code&gt;sh /data/bin/connect.sh &amp;gt; /tmp/dog.log 2&amp;gt;&amp;amp;1 &amp;amp;&lt;/code&gt;&lt;/p&gt;
 </description>
     </item>
     
@@ -735,7 +1011,7 @@ make -j4&amp;amp;&amp;amp; make install
 
 &lt;h3 id=&#34;windows平台&#34;&gt;windows平台&lt;/h3&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/shadowsocks/Shadowsocks-3.0.zip&#34;&gt;Shadowsocks-3.0&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/shadowsocks/Shadowsocks-3.3.4.zip&#34;&gt;Shadowsocks-3.3.4&lt;/a&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;mac平台&#34;&gt;mac平台&lt;/h3&gt;
 
@@ -743,7 +1019,7 @@ make -j4&amp;amp;&amp;amp; make install
 
 &lt;h3 id=&#34;android平台&#34;&gt;android平台&lt;/h3&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/shadowsocks/shadowsocks-nightly-3.0.3.apk&#34;&gt;shadowsocks-nightly-3.0.3&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/shadowsocks/shadowsocks-nightly-3.2.7.apk&#34;&gt;shadowsocks-nightly-3.2.7&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;服务端可以使用docker更方便 &lt;a href=&#34;https://hub.docker.com/r/suconghou/shadowsocks/&#34;&gt;shadowsocks docker&lt;/a&gt;&lt;/p&gt;
 </description>
@@ -779,33 +1055,19 @@ make -j4&amp;amp;&amp;amp; make install
 
 &lt;p&gt;所有资源均来源于官网&lt;code&gt;http://git-scm.com/download/win&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;最新版本2.10.0,发布于2016-09-03&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;最新版本2.10.2,发布于2016-11-02&lt;/strong&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;32位资源&#34;&gt;32位资源&lt;/h3&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/Git-2.10.0-32-bit.exe&#34;&gt;32位安装版&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/Git-2.10.2-32-bit.exe&#34;&gt;32位安装版&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/PortableGit-2.10.0-64-bit.7z.exe&#34;&gt;32位绿色版&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/PortableGit-2.10.2-64-bit.7z.exe&#34;&gt;32位绿色版&lt;/a&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;64位资源&#34;&gt;64位资源&lt;/h3&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/Git-2.10.0-64-bit.exe&#34;&gt;64位安装版&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/Git-2.10.2-64-bit.exe&#34;&gt;64位安装版&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/PortableGit-2.10.0-64-bit.7z.exe&#34;&gt;64位绿色版&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;版本2.9.3.2,发布于2016-08-25&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;32位资源-1&#34;&gt;32位资源&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/Git-2.9.3.2-32-bit.exe&#34;&gt;32位安装版&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/PortableGit-2.9.3.2-64-bit.7z.exe&#34;&gt;32位绿色版&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;64位资源-1&#34;&gt;64位资源&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/Git-2.9.3.2-64-bit.exe&#34;&gt;64位安装版&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/PortableGit-2.9.3.2-64-bit.7z.exe&#34;&gt;64位绿色版&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/PortableGit-2.10.2-64-bit.7z.exe&#34;&gt;64位绿色版&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     
@@ -1243,6 +1505,18 @@ ZLIB_ENCODING_DEFLATE 对应于ZLIB格式（注意不是纯DEFLATE格式）&lt;/
 &lt;h2 id=&#34;array-merge-vs-array-array&#34;&gt;array_merge vs array+array&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://stackoverflow.com/questions/7059721/array-merge-versus&#34;&gt;http://stackoverflow.com/questions/7059721/array-merge-versus&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;正则-w匹不匹配中文&#34;&gt;正则\w匹不匹配中文&lt;/h2&gt;
+
+&lt;p&gt;\w在ASCII下等价于[A-Za-z0-9_],在Unicode下表示字符(包括汉字)和数字和下划线.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;/\w+/u&lt;/code&gt; 不添加u修饰符是不能匹配汉字的.&lt;/p&gt;
+
+&lt;p&gt;匹配全是汉字的正则&lt;code&gt;/^[\x{4e00}-\x{9fa5}]+$/u&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Unicode的中文字范围是u4e00-u9fa5，4e00对应的字是&amp;rdquo;一&amp;rdquo;,9fa5对应的汉字是&amp;rdquo;龥&amp;rdquo;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;/[\x{4e00}-\x{9fa5}]/u&lt;/code&gt; 等同于 &lt;code&gt;/[一-龥]/u&lt;/code&gt;&lt;/p&gt;
 </description>
     </item>
     
@@ -1333,6 +1607,20 @@ net.ipv4.tcp_congestion_control = hybla
 &lt;pre&gt;&lt;code&gt;net.core.somaxconn = 4096
 net.ipv4.tcp_syncookies = 1
 net.netfilter.nf_conntrack_max = 64000
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使用kcptun加速&lt;/p&gt;
+
+&lt;p&gt;服务器上&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;alias kcptun_start=&#39;server_linux_amd64 -t 127.0.0.1:443 -l :4433 -sndwnd 2048 -rcvwnd 2048 -mode fast2 &amp;gt; /var/log/kcptun.log 2&amp;gt;&amp;amp;1 &amp;amp; &#39;
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;客户机上&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;alias kcptun_start=&#39;kcptun_client -r 192.243.115.210:4433 -l :4433 -sndwnd 2048 -rcvwnd 2048 -mode fast2 &amp;gt; /var/log/kcptun.log 2&amp;gt;&amp;amp;1 &amp;amp;&#39;
+
 &lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
@@ -1470,131 +1758,6 @@ make install
 
 &lt;p&gt;具体使用见
 &lt;a href=&#34;http://man.linuxde.net/ngrep&#34;&gt;http://man.linuxde.net/ngrep&lt;/a&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>编译安装Apache Traffic Server</title>
-      <link>http://blog.suconghou.cn/post/use-apache-traffic-server/</link>
-      <pubDate>Mon, 09 May 2016 22:24:14 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/post/use-apache-traffic-server/</guid>
-      <description>
-
-&lt;h2 id=&#34;编译安装&#34;&gt;编译安装&lt;/h2&gt;
-
-&lt;p&gt;Centos下编译安装&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;yum update -y &amp;amp;&amp;amp; yum install wget gcc g++ gcc-c++ glibc-headers perl openssl openssl-devel tcl-devel libxml2-devel pcre-devel
-wget http://apache.fayea.com/trafficserver/trafficserver-6.1.1.tar.bz2
-tar xvjf trafficserver-6.1.1.tar.bz2
-cd trafficserver-6.1.1
-./configure
-make &amp;amp;&amp;amp; make install
-useradd -s /sbin/nologin trafficserver
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Apache镜像&lt;a href=&#34;http://archive.apache.org/dist/&#34;&gt;http://archive.apache.org/dist/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;国内Apache镜像&lt;a href=&#34;http://apache.fayea.com/&#34;&gt;http://apache.fayea.com/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;编译完成后,就可以使用了,默认是安装在&lt;code&gt;/usr/local/bin&lt;/code&gt;,编译后是比较大&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;total 98M
--rwxr-xr-x 1 root root 692K May  9 14:30 header_rewrite_test
--rwxr-xr-x 1 root root 520K May  9 14:30 traffic_cop
--rwxr-xr-x 1 root root 1.9M May  9 14:30 traffic_crashlog
--rwxr-xr-x 1 root root 259K May  9 14:30 traffic_ctl
--rwxr-xr-x 1 root root 1.9M May  9 14:30 traffic_layout
--rwxr-xr-x 1 root root  41K May  9 14:30 traffic_line
--rwxr-xr-x 1 root root 4.4M May  9 14:30 traffic_logcat
--rwxr-xr-x 1 root root 5.0M May  9 14:30 traffic_logstats
--rwxr-xr-x 1 root root 4.7M May  9 14:30 traffic_manager
--rwxr-xr-x 1 root root  37M May  9 14:30 traffic_sac
--rwxr-xr-x 1 root root  43M May  9 14:30 traffic_server
--rwxr-xr-x 1 root root  42K May  9 14:30 traffic_via
--rwxr-xr-x 1 root root  18K May  9 14:30 trafficserver
--rwxr-xr-x 1 root root 2.1K May  9 14:30 tspush
--rwxr-xr-x 1 root root 5.7K May  9 14:30 tsxs
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;运行&lt;code&gt;traffic_server -R 1&lt;/code&gt;执行测试,经过一系列测试后,显示&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Tests Passed: 177
-Tests Failed: 0
-    REGRESSION_RESULT PARENTSELECTION:                          PASSED
-REGRESSION_TEST DONE: PASSED
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;全部测试通过&lt;/p&gt;
-
-&lt;h2 id=&#34;使用&#34;&gt;使用&lt;/h2&gt;
-
-&lt;p&gt;默认的配置文件存放在&lt;code&gt;/usr/local/etc/trafficserver&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;drwxr-xr-x 3 nobody nobody 1.0K May  9 14:30 body_factory
--rw-r--r-- 1 nobody nobody 1.7K May  9 14:30 cache.config
--rw-r--r-- 1 nobody nobody  657 May  9 14:30 cluster.config
--rw-r--r-- 1 nobody nobody 1.9K May  9 14:30 congestion.config
--rw-r--r-- 1 nobody nobody  746 May  9 14:30 hosting.config
--rw-r--r-- 1 nobody nobody 1.8K May  9 14:30 icp.config
--rw-r--r-- 1 nobody nobody 1.2K May  9 14:30 ip_allow.config
--rw-r--r-- 1 nobody nobody  328 May  9 14:30 log_hosts.config
--rw-r--r-- 1 nobody nobody  17K May  9 14:30 logs_xml.config
--rw-r--r-- 1 nobody nobody 1.4K May  9 14:30 parent.config
--rw-r--r-- 1 nobody nobody  261 May  9 14:30 plugin.config
--rw-r--r-- 1 nobody nobody  13K May  9 14:30 records.config
--rw-r--r-- 1 nobody nobody 8.6K May  9 14:30 remap.config
--rw-r--r-- 1 nobody nobody 1.7K May  9 14:30 socks.config
--rw-r--r-- 1 nobody nobody 2.1K May  9 14:30 splitdns.config
--rw-r--r-- 1 nobody nobody 2.7K May  9 14:30 ssl_multicert.config
--rw-r--r-- 1 nobody nobody  76K May  9 14:30 stats.config.xml
--rw-r--r-- 1 nobody nobody 1.9K May  9 14:30 storage.config
--rw-r--r-- 1 root   root     19 May  9 14:30 trafficserver-release
--rw-r--r-- 1 nobody nobody  649 May  9 14:30 vaddrs.config
--rw-r--r-- 1 nobody nobody 1.3K May  9 14:30 volume.config
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;records.config&lt;/code&gt;负责大部分全局的选项设置，即主要配置文件&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;CONFIG proxy.config.reverse_proxy.enabled INT 1                           # 开启反向代理
-CONFIG proxy.config.url_remap.remap_required INT 1                        # 1 代理反向代理，0代表正向+反向代理
-CONFIG proxy.config.http.cache.http INT 1                                 # 打开http缓存功能
-CONFIG proxy.config.cache.ram_cache.size INT 512M                         # RAM 缓存大小
-CONFIG proxy.config.http.keep_alive_no_activity_timeout_out INT 120       # 当一个事务结束后同原服务器保持连接的时间
-CONFIG proxy.config.cluster.ethernet_interface STRING eth0                # 修改成需要侦听的interface名称
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;remap.config&lt;/code&gt;定义映射规则，用于请求的重定向（rewrite）,反向代理即在此配置&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;storage.config&lt;/code&gt; 用于指定磁盘存储&lt;/p&gt;
-
-&lt;p&gt;启动&lt;code&gt;trafficserver start&lt;/code&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;varnish编译&#34;&gt;varnish编译&lt;/h3&gt;
-
-&lt;p&gt;alpine中编译&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;apk update &amp;amp;&amp;amp; apk upgrade
-apk --update add gcc g++ make wget curl m4 automake autoconf libtool linux-headers py-docutils ncurses-dev pcre-dev libedit-dev
-cd /tmp
-VARNISH_VERSION=varnish-4.1.3
-CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
-wget https://repo.varnish-cache.org/source/${VARNISH_VERSION}.tar.gz
-tar xzf ${VARNISH_VERSION}.tar.gz
-cd ${VARNISH_VERSION}
-./configure
-make CFLAGS=&amp;quot;-Os&amp;quot; CPPFLAGS=-D__NEED_mode_t -j$CPU_NUM &amp;amp;&amp;amp; make install
-strip -s /usr/local/bin/* /usr/local/sbin/* /usr/local/lib/varnish/*.so /usr/local/lib/varnish/vmods/*.so
-varnishd  -V
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4 id=&#34;varnish基本使用&#34;&gt;varnish基本使用&lt;/h4&gt;
-
-&lt;p&gt;varnish / squid / nginx 优缺点讨论 见 &lt;a href=&#34;http://www.zhihu.com/question/20143441&#34;&gt;http://www.zhihu.com/question/20143441&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     

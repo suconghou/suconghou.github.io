@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Hugo on 苏苏的博客</title>
-    <link>http://blog.suconghou.cn/tags/hugo/</link>
-    <description>Recent content in Hugo on 苏苏的博客</description>
+    <title>苏苏的博客</title>
+    <link>http://blog.suconghou.cn/tags/hugo/index.xml</link>
+    <description>Recent content on 苏苏的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 01 Jan 2016 19:00:18 +0800</lastBuildDate>
     <atom:link href="http://blog.suconghou.cn/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
     
     <item>

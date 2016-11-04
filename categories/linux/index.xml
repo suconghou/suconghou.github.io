@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Linux on 苏苏的博客</title>
-    <link>http://blog.suconghou.cn/categories/linux/</link>
-    <description>Recent content in Linux on 苏苏的博客</description>
+    <title>苏苏的博客</title>
+    <link>http://blog.suconghou.cn/categories/linux/index.xml</link>
+    <description>Recent content on 苏苏的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 21 Jan 2016 13:40:53 +0800</lastBuildDate>
     <atom:link href="http://blog.suconghou.cn/categories/linux/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -25,9 +24,62 @@
 
 &lt;p&gt;&lt;code&gt;adduser work -M&lt;/code&gt;&lt;/p&gt;
 
+&lt;pre&gt;&lt;code&gt;# add rslsync user without home dir and cannot login
+sudo adduser --shell /bin/nologin --no-create-home --group rslsync
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;-M, &amp;ndash;no-create-home        不创建用户的主目录
+-s, &amp;ndash;shell SHELL       新账户的登录 shell,nologin就是登陆不了
+-G, &amp;ndash;groups GROUPS 新账户的附加组列表&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;adduser -h&lt;/code&gt;查看完整帮助&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;用法：adduser [选项] 登录
+      adduser -D
+      adduser -D [选项]
+
+选项：
+  -b, --base-dir BASE_DIR	新账户的主目录的基目录
+  -c, --comment COMMENT         新账户的 GECOS 字段
+  -d, --home-dir HOME_DIR       新账户的主目录
+  -D, --defaults		显示或更改默认的 useradd 配置
+  -e, --expiredate EXPIRE_DATE  新账户的过期日期
+  -f, --inactive INACTIVE       新账户的密码不活动期
+  -g, --gid GROUP		新账户主组的名称或 ID
+  -G, --groups GROUPS	新账户的附加组列表
+  -h, --help                    显示此帮助信息并推出
+  -k, --skel SKEL_DIR	使用此目录作为骨架目录
+  -K, --key KEY=VALUE           不使用 /etc/login.defs 中的默认值
+  -l, --no-log-init	不要将此用户添加到最近登录和登录失败数据库
+  -m, --create-home	创建用户的主目录
+  -M, --no-create-home		不创建用户的主目录
+  -N, --no-user-group	不创建同名的组
+  -o, --non-unique		允许使用重复的 UID 创建用户
+  -p, --password PASSWORD		加密后的新账户密码
+  -r, --system                  创建一个系统账户
+  -R, --root CHROOT_DIR         chroot 到的目录
+  -s, --shell SHELL		新账户的登录 shell
+  -u, --uid UID			新账户的用户 ID
+  -U, --user-group		创建与用户同名的组
+  -Z, --selinux-user SEUSER		为 SELinux 用户映射使用指定 SEUSER
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h3 id=&#34;修改密码&#34;&gt;修改密码&lt;/h3&gt;
 
 &lt;p&gt;&lt;code&gt;passwd work&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;修改用户名&#34;&gt;修改用户名&lt;/h3&gt;
+
+&lt;p&gt;alarm为旧用户名&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;new_user=lao
+# change user name
+usermod -l $new_user -d /home/$new_user -m alarm
+# chenge user group
+groupmod -n $new_user alarm
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.cnblogs.com/xd502djj/archive/2011/11/23/2260094.html&#34;&gt;http://www.cnblogs.com/xd502djj/archive/2011/11/23/2260094.html&lt;/a&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;linux实用命令&#34;&gt;Linux实用命令&lt;/h2&gt;
 
@@ -63,7 +115,25 @@ us, sy, id, wa, st：这些都是平均了所有 CPU 的 CPU 分解时间。它�
 
 &lt;h2 id=&#34;top&#34;&gt;top&lt;/h2&gt;
 
+&lt;p&gt;&lt;code&gt;top -b -n1&lt;/code&gt; 可以只执行一次,用于将结果重定向到文件.&lt;/p&gt;
+
 &lt;h2 id=&#34;free&#34;&gt;free&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;free -m&lt;/code&gt; &lt;code&gt;free -h&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;按内存占用排序&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+ps -eo rss,vsz,pid,ppid,time,etime,command --sort=rss   # 按内存
+ps -eo rss,vsz,pid,ppid,time,etime,command --sort=time  # 按CPU时间,etime启动时间,comm等都可以.
+
+# MAC无法使用`--sort`上需要使用`| sort -n`
+
+ps -eo rss,vsz,pid,ppid,time,etime,command |sort -n
+
+# alpine 里这样用,不支持--sort, 同样也可以 `top -b -n1`
+ps -o rss,vsz,pid,ppid,time,etime,args
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;h2 id=&#34;ssh&#34;&gt;ssh&lt;/h2&gt;
 
@@ -128,6 +198,8 @@ count = blocks 只拷贝输入的blocks块&lt;/p&gt;
 &lt;p&gt;ps 默认是按照PID排序的,若要按内存使用排序&lt;code&gt;ps auxw --sort=rss&lt;/code&gt;,同理按虚拟内存排序&lt;code&gt;ps auxw --sort=vsz&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;mac上无法使用&lt;code&gt;--sort&lt;/code&gt;,可以采用&lt;code&gt;sort&lt;/code&gt;排序,如rss在第六列,则&lt;code&gt;ps auxw | sort -k6,6n&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;lscpu&lt;/p&gt;
 
 &lt;h2 id=&#34;nc&#34;&gt;nc&lt;/h2&gt;
 
@@ -203,20 +275,13 @@ getlocation() { lynx -dump http://www.ip-adress.com/ip_tracer/?QRY=$1|grep addre
 # 删除.log.1.gz 或者 .log.1.bz2
 delog(){ ls | grep &amp;quot;log.\d\+.\(bz2\|gz\)&amp;quot; | xargs rm}
 
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;# 这几个Mac不兼容
 # 查看最占用内存的前五个进程(根据第几列可修改k6)
 topmem()
 {
 	ps aux | sort -k6nr | head -n5;
 }
-# 查看某一程序占用的内存
-mem()
-{
-    top -n1 -b | head -n7 | sed &#39;1,6d&#39; &amp;amp;&amp;amp; top -n1 -b | sed &#39;1,7d&#39; | grep --color=auto $1;
-    ps aux | grep --color=auto $1 | grep --color=auto -v grep | awk -F &amp;quot; &amp;quot; &#39;{ sum += $6 } END { printf &amp;quot;Total Memory Usage: %.1f MB\n&amp;quot;, sum/1024 }&#39;
-}
+
+
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;部分快捷键&lt;/p&gt;
@@ -317,6 +382,16 @@ echo &amp;quot;*****************************&amp;quot;
 &lt;p&gt;&lt;a href=&#34;https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian&#34;&gt;https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian&lt;/a&gt;
 &lt;code&gt;照着全部做下来&lt;/code&gt;&lt;/p&gt;
 
+&lt;h2 id=&#34;sed使用&#34;&gt;sed使用&lt;/h2&gt;
+
+&lt;p&gt;更新版本号&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sed -i &amp;quot;s/?ver=\w\+/?ver=`date +%s`/g&amp;quot; *.html
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;o=http://cdn.ourwill.cn/fed-static r=http://cdn.ourwill.cn/fed-static/fedv2 sed -i &amp;quot;s#$o#$r#g&amp;quot; *.html
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h2 id=&#34;vim乱码解决&#34;&gt;Vim乱码解决&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;vim ~/.vimrc&lt;/code&gt;&lt;/p&gt;
@@ -354,9 +429,11 @@ init.d脚本 包含完整的start,stop,status,reload等参数，是标准做法�
 
 &lt;p&gt;1.RedHat系列：Redhat、Centos、Fedora等&lt;/p&gt;
 
-&lt;p&gt;2.Debian系列：Debian、Ubuntu等
-RedHat 系列
-1 常见的安装包格式 rpm包,安装rpm包的命令是“rpm -参数”&lt;/p&gt;
+&lt;p&gt;2.Debian系列：Debian、Ubuntu等&lt;/p&gt;
+
+&lt;p&gt;RedHat 系列&lt;/p&gt;
+
+&lt;p&gt;1 常见的安装包格式 rpm包,安装rpm包的命令是“rpm -参数”&lt;/p&gt;
 
 &lt;p&gt;2 包管理工具 yum&lt;/p&gt;
 
@@ -422,6 +499,118 @@ fi
 &lt;p&gt;数组下标以0开始,取得第二个元素为&lt;code&gt;echo ${arr[1]}&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;赋值使用&lt;code&gt;arr[5]=5555&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;测试vps宽带&#34;&gt;测试VPS宽带&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/sivel/speedtest-cli&#34;&gt;https://github.com/sivel/speedtest-cli&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://man.linuxde.net/speedtest-cli&#34;&gt;http://man.linuxde.net/speedtest-cli&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;还可以使用wget下载各大型机房的测试文件&lt;/p&gt;
+
+&lt;p&gt;芝加哥机房/100M测试包&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;wget http://cachefly.cachefly.net/100mb.test&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;wget http://cachefly.cachefly.net/10mb.test&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;directspace机房/10M.100M测试包&lt;/p&gt;
+
+&lt;p&gt;Portland, Oregon Data Center&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;wget http://bandwidth.directspace.net/100MBtest.zip&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;wget http://bandwidth.directspace.net/10MBtest.zip&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Los Angeles, California Data Center&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;wget http://45.34.158.82/speedtest/100MBtest.zip&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;访问 cachefly.cachefly.net 可以测试你电脑当前的网络速度&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.fyzhuji.com/speed.html&#34;&gt;http://www.fyzhuji.com/speed.html&lt;/a&gt; 提供的测速文件.&lt;/p&gt;
+
+&lt;p&gt;香港SV新力讯机房,测试20M光纤能跑满2.6MB/s&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://www.starrydns.com/tc/speedtest&#34;&gt;https://www.starrydns.com/tc/speedtest&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Mega-I, Hong Kong,测试能跑到3MB/s&lt;/p&gt;
+
+&lt;h2 id=&#34;lvm&#34;&gt;LVM&lt;/h2&gt;
+
+&lt;p&gt;使用&lt;code&gt;pvcreate&lt;/code&gt;创建PV&lt;/p&gt;
+
+&lt;p&gt;pvcreate 物理分区名字&lt;/p&gt;
+
+&lt;p&gt;使用&lt;code&gt;vgcreate&lt;/code&gt;创建VG&lt;/p&gt;
+
+&lt;p&gt;vgcreate vgname pv1 pv2 pv3&lt;/p&gt;
+
+&lt;p&gt;pvdisplay 查看当前的PV&lt;/p&gt;
+
+&lt;p&gt;vgdisplay 查看VG&lt;/p&gt;
+
+&lt;p&gt;lvdisplay 查看LV&lt;/p&gt;
+
+&lt;p&gt;-L：指定LV的大小 -n：指定LV的名。Vo1Group00：表示从这个VG中划分LV；&lt;/p&gt;
+
+&lt;p&gt;LV创建好后格式化为想要的格式,然后挂载指定目录,就能使用了.(可以使用&lt;code&gt;df -lhT&lt;/code&gt;查看了)&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;lsblk&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@will ~]# lsblk
+NAME            MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+sda               8:0    0 931.5G  0 disk
+├─sda1            8:1    0   200M  0 part /boot/efi
+├─sda2            8:2    0   500M  0 part /boot
+└─sda3            8:3    0 930.8G  0 part
+  ├─centos-root 253:0    0    50G  0 lvm  /
+  ├─centos-swap 253:1    0   5.9G  0 lvm  [SWAP]
+  └─centos-home 253:2    0 874.9G  0 lvm  /home
+sr0              11:0    1  1024M  0 rom
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;##&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://home.tiscali.cz/~cz210552/webbench.html&#34;&gt;http://home.tiscali.cz/~cz210552/webbench.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.cppblog.com/merlinfang/archive/2014/12/26/209311.html&#34;&gt;http://www.cppblog.com/merlinfang/archive/2014/12/26/209311.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://cloudwu.github.io/lua53doc/&#34;&gt;http://cloudwu.github.io/lua53doc/&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd /tmp
+LUA_VERSION=lua-5.3.3
+CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
+wget http://www.lua.org/ftp/${LUA_VERSION}.tar.gz
+tar zxf ${LUA_VERSION}.tar.gz
+cd ${LUA_VERSION}
+make linux
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://webserver2.tecgraf.puc-rio.br/~lhf/ftp/lua/#srlua&#34;&gt;http://webserver2.tecgraf.puc-rio.br/~lhf/ftp/lua/#srlua&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://luabinaries.sourceforge.net/download.html&#34;&gt;http://luabinaries.sourceforge.net/download.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://cloudwu.github.io/lua53doc/manual.html&#34;&gt;http://cloudwu.github.io/lua53doc/manual.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;socat是一個netcat(nc)的替代產品，可以稱得上nc++。
+&lt;a href=&#34;http://www.dest-unreach.org/socat/&#34;&gt;http://www.dest-unreach.org/socat/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.dest-unreach.org/socat/download/&#34;&gt;http://www.dest-unreach.org/socat/download/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;iotop htop
+mtr&lt;/p&gt;
+
+&lt;p&gt;netpipes 和socat一样，主要是用来在命令行来进行socket操作的命令，这样你就可以在Shell脚本下行进socket网络通讯了。&lt;/p&gt;
+
+&lt;p&gt;iftop和iptraf可以用来查看当前网络链接的一些流量情况。&lt;/p&gt;
+
+&lt;p&gt;iostat, vmstat, ifstat 三合一的工具，用来查看系统性能。&lt;/p&gt;
+
+&lt;p&gt;rtorrent aria2c
+lftp
+ack是一个perl脚本，是grep的一个可选替换品&lt;/p&gt;
 </description>
     </item>
     

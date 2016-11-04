@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.16" />
+	<meta name="generator" content="Hugo 0.17" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -31,6 +31,120 @@
 
 <div class="content container">
 	<div class="posts">
+		
+		<div class="post">
+			<h1 class="post-title">
+				<a href="/post/play-with-raspberrypi/"> 玩转树莓派</a>
+			</h1>
+			<p class="post-date">Sun, Jan 17, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="官方操作系统">官方操作系统</h2>
+
+<p><a href="https://www.raspberrypi.org/downloads/raspbian/">https://www.raspberrypi.org/downloads/raspbian/</a></p>
+
+<p>带桌面版1.4G</p>
+
+<p>精简版292MB</p>
+
+<h2 id="安装其他操作系统">安装其他操作系统</h2>
+
+<h3 id="centos">CentOS</h3>
+
+<p>CentOS7官方支持了AMRV7发布了树莓派2、香蕉派、以及CubitTruck单片机的版本</p>
+
+<p><a href="http://mirror.centos.org/altarch/7/isos/armhfp/">CentOS7官方下载</a>
+root 密码 centos
+大约275MB</p>
+
+<h3 id="archlinux">ArchLinux</h3>
+
+<p>树莓派1 <a href="https://archlinuxarm.org/platforms/armv6/raspberry-pi">https://archlinuxarm.org/platforms/armv6/raspberry-pi</a></p>
+
+<p>树莓派2 <a href="https://archlinuxarm.org/platforms/armv7/broadcom/raspberry-pi-2">https://archlinuxarm.org/platforms/armv7/broadcom/raspberry-pi-2</a></p>
+
+<p>树莓派3 <a href="https://archlinuxarm.org/platforms/armv8/broadcom/raspberry-pi-3">https://archlinuxarm.org/platforms/armv8/broadcom/raspberry-pi-3</a></p>
+
+<p>有国内的下载镜像 <a href="https://mirrors.tuna.tsinghua.edu.cn/archlinuxarm/os/">https://mirrors.tuna.tsinghua.edu.cn/archlinuxarm/os/</a></p>
+
+<p>大约293MB</p>
+
+<h2 id="安装osmc">安装OSMC</h2>
+
+<p><a href="https://osmc.tv/download/">下载一览</a>,选择<code>Disk images</code>,此系统较省资源,默认开机进入OSMC,img.gz 大小约160M</p>
+
+<pre><code>OSMC_FILE=OSMC_TGT_rbp2_20160621.img.gz
+cd /data/tmp
+axel -n 20 http://download.osmc.tv/installers/diskimages/$OSMC_FILE
+md5sum $OSMC_FILE
+ls -lh
+</code></pre>
+
+<p>查看所有版本 <a href="http://download.osmc.tv/installers/diskimages/">http://download.osmc.tv/installers/diskimages/</a></p>
+
+<blockquote>
+<p>使用清华大学镜像站国内下载速度更快: <a href="https://mirrors.tuna.tsinghua.edu.cn/osmc/osmc/download/installers/">https://mirrors.tuna.tsinghua.edu.cn/osmc/osmc/download/installers/</a></p>
+</blockquote>
+
+<p>插入内存卡,开始烧写到内存卡中.烧写之前需要取消挂载</p>
+
+<p><code>diskutil list</code> 查看你的内存卡的挂载位置,取消挂载</p>
+
+<p>执行<code>diskutil unmountdisk /dev/disk2</code> 取消挂载,需要稍等一小会.</p>
+
+<p>烧写,烧写过程中读卡器不断闪烁.</p>
+
+<pre><code>gzip -dc /data/tmp/$OSMC_FILE | sudo dd of=/dev/disk2 bs=8k
+</code></pre>
+
+<p>dd的用法: <code>dd if=/dev/zero of=hello.txt bs=1024</code></p>
+
+<p>dd过程中看不到进度,如果确实想要了解进度,可以再开一个终端<code>pkill -USR1 -n -x dd</code>查看进度.</p>
+
+<p>如果是iso文件,需要装换为img文件,</p>
+
+<pre><code>hdiutil convert -format UDRW -o /path/to/generate/img/file /path/to/your/iso/file
+</code></pre>
+
+<p>mac osx会默认追加一个.dmg,这个没有影响,然后就可以使用dd写入这个img文件了.</p>
+
+<p><code>diskutil eject /dev/disk1</code> 弹出USB,注意和卸载(<code>unmountdisk</code>)是不同的</p>
+
+<p>除了OSMC默认皮肤,还有一些好看的皮肤推荐</p>
+
+<p>1.<a href="http://forum.kodi.tv/showthread.php?tid=187071">Eminence</a></p>
+
+<p>2.<a href="http://forum.kodi.tv/showthread.php?tid=214146">Bello</a> 看github,支持中文</p>
+
+<p><a href="http://forum.kodi.tv/forumdisplay.php?fid=26">官方论坛</a></p>
+
+<p>OSMC默认的ssh连接用户是 osmc 密码 osmc</p>
+
+<h2 id="安装openelec">安装openelec</h2>
+
+<p><a href="http://openelec.tv/get-openelec">openelec</a> 镜像下载,osmc是基于debain的,系统更加完善.此系统相比osmc更加精简,是专为跑kodi精简的系统. img.gz 大小约102M</p>
+
+<h2 id="安装xbian">安装xbian</h2>
+
+<p><a href="http://www.xbian.org/">http://www.xbian.org/</a></p>
+
+<p>与openelec,osmc都是类似,img.gz较大,大约316MB</p>
+
+<h2 id="安装chromeos">安装ChromeOs</h2>
+
+<p>ChromeOs已经有支持树莓派的版本了,<a href="www.chromiumosforsbc.org">www.chromiumosforsbc.org</a></p>
+
+<h2 id="关于各种派的性能比较">关于各种派的性能比较</h2>
+
+<p><a href="https://www.zhihu.com/question/37202806">https://www.zhihu.com/question/37202806</a></p>
+
+<p>参数一览</p>
+
+<p><a href="https://cdn.shopify.com/s/files/1/1098/4826/files/comparisonupdate.png?13077955502273113275">https://cdn.shopify.com/s/files/1/1098/4826/files/comparisonupdate.png?13077955502273113275</a></p>
+
+			</div>
+		</div>
 		
 		<div class="post">
 			<h1 class="post-title">
@@ -523,11 +637,11 @@ interactive_timeout=3600
 
 <p>当update或者insert的内容过大时,<code>max_allowed_packet</code>的值过小,会引起sql异常,需要改大;其默认值为1048576(1M)，</p>
 
-<p>修改<code>my.cnf</code>  <code>max_allowed_packet = 20M</code></p>
+<p>修改<code>my.cnf</code>  <code>max_allowed_packet = 100M</code></p>
 
-<p>或者零时动态设置 <code>set global max_allowed_packet = 20*1024*1024</code></p>
+<p>或者零时动态设置 <code>set global max_allowed_packet = 104857600;</code></p>
 
-<p>查看是否生效,零时修改一般断开后重新连接即可生效. <code>show variables like '%max_allowed_packet%'</code></p>
+<p>查看是否生效,零时修改一般断开后重新连接即可生效. <code>show variables like '%max_allowed_packet%';</code></p>
 
 <h2 id="数据库优化">数据库优化</h2>
 
@@ -702,10 +816,12 @@ SET GLOBAL general_log = &lsquo;ON&rsquo;;
 <h3 id="ibdata1文件过大">ibdata1文件过大</h3>
 
 <ol>
-<li>需要指定<code>innodb_file_per_table=1</code>参数,单独保存每个表的数据,否则MySQL的数据都会存放在ibdata1文件里，文件只增加不减小,时间久了这个文件就会变的非常大。</li>
+<li>需要指定<code>innodb_file_per_table</code>参数,单独保存每个表的数据,否则MySQL的数据都会存放在ibdata1文件里，文件只增加不减小,时间久了这个文件就会变的非常大。</li>
 </ol>
 
 <p><code>show variables like '%innodb%';</code>查看目前innodb的配置</p>
+
+<p>需要给<code>my.cnf</code>添加一行<code>innodb_file_per_table</code>,记得这个需要在<code>[mysqld]</code>段下面</p>
 
 <ol>
 <li>可能有长时间执行但未提交的事务.</li>
@@ -749,167 +865,13 @@ mysqldump -uroot -pdbpasswd dbname test&gt;db.sql;</p>
 
 <p>同理还可以使用<code>bzip2</code>和<code>bzip2 -dc</code>压缩和解压</p>
 
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/ffmpeg-usage/"> ffmpeg安装使用</a>
-			</h1>
-			<p class="post-date">Mon, Jan 11, 2016</p>
-			<div class="post-text">
-				
+<p>DELAYED仅适用于MyISAM, MEMORY和ARCHIVE表</p>
 
-<h2 id="安装">安装</h2>
+<p>replace delayed into</p>
 
-<pre><code>yum install autoconf automake cmake freetype-devel gcc gcc-c++ git libtool make mercurial nasm pkgconfig zlib-devel
-mkdir ~/ffmpeg_sources
-</code></pre>
+<p>insert delayed into</p>
 
-<p>Yasm is an assembler used by x264 and FFmpeg</p>
-
-<pre><code>cd ~/ffmpeg_sources
-git clone --depth 1 git://github.com/yasm/yasm.git
-cd yasm
-autoreconf -fiv
-./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --bindir=&quot;$HOME/bin&quot;
-make
-make install
-make distclean
-</code></pre>
-
-<p>H.264 video encoder.
-Requires ffmpeg to be configured with <code>--enable-gpl --enable-libx264</code></p>
-
-<pre><code>cd ~/ffmpeg_sources
-git clone --depth 1 git://git.videolan.org/x264
-cd x264
-PKG_CONFIG_PATH=&quot;$HOME/ffmpeg_build/lib/pkgconfig&quot; ./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --bindir=&quot;$HOME/bin&quot; --enable-static
-make
-make install
-make distclean
-</code></pre>
-
-<p>H.265/HEVC video encoder. Requires ffmpeg to be configured with <code>--enable-gpl --enable-libx265</code></p>
-
-<pre><code>cd ~/ffmpeg_sources
-hg clone https://bitbucket.org/multicoreware/x265
-cd ~/ffmpeg_sources/x265/build/linux
-cmake -G &quot;Unix Makefiles&quot; -DCMAKE_INSTALL_PREFIX=&quot;$HOME/ffmpeg_build&quot; -DENABLE_SHARED:bool=off ../../source
-make
-make install
-</code></pre>
-
-<p>AAC audio encoder. Requires ffmpeg to be configured with <code>--enable-libfdk-aac</code> (and <code>--enable-nonfree</code> if you also included <code>--enable-gpl</code>)</p>
-
-<pre><code>cd ~/ffmpeg_sources
-git clone --depth 1 git://git.code.sf.net/p/opencore-amr/fdk-aac
-cd fdk-aac
-autoreconf -fiv
-./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --disable-shared
-make
-make install
-make distclean
-</code></pre>
-
-<p>MP3 audio encoder. Requires ffmpeg to be configured with <code>--enable-libmp3lame</code></p>
-
-<pre><code>cd ~/ffmpeg_sources
-curl -L -O http://downloads.sourceforge.net/project/lame/lame/3.99/lame-3.99.5.tar.gz
-tar xzvf lame-3.99.5.tar.gz
-cd lame-3.99.5
-./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --bindir=&quot;$HOME/bin&quot; --disable-shared --enable-nasm
-make
-make install
-make distclean
-</code></pre>
-
-<p>Opus audio decoder and encoder. Requires ffmpeg to be configured with <code>--enable-libopus</code></p>
-
-<pre><code>cd ~/ffmpeg_sources
-git clone git://git.opus-codec.org/opus.git
-cd opus
-autoreconf -fiv
-./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --disable-shared
-make
-make install
-make distclean
-</code></pre>
-
-<p>Ogg bitstream library. Required by libtheora and libvorbis.</p>
-
-<pre><code>cd ~/ffmpeg_sources
-curl -O http://downloads.xiph.org/releases/ogg/libogg-1.3.2.tar.gz
-tar xzvf libogg-1.3.2.tar.gz
-cd libogg-1.3.2
-./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --disable-shared
-make
-make install
-make distclean
-</code></pre>
-
-<p>Vorbis audio encoder. Requires libogg. Requires ffmpeg to be configured with <code>--enable-libvorbis</code></p>
-
-<pre><code>cd ~/ffmpeg_sources
-curl -O http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.4.tar.gz
-tar xzvf libvorbis-1.3.4.tar.gz
-cd libvorbis-1.3.4
-LDFLAGS=&quot;-L$HOME/ffmeg_build/lib&quot; CPPFLAGS=&quot;-I$HOME/ffmpeg_build/include&quot; ./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --with-ogg=&quot;$HOME/ffmpeg_build&quot; --disable-shared
-make
-make install
-make distclean
-</code></pre>
-
-<p>VP8/VP9 video encoder. Requires ffmpeg to be configured with <code>--enable-libvpx</code></p>
-
-<pre><code>cd ~/ffmpeg_sources
-git clone --depth 1 https://chromium.googlesource.com/webm/libvpx.git
-cd libvpx
-./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --disable-examples
-make
-make install
-make clean
-</code></pre>
-
-<p>Compilation is now complete and ffmpeg (also ffprobe, ffserver, lame, and x264) should now be ready to use.</p>
-
-<pre><code>cd ~/ffmpeg_sources
-git clone https://github.com/FFmpeg/FFmpeg ffmpeg
-cd ffmpeg
-PKG_CONFIG_PATH=&quot;$HOME/ffmpeg_build/lib/pkgconfig&quot; ./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --extra-cflags=&quot;-I$HOME/ffmpeg_build/include&quot; --extra-ldflags=&quot;-L$HOME/ffmpeg_build/lib&quot; --bindir=&quot;$HOME/bin&quot; --pkg-config-flags=&quot;--static&quot; --enable-gpl --enable-nonfree --enable-libfdk-aac --enable-libfreetype --enable-libmp3lame --enable-libopus --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libx265
-make -j4
-make install
-make distclean
-hash -r
-</code></pre>
-
-<p>生成的可执行文件存放在<code>~/bin</code></p>
-
-<h2 id="下载官方的静态编译的linux通用二进制包">下载官方的静态编译的Linux通用二进制包</h2>
-
-<p><a href="http://johnvansickle.com/ffmpeg/">ffmeg</a></p>
-
-<p>3.1正式版已发布,<a href="http://www.oschina.net/news/74702/ffmpeg-3-1">查看详情</a></p>
-
-<p>3.1.2 <a href="http://www.oschina.net/news/75969/ffmpeg-3-1-2">http://www.oschina.net/news/75969/ffmpeg-3-1-2</a></p>
-
-<p>让ffmpeg转为MP4边下边播</p>
-
-<p><code>ffmpeg -i input.xxoo -c copy -movflags faststart output.mp4</code></p>
-
-<p>flv to mp4</p>
-
-<p><code>ffmpeg -i input.flv -codec copy output.mp4</code> 快速转化flv到mp4,高质量转化( only changes container without reencoding )</p>
-
-<p><code>ffmpeg -i input.flv -c copy -copyts output.mp4</code> 也比较快,高质量转化</p>
-
-<p><code>ffmpeg -i aaa.flv -c:v libx264 -crf 28 output.mp4</code> 带压缩的转换,非常消耗CPU和时间</p>
-
-<p>更多用法可以参考 <a href="http://www.jianshu.com/p/053665062f22">http://www.jianshu.com/p/053665062f22</a></p>
-
-<p>处理m3u8地址视频</p>
-
-<p>下载转码 <code>ffmpeg -i &quot;http://m3u8的地址&quot;&quot; -c copy -bsf:a aac_adtstoasc output.mp4</code></p>
+<p>insert delayed ignore into</p>
 
 			</div>
 		</div>

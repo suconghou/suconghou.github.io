@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tools on 苏苏的博客</title>
-    <link>http://blog.suconghou.cn/categories/tools/</link>
-    <description>Recent content in Tools on 苏苏的博客</description>
+    <title>苏苏的博客</title>
+    <link>http://blog.suconghou.cn/categories/tools/index.xml</link>
+    <description>Recent content on 苏苏的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 01 Jan 2016 23:54:20 +0800</lastBuildDate>
     <atom:link href="http://blog.suconghou.cn/categories/tools/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -19,8 +18,13 @@
 
 &lt;h2 id=&#34;wget&#34;&gt;wget&lt;/h2&gt;
 
-&lt;p&gt;&lt;code&gt;wget -c -O filename &amp;quot;http://xx.com&amp;quot;&lt;/code&gt; 下载存储到指定文件,并指定断点续传
-&lt;code&gt;wget -nc -c -i url.txt&lt;/code&gt; 批量下载文件中指定的资源(每行一个连接),跳过已下载的(同名的),并且断点续传.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;wget -c -O filename &amp;quot;http://xx.com&amp;quot;&lt;/code&gt; 下载存储到指定文件,并指定断点续传&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;wget -nc -c -i url.txt&lt;/code&gt; 批量下载文件中指定的资源(每行一个连接),跳过已下载的(同名的),并且断点续传.&lt;/p&gt;
+
+&lt;p&gt;使用user-agent&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;wget --user-agent=&amp;quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36&amp;quot; URL-TO-DOWNLOAD&lt;/code&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;curl&#34;&gt;curl&lt;/h2&gt;
 

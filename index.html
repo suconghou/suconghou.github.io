@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.16" />
+	<meta name="generator" content="Hugo 0.17" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -31,6 +31,211 @@
 
 <div class="content container">
 	<div class="posts">
+		
+		<div class="post">
+			<h1 class="post-title">
+				<a href="/post/use-kvm/"> use kvm</a>
+			</h1>
+			<p class="post-date">Tue, Oct 18, 2016</p>
+			<div class="post-text">
+				
+
+<h1 id="安装和配置kvm">安装和配置KVM</h1>
+
+<h2 id="kvm与xen区别">KVM与XEN区别</h2>
+
+<p>OPENVZ就不说了,是半虚拟化,不能安装Windows操作系统</p>
+
+<p>KVM是内核模块,从2.6.20内核开始,kvm模块就包含在Linux内核中,只需加载此模块即可</p>
+
+<pre><code>#查看宿主机CPU是否在硬件上支持虚拟化扩展特性
+cat /proc/cpuinfo | grep -E &quot;(vmx|svm)&quot;
+
+#加载kvm模块（Intel VT）
+modprobe kvm
+modprobe kvm-intel
+#注意：如果加载失败，说明服务器硬件不支持或BIOS中未开启虚拟化扩展
+</code></pre>
+
+<p>运行命令<code>lsmod | grep kvm</code>检查 KVM 模块是否成功安装</p>
+
+<p>XEN是一套虚拟化方案,可以直接安装,不需要先安装操作系统.</p>
+
+<p>KVM起步较晚,XEN起步早发展成熟,但目前KVM潜力较大.</p>
+
+<h2 id="kvm-与-qemu">KVM 与 qemu</h2>
+
+<p><code>yum install qemu-kvm libvirt virt-install bridge-utils</code></p>
+
+<p>qemu-kvm 该软件包主要包含KVM内核模块和适用于KVM的QEMU模拟器。KVM模块负责CPU和内存的调度，QEMU负责虚拟机I/O设备的模拟。</p>
+
+<p>libvirt 提供Hypervisor和虚拟机的管理功能。</p>
+
+<p>virt-install 创建和克隆虚拟机的命令行工具包。</p>
+
+<p>bridge-utils 网桥管理工具包，负责桥接网络的创建、配置和管理等工作。</p>
+
+<h2 id="激活并启动libvirtd服务">激活并启动libvirtd服务</h2>
+
+<pre><code>systemctl enable libvirtd
+systemctl start libvirtd
+</code></pre>
+
+<h2 id="安装centos7">安装CentOS7</h2>
+
+<p><code>diskutil list</code>查看所有磁盘</p>
+
+<p><code>diskutil unmountdisk /dev/disk1</code> 解除其挂载</p>
+
+<p>用dd将ISO文件写入</p>
+
+<p><code>sudo dd if=/data/files/iso/CentOS-7-x86_64-Minimal-1511.iso of=/dev/disk2 bs=1m</code></p>
+
+<p>安装好系统后,更换网易的源 <a href="http://mirrors.163.com/.help/centos.html">http://mirrors.163.com/.help/centos.html</a></p>
+
+<pre><code>mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
+cd /etc/yum.repos.d
+wget http://mirrors.163.com/.help/CentOS7-Base-163.repo
+yum clean all
+yum makecache
+</code></pre>
+
+<p>搜狐也有,但版本太老 <a href="http://mirrors.sohu.com/help/centos.html">http://mirrors.sohu.com/help/centos.html</a></p>
+
+<p>可以使用清华大学的. <a href="https://lug.ustc.edu.cn/wiki/mirrors/help/centos">https://lug.ustc.edu.cn/wiki/mirrors/help/centos</a> 速度都十分快.</p>
+
+<h2 id="启用kvm后-需要配置网卡">启用KVM后,需要配置网卡</h2>
+
+<p><code>cd /etc/sysconfig/network-scripts/</code></p>
+
+<p>桥接网卡</p>
+
+<p><code>brctl addbr br0</code> 添加一个虚拟网卡</p>
+
+<p><code>brctl addif br0 em2</code> 将网卡<code>br0</code>桥接到<code>em2</code> ,这一步将会导致em2断网,远程ssh将会断开</p>
+
+<p><code>brctl stp br0 on</code> 将br0设置为启用STP协议</p>
+
+<p><code>ifconfig em2 0</code> #将em2的IP设置为0</p>
+
+<p><code>dhclient br0</code> #将br0网络配置好</p>
+
+<p><code>brctl show</code></p>
+
+<p>然后<code>systemctl restart network</code></p>
+
+<p><code>route</code> 查看默认网关</p>
+
+<h2 id="创建虚拟机磁盘镜像文件">创建虚拟机磁盘镜像文件</h2>
+
+<p>不能创建太小,建议5G-50G</p>
+
+<p>qcow2格式是kvm支持的标准格式，raw格式为虚拟磁盘文件通用格式。有测试数据表明raw格式的I/O性能略高于qcow2格式，但是在加密，容量，快照方面qcow2格式有优势</p>
+
+<pre><code>qemu-img create -f qcow2 test.qcow2 20G  //建立qcow2格式磁盘文件
+qemu-img create -f raw test.raw 20G      //建立raw格式磁盘文件
+qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文件
+
+</code></pre>
+
+<p>创建虚拟机</p>
+
+<p>创建 Ubuntu</p>
+
+<pre><code>virt-install \
+--name ubuntu \
+--ram 512 --vcpus 1 \
+--boot network,cdrom,menu=on \
+--disk path=/disk/kvm/disk1,size=10,format=qcow2,bus=virtio \
+--os-type linux \
+--os-variant generic \
+--nographics --accelerate \
+--bridge=br0,model=virtio --keymap=en-us \
+--console pty,target_type=serial \
+--cdrom=/data/iso/ubuntu-16.04.1-server-amd64.iso \
+--extra-args='console=tty0 console=ttyS0,115200n8 serial' \
+--hvm --dry-run
+</code></pre>
+
+<p>创建CentOS</p>
+
+<pre><code>virt-install \
+--name centos \
+--ram 512 --vcpus 1 \
+--disk path=/disk/kvm/disk1,size=10,format=qcow2,bus=virtio \
+--os-type linux \
+--os-variant generic \
+--accelerate \
+--bridge=br0,model=virtio --keymap=en-us \
+--console pty,target_type=serial \
+--location=/data/iso/CentOS-7-x86_64-Minimal-1511.iso \
+--extra-args='console=tty0 console=ttyS0,115200n8 serial' \
+--hvm --dry-run
+</code></pre>
+
+<p>virsh &ndash;connect qemu:///system</p>
+
+<p>创建Debain</p>
+
+<p>先挂载 <code>sudo mount -o loop,unhide -t iso9660 -r /data/iso/debian-8.6.0-amd64-CD-1.iso /mnt/cdrom</code></p>
+
+<p>需要nfs启动 <code>service nfs start</code></p>
+
+<p>添加<code>/mnt/cdrom    *(ro,insecure,all_squash)</code>到文件<code>/etc/exports</code></p>
+
+<p>并刷新<code>exportfs -r</code></p>
+
+<pre><code>virt-install \
+--name debain \
+--ram 512 --vcpus 1 \
+--boot network,cdrom,menu=on \
+--disk path=/disk/kvm/disk4,size=10,format=qcow2,bus=virtio \
+--os-type linux \
+--os-variant generic \
+--bridge=br0,model=virtio --keymap=en-us \
+--console pty,target_type=serial \
+--accelerate \
+--location=/mnt/cdrom \
+--extra-args='console=tty0 console=ttyS0,115200n8 serial' \
+--vnc --vncport=5911 --vnclisten=0.0.0.0 \
+--hvm --dry-run
+</code></pre>
+
+<blockquote>
+<p>disk属性就是指虚拟机使用哪一个磁盘镜像文件作为存储地方，指定刚才创建的镜像文件位置即可，size=10,format=qcow2,bus=virtio分别是指大小，格式（跟镜像格式一致），磁盘总线类型（指Value can be ’ide’, ’scsi’, ’usb’, ’virtio’ or ’xen’，virtio是专门为kvm制定的bus，比较常用），大小需要比镜像文件大小要小，相当于镜像是容器，这个disk是里面的水，水太多就溢出了。</p>
+
+<p>bridge=br0,model=virtio –keymap=en-us分别指网卡使用，网卡模式即驱动模式，和键盘制式，桥接模式都使用br0，而虚拟机需要使用virtio这个驱动才能使用虚拟网卡，这个虚拟网卡驱动在linux下支持很好，在windows下支持一般，键盘制式如果不指定的话会出现键位错乱的情况，一般我们使用英式。</p>
+</blockquote>
+
+<p>使用<code>virsh</code>可以管理已创建的虚拟机</p>
+
+<p>virsh shutdown demo 正常关闭虚拟机</p>
+
+<p>virsh destroy demo 直接销毁虚拟机</p>
+
+<p>可见 <a href="http://www.cnblogs.com/lin1/p/5776280.html">http://www.cnblogs.com/lin1/p/5776280.html</a></p>
+
+<p>启动并进入虚拟机</p>
+
+<pre><code>virsh start 域名 --console
+</code></pre>
+
+<p>10，彻底删除虚拟机</p>
+
+<p>1,删除虚拟机   virsh destroy +域名</p>
+
+<p>2，解除标记     virsh undefine +域名</p>
+
+<p>3，删除虚拟机文件</p>
+
+<p><code>virsh destroy debain &amp;&amp;  virsh undefine debain</code></p>
+
+<p>通过virt-clone命令克隆虚拟机</p>
+
+<p><code>virt-clone -o centos -n centos2 -f /disk/kvm/disk2</code></p>
+
+			</div>
+		</div>
 		
 		<div class="post">
 			<h1 class="post-title">
@@ -425,6 +630,16 @@ window.addEventListener('error', function (err)
 
 <p><code>UA-xxx-1</code>使用自己的统计ID</p>
 
+<h3 id="fetch跨域带cookie">Fetch跨域带cookie</h3>
+
+<pre><code>fetch(url, {credentials: 'include'})
+</code></pre>
+
+<p>jQuery ajax 跨域带 cookie</p>
+
+<pre><code>$.ajaxSetup({xhrFields: {withCredentials: true }});
+</code></pre>
+
 			</div>
 		</div>
 		
@@ -537,163 +752,6 @@ obj.name='world';
     };
   }
 </code></pre>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/use-haproxy/"> HAProxy优化应用程序速度</a>
-			</h1>
-			<p class="post-date">Fri, Jul 29, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="haproxy">HAProxy</h2>
-
-<p>HAProxy高性能的反向代理软件,更专注于TCP,HTTP处理,它可以基于四层或七层进行反向代理,尤其适合于高负载且需要进行七层处理的 Web 站点.</p>
-
-<p>单进程、事件驱动模型,通常用于超高流量的负载均衡.</p>
-
-<p>我们也可以使用它来作为中转站,使直连连通率不好的请求进过中转提升速度.</p>
-
-<h3 id="编译安装">编译安装</h3>
-
-<p>编译haproxy时必须制定target,不能直接make</p>
-
-<pre><code>Due to too many reports of suboptimized setups, building without
-specifying the target is no longer supported. Please specify the
-target OS in the TARGET variable, in the following form:
-
-   make TARGET=xxx
-
-Please choose the target among the following supported list :
-
-   linux2628, linux26, linux24, linux24e, linux22, solaris
-   freebsd, openbsd, cygwin, custom, generic
-
-Use &quot;generic&quot; if you don't want any optimization, &quot;custom&quot; if you
-want to precisely tweak every option, or choose the target which
-matches your OS the most in order to gain the maximum performance
-out of it. Please check the Makefile in case of doubts.
-
-</code></pre>
-
-<blockquote>
-<p>linux2628 表示  内核版本&gt;=2.6.28</p>
-</blockquote>
-
-<pre><code>apt-get update &amp;&amp; apt-get install -y wget gcc g++ make libpcre++0v5 libpcre++-dev
-</code></pre>
-
-<pre><code>HAPROXY_VERSION=haproxy-1.6.8
-CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
-wget http://www.haproxy.org/download/1.6/src/${HAPROXY_VERSION}.tar.gz
-tar zxf ${HAPROXY_VERSION}.tar.gz
-cd ${HAPROXY_VERSION}
-export CFLAGS=&quot;-O3&quot;
-make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 -j$CPU_NUM &amp;&amp; make install
-
-</code></pre>
-
-<p>编译32位版本<code>make TARGET=linux26 ARCH=i686 USE_STATIC_PCRE=1 -j$CPU_NUM</code></p>
-
-<p>在64位系统下编译32位需要<code>apt-get install gcc-multilib g++-multilib</code></p>
-
-<p>我编译好的haproxy version 1.6.8</p>
-
-<blockquote>
-<p>64位 <a href="http://share.suconghou.cn/bin/haproxy.xz">http://share.suconghou.cn/bin/haproxy.xz</a></p>
-
-<p>32位 <a href="http://share.suconghou.cn/bin/haproxy.gz">http://share.suconghou.cn/bin/haproxy.gz</a></p>
-</blockquote>
-
-<h3 id="使用docker版本的haproxy">使用Docker版本的HAProxy</h3>
-
-<p>这里提供一份编译好的最新版HAProxy镜像 <a href="https://hub.docker.com/r/suconghou/haproxy/">https://hub.docker.com/r/suconghou/haproxy/</a></p>
-
-<h3 id="优化国外主机速度">优化国外主机速度</h3>
-
-<p>HAProxy有多种连接模型,还有多种负载均衡算法,由于只有一台机器,我们主要侧重于使用它的反向代理.</p>
-
-<p>HAProxy可以一边保持与代理后端的长连接,一边又保持对客户端的连接.
-这样双向保持持久连接,省去了中间反复创建连接可以在一定程度上优化速度.</p>
-
-<p>其只需要一个配置文件,配置主要有以下几部分功能</p>
-
-<ul>
-<li><code>default</code>：用于为所有其它配置段提供默认参数</li>
-<li><code>frontend</code>：用于定义一系列监听的套接字，这些套接字可接受客户端请求并与之建立连接</li>
-<li><code>backend</code>：用于定义一系列后端服务器，代理将会将对应客户端的请求转发至这些服务器</li>
-<li><code>listen</code>： 通过关联前端和后端定义了一个完整的代理</li>
-</ul>
-
-<p>配置写在<code>haproxy.cfg</code>文件中,启动的时候指定使用的配置文件.</p>
-
-<p>如<code>haproxy -c -f /etc/haproxy/haproxy.cfg</code>检查配置文件,<code>haproxy -f /etc/haproxy/haproxy.cfg</code>使用此配置文件启动</p>
-
-<p>一个简单的配置文件如下</p>
-
-<pre><code>global
-    log         127.0.0.1 local3
-    pidfile     /var/run/haproxy.pid
-    user        haproxy
-    group       haproxy
-    daemon
-
-defaults
-    mode                    http
-    log                     global
-    retries                 3
-    timeout http-request    10s
-    timeout queue           1m
-    timeout connect         10s
-    timeout client          1m
-    timeout server          1m
-    timeout http-keep-alive 10s
-    timeout check           10s
-    maxconn                 30000
-
-frontend http-in
-    mode http
-    bind 0.0.0.0:1080
-    option http-keep-alive
-    default_backend  servers
-
-backend servers
-	option http-keep-alive
-    server myserver 192.243.115.210:80 check maxconn 6000
-</code></pre>
-
-<p>还有一个在应对高并发时通常都需要改的
-<code>ulimit -n 8192</code></p>
-
-<p><code>ulimit -n</code> 可以查看当前的</p>
-
-<p>重启HAProxy</p>
-
-<pre><code>haproxy -f /etc/haproxy/haproxy.cfg -st `cat /var/run/haproxy.pid`
-</code></pre>
-
-<h2 id="升级-glibc-版本-最新发布-http-www-gnu-org-software-libc">升级<code>glibc</code>版本,最新发布 <a href="http://www.gnu.org/software/libc/">http://www.gnu.org/software/libc/</a></h2>
-
-<p>所有版本见<code>http://mirror.hust.edu.cn/gnu/libc/</code></p>
-
-<p>错误 <code>libc.so.6: version GLIBC_2.14 not found</code> 表明当前系统的glibc版本较低</p>
-
-<p><code>strings libc.so.6 |grep GLIBC_</code>可以查看当前系统支持的版本</p>
-
-<pre><code>wget http://mirror.hust.edu.cn/gnu/libc/glibc-2.19.tar.xz
-tar Jxf glibc-2.19.tar.xz
-cd glibc-2.19
-mkdir build
-cd build
-../configure
-make -j4&amp;&amp; make install
-</code></pre>
-
-<p>见 <a href="https://cnodejs.org/topic/56dc21f1502596633dc2c3dc">https://cnodejs.org/topic/56dc21f1502596633dc2c3dc</a>
-此编译需要较长时间</p>
 
 			</div>
 		</div>

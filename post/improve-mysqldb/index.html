@@ -303,11 +303,11 @@ interactive_timeout=3600
 
 <p>当update或者insert的内容过大时,<code>max_allowed_packet</code>的值过小,会引起sql异常,需要改大;其默认值为1048576(1M)，</p>
 
-<p>修改<code>my.cnf</code>  <code>max_allowed_packet = 20M</code></p>
+<p>修改<code>my.cnf</code>  <code>max_allowed_packet = 100M</code></p>
 
-<p>或者零时动态设置 <code>set global max_allowed_packet = 20*1024*1024</code></p>
+<p>或者零时动态设置 <code>set global max_allowed_packet = 104857600;</code></p>
 
-<p>查看是否生效,零时修改一般断开后重新连接即可生效. <code>show variables like '%max_allowed_packet%'</code></p>
+<p>查看是否生效,零时修改一般断开后重新连接即可生效. <code>show variables like '%max_allowed_packet%';</code></p>
 
 <h2 id="数据库优化">数据库优化</h2>
 
@@ -482,10 +482,12 @@ SET GLOBAL general_log = &lsquo;ON&rsquo;;
 <h3 id="ibdata1文件过大">ibdata1文件过大</h3>
 
 <ol>
-<li>需要指定<code>innodb_file_per_table=1</code>参数,单独保存每个表的数据,否则MySQL的数据都会存放在ibdata1文件里，文件只增加不减小,时间久了这个文件就会变的非常大。</li>
+<li>需要指定<code>innodb_file_per_table</code>参数,单独保存每个表的数据,否则MySQL的数据都会存放在ibdata1文件里，文件只增加不减小,时间久了这个文件就会变的非常大。</li>
 </ol>
 
 <p><code>show variables like '%innodb%';</code>查看目前innodb的配置</p>
+
+<p>需要给<code>my.cnf</code>添加一行<code>innodb_file_per_table</code>,记得这个需要在<code>[mysqld]</code>段下面</p>
 
 <ol>
 <li>可能有长时间执行但未提交的事务.</li>
@@ -528,6 +530,14 @@ mysqldump -uroot -pdbpasswd dbname test&gt;db.sql;</p>
 <p>gzip和xz压缩时后面都可以使用参数<code>-9</code>加大压缩率.但也更耗时.</p>
 
 <p>同理还可以使用<code>bzip2</code>和<code>bzip2 -dc</code>压缩和解压</p>
+
+<p>DELAYED仅适用于MyISAM, MEMORY和ARCHIVE表</p>
+
+<p>replace delayed into</p>
+
+<p>insert delayed into</p>
+
+<p>insert delayed ignore into</p>
 
 		</div>
 	</div>

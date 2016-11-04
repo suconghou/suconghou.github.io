@@ -75,7 +75,7 @@ out of it. Please check the Makefile in case of doubts.
 <pre><code>apt-get update &amp;&amp; apt-get install -y wget gcc g++ make libpcre++0v5 libpcre++-dev
 </code></pre>
 
-<pre><code>HAPROXY_VERSION=haproxy-1.6.8
+<pre><code>HAPROXY_VERSION=haproxy-1.6.9
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
 wget http://www.haproxy.org/download/1.6/src/${HAPROXY_VERSION}.tar.gz
 tar zxf ${HAPROXY_VERSION}.tar.gz
@@ -101,6 +101,12 @@ make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 -j$CPU_NUM &amp;&amp; make i
 
 <p>这里提供一份编译好的最新版HAProxy镜像 <a href="https://hub.docker.com/r/suconghou/haproxy/">https://hub.docker.com/r/suconghou/haproxy/</a></p>
 
+<p><code>useradd -M -s /sbin/nologin haproxy</code></p>
+
+<p>-M：不创建家目录</p>
+
+<p>-s：指定用户登陆时使用的shell，nologin就是登陆不了</p>
+
 <h3 id="优化国外主机速度">优化国外主机速度</h3>
 
 <p>HAProxy有多种连接模型,还有多种负载均衡算法,由于只有一台机器,我们主要侧重于使用它的反向代理.</p>
@@ -124,7 +130,6 @@ make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 -j$CPU_NUM &amp;&amp; make i
 <p>一个简单的配置文件如下</p>
 
 <pre><code>global
-    log         127.0.0.1 local3
     pidfile     /var/run/haproxy.pid
     user        haproxy
     group       haproxy
@@ -159,10 +164,26 @@ backend servers
 
 <p><code>ulimit -n</code> 可以查看当前的</p>
 
+<p><code>-st</code> 是立即结束原有进程(SIGTERM,立即重启)</p>
+
+<p><code>-sf</code> 是原有进程执行完后退出(SIGUSR1,平滑重启)</p>
+
 <p>重启HAProxy</p>
 
 <pre><code>haproxy -f /etc/haproxy/haproxy.cfg -st `cat /var/run/haproxy.pid`
+
+# 不能放入.bashrc,``会立即执行的
+# haproxy-reload
+haproxy -f /etc/haproxy/haproxy.cfg -st `cat /var/run/haproxy.pid`
+# haproxy-hot-reload
+haproxy -f /etc/haproxy/haproxy.cfg -sf `cat /var/run/haproxy.pid`
 </code></pre>
+
+<p><code>/etc/rc.local</code>(软连接到<code>/etc/rc.d/rc.local</code>)是开机后自动执行的脚本</p>
+
+<p>可以加入<code>haproxy -f /etc/haproxy/haproxy.cfg</code>到其中实现开机启动.</p>
+
+<p>配置文件参考 <a href="https://github.com/chenzhiwei/linux/tree/master/haproxy">https://github.com/chenzhiwei/linux/tree/master/haproxy</a></p>
 
 <h2 id="升级-glibc-版本-最新发布-http-www-gnu-org-software-libc">升级<code>glibc</code>版本,最新发布 <a href="http://www.gnu.org/software/libc/">http://www.gnu.org/software/libc/</a></h2>
 
@@ -183,6 +204,47 @@ make -j4&amp;&amp; make install
 
 <p>见 <a href="https://cnodejs.org/topic/56dc21f1502596633dc2c3dc">https://cnodejs.org/topic/56dc21f1502596633dc2c3dc</a>
 此编译需要较长时间</p>
+
+<h2 id="dog-tunnel端口映射">dog-tunnel端口映射</h2>
+
+<p>开启服务器端(须有外网IP)</p>
+
+<pre><code>dtunnel_lite -service 0.0.0.0:1234 -v -tcp -xor 121333 &gt; /tmp/dog.log 2&gt;&amp;1 &amp;
+</code></pre>
+
+<p>开启客户端(任意一台可联网的机器)</p>
+
+<p>反向映射客户机22端口到服务器的30222端口,代理ssh建议使用tcp,pipe通道为1</p>
+
+<pre><code>dtunnel_lite -service 服务器端IP:1234 -v -action 127.0.0.1:22 -encrypt -tcp -xor 121333 -local 172.168.1.99:30222 -r &gt; /tmp/dog.log 2&gt;&amp;1 &amp;
+</code></pre>
+
+<p>可以使用客户端连接多个服务器,将22端口映射到多个服务器端.</p>
+
+<p>用<code>crontab</code>守护进程,每5分钟检查一次</p>
+
+<p><code>*/5 * * * * sh /data/bin/connect.sh &gt; /tmp/dog.log 2&gt;&amp;1</code></p>
+
+<pre><code>#!/bin/bash
+echo &quot;`date` start shell process &quot;&gt;&gt; /tmp/connect.log
+if test $( pgrep -f dtunnel_lite | wc -l ) -eq 0
+then
+    while true
+    do
+        echo &quot;`date` dtunnel_lite process is starting...&quot;&gt;&gt; /tmp/connect.log
+        touch /run/connect.lock
+        dtunnel_lite -service 114.242.25.173:1234 -v -action 127.0.0.1:22 -encrypt -tcp -xor 121333 -local 172.168.1.99:30222  -r
+        echo &quot;`date` dtunnel_lite process killed,todo restart &quot;&gt;&gt; /tmp/connect.log
+        sleep 5
+    done
+else
+    touch /run/connect.lock
+    echo &quot;`date` dtunnel_lite process is already running &quot;&gt;&gt; /tmp/connect.log
+fi
+
+</code></pre>
+
+<p>先手动启动一次 <code>sh /data/bin/connect.sh &gt; /tmp/dog.log 2&gt;&amp;1 &amp;</code></p>
 
 		</div>
 	</div>

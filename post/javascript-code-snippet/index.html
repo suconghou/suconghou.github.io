@@ -295,6 +295,16 @@ window.addEventListener('error', function (err)
 
 <p><code>UA-xxx-1</code>使用自己的统计ID</p>
 
+<h3 id="fetch跨域带cookie">Fetch跨域带cookie</h3>
+
+<pre><code>fetch(url, {credentials: 'include'})
+</code></pre>
+
+<p>jQuery ajax 跨域带 cookie</p>
+
+<pre><code>$.ajaxSetup({xhrFields: {withCredentials: true }});
+</code></pre>
+
 		</div>
 	</div>
 </div>

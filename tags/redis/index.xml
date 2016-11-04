@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Redis on 苏苏的博客</title>
-    <link>http://blog.suconghou.cn/tags/redis/</link>
-    <description>Recent content in Redis on 苏苏的博客</description>
+    <title>苏苏的博客</title>
+    <link>http://blog.suconghou.cn/tags/redis/index.xml</link>
+    <description>Recent content on 苏苏的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 01 Jan 2016 23:51:02 +0800</lastBuildDate>
     <atom:link href="http://blog.suconghou.cn/tags/redis/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -114,6 +113,32 @@ make -j$CPU_NUM &amp;amp;&amp;amp; make install
 
 }
 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;反向代理&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;location / {
+	proxy_pass http://127.0.0.1:1080;
+	proxy_set_header Host $host;
+	proxy_set_header X-Forwarded-Ssl off;
+	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+	proxy_set_header X-Forwarded-Port 80;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;一个纯静态文件服务器,开启目录浏览&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;server{
+        server_name share.ourwill.cn;
+        listen 80;
+        gzip on;
+        etag on;
+        autoindex on;
+        autoindex_exact_size off;
+        autoindex_localtime on;
+        index index.html;
+        root /data/share;
+}
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;blockquote&gt;
@@ -224,6 +249,10 @@ upstream backend {
 
 &lt;p&gt;使用if判断时,if和括号之间是必须要加空格的,判断文件,目录是否存在&lt;code&gt;!-f&lt;/code&gt;,&lt;code&gt;!-d&lt;/code&gt;也是连起来的不能有空格&lt;/p&gt;
 
+&lt;p&gt;nginx 官方yum源.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;https://www.nginx.com/resources/wiki/start/topics/tutorials/install/&lt;/code&gt;&lt;/p&gt;
+
 &lt;h3 id=&#34;附上卸载apache方法&#34;&gt;附上卸载Apache方法&lt;/h3&gt;
 
 &lt;ul&gt;
@@ -297,6 +326,22 @@ make -j$CPU_NUM &amp;amp;&amp;amp; make install
 &lt;pre&gt;&lt;code&gt;./configure --enable-inline-optimization --enable-static=yes --prefix=/usr/local --with-config-file-path=/etc --disable-cgi --enable-opcache --enable-fpm  --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath --enable-zip --enable-mbstring --enable-gd-native-ttf --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd --with-freetype-dir=/usr/include/freetype2 --with-png-dir=/usr/include --with-jpeg-dir=/usr/include --with-openssl --with-mcrypt --enable-exif --enable-calendar  --with-xsl --with-bz2
 make -j$CPU_NUM &amp;amp;&amp;amp; make install
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;静态编译php7&#34;&gt;静态编译php7&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;
+./configure --enable-inline-optimization --enable-static=yes --prefix=/usr/local --with-config-file-path=/etc --without-pear --disable-cgi --disable-opcache --disable-fpm --disable-all --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath  --enable-zip --enable-mbstring --enable-gd-native-ttf --with-iconv --with-mysqli --with-pdo-mysql --with-openssl --enable-pdo --enable-exif --enable-calendar  --with-bz2 --with-sqlite3 --with-pdo-sqlite --enable-phar --enable-session --enable-tokenizer --enable-hash --enable-fileinfo --enable-json  --enable-shared=no  LDFLAGS=-static
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;之后出来一大堆东西,打开 Makefile,搜索-export-dynamic 有两个.&lt;/p&gt;
+
+&lt;p&gt;BUILD_CLI = $(LIBTOOL) &amp;ndash;mode=link $(CC) -export-dynamic $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_CLI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -o $(SAPI_CLI_PATH)&lt;/p&gt;
+
+&lt;p&gt;这里决定了只会静态链接 php 自己的库,系统库还是动态的.&lt;/p&gt;
+
+&lt;p&gt;删掉 -export-dynamic,在最后面加上-all-static.&lt;/p&gt;
+
+&lt;p&gt;之后开开心心 make -j8&lt;/p&gt;
 
 &lt;p&gt;安装过后就可以使用&lt;code&gt;php&lt;/code&gt;命令了,但是&lt;code&gt;php-fpm&lt;/code&gt;还需要配置一下&lt;/p&gt;
 
@@ -963,6 +1008,52 @@ sudo chkconfig --list nginx
 然后直接使用 sysv-rc-conf 来管理;&lt;/p&gt;
 
 &lt;p&gt;或者&lt;code&gt;sudo sysv-rc-conf nginx on&lt;/code&gt;直接把&lt;code&gt;/etc/init.d/nginx&lt;/code&gt; 加入到系统自动 启动列表中&lt;/p&gt;
+
+&lt;h3 id=&#34;centos7-快速安装php7并使用-memcached-redis&#34;&gt;centos7 快速安装php7并使用 memcached,redis&lt;/h3&gt;
+
+&lt;p&gt;安装php7 &lt;code&gt;yum install php70w php70w-cli php70w-fpm php70w-gd php70w-mbstring php70w-mcrypt php70w-pdo php70w-xml php70w-mysqlnd php70w-pear&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;安装 memcached和redis &lt;code&gt;yum install memcached redis&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;设置开机启动&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;systemctl enable memcached
+systemctl enable redis
+systemctl start memcached
+systemctl start redis
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;安装redis扩展 &lt;code&gt;yum install php70w-pecl-redis&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;使用&lt;code&gt;pecl&lt;/code&gt;安装&lt;code&gt;memcached&lt;/code&gt;或其他扩展&lt;/p&gt;
+
+&lt;p&gt;搜索一下看看 &lt;code&gt;pecl search memcached&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;pecl install memcached&lt;/code&gt; 目前memcached在pecl上发布的包还不支持php7&lt;/p&gt;
+
+&lt;p&gt;需要自己编译&lt;/p&gt;
+
+&lt;p&gt;要编译扩展,还需要安装 &lt;code&gt;yum install php70w-devel&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;wget -O php-memcached.zip https://codeload.github.com/php-memcached-dev/php-memcached/zip/php7
+unzip php-memcached.zip
+cd php-memcached-php7
+/usr/bin/phpize
+./configure --with-php-config=/usr/bin/php-config
+make &amp;amp;&amp;amp; make install
+echo &amp;quot;extension=memcached.so&amp;quot; &amp;gt; `php --ini | grep &amp;quot;Scan for additional&amp;quot; | sed -e &amp;quot;s|.*:\s*||&amp;quot;`/memcached.ini
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;加入php.ini也可以&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;echo &amp;quot;extension=memcached.so&amp;quot; &amp;gt;&amp;gt; `php --ini | grep &amp;quot;Loaded Configuration&amp;quot; | sed -e &amp;quot;s|.*:\s*||&amp;quot;`
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;设置开启php-fpm自启动&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;systemctl enable php-fpm
+systemctl start php-fpm
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     

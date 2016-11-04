@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Ssh on 苏苏的博客</title>
-    <link>http://blog.suconghou.cn/tags/ssh/</link>
-    <description>Recent content in Ssh on 苏苏的博客</description>
+    <title>苏苏的博客</title>
+    <link>http://blog.suconghou.cn/tags/ssh/index.xml</link>
+    <description>Recent content on 苏苏的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 07 Jan 2016 13:47:22 +0800</lastBuildDate>
     <atom:link href="http://blog.suconghou.cn/tags/ssh/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -43,14 +42,16 @@
 
 &lt;h2 id=&#34;ssh隧道&#34;&gt;ssh隧道&lt;/h2&gt;
 
-&lt;h3 id=&#34;cfng&#34;&gt;-CfNg&lt;/h3&gt;
+&lt;h3 id=&#34;cfng参数&#34;&gt;CfNg参数&lt;/h3&gt;
 
-&lt;p&gt;C表示压缩数据传输
-f表示后台用户验证,这个选项很有用,没有shell的不可登陆账号也能使用.
-N表示不执行脚本或命令
-g表示允许远程主机连接转发端口&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;C表示压缩数据传输&lt;/li&gt;
+&lt;li&gt;f表示后台用户验证,这个选项很有用,没有shell的不可登陆账号也能使用.&lt;/li&gt;
+&lt;li&gt;N表示不执行脚本或命令&lt;/li&gt;
+&lt;li&gt;g表示允许远程主机连接转发端口,往往会没有效果,需要修改&lt;code&gt;/etc/ssh/sshd_config&lt;/code&gt;添加&lt;code&gt;gatewayports yes&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;h3 id=&#34;l-本地转发&#34;&gt;-L 本地转发&lt;/h3&gt;
+&lt;h3 id=&#34;l本地转发&#34;&gt;-L本地转发&lt;/h3&gt;
 
 &lt;p&gt;-L [本地监听IP:]本地监听端口号:目标主机IP:目标端口号
 (其中,“本地监听IP”可以省略，省略的话就认为是“0.0.0.0”，但为了安全性考虑，请务必使用“127.0.0.1”做为本地监听端口， 而不要使用默认的“0.0.0.0”。）&lt;/p&gt;
@@ -67,7 +68,7 @@ SSH会建立一个socket，去监听本地的8080端口。一旦有数据传向�
 
 &lt;p&gt;本机的6300端口就是远程主机172.16.1.164的1521端口&lt;/p&gt;
 
-&lt;h3 id=&#34;r-远程转发&#34;&gt;-R 远程转发&lt;/h3&gt;
+&lt;h3 id=&#34;r远程转发&#34;&gt;-R远程转发&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code&gt; ssh -CfNg -R 1521:127.0.0.1:6300 oracle@172.16.1.164
 &lt;/code&gt;&lt;/pre&gt;
@@ -105,6 +106,8 @@ GatewayPorts yes
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;使用&lt;code&gt;netstat -anltp&lt;/code&gt;查看,监听的已经是&lt;code&gt;0.0.0.0&lt;/code&gt;了,不过即使你指定-R参数&lt;code&gt;127.0.0.1:2222&lt;/code&gt;,也不会监听&lt;code&gt;127.0.0.1&lt;/code&gt;而始终是&lt;code&gt;0.0.0.0&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;若没有&lt;code&gt;netstat&lt;/code&gt;可考虑安装&lt;code&gt;yum install lsof net-tools&lt;/code&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;使用socks5代理&#34;&gt;使用socks5代理&lt;/h3&gt;
 
@@ -198,6 +201,20 @@ ssh-keygen -t ed25519 -f /usr/local/etc/ssh_host_ed25519_key -N &#39;&#39;
 &lt;pre&gt;&lt;code&gt;ssh -CfNg -R 0.0.0.0:2233:127.0.0.1:22 root@yourvps.com -p 27558
 
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;centos7修改ssh端口&#34;&gt;CentOS7修改ssh端口&lt;/h3&gt;
+
+&lt;p&gt;注意:修改ssh端口后,可能还是不能使用,主要原因可能是semanage&lt;/p&gt;
+
+&lt;p&gt;使用以下命令查看当前SElinux 允许的ssh端口：
+semanage port -l | grep ssh&lt;/p&gt;
+
+&lt;p&gt;添加xxxx端口到 SELinux
+semanage port -a -t ssh_port_t -p tcp xxxx
+然后确认一下是否添加进去
+semanage port -l | grep ssh
+如果成功会输出
+ssh_port_t                    tcp    xxxx, 22&lt;/p&gt;
 </description>
     </item>
     
