@@ -126,6 +126,8 @@ yum makecache
 
 <p><code>route</code> 查看默认网关</p>
 
+<p><a href="https://wiki.centos.org/zh/HowTos/KVM">https://wiki.centos.org/zh/HowTos/KVM</a></p>
+
 <h2 id="创建虚拟机磁盘镜像文件">创建虚拟机磁盘镜像文件</h2>
 
 <p>不能创建太小,建议5G-50G</p>
@@ -138,7 +140,11 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 
 </code></pre>
 
-<p>创建虚拟机</p>
+<h2 id="创建虚拟机">创建虚拟机</h2>
+
+<p>使用<code>osinfo-query os</code>可以查看<code>os-variant</code>都有哪些代号</p>
+
+<p><a href="https://raymii.org/s/articles/virt-install_introduction_and_copy_paste_distro_install_commands.html">https://raymii.org/s/articles/virt-install_introduction_and_copy_paste_distro_install_commands.html</a></p>
 
 <p>创建 Ubuntu</p>
 
@@ -201,6 +207,39 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 --hvm --dry-run
 </code></pre>
 
+<p>创建Windows Server</p>
+
+<p><code>qemu-img create -f qcow2 /disk/kvm/windisk1 50G</code></p>
+
+<p>针对Windows需要安装一些驱动</p>
+
+<p><code>sudo wget https://fedorapeople.org/groups/virt/virtio-win/virtio-win.repo -O /etc/yum.repos.d/virtio-win.repo</code></p>
+
+<p><code>sudo yum install virtio-win</code></p>
+
+<p><a href="https://fedoraproject.org/wiki/Windows_Virtio_Drivers">https://fedoraproject.org/wiki/Windows_Virtio_Drivers</a></p>
+
+<pre><code>virt-install \
+--name windows2012 \
+--ram 4096 --vcpus 2 \
+--disk path=/data/iso/cn_windows_server_2012_r2_with_update_x64_dvd_4048415.iso,device=cdrom \
+--disk path=/disk/kvm/windisk1,size=50,format=qcow2,bus=virtio,cache=writeback \
+--cdrom=/usr/share/virtio-win/virtio-win-0.1.126.iso \
+--os-type windows \
+--os-variant win2k12r2 \
+--bridge=br0,model=virtio \
+--accelerate \
+--graphics vnc,port=5999,listen=0.0.0.0 \
+--console pty,target_type=serial \
+--hvm --dry-run
+</code></pre>
+
+<p>出现<code>ERROR    不能混用 --graphics 和旧式的图形选项</code>可能是需要去掉<code>--keymap</code></p>
+
+<p>关于 加载 virtio 驱动可以参考  <a href="http://www.ilanni.com/?p=5877">http://www.ilanni.com/?p=5877</a></p>
+
+<p><strong>选择加载<code>viostor</code>磁盘驱动</strong></p>
+
 <blockquote>
 <p>disk属性就是指虚拟机使用哪一个磁盘镜像文件作为存储地方，指定刚才创建的镜像文件位置即可，size=10,format=qcow2,bus=virtio分别是指大小，格式（跟镜像格式一致），磁盘总线类型（指Value can be ’ide’, ’scsi’, ’usb’, ’virtio’ or ’xen’，virtio是专门为kvm制定的bus，比较常用），大小需要比镜像文件大小要小，相当于镜像是容器，这个disk是里面的水，水太多就溢出了。</p>
 
@@ -228,11 +267,149 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 
 <p>3，删除虚拟机文件</p>
 
-<p><code>virsh destroy debain &amp;&amp;  virsh undefine debain</code></p>
+<p><code>virsh destroy windows2012 &amp;&amp;  virsh undefine windows2012</code></p>
 
 <p>通过virt-clone命令克隆虚拟机</p>
 
 <p><code>virt-clone -o centos -n centos2 -f /disk/kvm/disk2</code></p>
+
+<p><code>virsh -c qemu:///system list</code> 可以查看正在运行的机器</p>
+
+<p><code>virsh vncdisplay windows2012</code>查看vnc端口</p>
+
+<p>可以使用其他机器上的vnc  viewer 连接</p>
+
+<p>本机 <code>virt-viewer --connect qemu:///system windows2012</code></p>
+
+<p>windows系统可使用 vncviewer (<a href="http://share.suconghou.cn/bin/vncviewer.zip">http://share.suconghou.cn/bin/vncviewer.zip</a>) 连接</p>
+
+<p>全屏下用F8键可唤出菜单.</p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
+				<a href="/post/iptables/"> iptables</a>
+			</h1>
+			<p class="post-date">Wed, Sep 14, 2016</p>
+			<div class="post-text">
+				
+
+<h1 id="iptables相关配置">iptables相关配置</h1>
+
+<p>配置<code>iptables</code>之前,建议添加一个crontab定时重置iptables,防止将自己阻挡.</p>
+
+<p>建议写入<code>/usr/iptab.sh</code>,加入<code>crontab</code>,每个整点执行</p>
+
+<pre><code>sudo iptables -F
+sudo iptables -X
+</code></pre>
+
+<h2 id="查看本机关于iptables的设置情况">查看本机关于IPTABLES的设置情况</h2>
+
+<pre><code>iptables -L -n
+</code></pre>
+
+<h2 id="清除原有规则">清除原有规则.</h2>
+
+<p>不管你在安装linux时是否启动了防火墙,如果你想配置属于自己的防火墙,那就清除现在filter的所有规则.
+清除预设表filter中的所有规则链的规则</p>
+
+<pre><code>iptables -F
+</code></pre>
+
+<p>清除预设表filter中使用者自定链中的规则</p>
+
+<pre><code>iptables -X
+</code></pre>
+
+<h2 id="保存配置">保存配置</h2>
+
+<p>刚刚配置的重启以后就会丢失,想要保存使用</p>
+
+<pre><code>iptables save
+</code></pre>
+
+<p>有的可能是<code>iptables-save</code></p>
+
+<p>这样就写到<code>/etc/sysconfig/iptables</code> 文件里了.
+写入后记得把防火墙重起一下,才能起作用.</p>
+
+<pre><code>service iptables restart
+</code></pre>
+
+<h2 id="设定预设规则">设定预设规则</h2>
+
+<p>默认的入口,出口,转发策略都是ACCEPT
+下面要改变这种规则</p>
+
+<p>iptables 采用黑名单加白名单的方式, 未命中白名单的将采用预设规则</p>
+
+<p>下面操作注意,为避免ssh端口22被拦截,首先添加</p>
+
+<pre><code>iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+</code></pre>
+
+<p>保证22端口入口畅通,注意如果你的OUTPUT模式设置为DROP(上面已经清空了,默认为ACCEPT),还需要添加</p>
+
+<pre><code>iptables -A OUTPUT -p tcp --sport 22 -j ACCEPT
+</code></pre>
+
+<p>保证出口22端口畅通
+下面开始折腾吧</p>
+
+<p>1.修改入口流量默认规则为DROP,除非命中用户规则,否则拦截所有入口流量(注意上面一定要排除ssh的端口,否则直接掉线)</p>
+
+<pre><code>iptables -P INPUT DROP
+</code></pre>
+
+<p>如果你使用了docker,这里好像会对docker的网络造成影响</p>
+
+<p>2.允许所有出口流量(重置iptables时,这其实就是默认的规则)</p>
+
+<pre><code>iptables -P OUTPUT ACCEPT
+</code></pre>
+
+<p>3.禁止所有转发流量,除了命中用户规则的</p>
+
+<pre><code>iptables -P FORWARD DROP
+</code></pre>
+
+<h3 id="常用端口开启">常用端口开启</h3>
+
+<p>开启80,443端口,http,https服务</p>
+
+<pre><code>iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+</code></pre>
+
+<p>开启21端口,ftp服务</p>
+
+<pre><code>iptables -A INPUT -p tcp --dport 21 -j ACCEPT
+</code></pre>
+
+<h3 id="开启基本端口">开启基本端口</h3>
+
+<p>允许icmp包通过,也就是允许ping</p>
+
+<pre><code>iptables -A INPUT -p icmp -j ACCEPT
+</code></pre>
+
+<p>允许loopback!(不然会导致DNS无法正常关闭等问题)</p>
+
+<p><strong>如果未启用此项,常见的fastcgi_pass 127.0.0.1 将会有问题</strong></p>
+
+<pre><code>iptables -A INPUT -i lo -p all -j ACCEPT
+</code></pre>
+
+<p>iptables 配置实时生效,如果拦截了ssh端口,将立即掉线!</p>
+
+<p>无论iptabes启动与否，ps -ef都不会看到iptables的进程，这是因为iptables是由内核来实现的，也就是说iptables的功能已经融入到内核里面了</p>
+
+<p>iptables只是一个工具，将IP规则写入内核，让内核去处理。所以iptables只有在加规则的时候才会看得到进程，加完了就退出了</p>
+
+<p>iptables并不是一个普通的daemon，只是一个普通的工具，添加一些规则到kernel的filter列表里面。</p>
 
 			</div>
 		</div>
@@ -638,119 +815,6 @@ window.addEventListener('error', function (err)
 <p>jQuery ajax 跨域带 cookie</p>
 
 <pre><code>$.ajaxSetup({xhrFields: {withCredentials: true }});
-</code></pre>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/javascript-senior/"> javascript senior</a>
-			</h1>
-			<p class="post-date">Tue, Aug 9, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="javascript-参数传递">Javascript 参数传递</h2>
-
-<p>说起参数传递,首先需要弄清楚javascript里的数据类型</p>
-
-<p>原始数据类型
-<code>Undefined</code> <code>Null</code> <code>Boolean</code> <code>Number</code> <code>String</code></p>
-
-<p>引用数据类型</p>
-
-<p><code>Object</code> <code>Array</code> <code>Function</code> <code>Date</code> 等</p>
-
-<p>原始数据类型存储在栈的简单数据段,他们的值直接存储在变量访问的位置(因原始数据类型占据的空间是固定的,可以存储在较小的内存区域<code>栈</code>中)</p>
-
-<p>引用数据类型是存储在堆中的对象,存储在变量处的值只是一个指针,指向存储对象的内存地址,这是因为引用类型的大小会改变.</p>
-
-<p>不同的内存分配机制带来不同的访问机制</p>
-
-<p>在JavaScript中,是不允许直接访问保存在堆内存中的对象的,访问对象时必须取得对象在堆内存中的地址,然后按地址去取得对象中的值.</p>
-
-<p>这便是传说中的按引用访问.</p>
-
-<p>而原始类型则是直接访问到的.</p>
-
-<p><strong>复制变量时的不同</strong></p>
-
-<p>原始值:</p>
-
-<p>会将原始值的副本赋值给新变量.此后两个变量完全独立.</p>
-
-<p>引用值:</p>
-
-<p>会把内存地址赋值给新变量,也就是说两个变量都指向堆内存中的同一个对象.
-他们中任何一个改变都会反映到另一个身上.</p>
-
-<p><strong>参数传递的不同</strong></p>
-
-<p>最重要的一点:<code>ECMAScript</code>中所有函数的参数都是按值传递的.</p>
-
-<p>但原始值和引用值仍会造成不同的后果.</p>
-
-<p>原始值:</p>
-
-<p>把变量里的值传递给参数,之后两个变量互不影响.(就是把实参复制给形参的过程)</p>
-
-<p>引用值:</p>
-
-<p>任然是将实参里面的值复制到形参,但是注意<em>对象变量它里面的值是这个对象的堆内存地址</em></p>
-
-<p>也就是说形参和实参都是指向同一个堆内存对象.</p>
-
-<p>但是也要记住另外一点:如果形参被赋值为另外一个对象时,那么这个形参将会丢弃对上次指向的堆内存地址,而指向新对象的堆内存地址.</p>
-
-<p>此时,形参和实参相互脱离,互不影响,原先的实参任然指向原先对象的堆内存地址.</p>
-
-<p>如果是添加修改形参的属性,那么就是修改堆内存中的对象,形参和实参将同时得到反映,因为他们指向的是同一个堆内存对象.</p>
-
-<p>这种传递方式被称为<code>Call By Sharing</code></p>
-
-<pre><code>function box(obj)
-{
-	obj.name='hello';
-	var obj=new Object();
-	obj.name='world';
-}
-var obj=new Object();
-box(obj);
-console.log(obj.name);
-</code></pre>
-
-<p>注意两点:
-1. <code>var obj=new Object()</code> 声明提升</p>
-
-<p>变为</p>
-
-<pre><code>var obj;
-obj.name='hello';
-obj=new Object();
-obj.name='world';
-</code></pre>
-
-<p>函数的已存在一个变量形参<code>obj</code>,再次的变量申明会忽略</p>
-
-<p>2.<code>obj=new Object()</code> 时,obj的修改就不会影响外层obj变量了,因为他此时已经脱离执行那个堆内存对象了.</p>
-
-<blockquote>
-<p>参考 <a href="http://www.zhihu.com/question/27114726">http://www.zhihu.com/question/27114726</a></p>
-</blockquote>
-
-<h2 id="object-create">Object.create</h2>
-
-<p>简单来讲，new Object()是一种通过构造函数来创建object的方式，而Object.create(proto, [ propertiesObject ])
-不需要通过构造函数就可以创建一个object，Object.create()的第一个参数是必须要的，第二个参数可选。其实Object.create()内部依然是通过new一个构造函数的方式来实现的，它有构造函数，不过这个构造函数是隐式存在的，看一下使老旧浏览器支持Object.create方法的“polyfill”就可以对它们之间的区别一目了然了：</p>
-
-<pre><code>if (!Object.create) {
-    Object.create = function (o) {
-    function F() {}  //定义了一个隐式的构造函数
-    F.prototype = o;
-    return new F();  //其实还是通过new来实现的
-    };
-  }
 </code></pre>
 
 			</div>

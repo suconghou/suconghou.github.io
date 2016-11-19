@@ -124,6 +124,8 @@ yum makecache
 
 <p><code>route</code> 查看默认网关</p>
 
+<p><a href="https://wiki.centos.org/zh/HowTos/KVM">https://wiki.centos.org/zh/HowTos/KVM</a></p>
+
 <h2 id="创建虚拟机磁盘镜像文件">创建虚拟机磁盘镜像文件</h2>
 
 <p>不能创建太小,建议5G-50G</p>
@@ -136,7 +138,11 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 
 </code></pre>
 
-<p>创建虚拟机</p>
+<h2 id="创建虚拟机">创建虚拟机</h2>
+
+<p>使用<code>osinfo-query os</code>可以查看<code>os-variant</code>都有哪些代号</p>
+
+<p><a href="https://raymii.org/s/articles/virt-install_introduction_and_copy_paste_distro_install_commands.html">https://raymii.org/s/articles/virt-install_introduction_and_copy_paste_distro_install_commands.html</a></p>
 
 <p>创建 Ubuntu</p>
 
@@ -199,6 +205,39 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 --hvm --dry-run
 </code></pre>
 
+<p>创建Windows Server</p>
+
+<p><code>qemu-img create -f qcow2 /disk/kvm/windisk1 50G</code></p>
+
+<p>针对Windows需要安装一些驱动</p>
+
+<p><code>sudo wget https://fedorapeople.org/groups/virt/virtio-win/virtio-win.repo -O /etc/yum.repos.d/virtio-win.repo</code></p>
+
+<p><code>sudo yum install virtio-win</code></p>
+
+<p><a href="https://fedoraproject.org/wiki/Windows_Virtio_Drivers">https://fedoraproject.org/wiki/Windows_Virtio_Drivers</a></p>
+
+<pre><code>virt-install \
+--name windows2012 \
+--ram 4096 --vcpus 2 \
+--disk path=/data/iso/cn_windows_server_2012_r2_with_update_x64_dvd_4048415.iso,device=cdrom \
+--disk path=/disk/kvm/windisk1,size=50,format=qcow2,bus=virtio,cache=writeback \
+--cdrom=/usr/share/virtio-win/virtio-win-0.1.126.iso \
+--os-type windows \
+--os-variant win2k12r2 \
+--bridge=br0,model=virtio \
+--accelerate \
+--graphics vnc,port=5999,listen=0.0.0.0 \
+--console pty,target_type=serial \
+--hvm --dry-run
+</code></pre>
+
+<p>出现<code>ERROR    不能混用 --graphics 和旧式的图形选项</code>可能是需要去掉<code>--keymap</code></p>
+
+<p>关于 加载 virtio 驱动可以参考  <a href="http://www.ilanni.com/?p=5877">http://www.ilanni.com/?p=5877</a></p>
+
+<p><strong>选择加载<code>viostor</code>磁盘驱动</strong></p>
+
 <blockquote>
 <p>disk属性就是指虚拟机使用哪一个磁盘镜像文件作为存储地方，指定刚才创建的镜像文件位置即可，size=10,format=qcow2,bus=virtio分别是指大小，格式（跟镜像格式一致），磁盘总线类型（指Value can be ’ide’, ’scsi’, ’usb’, ’virtio’ or ’xen’，virtio是专门为kvm制定的bus，比较常用），大小需要比镜像文件大小要小，相当于镜像是容器，这个disk是里面的水，水太多就溢出了。</p>
 
@@ -226,11 +265,23 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 
 <p>3，删除虚拟机文件</p>
 
-<p><code>virsh destroy debain &amp;&amp;  virsh undefine debain</code></p>
+<p><code>virsh destroy windows2012 &amp;&amp;  virsh undefine windows2012</code></p>
 
 <p>通过virt-clone命令克隆虚拟机</p>
 
 <p><code>virt-clone -o centos -n centos2 -f /disk/kvm/disk2</code></p>
+
+<p><code>virsh -c qemu:///system list</code> 可以查看正在运行的机器</p>
+
+<p><code>virsh vncdisplay windows2012</code>查看vnc端口</p>
+
+<p>可以使用其他机器上的vnc  viewer 连接</p>
+
+<p>本机 <code>virt-viewer --connect qemu:///system windows2012</code></p>
+
+<p>windows系统可使用 vncviewer (<a href="http://share.suconghou.cn/bin/vncviewer.zip">http://share.suconghou.cn/bin/vncviewer.zip</a>) 连接</p>
+
+<p>全屏下用F8键可唤出菜单.</p>
 
 		</div>
 	</div>

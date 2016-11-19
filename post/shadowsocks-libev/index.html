@@ -48,6 +48,36 @@ export CFLAGS=&quot;-O3&quot;
 make -j4 &amp;&amp; make install
 </code></pre>
 
+<p>在alpine里静态编译</p>
+
+<p>需要将生成的<code>./src/Makefile</code>修改<code>LDFLAGS = -all-static</code></p>
+
+<pre><code>apk update &amp;&amp; apk upgrade
+apk --update add gcc g++ make curl zlib-dev pcre-dev openssl-dev linux-headers asciidoc xmlto
+cd /tmp
+SHADOWSOCKS_LIBEV_VERSION=2.5.6
+CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
+curl -sSL https://github.com/shadowsocks/shadowsocks-libev/archive/v${SHADOWSOCKS_LIBEV_VERSION}.tar.gz |  tar xz
+cd shadowsocks-libev-${SHADOWSOCKS_LIBEV_VERSION}
+export CFLAGS=&quot;-O3&quot;
+./configure
+LDFLAGS=&quot;-all-static&quot; make -j$CPU_NUM &amp;&amp; make install
+strip -s /usr/local/bin/ss-server
+
+</code></pre>
+
+<p>启动server端</p>
+
+<p><code>ss-server -s 0.0.0.0 -p 443 -k 123456 -m rc4-md5 -t 300 -d 8.8.8.8 -u</code></p>
+
+<p>with Linux kernel &gt; 3.7.0</p>
+
+<p><code>ss-server -s 0.0.0.0 -p 443 -k 123456 -m rc4-md5 -t 300 -d 8.8.8.8 --fast-open -u</code></p>
+
+<p>后台运行:</p>
+
+<p><code>ss-server -s 0.0.0.0 -p 443 -k 123456 -m rc4-md5 -t 300 -d 8.8.8.8 -u &gt; /tmp/ss.log 2&gt;&amp;1 &amp;</code></p>
+
 <p><strong>GO语言版本的也十分方便哦</strong></p>
 
 <p>这里提供一个基于<code>docker</code>的go语言版本,<a href="https://hub.docker.com/r/suconghou/shadowsocks/">docker go shadowsocks</a>,只有3.3MB

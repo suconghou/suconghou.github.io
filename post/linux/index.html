@@ -514,6 +514,52 @@ fi
 
 <p>例如检查pid为143的进程 <code>ps ax | awk '{ print $1 }' | grep -e &quot;^143$&quot;</code></p>
 
+<h2 id="时间同步">时间同步</h2>
+
+<p><a href="http://www.ntp.org.cn/">http://www.ntp.org.cn/</a> 提供 ntp server</p>
+
+<p>使用 <code>sudo ntpdate us.ntp.org.cn</code> 来同步时间.</p>
+
+<p>/usr/bin/tzselect 来设置时区</p>
+
+<p>Alpine Linux 3.4  <code>ntpd -d -n -q -p us.ntp.org.cn</code></p>
+
+<p>alpine中设置时区执行</p>
+
+<pre><code>apk update &amp;&amp; apk upgrade &amp;&amp; apk add --no-cache tzdata
+ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+echo &quot;Asia/Shanghai&quot; &gt; /etc/timezone
+</code></pre>
+
+<p>会立即生效.</p>
+
+<h2 id="linux-磁盘与mysql性能测试">Linux 磁盘与MySQL性能测试</h2>
+
+<p>源码地址 : <a href="https://github.com/akopytov/sysbench">https://github.com/akopytov/sysbench</a></p>
+
+<p>它主要包括以下几种方式的测试：</p>
+
+<ol>
+<li>cpu性能</li>
+<li>磁盘io性能</li>
+<li>调度程序性能</li>
+<li>内存分配及传输速度</li>
+<li>POSIX线程性能</li>
+<li>数据库性能(OLTP基准测试)</li>
+</ol>
+
+<p>目前sysbench主要支持 MySQL,pgsql,oracle 这3种数据库。</p>
+
+<h2 id="mtr网络线路测试">Mtr网络线路测试</h2>
+
+<p>如果未安装可以<code>yum info mtr</code>安装</p>
+
+<p>-n  不用主机解释
+-c   发送多少个数据包
+&ndash;report  结果显示，并不动态显示。</p>
+
+<p><code>mtr --report www.baidu.com</code></p>
+
 <h2 id="shell基本语法">Shell基本语法</h2>
 
 <p>声明数组</p>
@@ -556,11 +602,11 @@ fi
 
 <p>访问 cachefly.cachefly.net 可以测试你电脑当前的网络速度</p>
 
-<p><a href="http://www.fyzhuji.com/speed.html">http://www.fyzhuji.com/speed.html</a> 提供的测速文件.</p>
+<p>枫叶主机 <a href="http://www.fyzhuji.com/speed.html">http://www.fyzhuji.com/speed.html</a> 提供的测速文件.</p>
 
 <p>香港SV新力讯机房,测试20M光纤能跑满2.6MB/s</p>
 
-<p><a href="https://www.starrydns.com/tc/speedtest">https://www.starrydns.com/tc/speedtest</a></p>
+<p>星光互联 <a href="https://www.starrydns.com/tc/speedtest">https://www.starrydns.com/tc/speedtest</a> 提供的测速文件</p>
 
 <p>Mega-I, Hong Kong,测试能跑到3MB/s</p>
 

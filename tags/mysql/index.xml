@@ -145,6 +145,12 @@ make -j$CPU_NUM &amp;amp;&amp;amp; make install
 &lt;p&gt;使用我编译的google代理的docker版本更易部署 &lt;a href=&#34;https://hub.docker.com/r/suconghou/nginx-google/&#34;&gt;https://hub.docker.com/r/suconghou/nginx-google/&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
+&lt;h3 id=&#34;nginx转发的权限问题&#34;&gt;nginx转发的权限问题&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;setsebool httpd_can_network_connect on&lt;/code&gt;或许能解决问题.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://stackoverflow.com/questions/23948527/13-permission-denied-while-connecting-to-upstreamnginx&#34;&gt;http://stackoverflow.com/questions/23948527/13-permission-denied-while-connecting-to-upstreamnginx&lt;/a&gt;&lt;/p&gt;
+
 &lt;h3 id=&#34;各模块说明&#34;&gt;各模块说明&lt;/h3&gt;
 
 &lt;p&gt;http_gzip_module提供了对gzip的基本的支持，默认是编译到nginx的发行版本里面的。&lt;/p&gt;
@@ -378,7 +384,7 @@ php-fpm -t
 
 &lt;pre&gt;&lt;code&gt;alias phpfpmreload=&#39; sudo kill -USR2 `cat /var/run/php-fpm.pid` &#39;;
 alias phpfpmstop=&#39; sudo kill -INT `cat /var/run/php-fpm.pid` &#39;;
-alias errorlog=&#39;tail -f /var/log/nginx/error.log  /var/log/php-fpm/* &#39;;
+alias errorlog=&#39;tail -f /var/log/nginx/error.log  /var/log/php-fpm/*.log &#39;;
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;在你的&lt;code&gt;.baserc&lt;/code&gt;,&lt;code&gt;vim ~/.baserc&lt;/code&gt;&lt;/p&gt;
@@ -811,6 +817,12 @@ perfschema&lt;/p&gt;
 
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;p&gt;也可以这样添加用户并授权.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;GRANT ALL ON *.* to &#39;work&#39;@&#39;%&#39; IDENTIFIED BY &#39;123456&#39;;
+FLUSH PRIVILEGES;
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;show status; // 显示一些系统特定资源的信息，例如，正在运行的线程数量&lt;/p&gt;
 
 &lt;p&gt;show variables; // 显示系统变量的名称和值&lt;/p&gt;
@@ -1011,7 +1023,22 @@ sudo chkconfig --list nginx
 
 &lt;h3 id=&#34;centos7-快速安装php7并使用-memcached-redis&#34;&gt;centos7 快速安装php7并使用 memcached,redis&lt;/h3&gt;
 
-&lt;p&gt;安装php7 &lt;code&gt;yum install php70w php70w-cli php70w-fpm php70w-gd php70w-mbstring php70w-mcrypt php70w-pdo php70w-xml php70w-mysqlnd php70w-pear&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Centos 5.X&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;rpm -Uvh http://mirror.webtatic.com/yum/el5/latest.rpm
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;CentOs 6.x&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;rpm -Uvh http://mirror.webtatic.com/yum/el6/latest.rpm
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;CentOs 7.X&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;安装php7 &lt;code&gt;yum install php70w php70w-cli php70w-fpm php70w-gd php70w-mbstring php70w-mcrypt php70w-pdo php70w-xml php70w-mysqlnd php70w-pear php70w-opcache&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;安装 memcached和redis &lt;code&gt;yum install memcached redis&lt;/code&gt;&lt;/p&gt;
 
@@ -1049,10 +1076,27 @@ echo &amp;quot;extension=memcached.so&amp;quot; &amp;gt; `php --ini | grep &amp;
 &lt;pre&gt;&lt;code&gt;echo &amp;quot;extension=memcached.so&amp;quot; &amp;gt;&amp;gt; `php --ini | grep &amp;quot;Loaded Configuration&amp;quot; | sed -e &amp;quot;s|.*:\s*||&amp;quot;`
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;设置开启php-fpm自启动&lt;/p&gt;
+&lt;p&gt;设置开启nginx和php-fpm自启动&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;systemctl enable php-fpm
+&lt;pre&gt;&lt;code&gt;systemctl enable nginx
+systemctl start nginx
+systemctl enable php-fpm
 systemctl start php-fpm
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;数据库通过yum安装&#34;&gt;数据库通过yum安装&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;yum info mariadb&lt;/code&gt;可查看版本,然后&lt;code&gt;yum install mariadb mariadb-server&lt;/code&gt;安装,&lt;code&gt;mysql -V&lt;/code&gt;可查看版本&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;systemctl enable mariadb
+systemctl start mariadb
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;mongodb&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;yum install mongodb mongodb-server
+systemctl enable mongod
+systemctl start mongod
 &lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>

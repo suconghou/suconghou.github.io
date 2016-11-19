@@ -159,6 +159,19 @@ backend servers
     server myserver 192.243.115.210:80 check maxconn 6000
 </code></pre>
 
+<p>八种负载算法</p>
+
+<blockquote>
+<p>&lsquo;roundrobin&rsquo;,  简单的轮询
+&lsquo;static-rr&rsquo;,    根据权重
+ &lsquo;leastconn&rsquo;, 最少连接者先处理
+&lsquo;source&rsquo;,  根据请求源IP
+&lsquo;uri&rsquo;,    根据请求的URI
+&lsquo;url_param&rsquo;,  根据请求的URl参数
+&lsquo;hdr(name)&rsquo; 根据HTTP请求头来锁定每一次HTTP请求
+ &lsquo;rdp-cookie(name)&rsquo; 很据cookie(name)来锁定并哈希每一次TCP请求</p>
+</blockquote>
+
 <p>还有一个在应对高并发时通常都需要改的
 <code>ulimit -n 8192</code></p>
 

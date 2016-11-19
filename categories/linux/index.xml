@@ -486,6 +486,52 @@ fi
 
 &lt;p&gt;例如检查pid为143的进程 &lt;code&gt;ps ax | awk &#39;{ print $1 }&#39; | grep -e &amp;quot;^143$&amp;quot;&lt;/code&gt;&lt;/p&gt;
 
+&lt;h2 id=&#34;时间同步&#34;&gt;时间同步&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.ntp.org.cn/&#34;&gt;http://www.ntp.org.cn/&lt;/a&gt; 提供 ntp server&lt;/p&gt;
+
+&lt;p&gt;使用 &lt;code&gt;sudo ntpdate us.ntp.org.cn&lt;/code&gt; 来同步时间.&lt;/p&gt;
+
+&lt;p&gt;/usr/bin/tzselect 来设置时区&lt;/p&gt;
+
+&lt;p&gt;Alpine Linux 3.4  &lt;code&gt;ntpd -d -n -q -p us.ntp.org.cn&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;alpine中设置时区执行&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;apk update &amp;amp;&amp;amp; apk upgrade &amp;amp;&amp;amp; apk add --no-cache tzdata
+ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+echo &amp;quot;Asia/Shanghai&amp;quot; &amp;gt; /etc/timezone
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;会立即生效.&lt;/p&gt;
+
+&lt;h2 id=&#34;linux-磁盘与mysql性能测试&#34;&gt;Linux 磁盘与MySQL性能测试&lt;/h2&gt;
+
+&lt;p&gt;源码地址 : &lt;a href=&#34;https://github.com/akopytov/sysbench&#34;&gt;https://github.com/akopytov/sysbench&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;它主要包括以下几种方式的测试：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;cpu性能&lt;/li&gt;
+&lt;li&gt;磁盘io性能&lt;/li&gt;
+&lt;li&gt;调度程序性能&lt;/li&gt;
+&lt;li&gt;内存分配及传输速度&lt;/li&gt;
+&lt;li&gt;POSIX线程性能&lt;/li&gt;
+&lt;li&gt;数据库性能(OLTP基准测试)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;目前sysbench主要支持 MySQL,pgsql,oracle 这3种数据库。&lt;/p&gt;
+
+&lt;h2 id=&#34;mtr网络线路测试&#34;&gt;Mtr网络线路测试&lt;/h2&gt;
+
+&lt;p&gt;如果未安装可以&lt;code&gt;yum info mtr&lt;/code&gt;安装&lt;/p&gt;
+
+&lt;p&gt;-n  不用主机解释
+-c   发送多少个数据包
+&amp;ndash;report  结果显示，并不动态显示。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;mtr --report www.baidu.com&lt;/code&gt;&lt;/p&gt;
+
 &lt;h2 id=&#34;shell基本语法&#34;&gt;Shell基本语法&lt;/h2&gt;
 
 &lt;p&gt;声明数组&lt;/p&gt;
@@ -528,11 +574,11 @@ fi
 
 &lt;p&gt;访问 cachefly.cachefly.net 可以测试你电脑当前的网络速度&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://www.fyzhuji.com/speed.html&#34;&gt;http://www.fyzhuji.com/speed.html&lt;/a&gt; 提供的测速文件.&lt;/p&gt;
+&lt;p&gt;枫叶主机 &lt;a href=&#34;http://www.fyzhuji.com/speed.html&#34;&gt;http://www.fyzhuji.com/speed.html&lt;/a&gt; 提供的测速文件.&lt;/p&gt;
 
 &lt;p&gt;香港SV新力讯机房,测试20M光纤能跑满2.6MB/s&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;https://www.starrydns.com/tc/speedtest&#34;&gt;https://www.starrydns.com/tc/speedtest&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;星光互联 &lt;a href=&#34;https://www.starrydns.com/tc/speedtest&#34;&gt;https://www.starrydns.com/tc/speedtest&lt;/a&gt; 提供的测速文件&lt;/p&gt;
 
 &lt;p&gt;Mega-I, Hong Kong,测试能跑到3MB/s&lt;/p&gt;
 

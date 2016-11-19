@@ -34,6 +34,659 @@
 		
 		<div class="post">
 			<h1 class="post-title">
+				<a href="/post/linux/"> linux相关操作</a>
+			</h1>
+			<p class="post-date">Thu, Jan 21, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="linux用户管理">Linux用户管理</h2>
+
+<h3 id="添加用户adduser">添加用户adduser</h3>
+
+<p>假如用户名为<code>work</code></p>
+
+<p><code>adduser work -M</code></p>
+
+<pre><code># add rslsync user without home dir and cannot login
+sudo adduser --shell /bin/nologin --no-create-home --group rslsync
+</code></pre>
+
+<p>-M, &ndash;no-create-home        不创建用户的主目录
+-s, &ndash;shell SHELL       新账户的登录 shell,nologin就是登陆不了
+-G, &ndash;groups GROUPS 新账户的附加组列表</p>
+
+<p><code>adduser -h</code>查看完整帮助</p>
+
+<pre><code>用法：adduser [选项] 登录
+      adduser -D
+      adduser -D [选项]
+
+选项：
+  -b, --base-dir BASE_DIR	新账户的主目录的基目录
+  -c, --comment COMMENT         新账户的 GECOS 字段
+  -d, --home-dir HOME_DIR       新账户的主目录
+  -D, --defaults		显示或更改默认的 useradd 配置
+  -e, --expiredate EXPIRE_DATE  新账户的过期日期
+  -f, --inactive INACTIVE       新账户的密码不活动期
+  -g, --gid GROUP		新账户主组的名称或 ID
+  -G, --groups GROUPS	新账户的附加组列表
+  -h, --help                    显示此帮助信息并推出
+  -k, --skel SKEL_DIR	使用此目录作为骨架目录
+  -K, --key KEY=VALUE           不使用 /etc/login.defs 中的默认值
+  -l, --no-log-init	不要将此用户添加到最近登录和登录失败数据库
+  -m, --create-home	创建用户的主目录
+  -M, --no-create-home		不创建用户的主目录
+  -N, --no-user-group	不创建同名的组
+  -o, --non-unique		允许使用重复的 UID 创建用户
+  -p, --password PASSWORD		加密后的新账户密码
+  -r, --system                  创建一个系统账户
+  -R, --root CHROOT_DIR         chroot 到的目录
+  -s, --shell SHELL		新账户的登录 shell
+  -u, --uid UID			新账户的用户 ID
+  -U, --user-group		创建与用户同名的组
+  -Z, --selinux-user SEUSER		为 SELinux 用户映射使用指定 SEUSER
+</code></pre>
+
+<h3 id="修改密码">修改密码</h3>
+
+<p><code>passwd work</code></p>
+
+<h3 id="修改用户名">修改用户名</h3>
+
+<p>alarm为旧用户名</p>
+
+<pre><code>new_user=lao
+# change user name
+usermod -l $new_user -d /home/$new_user -m alarm
+# chenge user group
+groupmod -n $new_user alarm
+</code></pre>
+
+<p><a href="http://www.cnblogs.com/xd502djj/archive/2011/11/23/2260094.html">http://www.cnblogs.com/xd502djj/archive/2011/11/23/2260094.html</a></p>
+
+<h2 id="linux实用命令">Linux实用命令</h2>
+
+<h2 id="w">w</h2>
+
+<p><code>w</code>命令能容清晰的显示,服务器在线时间,负载以及当前登陆的用户</p>
+
+<h2 id="vmstat">vmstat</h2>
+
+<p><code>vmstat</code> 显示开机以来的平均值，而不是前一秒的值
+<code>vmstat 1</code>命令指定一个参数 1 运行，来打印每一秒的统计摘要.
+这些列代表的信息:</p>
+
+<blockquote>
+<p>r：CPU 中正在运行和等待运行的进程的数量。其提供了一个比平均负载更好的信号来确定 CPU 是否饱和，因为其不包含 I/O。解释：&rdquo;r&rdquo;的值大于了 CPU 的数量就表示已经饱和了。
+free：以 kb 为单位显式的空闲内存。如果数字位数很多，说明你有足够的空闲内存。&rdquo;free -m&rdquo; 命令，是下面的第七个命令，其可以更好的说明空闲内存的状态。
+si, so：Swap-ins 和 swap-outs。如果它们不是零，则代表你的内存不足了。
+us, sy, id, wa, st：这些都是平均了所有 CPU 的 CPU 分解时间。它们分别是用户时间（user）、系统时间（内核）（system）、空闲（idle）、等待 I/O（wait）、以及占用时间（stolen）（被其他访客，或使用 Xen，访客自己独立的驱动域）。</p>
+</blockquote>
+
+<p>CPU 分解时间将会通过用户时间加系统时间确认 CPU 是否为忙碌状态。等待 I/O 的时间一直不变则表明了一个磁盘瓶颈；这就是 CPU 的闲置，因为任务都阻塞在等待挂起磁盘 I/O 上了。你可以把等待 I/O 当成是 CPU 闲置的另一种形式，其给出了为什么 CPU 闲置的一个线索。
+对于 I/O 处理来说，系统时间是很重要的。一个高于 20% 的平均系统时间，可以值得进一步的探讨：也许内核在处理 I/O 时效率太低了。</p>
+
+<p>SIZE(VIRT): 进程使用的地址空间, 如果进程映射了100M的内存, 进程的地址空间将报告为100M内存. 事实上, 这个大小不是一个程序实际使用的内存数.</p>
+
+<p>RSS(RES): &ldquo;Resident Set Size&rdquo;, 实际驻留&rdquo;在内存中&rdquo;的内存数. 不包括已经交换出去的代码. 举一个例子: 如果你有一个程序使用了100K内存, 操作系统交换出40K内存, 那么RSS为60K. RSS还包括了与其它进程共享的内存区域. 这些区域通常用于libc库等.</p>
+
+<p>SHARE(SHR): RSS中与其它进程共享的内存部分大小.</p>
+
+<p>VMSIZE: 一个进程占用的总的地址空间大小. 它包括了没有映射到内存中的页面。</p>
+
+<p>SZ（DATA）: 映射到内存中的页面, 这些页面仅由进程单独使用. 这也是我们最关心地方: 进程实际占用的内存数。</p>
+
+<h2 id="top">top</h2>
+
+<p><code>top -b -n1</code> 可以只执行一次,用于将结果重定向到文件.</p>
+
+<h2 id="free">free</h2>
+
+<p><code>free -m</code> <code>free -h</code></p>
+
+<p>按内存占用排序</p>
+
+<pre><code>
+ps -eo rss,vsz,pid,ppid,time,etime,command --sort=rss   # 按内存
+ps -eo rss,vsz,pid,ppid,time,etime,command --sort=time  # 按CPU时间,etime启动时间,comm等都可以.
+
+# MAC无法使用`--sort`上需要使用`| sort -n`
+
+ps -eo rss,vsz,pid,ppid,time,etime,command |sort -n
+
+# alpine 里这样用,不支持--sort, 同样也可以 `top -b -n1`
+ps -o rss,vsz,pid,ppid,time,etime,args
+</code></pre>
+
+<h2 id="ssh">ssh</h2>
+
+<p><code>ssh-copy-id -i ~/.ssh/id_rsa.pub root@host</code></p>
+
+<p><code>ssh-copy-id -i ~/.ssh/id_rsa.pub -p 26671 root@host</code></p>
+
+<h2 id="pgrep">pgrep</h2>
+
+<p>根据名字或其他属性查询出进程的PID</p>
+
+<p>如:<code>pgrep nginx -fl</code></p>
+
+<h2 id="pkill">pkill</h2>
+
+<p>和<code>pgrep</code>类似,不同的是向进程发送信号,默认发送<code>SIGTERM</code>信号,查看都有哪些信号可用,可以使用<code>kill -l</code>查看</p>
+
+<p>类似<code>pkill</code>的命令是<code>killall</code>,后面都是可以直接加进程名字批量杀死进程</p>
+
+<h2 id="pstree">pstree</h2>
+
+<p>用树的形式显示正在运行的进程,树的节点为指定的PID(忽略则为init进程)</p>
+
+<h2 id="ss">ss</h2>
+
+<p>用于显示socket的统计信息,<code>-s</code>用于显示汇总</p>
+
+<p><code>-l</code>用于列出正在监听的<code>socket</code></p>
+
+<p><code>-p</code>显示进程信息,<code>ss -pl</code> 可以查看使用网络端口的进程名字</p>
+
+<h2 id="磁盘相关">磁盘相关</h2>
+
+<h3 id="dd">dd</h3>
+
+<p><code>dd</code>把指定的输入文件拷贝到指定的输出文件中,并且在拷贝的过程中可以进行格式转换。</p>
+
+<p>if =输入文件(或设备名称)
+of =输出文件(或设备名称)
+bs = bytes 同时设置读/写缓冲区的字节数(等于设置obs和obs)
+count = blocks 只拷贝输入的blocks块</p>
+
+<p>创建一个100M的空文件
+<code>dd if=/dev/zero of=hello.txt bs=100m count=1</code></p>
+
+<h2 id="查看当前目录下所有一级子目录文件夹大小">查看当前目录下所有一级子目录文件夹大小</h2>
+
+<p><code>du -h --max-depth=1</code></p>
+
+<h2 id="查看当前目录下所有一级子目录文件夹大小-并排序">查看当前目录下所有一级子目录文件夹大小 并排序</h2>
+
+<p><code>du -h --max-depth=1 |sort</code></p>
+
+<p>以上两条命令不适用于MacOs,可以使用<code>du -sh *</code></p>
+
+<h2 id="ps">ps</h2>
+
+<p>ps ef  查看进程的状态</p>
+
+<p>ps auxw 查看进程的CPU,内存占用</p>
+
+<p>ps 默认是按照PID排序的,若要按内存使用排序<code>ps auxw --sort=rss</code>,同理按虚拟内存排序<code>ps auxw --sort=vsz</code></p>
+
+<p>mac上无法使用<code>--sort</code>,可以采用<code>sort</code>排序,如rss在第六列,则<code>ps auxw | sort -k6,6n</code></p>
+
+<p>lscpu</p>
+
+<h2 id="nc">nc</h2>
+
+<p>nc 命令默认没有安装,需要自己安装,<code>yum install nc</code></p>
+
+<p><strong>传送字符与文件</strong></p>
+
+<p>一端<code>nc -l 9090</code>监听端口9090</p>
+
+<p>一端<code>nc host 9090</code>连接host的9090端口,通信建立后,可以双向通信,实现文字聊天等,也可以传送文件</p>
+
+<p>一端<code>nc -l 9090 &gt; file</code> ,另一端发送文件<code>nc host 9090 &lt; file</code></p>
+
+<p>传送文件夹(压缩文件) <code>nc -l 9090 |tar xzvf -</code> , 另一端发送文件<code>tar czvf – dir | nc host 9090</code></p>
+
+<p>同样可以拷贝硬盘 <code>nc -l 9090 | dd of=/dev/sda</code>,另一端发送<code>dd if=/dev/sda | nc host 9090</code></p>
+
+<p><strong>端口扫描</strong></p>
+
+<p><code>nc -vz -w 1 someIp 1-1000</code></p>
+
+<p><strong>模拟调试http请求</strong></p>
+
+<p><code>GET / HTTP/1.0</code></p>
+
+<p><strong>端口转发</strong></p>
+
+<p>使用之前需要了解其他的命令</p>
+
+<p><code>tee</code>命令将标准输入的数据写入标准输出和tee命令指定的文件参数</p>
+
+<p><code>mkfifo</code>命令用于创建一个FIFO（先进先出）方式的命名管道</p>
+
+<p>标准流:</p>
+
+<pre><code>stdin	0
+stdout	1
+stderr	2
+</code></pre>
+
+<p>** listener-to-client模式(用于外网访问内网) **</p>
+
+<p>见 <a href="http://onestraw.net/cybersecurity/netcat-advanced-usage/">http://onestraw.net/cybersecurity/netcat-advanced-usage/</a></p>
+
+<h2 id="一份linux别名和函数库">一份Linux别名和函数库</h2>
+
+<pre><code>alias tree=&quot;find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g' &quot;;
+alias cls=&quot;cd $1;ls -lh;&quot;;
+# 获得你的公网IP地址和主机名。
+alias ipinfo=&quot;curl ifconfig.me &amp;&amp; curl ifconfig.me/host&quot;;
+# 显示出哪个应用程序连接到网络。
+alias listen=&quot;lsof -P -i -n&quot;;
+# 显示出活动的端口。
+alias port='netstat -uanltp'
+# 统计TCP连接个数
+alias tcpstatus=&quot;netstat -n|awk '/^tcp/{++S[\$NF]} END {for(a in S) print a,S[a]}'&quot;
+# 回到上层目录
+alias ..='cd ..'
+# 去到上两层目录
+alias ...='cd ../..'
+# 按列格式化输出mount信息。
+alias cmount=&quot;mount | column -t&quot;
+# 查看你还有剩下多少内存
+alias meminfo='free -m -l -t'
+# 按照文件在磁盘存储的大小排序，显示当前目录的文件列表。
+sbs() { du -b --max-depth 1 | sort -nr | perl -pe 's{([0-9]+)}{sprintf &quot;%.1f%s&quot;, $1&gt;=2**30? ($1/2**30, &quot;G&quot;): $1&gt;=2**20? ($1/2**20, &quot;M&quot;): $1&gt;=2**10? ($1/2**10, &quot;K&quot;): ($1, &quot;&quot;)}e';}
+# 找出指定目录中最大的10个文件
+largefile() { find . -type f -exec du -k {} \; | sort  -nrk 1 | head; }
+# 查看当前目录大于[多少]kb的文件,速度更快
+bigthan() { size=${1:-100}; find . -type f -size +&quot;$size&quot;k |xargs  ls  -lh ; }
+# 返回你的当前IP地址的地理位置。
+getlocation() { lynx -dump http://www.ip-adress.com/ip_tracer/?QRY=$1|grep address|egrep 'city|state|country'|awk '{print $3,$4,$5,$6,$7,$8}'|sed 's\ip address flag \\'|sed 's\My\\';}
+# 删除.log.1.gz 或者 .log.1.bz2
+delog(){ ls | grep &quot;log.\d\+.\(bz2\|gz\)&quot; | xargs rm}
+
+# 查看最占用内存的前五个进程(根据第几列可修改k6)
+topmem()
+{
+	ps aux | sort -k6nr | head -n5;
+}
+
+
+</code></pre>
+
+<p>部分快捷键</p>
+
+<pre><code>
+CTRL + U -剪切光标前的内容
+
+CTRL + K -剪切光标至行末的内容
+
+CTRL + Y -粘贴
+
+CTRL + E -移动光标到行末
+
+CTRL + A -移动光标到行首
+
+ALT + F -跳向下一个空格
+
+ALT + B -跳回上一个空格
+
+ALT + Backspace -删除前一个单词
+
+CTRL + W -剪切光标后一个单词
+
+Shift + Insert -向终端内粘贴文本
+
+</code></pre>
+
+<p>压缩率 xz &gt; 7z &gt; bzip2 &gt; gzip &gt; zip</p>
+
+<p>gzexe 创建自解压文件</p>
+
+<p>xz5.2以上版本支持多线程压缩,xz -T0 就可以自动按机器线程数多线程执行了,xz 支持 env 环境变量，XZ_OPT=-T0 xz xxx.file 就行啦</p>
+
+<p>多线程的压缩速度几乎与gzip相当</p>
+
+<pre><code># 查看你机器的CPU个数,超线程信息
+sysinfo() {
+physicalNumber=0
+coreNumber=0
+logicalNumber=0
+HTNumber=0
+logicalNumber=$(grep &quot;processor&quot; /proc/cpuinfo|sort -u|wc -l)
+physicalNumber=$(grep &quot;physical id&quot; /proc/cpuinfo|sort -u|wc -l)
+coreNumber=$(grep &quot;cpu cores&quot; /proc/cpuinfo|uniq|awk -F':' '{print $2}'|xargs)
+HTNumber=$((logicalNumber / (physicalNumber * coreNumber)))
+echo &quot;****** CPU Information ******&quot;
+echo &quot;Logical CPU Number  : ${logicalNumber}&quot;
+echo &quot;Physical CPU Number : ${physicalNumber}&quot;
+echo &quot;CPU Core Number     : ${coreNumber}&quot;
+echo &quot;HT Number           : ${HTNumber}&quot;
+echo &quot;*****************************&quot;
+}
+
+</code></pre>
+
+<h2 id="使用脚本清理一些文件">使用脚本清理一些文件</h2>
+
+<p>删除当前目录超过30天未变动过的log文件</p>
+
+<pre><code>find . -mtime +30 -type f -name '*.log*' | xargs rm
+</code></pre>
+
+<p>或者</p>
+
+<pre><code>find . -mtime +30 -type f -name '*.log*' -exec rm -i {} \;
+</code></pre>
+
+<p>所有的操作都包含子目录</p>
+
+<p>-exec  参数后面跟的是command命令，它的终止是以;为结束标志的，所以这句命令后面的分号是不可缺少的，考虑到各个系统中分号会有不同的意义，所以前面加反斜杠。</p>
+
+<p>{}   花括号代表前面find查找出来的文件名。</p>
+
+<p>如<code>find . -type f -exec ls -l {} \;</code></p>
+
+<p>使用-exec选项的安全模式。它将在对每个匹配到的文件进行操作之前提示你。</p>
+
+<p>如<code>find . -name &quot;*.log&quot; -mtime +60 -ok rm {} \;</code></p>
+
+<p>-mtime +30 设定时间为30天前</p>
+
+<p>-type f 查找的类型为文件</p>
+
+<p>-name 文件路径需要匹配的</p>
+
+<p><strong>使用全文查找</strong></p>
+
+<p>grep -lr &lsquo;string&rsquo; /etc/</p>
+
+<p>这个命令就可以搞定。搜索etc下面的文件，包含所有目录下的文件。这样就搞定了。</p>
+
+<p>-i，乎略大小写
+-l，找出含有这个字符串的文件
+-r，不放过子目录</p>
+
+<h2 id="解决can-t-set-the-locale-make-sure-lc-and-lang-are-correct">解决can&rsquo;t set the locale; make sure $LC_* and $LANG are correct</h2>
+
+<p><a href="https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian">https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian</a>
+<code>照着全部做下来</code></p>
+
+<h2 id="sed使用">sed使用</h2>
+
+<p>更新版本号</p>
+
+<pre><code>sed -i &quot;s/?ver=\w\+/?ver=`date +%s`/g&quot; *.html
+</code></pre>
+
+<pre><code>o=http://cdn.ourwill.cn/fed-static r=http://cdn.ourwill.cn/fed-static/fedv2 sed -i &quot;s#$o#$r#g&quot; *.html
+</code></pre>
+
+<h2 id="vim乱码解决">Vim乱码解决</h2>
+
+<p><code>vim ~/.vimrc</code></p>
+
+<pre><code>set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
+set termencoding=utf-8
+set encoding=utf-8
+</code></pre>
+
+<h2 id="开机启动的">开机启动的</h2>
+
+<p>检视和控制systemd的主要命令是systemctl</p>
+
+<p>详细使用见<a href="https://wiki.archlinux.org/index.php/systemd_(简体中文)">https://wiki.archlinux.org/index.php/systemd_(简体中文)</a></p>
+
+<p>CentOS7 用<code>systemctl</code>取代了<code>service</code>
+旧版本的 <code>service docker start</code> 改为<code>systemctl start docker</code>
+设置开机启动
+旧版本的 <code>chkconfig docker on</code> 改为 <code>systemctl enable docker</code></p>
+
+<p><code>/usr/lib/systemd/system/</code>
+<code>/etc/systemd/system/</code>
+后者有较高优先级会覆盖前者</p>
+
+<p>/etc/profile 和 ~/.bash_profile 是在启动 一个交互登陆shell的时候 被调用。
+/etc/bashrc 和 ~/.bashrc 是在一个交互的非登陆shell启动 的时候 被调用。
+~/.bash_logout 在用户注销登陆的时候 被读取</p>
+
+<p>系统脚本 可以放置在/etc/rc.d/init.d中并建立/etc/rc.d/rc?.d链接，也可以直接放置在/etc/rc.d/rc.local中。
+init.d脚本 包含完整的start,stop,status,reload等参数，是标准做法，推荐使用。</p>
+
+<h2 id="linux-家族">Linux 家族</h2>
+
+<p>一般来说著名的linux系统基本上分两大类：</p>
+
+<p>1.RedHat系列：Redhat、Centos、Fedora等</p>
+
+<p>2.Debian系列：Debian、Ubuntu等</p>
+
+<p>RedHat 系列</p>
+
+<p>1 常见的安装包格式 rpm包,安装rpm包的命令是“rpm -参数”</p>
+
+<p>2 包管理工具 yum</p>
+
+<p>3 支持tar包</p>
+
+<p>Debian系列
+1 常见的安装包格式 deb包,安装deb包的命令是“dpkg -参数”</p>
+
+<p>2 包管理工具 apt-get</p>
+
+<p>3 支持tar包</p>
+
+<p><code>soft rlimits too low. Number of files is 256, should be at least 1000</code></p>
+
+<p>见 <a href="https://www.fdzh.org/slides/2015/06/20/linux-distr/">https://www.fdzh.org/slides/2015/06/20/linux-distr/</a></p>
+
+<p><img src="http://static.suconghou.cn/document/linux.jpg" alt="家族示意图" /></p>
+
+<h2 id="判断一个命令是否存在">判断一个命令是否存在</h2>
+
+<p>如判断<code>nc</code>是否存在</p>
+
+<pre><code>command -v nc &gt;/dev/null 2&gt;&amp;1 || { echo &gt;&amp;2 &quot;I require nc but it's not installed.  Aborting.&quot;; exit 1; }
+
+</code></pre>
+
+<pre><code>if ! command -v pip &gt; /dev/null 2&gt;&amp;1;then
+    echo &quot;YES&quot;
+fi
+</code></pre>
+
+<pre><code>PIP=$(which pip)
+if [ ! -x &quot;${PIP}&quot; ];then
+	echo &quot;NO&quot;
+else
+	echo &quot;YES&quot;
+fi
+</code></pre>
+
+<pre><code>[[ ! -x $(which pip) ]] &amp;&amp; echo &quot;No&quot; || echo &quot;Yes&quot;
+
+</code></pre>
+
+<pre><code>if (( ${+commands[pip]} )); then
+	echo &quot;YES&quot;
+fi
+</code></pre>
+
+<h2 id="判断一个进程pid是否还存在">判断一个进程PID是否还存在</h2>
+
+<p>例如检查pid为143的进程 <code>ps ax | awk '{ print $1 }' | grep -e &quot;^143$&quot;</code></p>
+
+<h2 id="时间同步">时间同步</h2>
+
+<p><a href="http://www.ntp.org.cn/">http://www.ntp.org.cn/</a> 提供 ntp server</p>
+
+<p>使用 <code>sudo ntpdate us.ntp.org.cn</code> 来同步时间.</p>
+
+<p>/usr/bin/tzselect 来设置时区</p>
+
+<p>Alpine Linux 3.4  <code>ntpd -d -n -q -p us.ntp.org.cn</code></p>
+
+<p>alpine中设置时区执行</p>
+
+<pre><code>apk update &amp;&amp; apk upgrade &amp;&amp; apk add --no-cache tzdata
+ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+echo &quot;Asia/Shanghai&quot; &gt; /etc/timezone
+</code></pre>
+
+<p>会立即生效.</p>
+
+<h2 id="linux-磁盘与mysql性能测试">Linux 磁盘与MySQL性能测试</h2>
+
+<p>源码地址 : <a href="https://github.com/akopytov/sysbench">https://github.com/akopytov/sysbench</a></p>
+
+<p>它主要包括以下几种方式的测试：</p>
+
+<ol>
+<li>cpu性能</li>
+<li>磁盘io性能</li>
+<li>调度程序性能</li>
+<li>内存分配及传输速度</li>
+<li>POSIX线程性能</li>
+<li>数据库性能(OLTP基准测试)</li>
+</ol>
+
+<p>目前sysbench主要支持 MySQL,pgsql,oracle 这3种数据库。</p>
+
+<h2 id="mtr网络线路测试">Mtr网络线路测试</h2>
+
+<p>如果未安装可以<code>yum info mtr</code>安装</p>
+
+<p>-n  不用主机解释
+-c   发送多少个数据包
+&ndash;report  结果显示，并不动态显示。</p>
+
+<p><code>mtr --report www.baidu.com</code></p>
+
+<h2 id="shell基本语法">Shell基本语法</h2>
+
+<p>声明数组</p>
+
+<p><code>arr=(item1 item2 item3)</code> 使用空格分开</p>
+
+<p>使用<code>echo ${arr[*]}</code> 或者 <code>echo ${arr[@]}</code> 可以查看数组内的元素,<code>echo $arr</code>只能取得第一个元素</p>
+
+<p>要取得数组长度,只需在名字前面加一个#,如<code>echo ${#arr[*]}</code> 或者 <code>echo ${#arr[@]}</code></p>
+
+<p>数组下标以0开始,取得第二个元素为<code>echo ${arr[1]}</code></p>
+
+<p>赋值使用<code>arr[5]=5555</code></p>
+
+<h2 id="测试vps宽带">测试VPS宽带</h2>
+
+<p><a href="https://github.com/sivel/speedtest-cli">https://github.com/sivel/speedtest-cli</a></p>
+
+<p><a href="http://man.linuxde.net/speedtest-cli">http://man.linuxde.net/speedtest-cli</a></p>
+
+<p>还可以使用wget下载各大型机房的测试文件</p>
+
+<p>芝加哥机房/100M测试包</p>
+
+<p><code>wget http://cachefly.cachefly.net/100mb.test</code></p>
+
+<p><code>wget http://cachefly.cachefly.net/10mb.test</code></p>
+
+<p>directspace机房/10M.100M测试包</p>
+
+<p>Portland, Oregon Data Center</p>
+
+<p><code>wget http://bandwidth.directspace.net/100MBtest.zip</code></p>
+
+<p><code>wget http://bandwidth.directspace.net/10MBtest.zip</code></p>
+
+<p>Los Angeles, California Data Center</p>
+
+<p><code>wget http://45.34.158.82/speedtest/100MBtest.zip</code></p>
+
+<p>访问 cachefly.cachefly.net 可以测试你电脑当前的网络速度</p>
+
+<p>枫叶主机 <a href="http://www.fyzhuji.com/speed.html">http://www.fyzhuji.com/speed.html</a> 提供的测速文件.</p>
+
+<p>香港SV新力讯机房,测试20M光纤能跑满2.6MB/s</p>
+
+<p>星光互联 <a href="https://www.starrydns.com/tc/speedtest">https://www.starrydns.com/tc/speedtest</a> 提供的测速文件</p>
+
+<p>Mega-I, Hong Kong,测试能跑到3MB/s</p>
+
+<h2 id="lvm">LVM</h2>
+
+<p>使用<code>pvcreate</code>创建PV</p>
+
+<p>pvcreate 物理分区名字</p>
+
+<p>使用<code>vgcreate</code>创建VG</p>
+
+<p>vgcreate vgname pv1 pv2 pv3</p>
+
+<p>pvdisplay 查看当前的PV</p>
+
+<p>vgdisplay 查看VG</p>
+
+<p>lvdisplay 查看LV</p>
+
+<p>-L：指定LV的大小 -n：指定LV的名。Vo1Group00：表示从这个VG中划分LV；</p>
+
+<p>LV创建好后格式化为想要的格式,然后挂载指定目录,就能使用了.(可以使用<code>df -lhT</code>查看了)</p>
+
+<p><code>lsblk</code></p>
+
+<pre><code>[root@will ~]# lsblk
+NAME            MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+sda               8:0    0 931.5G  0 disk
+├─sda1            8:1    0   200M  0 part /boot/efi
+├─sda2            8:2    0   500M  0 part /boot
+└─sda3            8:3    0 930.8G  0 part
+  ├─centos-root 253:0    0    50G  0 lvm  /
+  ├─centos-swap 253:1    0   5.9G  0 lvm  [SWAP]
+  └─centos-home 253:2    0 874.9G  0 lvm  /home
+sr0              11:0    1  1024M  0 rom
+
+</code></pre>
+
+<p>##</p>
+
+<p><a href="http://home.tiscali.cz/~cz210552/webbench.html">http://home.tiscali.cz/~cz210552/webbench.html</a></p>
+
+<p><a href="http://www.cppblog.com/merlinfang/archive/2014/12/26/209311.html">http://www.cppblog.com/merlinfang/archive/2014/12/26/209311.html</a></p>
+
+<p><a href="http://cloudwu.github.io/lua53doc/">http://cloudwu.github.io/lua53doc/</a></p>
+
+<pre><code>cd /tmp
+LUA_VERSION=lua-5.3.3
+CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
+wget http://www.lua.org/ftp/${LUA_VERSION}.tar.gz
+tar zxf ${LUA_VERSION}.tar.gz
+cd ${LUA_VERSION}
+make linux
+</code></pre>
+
+<p><a href="http://webserver2.tecgraf.puc-rio.br/~lhf/ftp/lua/#srlua">http://webserver2.tecgraf.puc-rio.br/~lhf/ftp/lua/#srlua</a></p>
+
+<p><a href="http://luabinaries.sourceforge.net/download.html">http://luabinaries.sourceforge.net/download.html</a></p>
+
+<p><a href="http://cloudwu.github.io/lua53doc/manual.html">http://cloudwu.github.io/lua53doc/manual.html</a></p>
+
+<p>socat是一個netcat(nc)的替代產品，可以稱得上nc++。
+<a href="http://www.dest-unreach.org/socat/">http://www.dest-unreach.org/socat/</a></p>
+
+<p><a href="http://www.dest-unreach.org/socat/download/">http://www.dest-unreach.org/socat/download/</a></p>
+
+<p>iotop htop
+mtr</p>
+
+<p>netpipes 和socat一样，主要是用来在命令行来进行socket操作的命令，这样你就可以在Shell脚本下行进socket网络通讯了。</p>
+
+<p>iftop和iptraf可以用来查看当前网络链接的一些流量情况。</p>
+
+<p>iostat, vmstat, ifstat 三合一的工具，用来查看系统性能。</p>
+
+<p>rtorrent aria2c
+lftp
+ack是一个perl脚本，是grep的一个可选替换品</p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
 				<a href="/post/play-with-raspberrypi/"> 玩转树莓派</a>
 			</h1>
 			<p class="post-date">Sun, Jan 17, 2016</p>
@@ -135,6 +788,43 @@ ls -lh
 
 <p>ChromeOs已经有支持树莓派的版本了,<a href="www.chromiumosforsbc.org">www.chromiumosforsbc.org</a></p>
 
+<h2 id="配置镜像加速">配置镜像加速</h2>
+
+<p>一:树莓派常用软件源列表</p>
+
+<p>中山大学</p>
+
+<p>Raspbian <a href="http://mirror.sysu.edu.cn/raspbian/raspbian">http://mirror.sysu.edu.cn/raspbian/raspbian</a></p>
+
+<p>中国科学技术大学</p>
+
+<p>Raspbian <a href="http://mirrors.ustc.edu.cn/raspbian/raspbian/">http://mirrors.ustc.edu.cn/raspbian/raspbian/</a></p>
+
+<p>清华大学</p>
+
+<p>Raspbian <a href="http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/">http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/</a></p>
+
+<p>大连东软信息学院源（北方用户）</p>
+
+<p>Raspbian <a href="http://mirrors.neusoft.edu.cn/raspbian/raspbian/">http://mirrors.neusoft.edu.cn/raspbian/raspbian/</a></p>
+
+<p>重庆大学源（中西部用户）</p>
+
+<p>Raspbian <a href="http://mirrors.cqu.edu.cn/Raspbian/raspbian/">http://mirrors.cqu.edu.cn/Raspbian/raspbian/</a></p>
+
+<p>二、树莓派修改软件源的方法</p>
+
+<p>编辑/etc/apt/sources.list文件。删除原文件所有内容，用以下内容取代：</p>
+
+<pre><code>deb http://mirrors.ustc.edu.cn/raspbian/raspbian/ wheezy main non-free contrib
+
+deb-src http://mirrors.ustc.edu.cn/raspbian/raspbian/ wheezy main non-free contrib
+</code></pre>
+
+<p>编辑此文件后，请使用sudo apt-get update命令，更新软件列表。</p>
+
+<p>这样树莓派更新软件就会使用中国科学技术大学的镜像源，从而大大提高更新速度，要使用其他的软件源，根据以上代码就行修改。</p>
+
 <h2 id="关于各种派的性能比较">关于各种派的性能比较</h2>
 
 <p><a href="https://www.zhihu.com/question/37202806">https://www.zhihu.com/question/37202806</a></p>
@@ -142,6 +832,10 @@ ls -lh
 <p>参数一览</p>
 
 <p><a href="https://cdn.shopify.com/s/files/1/1098/4826/files/comparisonupdate.png?13077955502273113275">https://cdn.shopify.com/s/files/1/1098/4826/files/comparisonupdate.png?13077955502273113275</a></p>
+
+<p>温度 <code>/opt/vc/bin/vcgencmd measure_temp</code></p>
+
+<p><code>watch /opt/vc/bin/vcgencmd measure_temp</code></p>
 
 			</div>
 		</div>
@@ -360,518 +1054,6 @@ for i in $backup
 </code></pre>
 
 <h3 id="全功能文件备份脚本">全功能文件备份脚本</h3>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/improve-mysqldb/"> MySQL性能优化</a>
-			</h1>
-			<p class="post-date">Mon, Jan 11, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="配置文件">配置文件</h2>
-
-<p>配置文件一般放在<code>/etc/my.cnf</code> 或者 <code>/etc/mysql/my.cnf</code></p>
-
-<p>默认的配置文件示例存放于<code>/usr/share/mysql</code></p>
-
-<p>各个文件适配不同内存的配置</p>
-
-<table>
-<thead>
-<tr>
-<th>文件</th>
-<th>内存大小</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>my-small.cnf</td>
-<td>&lt;= 64M 不经常开启mysql</td>
-</tr>
-
-<tr>
-<td>my-medium.cnf</td>
-<td>32M–64M 经常其他程序搭配mysql</td>
-</tr>
-
-<tr>
-<td>my-large.cnf</td>
-<td>512M</td>
-</tr>
-
-<tr>
-<td>my-huge.cnf</td>
-<td>1G-2G</td>
-</tr>
-
-<tr>
-<td>my-innodb-heavy-4G.cnf</td>
-<td>4GB 使用InnoDB</td>
-</tr>
-</tbody>
-</table>
-
-<p>使用<code>SHOW VARIABLES</code>来查看系统参数,通过<code>SHOW STATUS</code>来判断系统状态</p>
-
-<p>show 命令还有很多用途</p>
-
-<table>
-<thead>
-<tr>
-<th>命令</th>
-<th>描述</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>show databases 或show tables from database_name</td>
-<td>显示mysql中所有数据库的名称</td>
-</tr>
-
-<tr>
-<td>show tables</td>
-<td>显示当前数据库中所有表的名称</td>
-</tr>
-
-<tr>
-<td>show columns from table_name from database_name</td>
-<td>显示表中列名称</td>
-</tr>
-
-<tr>
-<td>show grants for user_name</td>
-<td>显示一个用户的权限，显示结果类似于grant命令</td>
-</tr>
-
-<tr>
-<td>show table status</td>
-<td>显示当前使用或者指定的database中的每个表的信息。<br>信息包括表类型和表的最新更新时间。</td>
-</tr>
-
-<tr>
-<td>show index from table_name</td>
-<td>显示表的索引</td>
-</tr>
-
-<tr>
-<td>show status</td>
-<td>显示一些系统特定资源的信息,例如,正在运行的线程数量</td>
-</tr>
-
-<tr>
-<td>show variables</td>
-<td>显示系统变量的名称和值</td>
-</tr>
-
-<tr>
-<td>show processlist</td>
-<td>显示系统中正在运行的所有进程，也就是当前正在执行的查询。<br>大多数用户可以查看他们自己的进程，但是如果他们拥有process权限，<br>就可以查看所有人的进程，包括密码</td>
-</tr>
-
-<tr>
-<td>show engies</td>
-<td>显示安装以后可用的存储引擎和默认引擎</td>
-</tr>
-
-<tr>
-<td>show innodb status</td>
-<td>显示innoDB存储引擎的状态</td>
-</tr>
-
-<tr>
-<td>show logs</td>
-<td>显示BDB存储引擎的日志</td>
-</tr>
-
-<tr>
-<td>show warnings</td>
-<td>显示最后一个执行的语句所产生的错误、警告和通知</td>
-</tr>
-
-<tr>
-<td>show errors</td>
-<td>只显示最后一个执行语句所产生的错误</td>
-</tr>
-</tbody>
-</table>
-
-<h2 id="小内存优化">小内存优化</h2>
-
-<p>依据<code>my-small.cnf</code>为模板</p>
-
-<p>主要指标:存储引擎,key_buffer_size,table_cache,max_connections,thread_concurrency,query_cache,thread_stack</p>
-
-<p><strong>存储引擎</strong>:
-如果不使用 BDB table 和 InnoDB table 的话，加入下面2行关闭不需要的表类型很有必要，关闭 innodb 可以省下大量内存，虽然 InnoDB 好处多多但是在一个64MB的 VPS 上并不能体现出来，并且很占内存。</p>
-
-<p><strong>key_buffer_size</strong>:
-用来缓存 tables keys 和 indexes，增加这个值可以更好的处理索引，读和写都需要索引,这里设置成16K足够了.优化性能需要<code>key_reads / key_read_requests</code>应该尽可能的低，至少是1:100，1:1000更好,使用<code>show status like 'key_%';</code>查看</p>
-
-<p><strong>table_cache</strong>:
-所有线程打开的表的数量，增加值可以增大 MySQL 的文件描述符数量，避免频繁的打开表，原始 my-small.cnf 中 table_cache 设置成4有点小，一个 wordpress 的页面通常会涉及到10个左右的表，其他的程序比如 Drupal，MediaWiki 会涉及到更多，将table_cache改为8。</p>
-
-<p><strong>max_connections</strong>:
-数据库最大的连接数量，可以根据自己博客/网站的访问量来定这个值,如果博客/网站经常出现：Too many connections 错误的信息说明需要增大 max_connections 的值.</p>
-
-<p><strong>thread_concurrency</strong>:
-最大并发线程数，通常设置为 CPU核数量×2，在 VPS 宿主机上如果服务器有2颗物理 CPU，而每颗物理 CPU 又支持 H.T 超线程（一个处理器上整合了两个逻辑处理器单元），所以实际取值为4 × 2 ＝ 8。
-如果我们在优化 php.ini 的时候设置了同时只有2个 php-cgi 运行的话，那么我们也应该只设置2个 MySQL 线程同时运行,设置过大导致线程之间的频繁切换。</p>
-
-<p><em>这个参数在mysql 5.6.1中已经被标记为过时，在5.7.2版本的mysql中被移除</em></p>
-
-<p><strong>query_cache</strong>:
-对于博客/新闻网站来说，用得最多的就是查询，所以需要加入 query cache 的设置。query_cache_size 是执行查询所使用的缓冲大小。
-query_cache_limit指定单个查询能够使用的缓冲区大小，缺省为1M,结果集超过这个大小将不会被缓存。</p>
-
-<p>与查询缓存有关的参数还有query_cache_type、query_cache_limit、query_cache_min_res_unit。</p>
-
-<p>query_cache_type指定是否使用查询缓存，可以设置为0、1、2,分别代表了off、on、demand,如果是0，那么query cache 是关闭的。如果是1，那么查询总是先到查询缓存中查找，除非使用了sql_no_cache。如果是2，那么，只有使用 sql_cache的查询，才会去查询缓存中查找.</p>
-
-<p>query_cache_limit指定单个查询能够使用的缓冲区大小，缺省为1M。</p>
-
-<p>query_cache_min_res_unit是在4.1版本以后引入的，它指定分配缓冲区空间的最小单位，缺省为4K。</p>
-
-<p>检查状态值Qcache_free_blocks，如果该值非常大，则表明缓冲区中碎片很多，这就表明查询结果都比较小，此时需要减小 query_cache_min_res_unit。</p>
-
-<p><strong>thread_stack</strong>:
-每个线程被创建的时候,mysql分配给它的内存,每个连接使用一个线程,用来存放每个线程的标识信息，如线程id，线程运行时环境等。</p>
-
-<p><strong>sort_buffer_size</strong>:
-每个需要排序的线程分配的缓冲区大小，增加该值可以加速 order by 和 group by 的操作。注意：该参数是以每个连接分配内存，也就是说，如果有16个连接，sort_buffer_size 为 64K，那么实际分配的内存为：16 × 64K = 1MB。如果设置的缓存大小无法满足需要，MySQL 会将数据写入磁盘来完成排序。因为磁盘操作和内存操作不在一个数量级，所以 sort_buffer_size 对排序的性能影响很大。</p>
-
-<p><strong>read_buffer_size</strong>:
-顺序读取数据时的缓冲区大小，与 sort_buffer_size 一样，该参数分配的内存也是以每连接为单位的。
-当需要顺序读取数据的时候，如无法使用索引的情况下的全表扫描，全索引扫描等。在这种时候，MySQL 按照数据的存储顺序依次读取数据块，每次读取的数据快首先会暂存在 read_buffer_size 中，当 buffer 空间被写满或者全部数据读取结束后，再将 buffer 中的数据返回给上层调用者，以提高效率。</p>
-
-<p><strong>read_rnd_buffer_size</strong>:
-随机读取数据时的缓冲区大小，与顺序读相对应。</p>
-
-<p><strong>net_buffer_size</strong>:
-用来存放客户端连接线程的连接信息和返回客户端的结果集的缓存大小。当 MySQL 接到请求后，产生返回结果集时，会在返回给请求线程之前暂存在在这个缓存中，等积累到一定大小的时候才开始向客户端发送，以提高网络效率。不 过，net_buffer_size 所设置的仅仅只是初始大小，MySQL 会根据实际需要自行申请更多的内存，但最大不会超过 max_allowed_packet。</p>
-
-<p>skip-locking用来避免 MySQL 外部锁定，减少出错几率，增强稳定性。</p>
-
-<p><strong>thread_cache_size 优化配置</strong></p>
-
-<p>Thread_Cache是mysql自己维护的连接池,将空闲的连接线程放在连接池中,而不是立即销毁.这样的好处就是,当又有一个新的请求的时候,mysql不会立即去创建连接 线程,而是先去Thread_Cache中去查找空闲的连接线程,如果存在则直接使用,不存在才创建新的连接线程.</p>
-
-<p>thread_cache_size为连接池里最大连接线程数,在短连接的应用中Thread_Cache的功效非常明显,因为在应用中数据库的连接和创建是非常频繁的,如果不使用 Thread_Cache那么消耗的资源是非常可观的!在长连接中虽然带来的改善没有短连接的那么明显,但是好处是显而易见的.但并不是越大越好大了反而浪费资源
-依据内存</p>
-
-<pre><code>1G  ---&gt; 8
-2G  ---&gt; 16
-3G  ---&gt; 32
-4G  ---&gt; 64
-</code></pre>
-
-<p><code>show variables like 'thread%';show variables like &quot;max_connections&quot;;show status like '%connections%';show status like 'thread%';</code></p>
-
-<p>表3中<code>Connections</code>表示服务器总共服务了多少次连接,<code>Max_used_connections</code>为实际达到的最大并发连接数</p>
-
-<p>表4中<code>Threads_cached</code>是处于连接池中的连接数(休眠的),从表1可以知道连接池允许的最大数量(<code>thread_cache_size</code>)</p>
-
-<p><code>Threads_connected</code>为当前的连接数,也可以从<code>show full processlist;</code>得知当前的连接数,他的最大值即为<code>Max_used_connections</code></p>
-
-<p><code>Threads_running</code>为此时刻正在进行SQL操作的线程,这个值必定是小于等于<code>Threads_connected</code></p>
-
-<p><code>Threads_created</code>为总共执行了多少次创建线程的操作,改数定大于等于<code>Max_used_connections</code>,一个线程创建后用于服务,客户端断开后并不会被销毁,而是放入连接池(只有连接池的数量大于设定值才会被抛弃),当创建的时候也会检查连接池内有没有,没有才会创建新的.</p>
-
-<p>配置项<code>max_connections</code>为允许的最大并发连接数,也可以依据<code>Max_used_connections</code>作为参考,增加该值不会占用系统资源,只有实际使用到的才会占用,但设置过小会出现<code>Too many connections</code>,默认值为100,须大于<code>Max_used_connections</code>,根据网站的并发量来设定.</p>
-
-<p>每一个连接都需要一个线程服务,每个线程初始分配<code>thread_stack</code>字节的内存,连接池的利用率为</p>
-
-<pre><code>Thread_Cache_Hit=(Connections-Thread_created)/Connections*100%
-</code></pre>
-
-<p>即尽量减少线程创建操作.</p>
-
-<p><code>show variables like '%timeout%';</code></p>
-
-<p><code>wait_timeout</code>参数有时也是什么有用,该值为客户端已连接但是未活动,最多等待的秒数,超过此时间将主动断开连接.默认是28800(8小时)</p>
-
-<p>执行<code>show full processlist;</code>可以查看所有连接的状态及空闲时间等.</p>
-
-<p>大量长期<code>Sleep</code>的连接,也是在白白消耗内存,该数量被记为<code>Threads_connected</code>,如果大量创建连接而又不断开不使用,会导致改值增加,达到<code>max_connections</code>上限后会报错<code>too many connections</code></p>
-
-<p>要改变他,要同时设置interactive_timeout和wait_timeout才会生效</p>
-
-<p>以上: 64M VPS数据库配置</p>
-
-<pre><code>skip-bdb
-skip-innodb
-
-key_buffer_size = 16K
-table_cache = 8
-
-thread_stack = 64K
-
-max_connections = 16
-thread_cache_size = 8
-thread_concurrency = 2
-
-query_cache_type = 1
-query_cache_size = 4M
-query_cache_limit = 128K
-query_cache_strip_comments = 1
-
-sort_buffer_size = 64K
-read_buffer_size = 256K
-read_rnd_buffer_size = 256K
-net_buffer_length = 2K
-skip-locking
-
-wait_timeout=3600
-interactive_timeout=3600
-
-</code></pre>
-
-<h3 id="packet-for-query-is-too-large">Packet for query is too large</h3>
-
-<p><code>show variables like '%max%'</code></p>
-
-<p>当update或者insert的内容过大时,<code>max_allowed_packet</code>的值过小,会引起sql异常,需要改大;其默认值为1048576(1M)，</p>
-
-<p>修改<code>my.cnf</code>  <code>max_allowed_packet = 100M</code></p>
-
-<p>或者零时动态设置 <code>set global max_allowed_packet = 104857600;</code></p>
-
-<p>查看是否生效,零时修改一般断开后重新连接即可生效. <code>show variables like '%max_allowed_packet%';</code></p>
-
-<h2 id="数据库优化">数据库优化</h2>
-
-<p>查看query_cache相关配置, 默认这个开关是关闭的,就是禁止使用query_cache
-query_cache_type 为0,是关闭的</p>
-
-<p>查看当前的配置 <code>show variables like '%query_cache%';</code></p>
-
-<p>单独查询一个可以使用 <code>select @@query_cache_type;</code></p>
-
-<pre><code>+------------------------------+----------+
-| Variable_name                | Value    |
-+------------------------------+----------+
-| have_query_cache             | YES      |
-| query_cache_limit            | 262144   |
-| query_cache_min_res_unit     | 4096     |
-| query_cache_size             | 33554432 |
-| query_cache_strip_comments   | OFF      |
-| query_cache_type             | ON       |
-| query_cache_wlock_invalidate | OFF      |
-+------------------------------+----------+
-</code></pre>
-
-<p>上述开启<code>query_cache</code> 32MB</p>
-
-<p>(OFF)如果设置为0，那么可以说，你的缓存根本就没有用，相当于禁用了。</p>
-
-<p>(ON)如果设置为1，将会缓存所有的结果，除非你的select语句使用SQL_NO_CACHE禁用了查询缓存。</p>
-
-<p>(DEMAND)如果设置为2，则只缓存在select语句中通过SQL_CACHE指定需要缓存的查询。</p>
-
-<p><code>query_cache_size</code>为0,没有分配缓存空间,如果配置了<code>query_cache_size = 4M</code>,这里会显示具体的字节</p>
-
-<p>查看配置及运行的状态 <code>show global variables like '%query_cache%';show global status like '%Qcache%';</code></p>
-
-<pre><code>+-------------------------+----------+
-| Variable_name           | Value    |
-+-------------------------+----------+
-| Qcache_free_blocks      | 1        |
-| Qcache_free_memory      | 26444248 |
-| Qcache_hits             | 159619   |
-| Qcache_inserts          | 27496    |
-| Qcache_lowmem_prunes    | 0        |
-| Qcache_not_cached       | 180      |
-| Qcache_queries_in_cache | 6922     |
-| Qcache_total_blocks     | 13850    |
-+-------------------------+----------+
-</code></pre>
-
-<p>如果<code>Qcache_lowmem_prunes</code>的值非常大，则表明经常出现缓冲不够的情况</p>
-
-<p>如果<code>Qcache_hits</code>的值也非常大，则表明查询缓存使用非常频繁，此时需要增加缓冲大小；</p>
-
-<p>如果<code>Qcache_hits</code>的值不大，则表明你的查询重复率很低，这种情况下使用查询缓存反而会影响效率，那么可以考虑不用查询缓存。</p>
-
-<p>此外，在SELECT语句中加入<code>SQL_NO_CACHE</code>可以明确表示不使用查询缓存。</p>
-
-<blockquote>
-<p>查询缓存碎片率 = Qcache_free_blocks / Qcache_total_blocks * 100%</p>
-</blockquote>
-
-<p>如果查询缓存碎片率超过20%，可以用FLUSH QUERY CACHE整理缓存碎片，或者试试减小query_cache_min_res_unit，如果你的查询都是小数据量的话.</p>
-
-<blockquote>
-<p>查询缓存利用率 = (query_cache_size – Qcache_free_memory) / query_cache_size * 100%</p>
-</blockquote>
-
-<p>查询缓存利用率在25%以下的话说明query_cache_size设置的过大，可适当减小;查询缓存利用率在80%以上而且Qcache_lowmem_prunes &gt; 50的话说明query_cache_size可能有点小，要不就是碎片太多。</p>
-
-<blockquote>
-<p>查询缓存命中率 = Qcache_hits / ( Qcache_hits + Qcache_inserts ) * 100%</p>
-</blockquote>
-
-<p>命中率越高,效果越好</p>
-
-<p>要开启<code>Query Cache</code>可以执行如下,注意<code>Query Cache</code>对于读多写少的场景才会有优势</p>
-
-<pre><code>SET GLOBAL query_cache_type = 1;
-SET GLOBAL query_cache_size = 16777216;
-SET GLOBAL query_cache_limit = 262144;
-SET GLOBAL query_cache_strip_comments = 1;
-</code></pre>
-
-<blockquote>
-<p>query_cache_type:开启缓存</p>
-
-<p>query_cache_size:总的缓存大小16Mb</p>
-
-<p>query_cache_limit:结果集超过256KB则不缓存</p>
-</blockquote>
-
-<h2 id="各个数据库引擎对比">各个数据库引擎对比</h2>
-
-<p>主要讨论引擎: MyISAM存储引擎 InnoDB存储引擎 Memory存储引擎</p>
-
-<h3 id="myisam存储引擎">MyISAM存储引擎</h3>
-
-<p>支持B-tree/FullText/R-tree索引类型
-锁级别是表锁,表锁的开销小，加锁快;锁粒度大，发生锁冲突的概率较高，并发度低；表锁适合查询
-不支持事务性，也不支持外键。</p>
-
-<blockquote>
-<p>并发不高，不需要支持事务,需要进行全文搜索,读次数大于写次数,适合数据量不是特别大并发不太高的大部分场合</p>
-</blockquote>
-
-<h3 id="innodb存储引擎">InnoDB存储引擎</h3>
-
-<p>支持事务性，支持回滚,支持Hash/B-tree索引类型
-锁级别是行锁，行锁在锁定上带来的消耗大于表锁，但是在系统并发访问量较高时，InnoDB整体性能远高于MyISAM。
-InnoDB的索引不仅缓存索引本身，也缓存数据，所以InnoDB需要更大的内存。</p>
-
-<blockquote>
-<p>表数据量超过千万，高并发,频繁更新大字段,安全性和可用性要求高,更适合与大并发大数据量的场合，除了支持事务，在高并发时行级锁的优势就会发挥出来。</p>
-</blockquote>
-
-<h3 id="memory存储引擎">Memory存储引擎</h3>
-
-<p>内存级的存储引擎，它将所有数据都存储在内存中，所以它能够存储的数据量是比较小的
-Memory的锁级别和MyISAM一样，是表锁；并且不支持事务性。</p>
-
-<blockquote>
-<p>适合与性能要求高数据量小的地方，和缓存的效果类似。</p>
-
-<p>innodb查询表的行数需要全表扫描，速度会非常慢，查询1千万行数据的表最多时要6、7s,而myisam因为保存了总行数是极快的。
-在一个进程操作的情况下，myisam的更新和查询速度都会稍快于innodb。memory引擎插入和查询修改的速度都极快，但支持的数据量有限,不支持BLOB/TEXT数据类型,适用于单表几万行数据.</p>
-
-<p>MEMORY表最大值受系统变量 max_heap_table_size 限制，默认为16MB，要改变MEMORY表大小限制，需要改变max_heap_table_size 的值。
-MEMORY表写入性能不如InnoDB,读取优于Redis, 更多相关阅读 <a href="https://www.v2ex.com/t/303137">https://www.v2ex.com/t/303137</a></p>
-</blockquote>
-
-<h3 id="锁">锁</h3>
-
-<blockquote>
-<p>读锁：读操作时增加锁，叫共享锁，S-lock特征是阻塞其他客户端的写操作，不阻塞读操作</p>
-
-<p>写锁：写操作时增加锁，叫独占锁或排他锁，X-lock特征是阻塞其他客户端的读、写操作</p>
-</blockquote>
-
-<h3 id="锁定粒度-范围">锁定粒度（范围）</h3>
-
-<blockquote>
-<p>行级：提升并发性，锁定开销大</p>
-
-<p>表级：不利于并发性，锁定开销小</p>
-</blockquote>
-
-<p><code>show global status like '%cost%';</code> 查看上一次查询的代价</p>
-
-<p><code>show global variables like 'long_query_time';</code> 查看长查询设定的时间</p>
-
-<p><code>show global status like 'slow_queries';</code> &ndash;查看查询时间超过long_query_time秒的查询的个数。</p>
-
-<h3 id="查看最近执行的sql">查看最近执行的sql</h3>
-
-<p>1) If general mysql logging is enabled then we can check the queries in the log file or table based what we have mentioned in the config. Check what is enabled with the following command</p>
-
-<p>mysql&gt; show variables like &lsquo;general_log%&lsquo;;
-mysql&gt; show variables like &lsquo;log_output%&lsquo;;
-If we need query history in table then</p>
-
-<p>Execute SET GLOBAL log_output = &lsquo;TABLE&rsquo;;
-Execute SET GLOBAL general_log = &lsquo;ON&rsquo;;
-Take a look at the table mysql.general_log</p>
-
-<p>If you prefer to output to a file:</p>
-
-<p>SET GLOBAL log_output = &ldquo;FILE&rdquo;; which is set by default.
-SET GLOBAL general_log_file = &ldquo;/path/to/your/logfile.log&rdquo;;
-SET GLOBAL general_log = &lsquo;ON&rsquo;;
-2) We can also check the queries in the .mysql_history file cat ~/.mysql_history</p>
-
-<h3 id="ibdata1文件过大">ibdata1文件过大</h3>
-
-<ol>
-<li>需要指定<code>innodb_file_per_table</code>参数,单独保存每个表的数据,否则MySQL的数据都会存放在ibdata1文件里，文件只增加不减小,时间久了这个文件就会变的非常大。</li>
-</ol>
-
-<p><code>show variables like '%innodb%';</code>查看目前innodb的配置</p>
-
-<p>需要给<code>my.cnf</code>添加一行<code>innodb_file_per_table</code>,记得这个需要在<code>[mysqld]</code>段下面</p>
-
-<ol>
-<li>可能有长时间执行但未提交的事务.</li>
-</ol>
-
-<p>解决方法可参见 <a href="http://blog.fens.me/mysql-ibdata1/">http://blog.fens.me/mysql-ibdata1/</a></p>
-
-<h2 id="mysql导出数据">mysql导出数据</h2>
-
-<p>命令行下具体用法如下：  mysqldump -u用戶名 -p密码 -d 數據库名 表名 脚本名;</p>
-
-<p>1、导出數據库為dbname的表结构（其中用戶名為root,密码為dbpasswd,生成的脚本名為db.sql）
-mysqldump -uroot -pdbpasswd -d dbname &gt;db.sql;</p>
-
-<p>2、导出數據库為dbname某张表(test)结构
-mysqldump -uroot -pdbpasswd -d dbname test&gt;db.sql;</p>
-
-<p>3、导出數據库為dbname所有表结构及表數據（不加-d）
-mysqldump -uroot -pdbpasswd  dbname &gt;db.sql;</p>
-
-<p>4、导出數據库為dbname某张表(test)结构及表數據（不加-d）
-mysqldump -uroot -pdbpasswd dbname test&gt;db.sql;</p>
-
-<p>5.导出数据中dbname多张表（test1,test2,test3）结构及表数据用用空格隔开</p>
-
-<p>mysqldump -uroot -pdbpasswd dbname test1 test2 test3&gt;db.sql;</p>
-
-<p><strong>使用gzip压缩</strong></p>
-
-<p>导出时: <code>mysqldump -uroot -pdbpasswd dbname | gzip &gt; backupfile.sql.gz</code></p>
-
-<p>导入时: <code>gunzip &lt; backupfile.sql.gz | mysql -uroot -pdbpasswd dbname</code></p>
-
-<p><strong>使用xz压缩</strong></p>
-
-<p>导出时: <code>mysqldump -uroot -pdbpasswd dbname | xz &gt; backupfile.sql.xz</code></p>
-
-<p>导入时: <code>unxz -c backupfile.sql.xz | mysql -uroot -pdbpasswd dbname</code></p>
-
-<p>gzip和xz压缩时后面都可以使用参数<code>-9</code>加大压缩率.但也更耗时.</p>
-
-<p>同理还可以使用<code>bzip2</code>和<code>bzip2 -dc</code>压缩和解压</p>
-
-<p>DELAYED仅适用于MyISAM, MEMORY和ARCHIVE表</p>
-
-<p>replace delayed into</p>
-
-<p>insert delayed into</p>
-
-<p>insert delayed ignore into</p>
 
 			</div>
 		</div>

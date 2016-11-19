@@ -103,6 +103,8 @@ yum makecache
 
 &lt;p&gt;&lt;code&gt;route&lt;/code&gt; 查看默认网关&lt;/p&gt;
 
+&lt;p&gt;&lt;a href=&#34;https://wiki.centos.org/zh/HowTos/KVM&#34;&gt;https://wiki.centos.org/zh/HowTos/KVM&lt;/a&gt;&lt;/p&gt;
+
 &lt;h2 id=&#34;创建虚拟机磁盘镜像文件&#34;&gt;创建虚拟机磁盘镜像文件&lt;/h2&gt;
 
 &lt;p&gt;不能创建太小,建议5G-50G&lt;/p&gt;
@@ -115,7 +117,11 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;创建虚拟机&lt;/p&gt;
+&lt;h2 id=&#34;创建虚拟机&#34;&gt;创建虚拟机&lt;/h2&gt;
+
+&lt;p&gt;使用&lt;code&gt;osinfo-query os&lt;/code&gt;可以查看&lt;code&gt;os-variant&lt;/code&gt;都有哪些代号&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://raymii.org/s/articles/virt-install_introduction_and_copy_paste_distro_install_commands.html&#34;&gt;https://raymii.org/s/articles/virt-install_introduction_and_copy_paste_distro_install_commands.html&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;创建 Ubuntu&lt;/p&gt;
 
@@ -178,6 +184,39 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 --hvm --dry-run
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;p&gt;创建Windows Server&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;qemu-img create -f qcow2 /disk/kvm/windisk1 50G&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;针对Windows需要安装一些驱动&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;sudo wget https://fedorapeople.org/groups/virt/virtio-win/virtio-win.repo -O /etc/yum.repos.d/virtio-win.repo&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;sudo yum install virtio-win&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://fedoraproject.org/wiki/Windows_Virtio_Drivers&#34;&gt;https://fedoraproject.org/wiki/Windows_Virtio_Drivers&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;virt-install \
+--name windows2012 \
+--ram 4096 --vcpus 2 \
+--disk path=/data/iso/cn_windows_server_2012_r2_with_update_x64_dvd_4048415.iso,device=cdrom \
+--disk path=/disk/kvm/windisk1,size=50,format=qcow2,bus=virtio,cache=writeback \
+--cdrom=/usr/share/virtio-win/virtio-win-0.1.126.iso \
+--os-type windows \
+--os-variant win2k12r2 \
+--bridge=br0,model=virtio \
+--accelerate \
+--graphics vnc,port=5999,listen=0.0.0.0 \
+--console pty,target_type=serial \
+--hvm --dry-run
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;出现&lt;code&gt;ERROR    不能混用 --graphics 和旧式的图形选项&lt;/code&gt;可能是需要去掉&lt;code&gt;--keymap&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;关于 加载 virtio 驱动可以参考  &lt;a href=&#34;http://www.ilanni.com/?p=5877&#34;&gt;http://www.ilanni.com/?p=5877&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;选择加载&lt;code&gt;viostor&lt;/code&gt;磁盘驱动&lt;/strong&gt;&lt;/p&gt;
+
 &lt;blockquote&gt;
 &lt;p&gt;disk属性就是指虚拟机使用哪一个磁盘镜像文件作为存储地方，指定刚才创建的镜像文件位置即可，size=10,format=qcow2,bus=virtio分别是指大小，格式（跟镜像格式一致），磁盘总线类型（指Value can be ’ide’, ’scsi’, ’usb’, ’virtio’ or ’xen’，virtio是专门为kvm制定的bus，比较常用），大小需要比镜像文件大小要小，相当于镜像是容器，这个disk是里面的水，水太多就溢出了。&lt;/p&gt;
 
@@ -205,11 +244,148 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 
 &lt;p&gt;3，删除虚拟机文件&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;virsh destroy debain &amp;amp;&amp;amp;  virsh undefine debain&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;virsh destroy windows2012 &amp;amp;&amp;amp;  virsh undefine windows2012&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;通过virt-clone命令克隆虚拟机&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;virt-clone -o centos -n centos2 -f /disk/kvm/disk2&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;virsh -c qemu:///system list&lt;/code&gt; 可以查看正在运行的机器&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;virsh vncdisplay windows2012&lt;/code&gt;查看vnc端口&lt;/p&gt;
+
+&lt;p&gt;可以使用其他机器上的vnc  viewer 连接&lt;/p&gt;
+
+&lt;p&gt;本机 &lt;code&gt;virt-viewer --connect qemu:///system windows2012&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;windows系统可使用 vncviewer (&lt;a href=&#34;http://share.suconghou.cn/bin/vncviewer.zip&#34;&gt;http://share.suconghou.cn/bin/vncviewer.zip&lt;/a&gt;) 连接&lt;/p&gt;
+
+&lt;p&gt;全屏下用F8键可唤出菜单.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>iptables</title>
+      <link>http://blog.suconghou.cn/post/iptables/</link>
+      <pubDate>Wed, 14 Sep 2016 12:24:02 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/iptables/</guid>
+      <description>
+
+&lt;h1 id=&#34;iptables相关配置&#34;&gt;iptables相关配置&lt;/h1&gt;
+
+&lt;p&gt;配置&lt;code&gt;iptables&lt;/code&gt;之前,建议添加一个crontab定时重置iptables,防止将自己阻挡.&lt;/p&gt;
+
+&lt;p&gt;建议写入&lt;code&gt;/usr/iptab.sh&lt;/code&gt;,加入&lt;code&gt;crontab&lt;/code&gt;,每个整点执行&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo iptables -F
+sudo iptables -X
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;查看本机关于iptables的设置情况&#34;&gt;查看本机关于IPTABLES的设置情况&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;iptables -L -n
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;清除原有规则&#34;&gt;清除原有规则.&lt;/h2&gt;
+
+&lt;p&gt;不管你在安装linux时是否启动了防火墙,如果你想配置属于自己的防火墙,那就清除现在filter的所有规则.
+清除预设表filter中的所有规则链的规则&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;iptables -F
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;清除预设表filter中使用者自定链中的规则&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;iptables -X
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;保存配置&#34;&gt;保存配置&lt;/h2&gt;
+
+&lt;p&gt;刚刚配置的重启以后就会丢失,想要保存使用&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;iptables save
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;有的可能是&lt;code&gt;iptables-save&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;这样就写到&lt;code&gt;/etc/sysconfig/iptables&lt;/code&gt; 文件里了.
+写入后记得把防火墙重起一下,才能起作用.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;service iptables restart
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;设定预设规则&#34;&gt;设定预设规则&lt;/h2&gt;
+
+&lt;p&gt;默认的入口,出口,转发策略都是ACCEPT
+下面要改变这种规则&lt;/p&gt;
+
+&lt;p&gt;iptables 采用黑名单加白名单的方式, 未命中白名单的将采用预设规则&lt;/p&gt;
+
+&lt;p&gt;下面操作注意,为避免ssh端口22被拦截,首先添加&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;保证22端口入口畅通,注意如果你的OUTPUT模式设置为DROP(上面已经清空了,默认为ACCEPT),还需要添加&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;iptables -A OUTPUT -p tcp --sport 22 -j ACCEPT
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;保证出口22端口畅通
+下面开始折腾吧&lt;/p&gt;
+
+&lt;p&gt;1.修改入口流量默认规则为DROP,除非命中用户规则,否则拦截所有入口流量(注意上面一定要排除ssh的端口,否则直接掉线)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;iptables -P INPUT DROP
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果你使用了docker,这里好像会对docker的网络造成影响&lt;/p&gt;
+
+&lt;p&gt;2.允许所有出口流量(重置iptables时,这其实就是默认的规则)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;iptables -P OUTPUT ACCEPT
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;3.禁止所有转发流量,除了命中用户规则的&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;iptables -P FORWARD DROP
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;常用端口开启&#34;&gt;常用端口开启&lt;/h3&gt;
+
+&lt;p&gt;开启80,443端口,http,https服务&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;开启21端口,ftp服务&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;iptables -A INPUT -p tcp --dport 21 -j ACCEPT
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;开启基本端口&#34;&gt;开启基本端口&lt;/h3&gt;
+
+&lt;p&gt;允许icmp包通过,也就是允许ping&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;iptables -A INPUT -p icmp -j ACCEPT
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;允许loopback!(不然会导致DNS无法正常关闭等问题)&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;如果未启用此项,常见的fastcgi_pass 127.0.0.1 将会有问题&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;iptables -A INPUT -i lo -p all -j ACCEPT
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;iptables 配置实时生效,如果拦截了ssh端口,将立即掉线!&lt;/p&gt;
+
+&lt;p&gt;无论iptabes启动与否，ps -ef都不会看到iptables的进程，这是因为iptables是由内核来实现的，也就是说iptables的功能已经融入到内核里面了&lt;/p&gt;
+
+&lt;p&gt;iptables只是一个工具，将IP规则写入内核，让内核去处理。所以iptables只有在加规则的时候才会看得到进程，加完了就退出了&lt;/p&gt;
+
+&lt;p&gt;iptables并不是一个普通的daemon，只是一个普通的工具，添加一些规则到kernel的filter列表里面。&lt;/p&gt;
 </description>
     </item>
     
@@ -857,6 +1033,19 @@ backend servers
     server myserver 192.243.115.210:80 check maxconn 6000
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;p&gt;八种负载算法&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&amp;lsquo;roundrobin&amp;rsquo;,  简单的轮询
+&amp;lsquo;static-rr&amp;rsquo;,    根据权重
+ &amp;lsquo;leastconn&amp;rsquo;, 最少连接者先处理
+&amp;lsquo;source&amp;rsquo;,  根据请求源IP
+&amp;lsquo;uri&amp;rsquo;,    根据请求的URI
+&amp;lsquo;url_param&amp;rsquo;,  根据请求的URl参数
+&amp;lsquo;hdr(name)&amp;rsquo; 根据HTTP请求头来锁定每一次HTTP请求
+ &amp;lsquo;rdp-cookie(name)&amp;rsquo; 很据cookie(name)来锁定并哈希每一次TCP请求&lt;/p&gt;
+&lt;/blockquote&gt;
+
 &lt;p&gt;还有一个在应对高并发时通常都需要改的
 &lt;code&gt;ulimit -n 8192&lt;/code&gt;&lt;/p&gt;
 
@@ -1412,6 +1601,36 @@ cd shadowsocks-libev
 export CFLAGS=&amp;quot;-O3&amp;quot;
 make -j4 &amp;amp;&amp;amp; make install
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在alpine里静态编译&lt;/p&gt;
+
+&lt;p&gt;需要将生成的&lt;code&gt;./src/Makefile&lt;/code&gt;修改&lt;code&gt;LDFLAGS = -all-static&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;apk update &amp;amp;&amp;amp; apk upgrade
+apk --update add gcc g++ make curl zlib-dev pcre-dev openssl-dev linux-headers asciidoc xmlto
+cd /tmp
+SHADOWSOCKS_LIBEV_VERSION=2.5.6
+CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
+curl -sSL https://github.com/shadowsocks/shadowsocks-libev/archive/v${SHADOWSOCKS_LIBEV_VERSION}.tar.gz |  tar xz
+cd shadowsocks-libev-${SHADOWSOCKS_LIBEV_VERSION}
+export CFLAGS=&amp;quot;-O3&amp;quot;
+./configure
+LDFLAGS=&amp;quot;-all-static&amp;quot; make -j$CPU_NUM &amp;amp;&amp;amp; make install
+strip -s /usr/local/bin/ss-server
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;启动server端&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ss-server -s 0.0.0.0 -p 443 -k 123456 -m rc4-md5 -t 300 -d 8.8.8.8 -u&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;with Linux kernel &amp;gt; 3.7.0&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ss-server -s 0.0.0.0 -p 443 -k 123456 -m rc4-md5 -t 300 -d 8.8.8.8 --fast-open -u&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;后台运行:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ss-server -s 0.0.0.0 -p 443 -k 123456 -m rc4-md5 -t 300 -d 8.8.8.8 -u &amp;gt; /tmp/ss.log 2&amp;gt;&amp;amp;1 &amp;amp;&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;GO语言版本的也十分方便哦&lt;/strong&gt;&lt;/p&gt;
 
@@ -2279,6 +2498,52 @@ fi
 
 &lt;p&gt;例如检查pid为143的进程 &lt;code&gt;ps ax | awk &#39;{ print $1 }&#39; | grep -e &amp;quot;^143$&amp;quot;&lt;/code&gt;&lt;/p&gt;
 
+&lt;h2 id=&#34;时间同步&#34;&gt;时间同步&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.ntp.org.cn/&#34;&gt;http://www.ntp.org.cn/&lt;/a&gt; 提供 ntp server&lt;/p&gt;
+
+&lt;p&gt;使用 &lt;code&gt;sudo ntpdate us.ntp.org.cn&lt;/code&gt; 来同步时间.&lt;/p&gt;
+
+&lt;p&gt;/usr/bin/tzselect 来设置时区&lt;/p&gt;
+
+&lt;p&gt;Alpine Linux 3.4  &lt;code&gt;ntpd -d -n -q -p us.ntp.org.cn&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;alpine中设置时区执行&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;apk update &amp;amp;&amp;amp; apk upgrade &amp;amp;&amp;amp; apk add --no-cache tzdata
+ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+echo &amp;quot;Asia/Shanghai&amp;quot; &amp;gt; /etc/timezone
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;会立即生效.&lt;/p&gt;
+
+&lt;h2 id=&#34;linux-磁盘与mysql性能测试&#34;&gt;Linux 磁盘与MySQL性能测试&lt;/h2&gt;
+
+&lt;p&gt;源码地址 : &lt;a href=&#34;https://github.com/akopytov/sysbench&#34;&gt;https://github.com/akopytov/sysbench&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;它主要包括以下几种方式的测试：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;cpu性能&lt;/li&gt;
+&lt;li&gt;磁盘io性能&lt;/li&gt;
+&lt;li&gt;调度程序性能&lt;/li&gt;
+&lt;li&gt;内存分配及传输速度&lt;/li&gt;
+&lt;li&gt;POSIX线程性能&lt;/li&gt;
+&lt;li&gt;数据库性能(OLTP基准测试)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;目前sysbench主要支持 MySQL,pgsql,oracle 这3种数据库。&lt;/p&gt;
+
+&lt;h2 id=&#34;mtr网络线路测试&#34;&gt;Mtr网络线路测试&lt;/h2&gt;
+
+&lt;p&gt;如果未安装可以&lt;code&gt;yum info mtr&lt;/code&gt;安装&lt;/p&gt;
+
+&lt;p&gt;-n  不用主机解释
+-c   发送多少个数据包
+&amp;ndash;report  结果显示，并不动态显示。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;mtr --report www.baidu.com&lt;/code&gt;&lt;/p&gt;
+
 &lt;h2 id=&#34;shell基本语法&#34;&gt;Shell基本语法&lt;/h2&gt;
 
 &lt;p&gt;声明数组&lt;/p&gt;
@@ -2321,11 +2586,11 @@ fi
 
 &lt;p&gt;访问 cachefly.cachefly.net 可以测试你电脑当前的网络速度&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://www.fyzhuji.com/speed.html&#34;&gt;http://www.fyzhuji.com/speed.html&lt;/a&gt; 提供的测速文件.&lt;/p&gt;
+&lt;p&gt;枫叶主机 &lt;a href=&#34;http://www.fyzhuji.com/speed.html&#34;&gt;http://www.fyzhuji.com/speed.html&lt;/a&gt; 提供的测速文件.&lt;/p&gt;
 
 &lt;p&gt;香港SV新力讯机房,测试20M光纤能跑满2.6MB/s&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;https://www.starrydns.com/tc/speedtest&#34;&gt;https://www.starrydns.com/tc/speedtest&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;星光互联 &lt;a href=&#34;https://www.starrydns.com/tc/speedtest&#34;&gt;https://www.starrydns.com/tc/speedtest&lt;/a&gt; 提供的测速文件&lt;/p&gt;
 
 &lt;p&gt;Mega-I, Hong Kong,测试能跑到3MB/s&lt;/p&gt;
 
@@ -2404,119 +2669,6 @@ mtr&lt;/p&gt;
 &lt;p&gt;rtorrent aria2c
 lftp
 ack是一个perl脚本，是grep的一个可选替换品&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>玩转树莓派</title>
-      <link>http://blog.suconghou.cn/post/play-with-raspberrypi/</link>
-      <pubDate>Sun, 17 Jan 2016 22:21:49 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/post/play-with-raspberrypi/</guid>
-      <description>
-
-&lt;h2 id=&#34;官方操作系统&#34;&gt;官方操作系统&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://www.raspberrypi.org/downloads/raspbian/&#34;&gt;https://www.raspberrypi.org/downloads/raspbian/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;带桌面版1.4G&lt;/p&gt;
-
-&lt;p&gt;精简版292MB&lt;/p&gt;
-
-&lt;h2 id=&#34;安装其他操作系统&#34;&gt;安装其他操作系统&lt;/h2&gt;
-
-&lt;h3 id=&#34;centos&#34;&gt;CentOS&lt;/h3&gt;
-
-&lt;p&gt;CentOS7官方支持了AMRV7发布了树莓派2、香蕉派、以及CubitTruck单片机的版本&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://mirror.centos.org/altarch/7/isos/armhfp/&#34;&gt;CentOS7官方下载&lt;/a&gt;
-root 密码 centos
-大约275MB&lt;/p&gt;
-
-&lt;h3 id=&#34;archlinux&#34;&gt;ArchLinux&lt;/h3&gt;
-
-&lt;p&gt;树莓派1 &lt;a href=&#34;https://archlinuxarm.org/platforms/armv6/raspberry-pi&#34;&gt;https://archlinuxarm.org/platforms/armv6/raspberry-pi&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;树莓派2 &lt;a href=&#34;https://archlinuxarm.org/platforms/armv7/broadcom/raspberry-pi-2&#34;&gt;https://archlinuxarm.org/platforms/armv7/broadcom/raspberry-pi-2&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;树莓派3 &lt;a href=&#34;https://archlinuxarm.org/platforms/armv8/broadcom/raspberry-pi-3&#34;&gt;https://archlinuxarm.org/platforms/armv8/broadcom/raspberry-pi-3&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;有国内的下载镜像 &lt;a href=&#34;https://mirrors.tuna.tsinghua.edu.cn/archlinuxarm/os/&#34;&gt;https://mirrors.tuna.tsinghua.edu.cn/archlinuxarm/os/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;大约293MB&lt;/p&gt;
-
-&lt;h2 id=&#34;安装osmc&#34;&gt;安装OSMC&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://osmc.tv/download/&#34;&gt;下载一览&lt;/a&gt;,选择&lt;code&gt;Disk images&lt;/code&gt;,此系统较省资源,默认开机进入OSMC,img.gz 大小约160M&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;OSMC_FILE=OSMC_TGT_rbp2_20160621.img.gz
-cd /data/tmp
-axel -n 20 http://download.osmc.tv/installers/diskimages/$OSMC_FILE
-md5sum $OSMC_FILE
-ls -lh
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;查看所有版本 &lt;a href=&#34;http://download.osmc.tv/installers/diskimages/&#34;&gt;http://download.osmc.tv/installers/diskimages/&lt;/a&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;使用清华大学镜像站国内下载速度更快: &lt;a href=&#34;https://mirrors.tuna.tsinghua.edu.cn/osmc/osmc/download/installers/&#34;&gt;https://mirrors.tuna.tsinghua.edu.cn/osmc/osmc/download/installers/&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;插入内存卡,开始烧写到内存卡中.烧写之前需要取消挂载&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;diskutil list&lt;/code&gt; 查看你的内存卡的挂载位置,取消挂载&lt;/p&gt;
-
-&lt;p&gt;执行&lt;code&gt;diskutil unmountdisk /dev/disk2&lt;/code&gt; 取消挂载,需要稍等一小会.&lt;/p&gt;
-
-&lt;p&gt;烧写,烧写过程中读卡器不断闪烁.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;gzip -dc /data/tmp/$OSMC_FILE | sudo dd of=/dev/disk2 bs=8k
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;dd的用法: &lt;code&gt;dd if=/dev/zero of=hello.txt bs=1024&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;dd过程中看不到进度,如果确实想要了解进度,可以再开一个终端&lt;code&gt;pkill -USR1 -n -x dd&lt;/code&gt;查看进度.&lt;/p&gt;
-
-&lt;p&gt;如果是iso文件,需要装换为img文件,&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;hdiutil convert -format UDRW -o /path/to/generate/img/file /path/to/your/iso/file
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;mac osx会默认追加一个.dmg,这个没有影响,然后就可以使用dd写入这个img文件了.&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;diskutil eject /dev/disk1&lt;/code&gt; 弹出USB,注意和卸载(&lt;code&gt;unmountdisk&lt;/code&gt;)是不同的&lt;/p&gt;
-
-&lt;p&gt;除了OSMC默认皮肤,还有一些好看的皮肤推荐&lt;/p&gt;
-
-&lt;p&gt;1.&lt;a href=&#34;http://forum.kodi.tv/showthread.php?tid=187071&#34;&gt;Eminence&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;2.&lt;a href=&#34;http://forum.kodi.tv/showthread.php?tid=214146&#34;&gt;Bello&lt;/a&gt; 看github,支持中文&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://forum.kodi.tv/forumdisplay.php?fid=26&#34;&gt;官方论坛&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;OSMC默认的ssh连接用户是 osmc 密码 osmc&lt;/p&gt;
-
-&lt;h2 id=&#34;安装openelec&#34;&gt;安装openelec&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://openelec.tv/get-openelec&#34;&gt;openelec&lt;/a&gt; 镜像下载,osmc是基于debain的,系统更加完善.此系统相比osmc更加精简,是专为跑kodi精简的系统. img.gz 大小约102M&lt;/p&gt;
-
-&lt;h2 id=&#34;安装xbian&#34;&gt;安装xbian&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.xbian.org/&#34;&gt;http://www.xbian.org/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;与openelec,osmc都是类似,img.gz较大,大约316MB&lt;/p&gt;
-
-&lt;h2 id=&#34;安装chromeos&#34;&gt;安装ChromeOs&lt;/h2&gt;
-
-&lt;p&gt;ChromeOs已经有支持树莓派的版本了,&lt;a href=&#34;www.chromiumosforsbc.org&#34;&gt;www.chromiumosforsbc.org&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;关于各种派的性能比较&#34;&gt;关于各种派的性能比较&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://www.zhihu.com/question/37202806&#34;&gt;https://www.zhihu.com/question/37202806&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;参数一览&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://cdn.shopify.com/s/files/1/1098/4826/files/comparisonupdate.png?13077955502273113275&#34;&gt;https://cdn.shopify.com/s/files/1/1098/4826/files/comparisonupdate.png?13077955502273113275&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     

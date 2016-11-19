@@ -103,6 +103,8 @@ yum makecache
 
 &lt;p&gt;&lt;code&gt;route&lt;/code&gt; 查看默认网关&lt;/p&gt;
 
+&lt;p&gt;&lt;a href=&#34;https://wiki.centos.org/zh/HowTos/KVM&#34;&gt;https://wiki.centos.org/zh/HowTos/KVM&lt;/a&gt;&lt;/p&gt;
+
 &lt;h2 id=&#34;创建虚拟机磁盘镜像文件&#34;&gt;创建虚拟机磁盘镜像文件&lt;/h2&gt;
 
 &lt;p&gt;不能创建太小,建议5G-50G&lt;/p&gt;
@@ -115,7 +117,11 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;创建虚拟机&lt;/p&gt;
+&lt;h2 id=&#34;创建虚拟机&#34;&gt;创建虚拟机&lt;/h2&gt;
+
+&lt;p&gt;使用&lt;code&gt;osinfo-query os&lt;/code&gt;可以查看&lt;code&gt;os-variant&lt;/code&gt;都有哪些代号&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://raymii.org/s/articles/virt-install_introduction_and_copy_paste_distro_install_commands.html&#34;&gt;https://raymii.org/s/articles/virt-install_introduction_and_copy_paste_distro_install_commands.html&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;创建 Ubuntu&lt;/p&gt;
 
@@ -178,6 +184,39 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 --hvm --dry-run
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;p&gt;创建Windows Server&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;qemu-img create -f qcow2 /disk/kvm/windisk1 50G&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;针对Windows需要安装一些驱动&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;sudo wget https://fedorapeople.org/groups/virt/virtio-win/virtio-win.repo -O /etc/yum.repos.d/virtio-win.repo&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;sudo yum install virtio-win&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://fedoraproject.org/wiki/Windows_Virtio_Drivers&#34;&gt;https://fedoraproject.org/wiki/Windows_Virtio_Drivers&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;virt-install \
+--name windows2012 \
+--ram 4096 --vcpus 2 \
+--disk path=/data/iso/cn_windows_server_2012_r2_with_update_x64_dvd_4048415.iso,device=cdrom \
+--disk path=/disk/kvm/windisk1,size=50,format=qcow2,bus=virtio,cache=writeback \
+--cdrom=/usr/share/virtio-win/virtio-win-0.1.126.iso \
+--os-type windows \
+--os-variant win2k12r2 \
+--bridge=br0,model=virtio \
+--accelerate \
+--graphics vnc,port=5999,listen=0.0.0.0 \
+--console pty,target_type=serial \
+--hvm --dry-run
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;出现&lt;code&gt;ERROR    不能混用 --graphics 和旧式的图形选项&lt;/code&gt;可能是需要去掉&lt;code&gt;--keymap&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;关于 加载 virtio 驱动可以参考  &lt;a href=&#34;http://www.ilanni.com/?p=5877&#34;&gt;http://www.ilanni.com/?p=5877&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;选择加载&lt;code&gt;viostor&lt;/code&gt;磁盘驱动&lt;/strong&gt;&lt;/p&gt;
+
 &lt;blockquote&gt;
 &lt;p&gt;disk属性就是指虚拟机使用哪一个磁盘镜像文件作为存储地方，指定刚才创建的镜像文件位置即可，size=10,format=qcow2,bus=virtio分别是指大小，格式（跟镜像格式一致），磁盘总线类型（指Value can be ’ide’, ’scsi’, ’usb’, ’virtio’ or ’xen’，virtio是专门为kvm制定的bus，比较常用），大小需要比镜像文件大小要小，相当于镜像是容器，这个disk是里面的水，水太多就溢出了。&lt;/p&gt;
 
@@ -205,11 +244,148 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 
 &lt;p&gt;3，删除虚拟机文件&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;virsh destroy debain &amp;amp;&amp;amp;  virsh undefine debain&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;virsh destroy windows2012 &amp;amp;&amp;amp;  virsh undefine windows2012&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;通过virt-clone命令克隆虚拟机&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;virt-clone -o centos -n centos2 -f /disk/kvm/disk2&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;virsh -c qemu:///system list&lt;/code&gt; 可以查看正在运行的机器&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;virsh vncdisplay windows2012&lt;/code&gt;查看vnc端口&lt;/p&gt;
+
+&lt;p&gt;可以使用其他机器上的vnc  viewer 连接&lt;/p&gt;
+
+&lt;p&gt;本机 &lt;code&gt;virt-viewer --connect qemu:///system windows2012&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;windows系统可使用 vncviewer (&lt;a href=&#34;http://share.suconghou.cn/bin/vncviewer.zip&#34;&gt;http://share.suconghou.cn/bin/vncviewer.zip&lt;/a&gt;) 连接&lt;/p&gt;
+
+&lt;p&gt;全屏下用F8键可唤出菜单.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>iptables</title>
+      <link>http://blog.suconghou.cn/post/iptables/</link>
+      <pubDate>Wed, 14 Sep 2016 12:24:02 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/iptables/</guid>
+      <description>
+
+&lt;h1 id=&#34;iptables相关配置&#34;&gt;iptables相关配置&lt;/h1&gt;
+
+&lt;p&gt;配置&lt;code&gt;iptables&lt;/code&gt;之前,建议添加一个crontab定时重置iptables,防止将自己阻挡.&lt;/p&gt;
+
+&lt;p&gt;建议写入&lt;code&gt;/usr/iptab.sh&lt;/code&gt;,加入&lt;code&gt;crontab&lt;/code&gt;,每个整点执行&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo iptables -F
+sudo iptables -X
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;查看本机关于iptables的设置情况&#34;&gt;查看本机关于IPTABLES的设置情况&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;iptables -L -n
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;清除原有规则&#34;&gt;清除原有规则.&lt;/h2&gt;
+
+&lt;p&gt;不管你在安装linux时是否启动了防火墙,如果你想配置属于自己的防火墙,那就清除现在filter的所有规则.
+清除预设表filter中的所有规则链的规则&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;iptables -F
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;清除预设表filter中使用者自定链中的规则&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;iptables -X
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;保存配置&#34;&gt;保存配置&lt;/h2&gt;
+
+&lt;p&gt;刚刚配置的重启以后就会丢失,想要保存使用&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;iptables save
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;有的可能是&lt;code&gt;iptables-save&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;这样就写到&lt;code&gt;/etc/sysconfig/iptables&lt;/code&gt; 文件里了.
+写入后记得把防火墙重起一下,才能起作用.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;service iptables restart
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;设定预设规则&#34;&gt;设定预设规则&lt;/h2&gt;
+
+&lt;p&gt;默认的入口,出口,转发策略都是ACCEPT
+下面要改变这种规则&lt;/p&gt;
+
+&lt;p&gt;iptables 采用黑名单加白名单的方式, 未命中白名单的将采用预设规则&lt;/p&gt;
+
+&lt;p&gt;下面操作注意,为避免ssh端口22被拦截,首先添加&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;保证22端口入口畅通,注意如果你的OUTPUT模式设置为DROP(上面已经清空了,默认为ACCEPT),还需要添加&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;iptables -A OUTPUT -p tcp --sport 22 -j ACCEPT
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;保证出口22端口畅通
+下面开始折腾吧&lt;/p&gt;
+
+&lt;p&gt;1.修改入口流量默认规则为DROP,除非命中用户规则,否则拦截所有入口流量(注意上面一定要排除ssh的端口,否则直接掉线)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;iptables -P INPUT DROP
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果你使用了docker,这里好像会对docker的网络造成影响&lt;/p&gt;
+
+&lt;p&gt;2.允许所有出口流量(重置iptables时,这其实就是默认的规则)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;iptables -P OUTPUT ACCEPT
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;3.禁止所有转发流量,除了命中用户规则的&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;iptables -P FORWARD DROP
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;常用端口开启&#34;&gt;常用端口开启&lt;/h3&gt;
+
+&lt;p&gt;开启80,443端口,http,https服务&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;开启21端口,ftp服务&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;iptables -A INPUT -p tcp --dport 21 -j ACCEPT
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;开启基本端口&#34;&gt;开启基本端口&lt;/h3&gt;
+
+&lt;p&gt;允许icmp包通过,也就是允许ping&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;iptables -A INPUT -p icmp -j ACCEPT
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;允许loopback!(不然会导致DNS无法正常关闭等问题)&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;如果未启用此项,常见的fastcgi_pass 127.0.0.1 将会有问题&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;iptables -A INPUT -i lo -p all -j ACCEPT
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;iptables 配置实时生效,如果拦截了ssh端口,将立即掉线!&lt;/p&gt;
+
+&lt;p&gt;无论iptabes启动与否，ps -ef都不会看到iptables的进程，这是因为iptables是由内核来实现的，也就是说iptables的功能已经融入到内核里面了&lt;/p&gt;
+
+&lt;p&gt;iptables只是一个工具，将IP规则写入内核，让内核去处理。所以iptables只有在加规则的时候才会看得到进程，加完了就退出了&lt;/p&gt;
+
+&lt;p&gt;iptables并不是一个普通的daemon，只是一个普通的工具，添加一些规则到kernel的filter列表里面。&lt;/p&gt;
 </description>
     </item>
     
@@ -856,6 +1032,19 @@ backend servers
 	option http-keep-alive
     server myserver 192.243.115.210:80 check maxconn 6000
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;八种负载算法&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&amp;lsquo;roundrobin&amp;rsquo;,  简单的轮询
+&amp;lsquo;static-rr&amp;rsquo;,    根据权重
+ &amp;lsquo;leastconn&amp;rsquo;, 最少连接者先处理
+&amp;lsquo;source&amp;rsquo;,  根据请求源IP
+&amp;lsquo;uri&amp;rsquo;,    根据请求的URI
+&amp;lsquo;url_param&amp;rsquo;,  根据请求的URl参数
+&amp;lsquo;hdr(name)&amp;rsquo; 根据HTTP请求头来锁定每一次HTTP请求
+ &amp;lsquo;rdp-cookie(name)&amp;rsquo; 很据cookie(name)来锁定并哈希每一次TCP请求&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;p&gt;还有一个在应对高并发时通常都需要改的
 &lt;code&gt;ulimit -n 8192&lt;/code&gt;&lt;/p&gt;
@@ -1538,6 +1727,36 @@ export CFLAGS=&amp;quot;-O3&amp;quot;
 make -j4 &amp;amp;&amp;amp; make install
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;p&gt;在alpine里静态编译&lt;/p&gt;
+
+&lt;p&gt;需要将生成的&lt;code&gt;./src/Makefile&lt;/code&gt;修改&lt;code&gt;LDFLAGS = -all-static&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;apk update &amp;amp;&amp;amp; apk upgrade
+apk --update add gcc g++ make curl zlib-dev pcre-dev openssl-dev linux-headers asciidoc xmlto
+cd /tmp
+SHADOWSOCKS_LIBEV_VERSION=2.5.6
+CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
+curl -sSL https://github.com/shadowsocks/shadowsocks-libev/archive/v${SHADOWSOCKS_LIBEV_VERSION}.tar.gz |  tar xz
+cd shadowsocks-libev-${SHADOWSOCKS_LIBEV_VERSION}
+export CFLAGS=&amp;quot;-O3&amp;quot;
+./configure
+LDFLAGS=&amp;quot;-all-static&amp;quot; make -j$CPU_NUM &amp;amp;&amp;amp; make install
+strip -s /usr/local/bin/ss-server
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;启动server端&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ss-server -s 0.0.0.0 -p 443 -k 123456 -m rc4-md5 -t 300 -d 8.8.8.8 -u&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;with Linux kernel &amp;gt; 3.7.0&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ss-server -s 0.0.0.0 -p 443 -k 123456 -m rc4-md5 -t 300 -d 8.8.8.8 --fast-open -u&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;后台运行:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ss-server -s 0.0.0.0 -p 443 -k 123456 -m rc4-md5 -t 300 -d 8.8.8.8 -u &amp;gt; /tmp/ss.log 2&amp;gt;&amp;amp;1 &amp;amp;&lt;/code&gt;&lt;/p&gt;
+
 &lt;p&gt;&lt;strong&gt;GO语言版本的也十分方便哦&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;这里提供一个基于&lt;code&gt;docker&lt;/code&gt;的go语言版本,&lt;a href=&#34;https://hub.docker.com/r/suconghou/shadowsocks/&#34;&gt;docker go shadowsocks&lt;/a&gt;,只有3.3MB
@@ -1622,142 +1841,6 @@ net.netfilter.nf_conntrack_max = 64000
 &lt;pre&gt;&lt;code&gt;alias kcptun_start=&#39;kcptun_client -r 192.243.115.210:4433 -l :4433 -sndwnd 2048 -rcvwnd 2048 -mode fast2 &amp;gt; /var/log/kcptun.log 2&amp;gt;&amp;amp;1 &amp;amp;&#39;
 
 &lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>使用tcpdump与ngrep</title>
-      <link>http://blog.suconghou.cn/post/tcpdump/</link>
-      <pubDate>Mon, 16 May 2016 18:21:04 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/post/tcpdump/</guid>
-      <description>
-
-&lt;p&gt;各版本 &lt;code&gt;http://www.tcpdump.org/release/&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;安装依赖 &lt;code&gt;yum install -y flex gcc make byacc&lt;/code&gt; or &lt;code&gt;apt-get install flex gcc make byacc wget bzip2&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;cd /tmp
-wget http://www.tcpdump.org/release/libpcap-1.7.4.tar.gz
-tar zxf libpcap-1.7.4.tar.gz
-cd libpcap-1.7.4
-./configure --prefix=/tmp/lib
-make -j4 &amp;amp;&amp;amp; make install
-cd ../
-wget http://www.tcpdump.org/release/tcpdump-4.7.4.tar.gz
-tar zxf tcpdump-4.7.4.tar.gz
-cd tcpdump-4.7.4
-./configure --prefix=/tmp  --disable-ipv6 CFLAGS=&#39;-O3 -I/tmp/lib/include&#39; LDFLAGS=&#39;-L/tmp/lib/lib/libpcap.a&#39;
-make -j4
-make install
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;安装成功后,位于&lt;code&gt;ls -lh /tmp/sbin/tcpdump&lt;/code&gt; &lt;code&gt;ldd&lt;/code&gt;查看此文件依赖较少,可直接复制到其他Linux上使用.&lt;/p&gt;
-
-&lt;p&gt;采用&lt;code&gt;CFLAGS=&amp;quot;-O3&amp;quot;&lt;/code&gt;编译后为1.2MB&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;tcpdump -h&lt;/code&gt; 查看版本号以及用法&lt;/p&gt;
-
-&lt;p&gt;我编译好的tcpdump version 4.7.4&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;64位 &lt;a href=&#34;http://share.suconghou.cn/bin/tcpdump.xz&#34;&gt;http://share.suconghou.cn/bin/tcpdump.xz&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;也可以直接&lt;code&gt;yum install tcpdump&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;使用tcpdump&#34;&gt;使用tcpdump&lt;/h2&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;-a 　　　将网络地址和广播地址转变成名字；&lt;/p&gt;
-
-&lt;p&gt;-d 　　　将匹配信息包的代码以人们能够理解的汇编格式给出；&lt;/p&gt;
-
-&lt;p&gt;-dd 　　 将匹配信息包的代码以c语言程序段的格式给出；&lt;/p&gt;
-
-&lt;p&gt;-ddd 　　将匹配信息包的代码以十进制的形式给出；&lt;/p&gt;
-
-&lt;p&gt;-e 　　　在输出行打印出数据链路层的头部信息；&lt;/p&gt;
-
-&lt;p&gt;-f 　　　将外部的Internet地址以数字的形式打印出来；&lt;/p&gt;
-
-&lt;p&gt;-l 　　　使标准输出变为缓冲行形式；&lt;/p&gt;
-
-&lt;p&gt;-n 　　　不把网络地址转换成名字；&lt;/p&gt;
-
-&lt;p&gt;-t 　　　在输出的每一行不打印时间戳；&lt;/p&gt;
-
-&lt;p&gt;-v 　　　输出一个稍微详细的信息，例如在ip包中可以包括ttl和服务类型的信息；&lt;/p&gt;
-
-&lt;p&gt;-vv 　　 输出详细的报文信息；&lt;/p&gt;
-
-&lt;p&gt;-c 　　　在收到指定的包的数目后，tcpdump就会停止；&lt;/p&gt;
-
-&lt;p&gt;-F 　　　从指定的文件中读取表达式,忽略其它的表达式；&lt;/p&gt;
-
-&lt;p&gt;-i 　　　指定监听的网络接口；&lt;/p&gt;
-
-&lt;p&gt;-r 　　　从指定的文件中读取包(这些包一般通过-w选项产生)；&lt;/p&gt;
-
-&lt;p&gt;-w 　　　直接将包写入文件中，并不分析和打印出来；&lt;/p&gt;
-
-&lt;p&gt;-T 　　　将监听到的包直接解释为指定的类型的报文，常见的类型有rpc （远程过程调用）和snmp（简单网络管理协议；&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;code&gt;tcpdump host 210.27.48.1&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;-A&lt;/code&gt;和&lt;code&gt;-X&lt;/code&gt;有助于你查看详细的报文数据&lt;/p&gt;
-
-&lt;h2 id=&#34;ngrep&#34;&gt;ngrep&lt;/h2&gt;
-
-&lt;p&gt;ngrep 编译总是出问题,建议直接安装:&lt;code&gt;apt-get install ngrep&lt;/code&gt; &lt;code&gt;yum install ngrep&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;如果更关注于TCP流量内容,可以使用&lt;code&gt;ngrep&lt;/code&gt;,他是grep命令的网络版,同样需要libpcap库,能识别TCP、UDP和ICMP包，理解bpf的过滤机制&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;ngrep -W byline -d eno1 port 80&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;用-d指定网卡,使用&lt;code&gt;ifconfig&lt;/code&gt;可以查看网卡信息&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;-e ：显示空数据包
--i ：忽略大小写
--v ：反转匹配
--R ：don&#39;t do privilege revocation logic
--x ：以16进制格式显示
--X ：以16进制格式匹配
--w ：整字匹配
--p ：不使用混杂模式
--l ：make stdout line buffered
--D ：replay pcap_dumps with their recorded time intervals
--t ：在每个匹配的包之前显示时间戳
--T ：显示上一个匹配的数据包之间的时间间隔
--M ：仅进行单行匹配
--I ：从文件中读取数据进行匹配
--O ：将匹配的数据保存到文件
--n ：仅捕获指定数目的数据包进行查看
--A ：匹配到数据包后dump随后的指定数目的数据包
--s ：set the bpf caplen
--S ：set the limitlen on matched packets
--W ：设置显示格式byline将解析包中的换行符
--c ：强制显示列的宽度
--q ：is be quiet (don’t print packet reception hash marks)静默模式，如果没有此开关，未匹配的数据包都以&amp;quot;#&amp;quot;显示
--P ：set the non-printable display char to what is specified
--F ：使用文件中定义的bpf(Berkeley Packet Filter)
--N ：显示由IANA定义的子协议号
--d ：使用哪个网卡，可以用-L选项查询
--L ：查询网卡接口
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;如果需要匹配关键字可以在-d参数之后, port 参数之前添加字符串匹配&lt;/p&gt;
-
-&lt;p&gt;同时可以使用-i忽略大小写,-w整字匹配等&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;sudo ngrep  -W byline -d en0 -iw &amp;quot;easy&amp;quot;  port 80&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;还可以使用这种过滤 &lt;code&gt;host www.google.com and port 80&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;具体使用见
-&lt;a href=&#34;http://man.linuxde.net/ngrep&#34;&gt;http://man.linuxde.net/ngrep&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     

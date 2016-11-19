@@ -133,6 +133,43 @@ ls -lh
 
 <p>ChromeOs已经有支持树莓派的版本了,<a href="www.chromiumosforsbc.org">www.chromiumosforsbc.org</a></p>
 
+<h2 id="配置镜像加速">配置镜像加速</h2>
+
+<p>一:树莓派常用软件源列表</p>
+
+<p>中山大学</p>
+
+<p>Raspbian <a href="http://mirror.sysu.edu.cn/raspbian/raspbian">http://mirror.sysu.edu.cn/raspbian/raspbian</a></p>
+
+<p>中国科学技术大学</p>
+
+<p>Raspbian <a href="http://mirrors.ustc.edu.cn/raspbian/raspbian/">http://mirrors.ustc.edu.cn/raspbian/raspbian/</a></p>
+
+<p>清华大学</p>
+
+<p>Raspbian <a href="http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/">http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/</a></p>
+
+<p>大连东软信息学院源（北方用户）</p>
+
+<p>Raspbian <a href="http://mirrors.neusoft.edu.cn/raspbian/raspbian/">http://mirrors.neusoft.edu.cn/raspbian/raspbian/</a></p>
+
+<p>重庆大学源（中西部用户）</p>
+
+<p>Raspbian <a href="http://mirrors.cqu.edu.cn/Raspbian/raspbian/">http://mirrors.cqu.edu.cn/Raspbian/raspbian/</a></p>
+
+<p>二、树莓派修改软件源的方法</p>
+
+<p>编辑/etc/apt/sources.list文件。删除原文件所有内容，用以下内容取代：</p>
+
+<pre><code>deb http://mirrors.ustc.edu.cn/raspbian/raspbian/ wheezy main non-free contrib
+
+deb-src http://mirrors.ustc.edu.cn/raspbian/raspbian/ wheezy main non-free contrib
+</code></pre>
+
+<p>编辑此文件后，请使用sudo apt-get update命令，更新软件列表。</p>
+
+<p>这样树莓派更新软件就会使用中国科学技术大学的镜像源，从而大大提高更新速度，要使用其他的软件源，根据以上代码就行修改。</p>
+
 <h2 id="关于各种派的性能比较">关于各种派的性能比较</h2>
 
 <p><a href="https://www.zhihu.com/question/37202806">https://www.zhihu.com/question/37202806</a></p>
@@ -140,6 +177,10 @@ ls -lh
 <p>参数一览</p>
 
 <p><a href="https://cdn.shopify.com/s/files/1/1098/4826/files/comparisonupdate.png?13077955502273113275">https://cdn.shopify.com/s/files/1/1098/4826/files/comparisonupdate.png?13077955502273113275</a></p>
+
+<p>温度 <code>/opt/vc/bin/vcgencmd measure_temp</code></p>
+
+<p><code>watch /opt/vc/bin/vcgencmd measure_temp</code></p>
 
 		</div>
 	</div>

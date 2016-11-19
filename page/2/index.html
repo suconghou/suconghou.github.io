@@ -34,6 +34,119 @@
 		
 		<div class="post">
 			<h1 class="post-title">
+				<a href="/post/javascript-senior/"> javascript senior</a>
+			</h1>
+			<p class="post-date">Tue, Aug 9, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="javascript-参数传递">Javascript 参数传递</h2>
+
+<p>说起参数传递,首先需要弄清楚javascript里的数据类型</p>
+
+<p>原始数据类型
+<code>Undefined</code> <code>Null</code> <code>Boolean</code> <code>Number</code> <code>String</code></p>
+
+<p>引用数据类型</p>
+
+<p><code>Object</code> <code>Array</code> <code>Function</code> <code>Date</code> 等</p>
+
+<p>原始数据类型存储在栈的简单数据段,他们的值直接存储在变量访问的位置(因原始数据类型占据的空间是固定的,可以存储在较小的内存区域<code>栈</code>中)</p>
+
+<p>引用数据类型是存储在堆中的对象,存储在变量处的值只是一个指针,指向存储对象的内存地址,这是因为引用类型的大小会改变.</p>
+
+<p>不同的内存分配机制带来不同的访问机制</p>
+
+<p>在JavaScript中,是不允许直接访问保存在堆内存中的对象的,访问对象时必须取得对象在堆内存中的地址,然后按地址去取得对象中的值.</p>
+
+<p>这便是传说中的按引用访问.</p>
+
+<p>而原始类型则是直接访问到的.</p>
+
+<p><strong>复制变量时的不同</strong></p>
+
+<p>原始值:</p>
+
+<p>会将原始值的副本赋值给新变量.此后两个变量完全独立.</p>
+
+<p>引用值:</p>
+
+<p>会把内存地址赋值给新变量,也就是说两个变量都指向堆内存中的同一个对象.
+他们中任何一个改变都会反映到另一个身上.</p>
+
+<p><strong>参数传递的不同</strong></p>
+
+<p>最重要的一点:<code>ECMAScript</code>中所有函数的参数都是按值传递的.</p>
+
+<p>但原始值和引用值仍会造成不同的后果.</p>
+
+<p>原始值:</p>
+
+<p>把变量里的值传递给参数,之后两个变量互不影响.(就是把实参复制给形参的过程)</p>
+
+<p>引用值:</p>
+
+<p>任然是将实参里面的值复制到形参,但是注意<em>对象变量它里面的值是这个对象的堆内存地址</em></p>
+
+<p>也就是说形参和实参都是指向同一个堆内存对象.</p>
+
+<p>但是也要记住另外一点:如果形参被赋值为另外一个对象时,那么这个形参将会丢弃对上次指向的堆内存地址,而指向新对象的堆内存地址.</p>
+
+<p>此时,形参和实参相互脱离,互不影响,原先的实参任然指向原先对象的堆内存地址.</p>
+
+<p>如果是添加修改形参的属性,那么就是修改堆内存中的对象,形参和实参将同时得到反映,因为他们指向的是同一个堆内存对象.</p>
+
+<p>这种传递方式被称为<code>Call By Sharing</code></p>
+
+<pre><code>function box(obj)
+{
+	obj.name='hello';
+	var obj=new Object();
+	obj.name='world';
+}
+var obj=new Object();
+box(obj);
+console.log(obj.name);
+</code></pre>
+
+<p>注意两点:
+1. <code>var obj=new Object()</code> 声明提升</p>
+
+<p>变为</p>
+
+<pre><code>var obj;
+obj.name='hello';
+obj=new Object();
+obj.name='world';
+</code></pre>
+
+<p>函数的已存在一个变量形参<code>obj</code>,再次的变量申明会忽略</p>
+
+<p>2.<code>obj=new Object()</code> 时,obj的修改就不会影响外层obj变量了,因为他此时已经脱离执行那个堆内存对象了.</p>
+
+<blockquote>
+<p>参考 <a href="http://www.zhihu.com/question/27114726">http://www.zhihu.com/question/27114726</a></p>
+</blockquote>
+
+<h2 id="object-create">Object.create</h2>
+
+<p>简单来讲，new Object()是一种通过构造函数来创建object的方式，而Object.create(proto, [ propertiesObject ])
+不需要通过构造函数就可以创建一个object，Object.create()的第一个参数是必须要的，第二个参数可选。其实Object.create()内部依然是通过new一个构造函数的方式来实现的，它有构造函数，不过这个构造函数是隐式存在的，看一下使老旧浏览器支持Object.create方法的“polyfill”就可以对它们之间的区别一目了然了：</p>
+
+<pre><code>if (!Object.create) {
+    Object.create = function (o) {
+    function F() {}  //定义了一个隐式的构造函数
+    F.prototype = o;
+    return new F();  //其实还是通过new来实现的
+    };
+  }
+</code></pre>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
 				<a href="/post/use-haproxy/"> HAProxy优化应用程序速度</a>
 			</h1>
 			<p class="post-date">Fri, Jul 29, 2016</p>
@@ -160,6 +273,19 @@ backend servers
 	option http-keep-alive
     server myserver 192.243.115.210:80 check maxconn 6000
 </code></pre>
+
+<p>八种负载算法</p>
+
+<blockquote>
+<p>&lsquo;roundrobin&rsquo;,  简单的轮询
+&lsquo;static-rr&rsquo;,    根据权重
+ &lsquo;leastconn&rsquo;, 最少连接者先处理
+&lsquo;source&rsquo;,  根据请求源IP
+&lsquo;uri&rsquo;,    根据请求的URI
+&lsquo;url_param&rsquo;,  根据请求的URl参数
+&lsquo;hdr(name)&rsquo; 根据HTTP请求头来锁定每一次HTTP请求
+ &lsquo;rdp-cookie(name)&rsquo; 很据cookie(name)来锁定并哈希每一次TCP请求</p>
+</blockquote>
 
 <p>还有一个在应对高并发时通常都需要改的
 <code>ulimit -n 8192</code></p>
@@ -347,35 +473,6 @@ fi
 <p>只有1.7MB,启动速度快,十分好用,有一个缺点是可能因为版权问题未对GIF做支持.</p>
 
 <p><a href="http://share.suconghou.cn/ImageView/PicasaPhotoViewer_3.9.136.9.exe">PicasaPhotoViewerv3.9.136.9</a></p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/software/git-for-windows/"> git for windows</a>
-			</h1>
-			<p class="post-date">Sun, Jul 17, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="git-for-windows-国内下载">git for windows 国内下载</h2>
-
-<p>所有资源均来源于官网<code>http://git-scm.com/download/win</code></p>
-
-<p><strong>最新版本2.10.2,发布于2016-11-02</strong></p>
-
-<h3 id="32位资源">32位资源</h3>
-
-<p><a href="http://share.suconghou.cn/git/Git-2.10.2-32-bit.exe">32位安装版</a></p>
-
-<p><a href="http://share.suconghou.cn/git/PortableGit-2.10.2-64-bit.7z.exe">32位绿色版</a></p>
-
-<h3 id="64位资源">64位资源</h3>
-
-<p><a href="http://share.suconghou.cn/git/Git-2.10.2-64-bit.exe">64位安装版</a></p>
-
-<p><a href="http://share.suconghou.cn/git/PortableGit-2.10.2-64-bit.7z.exe">64位绿色版</a></p>
 
 			</div>
 		</div>

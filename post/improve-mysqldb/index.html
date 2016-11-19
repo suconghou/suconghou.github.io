@@ -180,7 +180,7 @@
 用来缓存 tables keys 和 indexes，增加这个值可以更好的处理索引，读和写都需要索引,这里设置成16K足够了.优化性能需要<code>key_reads / key_read_requests</code>应该尽可能的低，至少是1:100，1:1000更好,使用<code>show status like 'key_%';</code>查看</p>
 
 <p><strong>table_cache</strong>:
-所有线程打开的表的数量，增加值可以增大 MySQL 的文件描述符数量，避免频繁的打开表，原始 my-small.cnf 中 table_cache 设置成4有点小，一个 wordpress 的页面通常会涉及到10个左右的表，其他的程序比如 Drupal，MediaWiki 会涉及到更多，将table_cache改为8。</p>
+(5.1.3及以后版本又名TABLE_OPEN_CACHE) 所有线程打开的表的数量，增加值可以增大 MySQL 的文件描述符数量，避免频繁的打开表，原始 my-small.cnf 中 table_cache 设置成4有点小，一个 wordpress 的页面通常会涉及到10个左右的表，其他的程序比如 Drupal，MediaWiki 会涉及到更多，将table_cache改为8。</p>
 
 <p><strong>max_connections</strong>:
 数据库最大的连接数量，可以根据自己博客/网站的访问量来定这个值,如果博客/网站经常出现：Too many connections 错误的信息说明需要增大 max_connections 的值.</p>
@@ -206,7 +206,7 @@ query_cache_limit指定单个查询能够使用的缓冲区大小，缺省为1M,
 <p>检查状态值Qcache_free_blocks，如果该值非常大，则表明缓冲区中碎片很多，这就表明查询结果都比较小，此时需要减小 query_cache_min_res_unit。</p>
 
 <p><strong>thread_stack</strong>:
-每个线程被创建的时候,mysql分配给它的内存,每个连接使用一个线程,用来存放每个线程的标识信息，如线程id，线程运行时环境等。</p>
+每个线程被创建的时候,mysql分配给它的内存,每个连接使用一个线程,用来存放每个线程的标识信息，如线程id，线程运行时环境等。默认294912(288KB)</p>
 
 <p><strong>sort_buffer_size</strong>:
 每个需要排序的线程分配的缓冲区大小，增加该值可以加速 order by 和 group by 的操作。注意：该参数是以每个连接分配内存，也就是说，如果有16个连接，sort_buffer_size 为 64K，那么实际分配的内存为：16 × 64K = 1MB。如果设置的缓存大小无法满足需要，MySQL 会将数据写入磁盘来完成排序。因为磁盘操作和内存操作不在一个数量级，所以 sort_buffer_size 对排序的性能影响很大。</p>
@@ -246,7 +246,7 @@ query_cache_limit指定单个查询能够使用的缓冲区大小，缺省为1M,
 
 <p><code>Threads_running</code>为此时刻正在进行SQL操作的线程,这个值必定是小于等于<code>Threads_connected</code></p>
 
-<p><code>Threads_created</code>为总共执行了多少次创建线程的操作,改数定大于等于<code>Max_used_connections</code>,一个线程创建后用于服务,客户端断开后并不会被销毁,而是放入连接池(只有连接池的数量大于设定值才会被抛弃),当创建的时候也会检查连接池内有没有,没有才会创建新的.</p>
+<p><code>Threads_created</code>为总共执行了多少次创建线程的操作,该数定大于等于<code>Max_used_connections</code>,一个线程创建后用于服务,客户端断开后并不会被销毁,而是放入连接池(只有连接池的数量大于设定值才会被抛弃),当创建的时候也会检查连接池内有没有,没有才会创建新的.</p>
 
 <p>配置项<code>max_connections</code>为允许的最大并发连接数,也可以依据<code>Max_used_connections</code>作为参考,增加该值不会占用系统资源,只有实际使用到的才会占用,但设置过小会出现<code>Too many connections</code>,默认值为100,须大于<code>Max_used_connections</code>,根据网站的并发量来设定.</p>
 
@@ -295,6 +295,31 @@ skip-locking
 wait_timeout=3600
 interactive_timeout=3600
 
+max_allowed_packet = 8M
+
+</code></pre>
+
+<p>为性能的优化配置</p>
+
+<pre><code>innodb_buffer_pool_size = 128M
+tmp_table_size=64M
+key_buffer_size=256M
+read_buffer_size=4M
+read_rnd_buffer_size=16M
+sort_buffer_size=32M
+join_buffer_size = 32M
+bulk_insert_buffer_size = 32M
+myisam_sort_buffer_size = 128M
+max_allowed_packet = 32M
+</code></pre>
+
+<p>如果你的服务器内存较大(4G或更多),专门来跑mysql,可设置key_buffer_size为内存的一半
+<code>key_buffer_size = 2048M</code></p>
+
+<p>连接的并发量不大,还有多余内存可以加大join_buffer_size和sort_buffer_size</p>
+
+<pre><code>sort_buffer_size = 64M
+join_buffer_size = 64M
 </code></pre>
 
 <h3 id="packet-for-query-is-too-large">Packet for query is too large</h3>
@@ -514,6 +539,8 @@ mysqldump -uroot -pdbpasswd dbname test&gt;db.sql;</p>
 <p>5.导出数据中dbname多张表（test1,test2,test3）结构及表数据用用空格隔开</p>
 
 <p>mysqldump -uroot -pdbpasswd dbname test1 test2 test3&gt;db.sql;</p>
+
+<p>导出多个数据库,使用 mysqldump -uroot -pdbpassword &ndash;databases db1 db2</p>
 
 <p><strong>使用gzip压缩</strong></p>
 

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+	<meta name='renderer' content='webkit'>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
+	<meta name='description' content='记录学习的点点滴滴'>
+	<meta name='keywords' content='前端,PHP,GO,编程博客'>
+	<title>iptables &middot; 苏苏的博客</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.min.css">
+	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+	<link rel="shortcut icon" href="/favicon.png">
+</head>
+<body>
+<header class="header">
+	<div class="header-main">
+		<a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
+		<h1>苏苏的博客</h1>
+		<p class="sub-title">简约至极</p>
+		<ul class="contact">
+			<a href="https://github.com/suconghou" target="_blank"><i class="fa fa-github"></i></a>
+			<a href="javascript:music.show(1)"><i class="fa fa-music"></i></a>
+		</ul>
+	</div>
+</header>
+
+<aside></aside>
+
+<div class="content container">
+	<div class="post">
+		<h1 class="post-title">
+			<a href="javascript:void(0)"> iptables</a>
+		</h1>
+		<p class="post-date">Wed, Sep 14, 2016</p>
+		
+		<div class="post-text">
+			
+
+<h1 id="iptables相关配置">iptables相关配置</h1>
+
+<p>配置<code>iptables</code>之前,建议添加一个crontab定时重置iptables,防止将自己阻挡.</p>
+
+<p>建议写入<code>/usr/iptab.sh</code>,加入<code>crontab</code>,每个整点执行</p>
+
+<pre><code>sudo iptables -F
+sudo iptables -X
+</code></pre>
+
+<h2 id="查看本机关于iptables的设置情况">查看本机关于IPTABLES的设置情况</h2>
+
+<pre><code>iptables -L -n
+</code></pre>
+
+<h2 id="清除原有规则">清除原有规则.</h2>
+
+<p>不管你在安装linux时是否启动了防火墙,如果你想配置属于自己的防火墙,那就清除现在filter的所有规则.
+清除预设表filter中的所有规则链的规则</p>
+
+<pre><code>iptables -F
+</code></pre>
+
+<p>清除预设表filter中使用者自定链中的规则</p>
+
+<pre><code>iptables -X
+</code></pre>
+
+<h2 id="保存配置">保存配置</h2>
+
+<p>刚刚配置的重启以后就会丢失,想要保存使用</p>
+
+<pre><code>iptables save
+</code></pre>
+
+<p>有的可能是<code>iptables-save</code></p>
+
+<p>这样就写到<code>/etc/sysconfig/iptables</code> 文件里了.
+写入后记得把防火墙重起一下,才能起作用.</p>
+
+<pre><code>service iptables restart
+</code></pre>
+
+<h2 id="设定预设规则">设定预设规则</h2>
+
+<p>默认的入口,出口,转发策略都是ACCEPT
+下面要改变这种规则</p>
+
+<p>iptables 采用黑名单加白名单的方式, 未命中白名单的将采用预设规则</p>
+
+<p>下面操作注意,为避免ssh端口22被拦截,首先添加</p>
+
+<pre><code>iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+</code></pre>
+
+<p>保证22端口入口畅通,注意如果你的OUTPUT模式设置为DROP(上面已经清空了,默认为ACCEPT),还需要添加</p>
+
+<pre><code>iptables -A OUTPUT -p tcp --sport 22 -j ACCEPT
+</code></pre>
+
+<p>保证出口22端口畅通
+下面开始折腾吧</p>
+
+<p>1.修改入口流量默认规则为DROP,除非命中用户规则,否则拦截所有入口流量(注意上面一定要排除ssh的端口,否则直接掉线)</p>
+
+<pre><code>iptables -P INPUT DROP
+</code></pre>
+
+<p>如果你使用了docker,这里好像会对docker的网络造成影响</p>
+
+<p>2.允许所有出口流量(重置iptables时,这其实就是默认的规则)</p>
+
+<pre><code>iptables -P OUTPUT ACCEPT
+</code></pre>
+
+<p>3.禁止所有转发流量,除了命中用户规则的</p>
+
+<pre><code>iptables -P FORWARD DROP
+</code></pre>
+
+<h3 id="常用端口开启">常用端口开启</h3>
+
+<p>开启80,443端口,http,https服务</p>
+
+<pre><code>iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+</code></pre>
+
+<p>开启21端口,ftp服务</p>
+
+<pre><code>iptables -A INPUT -p tcp --dport 21 -j ACCEPT
+</code></pre>
+
+<h3 id="开启基本端口">开启基本端口</h3>
+
+<p>允许icmp包通过,也就是允许ping</p>
+
+<pre><code>iptables -A INPUT -p icmp -j ACCEPT
+</code></pre>
+
+<p>允许loopback!(不然会导致DNS无法正常关闭等问题)</p>
+
+<p><strong>如果未启用此项,常见的fastcgi_pass 127.0.0.1 将会有问题</strong></p>
+
+<pre><code>iptables -A INPUT -i lo -p all -j ACCEPT
+</code></pre>
+
+<p>iptables 配置实时生效,如果拦截了ssh端口,将立即掉线!</p>
+
+<p>无论iptabes启动与否，ps -ef都不会看到iptables的进程，这是因为iptables是由内核来实现的，也就是说iptables的功能已经融入到内核里面了</p>
+
+<p>iptables只是一个工具，将IP规则写入内核，让内核去处理。所以iptables只有在加规则的时候才会看得到进程，加完了就退出了</p>
+
+<p>iptables并不是一个普通的daemon，只是一个普通的工具，添加一些规则到kernel的filter列表里面。</p>
+
+		</div>
+	</div>
+</div>
+	<div class="music-container">
+	<div class="music-header">
+	    <a class="fa-button home" href="javascript:music.show(0)"><i class="fa fa-home" title="Home"></i></a>
+	    <a class="fa-button next" href="javascript:music.next()"><i class="fa fa-chevron-right" title="Next"></i></a>
+	</div>
+	<div class="backdrop"></div>
+	<div class="music-player">
+		<div class="cover">
+            <img src="http://p4.music.126.net/ckfEE9UUGcnGHylQJ12ENA==/670702092966093.jpg?param=350y350">
+            <div class="foredrag"><i class="fa fa-play"></i></div>
+        </div>
+        <div class="progress">
+            <div class="elapse"></div>
+        </div>
+        <div class="detail">
+            <div class="title">音乐标题</div>
+            <div class="artist">歌手</div>
+        </div>
+	</div>
+</div>
+<div id="loader" style="z-index:99999;" class="pageload-overlay" data-opening="M 40 -21.875 C 11.356078 -21.875 -11.875 1.3560784 -11.875 30 C -11.875 58.643922 11.356078 81.875 40 81.875 C 68.643922 81.875 91.875 58.643922 91.875 30 C 91.875 1.3560784 68.643922 -21.875 40 -21.875 Z">
+    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 80 60" preserveAspectRatio="xMidYMid slice"> <path d="M40,30 c 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 Z"/></svg>
+</div>
+
+	<footer class="footer">
+		<div class="footer-nav">
+			<ul>
+				<li><a href="/post/">归档</a></li>
+				<li><a href="/">专题</a></li>
+				<li><a href="/life/">生活</a></li>
+				<li><a href="/about/">关于</a></li>
+			</ul>
+		</div>
+	</footer>
+	<script type="text/javascript" src="/js/main.min.js" data-no-instant></script>
+</body>
+</html>
+
+
