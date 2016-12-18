@@ -6,8 +6,179 @@
     <description>Recent content in Post-rsses on 苏苏的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 18 Oct 2016 19:18:24 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 20 Nov 2016 22:12:25 +0800</lastBuildDate>
     <atom:link href="http://blog.suconghou.cn/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>系统安全</title>
+      <link>http://blog.suconghou.cn/post/server-safe/</link>
+      <pubDate>Sun, 20 Nov 2016 22:12:25 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/server-safe/</guid>
+      <description>
+
+&lt;h2 id=&#34;nginx安全配置&#34;&gt;Nginx安全配置&lt;/h2&gt;
+
+&lt;p&gt;如果你是用&lt;code&gt;git&lt;/code&gt;或者&lt;code&gt;svn&lt;/code&gt;来部署代码,默认情况下,你的网站很可能已经泄露了&lt;code&gt;.git&lt;/code&gt;目录,或者&lt;code&gt;.svn&lt;/code&gt;目录&lt;/p&gt;
+
+&lt;p&gt;使用nginx配置过滤一切以&lt;code&gt;.&lt;/code&gt;开头的文件和文件夹,防止被用户下载.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;location ~ /\. {
+	deny all;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;每个网站都需要这么配置可能有些麻烦,你可以在统一的文件中定义好&lt;code&gt;/etc/nginx/default.d/php.conf&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;listen 80;
+index index.html index.php;
+try_files $uri $uri/ /index.php?$args;
+location ~ /\. {
+	deny all;
+}
+location ~ ^.+\.php$ {
+	try_files $uri =404;
+	fastcgi_pass 127.0.0.1:9000;
+	include fastcgi.conf;
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使用时,类似与下面,还不用每次写这么多配置了.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;server{
+  server_name fed-wx.xxx.cn;
+  root /data/www/fed-wx;
+  include /etc/nginx/default.d/php.conf;
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;给http段添加,开启一些gzip特性,关闭显示服务器版本&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;default_type        application/octet-stream;
+sendfile            on;
+tcp_nopush          on;
+tcp_nodelay         on;
+keepalive_timeout   65;
+types_hash_max_size 2048;
+server_tokens off;
+ssi on;
+gzip on;
+gzip_min_length 1024;
+gzip_proxied any;
+gzip_comp_level 3;
+gzip_types text/plain text/javascript text/css text/json application/xml application/javascript  application/json image/jpeg image/gif image/png;
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;修改你的ssh默认端口-并且使用强密码&#34;&gt;修改你的SSH默认端口,并且使用强密码&lt;/h2&gt;
+
+&lt;p&gt;每天都有大量的端口扫描来扫描你服务器IP的22端口,如果你的22端口密码又不强,很可能已被黑客侵入.&lt;/p&gt;
+
+&lt;p&gt;如果发现已经有大量的错误登陆,请立即更换端口.必要时考虑使用&lt;code&gt;fail2ban&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;所有的网络通信都应该使用-https&#34;&gt;所有的网络通信都应该使用&lt;code&gt;HTTPS&lt;/code&gt;&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;http&lt;/code&gt;并不安全,很有可能你收到和发出的信息,已被中间人劫持.&lt;/p&gt;
+
+&lt;p&gt;中间人劫持能查看你发送的信息,修改返回给你的数据包.&lt;/p&gt;
+
+&lt;p&gt;为此,使用http时,务必加盐加密你的密码,以减少在传输过程中被窃取的可能.&lt;/p&gt;
+
+&lt;p&gt;更有效的是使用&lt;code&gt;https&lt;/code&gt;来有效防止中间人劫持.&lt;/p&gt;
+
+&lt;h2 id=&#34;你的身份认证令牌应该多方关联&#34;&gt;你的身份认证令牌应该多方关联.&lt;/h2&gt;
+
+&lt;p&gt;即便使用&lt;code&gt;https&lt;/code&gt;,你的身份认证令牌,一旦从其他渠道泄漏,黑客便能使用你的身份进行操作.&lt;/p&gt;
+
+&lt;p&gt;特别是具有管理员权限的身份令牌,更是会带来严重后果,在&lt;code&gt;CSRF&lt;/code&gt;攻击中偷走令牌是常有的事.&lt;/p&gt;
+
+&lt;p&gt;因此你起码需要将cookie关键信息设置为&lt;code&gt;httponly&lt;/code&gt;和&lt;code&gt;security&lt;/code&gt;(使用https时),并小心过滤允许用户输入的链接地址(包含图片,视频地址)和富文本等.
+必要时开启&lt;code&gt;csrf-token&lt;/code&gt;认证.&lt;/p&gt;
+
+&lt;p&gt;还需要确保你的认证&lt;code&gt;token&lt;/code&gt;在丢失以后也不能在黑客手中登陆.&lt;/p&gt;
+
+&lt;p&gt;这需要你在生成&lt;code&gt;token&lt;/code&gt;时,进行多方关联,哈希时可包括&lt;code&gt;IP地址&lt;/code&gt;,&lt;code&gt;User Agent&lt;/code&gt;,当然用户ID也需要关联,这个&lt;code&gt;token&lt;/code&gt;只能这个用户用.&lt;/p&gt;
+
+&lt;p&gt;服务器验证时并不是从&lt;code&gt;token&lt;/code&gt;能找到用户,就验证通过,还需要对这些信息进行校验,验证还是不是那个客户端发出的.&lt;/p&gt;
+
+&lt;p&gt;除此之外,哈希时不能简单的哈希,还需要加盐哈希,防止黑客拆解出哈希包含的字段进而可以自己算出token.&lt;/p&gt;
+
+&lt;p&gt;即使黑客不能拆解你的哈希算法,也不知道哈希字段有哪些,只要他能捕获你发出的请求,(或窃取走你的token和所有可能参与哈希的字段),一样可以模拟请求,使用你的身份进行操作,除非你哈希时包含了IP.
+因为来源IP黑客是无法模拟的,除非他和你在同一个外网出口IP路由下.&lt;/p&gt;
+
+&lt;p&gt;但如果客户的IP经常变动,IP参与哈希可能体验太不好了,于是还是回到最初的问题,&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;使用&lt;code&gt;https&lt;/code&gt;,使用&lt;code&gt;httponly&lt;/code&gt;和&lt;code&gt;security&lt;/code&gt;的cookie,便能有效防止黑客捕获你的请求和偷走&lt;code&gt;token&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;再加上&lt;strong&gt;&lt;code&gt;token&lt;/code&gt;关联校验策略&lt;/strong&gt;, 再加上&lt;strong&gt;&lt;code&gt;token&lt;/code&gt;有效期滚动延期策略&lt;/strong&gt;,三道屏障保护你的身份不被黑客冒用.&lt;/p&gt;
+
+&lt;h2 id=&#34;合适和正确的验证码&#34;&gt;合适和正确的验证码&lt;/h2&gt;
+
+&lt;p&gt;一上来就给用户弹验证码未免也太不友好了,合适的做法是账户最近连续3次登陆都是错误登陆再弹出高强度的验证码.&lt;/p&gt;
+
+&lt;p&gt;这很好实现,只需一个字段就能带来好的体验.&lt;/p&gt;
+
+&lt;p&gt;毕竟正常的用户大部分时间都是一次登陆成功.&lt;/p&gt;
+
+&lt;p&gt;用户使用过的验证码一定不能再次用来验证,要保证每次身份验证都是一个新的验证码.&lt;/p&gt;
+
+&lt;p&gt;不能拿一次对的验证码去重复尝试验证用户名,密码,否则等同于没有验证码.&lt;/p&gt;
+
+&lt;p&gt;即便使用了验证码,也是不可信的,现在的打码平台已近非常成熟了,简单的验证码也很容易做到机器识别了.&lt;/p&gt;
+
+&lt;p&gt;还应该限制用户登陆错误次数,一小时10次或一天30次不能再多了.&lt;/p&gt;
+
+&lt;h2 id=&#34;登陆和找回密码返回合适的信息&#34;&gt;登陆和找回密码返回合适的信息&lt;/h2&gt;
+
+&lt;p&gt;别再返回&lt;code&gt;用户名不存在&lt;/code&gt;了,或者&lt;code&gt;密码不正确&lt;/code&gt;了&lt;/p&gt;
+
+&lt;p&gt;为了这一点点的客户体验,你将带来巨大的安全隐患.你的网站存在用户遍历漏洞.&lt;/p&gt;
+
+&lt;p&gt;黑客可以很轻松的知道一个用户有没有在你的网站注册.&lt;/p&gt;
+
+&lt;p&gt;黑客手中有大量的泄漏账户信息,一些有价值的账户就值得黑客深挖,通过此漏洞,黑客很容易找到哪些用户都有哪些账户.&lt;/p&gt;
+
+&lt;p&gt;更可怕的是,大部分人不同网站的密码是相同的.也许你的网站安全性很好,还使用了https,但是黑客只要攻破了防线最弱的那个网站拿到用户的密码,你所说的安全也就全瓦解了.&lt;/p&gt;
+
+&lt;p&gt;因此给出&lt;code&gt;用户名或密码错误&lt;/code&gt;和找回密码每次都需要高强度验证码,并且返回&lt;code&gt;如果你已注册,邮件已发送到您注册时的邮箱&lt;/code&gt;才是有效安全的方式.&lt;/p&gt;
+
+&lt;h2 id=&#34;可怕的撞库&#34;&gt;可怕的撞库&lt;/h2&gt;
+
+&lt;p&gt;大部分人不同网站的密码相同,作为使用者个人值得注意,需要为每个网站设置不同的密码,防止一个的密码泄露,其他网站的密码也不安全了.&lt;/p&gt;
+
+&lt;p&gt;作为系统设计者,也需要注意,最基本的密码不能明文存储,其次密码需要加盐存储.再者所有用户的盐不能都是一个,需要每个用户都有自己的盐.&lt;/p&gt;
+
+&lt;p&gt;做到即使被脱库,也不能直接得到密码,即使观测所有密文和盐,知道部分用户的明文密码,也不能拆解出其他用户的明文密码.(这就需要每个用户有自己的盐)&lt;/p&gt;
+
+&lt;p&gt;密文切记不要直接md5,或者md5加固定盐.这些都已不在安全.&lt;/p&gt;
+
+&lt;h2 id=&#34;修改关键信息时必须验证&#34;&gt;修改关键信息时必须验证&lt;/h2&gt;
+
+&lt;p&gt;为避免黑客盗取了身份认证信息,冒用正常用户,去修改邮箱,手机号等关键信息.&lt;/p&gt;
+
+&lt;p&gt;在修改之前一定需要二次验证.&lt;/p&gt;
+
+&lt;p&gt;否则手机号被修改,您账户里的财产在做变动时,验证码就发送到黑客修改过的手机上了,黑客顺利成章的就完成了交易.&lt;/p&gt;
+
+&lt;h2 id=&#34;邮箱和手机号已不在是有效凭据&#34;&gt;邮箱和手机号已不在是有效凭据&lt;/h2&gt;
+
+&lt;p&gt;即使使用手机号和邮箱来标示一个用户,那也不一定是正确的.&lt;/p&gt;
+
+&lt;p&gt;目前黑市上已经有很多成熟的产业链,黑客花少量的钱就能很快拥有数以万计的手机号和邮箱,能便捷的发送和接收验证码.&lt;/p&gt;
+
+&lt;p&gt;有利可图的地方就有黑客存在,在发放红利时须倍加小心.&lt;/p&gt;
+
+&lt;h2 id=&#34;手势解锁安全吗&#34;&gt;手势解锁安全吗&lt;/h2&gt;
+
+&lt;p&gt;大部分的手势解锁都是靠次数和时间限制,但是程序在客户端,黑客很容易修改程序配置文件,达到无限次尝试.&lt;/p&gt;
+
+&lt;p&gt;并且手势密码的验证大部分都是本地验证,意味着黑客根本不需要与服务器端交互,有很多方式攻破程序里的本地认证&lt;/p&gt;
+
+&lt;p&gt;因此手势密码只防君子,不妨小人,不要把它作为十分安全的验证,在做敏感操作时务必联网验证用户密码.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>use kvm</title>
@@ -211,6 +382,21 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 --hvm --dry-run
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;pre&gt;&lt;code&gt;virt-install \
+--name xp1 \
+--ram 1024 --vcpus 1 \
+--disk path=/data/iso/Deepin_Windows_LiteXP_v6.2_SP3.iso,device=cdrom \
+--disk path=/disk/kvm/winxp1,size=10,format=qcow2,bus=virtio,cache=writeback \
+--cdrom=/usr/share/virtio-win/virtio-win-0.1.126.iso \
+--os-type windows \
+--os-variant winxp \
+--bridge=br0,model=virtio \
+--accelerate \
+--graphics vnc,port=5999,listen=0.0.0.0 \
+--console pty,target_type=serial \
+--hvm --dry-run
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;出现&lt;code&gt;ERROR    不能混用 --graphics 和旧式的图形选项&lt;/code&gt;可能是需要去掉&lt;code&gt;--keymap&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;关于 加载 virtio 驱动可以参考  &lt;a href=&#34;http://www.ilanni.com/?p=5877&#34;&gt;http://www.ilanni.com/?p=5877&lt;/a&gt;&lt;/p&gt;
@@ -261,6 +447,17 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 &lt;p&gt;windows系统可使用 vncviewer (&lt;a href=&#34;http://share.suconghou.cn/bin/vncviewer.zip&#34;&gt;http://share.suconghou.cn/bin/vncviewer.zip&lt;/a&gt;) 连接&lt;/p&gt;
 
 &lt;p&gt;全屏下用F8键可唤出菜单.&lt;/p&gt;
+
+&lt;h3 id=&#34;修改相关&#34;&gt;修改相关&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;hostnamectl&lt;/code&gt; 可以查看主机相关信息,主机名,内核版本,64位等&lt;/p&gt;
+
+&lt;p&gt;只查看静态、瞬态或灵活主机名，分别使用&lt;code&gt;--static&lt;/code&gt;,&lt;code&gt;--transient&lt;/code&gt;或&lt;code&gt;--pretty&lt;/code&gt;选项&lt;/p&gt;
+
+&lt;p&gt;要同时修改所有三个主机名：静态、瞬态和灵活主机名：
+&lt;code&gt;hostnamectl set-hostname Linuxidc&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;hostname -I&lt;/code&gt; 可以获取所有网卡上配置的IP&lt;/p&gt;
 </description>
     </item>
     
@@ -766,6 +963,17 @@ jQuery(&amp;quot;form&amp;quot;).serializeObject(); //{username:&amp;quot;&amp;q
 }
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;h3 id=&#34;cookie操作&#34;&gt;Cookie操作&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;function setCookie(cookiename, cookievalue, hours)
+{
+	var date = new Date();
+	date.setTime(date.getTime() + Number(hours) * 3600 * 1000);
+	document.cookie = cookiename + &amp;quot;=&amp;quot; + cookievalue + &amp;quot;; path=/;expires = &amp;quot; + date.toGMTString();
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h3 id=&#34;用-google-analytics-统计js错误&#34;&gt;用&lt;code&gt;Google Analytics&lt;/code&gt;统计JS错误&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code&gt;(function(i,s,o,g,r,a,m){i[&#39;GoogleAnalyticsObject&#39;]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,&#39;script&#39;,&#39;https://www.google-analytics.com/analytics.js&#39;,&#39;ga&#39;);
@@ -949,9 +1157,12 @@ out of it. Please check the Makefile in case of doubts.
 &lt;pre&gt;&lt;code&gt;apt-get update &amp;amp;&amp;amp; apt-get install -y wget gcc g++ make libpcre++0v5 libpcre++-dev
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;pre&gt;&lt;code&gt;HAPROXY_VERSION=haproxy-1.6.9
+&lt;pre&gt;&lt;code&gt;yum update &amp;amp;&amp;amp; yum install wget gcc make
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;HAPROXY_VERSION=haproxy-1.7.0
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
-wget http://www.haproxy.org/download/1.6/src/${HAPROXY_VERSION}.tar.gz
+wget http://www.haproxy.org/download/1.7/src/${HAPROXY_VERSION}.tar.gz
 tar zxf ${HAPROXY_VERSION}.tar.gz
 cd ${HAPROXY_VERSION}
 export CFLAGS=&amp;quot;-O3&amp;quot;
@@ -963,7 +1174,7 @@ make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 -j$CPU_NUM &amp;amp;&amp;amp
 
 &lt;p&gt;在64位系统下编译32位需要&lt;code&gt;apt-get install gcc-multilib g++-multilib&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;我编译好的haproxy version 1.6.8&lt;/p&gt;
+&lt;p&gt;我编译好的haproxy version 1.7.0&lt;/p&gt;
 
 &lt;blockquote&gt;
 &lt;p&gt;64位 &lt;a href=&#34;http://share.suconghou.cn/bin/haproxy.xz&#34;&gt;http://share.suconghou.cn/bin/haproxy.xz&lt;/a&gt;&lt;/p&gt;
@@ -1072,6 +1283,31 @@ haproxy -f /etc/haproxy/haproxy.cfg -sf `cat /var/run/haproxy.pid`
 
 &lt;p&gt;配置文件参考 &lt;a href=&#34;https://github.com/chenzhiwei/linux/tree/master/haproxy&#34;&gt;https://github.com/chenzhiwei/linux/tree/master/haproxy&lt;/a&gt;&lt;/p&gt;
 
+&lt;p&gt;一份haproxy加速ss&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;global
+        pidfile   /var/run/haproxy.pid
+        ulimit-n  15000
+
+defaults
+        log global
+        mode    tcp
+        option  dontlognull
+        timeout connect 1000
+        timeout client  150000
+        timeout server  150000
+
+frontend ss-in
+        bind *:80
+        default_backend ss-out
+
+backend ss-out
+        server server1 208.81.202.208:443 maxconn 20480
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;haproxy -D -f /etc/haproxy/haproxy.cfg&lt;/code&gt;启动,参数&lt;code&gt;-D&lt;/code&gt;为goes daemon&lt;/p&gt;
+
 &lt;h2 id=&#34;升级-glibc-版本-最新发布-http-www-gnu-org-software-libc&#34;&gt;升级&lt;code&gt;glibc&lt;/code&gt;版本,最新发布 &lt;a href=&#34;http://www.gnu.org/software/libc/&#34;&gt;http://www.gnu.org/software/libc/&lt;/a&gt;&lt;/h2&gt;
 
 &lt;p&gt;所有版本见&lt;code&gt;http://mirror.hust.edu.cn/gnu/libc/&lt;/code&gt;&lt;/p&gt;
@@ -1086,7 +1322,7 @@ cd glibc-2.19
 mkdir build
 cd build
 ../configure
-make -j4&amp;amp;&amp;amp; make install
+make -j4 &amp;amp;&amp;amp; make install
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;见 &lt;a href=&#34;https://cnodejs.org/topic/56dc21f1502596633dc2c3dc&#34;&gt;https://cnodejs.org/topic/56dc21f1502596633dc2c3dc&lt;/a&gt;
@@ -1624,7 +1860,7 @@ strip -s /usr/local/bin/ss-server
 
 &lt;p&gt;&lt;code&gt;ss-server -s 0.0.0.0 -p 443 -k 123456 -m rc4-md5 -t 300 -d 8.8.8.8 -u&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;with Linux kernel &amp;gt; 3.7.0&lt;/p&gt;
+&lt;p&gt;with Linux kernel &amp;gt; 3.7.0 可以加上&lt;code&gt;--fast-open&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;ss-server -s 0.0.0.0 -p 443 -k 123456 -m rc4-md5 -t 300 -d 8.8.8.8 --fast-open -u&lt;/code&gt;&lt;/p&gt;
 
@@ -1695,6 +1931,8 @@ net.ipv4.tcp_congestion_control = hybla
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;然后&lt;code&gt;sysctl -p&lt;/code&gt;使之生效&lt;/p&gt;
+
+&lt;p&gt;可参见 &lt;a href=&#34;https://github.com/Long-live-shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks&#34;&gt;https://github.com/Long-live-shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;OPENVZ只能修改&lt;/p&gt;
 
@@ -2017,658 +2255,6 @@ diskutil unmountdisk /dev/disk2
 passwd abc&lt;/p&gt;
 
 &lt;p&gt;获得sudo权限:编辑&lt;code&gt;/etc/sudoers&lt;/code&gt; 加入新添加的用户名&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>linux相关操作</title>
-      <link>http://blog.suconghou.cn/post/linux/</link>
-      <pubDate>Thu, 21 Jan 2016 13:40:53 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/post/linux/</guid>
-      <description>
-
-&lt;h2 id=&#34;linux用户管理&#34;&gt;Linux用户管理&lt;/h2&gt;
-
-&lt;h3 id=&#34;添加用户adduser&#34;&gt;添加用户adduser&lt;/h3&gt;
-
-&lt;p&gt;假如用户名为&lt;code&gt;work&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;adduser work -M&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;# add rslsync user without home dir and cannot login
-sudo adduser --shell /bin/nologin --no-create-home --group rslsync
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;-M, &amp;ndash;no-create-home        不创建用户的主目录
--s, &amp;ndash;shell SHELL       新账户的登录 shell,nologin就是登陆不了
--G, &amp;ndash;groups GROUPS 新账户的附加组列表&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;adduser -h&lt;/code&gt;查看完整帮助&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;用法：adduser [选项] 登录
-      adduser -D
-      adduser -D [选项]
-
-选项：
-  -b, --base-dir BASE_DIR	新账户的主目录的基目录
-  -c, --comment COMMENT         新账户的 GECOS 字段
-  -d, --home-dir HOME_DIR       新账户的主目录
-  -D, --defaults		显示或更改默认的 useradd 配置
-  -e, --expiredate EXPIRE_DATE  新账户的过期日期
-  -f, --inactive INACTIVE       新账户的密码不活动期
-  -g, --gid GROUP		新账户主组的名称或 ID
-  -G, --groups GROUPS	新账户的附加组列表
-  -h, --help                    显示此帮助信息并推出
-  -k, --skel SKEL_DIR	使用此目录作为骨架目录
-  -K, --key KEY=VALUE           不使用 /etc/login.defs 中的默认值
-  -l, --no-log-init	不要将此用户添加到最近登录和登录失败数据库
-  -m, --create-home	创建用户的主目录
-  -M, --no-create-home		不创建用户的主目录
-  -N, --no-user-group	不创建同名的组
-  -o, --non-unique		允许使用重复的 UID 创建用户
-  -p, --password PASSWORD		加密后的新账户密码
-  -r, --system                  创建一个系统账户
-  -R, --root CHROOT_DIR         chroot 到的目录
-  -s, --shell SHELL		新账户的登录 shell
-  -u, --uid UID			新账户的用户 ID
-  -U, --user-group		创建与用户同名的组
-  -Z, --selinux-user SEUSER		为 SELinux 用户映射使用指定 SEUSER
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;修改密码&#34;&gt;修改密码&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;passwd work&lt;/code&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;修改用户名&#34;&gt;修改用户名&lt;/h3&gt;
-
-&lt;p&gt;alarm为旧用户名&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;new_user=lao
-# change user name
-usermod -l $new_user -d /home/$new_user -m alarm
-# chenge user group
-groupmod -n $new_user alarm
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.cnblogs.com/xd502djj/archive/2011/11/23/2260094.html&#34;&gt;http://www.cnblogs.com/xd502djj/archive/2011/11/23/2260094.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;linux实用命令&#34;&gt;Linux实用命令&lt;/h2&gt;
-
-&lt;h2 id=&#34;w&#34;&gt;w&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;w&lt;/code&gt;命令能容清晰的显示,服务器在线时间,负载以及当前登陆的用户&lt;/p&gt;
-
-&lt;h2 id=&#34;vmstat&#34;&gt;vmstat&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;vmstat&lt;/code&gt; 显示开机以来的平均值，而不是前一秒的值
-&lt;code&gt;vmstat 1&lt;/code&gt;命令指定一个参数 1 运行，来打印每一秒的统计摘要.
-这些列代表的信息:&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;r：CPU 中正在运行和等待运行的进程的数量。其提供了一个比平均负载更好的信号来确定 CPU 是否饱和，因为其不包含 I/O。解释：&amp;rdquo;r&amp;rdquo;的值大于了 CPU 的数量就表示已经饱和了。
-free：以 kb 为单位显式的空闲内存。如果数字位数很多，说明你有足够的空闲内存。&amp;rdquo;free -m&amp;rdquo; 命令，是下面的第七个命令，其可以更好的说明空闲内存的状态。
-si, so：Swap-ins 和 swap-outs。如果它们不是零，则代表你的内存不足了。
-us, sy, id, wa, st：这些都是平均了所有 CPU 的 CPU 分解时间。它们分别是用户时间（user）、系统时间（内核）（system）、空闲（idle）、等待 I/O（wait）、以及占用时间（stolen）（被其他访客，或使用 Xen，访客自己独立的驱动域）。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;CPU 分解时间将会通过用户时间加系统时间确认 CPU 是否为忙碌状态。等待 I/O 的时间一直不变则表明了一个磁盘瓶颈；这就是 CPU 的闲置，因为任务都阻塞在等待挂起磁盘 I/O 上了。你可以把等待 I/O 当成是 CPU 闲置的另一种形式，其给出了为什么 CPU 闲置的一个线索。
-对于 I/O 处理来说，系统时间是很重要的。一个高于 20% 的平均系统时间，可以值得进一步的探讨：也许内核在处理 I/O 时效率太低了。&lt;/p&gt;
-
-&lt;p&gt;SIZE(VIRT): 进程使用的地址空间, 如果进程映射了100M的内存, 进程的地址空间将报告为100M内存. 事实上, 这个大小不是一个程序实际使用的内存数.&lt;/p&gt;
-
-&lt;p&gt;RSS(RES): &amp;ldquo;Resident Set Size&amp;rdquo;, 实际驻留&amp;rdquo;在内存中&amp;rdquo;的内存数. 不包括已经交换出去的代码. 举一个例子: 如果你有一个程序使用了100K内存, 操作系统交换出40K内存, 那么RSS为60K. RSS还包括了与其它进程共享的内存区域. 这些区域通常用于libc库等.&lt;/p&gt;
-
-&lt;p&gt;SHARE(SHR): RSS中与其它进程共享的内存部分大小.&lt;/p&gt;
-
-&lt;p&gt;VMSIZE: 一个进程占用的总的地址空间大小. 它包括了没有映射到内存中的页面。&lt;/p&gt;
-
-&lt;p&gt;SZ（DATA）: 映射到内存中的页面, 这些页面仅由进程单独使用. 这也是我们最关心地方: 进程实际占用的内存数。&lt;/p&gt;
-
-&lt;h2 id=&#34;top&#34;&gt;top&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;top -b -n1&lt;/code&gt; 可以只执行一次,用于将结果重定向到文件.&lt;/p&gt;
-
-&lt;h2 id=&#34;free&#34;&gt;free&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;free -m&lt;/code&gt; &lt;code&gt;free -h&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;按内存占用排序&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;
-ps -eo rss,vsz,pid,ppid,time,etime,command --sort=rss   # 按内存
-ps -eo rss,vsz,pid,ppid,time,etime,command --sort=time  # 按CPU时间,etime启动时间,comm等都可以.
-
-# MAC无法使用`--sort`上需要使用`| sort -n`
-
-ps -eo rss,vsz,pid,ppid,time,etime,command |sort -n
-
-# alpine 里这样用,不支持--sort, 同样也可以 `top -b -n1`
-ps -o rss,vsz,pid,ppid,time,etime,args
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;ssh&#34;&gt;ssh&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;ssh-copy-id -i ~/.ssh/id_rsa.pub root@host&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;ssh-copy-id -i ~/.ssh/id_rsa.pub -p 26671 root@host&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;pgrep&#34;&gt;pgrep&lt;/h2&gt;
-
-&lt;p&gt;根据名字或其他属性查询出进程的PID&lt;/p&gt;
-
-&lt;p&gt;如:&lt;code&gt;pgrep nginx -fl&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;pkill&#34;&gt;pkill&lt;/h2&gt;
-
-&lt;p&gt;和&lt;code&gt;pgrep&lt;/code&gt;类似,不同的是向进程发送信号,默认发送&lt;code&gt;SIGTERM&lt;/code&gt;信号,查看都有哪些信号可用,可以使用&lt;code&gt;kill -l&lt;/code&gt;查看&lt;/p&gt;
-
-&lt;p&gt;类似&lt;code&gt;pkill&lt;/code&gt;的命令是&lt;code&gt;killall&lt;/code&gt;,后面都是可以直接加进程名字批量杀死进程&lt;/p&gt;
-
-&lt;h2 id=&#34;pstree&#34;&gt;pstree&lt;/h2&gt;
-
-&lt;p&gt;用树的形式显示正在运行的进程,树的节点为指定的PID(忽略则为init进程)&lt;/p&gt;
-
-&lt;h2 id=&#34;ss&#34;&gt;ss&lt;/h2&gt;
-
-&lt;p&gt;用于显示socket的统计信息,&lt;code&gt;-s&lt;/code&gt;用于显示汇总&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;-l&lt;/code&gt;用于列出正在监听的&lt;code&gt;socket&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;-p&lt;/code&gt;显示进程信息,&lt;code&gt;ss -pl&lt;/code&gt; 可以查看使用网络端口的进程名字&lt;/p&gt;
-
-&lt;h2 id=&#34;磁盘相关&#34;&gt;磁盘相关&lt;/h2&gt;
-
-&lt;h3 id=&#34;dd&#34;&gt;dd&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;dd&lt;/code&gt;把指定的输入文件拷贝到指定的输出文件中,并且在拷贝的过程中可以进行格式转换。&lt;/p&gt;
-
-&lt;p&gt;if =输入文件(或设备名称)
-of =输出文件(或设备名称)
-bs = bytes 同时设置读/写缓冲区的字节数(等于设置obs和obs)
-count = blocks 只拷贝输入的blocks块&lt;/p&gt;
-
-&lt;p&gt;创建一个100M的空文件
-&lt;code&gt;dd if=/dev/zero of=hello.txt bs=100m count=1&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;查看当前目录下所有一级子目录文件夹大小&#34;&gt;查看当前目录下所有一级子目录文件夹大小&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;du -h --max-depth=1&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;查看当前目录下所有一级子目录文件夹大小-并排序&#34;&gt;查看当前目录下所有一级子目录文件夹大小 并排序&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;du -h --max-depth=1 |sort&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;以上两条命令不适用于MacOs,可以使用&lt;code&gt;du -sh *&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;ps&#34;&gt;ps&lt;/h2&gt;
-
-&lt;p&gt;ps ef  查看进程的状态&lt;/p&gt;
-
-&lt;p&gt;ps auxw 查看进程的CPU,内存占用&lt;/p&gt;
-
-&lt;p&gt;ps 默认是按照PID排序的,若要按内存使用排序&lt;code&gt;ps auxw --sort=rss&lt;/code&gt;,同理按虚拟内存排序&lt;code&gt;ps auxw --sort=vsz&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;mac上无法使用&lt;code&gt;--sort&lt;/code&gt;,可以采用&lt;code&gt;sort&lt;/code&gt;排序,如rss在第六列,则&lt;code&gt;ps auxw | sort -k6,6n&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;lscpu&lt;/p&gt;
-
-&lt;h2 id=&#34;nc&#34;&gt;nc&lt;/h2&gt;
-
-&lt;p&gt;nc 命令默认没有安装,需要自己安装,&lt;code&gt;yum install nc&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;传送字符与文件&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;一端&lt;code&gt;nc -l 9090&lt;/code&gt;监听端口9090&lt;/p&gt;
-
-&lt;p&gt;一端&lt;code&gt;nc host 9090&lt;/code&gt;连接host的9090端口,通信建立后,可以双向通信,实现文字聊天等,也可以传送文件&lt;/p&gt;
-
-&lt;p&gt;一端&lt;code&gt;nc -l 9090 &amp;gt; file&lt;/code&gt; ,另一端发送文件&lt;code&gt;nc host 9090 &amp;lt; file&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;传送文件夹(压缩文件) &lt;code&gt;nc -l 9090 |tar xzvf -&lt;/code&gt; , 另一端发送文件&lt;code&gt;tar czvf – dir | nc host 9090&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;同样可以拷贝硬盘 &lt;code&gt;nc -l 9090 | dd of=/dev/sda&lt;/code&gt;,另一端发送&lt;code&gt;dd if=/dev/sda | nc host 9090&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;端口扫描&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;nc -vz -w 1 someIp 1-1000&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;模拟调试http请求&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;GET / HTTP/1.0&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;端口转发&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;使用之前需要了解其他的命令&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;tee&lt;/code&gt;命令将标准输入的数据写入标准输出和tee命令指定的文件参数&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;mkfifo&lt;/code&gt;命令用于创建一个FIFO（先进先出）方式的命名管道&lt;/p&gt;
-
-&lt;p&gt;标准流:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;stdin	0
-stdout	1
-stderr	2
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;** listener-to-client模式(用于外网访问内网) **&lt;/p&gt;
-
-&lt;p&gt;见 &lt;a href=&#34;http://onestraw.net/cybersecurity/netcat-advanced-usage/&#34;&gt;http://onestraw.net/cybersecurity/netcat-advanced-usage/&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;一份linux别名和函数库&#34;&gt;一份Linux别名和函数库&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;alias tree=&amp;quot;find . -print | sed -e &#39;s;[^/]*/;|____;g;s;____|; |;g&#39; &amp;quot;;
-alias cls=&amp;quot;cd $1;ls -lh;&amp;quot;;
-# 获得你的公网IP地址和主机名。
-alias ipinfo=&amp;quot;curl ifconfig.me &amp;amp;&amp;amp; curl ifconfig.me/host&amp;quot;;
-# 显示出哪个应用程序连接到网络。
-alias listen=&amp;quot;lsof -P -i -n&amp;quot;;
-# 显示出活动的端口。
-alias port=&#39;netstat -uanltp&#39;
-# 统计TCP连接个数
-alias tcpstatus=&amp;quot;netstat -n|awk &#39;/^tcp/{++S[\$NF]} END {for(a in S) print a,S[a]}&#39;&amp;quot;
-# 回到上层目录
-alias ..=&#39;cd ..&#39;
-# 去到上两层目录
-alias ...=&#39;cd ../..&#39;
-# 按列格式化输出mount信息。
-alias cmount=&amp;quot;mount | column -t&amp;quot;
-# 查看你还有剩下多少内存
-alias meminfo=&#39;free -m -l -t&#39;
-# 按照文件在磁盘存储的大小排序，显示当前目录的文件列表。
-sbs() { du -b --max-depth 1 | sort -nr | perl -pe &#39;s{([0-9]+)}{sprintf &amp;quot;%.1f%s&amp;quot;, $1&amp;gt;=2**30? ($1/2**30, &amp;quot;G&amp;quot;): $1&amp;gt;=2**20? ($1/2**20, &amp;quot;M&amp;quot;): $1&amp;gt;=2**10? ($1/2**10, &amp;quot;K&amp;quot;): ($1, &amp;quot;&amp;quot;)}e&#39;;}
-# 找出指定目录中最大的10个文件
-largefile() { find . -type f -exec du -k {} \; | sort  -nrk 1 | head; }
-# 查看当前目录大于[多少]kb的文件,速度更快
-bigthan() { size=${1:-100}; find . -type f -size +&amp;quot;$size&amp;quot;k |xargs  ls  -lh ; }
-# 返回你的当前IP地址的地理位置。
-getlocation() { lynx -dump http://www.ip-adress.com/ip_tracer/?QRY=$1|grep address|egrep &#39;city|state|country&#39;|awk &#39;{print $3,$4,$5,$6,$7,$8}&#39;|sed &#39;s\ip address flag \\&#39;|sed &#39;s\My\\&#39;;}
-# 删除.log.1.gz 或者 .log.1.bz2
-delog(){ ls | grep &amp;quot;log.\d\+.\(bz2\|gz\)&amp;quot; | xargs rm}
-
-# 查看最占用内存的前五个进程(根据第几列可修改k6)
-topmem()
-{
-	ps aux | sort -k6nr | head -n5;
-}
-
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;部分快捷键&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;
-CTRL + U -剪切光标前的内容
-
-CTRL + K -剪切光标至行末的内容
-
-CTRL + Y -粘贴
-
-CTRL + E -移动光标到行末
-
-CTRL + A -移动光标到行首
-
-ALT + F -跳向下一个空格
-
-ALT + B -跳回上一个空格
-
-ALT + Backspace -删除前一个单词
-
-CTRL + W -剪切光标后一个单词
-
-Shift + Insert -向终端内粘贴文本
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;压缩率 xz &amp;gt; 7z &amp;gt; bzip2 &amp;gt; gzip &amp;gt; zip&lt;/p&gt;
-
-&lt;p&gt;gzexe 创建自解压文件&lt;/p&gt;
-
-&lt;p&gt;xz5.2以上版本支持多线程压缩,xz -T0 就可以自动按机器线程数多线程执行了,xz 支持 env 环境变量，XZ_OPT=-T0 xz xxx.file 就行啦&lt;/p&gt;
-
-&lt;p&gt;多线程的压缩速度几乎与gzip相当&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;# 查看你机器的CPU个数,超线程信息
-sysinfo() {
-physicalNumber=0
-coreNumber=0
-logicalNumber=0
-HTNumber=0
-logicalNumber=$(grep &amp;quot;processor&amp;quot; /proc/cpuinfo|sort -u|wc -l)
-physicalNumber=$(grep &amp;quot;physical id&amp;quot; /proc/cpuinfo|sort -u|wc -l)
-coreNumber=$(grep &amp;quot;cpu cores&amp;quot; /proc/cpuinfo|uniq|awk -F&#39;:&#39; &#39;{print $2}&#39;|xargs)
-HTNumber=$((logicalNumber / (physicalNumber * coreNumber)))
-echo &amp;quot;****** CPU Information ******&amp;quot;
-echo &amp;quot;Logical CPU Number  : ${logicalNumber}&amp;quot;
-echo &amp;quot;Physical CPU Number : ${physicalNumber}&amp;quot;
-echo &amp;quot;CPU Core Number     : ${coreNumber}&amp;quot;
-echo &amp;quot;HT Number           : ${HTNumber}&amp;quot;
-echo &amp;quot;*****************************&amp;quot;
-}
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;使用脚本清理一些文件&#34;&gt;使用脚本清理一些文件&lt;/h2&gt;
-
-&lt;p&gt;删除当前目录超过30天未变动过的log文件&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;find . -mtime +30 -type f -name &#39;*.log*&#39; | xargs rm
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;或者&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;find . -mtime +30 -type f -name &#39;*.log*&#39; -exec rm -i {} \;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;所有的操作都包含子目录&lt;/p&gt;
-
-&lt;p&gt;-exec  参数后面跟的是command命令，它的终止是以;为结束标志的，所以这句命令后面的分号是不可缺少的，考虑到各个系统中分号会有不同的意义，所以前面加反斜杠。&lt;/p&gt;
-
-&lt;p&gt;{}   花括号代表前面find查找出来的文件名。&lt;/p&gt;
-
-&lt;p&gt;如&lt;code&gt;find . -type f -exec ls -l {} \;&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;使用-exec选项的安全模式。它将在对每个匹配到的文件进行操作之前提示你。&lt;/p&gt;
-
-&lt;p&gt;如&lt;code&gt;find . -name &amp;quot;*.log&amp;quot; -mtime +60 -ok rm {} \;&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;-mtime +30 设定时间为30天前&lt;/p&gt;
-
-&lt;p&gt;-type f 查找的类型为文件&lt;/p&gt;
-
-&lt;p&gt;-name 文件路径需要匹配的&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;使用全文查找&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;grep -lr &amp;lsquo;string&amp;rsquo; /etc/&lt;/p&gt;
-
-&lt;p&gt;这个命令就可以搞定。搜索etc下面的文件，包含所有目录下的文件。这样就搞定了。&lt;/p&gt;
-
-&lt;p&gt;-i，乎略大小写
--l，找出含有这个字符串的文件
--r，不放过子目录&lt;/p&gt;
-
-&lt;h2 id=&#34;解决can-t-set-the-locale-make-sure-lc-and-lang-are-correct&#34;&gt;解决can&amp;rsquo;t set the locale; make sure $LC_* and $LANG are correct&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian&#34;&gt;https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian&lt;/a&gt;
-&lt;code&gt;照着全部做下来&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;sed使用&#34;&gt;sed使用&lt;/h2&gt;
-
-&lt;p&gt;更新版本号&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sed -i &amp;quot;s/?ver=\w\+/?ver=`date +%s`/g&amp;quot; *.html
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;o=http://cdn.ourwill.cn/fed-static r=http://cdn.ourwill.cn/fed-static/fedv2 sed -i &amp;quot;s#$o#$r#g&amp;quot; *.html
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;vim乱码解决&#34;&gt;Vim乱码解决&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;vim ~/.vimrc&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
-set termencoding=utf-8
-set encoding=utf-8
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;开机启动的&#34;&gt;开机启动的&lt;/h2&gt;
-
-&lt;p&gt;检视和控制systemd的主要命令是systemctl&lt;/p&gt;
-
-&lt;p&gt;详细使用见&lt;a href=&#34;https://wiki.archlinux.org/index.php/systemd_(简体中文)&#34;&gt;https://wiki.archlinux.org/index.php/systemd_(简体中文)&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;CentOS7 用&lt;code&gt;systemctl&lt;/code&gt;取代了&lt;code&gt;service&lt;/code&gt;
-旧版本的 &lt;code&gt;service docker start&lt;/code&gt; 改为&lt;code&gt;systemctl start docker&lt;/code&gt;
-设置开机启动
-旧版本的 &lt;code&gt;chkconfig docker on&lt;/code&gt; 改为 &lt;code&gt;systemctl enable docker&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;/usr/lib/systemd/system/&lt;/code&gt;
-&lt;code&gt;/etc/systemd/system/&lt;/code&gt;
-后者有较高优先级会覆盖前者&lt;/p&gt;
-
-&lt;p&gt;/etc/profile 和 ~/.bash_profile 是在启动 一个交互登陆shell的时候 被调用。
-/etc/bashrc 和 ~/.bashrc 是在一个交互的非登陆shell启动 的时候 被调用。
-~/.bash_logout 在用户注销登陆的时候 被读取&lt;/p&gt;
-
-&lt;p&gt;系统脚本 可以放置在/etc/rc.d/init.d中并建立/etc/rc.d/rc?.d链接，也可以直接放置在/etc/rc.d/rc.local中。
-init.d脚本 包含完整的start,stop,status,reload等参数，是标准做法，推荐使用。&lt;/p&gt;
-
-&lt;h2 id=&#34;linux-家族&#34;&gt;Linux 家族&lt;/h2&gt;
-
-&lt;p&gt;一般来说著名的linux系统基本上分两大类：&lt;/p&gt;
-
-&lt;p&gt;1.RedHat系列：Redhat、Centos、Fedora等&lt;/p&gt;
-
-&lt;p&gt;2.Debian系列：Debian、Ubuntu等&lt;/p&gt;
-
-&lt;p&gt;RedHat 系列&lt;/p&gt;
-
-&lt;p&gt;1 常见的安装包格式 rpm包,安装rpm包的命令是“rpm -参数”&lt;/p&gt;
-
-&lt;p&gt;2 包管理工具 yum&lt;/p&gt;
-
-&lt;p&gt;3 支持tar包&lt;/p&gt;
-
-&lt;p&gt;Debian系列
-1 常见的安装包格式 deb包,安装deb包的命令是“dpkg -参数”&lt;/p&gt;
-
-&lt;p&gt;2 包管理工具 apt-get&lt;/p&gt;
-
-&lt;p&gt;3 支持tar包&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;soft rlimits too low. Number of files is 256, should be at least 1000&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;见 &lt;a href=&#34;https://www.fdzh.org/slides/2015/06/20/linux-distr/&#34;&gt;https://www.fdzh.org/slides/2015/06/20/linux-distr/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://static.suconghou.cn/document/linux.jpg&#34; alt=&#34;家族示意图&#34; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;判断一个命令是否存在&#34;&gt;判断一个命令是否存在&lt;/h2&gt;
-
-&lt;p&gt;如判断&lt;code&gt;nc&lt;/code&gt;是否存在&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;command -v nc &amp;gt;/dev/null 2&amp;gt;&amp;amp;1 || { echo &amp;gt;&amp;amp;2 &amp;quot;I require nc but it&#39;s not installed.  Aborting.&amp;quot;; exit 1; }
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;if ! command -v pip &amp;gt; /dev/null 2&amp;gt;&amp;amp;1;then
-    echo &amp;quot;YES&amp;quot;
-fi
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;PIP=$(which pip)
-if [ ! -x &amp;quot;${PIP}&amp;quot; ];then
-	echo &amp;quot;NO&amp;quot;
-else
-	echo &amp;quot;YES&amp;quot;
-fi
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;[[ ! -x $(which pip) ]] &amp;amp;&amp;amp; echo &amp;quot;No&amp;quot; || echo &amp;quot;Yes&amp;quot;
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;if (( ${+commands[pip]} )); then
-	echo &amp;quot;YES&amp;quot;
-fi
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;判断一个进程pid是否还存在&#34;&gt;判断一个进程PID是否还存在&lt;/h2&gt;
-
-&lt;p&gt;例如检查pid为143的进程 &lt;code&gt;ps ax | awk &#39;{ print $1 }&#39; | grep -e &amp;quot;^143$&amp;quot;&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;时间同步&#34;&gt;时间同步&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.ntp.org.cn/&#34;&gt;http://www.ntp.org.cn/&lt;/a&gt; 提供 ntp server&lt;/p&gt;
-
-&lt;p&gt;使用 &lt;code&gt;sudo ntpdate us.ntp.org.cn&lt;/code&gt; 来同步时间.&lt;/p&gt;
-
-&lt;p&gt;/usr/bin/tzselect 来设置时区&lt;/p&gt;
-
-&lt;p&gt;Alpine Linux 3.4  &lt;code&gt;ntpd -d -n -q -p us.ntp.org.cn&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;alpine中设置时区执行&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;apk update &amp;amp;&amp;amp; apk upgrade &amp;amp;&amp;amp; apk add --no-cache tzdata
-ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-echo &amp;quot;Asia/Shanghai&amp;quot; &amp;gt; /etc/timezone
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;会立即生效.&lt;/p&gt;
-
-&lt;h2 id=&#34;linux-磁盘与mysql性能测试&#34;&gt;Linux 磁盘与MySQL性能测试&lt;/h2&gt;
-
-&lt;p&gt;源码地址 : &lt;a href=&#34;https://github.com/akopytov/sysbench&#34;&gt;https://github.com/akopytov/sysbench&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;它主要包括以下几种方式的测试：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;cpu性能&lt;/li&gt;
-&lt;li&gt;磁盘io性能&lt;/li&gt;
-&lt;li&gt;调度程序性能&lt;/li&gt;
-&lt;li&gt;内存分配及传输速度&lt;/li&gt;
-&lt;li&gt;POSIX线程性能&lt;/li&gt;
-&lt;li&gt;数据库性能(OLTP基准测试)&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;目前sysbench主要支持 MySQL,pgsql,oracle 这3种数据库。&lt;/p&gt;
-
-&lt;h2 id=&#34;mtr网络线路测试&#34;&gt;Mtr网络线路测试&lt;/h2&gt;
-
-&lt;p&gt;如果未安装可以&lt;code&gt;yum info mtr&lt;/code&gt;安装&lt;/p&gt;
-
-&lt;p&gt;-n  不用主机解释
--c   发送多少个数据包
-&amp;ndash;report  结果显示，并不动态显示。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;mtr --report www.baidu.com&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;shell基本语法&#34;&gt;Shell基本语法&lt;/h2&gt;
-
-&lt;p&gt;声明数组&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;arr=(item1 item2 item3)&lt;/code&gt; 使用空格分开&lt;/p&gt;
-
-&lt;p&gt;使用&lt;code&gt;echo ${arr[*]}&lt;/code&gt; 或者 &lt;code&gt;echo ${arr[@]}&lt;/code&gt; 可以查看数组内的元素,&lt;code&gt;echo $arr&lt;/code&gt;只能取得第一个元素&lt;/p&gt;
-
-&lt;p&gt;要取得数组长度,只需在名字前面加一个#,如&lt;code&gt;echo ${#arr[*]}&lt;/code&gt; 或者 &lt;code&gt;echo ${#arr[@]}&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;数组下标以0开始,取得第二个元素为&lt;code&gt;echo ${arr[1]}&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;赋值使用&lt;code&gt;arr[5]=5555&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;测试vps宽带&#34;&gt;测试VPS宽带&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/sivel/speedtest-cli&#34;&gt;https://github.com/sivel/speedtest-cli&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://man.linuxde.net/speedtest-cli&#34;&gt;http://man.linuxde.net/speedtest-cli&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;还可以使用wget下载各大型机房的测试文件&lt;/p&gt;
-
-&lt;p&gt;芝加哥机房/100M测试包&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;wget http://cachefly.cachefly.net/100mb.test&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;wget http://cachefly.cachefly.net/10mb.test&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;directspace机房/10M.100M测试包&lt;/p&gt;
-
-&lt;p&gt;Portland, Oregon Data Center&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;wget http://bandwidth.directspace.net/100MBtest.zip&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;wget http://bandwidth.directspace.net/10MBtest.zip&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;Los Angeles, California Data Center&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;wget http://45.34.158.82/speedtest/100MBtest.zip&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;访问 cachefly.cachefly.net 可以测试你电脑当前的网络速度&lt;/p&gt;
-
-&lt;p&gt;枫叶主机 &lt;a href=&#34;http://www.fyzhuji.com/speed.html&#34;&gt;http://www.fyzhuji.com/speed.html&lt;/a&gt; 提供的测速文件.&lt;/p&gt;
-
-&lt;p&gt;香港SV新力讯机房,测试20M光纤能跑满2.6MB/s&lt;/p&gt;
-
-&lt;p&gt;星光互联 &lt;a href=&#34;https://www.starrydns.com/tc/speedtest&#34;&gt;https://www.starrydns.com/tc/speedtest&lt;/a&gt; 提供的测速文件&lt;/p&gt;
-
-&lt;p&gt;Mega-I, Hong Kong,测试能跑到3MB/s&lt;/p&gt;
-
-&lt;h2 id=&#34;lvm&#34;&gt;LVM&lt;/h2&gt;
-
-&lt;p&gt;使用&lt;code&gt;pvcreate&lt;/code&gt;创建PV&lt;/p&gt;
-
-&lt;p&gt;pvcreate 物理分区名字&lt;/p&gt;
-
-&lt;p&gt;使用&lt;code&gt;vgcreate&lt;/code&gt;创建VG&lt;/p&gt;
-
-&lt;p&gt;vgcreate vgname pv1 pv2 pv3&lt;/p&gt;
-
-&lt;p&gt;pvdisplay 查看当前的PV&lt;/p&gt;
-
-&lt;p&gt;vgdisplay 查看VG&lt;/p&gt;
-
-&lt;p&gt;lvdisplay 查看LV&lt;/p&gt;
-
-&lt;p&gt;-L：指定LV的大小 -n：指定LV的名。Vo1Group00：表示从这个VG中划分LV；&lt;/p&gt;
-
-&lt;p&gt;LV创建好后格式化为想要的格式,然后挂载指定目录,就能使用了.(可以使用&lt;code&gt;df -lhT&lt;/code&gt;查看了)&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;lsblk&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;[root@will ~]# lsblk
-NAME            MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
-sda               8:0    0 931.5G  0 disk
-├─sda1            8:1    0   200M  0 part /boot/efi
-├─sda2            8:2    0   500M  0 part /boot
-└─sda3            8:3    0 930.8G  0 part
-  ├─centos-root 253:0    0    50G  0 lvm  /
-  ├─centos-swap 253:1    0   5.9G  0 lvm  [SWAP]
-  └─centos-home 253:2    0 874.9G  0 lvm  /home
-sr0              11:0    1  1024M  0 rom
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;##&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://home.tiscali.cz/~cz210552/webbench.html&#34;&gt;http://home.tiscali.cz/~cz210552/webbench.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.cppblog.com/merlinfang/archive/2014/12/26/209311.html&#34;&gt;http://www.cppblog.com/merlinfang/archive/2014/12/26/209311.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://cloudwu.github.io/lua53doc/&#34;&gt;http://cloudwu.github.io/lua53doc/&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;cd /tmp
-LUA_VERSION=lua-5.3.3
-CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
-wget http://www.lua.org/ftp/${LUA_VERSION}.tar.gz
-tar zxf ${LUA_VERSION}.tar.gz
-cd ${LUA_VERSION}
-make linux
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://webserver2.tecgraf.puc-rio.br/~lhf/ftp/lua/#srlua&#34;&gt;http://webserver2.tecgraf.puc-rio.br/~lhf/ftp/lua/#srlua&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://luabinaries.sourceforge.net/download.html&#34;&gt;http://luabinaries.sourceforge.net/download.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://cloudwu.github.io/lua53doc/manual.html&#34;&gt;http://cloudwu.github.io/lua53doc/manual.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;socat是一個netcat(nc)的替代產品，可以稱得上nc++。
-&lt;a href=&#34;http://www.dest-unreach.org/socat/&#34;&gt;http://www.dest-unreach.org/socat/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.dest-unreach.org/socat/download/&#34;&gt;http://www.dest-unreach.org/socat/download/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;iotop htop
-mtr&lt;/p&gt;
-
-&lt;p&gt;netpipes 和socat一样，主要是用来在命令行来进行socket操作的命令，这样你就可以在Shell脚本下行进socket网络通讯了。&lt;/p&gt;
-
-&lt;p&gt;iftop和iptraf可以用来查看当前网络链接的一些流量情况。&lt;/p&gt;
-
-&lt;p&gt;iostat, vmstat, ifstat 三合一的工具，用来查看系统性能。&lt;/p&gt;
-
-&lt;p&gt;rtorrent aria2c
-lftp
-ack是一个perl脚本，是grep的一个可选替换品&lt;/p&gt;
 </description>
     </item>
     

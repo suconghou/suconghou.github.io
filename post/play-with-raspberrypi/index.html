@@ -44,7 +44,7 @@
 
 <p>带桌面版1.4G</p>
 
-<p>精简版292MB</p>
+<p>精简版293MB  下载 <code>wget  https://downloads.raspberrypi.org/raspbian_lite_latest</code></p>
 
 <h2 id="安装其他操作系统">安装其他操作系统</h2>
 
@@ -55,6 +55,12 @@
 <p><a href="http://mirror.centos.org/altarch/7/isos/armhfp/">CentOS7官方下载</a>
 root 密码 centos
 大约275MB</p>
+
+<p>CentOS7.3也已发布</p>
+
+<p><a href="http://mirror.centos.org/altarch/7.3.1611/isos/armhfp/">http://mirror.centos.org/altarch/7.3.1611/isos/armhfp/</a></p>
+
+<p>树莓派2版254M</p>
 
 <h3 id="archlinux">ArchLinux</h3>
 
@@ -119,6 +125,54 @@ ls -lh
 
 <p>OSMC默认的ssh连接用户是 osmc 密码 osmc</p>
 
+<p>osmc 启用 root 登陆</p>
+
+<pre><code>sudo passwd --unlock root
+</code></pre>
+
+<p>修改root密码</p>
+
+<pre><code>sudo passwd root
+</code></pre>
+
+<p>修改为国内镜像源
+<code>/etc/apt/sources.list</code>原先内容</p>
+
+<pre><code>
+deb http://ftp.debian.org/debian jessie main contrib non-free
+
+deb http://ftp.debian.org/debian/ jessie-updates main contrib non-free
+
+deb http://security.debian.org/ jessie/updates main contrib non-free
+
+deb http://apt.osmc.tv jessie main
+
+</code></pre>
+
+<p>修改为</p>
+
+<pre><code>
+deb http://mirrors.tuna.tsinghua.edu.cn/debian jessie main contrib non-free
+
+deb http://mirrors.tuna.tsinghua.edu.cn/debian/ jessie-updates contrib main non-free
+
+deb http://mirrors.tuna.tsinghua.edu.cn/debian-security/ jessie/updates main contrib non-free
+
+deb http://mirrors.tuna.tsinghua.edu.cn/osmc/osmc/apt/  jessie main
+
+</code></pre>
+
+<p>在 <a href="http://www.debian.org/mirror/list">http://www.debian.org/mirror/list</a> 查看有多个国内镜像源</p>
+
+<p>执行更新<code>sudo apt-get update -y &amp;&amp; sudo apt-get upgrade -y</code></p>
+
+<p>安装常用工具<code>sudo apt-get install htop tree xz-util file telnet</code></p>
+
+<p>安装<code>zsh</code>,可通过CURL或者WGET安装 <a href="https://github.com/robbyrussell/oh-my-zsh">https://github.com/robbyrussell/oh-my-zsh</a></p>
+
+<pre><code>chsh -s /bin/zsh
+</code></pre>
+
 <h2 id="安装openelec">安装openelec</h2>
 
 <p><a href="http://openelec.tv/get-openelec">openelec</a> 镜像下载,osmc是基于debain的,系统更加完善.此系统相比osmc更加精简,是专为跑kodi精简的系统. img.gz 大小约102M</p>
@@ -181,6 +235,14 @@ deb-src http://mirrors.ustc.edu.cn/raspbian/raspbian/ wheezy main non-free contr
 <p>温度 <code>/opt/vc/bin/vcgencmd measure_temp</code></p>
 
 <p><code>watch /opt/vc/bin/vcgencmd measure_temp</code></p>
+
+<p>参考</p>
+
+<p><code>https://ky0n.xyz/osmc-init/</code></p>
+
+<p><code>http://blog.laolilin.com/posts/2016/10/config_raspberry_pi.html#.WBR2huF96Rs</code></p>
+
+<p><code>https://www.zybuluo.com/yangxuan/note/321467</code></p>
 
 		</div>
 	</div>

@@ -137,9 +137,11 @@ ps -o rss,vsz,pid,ppid,time,etime,args
 
 &lt;h2 id=&#34;ssh&#34;&gt;ssh&lt;/h2&gt;
 
-&lt;p&gt;&lt;code&gt;ssh-copy-id -i ~/.ssh/id_rsa.pub root@host&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;配置无密码登陆
+&lt;code&gt;ssh-copy-id -i ~/.ssh/id_rsa.pub root@host&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;ssh-copy-id -i ~/.ssh/id_rsa.pub -p 26671 root@host&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;如果是其他端口可以-p指定端口
+&lt;code&gt;ssh-copy-id -i ~/.ssh/id_rsa.pub -p 26671 root@host&lt;/code&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;pgrep&#34;&gt;pgrep&lt;/h2&gt;
 
@@ -216,6 +218,23 @@ count = blocks 只拷贝输入的blocks块&lt;/p&gt;
 &lt;p&gt;传送文件夹(压缩文件) &lt;code&gt;nc -l 9090 |tar xzvf -&lt;/code&gt; , 另一端发送文件&lt;code&gt;tar czvf – dir | nc host 9090&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;同样可以拷贝硬盘 &lt;code&gt;nc -l 9090 | dd of=/dev/sda&lt;/code&gt;,另一端发送&lt;code&gt;dd if=/dev/sda | nc host 9090&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;有个高性能的方法：
+1.先在接收方执行:
+nc -l 6677 | tar -C 接收文件的目录 -zxf - #接收目录最好是个空目录，防止覆盖的风险&lt;/p&gt;
+
+&lt;p&gt;2.再在发送方执行:
+tar -zcvf - 要发送的目录 | nc 接收方 ip 6677&lt;/p&gt;
+
+&lt;p&gt;ssh 也可以使用 pipe 传送 &lt;code&gt;tar zcf - attaches | ssh root@ip &amp;quot;tar zxf - -C /path/to/&amp;quot;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;传送大量大文件 使用 &lt;code&gt;lftp&lt;/code&gt;也是一个好方案&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Use lftp, its much faster than rsync and its best for mirroring websites (many small files). It can also transfer in parallel using multiple connections:
+
+lftp -u username,password sftp://ip-address -e &#39;mirror --only-newer --no-dereference --parallel=5 /remote/path/ /destination/;quit&#39;
+If one connection breaks it will reconnect and continue. If you break the transfer it will skip existing files and continue.
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;strong&gt;端口扫描&lt;/strong&gt;&lt;/p&gt;
 
@@ -545,6 +564,16 @@ echo &amp;quot;Asia/Shanghai&amp;quot; &amp;gt; /etc/timezone
 &lt;p&gt;数组下标以0开始,取得第二个元素为&lt;code&gt;echo ${arr[1]}&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;赋值使用&lt;code&gt;arr[5]=5555&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;dns配置&#34;&gt;DNS配置&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;/etc/resolv.conf&lt;/code&gt;内配置&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;nameserver 8.8.8.8
+nameserver 74.82.42.42
+nameserver 4.2.2.1
+nameserver 8.8.4.4
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;h2 id=&#34;测试vps宽带&#34;&gt;测试VPS宽带&lt;/h2&gt;
 

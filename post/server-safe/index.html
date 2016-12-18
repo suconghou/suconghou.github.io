@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+	<meta name='renderer' content='webkit'>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
+	<meta name='description' content='记录学习的点点滴滴'>
+	<meta name='keywords' content='前端,PHP,GO,编程博客'>
+	<title>系统安全 &middot; 苏苏的博客</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.min.css">
+	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+	<link rel="shortcut icon" href="/favicon.png">
+</head>
+<body>
+<header class="header">
+	<div class="header-main">
+		<a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
+		<h1>苏苏的博客</h1>
+		<p class="sub-title">简约至极</p>
+		<ul class="contact">
+			<a href="https://github.com/suconghou" target="_blank"><i class="fa fa-github"></i></a>
+			<a href="javascript:music.show(1)"><i class="fa fa-music"></i></a>
+		</ul>
+	</div>
+</header>
+
+<aside></aside>
+
+<div class="content container">
+	<div class="post">
+		<h1 class="post-title">
+			<a href="javascript:void(0)"> 系统安全</a>
+		</h1>
+		<p class="post-date">Sun, Nov 20, 2016</p>
+		
+		<div class="post-text">
+			
+
+<h2 id="nginx安全配置">Nginx安全配置</h2>
+
+<p>如果你是用<code>git</code>或者<code>svn</code>来部署代码,默认情况下,你的网站很可能已经泄露了<code>.git</code>目录,或者<code>.svn</code>目录</p>
+
+<p>使用nginx配置过滤一切以<code>.</code>开头的文件和文件夹,防止被用户下载.</p>
+
+<pre><code>location ~ /\. {
+	deny all;
+}
+</code></pre>
+
+<p>每个网站都需要这么配置可能有些麻烦,你可以在统一的文件中定义好<code>/etc/nginx/default.d/php.conf</code></p>
+
+<pre><code>listen 80;
+index index.html index.php;
+try_files $uri $uri/ /index.php?$args;
+location ~ /\. {
+	deny all;
+}
+location ~ ^.+\.php$ {
+	try_files $uri =404;
+	fastcgi_pass 127.0.0.1:9000;
+	include fastcgi.conf;
+}
+
+</code></pre>
+
+<p>使用时,类似与下面,还不用每次写这么多配置了.</p>
+
+<pre><code>server{
+  server_name fed-wx.xxx.cn;
+  root /data/www/fed-wx;
+  include /etc/nginx/default.d/php.conf;
+}
+
+</code></pre>
+
+<p>给http段添加,开启一些gzip特性,关闭显示服务器版本</p>
+
+<pre><code>default_type        application/octet-stream;
+sendfile            on;
+tcp_nopush          on;
+tcp_nodelay         on;
+keepalive_timeout   65;
+types_hash_max_size 2048;
+server_tokens off;
+ssi on;
+gzip on;
+gzip_min_length 1024;
+gzip_proxied any;
+gzip_comp_level 3;
+gzip_types text/plain text/javascript text/css text/json application/xml application/javascript  application/json image/jpeg image/gif image/png;
+
+</code></pre>
+
+<h2 id="修改你的ssh默认端口-并且使用强密码">修改你的SSH默认端口,并且使用强密码</h2>
+
+<p>每天都有大量的端口扫描来扫描你服务器IP的22端口,如果你的22端口密码又不强,很可能已被黑客侵入.</p>
+
+<p>如果发现已经有大量的错误登陆,请立即更换端口.必要时考虑使用<code>fail2ban</code></p>
+
+<h2 id="所有的网络通信都应该使用-https">所有的网络通信都应该使用<code>HTTPS</code></h2>
+
+<p><code>http</code>并不安全,很有可能你收到和发出的信息,已被中间人劫持.</p>
+
+<p>中间人劫持能查看你发送的信息,修改返回给你的数据包.</p>
+
+<p>为此,使用http时,务必加盐加密你的密码,以减少在传输过程中被窃取的可能.</p>
+
+<p>更有效的是使用<code>https</code>来有效防止中间人劫持.</p>
+
+<h2 id="你的身份认证令牌应该多方关联">你的身份认证令牌应该多方关联.</h2>
+
+<p>即便使用<code>https</code>,你的身份认证令牌,一旦从其他渠道泄漏,黑客便能使用你的身份进行操作.</p>
+
+<p>特别是具有管理员权限的身份令牌,更是会带来严重后果,在<code>CSRF</code>攻击中偷走令牌是常有的事.</p>
+
+<p>因此你起码需要将cookie关键信息设置为<code>httponly</code>和<code>security</code>(使用https时),并小心过滤允许用户输入的链接地址(包含图片,视频地址)和富文本等.
+必要时开启<code>csrf-token</code>认证.</p>
+
+<p>还需要确保你的认证<code>token</code>在丢失以后也不能在黑客手中登陆.</p>
+
+<p>这需要你在生成<code>token</code>时,进行多方关联,哈希时可包括<code>IP地址</code>,<code>User Agent</code>,当然用户ID也需要关联,这个<code>token</code>只能这个用户用.</p>
+
+<p>服务器验证时并不是从<code>token</code>能找到用户,就验证通过,还需要对这些信息进行校验,验证还是不是那个客户端发出的.</p>
+
+<p>除此之外,哈希时不能简单的哈希,还需要加盐哈希,防止黑客拆解出哈希包含的字段进而可以自己算出token.</p>
+
+<p>即使黑客不能拆解你的哈希算法,也不知道哈希字段有哪些,只要他能捕获你发出的请求,(或窃取走你的token和所有可能参与哈希的字段),一样可以模拟请求,使用你的身份进行操作,除非你哈希时包含了IP.
+因为来源IP黑客是无法模拟的,除非他和你在同一个外网出口IP路由下.</p>
+
+<p>但如果客户的IP经常变动,IP参与哈希可能体验太不好了,于是还是回到最初的问题,</p>
+
+<p><strong>使用<code>https</code>,使用<code>httponly</code>和<code>security</code>的cookie,便能有效防止黑客捕获你的请求和偷走<code>token</code></strong></p>
+
+<p>再加上<strong><code>token</code>关联校验策略</strong>, 再加上<strong><code>token</code>有效期滚动延期策略</strong>,三道屏障保护你的身份不被黑客冒用.</p>
+
+<h2 id="合适和正确的验证码">合适和正确的验证码</h2>
+
+<p>一上来就给用户弹验证码未免也太不友好了,合适的做法是账户最近连续3次登陆都是错误登陆再弹出高强度的验证码.</p>
+
+<p>这很好实现,只需一个字段就能带来好的体验.</p>
+
+<p>毕竟正常的用户大部分时间都是一次登陆成功.</p>
+
+<p>用户使用过的验证码一定不能再次用来验证,要保证每次身份验证都是一个新的验证码.</p>
+
+<p>不能拿一次对的验证码去重复尝试验证用户名,密码,否则等同于没有验证码.</p>
+
+<p>即便使用了验证码,也是不可信的,现在的打码平台已近非常成熟了,简单的验证码也很容易做到机器识别了.</p>
+
+<p>还应该限制用户登陆错误次数,一小时10次或一天30次不能再多了.</p>
+
+<h2 id="登陆和找回密码返回合适的信息">登陆和找回密码返回合适的信息</h2>
+
+<p>别再返回<code>用户名不存在</code>了,或者<code>密码不正确</code>了</p>
+
+<p>为了这一点点的客户体验,你将带来巨大的安全隐患.你的网站存在用户遍历漏洞.</p>
+
+<p>黑客可以很轻松的知道一个用户有没有在你的网站注册.</p>
+
+<p>黑客手中有大量的泄漏账户信息,一些有价值的账户就值得黑客深挖,通过此漏洞,黑客很容易找到哪些用户都有哪些账户.</p>
+
+<p>更可怕的是,大部分人不同网站的密码是相同的.也许你的网站安全性很好,还使用了https,但是黑客只要攻破了防线最弱的那个网站拿到用户的密码,你所说的安全也就全瓦解了.</p>
+
+<p>因此给出<code>用户名或密码错误</code>和找回密码每次都需要高强度验证码,并且返回<code>如果你已注册,邮件已发送到您注册时的邮箱</code>才是有效安全的方式.</p>
+
+<h2 id="可怕的撞库">可怕的撞库</h2>
+
+<p>大部分人不同网站的密码相同,作为使用者个人值得注意,需要为每个网站设置不同的密码,防止一个的密码泄露,其他网站的密码也不安全了.</p>
+
+<p>作为系统设计者,也需要注意,最基本的密码不能明文存储,其次密码需要加盐存储.再者所有用户的盐不能都是一个,需要每个用户都有自己的盐.</p>
+
+<p>做到即使被脱库,也不能直接得到密码,即使观测所有密文和盐,知道部分用户的明文密码,也不能拆解出其他用户的明文密码.(这就需要每个用户有自己的盐)</p>
+
+<p>密文切记不要直接md5,或者md5加固定盐.这些都已不在安全.</p>
+
+<h2 id="修改关键信息时必须验证">修改关键信息时必须验证</h2>
+
+<p>为避免黑客盗取了身份认证信息,冒用正常用户,去修改邮箱,手机号等关键信息.</p>
+
+<p>在修改之前一定需要二次验证.</p>
+
+<p>否则手机号被修改,您账户里的财产在做变动时,验证码就发送到黑客修改过的手机上了,黑客顺利成章的就完成了交易.</p>
+
+<h2 id="邮箱和手机号已不在是有效凭据">邮箱和手机号已不在是有效凭据</h2>
+
+<p>即使使用手机号和邮箱来标示一个用户,那也不一定是正确的.</p>
+
+<p>目前黑市上已经有很多成熟的产业链,黑客花少量的钱就能很快拥有数以万计的手机号和邮箱,能便捷的发送和接收验证码.</p>
+
+<p>有利可图的地方就有黑客存在,在发放红利时须倍加小心.</p>
+
+<h2 id="手势解锁安全吗">手势解锁安全吗</h2>
+
+<p>大部分的手势解锁都是靠次数和时间限制,但是程序在客户端,黑客很容易修改程序配置文件,达到无限次尝试.</p>
+
+<p>并且手势密码的验证大部分都是本地验证,意味着黑客根本不需要与服务器端交互,有很多方式攻破程序里的本地认证</p>
+
+<p>因此手势密码只防君子,不妨小人,不要把它作为十分安全的验证,在做敏感操作时务必联网验证用户密码.</p>
+
+		</div>
+	</div>
+</div>
+	<div class="music-container">
+	<div class="music-header">
+	    <a class="fa-button home" href="javascript:music.show(0)"><i class="fa fa-home" title="Home"></i></a>
+	    <a class="fa-button next" href="javascript:music.next()"><i class="fa fa-chevron-right" title="Next"></i></a>
+	</div>
+	<div class="backdrop"></div>
+	<div class="music-player">
+		<div class="cover">
+            <img src="http://p4.music.126.net/ckfEE9UUGcnGHylQJ12ENA==/670702092966093.jpg?param=350y350">
+            <div class="foredrag"><i class="fa fa-play"></i></div>
+        </div>
+        <div class="progress">
+            <div class="elapse"></div>
+        </div>
+        <div class="detail">
+            <div class="title">音乐标题</div>
+            <div class="artist">歌手</div>
+        </div>
+	</div>
+</div>
+<div id="loader" style="z-index:99999;" class="pageload-overlay" data-opening="M 40 -21.875 C 11.356078 -21.875 -11.875 1.3560784 -11.875 30 C -11.875 58.643922 11.356078 81.875 40 81.875 C 68.643922 81.875 91.875 58.643922 91.875 30 C 91.875 1.3560784 68.643922 -21.875 40 -21.875 Z">
+    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 80 60" preserveAspectRatio="xMidYMid slice"> <path d="M40,30 c 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 Z"/></svg>
+</div>
+
+	<footer class="footer">
+		<div class="footer-nav">
+			<ul>
+				<li><a href="/post/">归档</a></li>
+				<li><a href="/">专题</a></li>
+				<li><a href="/life/">生活</a></li>
+				<li><a href="/about/">关于</a></li>
+			</ul>
+		</div>
+	</footer>
+	<script type="text/javascript" src="/js/main.min.js" data-no-instant></script>
+</body>
+</html>
+
+

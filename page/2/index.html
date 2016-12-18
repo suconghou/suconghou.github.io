@@ -34,6 +34,295 @@
 		
 		<div class="post">
 			<h1 class="post-title">
+				<a href="/post/javascript-code-snippet/"> javascript code snippet</a>
+			</h1>
+			<p class="post-date">Thu, Aug 11, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="实用的javascript代码锦集">实用的Javascript代码锦集</h2>
+
+<h3 id="获取查询查询字符串get参数值">获取查询查询字符串get参数值</h3>
+
+<pre><code>function getParam()
+{
+	var data = decodeURIComponent(location.href).split(&quot;?&quot;)[1].split(&quot;&amp;&quot;);
+	var param = {};
+	for(var i = 0; i&lt;data .length; i++)
+	{
+		param[data [i].split(&quot;=&quot;)[0]] = data [i].split(&quot;=&quot;)[1];
+	}
+	return param;
+}
+</code></pre>
+
+<p>类似于PHP中的<code>$_GET</code></p>
+
+<pre><code>var $_GET = (function()
+{
+	var url = decodeURIComponent(location.href);
+	var u = url.split( &quot;?&quot; );
+	if ( typeof (u[1]) == &quot;string&quot; )
+	{
+		u = u[1].split( &quot;&amp;&quot; );
+		var get = {};
+		for ( var i in u)
+		{
+			var j = u[i].split( &quot;=&quot; );
+			get[j[0]] = j[1];
+		}
+		return get;
+	}
+	else
+	{
+		return {};
+	}
+})();
+</code></pre>
+
+<p>给出要获取的参数,每次都会解析一遍</p>
+
+<pre><code>function getPar(par)
+{
+	//获取当前URL
+	var local_url = decodeURIComponent(location.href);
+	//获取要取得的get参数位置
+	var get = local_url.indexOf(par + &quot;=&quot; );
+	if (get == -1)
+	{
+		return false ;
+	}
+	//截取字符串
+	var get_par = local_url.slice(par.length + get + 1);
+	//判断截取后的字符串是否还有其他get参数
+	var nextPar = get_par.indexOf( &quot;&amp;&quot; );
+	if (nextPar != -1)
+	{
+		get_par = get_par.slice(0, nextPar);
+	}
+	return get_par;
+}
+</code></pre>
+
+<p>QueryString</p>
+
+<pre><code>function QueryString(item)
+{
+	var value = location.search.match(new RegExp('[\?\&amp;]' + item + '=([^\&amp;]*)(\&amp;?)','i'));
+	return value ? value[1] : value;
+}
+</code></pre>
+
+<h3 id="取得cookie中某个键的值">取得Cookie中某个键的值</h3>
+
+<pre><code>$.getCookie = function(name)
+{
+	 if(document.cookie.indexOf(name)!=-1) return document.cookie.split(name+'=')[1].split(';')[0]
+}
+</code></pre>
+
+<p>另一个</p>
+
+<pre><code>function getcookie(cookieid)
+{
+	//获取cookie字符串
+	var strCookie=document.cookie;
+	//将多cookie切割为多个名/值对
+	var arrCookie=strCookie.split(&quot;; &quot;);
+	var cookieval;
+	//遍历cookie数组，处理每个cookie对
+	for(var i=0;i&lt;arrCookie.length;i++)
+	{
+		var arr=arrCookie[i].split(&quot;=&quot;);
+		//找到名称为userId的cookie，并返回它的值
+		if(cookieid==arr[0])
+		{
+			cookieval=arr[1];
+			break;
+		}
+	}
+	return(cookieval);
+}
+</code></pre>
+
+<h3 id="进入全屏">进入全屏</h3>
+
+<pre><code>function gofull()
+{
+	var el=document.documentElement;
+	el.webkitRequestFullScreen&amp;&amp;el.webkitRequestFullScreen();
+	el.mozRequestFullScreen&amp;&amp;el.mozRequestFullScreen();
+	el.requestFullscreen&amp;&amp;el.requestFullscreen();
+}
+</code></pre>
+
+<h3 id="字符串去空格">字符串去空格</h3>
+
+<pre><code>String.prototype.trim=function() {return this.replace(/(^\s*)|(\s*$)/g,&quot;&quot;); }
+String.prototype.ltrim=function(){return this.replace(/(^\s*)/g,&quot;&quot;); }
+String.prototype.rtrim=function(){return this.replace(/(\s*$)/g,&quot;&quot;); }
+</code></pre>
+
+<h3 id="字节格式化">字节格式化</h3>
+
+<pre><code>function size(size)
+{
+	var name=['B','KB','MB','GB','TB','PB'];
+	var pos=0;
+	while(size&gt;=1204)
+	{
+	    size/=1024;
+	    pos++;
+	}
+	return size.toFixed(2)+&quot; &quot;+name[pos];
+}
+</code></pre>
+
+<h3 id="一些正则验证">一些正则验证</h3>
+
+<p>验证邮箱</p>
+
+<pre><code>function is_mail(str)
+{
+	return(new RegExp(/^[0-9a-zA-Z]+@(([0-9a-zA-Z]+)[.])+[a-z]{2,4}$/i).test(str));
+}
+</code></pre>
+
+<p>验证手机号</p>
+
+<pre><code>function is_tel(str)
+{
+	return(new RegExp(/^1[34578][0-9]{9}$/).test(str));
+}
+</code></pre>
+
+<h3 id="base64的1x1像素间隔gif">Base64的1x1像素间隔gif</h3>
+
+<pre><code>&lt;img src=&quot;data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7&quot;&gt;
+</code></pre>
+
+<h3 id="一个range函数">一个range函数</h3>
+
+<pre><code>function range(start, count)
+{
+	return Array.apply(0, Array(count)).map(function (element, index)
+	{
+		return index + start;
+	});
+}
+</code></pre>
+
+<h3 id="简化-console-log">简化<code>console.log</code></h3>
+
+<pre><code>var log = console.log.bind(console);
+</code></pre>
+
+<h3 id="生成较短的唯一id">生成较短的唯一ID</h3>
+
+<p>一定年限内单线程非连续调用唯一</p>
+
+<pre><code>function shortId()
+{
+	var time=Date.now()+'';
+	time=parseInt(time.substr(1));
+	return time.toString(36);
+}
+</code></pre>
+
+<p>生成随机短ID,仅具备较低的不重复性</p>
+
+<pre><code>var t=(((1+Math.random())*0x10000000)|0).toString(16);
+</code></pre>
+
+<p>生成指定长度随机字符串</p>
+
+<pre><code>function code($nc, $a='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
+{
+    $l=strlen($a)-1; $r='';
+    while($nc--&gt;0) $r.=$a{mt_rand(0,$l)};
+    return $r;
+}
+</code></pre>
+
+<h3 id="给jquery的form添加-serializeobject">给jQuery的form添加<code>serializeObject</code></h3>
+
+<pre><code>jQuery.prototype.serializeObject=function()
+{
+	var a,o,h,i,e;
+	a=this.serializeArray();
+	o={};
+	h=o.hasOwnProperty;
+	for(i=0;i&lt;a.length;i++)
+	{
+		e=a[i];
+		if(!h.call(o,e.name))
+		{
+			o[e.name]=e.value;
+		}
+	}
+	return o;
+};
+</code></pre>
+
+<p>使用效果如下</p>
+
+<pre><code>jQuery(&quot;form&quot;).serialize(); //&quot;username=&amp;password=&quot;
+jQuery(&quot;form&quot;).serializeArray(); //[{name:&quot;username&quot;,value:&quot;&quot;},{name:&quot;password&quot;,value:&quot;&quot;}]
+jQuery(&quot;form&quot;).serializeObject(); //{username:&quot;&quot;,password:&quot;&quot;}
+</code></pre>
+
+<h3 id="资源预取">资源预取</h3>
+
+<pre><code>function prefetch(url)
+{
+	var link = document.createElement(&quot;link&quot;);
+	link.href = url;
+	link.rel=&quot;prefetch&quot;;
+	var s = document.getElementsByTagName(&quot;head&quot;)[0];
+	s.appendChild(link);
+}
+</code></pre>
+
+<h3 id="cookie操作">Cookie操作</h3>
+
+<pre><code>function setCookie(cookiename, cookievalue, hours)
+{
+	var date = new Date();
+	date.setTime(date.getTime() + Number(hours) * 3600 * 1000);
+	document.cookie = cookiename + &quot;=&quot; + cookievalue + &quot;; path=/;expires = &quot; + date.toGMTString();
+}
+
+</code></pre>
+
+<h3 id="用-google-analytics-统计js错误">用<code>Google Analytics</code>统计JS错误</h3>
+
+<pre><code>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+window.addEventListener('error', function (err)
+{
+	ga('create', 'UA-xxx-1', 'auto');
+    var lineAndColumnInfo = err.colno ? ' line:' + err.lineno +', column:'+ err.colno : ' line:' + err.lineno;
+    ga('send', 'event', 'JavaScript Error', err.message, location.href+' =&gt; '+err.filename + lineAndColumnInfo + ' -&gt; ' +  navigator.userAgent, 0, true );
+});
+
+</code></pre>
+
+<p><code>UA-xxx-1</code>使用自己的统计ID</p>
+
+<h3 id="fetch跨域带cookie">Fetch跨域带cookie</h3>
+
+<pre><code>fetch(url, {credentials: 'include'})
+</code></pre>
+
+<p>jQuery ajax 跨域带 cookie</p>
+
+<pre><code>$.ajaxSetup({xhrFields: {withCredentials: true }});
+</code></pre>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
 				<a href="/post/javascript-senior/"> javascript senior</a>
 			</h1>
 			<p class="post-date">Tue, Aug 9, 2016</p>
@@ -190,9 +479,12 @@ out of it. Please check the Makefile in case of doubts.
 <pre><code>apt-get update &amp;&amp; apt-get install -y wget gcc g++ make libpcre++0v5 libpcre++-dev
 </code></pre>
 
-<pre><code>HAPROXY_VERSION=haproxy-1.6.9
+<pre><code>yum update &amp;&amp; yum install wget gcc make
+</code></pre>
+
+<pre><code>HAPROXY_VERSION=haproxy-1.7.0
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
-wget http://www.haproxy.org/download/1.6/src/${HAPROXY_VERSION}.tar.gz
+wget http://www.haproxy.org/download/1.7/src/${HAPROXY_VERSION}.tar.gz
 tar zxf ${HAPROXY_VERSION}.tar.gz
 cd ${HAPROXY_VERSION}
 export CFLAGS=&quot;-O3&quot;
@@ -204,7 +496,7 @@ make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 -j$CPU_NUM &amp;&amp; make i
 
 <p>在64位系统下编译32位需要<code>apt-get install gcc-multilib g++-multilib</code></p>
 
-<p>我编译好的haproxy version 1.6.8</p>
+<p>我编译好的haproxy version 1.7.0</p>
 
 <blockquote>
 <p>64位 <a href="http://share.suconghou.cn/bin/haproxy.xz">http://share.suconghou.cn/bin/haproxy.xz</a></p>
@@ -313,6 +605,31 @@ haproxy -f /etc/haproxy/haproxy.cfg -sf `cat /var/run/haproxy.pid`
 
 <p>配置文件参考 <a href="https://github.com/chenzhiwei/linux/tree/master/haproxy">https://github.com/chenzhiwei/linux/tree/master/haproxy</a></p>
 
+<p>一份haproxy加速ss</p>
+
+<pre><code>global
+        pidfile   /var/run/haproxy.pid
+        ulimit-n  15000
+
+defaults
+        log global
+        mode    tcp
+        option  dontlognull
+        timeout connect 1000
+        timeout client  150000
+        timeout server  150000
+
+frontend ss-in
+        bind *:80
+        default_backend ss-out
+
+backend ss-out
+        server server1 208.81.202.208:443 maxconn 20480
+
+</code></pre>
+
+<p><code>haproxy -D -f /etc/haproxy/haproxy.cfg</code>启动,参数<code>-D</code>为goes daemon</p>
+
 <h2 id="升级-glibc-版本-最新发布-http-www-gnu-org-software-libc">升级<code>glibc</code>版本,最新发布 <a href="http://www.gnu.org/software/libc/">http://www.gnu.org/software/libc/</a></h2>
 
 <p>所有版本见<code>http://mirror.hust.edu.cn/gnu/libc/</code></p>
@@ -327,7 +644,7 @@ cd glibc-2.19
 mkdir build
 cd build
 ../configure
-make -j4&amp;&amp; make install
+make -j4 &amp;&amp; make install
 </code></pre>
 
 <p>见 <a href="https://cnodejs.org/topic/56dc21f1502596633dc2c3dc">https://cnodejs.org/topic/56dc21f1502596633dc2c3dc</a>
@@ -443,7 +760,7 @@ fi
 
 <h3 id="windows平台">windows平台</h3>
 
-<p><a href="http://share.suconghou.cn/shadowsocks/Shadowsocks-3.3.4.zip">Shadowsocks-3.3.4</a></p>
+<p><a href="http://share.suconghou.cn/shadowsocks/Shadowsocks-3.4.2.zip">Shadowsocks-3.4.2</a></p>
 
 <h3 id="mac平台">mac平台</h3>
 
@@ -451,28 +768,9 @@ fi
 
 <h3 id="android平台">android平台</h3>
 
-<p><a href="http://share.suconghou.cn/shadowsocks/shadowsocks-nightly-3.2.7.apk">shadowsocks-nightly-3.2.7</a></p>
+<p><a href="http://share.suconghou.cn/shadowsocks/shadowsocks-nightly-3.3.1.apk">shadowsocks-nightly-3.3.1</a></p>
 
 <p>服务端可以使用docker更方便 <a href="https://hub.docker.com/r/suconghou/shadowsocks/">shadowsocks docker</a></p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/software/picasa-photo-viewer/"> picasa photo viewer</a>
-			</h1>
-			<p class="post-date">Sun, Jul 17, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="picasaphotoviewer-图片查看器-v3-9-136-9">PicasaPhotoViewer(图片查看器) v3.9.136.9</h2>
-
-<p>Picasa内置的图片浏览器,Google出品,此版本为独木成林提取出来的.</p>
-
-<p>只有1.7MB,启动速度快,十分好用,有一个缺点是可能因为版权问题未对GIF做支持.</p>
-
-<p><a href="http://share.suconghou.cn/ImageView/PicasaPhotoViewer_3.9.136.9.exe">PicasaPhotoViewerv3.9.136.9</a></p>
 
 			</div>
 		</div>

@@ -92,7 +92,7 @@ openssl version
 adduser -M -s /sbin/nologin www-data -g www-data
 </code></pre>
 
-<p>编译nginx</p>
+<h3 id="编译nginx">编译nginx</h3>
 
 <pre><code>NGINX_VERSION=nginx-1.11.3
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
@@ -111,6 +111,12 @@ nginx -V
 <p>如果找不到<code>sudo nginx</code>,使用以下命令:</p>
 
 <p><code>sudo ln -sf /usr/local/sbin/nginx /usr/sbin/nginx</code></p>
+
+<h3 id="通过yum安装nginx">通过YUM安装nginx</h3>
+
+<pre><code>sudo rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
+
+</code></pre>
 
 <p>还可以添加<a href="https://github.com/cuber/ngx_http_google_filter_module">Google反代模块</a>,按下面操作编译</p>
 
@@ -371,21 +377,43 @@ make -j$CPU_NUM &amp;&amp; make install
 
 <h3 id="静态编译php7">静态编译php7</h3>
 
-<pre><code>
-./configure --enable-inline-optimization --enable-static=yes --prefix=/usr/local --with-config-file-path=/etc --without-pear --disable-cgi --disable-opcache --disable-fpm --disable-all --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath  --enable-zip --enable-mbstring --enable-gd-native-ttf --with-iconv --with-mysqli --with-pdo-mysql --with-openssl --enable-pdo --enable-exif --enable-calendar  --with-bz2 --with-sqlite3 --with-pdo-sqlite --enable-phar --enable-session --enable-tokenizer --enable-hash --enable-fileinfo --enable-json  --enable-shared=no  LDFLAGS=-static
+<pre><code>apk update &amp;&amp; apk upgrade
+apk --update add xz gcc g++ make wget file openssl-dev pcre-dev zlib-dev libxml2-dev curl-dev jpeg-dev libpng-dev freetype-dev libmcrypt-dev bzip2-dev libxslt-dev
+cd /tmp
+PHP_VERSION=php-7.0.13
+wget http://php.net/distributions/${PHP_VERSION}.tar.xz
+tar xJf ${PHP_VERSION}.tar.xz
+cd ${PHP_VERSION}
+export CFLAGS=&quot;-Os&quot;
+
+./configure --enable-inline-optimization --enable-static=yes --enable-shared=no --prefix=/usr/local --with-config-file-path=/etc --without-pear --disable-cgi --disable-opcache --disable-fpm --disable-phpdbg --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath  --enable-zip --enable-mbstring --enable-gd-native-ttf --with-mysqli --with-pdo-mysql --with-openssl  --enable-exif --enable-calendar  --with-bz2 LDFLAGS=-static
+
 </code></pre>
 
-<p>之后出来一大堆东西,打开 Makefile,搜索-export-dynamic 有两个.</p>
+<p>如果报<code>libxml2</code>错误需要自己下载编译官方xml2</p>
 
-<p>BUILD_CLI = $(LIBTOOL) &ndash;mode=link $(CC) -export-dynamic $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_CLI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -o $(SAPI_CLI_PATH)</p>
+<pre><code>wget ftp://xmlsoft.org/libxml2/libxml2-2.9.4.tar.gz
+tar zxvf libxml2-2.9.4.tar.gz
+cd libxml2-2.9.4
+./configure
+make &amp;&amp; make install
+</code></pre>
+
+<p>之后出来一大堆东西,打开 Makefile,搜索<code>-export-dynamic</code> ,如果你还开启了编译php-fpm phpdbg 等会有多个,如果只编译php-cli就只会有一个.</p>
+
+<pre><code>BUILD_CLI = $(LIBTOOL) --mode=link $(CC) -export-dynamic $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_CLI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -o $(SAPI_CLI_PATH)
+</code></pre>
 
 <p>这里决定了只会静态链接 php 自己的库,系统库还是动态的.</p>
 
-<p>删掉 -export-dynamic,在最后面加上-all-static.</p>
+<p>删掉 <code>-export-dynamic</code>,在最后面加上<code>-all-static</code>,可以使用脚本替换掉</p>
 
-<p>之后开开心心 make -j8</p>
+<pre><code>sed -i &quot;s{-export-dynamic{-all-static{&quot; Makefile
+</code></pre>
 
-<p>安装过后就可以使用<code>php</code>命令了,但是<code>php-fpm</code>还需要配置一下</p>
+<p>之后开开心心 make -j8, make install 后便可得到静态编译的PHP</p>
+
+<p>php安装过后就可以使用<code>php</code>命令了,但是<code>php-fpm</code>还需要配置一下</p>
 
 <pre><code>php -v
 php -m
@@ -649,7 +677,7 @@ phpize
 make -j$CPU_NUM  &amp;&amp; make install
 </code></pre>
 
-<h2 id="静态编译redis-memcached-opcache到php7">静态编译redis,memcached,opcache到php7</h2>
+<h2 id="编译redis-memcached-opcache到php7">编译redis,memcached,opcache到php7</h2>
 
 <pre><code>wget -c http://php.net/distributions/${PHP_VERSION}.tar.xz
 wget -c -O php-redis.zip https://github.com/phpredis/phpredis/archive/php7.zip

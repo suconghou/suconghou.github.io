@@ -34,6 +34,178 @@
 		
 		<div class="post">
 			<h1 class="post-title">
+				<a href="/post/server-safe/"> 系统安全</a>
+			</h1>
+			<p class="post-date">Sun, Nov 20, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="nginx安全配置">Nginx安全配置</h2>
+
+<p>如果你是用<code>git</code>或者<code>svn</code>来部署代码,默认情况下,你的网站很可能已经泄露了<code>.git</code>目录,或者<code>.svn</code>目录</p>
+
+<p>使用nginx配置过滤一切以<code>.</code>开头的文件和文件夹,防止被用户下载.</p>
+
+<pre><code>location ~ /\. {
+	deny all;
+}
+</code></pre>
+
+<p>每个网站都需要这么配置可能有些麻烦,你可以在统一的文件中定义好<code>/etc/nginx/default.d/php.conf</code></p>
+
+<pre><code>listen 80;
+index index.html index.php;
+try_files $uri $uri/ /index.php?$args;
+location ~ /\. {
+	deny all;
+}
+location ~ ^.+\.php$ {
+	try_files $uri =404;
+	fastcgi_pass 127.0.0.1:9000;
+	include fastcgi.conf;
+}
+
+</code></pre>
+
+<p>使用时,类似与下面,还不用每次写这么多配置了.</p>
+
+<pre><code>server{
+  server_name fed-wx.xxx.cn;
+  root /data/www/fed-wx;
+  include /etc/nginx/default.d/php.conf;
+}
+
+</code></pre>
+
+<p>给http段添加,开启一些gzip特性,关闭显示服务器版本</p>
+
+<pre><code>default_type        application/octet-stream;
+sendfile            on;
+tcp_nopush          on;
+tcp_nodelay         on;
+keepalive_timeout   65;
+types_hash_max_size 2048;
+server_tokens off;
+ssi on;
+gzip on;
+gzip_min_length 1024;
+gzip_proxied any;
+gzip_comp_level 3;
+gzip_types text/plain text/javascript text/css text/json application/xml application/javascript  application/json image/jpeg image/gif image/png;
+
+</code></pre>
+
+<h2 id="修改你的ssh默认端口-并且使用强密码">修改你的SSH默认端口,并且使用强密码</h2>
+
+<p>每天都有大量的端口扫描来扫描你服务器IP的22端口,如果你的22端口密码又不强,很可能已被黑客侵入.</p>
+
+<p>如果发现已经有大量的错误登陆,请立即更换端口.必要时考虑使用<code>fail2ban</code></p>
+
+<h2 id="所有的网络通信都应该使用-https">所有的网络通信都应该使用<code>HTTPS</code></h2>
+
+<p><code>http</code>并不安全,很有可能你收到和发出的信息,已被中间人劫持.</p>
+
+<p>中间人劫持能查看你发送的信息,修改返回给你的数据包.</p>
+
+<p>为此,使用http时,务必加盐加密你的密码,以减少在传输过程中被窃取的可能.</p>
+
+<p>更有效的是使用<code>https</code>来有效防止中间人劫持.</p>
+
+<h2 id="你的身份认证令牌应该多方关联">你的身份认证令牌应该多方关联.</h2>
+
+<p>即便使用<code>https</code>,你的身份认证令牌,一旦从其他渠道泄漏,黑客便能使用你的身份进行操作.</p>
+
+<p>特别是具有管理员权限的身份令牌,更是会带来严重后果,在<code>CSRF</code>攻击中偷走令牌是常有的事.</p>
+
+<p>因此你起码需要将cookie关键信息设置为<code>httponly</code>和<code>security</code>(使用https时),并小心过滤允许用户输入的链接地址(包含图片,视频地址)和富文本等.
+必要时开启<code>csrf-token</code>认证.</p>
+
+<p>还需要确保你的认证<code>token</code>在丢失以后也不能在黑客手中登陆.</p>
+
+<p>这需要你在生成<code>token</code>时,进行多方关联,哈希时可包括<code>IP地址</code>,<code>User Agent</code>,当然用户ID也需要关联,这个<code>token</code>只能这个用户用.</p>
+
+<p>服务器验证时并不是从<code>token</code>能找到用户,就验证通过,还需要对这些信息进行校验,验证还是不是那个客户端发出的.</p>
+
+<p>除此之外,哈希时不能简单的哈希,还需要加盐哈希,防止黑客拆解出哈希包含的字段进而可以自己算出token.</p>
+
+<p>即使黑客不能拆解你的哈希算法,也不知道哈希字段有哪些,只要他能捕获你发出的请求,(或窃取走你的token和所有可能参与哈希的字段),一样可以模拟请求,使用你的身份进行操作,除非你哈希时包含了IP.
+因为来源IP黑客是无法模拟的,除非他和你在同一个外网出口IP路由下.</p>
+
+<p>但如果客户的IP经常变动,IP参与哈希可能体验太不好了,于是还是回到最初的问题,</p>
+
+<p><strong>使用<code>https</code>,使用<code>httponly</code>和<code>security</code>的cookie,便能有效防止黑客捕获你的请求和偷走<code>token</code></strong></p>
+
+<p>再加上<strong><code>token</code>关联校验策略</strong>, 再加上<strong><code>token</code>有效期滚动延期策略</strong>,三道屏障保护你的身份不被黑客冒用.</p>
+
+<h2 id="合适和正确的验证码">合适和正确的验证码</h2>
+
+<p>一上来就给用户弹验证码未免也太不友好了,合适的做法是账户最近连续3次登陆都是错误登陆再弹出高强度的验证码.</p>
+
+<p>这很好实现,只需一个字段就能带来好的体验.</p>
+
+<p>毕竟正常的用户大部分时间都是一次登陆成功.</p>
+
+<p>用户使用过的验证码一定不能再次用来验证,要保证每次身份验证都是一个新的验证码.</p>
+
+<p>不能拿一次对的验证码去重复尝试验证用户名,密码,否则等同于没有验证码.</p>
+
+<p>即便使用了验证码,也是不可信的,现在的打码平台已近非常成熟了,简单的验证码也很容易做到机器识别了.</p>
+
+<p>还应该限制用户登陆错误次数,一小时10次或一天30次不能再多了.</p>
+
+<h2 id="登陆和找回密码返回合适的信息">登陆和找回密码返回合适的信息</h2>
+
+<p>别再返回<code>用户名不存在</code>了,或者<code>密码不正确</code>了</p>
+
+<p>为了这一点点的客户体验,你将带来巨大的安全隐患.你的网站存在用户遍历漏洞.</p>
+
+<p>黑客可以很轻松的知道一个用户有没有在你的网站注册.</p>
+
+<p>黑客手中有大量的泄漏账户信息,一些有价值的账户就值得黑客深挖,通过此漏洞,黑客很容易找到哪些用户都有哪些账户.</p>
+
+<p>更可怕的是,大部分人不同网站的密码是相同的.也许你的网站安全性很好,还使用了https,但是黑客只要攻破了防线最弱的那个网站拿到用户的密码,你所说的安全也就全瓦解了.</p>
+
+<p>因此给出<code>用户名或密码错误</code>和找回密码每次都需要高强度验证码,并且返回<code>如果你已注册,邮件已发送到您注册时的邮箱</code>才是有效安全的方式.</p>
+
+<h2 id="可怕的撞库">可怕的撞库</h2>
+
+<p>大部分人不同网站的密码相同,作为使用者个人值得注意,需要为每个网站设置不同的密码,防止一个的密码泄露,其他网站的密码也不安全了.</p>
+
+<p>作为系统设计者,也需要注意,最基本的密码不能明文存储,其次密码需要加盐存储.再者所有用户的盐不能都是一个,需要每个用户都有自己的盐.</p>
+
+<p>做到即使被脱库,也不能直接得到密码,即使观测所有密文和盐,知道部分用户的明文密码,也不能拆解出其他用户的明文密码.(这就需要每个用户有自己的盐)</p>
+
+<p>密文切记不要直接md5,或者md5加固定盐.这些都已不在安全.</p>
+
+<h2 id="修改关键信息时必须验证">修改关键信息时必须验证</h2>
+
+<p>为避免黑客盗取了身份认证信息,冒用正常用户,去修改邮箱,手机号等关键信息.</p>
+
+<p>在修改之前一定需要二次验证.</p>
+
+<p>否则手机号被修改,您账户里的财产在做变动时,验证码就发送到黑客修改过的手机上了,黑客顺利成章的就完成了交易.</p>
+
+<h2 id="邮箱和手机号已不在是有效凭据">邮箱和手机号已不在是有效凭据</h2>
+
+<p>即使使用手机号和邮箱来标示一个用户,那也不一定是正确的.</p>
+
+<p>目前黑市上已经有很多成熟的产业链,黑客花少量的钱就能很快拥有数以万计的手机号和邮箱,能便捷的发送和接收验证码.</p>
+
+<p>有利可图的地方就有黑客存在,在发放红利时须倍加小心.</p>
+
+<h2 id="手势解锁安全吗">手势解锁安全吗</h2>
+
+<p>大部分的手势解锁都是靠次数和时间限制,但是程序在客户端,黑客很容易修改程序配置文件,达到无限次尝试.</p>
+
+<p>并且手势密码的验证大部分都是本地验证,意味着黑客根本不需要与服务器端交互,有很多方式攻破程序里的本地认证</p>
+
+<p>因此手势密码只防君子,不妨小人,不要把它作为十分安全的验证,在做敏感操作时务必联网验证用户密码.</p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
 				<a href="/post/use-kvm/"> use kvm</a>
 			</h1>
 			<p class="post-date">Tue, Oct 18, 2016</p>
@@ -234,6 +406,21 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 --hvm --dry-run
 </code></pre>
 
+<pre><code>virt-install \
+--name xp1 \
+--ram 1024 --vcpus 1 \
+--disk path=/data/iso/Deepin_Windows_LiteXP_v6.2_SP3.iso,device=cdrom \
+--disk path=/disk/kvm/winxp1,size=10,format=qcow2,bus=virtio,cache=writeback \
+--cdrom=/usr/share/virtio-win/virtio-win-0.1.126.iso \
+--os-type windows \
+--os-variant winxp \
+--bridge=br0,model=virtio \
+--accelerate \
+--graphics vnc,port=5999,listen=0.0.0.0 \
+--console pty,target_type=serial \
+--hvm --dry-run
+</code></pre>
+
 <p>出现<code>ERROR    不能混用 --graphics 和旧式的图形选项</code>可能是需要去掉<code>--keymap</code></p>
 
 <p>关于 加载 virtio 驱动可以参考  <a href="http://www.ilanni.com/?p=5877">http://www.ilanni.com/?p=5877</a></p>
@@ -284,6 +471,17 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 <p>windows系统可使用 vncviewer (<a href="http://share.suconghou.cn/bin/vncviewer.zip">http://share.suconghou.cn/bin/vncviewer.zip</a>) 连接</p>
 
 <p>全屏下用F8键可唤出菜单.</p>
+
+<h3 id="修改相关">修改相关</h3>
+
+<p><code>hostnamectl</code> 可以查看主机相关信息,主机名,内核版本,64位等</p>
+
+<p>只查看静态、瞬态或灵活主机名，分别使用<code>--static</code>,<code>--transient</code>或<code>--pretty</code>选项</p>
+
+<p>要同时修改所有三个主机名：静态、瞬态和灵活主机名：
+<code>hostnamectl set-hostname Linuxidc</code></p>
+
+<p><code>hostname -I</code> 可以获取所有网卡上配置的IP</p>
 
 			</div>
 		</div>
@@ -538,284 +736,6 @@ make -j$CPU_NUM &amp;&amp; make install
 <p>官方也提供监控工具</p>
 
 <p><a href="https://github.com/memcached/memcached/blob/master/scripts/memcached-tool">https://github.com/memcached/memcached/blob/master/scripts/memcached-tool</a></p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/javascript-code-snippet/"> javascript code snippet</a>
-			</h1>
-			<p class="post-date">Thu, Aug 11, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="实用的javascript代码锦集">实用的Javascript代码锦集</h2>
-
-<h3 id="获取查询查询字符串get参数值">获取查询查询字符串get参数值</h3>
-
-<pre><code>function getParam()
-{
-	var data = decodeURIComponent(location.href).split(&quot;?&quot;)[1].split(&quot;&amp;&quot;);
-	var param = {};
-	for(var i = 0; i&lt;data .length; i++)
-	{
-		param[data [i].split(&quot;=&quot;)[0]] = data [i].split(&quot;=&quot;)[1];
-	}
-	return param;
-}
-</code></pre>
-
-<p>类似于PHP中的<code>$_GET</code></p>
-
-<pre><code>var $_GET = (function()
-{
-	var url = decodeURIComponent(location.href);
-	var u = url.split( &quot;?&quot; );
-	if ( typeof (u[1]) == &quot;string&quot; )
-	{
-		u = u[1].split( &quot;&amp;&quot; );
-		var get = {};
-		for ( var i in u)
-		{
-			var j = u[i].split( &quot;=&quot; );
-			get[j[0]] = j[1];
-		}
-		return get;
-	}
-	else
-	{
-		return {};
-	}
-})();
-</code></pre>
-
-<p>给出要获取的参数,每次都会解析一遍</p>
-
-<pre><code>function getPar(par)
-{
-	//获取当前URL
-	var local_url = decodeURIComponent(location.href);
-	//获取要取得的get参数位置
-	var get = local_url.indexOf(par + &quot;=&quot; );
-	if (get == -1)
-	{
-		return false ;
-	}
-	//截取字符串
-	var get_par = local_url.slice(par.length + get + 1);
-	//判断截取后的字符串是否还有其他get参数
-	var nextPar = get_par.indexOf( &quot;&amp;&quot; );
-	if (nextPar != -1)
-	{
-		get_par = get_par.slice(0, nextPar);
-	}
-	return get_par;
-}
-</code></pre>
-
-<p>QueryString</p>
-
-<pre><code>function QueryString(item)
-{
-	var value = location.search.match(new RegExp('[\?\&amp;]' + item + '=([^\&amp;]*)(\&amp;?)','i'));
-	return value ? value[1] : value;
-}
-</code></pre>
-
-<h3 id="取得cookie中某个键的值">取得Cookie中某个键的值</h3>
-
-<pre><code>$.getCookie = function(name)
-{
-	 if(document.cookie.indexOf(name)!=-1) return document.cookie.split(name+'=')[1].split(';')[0]
-}
-</code></pre>
-
-<p>另一个</p>
-
-<pre><code>function getcookie(cookieid)
-{
-	//获取cookie字符串
-	var strCookie=document.cookie;
-	//将多cookie切割为多个名/值对
-	var arrCookie=strCookie.split(&quot;; &quot;);
-	var cookieval;
-	//遍历cookie数组，处理每个cookie对
-	for(var i=0;i&lt;arrCookie.length;i++)
-	{
-		var arr=arrCookie[i].split(&quot;=&quot;);
-		//找到名称为userId的cookie，并返回它的值
-		if(cookieid==arr[0])
-		{
-			cookieval=arr[1];
-			break;
-		}
-	}
-	return(cookieval);
-}
-</code></pre>
-
-<h3 id="进入全屏">进入全屏</h3>
-
-<pre><code>function gofull()
-{
-	var el=document.documentElement;
-	el.webkitRequestFullScreen&amp;&amp;el.webkitRequestFullScreen();
-	el.mozRequestFullScreen&amp;&amp;el.mozRequestFullScreen();
-	el.requestFullscreen&amp;&amp;el.requestFullscreen();
-}
-</code></pre>
-
-<h3 id="字符串去空格">字符串去空格</h3>
-
-<pre><code>String.prototype.trim=function() {return this.replace(/(^\s*)|(\s*$)/g,&quot;&quot;); }
-String.prototype.ltrim=function(){return this.replace(/(^\s*)/g,&quot;&quot;); }
-String.prototype.rtrim=function(){return this.replace(/(\s*$)/g,&quot;&quot;); }
-</code></pre>
-
-<h3 id="字节格式化">字节格式化</h3>
-
-<pre><code>function size(size)
-{
-	var name=['B','KB','MB','GB','TB','PB'];
-	var pos=0;
-	while(size&gt;=1204)
-	{
-	    size/=1024;
-	    pos++;
-	}
-	return size.toFixed(2)+&quot; &quot;+name[pos];
-}
-</code></pre>
-
-<h3 id="一些正则验证">一些正则验证</h3>
-
-<p>验证邮箱</p>
-
-<pre><code>function is_mail(str)
-{
-	return(new RegExp(/^[0-9a-zA-Z]+@(([0-9a-zA-Z]+)[.])+[a-z]{2,4}$/i).test(str));
-}
-</code></pre>
-
-<p>验证手机号</p>
-
-<pre><code>function is_tel(str)
-{
-	return(new RegExp(/^1[34578][0-9]{9}$/).test(str));
-}
-</code></pre>
-
-<h3 id="base64的1x1像素间隔gif">Base64的1x1像素间隔gif</h3>
-
-<pre><code>&lt;img src=&quot;data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7&quot;&gt;
-</code></pre>
-
-<h3 id="一个range函数">一个range函数</h3>
-
-<pre><code>function range(start, count)
-{
-	return Array.apply(0, Array(count)).map(function (element, index)
-	{
-		return index + start;
-	});
-}
-</code></pre>
-
-<h3 id="简化-console-log">简化<code>console.log</code></h3>
-
-<pre><code>var log = console.log.bind(console);
-</code></pre>
-
-<h3 id="生成较短的唯一id">生成较短的唯一ID</h3>
-
-<p>一定年限内单线程非连续调用唯一</p>
-
-<pre><code>function shortId()
-{
-	var time=Date.now()+'';
-	time=parseInt(time.substr(1));
-	return time.toString(36);
-}
-</code></pre>
-
-<p>生成随机短ID,仅具备较低的不重复性</p>
-
-<pre><code>var t=(((1+Math.random())*0x10000000)|0).toString(16);
-</code></pre>
-
-<p>生成指定长度随机字符串</p>
-
-<pre><code>function code($nc, $a='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
-{
-    $l=strlen($a)-1; $r='';
-    while($nc--&gt;0) $r.=$a{mt_rand(0,$l)};
-    return $r;
-}
-</code></pre>
-
-<h3 id="给jquery的form添加-serializeobject">给jQuery的form添加<code>serializeObject</code></h3>
-
-<pre><code>jQuery.prototype.serializeObject=function()
-{
-	var a,o,h,i,e;
-	a=this.serializeArray();
-	o={};
-	h=o.hasOwnProperty;
-	for(i=0;i&lt;a.length;i++)
-	{
-		e=a[i];
-		if(!h.call(o,e.name))
-		{
-			o[e.name]=e.value;
-		}
-	}
-	return o;
-};
-</code></pre>
-
-<p>使用效果如下</p>
-
-<pre><code>jQuery(&quot;form&quot;).serialize(); //&quot;username=&amp;password=&quot;
-jQuery(&quot;form&quot;).serializeArray(); //[{name:&quot;username&quot;,value:&quot;&quot;},{name:&quot;password&quot;,value:&quot;&quot;}]
-jQuery(&quot;form&quot;).serializeObject(); //{username:&quot;&quot;,password:&quot;&quot;}
-</code></pre>
-
-<h3 id="资源预取">资源预取</h3>
-
-<pre><code>function prefetch(url)
-{
-	var link = document.createElement(&quot;link&quot;);
-	link.href = url;
-	link.rel=&quot;prefetch&quot;;
-	var s = document.getElementsByTagName(&quot;head&quot;)[0];
-	s.appendChild(link);
-}
-</code></pre>
-
-<h3 id="用-google-analytics-统计js错误">用<code>Google Analytics</code>统计JS错误</h3>
-
-<pre><code>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-window.addEventListener('error', function (err)
-{
-	ga('create', 'UA-xxx-1', 'auto');
-    var lineAndColumnInfo = err.colno ? ' line:' + err.lineno +', column:'+ err.colno : ' line:' + err.lineno;
-    ga('send', 'event', 'JavaScript Error', err.message, location.href+' =&gt; '+err.filename + lineAndColumnInfo + ' -&gt; ' +  navigator.userAgent, 0, true );
-});
-
-</code></pre>
-
-<p><code>UA-xxx-1</code>使用自己的统计ID</p>
-
-<h3 id="fetch跨域带cookie">Fetch跨域带cookie</h3>
-
-<pre><code>fetch(url, {credentials: 'include'})
-</code></pre>
-
-<p>jQuery ajax 跨域带 cookie</p>
-
-<pre><code>$.ajaxSetup({xhrFields: {withCredentials: true }});
-</code></pre>
 
 			</div>
 		</div>

@@ -246,6 +246,17 @@ semanage port -l | grep ssh
 如果成功会输出
 ssh_port_t        tcp    xxxx, 22</p>
 
+<h3 id="autossh">autossh</h3>
+
+<p><code>sudo yum install gcc make</code></p>
+
+<pre><code>wget http://www.harding.motd.ca/autossh/autossh-1.4e.tgz
+tar zxf autossh-1.4e.tgz
+cd autossh-1.4e
+./configure &amp;&amp; make
+
+</code></pre>
+
 		</div>
 	</div>
 </div>

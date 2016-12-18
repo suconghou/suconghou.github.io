@@ -34,6 +34,94 @@
 		
 		<div class="post">
 			<h1 class="post-title">
+				<a href="/post/linux-download-tools/"> Linux下常用的下载利器</a>
+			</h1>
+			<p class="post-date">Fri, Jan 1, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="wget">wget</h2>
+
+<p><code>wget -c -O filename &quot;http://xx.com&quot;</code> 下载存储到指定文件,并指定断点续传</p>
+
+<p><code>wget -nc -c -i url.txt</code> 批量下载文件中指定的资源(每行一个连接),跳过已下载的(同名的),并且断点续传.</p>
+
+<p>使用user-agent</p>
+
+<p><code>wget --user-agent=&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36&quot; URL-TO-DOWNLOAD</code></p>
+
+<h2 id="curl">curl</h2>
+
+<p>常用的命令</p>
+
+<p><code>curl http://xx.com</code> 只获取http消息正文</p>
+
+<p><code>curl -I http://xx.com</code> 只获取http消息头</p>
+
+<p><code>curl -i http://xx.com</code> 获取http消息头和正文</p>
+
+<p><code>curl -d &quot;name=abc&amp;pass=123&quot; http://xx.com</code> 发送<code>http post</code>请求,采用的是<code>application/x-www-form-urlencoded</code>形式</p>
+
+<p><code>curl -F &quot;name=abc&quot; -F &quot;pass=123&quot; http://xx.com</code> 发送<code>http post</code>请求,采用的是<code>multipart/form-data</code> 形式,此两种方式都可以由 $_POST 接收</p>
+
+<p><code>curl -F &quot;name=abc&quot; -F &quot;file=@/tmp/1.jpg&quot; http://xx.com</code> 发送 <code>http post</code>请求, <code>multipart/form-data</code> 形式还可以上传文件,只需改为@加路径</p>
+
+<p>curl 不仅能用来下载,还是网络调试的利器,Chrome的网络请求也可以直接另存为curl请求格式</p>
+
+<p>批量下载规则的URL资源</p>
+
+<pre><code>curl -O &quot;http://www.example.com/[0001-9999].jpg&quot;
+
+</code></pre>
+
+<p>在shell中可以这样用,实现同样功能</p>
+
+<pre><code>for i in {10001..19999}; do
+wget www.example.com/${i:1}.jpg;
+done
+</code></pre>
+
+<p>或</p>
+
+<pre><code>for i in {0001..9999}; do
+echo www.example.com/${i}.jpg;
+done
+</code></pre>
+
+<h3 id="下载一个压缩包-不存储直接解压">下载一个压缩包,不存储直接解压</h3>
+
+<p><code>curl -sSL http://www.memcached.org/files/memcached-1.4.30.tar.gz | tar xz</code></p>
+
+<p>其中<code>-L</code>表示更随重定向<code>-s</code>为安静模式,不输出任何信息,<code>-S</code>为在安静模式下出错的话要输出错误信息.</p>
+
+<p>要解压到指定目录,后面的可以使用 tar xzC ./path/to/dir ,当然这个路径要存在</p>
+
+<p>用curl下载的好处是不会像wget那样出现多个已下载的重复文件</p>
+
+<h2 id="axel">Axel</h2>
+
+<p>下载速度最快,分段下载速度优异
+<code>axel -n 30 -a -o localfilename http://xx.com/downloadfile</code> 30个线程分段下载,存储为localfilename
+参数<code>-a</code>更新进度条而不是每次都输出
+参数<code>-H</code> 添加header,参数<code>-U</code>设定<code>user-agent</code>
+<strong>Downloads patch from 4 ftp mirrors</strong>
+axel <a href="ftp://ftp.{us,uk,br,fr}.kernel.org/pub/linux/kernel/v2.6/patch-2.6.39.gz">ftp://ftp.{us,uk,br,fr}.kernel.org/pub/linux/kernel/v2.6/patch-2.6.39.gz</a></p>
+
+<p>axel <a href="http://itmp.suconghou.cn">http://itmp.suconghou.cn</a> hypriot-rpi-20160306-192317.img.zip <a href="http://wtmp.suconghou.cn">http://wtmp.suconghou.cn</a> hypriot-rpi-20160306-192317.img.zip <a href="http://btmp.suconghou.cn">http://btmp.suconghou.cn</a> hypriot-rpi-20160306-192317.img.zip</p>
+
+<h2 id="aria2c">Aria2c</h2>
+
+<p>aria2c支持多种协议,<code>URI</code> <code>MAGNET</code> <code>TORRENT_FILE</code> <code>METALINK_FILE</code>,也支持axel类似的分段下载</p>
+
+<p><code>aria2c -s 30 -c -o localfilename http://xx.com/downloadfile</code> 30个线程分段下载,存储为localfilename,并断点续传</p>
+
+<p><code>aria2c file1.torrent file2.torrent</code></p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
 				<a href="/post/install-nginx-php-mysql-redis/"> 安装PHP7和NGINX</a>
 			</h1>
 			<p class="post-date">Fri, Jan 1, 2016</p>
@@ -80,7 +168,7 @@ openssl version
 adduser -M -s /sbin/nologin www-data -g www-data
 </code></pre>
 
-<p>编译nginx</p>
+<h3 id="编译nginx">编译nginx</h3>
 
 <pre><code>NGINX_VERSION=nginx-1.11.3
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
@@ -99,6 +187,12 @@ nginx -V
 <p>如果找不到<code>sudo nginx</code>,使用以下命令:</p>
 
 <p><code>sudo ln -sf /usr/local/sbin/nginx /usr/sbin/nginx</code></p>
+
+<h3 id="通过yum安装nginx">通过YUM安装nginx</h3>
+
+<pre><code>sudo rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
+
+</code></pre>
 
 <p>还可以添加<a href="https://github.com/cuber/ngx_http_google_filter_module">Google反代模块</a>,按下面操作编译</p>
 
@@ -359,21 +453,43 @@ make -j$CPU_NUM &amp;&amp; make install
 
 <h3 id="静态编译php7">静态编译php7</h3>
 
-<pre><code>
-./configure --enable-inline-optimization --enable-static=yes --prefix=/usr/local --with-config-file-path=/etc --without-pear --disable-cgi --disable-opcache --disable-fpm --disable-all --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath  --enable-zip --enable-mbstring --enable-gd-native-ttf --with-iconv --with-mysqli --with-pdo-mysql --with-openssl --enable-pdo --enable-exif --enable-calendar  --with-bz2 --with-sqlite3 --with-pdo-sqlite --enable-phar --enable-session --enable-tokenizer --enable-hash --enable-fileinfo --enable-json  --enable-shared=no  LDFLAGS=-static
+<pre><code>apk update &amp;&amp; apk upgrade
+apk --update add xz gcc g++ make wget file openssl-dev pcre-dev zlib-dev libxml2-dev curl-dev jpeg-dev libpng-dev freetype-dev libmcrypt-dev bzip2-dev libxslt-dev
+cd /tmp
+PHP_VERSION=php-7.0.13
+wget http://php.net/distributions/${PHP_VERSION}.tar.xz
+tar xJf ${PHP_VERSION}.tar.xz
+cd ${PHP_VERSION}
+export CFLAGS=&quot;-Os&quot;
+
+./configure --enable-inline-optimization --enable-static=yes --enable-shared=no --prefix=/usr/local --with-config-file-path=/etc --without-pear --disable-cgi --disable-opcache --disable-fpm --disable-phpdbg --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath  --enable-zip --enable-mbstring --enable-gd-native-ttf --with-mysqli --with-pdo-mysql --with-openssl  --enable-exif --enable-calendar  --with-bz2 LDFLAGS=-static
+
 </code></pre>
 
-<p>之后出来一大堆东西,打开 Makefile,搜索-export-dynamic 有两个.</p>
+<p>如果报<code>libxml2</code>错误需要自己下载编译官方xml2</p>
 
-<p>BUILD_CLI = $(LIBTOOL) &ndash;mode=link $(CC) -export-dynamic $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_CLI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -o $(SAPI_CLI_PATH)</p>
+<pre><code>wget ftp://xmlsoft.org/libxml2/libxml2-2.9.4.tar.gz
+tar zxvf libxml2-2.9.4.tar.gz
+cd libxml2-2.9.4
+./configure
+make &amp;&amp; make install
+</code></pre>
+
+<p>之后出来一大堆东西,打开 Makefile,搜索<code>-export-dynamic</code> ,如果你还开启了编译php-fpm phpdbg 等会有多个,如果只编译php-cli就只会有一个.</p>
+
+<pre><code>BUILD_CLI = $(LIBTOOL) --mode=link $(CC) -export-dynamic $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_CLI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -o $(SAPI_CLI_PATH)
+</code></pre>
 
 <p>这里决定了只会静态链接 php 自己的库,系统库还是动态的.</p>
 
-<p>删掉 -export-dynamic,在最后面加上-all-static.</p>
+<p>删掉 <code>-export-dynamic</code>,在最后面加上<code>-all-static</code>,可以使用脚本替换掉</p>
 
-<p>之后开开心心 make -j8</p>
+<pre><code>sed -i &quot;s{-export-dynamic{-all-static{&quot; Makefile
+</code></pre>
 
-<p>安装过后就可以使用<code>php</code>命令了,但是<code>php-fpm</code>还需要配置一下</p>
+<p>之后开开心心 make -j8, make install 后便可得到静态编译的PHP</p>
+
+<p>php安装过后就可以使用<code>php</code>命令了,但是<code>php-fpm</code>还需要配置一下</p>
 
 <pre><code>php -v
 php -m
@@ -637,7 +753,7 @@ phpize
 make -j$CPU_NUM  &amp;&amp; make install
 </code></pre>
 
-<h2 id="静态编译redis-memcached-opcache到php7">静态编译redis,memcached,opcache到php7</h2>
+<h2 id="编译redis-memcached-opcache到php7">编译redis,memcached,opcache到php7</h2>
 
 <pre><code>wget -c http://php.net/distributions/${PHP_VERSION}.tar.xz
 wget -c -O php-redis.zip https://github.com/phpredis/phpredis/archive/php7.zip

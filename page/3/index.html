@@ -34,6 +34,25 @@
 		
 		<div class="post">
 			<h1 class="post-title">
+				<a href="/software/picasa-photo-viewer/"> picasa photo viewer</a>
+			</h1>
+			<p class="post-date">Sun, Jul 17, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="picasaphotoviewer-图片查看器-v3-9-136-9">PicasaPhotoViewer(图片查看器) v3.9.136.9</h2>
+
+<p>Picasa内置的图片浏览器,Google出品,此版本为独木成林提取出来的.</p>
+
+<p>只有1.7MB,启动速度快,十分好用,有一个缺点是可能因为版权问题未对GIF做支持.</p>
+
+<p><a href="http://share.suconghou.cn/ImageView/PicasaPhotoViewer_3.9.136.9.exe">PicasaPhotoViewerv3.9.136.9</a></p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
 				<a href="/software/git-for-windows/"> git for windows</a>
 			</h1>
 			<p class="post-date">Sun, Jul 17, 2016</p>
@@ -509,142 +528,6 @@ ZLIB_ENCODING_DEFLATE 对应于ZLIB格式（注意不是纯DEFLATE格式）</p>
 <p>Unicode的中文字范围是u4e00-u9fa5，4e00对应的字是&rdquo;一&rdquo;,9fa5对应的汉字是&rdquo;龥&rdquo;</p>
 
 <p><code>/[\x{4e00}-\x{9fa5}]/u</code> 等同于 <code>/[一-龥]/u</code></p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/shadowsocks-libev/"> shadowsocks libev</a>
-			</h1>
-			<p class="post-date">Wed, May 18, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="编译">编译</h2>
-
-<pre><code>yum update &amp;&amp; yum install -y zip unzip xz curl wget git gcc make zlib zlib-devel openssl openssl-devel
-git clone https://github.com/shadowsocks/shadowsocks-libev.git
-cd shadowsocks-libev
-./configure --enable-static=yes
-export CFLAGS=&quot;-O3&quot;
-make -j4 &amp;&amp; make install
-</code></pre>
-
-<p>在alpine里静态编译</p>
-
-<p>需要将生成的<code>./src/Makefile</code>修改<code>LDFLAGS = -all-static</code></p>
-
-<pre><code>apk update &amp;&amp; apk upgrade
-apk --update add gcc g++ make curl zlib-dev pcre-dev openssl-dev linux-headers asciidoc xmlto
-cd /tmp
-SHADOWSOCKS_LIBEV_VERSION=2.5.6
-CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
-curl -sSL https://github.com/shadowsocks/shadowsocks-libev/archive/v${SHADOWSOCKS_LIBEV_VERSION}.tar.gz |  tar xz
-cd shadowsocks-libev-${SHADOWSOCKS_LIBEV_VERSION}
-export CFLAGS=&quot;-O3&quot;
-./configure
-LDFLAGS=&quot;-all-static&quot; make -j$CPU_NUM &amp;&amp; make install
-strip -s /usr/local/bin/ss-server
-
-</code></pre>
-
-<p>启动server端</p>
-
-<p><code>ss-server -s 0.0.0.0 -p 443 -k 123456 -m rc4-md5 -t 300 -d 8.8.8.8 -u</code></p>
-
-<p>with Linux kernel &gt; 3.7.0</p>
-
-<p><code>ss-server -s 0.0.0.0 -p 443 -k 123456 -m rc4-md5 -t 300 -d 8.8.8.8 --fast-open -u</code></p>
-
-<p>后台运行:</p>
-
-<p><code>ss-server -s 0.0.0.0 -p 443 -k 123456 -m rc4-md5 -t 300 -d 8.8.8.8 -u &gt; /tmp/ss.log 2&gt;&amp;1 &amp;</code></p>
-
-<p><strong>GO语言版本的也十分方便哦</strong></p>
-
-<p>这里提供一个基于<code>docker</code>的go语言版本,<a href="https://hub.docker.com/r/suconghou/shadowsocks/">docker go shadowsocks</a>,只有3.3MB
-十分方便</p>
-
-<p>同时也含有libev版本的可供选择</p>
-
-<h2 id="网络内核参数优化">网络内核参数优化</h2>
-
-<p>修改<code>ulimit</code></p>
-
-<p><code>ulimit -n</code> 可以查看当前的</p>
-
-<p><code>vim /etc/security/limits.conf</code></p>
-
-<p>添加一下两行</p>
-
-<pre><code>* soft nofile 51200
-* hard nofile 51200
-</code></pre>
-
-<p>KVM 和 XEN 可以修改内核,明显提升网络环境差的情况下的表现,使用<code>hybla</code>控制算法,效果明显,能提速30%</p>
-
-<p><code>/etc/sysctl.conf</code></p>
-
-<pre><code>net.core.somaxconn = 4096
-net.netfilter.nf_conntrack_max = 64000
-fs.file-max = 51200
-#提高整个系统的文件限制
-net.ipv4.tcp_syncookies = 1
-#表示开启SYN Cookies。当出现SYN等待队列溢出时，启用cookies来处理，可防范少量SYN攻击，默认为0，表示关闭；
-net.ipv4.tcp_tw_reuse = 1
-#表示开启重用。允许将TIME-WAIT sockets重新用于新的TCP连接，默认为0，表示关闭；
-net.ipv4.tcp_tw_recycle = 0
-#表示开启TCP连接中TIME-WAIT sockets的快速回收，默认为0，表示关闭；
-#为了对NAT设备更友好，建议设置为0。
-net.ipv4.tcp_fin_timeout = 30
-#修改系統默认的 TIMEOUT 时间。
-net.ipv4.tcp_keepalive_time = 1200
-#表示当keepalive起用的时候，TCP发送keepalive消息的频度。缺省是2小时，改为20分钟。
-net.ipv4.ip_local_port_range = 10000 65000 #表示用于向外连接的端口范围。缺省情况下很小：32768到61000，改为10000到65000。（注意：这里不要将最低值设的太低，否则可能会占用掉正常的端口！）
-net.ipv4.tcp_max_syn_backlog = 8192
-#表示SYN队列的长度，默认为1024，加大队列长度为8192，可以容纳更多等待连接的网络连接数。
-net.ipv4.tcp_max_tw_buckets = 5000
-#表示系统同时保持TIME_WAIT的最大数量，如果超过这个数字，TIME_WAIT将立刻被清除并打印警告信息。
-#额外的，对于内核版本新于**3.7.1**的，我们可以开启tcp_fastopen：
-net.ipv4.tcp_fastopen = 3
-
-#increase TCP max buffer size settable using setsockopt()
-net.core.rmem_max = 67108864
-net.core.wmem_max = 67108864
-#increase Linux autotuning TCP buffer limit
-net.ipv4.tcp_rmem = 4096 87380 67108864
-net.ipv4.tcp_wmem = 4096 65536 67108864
-#increase the length of the processor input queue
-net.core.netdev_max_backlog = 250000
-#recommended for hosts with jumbo frames enabled
-net.ipv4.tcp_mtu_probing=1
-#使用拥塞算法Hybla
-net.ipv4.tcp_congestion_control = hybla
-</code></pre>
-
-<p>然后<code>sysctl -p</code>使之生效</p>
-
-<p>OPENVZ只能修改</p>
-
-<pre><code>net.core.somaxconn = 4096
-net.ipv4.tcp_syncookies = 1
-net.netfilter.nf_conntrack_max = 64000
-</code></pre>
-
-<p>使用kcptun加速</p>
-
-<p>服务器上</p>
-
-<pre><code>alias kcptun_start='server_linux_amd64 -t 127.0.0.1:443 -l :4433 -sndwnd 2048 -rcvwnd 2048 -mode fast2 &gt; /var/log/kcptun.log 2&gt;&amp;1 &amp; '
-
-</code></pre>
-
-<p>客户机上</p>
-
-<pre><code>alias kcptun_start='kcptun_client -r 192.243.115.210:4433 -l :4433 -sndwnd 2048 -rcvwnd 2048 -mode fast2 &gt; /var/log/kcptun.log 2&gt;&amp;1 &amp;'
-
-</code></pre>
 
 			</div>
 		</div>

@@ -240,7 +240,9 @@ git stash pop
 
 <p>使用<code>git prune</code> 删除一些不会被使用的残留数据,使用<code>git prune -n</code>可以查看将要被删除的数据.</p>
 
-<p>如果想要更加暴力的操作git减小仓库大小,一般使用<code>git-filter-branch</code>,不过操作比较麻烦,这里提供一个工具<a href="https://rtyley.github.io/bfg-repo-cleaner/">https://rtyley.github.io/bfg-repo-cleaner/</a></p>
+<p>如果想要更加暴力的操作git减小仓库大小,一般使用<code>git-filter-branch</code>,不过操作比较麻烦,可以参考官方的操作 <a href="http://git-scm.com/book/zh/v1/Git-内部原理-维护及数据恢复">http://git-scm.com/book/zh/v1/Git-内部原理-维护及数据恢复</a></p>
+
+<p>这里提供一个工具<a href="https://rtyley.github.io/bfg-repo-cleaner/">https://rtyley.github.io/bfg-repo-cleaner/</a></p>
 
 <p>使用这个操作更加方便</p>
 
@@ -276,6 +278,18 @@ git archive master &gt; ./fds.zip
 <p>使用 -o a.tgz 或者 a.tar.gz 生成gzip格式的, -o a.zip 生成zip格式的.</p>
 
 <p><img src="http://static.suconghou.cn/document/git-usage.jpg" alt="git-usage" /></p>
+
+<h1 id="从源码静态编译git">从源码静态编译git</h1>
+
+<pre><code>apk update &amp;&amp; apk upgrade
+apk add curl gcc g++ make zlib-dev perl
+curl https://www.kernel.org/pub/software/scm/git/git-2.10.2.tar.xz | tar xJ
+cd git-2.10.2
+./configure --prefix=/usr/local --with-curl   CFLAGS=&quot;${CFLAGS} -Os -static `pkg-config --static --libs libcurl`&quot;  NO_TCLTK=1 NO_PERL=1 NO_GETTEXT=1
+make -j4
+make install
+
+</code></pre>
 
 <h1 id="svn">svn</h1>
 

@@ -75,9 +75,12 @@ out of it. Please check the Makefile in case of doubts.
 <pre><code>apt-get update &amp;&amp; apt-get install -y wget gcc g++ make libpcre++0v5 libpcre++-dev
 </code></pre>
 
-<pre><code>HAPROXY_VERSION=haproxy-1.6.9
+<pre><code>yum update &amp;&amp; yum install wget gcc make
+</code></pre>
+
+<pre><code>HAPROXY_VERSION=haproxy-1.7.0
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
-wget http://www.haproxy.org/download/1.6/src/${HAPROXY_VERSION}.tar.gz
+wget http://www.haproxy.org/download/1.7/src/${HAPROXY_VERSION}.tar.gz
 tar zxf ${HAPROXY_VERSION}.tar.gz
 cd ${HAPROXY_VERSION}
 export CFLAGS=&quot;-O3&quot;
@@ -89,7 +92,7 @@ make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 -j$CPU_NUM &amp;&amp; make i
 
 <p>在64位系统下编译32位需要<code>apt-get install gcc-multilib g++-multilib</code></p>
 
-<p>我编译好的haproxy version 1.6.8</p>
+<p>我编译好的haproxy version 1.7.0</p>
 
 <blockquote>
 <p>64位 <a href="http://share.suconghou.cn/bin/haproxy.xz">http://share.suconghou.cn/bin/haproxy.xz</a></p>
@@ -198,6 +201,31 @@ haproxy -f /etc/haproxy/haproxy.cfg -sf `cat /var/run/haproxy.pid`
 
 <p>配置文件参考 <a href="https://github.com/chenzhiwei/linux/tree/master/haproxy">https://github.com/chenzhiwei/linux/tree/master/haproxy</a></p>
 
+<p>一份haproxy加速ss</p>
+
+<pre><code>global
+        pidfile   /var/run/haproxy.pid
+        ulimit-n  15000
+
+defaults
+        log global
+        mode    tcp
+        option  dontlognull
+        timeout connect 1000
+        timeout client  150000
+        timeout server  150000
+
+frontend ss-in
+        bind *:80
+        default_backend ss-out
+
+backend ss-out
+        server server1 208.81.202.208:443 maxconn 20480
+
+</code></pre>
+
+<p><code>haproxy -D -f /etc/haproxy/haproxy.cfg</code>启动,参数<code>-D</code>为goes daemon</p>
+
 <h2 id="升级-glibc-版本-最新发布-http-www-gnu-org-software-libc">升级<code>glibc</code>版本,最新发布 <a href="http://www.gnu.org/software/libc/">http://www.gnu.org/software/libc/</a></h2>
 
 <p>所有版本见<code>http://mirror.hust.edu.cn/gnu/libc/</code></p>
@@ -212,7 +240,7 @@ cd glibc-2.19
 mkdir build
 cd build
 ../configure
-make -j4&amp;&amp; make install
+make -j4 &amp;&amp; make install
 </code></pre>
 
 <p>见 <a href="https://cnodejs.org/topic/56dc21f1502596633dc2c3dc">https://cnodejs.org/topic/56dc21f1502596633dc2c3dc</a>

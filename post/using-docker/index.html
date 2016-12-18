@@ -178,6 +178,13 @@ gpgkey=https://yum.dockerproject.org/gpg
 EOF
 </code></pre>
 
+<p>清华大学镜像源提供docker安装镜像与说明</p>
+
+<p><code>https://mirror.tuna.tsinghua.edu.cn/help/docker/</code></p>
+
+<p>阿里云也提供安装脚本
+<code>http://mirrors.aliyun.com/help/docker-engine</code></p>
+
 <p>然后<code>yum info docker-engine</code>可以看到官方的docker版本.执行<code>yum install docker-engine</code>安装</p>
 
 <p><code>sudo service docker start</code> 启动服务,开机启动<code>sudo chkconfig docker on</code></p>
@@ -418,6 +425,10 @@ docker run -it -p 8080:8000 --name vps vpsimage bash
 <p><code>docker rmi $(docker images | grep &quot;^&lt;none&gt;&quot; | awk &quot;{print \$3}&quot;)</code> 清除none标签的镜像</p>
 </blockquote>
 
+<p>Docker 1.13 引进了新的管理命令，如下：</p>
+
+<p>命令 <code>docker system df</code> 提供 Docker 整体磁盘使用率的概况，包括镜像、容器和（本地） volume</p>
+
 <h2 id="国内加速">国内加速</h2>
 
 <p><code>docker pull</code> 默认采用https通信,国内一般提供镜像,或者自己的registry,可以采用
@@ -444,6 +455,25 @@ docker run -it -p 8080:8000 --name vps vpsimage bash
 </code></pre>
 
 <p>配置文件介绍见 <a href="https://docs.docker.com/engine/reference/commandline/dockerd/">https://docs.docker.com/engine/reference/commandline/dockerd/</a></p>
+
+<h2 id="修改alpine-linux-的镜像源地址">修改alpine linux 的镜像源地址</h2>
+
+<p><code>vi /etc/apk/repositories</code></p>
+
+<pre><code>http://nl.alpinelinux.org/alpine/v3.4/main
+http://nl.alpinelinux.org/alpine/v3.4/community
+</code></pre>
+
+<p>可替换为</p>
+
+<pre><code>http://mirror.tuna.tsinghua.edu.cn/alpine/v3.4/main
+http://mirror.tuna.tsinghua.edu.cn/alpine/v3.4/community
+</code></pre>
+
+<p>简化为</p>
+
+<pre><code>echo -e 'http://mirror.tuna.tsinghua.edu.cn/alpine/v3.4/main\nhttp://mirror.tuna.tsinghua.edu.cn/alpine/v3.4/community' &gt; /etc/apk/repositories
+</code></pre>
 
 <h2 id="使用流程">使用流程</h2>
 

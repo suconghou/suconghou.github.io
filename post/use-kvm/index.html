@@ -232,6 +232,21 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 --hvm --dry-run
 </code></pre>
 
+<pre><code>virt-install \
+--name xp1 \
+--ram 1024 --vcpus 1 \
+--disk path=/data/iso/Deepin_Windows_LiteXP_v6.2_SP3.iso,device=cdrom \
+--disk path=/disk/kvm/winxp1,size=10,format=qcow2,bus=virtio,cache=writeback \
+--cdrom=/usr/share/virtio-win/virtio-win-0.1.126.iso \
+--os-type windows \
+--os-variant winxp \
+--bridge=br0,model=virtio \
+--accelerate \
+--graphics vnc,port=5999,listen=0.0.0.0 \
+--console pty,target_type=serial \
+--hvm --dry-run
+</code></pre>
+
 <p>出现<code>ERROR    不能混用 --graphics 和旧式的图形选项</code>可能是需要去掉<code>--keymap</code></p>
 
 <p>关于 加载 virtio 驱动可以参考  <a href="http://www.ilanni.com/?p=5877">http://www.ilanni.com/?p=5877</a></p>
@@ -282,6 +297,17 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 <p>windows系统可使用 vncviewer (<a href="http://share.suconghou.cn/bin/vncviewer.zip">http://share.suconghou.cn/bin/vncviewer.zip</a>) 连接</p>
 
 <p>全屏下用F8键可唤出菜单.</p>
+
+<h3 id="修改相关">修改相关</h3>
+
+<p><code>hostnamectl</code> 可以查看主机相关信息,主机名,内核版本,64位等</p>
+
+<p>只查看静态、瞬态或灵活主机名，分别使用<code>--static</code>,<code>--transient</code>或<code>--pretty</code>选项</p>
+
+<p>要同时修改所有三个主机名：静态、瞬态和灵活主机名：
+<code>hostnamectl set-hostname Linuxidc</code></p>
+
+<p><code>hostname -I</code> 可以获取所有网卡上配置的IP</p>
 
 		</div>
 	</div>

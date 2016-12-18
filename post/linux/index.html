@@ -165,9 +165,11 @@ ps -o rss,vsz,pid,ppid,time,etime,args
 
 <h2 id="ssh">ssh</h2>
 
-<p><code>ssh-copy-id -i ~/.ssh/id_rsa.pub root@host</code></p>
+<p>配置无密码登陆
+<code>ssh-copy-id -i ~/.ssh/id_rsa.pub root@host</code></p>
 
-<p><code>ssh-copy-id -i ~/.ssh/id_rsa.pub -p 26671 root@host</code></p>
+<p>如果是其他端口可以-p指定端口
+<code>ssh-copy-id -i ~/.ssh/id_rsa.pub -p 26671 root@host</code></p>
 
 <h2 id="pgrep">pgrep</h2>
 
@@ -244,6 +246,23 @@ count = blocks 只拷贝输入的blocks块</p>
 <p>传送文件夹(压缩文件) <code>nc -l 9090 |tar xzvf -</code> , 另一端发送文件<code>tar czvf – dir | nc host 9090</code></p>
 
 <p>同样可以拷贝硬盘 <code>nc -l 9090 | dd of=/dev/sda</code>,另一端发送<code>dd if=/dev/sda | nc host 9090</code></p>
+
+<p>有个高性能的方法：
+1.先在接收方执行:
+nc -l 6677 | tar -C 接收文件的目录 -zxf - #接收目录最好是个空目录，防止覆盖的风险</p>
+
+<p>2.再在发送方执行:
+tar -zcvf - 要发送的目录 | nc 接收方 ip 6677</p>
+
+<p>ssh 也可以使用 pipe 传送 <code>tar zcf - attaches | ssh root@ip &quot;tar zxf - -C /path/to/&quot;</code></p>
+
+<p>传送大量大文件 使用 <code>lftp</code>也是一个好方案</p>
+
+<pre><code>Use lftp, its much faster than rsync and its best for mirroring websites (many small files). It can also transfer in parallel using multiple connections:
+
+lftp -u username,password sftp://ip-address -e 'mirror --only-newer --no-dereference --parallel=5 /remote/path/ /destination/;quit'
+If one connection breaks it will reconnect and continue. If you break the transfer it will skip existing files and continue.
+</code></pre>
 
 <p><strong>端口扫描</strong></p>
 
@@ -573,6 +592,16 @@ echo &quot;Asia/Shanghai&quot; &gt; /etc/timezone
 <p>数组下标以0开始,取得第二个元素为<code>echo ${arr[1]}</code></p>
 
 <p>赋值使用<code>arr[5]=5555</code></p>
+
+<h2 id="dns配置">DNS配置</h2>
+
+<p><code>/etc/resolv.conf</code>内配置</p>
+
+<pre><code>nameserver 8.8.8.8
+nameserver 74.82.42.42
+nameserver 4.2.2.1
+nameserver 8.8.4.4
+</code></pre>
 
 <h2 id="测试vps宽带">测试VPS宽带</h2>
 

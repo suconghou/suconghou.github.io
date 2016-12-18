@@ -34,6 +34,228 @@
 		
 		<div class="post">
 			<h1 class="post-title">
+				<a href="/post/linux-ssh/"> SSH</a>
+			</h1>
+			<p class="post-date">Thu, Jan 7, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="避免ssh自动断开连接">避免SSH自动断开连接</h2>
+
+<p>如果有一段时间在SSH连接上无数据传输，连接就会断开,以下设定可以解决这个问题</p>
+
+<p>方案一：在客户端设置</p>
+
+<p><code>sudo vim /etc/ssh/ssh_config</code></p>
+
+<p>开启 <code>ServerAliveInterval 60</code>
+开启 <code>TCPKeepAlive yes</code></p>
+
+<p>此后该系统里的用户连接SSH时，每60秒会发一个KeepAlive请求，避免被踢。</p>
+
+<p>方案二：在服务器端设置</p>
+
+<p><code>sudo vim /etc/ssh/sshd_config</code></p>
+
+<p>开启<code>ClientAliveInterval 60</code>
+开启 <code>TCPKeepAlive yes</code></p>
+
+<p>如果您只想让当前的 ssh 保持连接，可以使用以下的命令：</p>
+
+<p><code>ssh -o ServerAliveInterval=60 user@sshserver</code></p>
+
+<h2 id="ssh隧道">ssh隧道</h2>
+
+<h3 id="cfng参数">CfNg参数</h3>
+
+<ul>
+<li>C表示压缩数据传输</li>
+<li>f表示后台用户验证,这个选项很有用,没有shell的不可登陆账号也能使用.</li>
+<li>N表示不执行脚本或命令</li>
+<li>g表示允许远程主机连接转发端口,往往会没有效果,需要修改<code>/etc/ssh/sshd_config</code>添加<code>gatewayports yes</code></li>
+</ul>
+
+<h3 id="l本地转发">-L本地转发</h3>
+
+<p>-L [本地监听IP:]本地监听端口号:目标主机IP:目标端口号
+(其中,“本地监听IP”可以省略，省略的话就认为是“0.0.0.0”，但为了安全性考虑，请务必使用“127.0.0.1”做为本地监听端口， 而不要使用默认的“0.0.0.0”。）</p>
+
+<p><code>ssh -D 8080 user@host</code>
+SSH会建立一个socket，去监听本地的8080端口。一旦有数据传向那个端口，就自动把它转移到SSH连接上面，发往远程主机。可以想象，如果8080端口原来是一个不加密端口，现在将变成一个加密端口。</p>
+
+<p><code>ssh -L 2121:host2:21 host3</code>
+命令中的L参数一共接受三个值，分别是&rdquo;本地端口:目标主机:目标主机端口&rdquo;，它们之间用冒号分隔。这条命令的意思，就是指定SSH绑定本地端口2121，然后指定host3将所有的数据，转发到目标主机host2的21端口（假定host2运行FTP，默认端口为21）。
+这样一来，我们只要连接host1的2121端口，就等于连上了host2的21端口。</p>
+
+<pre><code>ssh -CfNg -L 6300:127.0.0.1:1521 oracle@172.16.1.164
+</code></pre>
+
+<p>本机的6300端口就是远程主机172.16.1.164的1521端口</p>
+
+<h3 id="r远程转发">-R远程转发</h3>
+
+<pre><code> ssh -CfNg -R 1521:127.0.0.1:6300 oracle@172.16.1.164
+</code></pre>
+
+<p>在远程主机172.16.1.164上打开1521端口, 来映射本机的6300端口.</p>
+
+<p><strong>在树莓派上映射ssh到外网</strong></p>
+
+<pre><code>ssh -CfNg -R 2222:127.0.0.1:22 username@yourvps.com
+</code></pre>
+
+<p>这样就映射vps的2222端口到树莓派上了.但是这样映射的是服务器的127.0.0.1:2222,外网无法连接这个2222端口</p>
+
+<p>如果你自己的服务器连接时需要端口可以在最后加上 <code>-p port</code> 指定ssh的端口</p>
+
+<p>可以在服务器上执行<code>netstat -anltp</code>查看,这样要先登陆到自己的vps才能通过2222访问树莓派.</p>
+
+<p>可以使用</p>
+
+<pre><code>ssh -CfNg -R 0.0.0.0:2222:127.0.0.1:22 username@yourvps.com
+</code></pre>
+
+<p>再在服务器上配置<code>/etc/ssh/sshd_config</code></p>
+
+<pre><code>#增加下面一句
+GatewayPorts yes
+#如果有
+GatewayPorts no
+#则改为
+GatewayPorts yes
+#然后重启ssh
+#centos7： systemctl restart sshd
+#centos6： service sshd restart
+#ubuntu:   service ssh restart
+</code></pre>
+
+<p>使用<code>netstat -anltp</code>查看,监听的已经是<code>0.0.0.0</code>了,不过即使你指定-R参数<code>127.0.0.1:2222</code>,也不会监听<code>127.0.0.1</code>而始终是<code>0.0.0.0</code></p>
+
+<p>若没有<code>netstat</code>可考虑安装<code>yum install lsof net-tools</code></p>
+
+<h3 id="使用socks5代理">使用socks5代理</h3>
+
+<pre><code>alias socksproxy=&quot;ssh -NT -f -D 0.0.0.0:1090  -p 1234 root@host&quot;;
+</code></pre>
+
+<p>-N 不打开远程的shell
+-T 不分配tty
+-f 后台运行</p>
+
+<p>执行<code>socksproxy</code>后就建立了一条ssh socks5 proxy,本地使用127.0.0.1:1090就可以使用服务器中转流量.</p>
+
+<h3 id="ssh-服务">ssh 服务</h3>
+
+<p><code>chkconfig --list</code>可以查看所有服务是否开机启动等.</p>
+
+<p><code>chkconfig --list sshd</code>可以单独查看sshd服务的启动状态</p>
+
+<p><code>/var/empty/sshd</code>文件夹是sshd所必须的,不能被删除否则ssh服务将无法启动</p>
+
+<p><code>chkconfig sshd on</code>将其设置为开机启动</p>
+
+<p>CentOS7 用<code>systemctl</code>取代了<code>service</code>
+旧版本的 <code>chkconfig docker on</code> 改为 <code>systemctl enable docker</code></p>
+
+<h3 id="编译openssh">编译openssh</h3>
+
+<p>在alpine中编译openssh,镜像地址 <a href="http://ftp.jaist.ac.jp/pub/OpenBSD/OpenSSH/portable/">http://ftp.jaist.ac.jp/pub/OpenBSD/OpenSSH/portable/</a></p>
+
+<p>编译完成后得到一些工具,如<code>scp</code>,<code>sftp-server</code>,<code>ssh</code>,<code>sshd</code>等等</p>
+
+<pre><code>apk update &amp;&amp; apk upgrade
+apk --update add make gcc g++ zlib-dev openssl-dev
+cd /tmp
+OPENSSH_VERSION=openssh-7.3p1
+CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
+curl http://ftp.jaist.ac.jp/pub/OpenBSD/OpenSSH/portable/${OPENSSH_VERSION}.tar.gz | tar xz
+cd ${OPENSSH_VERSION}
+export CFLAGS=&quot;-O3&quot;
+./configure
+make -j$CPU_NUM &amp;&amp; make install
+</code></pre>
+
+<p>我编译好的二进制文件,能直接用于alpine系统</p>
+
+<p><a href="http://share.suconghou.cn/bin/ssh.xz">ssh</a></p>
+
+<p><a href="http://share.suconghou.cn/bin/sshd.xz">sshd</a></p>
+
+<p>编译出来的这些工具的合集</p>
+
+<p><a href="http://share.suconghou.cn/bin/sshbin.tar.gz">sshbin</a></p>
+
+<p><a href="http://share.suconghou.cn/bin/sshtool.tar.gz">sshtool</a></p>
+
+<p>配合Linux<code>adduser</code>,可以ssh到docker中</p>
+
+<p><code>curl -o /usr/local/bin/sshd.xz http://share.suconghou.cn/bin/sshd.xz</code></p>
+
+<p>sshd运行不能直接执行sshd,需要执行<code>/usr/local/bin/sshd</code></p>
+
+<p>配置文件为<code>/usr/local/etc/sshd_config</code>,同时还需要几个密匙文件.</p>
+
+<pre><code>curl -o /usr/local/bin/sshd.xz http://share.suconghou.cn/bin/sshd.xz
+xz -d /usr/local/bin/sshd.xz
+chmod +x /usr/local/bin/sshd
+mkdir -p /usr/local/etc/
+touch /usr/local/etc/sshd_config
+ssh-keygen -t dsa -f /usr/local/etc/ssh_host_dsa_key -N ''
+ssh-keygen -t rsa -f /usr/local/etc/ssh_host_rsa_key -N ''
+ssh-keygen -t ecdsa -f /usr/local/etc/ssh_host_ecdsa_key -N ''
+ssh-keygen -t ed25519 -f /usr/local/etc/ssh_host_ed25519_key -N ''
+</code></pre>
+
+<p>添加一个用户:<code>adduser work</code> ,Alpine里是<code>adduser</code>,Linux发行版里是<code>useradd</code></p>
+
+<p>cat /etc/passwd 可以查看所有用户的列表,只输出用户名可以<code>cat /etc/passwd |cut -f 1 -d :</code></p>
+
+<p>看第三个参数:500以上的,就是后面建的用户了.其它则为系统的用户.</p>
+
+<p>cat /etc/group 查看用户组</p>
+
+<p>非交互式修改密码可以使用 chpasswd <code>echo &quot;1234&quot; | chpasswd</code></p>
+
+<p>w 可以查看当前活跃的用户列表</p>
+
+<p>删除用户<code>userdel</code> , 用户<code>userdel -r 用户名</code>,删除用户账户及用户主目录文件</p>
+
+<p>没有外网IP还可以使用ssh建立一个隧道</p>
+
+<pre><code>ssh -CfNg -R 0.0.0.0:2233:127.0.0.1:22 root@yourvps.com -p 27558
+
+</code></pre>
+
+<h3 id="centos7修改ssh端口">CentOS7修改ssh端口</h3>
+
+<p>注意:修改ssh端口后,可能还是不能使用,主要原因可能是semanage</p>
+
+<p>使用以下命令查看当前SElinux 允许的ssh端口：
+semanage port -l | grep ssh</p>
+
+<p>添加xxxx端口到 SELinux
+semanage port -a -t ssh_port_t -p tcp xxxx
+然后确认一下是否添加进去
+semanage port -l | grep ssh
+如果成功会输出
+ssh_port_t        tcp    xxxx, 22</p>
+
+<h3 id="autossh">autossh</h3>
+
+<p><code>sudo yum install gcc make</code></p>
+
+<pre><code>wget http://www.harding.motd.ca/autossh/autossh-1.4e.tgz
+tar zxf autossh-1.4e.tgz
+cd autossh-1.4e
+./configure &amp;&amp; make
+
+</code></pre>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
 				<a href="/post/install-nodejs/"> 安装NodeJs和npm</a>
 			</h1>
 			<p class="post-date">Thu, Jan 7, 2016</p>
@@ -533,6 +755,13 @@ gpgkey=https://yum.dockerproject.org/gpg
 EOF
 </code></pre>
 
+<p>清华大学镜像源提供docker安装镜像与说明</p>
+
+<p><code>https://mirror.tuna.tsinghua.edu.cn/help/docker/</code></p>
+
+<p>阿里云也提供安装脚本
+<code>http://mirrors.aliyun.com/help/docker-engine</code></p>
+
 <p>然后<code>yum info docker-engine</code>可以看到官方的docker版本.执行<code>yum install docker-engine</code>安装</p>
 
 <p><code>sudo service docker start</code> 启动服务,开机启动<code>sudo chkconfig docker on</code></p>
@@ -773,6 +1002,10 @@ docker run -it -p 8080:8000 --name vps vpsimage bash
 <p><code>docker rmi $(docker images | grep &quot;^&lt;none&gt;&quot; | awk &quot;{print \$3}&quot;)</code> 清除none标签的镜像</p>
 </blockquote>
 
+<p>Docker 1.13 引进了新的管理命令，如下：</p>
+
+<p>命令 <code>docker system df</code> 提供 Docker 整体磁盘使用率的概况，包括镜像、容器和（本地） volume</p>
+
 <h2 id="国内加速">国内加速</h2>
 
 <p><code>docker pull</code> 默认采用https通信,国内一般提供镜像,或者自己的registry,可以采用
@@ -799,6 +1032,25 @@ docker run -it -p 8080:8000 --name vps vpsimage bash
 </code></pre>
 
 <p>配置文件介绍见 <a href="https://docs.docker.com/engine/reference/commandline/dockerd/">https://docs.docker.com/engine/reference/commandline/dockerd/</a></p>
+
+<h2 id="修改alpine-linux-的镜像源地址">修改alpine linux 的镜像源地址</h2>
+
+<p><code>vi /etc/apk/repositories</code></p>
+
+<pre><code>http://nl.alpinelinux.org/alpine/v3.4/main
+http://nl.alpinelinux.org/alpine/v3.4/community
+</code></pre>
+
+<p>可替换为</p>
+
+<pre><code>http://mirror.tuna.tsinghua.edu.cn/alpine/v3.4/main
+http://mirror.tuna.tsinghua.edu.cn/alpine/v3.4/community
+</code></pre>
+
+<p>简化为</p>
+
+<pre><code>echo -e 'http://mirror.tuna.tsinghua.edu.cn/alpine/v3.4/main\nhttp://mirror.tuna.tsinghua.edu.cn/alpine/v3.4/community' &gt; /etc/apk/repositories
+</code></pre>
 
 <h2 id="使用流程">使用流程</h2>
 
@@ -921,94 +1173,6 @@ sudo systemctl restart docker
 
 <p>解决
 <code>Usage of loopback devices is strongly discouraged for production use. Use</code>&ndash;storage-opt dm.thinpooldev<code>to specify a custom block storage device.</code></p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/linux-download-tools/"> Linux下常用的下载利器</a>
-			</h1>
-			<p class="post-date">Fri, Jan 1, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="wget">wget</h2>
-
-<p><code>wget -c -O filename &quot;http://xx.com&quot;</code> 下载存储到指定文件,并指定断点续传</p>
-
-<p><code>wget -nc -c -i url.txt</code> 批量下载文件中指定的资源(每行一个连接),跳过已下载的(同名的),并且断点续传.</p>
-
-<p>使用user-agent</p>
-
-<p><code>wget --user-agent=&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36&quot; URL-TO-DOWNLOAD</code></p>
-
-<h2 id="curl">curl</h2>
-
-<p>常用的命令</p>
-
-<p><code>curl http://xx.com</code> 只获取http消息正文</p>
-
-<p><code>curl -I http://xx.com</code> 只获取http消息头</p>
-
-<p><code>curl -i http://xx.com</code> 获取http消息头和正文</p>
-
-<p><code>curl -d &quot;name=abc&amp;pass=123&quot; http://xx.com</code> 发送<code>http post</code>请求,采用的是<code>application/x-www-form-urlencoded</code>形式</p>
-
-<p><code>curl -F &quot;name=abc&quot; -F &quot;pass=123&quot; http://xx.com</code> 发送<code>http post</code>请求,采用的是<code>multipart/form-data</code> 形式,此两种方式都可以由 $_POST 接收</p>
-
-<p><code>curl -F &quot;name=abc&quot; -F &quot;file=@/tmp/1.jpg&quot; http://xx.com</code> 发送 <code>http post</code>请求, <code>multipart/form-data</code> 形式还可以上传文件,只需改为@加路径</p>
-
-<p>curl 不仅能用来下载,还是网络调试的利器,Chrome的网络请求也可以直接另存为curl请求格式</p>
-
-<p>批量下载规则的URL资源</p>
-
-<pre><code>curl -O &quot;http://www.example.com/[0001-9999].jpg&quot;
-
-</code></pre>
-
-<p>在shell中可以这样用,实现同样功能</p>
-
-<pre><code>for i in {10001..19999}; do
-wget www.example.com/${i:1}.jpg;
-done
-</code></pre>
-
-<p>或</p>
-
-<pre><code>for i in {0001..9999}; do
-echo www.example.com/${i}.jpg;
-done
-</code></pre>
-
-<h3 id="下载一个压缩包-不存储直接解压">下载一个压缩包,不存储直接解压</h3>
-
-<p><code>curl -sSL http://www.memcached.org/files/memcached-1.4.30.tar.gz | tar xz</code></p>
-
-<p>其中<code>-L</code>表示更随重定向<code>-s</code>为安静模式,不输出任何信息,<code>-S</code>为在安静模式下出错的话要输出错误信息.</p>
-
-<p>要解压到指定目录,后面的可以使用 tar xzC ./path/to/dir ,当然这个路径要存在</p>
-
-<p>用curl下载的好处是不会像wget那样出现多个已下载的重复文件</p>
-
-<h2 id="axel">Axel</h2>
-
-<p>下载速度最快,分段下载速度优异
-<code>axel -n 30 -a -o localfilename http://xx.com/downloadfile</code> 30个线程分段下载,存储为localfilename
-参数<code>-a</code>更新进度条而不是每次都输出
-参数<code>-H</code> 添加header,参数<code>-U</code>设定<code>user-agent</code>
-<strong>Downloads patch from 4 ftp mirrors</strong>
-axel <a href="ftp://ftp.{us,uk,br,fr}.kernel.org/pub/linux/kernel/v2.6/patch-2.6.39.gz">ftp://ftp.{us,uk,br,fr}.kernel.org/pub/linux/kernel/v2.6/patch-2.6.39.gz</a></p>
-
-<p>axel <a href="http://itmp.suconghou.cn">http://itmp.suconghou.cn</a> hypriot-rpi-20160306-192317.img.zip <a href="http://wtmp.suconghou.cn">http://wtmp.suconghou.cn</a> hypriot-rpi-20160306-192317.img.zip <a href="http://btmp.suconghou.cn">http://btmp.suconghou.cn</a> hypriot-rpi-20160306-192317.img.zip</p>
-
-<h2 id="aria2c">Aria2c</h2>
-
-<p>aria2c支持多种协议,<code>URI</code> <code>MAGNET</code> <code>TORRENT_FILE</code> <code>METALINK_FILE</code>,也支持axel类似的分段下载</p>
-
-<p><code>aria2c -s 30 -c -o localfilename http://xx.com/downloadfile</code> 30个线程分段下载,存储为localfilename,并断点续传</p>
-
-<p><code>aria2c file1.torrent file2.torrent</code></p>
 
 			</div>
 		</div>

@@ -70,7 +70,7 @@ strip -s /usr/local/bin/ss-server
 
 <p><code>ss-server -s 0.0.0.0 -p 443 -k 123456 -m rc4-md5 -t 300 -d 8.8.8.8 -u</code></p>
 
-<p>with Linux kernel &gt; 3.7.0</p>
+<p>with Linux kernel &gt; 3.7.0 可以加上<code>--fast-open</code></p>
 
 <p><code>ss-server -s 0.0.0.0 -p 443 -k 123456 -m rc4-md5 -t 300 -d 8.8.8.8 --fast-open -u</code></p>
 
@@ -141,6 +141,8 @@ net.ipv4.tcp_congestion_control = hybla
 </code></pre>
 
 <p>然后<code>sysctl -p</code>使之生效</p>
+
+<p>可参见 <a href="https://github.com/Long-live-shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks">https://github.com/Long-live-shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks</a></p>
 
 <p>OPENVZ只能修改</p>
 

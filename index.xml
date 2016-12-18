@@ -6,8 +6,179 @@
     <description>Recent content on 苏苏的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 18 Oct 2016 19:18:24 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 20 Nov 2016 22:12:25 +0800</lastBuildDate>
     <atom:link href="http://blog.suconghou.cn/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>系统安全</title>
+      <link>http://blog.suconghou.cn/post/server-safe/</link>
+      <pubDate>Sun, 20 Nov 2016 22:12:25 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/server-safe/</guid>
+      <description>
+
+&lt;h2 id=&#34;nginx安全配置&#34;&gt;Nginx安全配置&lt;/h2&gt;
+
+&lt;p&gt;如果你是用&lt;code&gt;git&lt;/code&gt;或者&lt;code&gt;svn&lt;/code&gt;来部署代码,默认情况下,你的网站很可能已经泄露了&lt;code&gt;.git&lt;/code&gt;目录,或者&lt;code&gt;.svn&lt;/code&gt;目录&lt;/p&gt;
+
+&lt;p&gt;使用nginx配置过滤一切以&lt;code&gt;.&lt;/code&gt;开头的文件和文件夹,防止被用户下载.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;location ~ /\. {
+	deny all;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;每个网站都需要这么配置可能有些麻烦,你可以在统一的文件中定义好&lt;code&gt;/etc/nginx/default.d/php.conf&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;listen 80;
+index index.html index.php;
+try_files $uri $uri/ /index.php?$args;
+location ~ /\. {
+	deny all;
+}
+location ~ ^.+\.php$ {
+	try_files $uri =404;
+	fastcgi_pass 127.0.0.1:9000;
+	include fastcgi.conf;
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使用时,类似与下面,还不用每次写这么多配置了.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;server{
+  server_name fed-wx.xxx.cn;
+  root /data/www/fed-wx;
+  include /etc/nginx/default.d/php.conf;
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;给http段添加,开启一些gzip特性,关闭显示服务器版本&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;default_type        application/octet-stream;
+sendfile            on;
+tcp_nopush          on;
+tcp_nodelay         on;
+keepalive_timeout   65;
+types_hash_max_size 2048;
+server_tokens off;
+ssi on;
+gzip on;
+gzip_min_length 1024;
+gzip_proxied any;
+gzip_comp_level 3;
+gzip_types text/plain text/javascript text/css text/json application/xml application/javascript  application/json image/jpeg image/gif image/png;
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;修改你的ssh默认端口-并且使用强密码&#34;&gt;修改你的SSH默认端口,并且使用强密码&lt;/h2&gt;
+
+&lt;p&gt;每天都有大量的端口扫描来扫描你服务器IP的22端口,如果你的22端口密码又不强,很可能已被黑客侵入.&lt;/p&gt;
+
+&lt;p&gt;如果发现已经有大量的错误登陆,请立即更换端口.必要时考虑使用&lt;code&gt;fail2ban&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;所有的网络通信都应该使用-https&#34;&gt;所有的网络通信都应该使用&lt;code&gt;HTTPS&lt;/code&gt;&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;http&lt;/code&gt;并不安全,很有可能你收到和发出的信息,已被中间人劫持.&lt;/p&gt;
+
+&lt;p&gt;中间人劫持能查看你发送的信息,修改返回给你的数据包.&lt;/p&gt;
+
+&lt;p&gt;为此,使用http时,务必加盐加密你的密码,以减少在传输过程中被窃取的可能.&lt;/p&gt;
+
+&lt;p&gt;更有效的是使用&lt;code&gt;https&lt;/code&gt;来有效防止中间人劫持.&lt;/p&gt;
+
+&lt;h2 id=&#34;你的身份认证令牌应该多方关联&#34;&gt;你的身份认证令牌应该多方关联.&lt;/h2&gt;
+
+&lt;p&gt;即便使用&lt;code&gt;https&lt;/code&gt;,你的身份认证令牌,一旦从其他渠道泄漏,黑客便能使用你的身份进行操作.&lt;/p&gt;
+
+&lt;p&gt;特别是具有管理员权限的身份令牌,更是会带来严重后果,在&lt;code&gt;CSRF&lt;/code&gt;攻击中偷走令牌是常有的事.&lt;/p&gt;
+
+&lt;p&gt;因此你起码需要将cookie关键信息设置为&lt;code&gt;httponly&lt;/code&gt;和&lt;code&gt;security&lt;/code&gt;(使用https时),并小心过滤允许用户输入的链接地址(包含图片,视频地址)和富文本等.
+必要时开启&lt;code&gt;csrf-token&lt;/code&gt;认证.&lt;/p&gt;
+
+&lt;p&gt;还需要确保你的认证&lt;code&gt;token&lt;/code&gt;在丢失以后也不能在黑客手中登陆.&lt;/p&gt;
+
+&lt;p&gt;这需要你在生成&lt;code&gt;token&lt;/code&gt;时,进行多方关联,哈希时可包括&lt;code&gt;IP地址&lt;/code&gt;,&lt;code&gt;User Agent&lt;/code&gt;,当然用户ID也需要关联,这个&lt;code&gt;token&lt;/code&gt;只能这个用户用.&lt;/p&gt;
+
+&lt;p&gt;服务器验证时并不是从&lt;code&gt;token&lt;/code&gt;能找到用户,就验证通过,还需要对这些信息进行校验,验证还是不是那个客户端发出的.&lt;/p&gt;
+
+&lt;p&gt;除此之外,哈希时不能简单的哈希,还需要加盐哈希,防止黑客拆解出哈希包含的字段进而可以自己算出token.&lt;/p&gt;
+
+&lt;p&gt;即使黑客不能拆解你的哈希算法,也不知道哈希字段有哪些,只要他能捕获你发出的请求,(或窃取走你的token和所有可能参与哈希的字段),一样可以模拟请求,使用你的身份进行操作,除非你哈希时包含了IP.
+因为来源IP黑客是无法模拟的,除非他和你在同一个外网出口IP路由下.&lt;/p&gt;
+
+&lt;p&gt;但如果客户的IP经常变动,IP参与哈希可能体验太不好了,于是还是回到最初的问题,&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;使用&lt;code&gt;https&lt;/code&gt;,使用&lt;code&gt;httponly&lt;/code&gt;和&lt;code&gt;security&lt;/code&gt;的cookie,便能有效防止黑客捕获你的请求和偷走&lt;code&gt;token&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;再加上&lt;strong&gt;&lt;code&gt;token&lt;/code&gt;关联校验策略&lt;/strong&gt;, 再加上&lt;strong&gt;&lt;code&gt;token&lt;/code&gt;有效期滚动延期策略&lt;/strong&gt;,三道屏障保护你的身份不被黑客冒用.&lt;/p&gt;
+
+&lt;h2 id=&#34;合适和正确的验证码&#34;&gt;合适和正确的验证码&lt;/h2&gt;
+
+&lt;p&gt;一上来就给用户弹验证码未免也太不友好了,合适的做法是账户最近连续3次登陆都是错误登陆再弹出高强度的验证码.&lt;/p&gt;
+
+&lt;p&gt;这很好实现,只需一个字段就能带来好的体验.&lt;/p&gt;
+
+&lt;p&gt;毕竟正常的用户大部分时间都是一次登陆成功.&lt;/p&gt;
+
+&lt;p&gt;用户使用过的验证码一定不能再次用来验证,要保证每次身份验证都是一个新的验证码.&lt;/p&gt;
+
+&lt;p&gt;不能拿一次对的验证码去重复尝试验证用户名,密码,否则等同于没有验证码.&lt;/p&gt;
+
+&lt;p&gt;即便使用了验证码,也是不可信的,现在的打码平台已近非常成熟了,简单的验证码也很容易做到机器识别了.&lt;/p&gt;
+
+&lt;p&gt;还应该限制用户登陆错误次数,一小时10次或一天30次不能再多了.&lt;/p&gt;
+
+&lt;h2 id=&#34;登陆和找回密码返回合适的信息&#34;&gt;登陆和找回密码返回合适的信息&lt;/h2&gt;
+
+&lt;p&gt;别再返回&lt;code&gt;用户名不存在&lt;/code&gt;了,或者&lt;code&gt;密码不正确&lt;/code&gt;了&lt;/p&gt;
+
+&lt;p&gt;为了这一点点的客户体验,你将带来巨大的安全隐患.你的网站存在用户遍历漏洞.&lt;/p&gt;
+
+&lt;p&gt;黑客可以很轻松的知道一个用户有没有在你的网站注册.&lt;/p&gt;
+
+&lt;p&gt;黑客手中有大量的泄漏账户信息,一些有价值的账户就值得黑客深挖,通过此漏洞,黑客很容易找到哪些用户都有哪些账户.&lt;/p&gt;
+
+&lt;p&gt;更可怕的是,大部分人不同网站的密码是相同的.也许你的网站安全性很好,还使用了https,但是黑客只要攻破了防线最弱的那个网站拿到用户的密码,你所说的安全也就全瓦解了.&lt;/p&gt;
+
+&lt;p&gt;因此给出&lt;code&gt;用户名或密码错误&lt;/code&gt;和找回密码每次都需要高强度验证码,并且返回&lt;code&gt;如果你已注册,邮件已发送到您注册时的邮箱&lt;/code&gt;才是有效安全的方式.&lt;/p&gt;
+
+&lt;h2 id=&#34;可怕的撞库&#34;&gt;可怕的撞库&lt;/h2&gt;
+
+&lt;p&gt;大部分人不同网站的密码相同,作为使用者个人值得注意,需要为每个网站设置不同的密码,防止一个的密码泄露,其他网站的密码也不安全了.&lt;/p&gt;
+
+&lt;p&gt;作为系统设计者,也需要注意,最基本的密码不能明文存储,其次密码需要加盐存储.再者所有用户的盐不能都是一个,需要每个用户都有自己的盐.&lt;/p&gt;
+
+&lt;p&gt;做到即使被脱库,也不能直接得到密码,即使观测所有密文和盐,知道部分用户的明文密码,也不能拆解出其他用户的明文密码.(这就需要每个用户有自己的盐)&lt;/p&gt;
+
+&lt;p&gt;密文切记不要直接md5,或者md5加固定盐.这些都已不在安全.&lt;/p&gt;
+
+&lt;h2 id=&#34;修改关键信息时必须验证&#34;&gt;修改关键信息时必须验证&lt;/h2&gt;
+
+&lt;p&gt;为避免黑客盗取了身份认证信息,冒用正常用户,去修改邮箱,手机号等关键信息.&lt;/p&gt;
+
+&lt;p&gt;在修改之前一定需要二次验证.&lt;/p&gt;
+
+&lt;p&gt;否则手机号被修改,您账户里的财产在做变动时,验证码就发送到黑客修改过的手机上了,黑客顺利成章的就完成了交易.&lt;/p&gt;
+
+&lt;h2 id=&#34;邮箱和手机号已不在是有效凭据&#34;&gt;邮箱和手机号已不在是有效凭据&lt;/h2&gt;
+
+&lt;p&gt;即使使用手机号和邮箱来标示一个用户,那也不一定是正确的.&lt;/p&gt;
+
+&lt;p&gt;目前黑市上已经有很多成熟的产业链,黑客花少量的钱就能很快拥有数以万计的手机号和邮箱,能便捷的发送和接收验证码.&lt;/p&gt;
+
+&lt;p&gt;有利可图的地方就有黑客存在,在发放红利时须倍加小心.&lt;/p&gt;
+
+&lt;h2 id=&#34;手势解锁安全吗&#34;&gt;手势解锁安全吗&lt;/h2&gt;
+
+&lt;p&gt;大部分的手势解锁都是靠次数和时间限制,但是程序在客户端,黑客很容易修改程序配置文件,达到无限次尝试.&lt;/p&gt;
+
+&lt;p&gt;并且手势密码的验证大部分都是本地验证,意味着黑客根本不需要与服务器端交互,有很多方式攻破程序里的本地认证&lt;/p&gt;
+
+&lt;p&gt;因此手势密码只防君子,不妨小人,不要把它作为十分安全的验证,在做敏感操作时务必联网验证用户密码.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>use kvm</title>
@@ -211,6 +382,21 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 --hvm --dry-run
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;pre&gt;&lt;code&gt;virt-install \
+--name xp1 \
+--ram 1024 --vcpus 1 \
+--disk path=/data/iso/Deepin_Windows_LiteXP_v6.2_SP3.iso,device=cdrom \
+--disk path=/disk/kvm/winxp1,size=10,format=qcow2,bus=virtio,cache=writeback \
+--cdrom=/usr/share/virtio-win/virtio-win-0.1.126.iso \
+--os-type windows \
+--os-variant winxp \
+--bridge=br0,model=virtio \
+--accelerate \
+--graphics vnc,port=5999,listen=0.0.0.0 \
+--console pty,target_type=serial \
+--hvm --dry-run
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;出现&lt;code&gt;ERROR    不能混用 --graphics 和旧式的图形选项&lt;/code&gt;可能是需要去掉&lt;code&gt;--keymap&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;关于 加载 virtio 驱动可以参考  &lt;a href=&#34;http://www.ilanni.com/?p=5877&#34;&gt;http://www.ilanni.com/?p=5877&lt;/a&gt;&lt;/p&gt;
@@ -261,6 +447,17 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 &lt;p&gt;windows系统可使用 vncviewer (&lt;a href=&#34;http://share.suconghou.cn/bin/vncviewer.zip&#34;&gt;http://share.suconghou.cn/bin/vncviewer.zip&lt;/a&gt;) 连接&lt;/p&gt;
 
 &lt;p&gt;全屏下用F8键可唤出菜单.&lt;/p&gt;
+
+&lt;h3 id=&#34;修改相关&#34;&gt;修改相关&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;hostnamectl&lt;/code&gt; 可以查看主机相关信息,主机名,内核版本,64位等&lt;/p&gt;
+
+&lt;p&gt;只查看静态、瞬态或灵活主机名，分别使用&lt;code&gt;--static&lt;/code&gt;,&lt;code&gt;--transient&lt;/code&gt;或&lt;code&gt;--pretty&lt;/code&gt;选项&lt;/p&gt;
+
+&lt;p&gt;要同时修改所有三个主机名：静态、瞬态和灵活主机名：
+&lt;code&gt;hostnamectl set-hostname Linuxidc&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;hostname -I&lt;/code&gt; 可以获取所有网卡上配置的IP&lt;/p&gt;
 </description>
     </item>
     
@@ -766,6 +963,17 @@ jQuery(&amp;quot;form&amp;quot;).serializeObject(); //{username:&amp;quot;&amp;q
 }
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;h3 id=&#34;cookie操作&#34;&gt;Cookie操作&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;function setCookie(cookiename, cookievalue, hours)
+{
+	var date = new Date();
+	date.setTime(date.getTime() + Number(hours) * 3600 * 1000);
+	document.cookie = cookiename + &amp;quot;=&amp;quot; + cookievalue + &amp;quot;; path=/;expires = &amp;quot; + date.toGMTString();
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h3 id=&#34;用-google-analytics-统计js错误&#34;&gt;用&lt;code&gt;Google Analytics&lt;/code&gt;统计JS错误&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code&gt;(function(i,s,o,g,r,a,m){i[&#39;GoogleAnalyticsObject&#39;]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,&#39;script&#39;,&#39;https://www.google-analytics.com/analytics.js&#39;,&#39;ga&#39;);
@@ -949,9 +1157,12 @@ out of it. Please check the Makefile in case of doubts.
 &lt;pre&gt;&lt;code&gt;apt-get update &amp;amp;&amp;amp; apt-get install -y wget gcc g++ make libpcre++0v5 libpcre++-dev
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;pre&gt;&lt;code&gt;HAPROXY_VERSION=haproxy-1.6.9
+&lt;pre&gt;&lt;code&gt;yum update &amp;amp;&amp;amp; yum install wget gcc make
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;HAPROXY_VERSION=haproxy-1.7.0
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
-wget http://www.haproxy.org/download/1.6/src/${HAPROXY_VERSION}.tar.gz
+wget http://www.haproxy.org/download/1.7/src/${HAPROXY_VERSION}.tar.gz
 tar zxf ${HAPROXY_VERSION}.tar.gz
 cd ${HAPROXY_VERSION}
 export CFLAGS=&amp;quot;-O3&amp;quot;
@@ -963,7 +1174,7 @@ make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 -j$CPU_NUM &amp;amp;&amp;amp
 
 &lt;p&gt;在64位系统下编译32位需要&lt;code&gt;apt-get install gcc-multilib g++-multilib&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;我编译好的haproxy version 1.6.8&lt;/p&gt;
+&lt;p&gt;我编译好的haproxy version 1.7.0&lt;/p&gt;
 
 &lt;blockquote&gt;
 &lt;p&gt;64位 &lt;a href=&#34;http://share.suconghou.cn/bin/haproxy.xz&#34;&gt;http://share.suconghou.cn/bin/haproxy.xz&lt;/a&gt;&lt;/p&gt;
@@ -1072,6 +1283,31 @@ haproxy -f /etc/haproxy/haproxy.cfg -sf `cat /var/run/haproxy.pid`
 
 &lt;p&gt;配置文件参考 &lt;a href=&#34;https://github.com/chenzhiwei/linux/tree/master/haproxy&#34;&gt;https://github.com/chenzhiwei/linux/tree/master/haproxy&lt;/a&gt;&lt;/p&gt;
 
+&lt;p&gt;一份haproxy加速ss&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;global
+        pidfile   /var/run/haproxy.pid
+        ulimit-n  15000
+
+defaults
+        log global
+        mode    tcp
+        option  dontlognull
+        timeout connect 1000
+        timeout client  150000
+        timeout server  150000
+
+frontend ss-in
+        bind *:80
+        default_backend ss-out
+
+backend ss-out
+        server server1 208.81.202.208:443 maxconn 20480
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;haproxy -D -f /etc/haproxy/haproxy.cfg&lt;/code&gt;启动,参数&lt;code&gt;-D&lt;/code&gt;为goes daemon&lt;/p&gt;
+
 &lt;h2 id=&#34;升级-glibc-版本-最新发布-http-www-gnu-org-software-libc&#34;&gt;升级&lt;code&gt;glibc&lt;/code&gt;版本,最新发布 &lt;a href=&#34;http://www.gnu.org/software/libc/&#34;&gt;http://www.gnu.org/software/libc/&lt;/a&gt;&lt;/h2&gt;
 
 &lt;p&gt;所有版本见&lt;code&gt;http://mirror.hust.edu.cn/gnu/libc/&lt;/code&gt;&lt;/p&gt;
@@ -1086,7 +1322,7 @@ cd glibc-2.19
 mkdir build
 cd build
 ../configure
-make -j4&amp;amp;&amp;amp; make install
+make -j4 &amp;amp;&amp;amp; make install
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;见 &lt;a href=&#34;https://cnodejs.org/topic/56dc21f1502596633dc2c3dc&#34;&gt;https://cnodejs.org/topic/56dc21f1502596633dc2c3dc&lt;/a&gt;
@@ -1200,7 +1436,7 @@ fi
 
 &lt;h3 id=&#34;windows平台&#34;&gt;windows平台&lt;/h3&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/shadowsocks/Shadowsocks-3.3.4.zip&#34;&gt;Shadowsocks-3.3.4&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/shadowsocks/Shadowsocks-3.4.2.zip&#34;&gt;Shadowsocks-3.4.2&lt;/a&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;mac平台&#34;&gt;mac平台&lt;/h3&gt;
 
@@ -1208,7 +1444,7 @@ fi
 
 &lt;h3 id=&#34;android平台&#34;&gt;android平台&lt;/h3&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/shadowsocks/shadowsocks-nightly-3.2.7.apk&#34;&gt;shadowsocks-nightly-3.2.7&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/shadowsocks/shadowsocks-nightly-3.3.1.apk&#34;&gt;shadowsocks-nightly-3.3.1&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;服务端可以使用docker更方便 &lt;a href=&#34;https://hub.docker.com/r/suconghou/shadowsocks/&#34;&gt;shadowsocks docker&lt;/a&gt;&lt;/p&gt;
 </description>
@@ -1706,141 +1942,6 @@ ZLIB_ENCODING_DEFLATE 对应于ZLIB格式（注意不是纯DEFLATE格式）&lt;/
 &lt;p&gt;Unicode的中文字范围是u4e00-u9fa5，4e00对应的字是&amp;rdquo;一&amp;rdquo;,9fa5对应的汉字是&amp;rdquo;龥&amp;rdquo;&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;/[\x{4e00}-\x{9fa5}]/u&lt;/code&gt; 等同于 &lt;code&gt;/[一-龥]/u&lt;/code&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>shadowsocks libev</title>
-      <link>http://blog.suconghou.cn/post/shadowsocks-libev/</link>
-      <pubDate>Wed, 18 May 2016 17:37:16 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/post/shadowsocks-libev/</guid>
-      <description>
-
-&lt;h2 id=&#34;编译&#34;&gt;编译&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;yum update &amp;amp;&amp;amp; yum install -y zip unzip xz curl wget git gcc make zlib zlib-devel openssl openssl-devel
-git clone https://github.com/shadowsocks/shadowsocks-libev.git
-cd shadowsocks-libev
-./configure --enable-static=yes
-export CFLAGS=&amp;quot;-O3&amp;quot;
-make -j4 &amp;amp;&amp;amp; make install
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;在alpine里静态编译&lt;/p&gt;
-
-&lt;p&gt;需要将生成的&lt;code&gt;./src/Makefile&lt;/code&gt;修改&lt;code&gt;LDFLAGS = -all-static&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;apk update &amp;amp;&amp;amp; apk upgrade
-apk --update add gcc g++ make curl zlib-dev pcre-dev openssl-dev linux-headers asciidoc xmlto
-cd /tmp
-SHADOWSOCKS_LIBEV_VERSION=2.5.6
-CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
-curl -sSL https://github.com/shadowsocks/shadowsocks-libev/archive/v${SHADOWSOCKS_LIBEV_VERSION}.tar.gz |  tar xz
-cd shadowsocks-libev-${SHADOWSOCKS_LIBEV_VERSION}
-export CFLAGS=&amp;quot;-O3&amp;quot;
-./configure
-LDFLAGS=&amp;quot;-all-static&amp;quot; make -j$CPU_NUM &amp;amp;&amp;amp; make install
-strip -s /usr/local/bin/ss-server
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;启动server端&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;ss-server -s 0.0.0.0 -p 443 -k 123456 -m rc4-md5 -t 300 -d 8.8.8.8 -u&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;with Linux kernel &amp;gt; 3.7.0&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;ss-server -s 0.0.0.0 -p 443 -k 123456 -m rc4-md5 -t 300 -d 8.8.8.8 --fast-open -u&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;后台运行:&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;ss-server -s 0.0.0.0 -p 443 -k 123456 -m rc4-md5 -t 300 -d 8.8.8.8 -u &amp;gt; /tmp/ss.log 2&amp;gt;&amp;amp;1 &amp;amp;&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;GO语言版本的也十分方便哦&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;这里提供一个基于&lt;code&gt;docker&lt;/code&gt;的go语言版本,&lt;a href=&#34;https://hub.docker.com/r/suconghou/shadowsocks/&#34;&gt;docker go shadowsocks&lt;/a&gt;,只有3.3MB
-十分方便&lt;/p&gt;
-
-&lt;p&gt;同时也含有libev版本的可供选择&lt;/p&gt;
-
-&lt;h2 id=&#34;网络内核参数优化&#34;&gt;网络内核参数优化&lt;/h2&gt;
-
-&lt;p&gt;修改&lt;code&gt;ulimit&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;ulimit -n&lt;/code&gt; 可以查看当前的&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;vim /etc/security/limits.conf&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;添加一下两行&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;* soft nofile 51200
-* hard nofile 51200
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;KVM 和 XEN 可以修改内核,明显提升网络环境差的情况下的表现,使用&lt;code&gt;hybla&lt;/code&gt;控制算法,效果明显,能提速30%&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;/etc/sysctl.conf&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;net.core.somaxconn = 4096
-net.netfilter.nf_conntrack_max = 64000
-fs.file-max = 51200
-#提高整个系统的文件限制
-net.ipv4.tcp_syncookies = 1
-#表示开启SYN Cookies。当出现SYN等待队列溢出时，启用cookies来处理，可防范少量SYN攻击，默认为0，表示关闭；
-net.ipv4.tcp_tw_reuse = 1
-#表示开启重用。允许将TIME-WAIT sockets重新用于新的TCP连接，默认为0，表示关闭；
-net.ipv4.tcp_tw_recycle = 0
-#表示开启TCP连接中TIME-WAIT sockets的快速回收，默认为0，表示关闭；
-#为了对NAT设备更友好，建议设置为0。
-net.ipv4.tcp_fin_timeout = 30
-#修改系統默认的 TIMEOUT 时间。
-net.ipv4.tcp_keepalive_time = 1200
-#表示当keepalive起用的时候，TCP发送keepalive消息的频度。缺省是2小时，改为20分钟。
-net.ipv4.ip_local_port_range = 10000 65000 #表示用于向外连接的端口范围。缺省情况下很小：32768到61000，改为10000到65000。（注意：这里不要将最低值设的太低，否则可能会占用掉正常的端口！）
-net.ipv4.tcp_max_syn_backlog = 8192
-#表示SYN队列的长度，默认为1024，加大队列长度为8192，可以容纳更多等待连接的网络连接数。
-net.ipv4.tcp_max_tw_buckets = 5000
-#表示系统同时保持TIME_WAIT的最大数量，如果超过这个数字，TIME_WAIT将立刻被清除并打印警告信息。
-#额外的，对于内核版本新于**3.7.1**的，我们可以开启tcp_fastopen：
-net.ipv4.tcp_fastopen = 3
-
-#increase TCP max buffer size settable using setsockopt()
-net.core.rmem_max = 67108864
-net.core.wmem_max = 67108864
-#increase Linux autotuning TCP buffer limit
-net.ipv4.tcp_rmem = 4096 87380 67108864
-net.ipv4.tcp_wmem = 4096 65536 67108864
-#increase the length of the processor input queue
-net.core.netdev_max_backlog = 250000
-#recommended for hosts with jumbo frames enabled
-net.ipv4.tcp_mtu_probing=1
-#使用拥塞算法Hybla
-net.ipv4.tcp_congestion_control = hybla
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;然后&lt;code&gt;sysctl -p&lt;/code&gt;使之生效&lt;/p&gt;
-
-&lt;p&gt;OPENVZ只能修改&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;net.core.somaxconn = 4096
-net.ipv4.tcp_syncookies = 1
-net.netfilter.nf_conntrack_max = 64000
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;使用kcptun加速&lt;/p&gt;
-
-&lt;p&gt;服务器上&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;alias kcptun_start=&#39;server_linux_amd64 -t 127.0.0.1:443 -l :4433 -sndwnd 2048 -rcvwnd 2048 -mode fast2 &amp;gt; /var/log/kcptun.log 2&amp;gt;&amp;amp;1 &amp;amp; &#39;
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;客户机上&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;alias kcptun_start=&#39;kcptun_client -r 192.243.115.210:4433 -l :4433 -sndwnd 2048 -rcvwnd 2048 -mode fast2 &amp;gt; /var/log/kcptun.log 2&amp;gt;&amp;amp;1 &amp;amp;&#39;
-
-&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
