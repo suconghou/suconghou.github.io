@@ -176,6 +176,21 @@ String.prototype.rtrim=function(){return this.replace(/(\s*$)/g,&quot;&quot;); }
 }
 </code></pre>
 
+<h3 id="判断页面滚动到底部和顶部">判断页面滚动到底部和顶部</h3>
+
+<pre><code>$(document).scroll(function()
+{
+	if ($(document).scrollTop()&lt;=0)
+	{
+		console.log(&quot;滚动条已经到达顶部为0&quot;);
+	}
+	if ($(document).scrollTop() &gt;= $(document).height() - $(window).height())
+	{
+		console.log(&quot;滚动条已经到达底部为&quot; + $(document).scrollTop());
+	}
+});
+</code></pre>
+
 <h3 id="一些正则验证">一些正则验证</h3>
 
 <p>验证邮箱</p>

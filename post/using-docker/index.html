@@ -72,13 +72,43 @@ Windows 32bit client binary: <a href="https://get.docker.com/builds/Windows/i386
 
 <p><a href="https://docs.docker.com/engine/installation/linux/centos/">官方安装教程</a></p>
 
+<blockquote>
+<p>使用二进制方式安装的docker不支持<code>devicemapper</code>驱动,yum安装的支持.
+yum安装的版本落后于官方最新版,可以使用官方的yum源</p>
+</blockquote>
+
+<pre><code>sudo tee /etc/yum.repos.d/docker.repo &lt;&lt;-'EOF'
+[dockerrepo]
+name=Docker Repository
+baseurl=https://yum.dockerproject.org/repo/main/centos/$releasever/
+enabled=1
+gpgcheck=1
+gpgkey=https://yum.dockerproject.org/gpg
+EOF
+sudo yum install docker-engine
+</code></pre>
+
+<p>设置开机启动并启动</p>
+
+<pre><code>sudo systemctl enable docker.service
+sudo systemctl start docker
+</code></pre>
+
+<p>清华大学镜像源提供docker安装镜像与说明</p>
+
+<p><code>https://mirror.tuna.tsinghua.edu.cn/help/docker/</code></p>
+
 <p>或者<code>http://get.daocloud.io/docker/builds/</code>查看</p>
 
 <p>阿里云也提供安装脚本 见<code>http://mirrors.aliyun.com/help/docker-engine</code>,</p>
 
 <p>阿里云的软件源可以使用内网源不占用外网流量</p>
 
-<p>以上<code>get.docker.com</code>都可以使用<code>get.daocloud.io/docker</code>代替,使用国内镜像加速</p>
+<p>然后<code>yum info docker-engine</code>可以看到官方的docker版本.执行<code>yum install docker-engine</code>安装</p>
+
+<p><code>sudo service docker start</code> 启动服务,开机启动<code>sudo chkconfig docker on</code></p>
+
+<p>如果你以前采用<code>yum install docker</code>安装过非官方源里的docker,需要先卸载<code>yum remove docker*</code></p>
 
 <p>docker采用Go语言编写,编译以后生成一个无依赖的可执行文件.</p>
 
@@ -127,6 +157,28 @@ docker 分为两部分,一分部是docker daemon , 一部分是docker client</p>
 <pre><code>ExecStart=/usr/bin/dockerd -H unix:///var/run/docker.sock -H tcp://0.0.0.0:2376 --tlsverify --tlscacert=/root/.docker/ca.pem --tlscert=/root/.docker/cert.pem --tlskey=/root/.docker/key.pem -s devicemapper --storage-opt dm.datadev=/dev/centos/docker-data --storage-opt dm.metadatadev=/dev/centos/docker-metadata
 </code></pre>
 
+<p>最好是将这些配置写入<code>/etc/docker/daemon.json</code> 防止更新docker覆盖配置文件</p>
+
+<pre><code>{
+    &quot;registry-mirrors&quot;: [
+        &quot;https://docker.mirrors.ustc.edu.cn&quot;
+    ],
+    &quot;hosts&quot;: [
+        &quot;unix:///var/run/docker.sock&quot;,
+        &quot;tcp://0.0.0.0:2376&quot;
+    ],
+    &quot;storage-driver&quot;: &quot;devicemapper&quot;,
+    &quot;storage-opts&quot;: [
+        &quot;dm.datadev=/dev/centos/docker-data&quot;,
+        &quot;dm.metadatadev=/dev/centos/docker-metadata&quot;
+    ],
+    &quot;tlsverify&quot;: true,
+    &quot;tlscacert&quot;: &quot;/root/.docker/ca.pem&quot;,
+    &quot;tlscert&quot;: &quot;/root/.docker/cert.pem&quot;,
+    &quot;tlskey&quot;: &quot;/root/.docker/key.pem&quot;
+}
+</code></pre>
+
 <p>client端配置下面这几个变量就好</p>
 
 <pre><code>export DOCKER_HOST=tcp://some.domain:2376
@@ -162,34 +214,6 @@ sudo systemctl restart docker
 </code></pre>
 
 <p><a href="https://hub.docker.com/explore/">官方Docker镜像一览</a></p>
-
-<blockquote>
-<p>还可以使用<code>yum update &amp;&amp; yum install docker</code> 安装docker,使用二进制方式安装的docker不支持<code>devicemapper</code>驱动,yum安装的支持.
-yum安装的版本落后于官方最新版,可以使用官方的yum源</p>
-</blockquote>
-
-<pre><code>sudo tee /etc/yum.repos.d/docker.repo &lt;&lt;-'EOF'
-[dockerrepo]
-name=Docker Repository
-baseurl=https://yum.dockerproject.org/repo/main/centos/$releasever/
-enabled=1
-gpgcheck=1
-gpgkey=https://yum.dockerproject.org/gpg
-EOF
-</code></pre>
-
-<p>清华大学镜像源提供docker安装镜像与说明</p>
-
-<p><code>https://mirror.tuna.tsinghua.edu.cn/help/docker/</code></p>
-
-<p>阿里云也提供安装脚本
-<code>http://mirrors.aliyun.com/help/docker-engine</code></p>
-
-<p>然后<code>yum info docker-engine</code>可以看到官方的docker版本.执行<code>yum install docker-engine</code>安装</p>
-
-<p><code>sudo service docker start</code> 启动服务,开机启动<code>sudo chkconfig docker on</code></p>
-
-<p>如果你以前采用<code>yum install docker</code>安装过非官方源里的docker,需要先卸载<code>yum remove docker*</code></p>
 
 <p>下载官方ubuntu <code>docker pull ubuntu</code></p>
 
@@ -584,6 +608,10 @@ echo &quot;&quot; &gt; $(docker inspect --format='{{.LogPath}}' &lt;container_na
 <p>使用<code>docker -m</code>可以限制内存的使用,这个是直到程序内存使用超过此限定的2倍,才会因OOM而被进程杀掉.容器仍会正常运行.</p>
 
 <p>要使超过限定大小如100,就杀死,可以 <code>-m 100m --memory-swap=100m</code></p>
+
+<h2 id="问题排查">问题排查</h2>
+
+<p><code>systemctl status docker.service -l</code> 可查看docker工作状态,为什么启动失败等</p>
 
 <h2 id="coreos">CoreOs</h2>
 

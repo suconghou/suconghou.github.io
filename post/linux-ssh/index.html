@@ -165,14 +165,16 @@ GatewayPorts yes
 
 <h3 id="编译openssh">编译openssh</h3>
 
+<p><a href="http://www.openssh.com/ftp.html">http://www.openssh.com/ftp.html</a></p>
+
 <p>在alpine中编译openssh,镜像地址 <a href="http://ftp.jaist.ac.jp/pub/OpenBSD/OpenSSH/portable/">http://ftp.jaist.ac.jp/pub/OpenBSD/OpenSSH/portable/</a></p>
 
 <p>编译完成后得到一些工具,如<code>scp</code>,<code>sftp-server</code>,<code>ssh</code>,<code>sshd</code>等等</p>
 
 <pre><code>apk update &amp;&amp; apk upgrade
-apk --update add make gcc g++ zlib-dev openssl-dev
+apk --update add make curl gcc g++ zlib-dev openssl-dev
 cd /tmp
-OPENSSH_VERSION=openssh-7.3p1
+OPENSSH_VERSION=openssh-7.4p1
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
 curl http://ftp.jaist.ac.jp/pub/OpenBSD/OpenSSH/portable/${OPENSSH_VERSION}.tar.gz | tar xz
 cd ${OPENSSH_VERSION}

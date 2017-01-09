@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>苏苏的博客</title>
+    <title>Ssh on 苏苏的博客</title>
     <link>http://blog.suconghou.cn/tags/ssh/index.xml</link>
-    <description>Recent content on 苏苏的博客</description>
+    <description>Recent content in Ssh on 苏苏的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <atom:link href="http://blog.suconghou.cn/tags/ssh/index.xml" rel="self" type="application/rss+xml" />
@@ -135,14 +135,16 @@ GatewayPorts yes
 
 &lt;h3 id=&#34;编译openssh&#34;&gt;编译openssh&lt;/h3&gt;
 
+&lt;p&gt;&lt;a href=&#34;http://www.openssh.com/ftp.html&#34;&gt;http://www.openssh.com/ftp.html&lt;/a&gt;&lt;/p&gt;
+
 &lt;p&gt;在alpine中编译openssh,镜像地址 &lt;a href=&#34;http://ftp.jaist.ac.jp/pub/OpenBSD/OpenSSH/portable/&#34;&gt;http://ftp.jaist.ac.jp/pub/OpenBSD/OpenSSH/portable/&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;编译完成后得到一些工具,如&lt;code&gt;scp&lt;/code&gt;,&lt;code&gt;sftp-server&lt;/code&gt;,&lt;code&gt;ssh&lt;/code&gt;,&lt;code&gt;sshd&lt;/code&gt;等等&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;apk update &amp;amp;&amp;amp; apk upgrade
-apk --update add make gcc g++ zlib-dev openssl-dev
+apk --update add make curl gcc g++ zlib-dev openssl-dev
 cd /tmp
-OPENSSH_VERSION=openssh-7.3p1
+OPENSSH_VERSION=openssh-7.4p1
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
 curl http://ftp.jaist.ac.jp/pub/OpenBSD/OpenSSH/portable/${OPENSSH_VERSION}.tar.gz | tar xz
 cd ${OPENSSH_VERSION}

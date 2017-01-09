@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.17" />
+	<meta name="generator" content="Hugo 0.18.1" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -166,6 +166,18 @@ net.netfilter.nf_conntrack_max = 64000
 <pre><code>alias kcptun_start='kcptun_client -r 192.243.115.210:4433 -l :4433 -sndwnd 2048 -rcvwnd 2048 -mode fast2 &gt; /var/log/kcptun.log 2&gt;&amp;1 &amp;'
 
 </code></pre>
+
+<h2 id="python-版本">python 版本</h2>
+
+<p>升级pip本身</p>
+
+<pre><code>pip install --upgrade pip
+</code></pre>
+
+<pre><code>pip install shadowsocks --upgrade
+</code></pre>
+
+<p><code>--upgrade 同 -U</code> 代表如果已安装则升级到最新版</p>
 
 			</div>
 		</div>

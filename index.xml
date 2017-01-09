@@ -858,6 +858,21 @@ String.prototype.rtrim=function(){return this.replace(/(\s*$)/g,&amp;quot;&amp;q
 }
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;h3 id=&#34;判断页面滚动到底部和顶部&#34;&gt;判断页面滚动到底部和顶部&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;$(document).scroll(function()
+{
+	if ($(document).scrollTop()&amp;lt;=0)
+	{
+		console.log(&amp;quot;滚动条已经到达顶部为0&amp;quot;);
+	}
+	if ($(document).scrollTop() &amp;gt;= $(document).height() - $(window).height())
+	{
+		console.log(&amp;quot;滚动条已经到达底部为&amp;quot; + $(document).scrollTop());
+	}
+});
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h3 id=&#34;一些正则验证&#34;&gt;一些正则验证&lt;/h3&gt;
 
 &lt;p&gt;验证邮箱&lt;/p&gt;

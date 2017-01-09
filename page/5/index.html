@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.17" />
+	<meta name="generator" content="Hugo 0.18.1" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -375,6 +375,9 @@ ps -o rss,vsz,pid,ppid,time,etime,args
 <p>如果是其他端口可以-p指定端口
 <code>ssh-copy-id -i ~/.ssh/id_rsa.pub -p 26671 root@host</code></p>
 
+<p>使用指定私钥登陆
+<code>ssh –i  id_rsa root@host</code></p>
+
 <h2 id="pgrep">pgrep</h2>
 
 <p>根据名字或其他属性查询出进程的PID</p>
@@ -384,6 +387,8 @@ ps -o rss,vsz,pid,ppid,time,etime,args
 <h2 id="pkill">pkill</h2>
 
 <p>和<code>pgrep</code>类似,不同的是向进程发送信号,默认发送<code>SIGTERM</code>信号,查看都有哪些信号可用,可以使用<code>kill -l</code>查看</p>
+
+<p>pkill -f &ldquo;php index.php em&rdquo;</p>
 
 <p>类似<code>pkill</code>的命令是<code>killall</code>,后面都是可以直接加进程名字批量杀死进程</p>
 
@@ -801,10 +806,12 @@ echo &quot;Asia/Shanghai&quot; &gt; /etc/timezone
 
 <p><code>/etc/resolv.conf</code>内配置</p>
 
+<p>国外可以配置</p>
+
 <pre><code>nameserver 8.8.8.8
-nameserver 74.82.42.42
 nameserver 4.2.2.1
 nameserver 8.8.4.4
+nameserver 4.2.2.2
 </code></pre>
 
 <h2 id="测试vps宽带">测试VPS宽带</h2>
@@ -858,6 +865,8 @@ nameserver 8.8.4.4
 <p>vgdisplay 查看VG</p>
 
 <p>lvdisplay 查看LV</p>
+
+<p><code>pvscan</code> <code>vgscan</code>  <code>lvscan</code> <code>fdisk -l</code></p>
 
 <p>-L：指定LV的大小 -n：指定LV的名。Vo1Group00：表示从这个VG中划分LV；</p>
 
@@ -918,6 +927,28 @@ mtr</p>
 <p>rtorrent aria2c
 lftp
 ack是一个perl脚本，是grep的一个可选替换品</p>
+
+<h2 id="logs">logs</h2>
+
+<p>系统log</p>
+
+<p><code>/var/log/boot.log</code> 系统启动的log</p>
+
+<p><code>/var/log/yum.log</code> yum执行的log</p>
+
+<p><code>/var/log/messages</code> 系统实时log</p>
+
+<p><code>/var/log/cron</code> crontab 的log</p>
+
+<p><code>/var/log/secure</code> sshd 的log</p>
+
+<p>这些log的配置主要由<code>/etc/rsyslog.conf</code>配置</p>
+
+<p><code>grep &quot;Failed password for&quot; /var/log/secure</code> 查看最近登录失败的请求</p>
+
+<p><code>grep &quot;Failed password for&quot; /var/log/secure | awk '{print $11}' | sort | uniq -c | sort -nr</code></p>
+
+<p>查看最近登录失败的统计</p>
 
 			</div>
 		</div>
@@ -1135,6 +1166,16 @@ deb-src http://mirrors.ustc.edu.cn/raspbian/raspbian/ wheezy main non-free contr
 <p><code>http://blog.laolilin.com/posts/2016/10/config_raspberry_pi.html#.WBR2huF96Rs</code></p>
 
 <p><code>https://www.zybuluo.com/yangxuan/note/321467</code></p>
+
+<h2 id="bash-乱码设置">bash 乱码设置</h2>
+
+<p><code>env|grep LANG</code> 查看当前编码</p>
+
+<p>清除 <code>unset LANG</code></p>
+
+<p><code>export LANG=zh_CN.UTF-8</code></p>
+
+<p>sudo apt-get install zhcon</p>
 
 			</div>
 		</div>
