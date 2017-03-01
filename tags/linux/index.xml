@@ -512,13 +512,19 @@ fi
 
 &lt;h2 id=&#34;时间同步&#34;&gt;时间同步&lt;/h2&gt;
 
+&lt;p&gt;&lt;a href=&#34;http://www.pool.ntp.org/zh/&#34;&gt;http://www.pool.ntp.org/zh/&lt;/a&gt;&lt;/p&gt;
+
 &lt;p&gt;&lt;a href=&#34;http://www.ntp.org.cn/&#34;&gt;http://www.ntp.org.cn/&lt;/a&gt; 提供 ntp server&lt;/p&gt;
 
 &lt;p&gt;使用 &lt;code&gt;sudo ntpdate us.ntp.org.cn&lt;/code&gt; 来同步时间.&lt;/p&gt;
 
+&lt;p&gt;&lt;code&gt;time.pool.aliyun.com&lt;/code&gt;  &lt;code&gt;time.asia.apple.com&lt;/code&gt;&lt;/p&gt;
+
 &lt;p&gt;/usr/bin/tzselect 来设置时区&lt;/p&gt;
 
 &lt;p&gt;Alpine Linux 3.4  &lt;code&gt;ntpd -d -n -q -p us.ntp.org.cn&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;还可以&lt;code&gt;sudo date -s &amp;quot;2017-02-08 21:28:00&amp;quot;&lt;/code&gt;手动设置时间&lt;/p&gt;
 
 &lt;p&gt;alpine中设置时区执行&lt;/p&gt;
 
@@ -717,6 +723,20 @@ ack是一个perl脚本，是grep的一个可选替换品&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;grep &amp;quot;Failed password for&amp;quot; /var/log/secure | awk &#39;{print $11}&#39; | sort | uniq -c | sort -nr&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;查看最近登录失败的统计&lt;/p&gt;
+
+&lt;h3 id=&#34;查看进程的线程&#34;&gt;查看进程的线程&lt;/h3&gt;
+
+&lt;p&gt;在ps命令中，“-T”选项可以开启线程查看。 &lt;code&gt;ps -T aux&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;ps -T -p &lt;pid&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;top -H&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;在top运行时，你也可以通过按“H”键将线程查看模式切换为开或关。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;top -H -p &amp;lt;pid&amp;gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;top -H -b -n1&lt;/code&gt;&lt;/p&gt;
 </description>
     </item>
     
@@ -867,15 +887,7 @@ make -j$CPU_NUM &amp;amp;&amp;amp; make install
 
 &lt;p&gt;我编译好的二进制文件,能直接用于alpine系统&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/bin/ssh.xz&#34;&gt;ssh&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/bin/sshd.xz&#34;&gt;sshd&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;编译出来的这些工具的合集&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/bin/sshbin.tar.gz&#34;&gt;sshbin&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/bin/sshtool.tar.gz&#34;&gt;sshtool&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/bin/sshd.xz&#34;&gt;sshd&lt;/a&gt;  包含 sshd,与ssh-keygen&lt;/p&gt;
 
 &lt;p&gt;配合Linux&lt;code&gt;adduser&lt;/code&gt;,可以ssh到docker中&lt;/p&gt;
 
@@ -1027,6 +1039,12 @@ axel &lt;a href=&#34;ftp://ftp.{us,uk,br,fr}.kernel.org/pub/linux/kernel/v2.6/pa
 &lt;p&gt;&lt;code&gt;aria2c -s 30 -c -o localfilename http://xx.com/downloadfile&lt;/code&gt; 30个线程分段下载,存储为localfilename,并断点续传&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;aria2c file1.torrent file2.torrent&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;On CentOS 7.2.1511, I was able to install it through the EPEL repository:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;yum install epel-release -y
+yum install aria2 -y
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     

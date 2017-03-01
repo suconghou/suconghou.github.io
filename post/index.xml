@@ -1001,6 +1001,14 @@ window.addEventListener(&#39;error&#39;, function (err)
 
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;h3 id=&#34;并发发送ajax&#34;&gt;并发发送ajax&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;$.when($.get(&#39;assets/misc/1.json&#39;), $.get(&#39;assets/misc/2.json&#39;)).then(function(r1, r2)
+{
+    console.log(r1[0].message + &amp;quot; &amp;quot; + r2[0].message);
+})
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;&lt;code&gt;UA-xxx-1&lt;/code&gt;使用自己的统计ID&lt;/p&gt;
 
 &lt;h3 id=&#34;fetch跨域带cookie&#34;&gt;Fetch跨域带cookie&lt;/h3&gt;

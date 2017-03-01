@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.18.1" />
+	<meta name="generator" content="Hugo 0.19" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -744,13 +744,19 @@ fi
 
 <h2 id="时间同步">时间同步</h2>
 
+<p><a href="http://www.pool.ntp.org/zh/">http://www.pool.ntp.org/zh/</a></p>
+
 <p><a href="http://www.ntp.org.cn/">http://www.ntp.org.cn/</a> 提供 ntp server</p>
 
 <p>使用 <code>sudo ntpdate us.ntp.org.cn</code> 来同步时间.</p>
 
+<p><code>time.pool.aliyun.com</code>  <code>time.asia.apple.com</code></p>
+
 <p>/usr/bin/tzselect 来设置时区</p>
 
 <p>Alpine Linux 3.4  <code>ntpd -d -n -q -p us.ntp.org.cn</code></p>
+
+<p>还可以<code>sudo date -s &quot;2017-02-08 21:28:00&quot;</code>手动设置时间</p>
 
 <p>alpine中设置时区执行</p>
 
@@ -950,6 +956,20 @@ ack是一个perl脚本，是grep的一个可选替换品</p>
 
 <p>查看最近登录失败的统计</p>
 
+<h3 id="查看进程的线程">查看进程的线程</h3>
+
+<p>在ps命令中，“-T”选项可以开启线程查看。 <code>ps -T aux</code></p>
+
+<p>ps -T -p <pid></p>
+
+<p><code>top -H</code></p>
+
+<p>在top运行时，你也可以通过按“H”键将线程查看模式切换为开或关。</p>
+
+<p><code>top -H -p &lt;pid&gt;</code></p>
+
+<p><code>top -H -b -n1</code></p>
+
 			</div>
 		</div>
 		
@@ -986,6 +1006,8 @@ root 密码 centos
 <p>树莓派2版254M</p>
 
 <h3 id="archlinux">ArchLinux</h3>
+
+<p><a href="https://archlinuxarm.org/">https://archlinuxarm.org/</a></p>
 
 <p>树莓派1 <a href="https://archlinuxarm.org/platforms/armv6/raspberry-pi">https://archlinuxarm.org/platforms/armv6/raspberry-pi</a></p>
 
@@ -1037,12 +1059,6 @@ ls -lh
 <p>mac osx会默认追加一个.dmg,这个没有影响,然后就可以使用dd写入这个img文件了.</p>
 
 <p><code>diskutil eject /dev/disk1</code> 弹出USB,注意和卸载(<code>unmountdisk</code>)是不同的</p>
-
-<p>除了OSMC默认皮肤,还有一些好看的皮肤推荐</p>
-
-<p>1.<a href="http://forum.kodi.tv/showthread.php?tid=187071">Eminence</a></p>
-
-<p>2.<a href="http://forum.kodi.tv/showthread.php?tid=214146">Bello</a> 看github,支持中文</p>
 
 <p><a href="http://forum.kodi.tv/forumdisplay.php?fid=26">官方论坛</a></p>
 
@@ -1148,6 +1164,15 @@ deb-src http://mirrors.ustc.edu.cn/raspbian/raspbian/ wheezy main non-free contr
 <p>这样树莓派更新软件就会使用中国科学技术大学的镜像源，从而大大提高更新速度，要使用其他的软件源，根据以上代码就行修改。</p>
 
 <h2 id="关于各种派的性能比较">关于各种派的性能比较</h2>
+
+<p>树莓派3仅仅插单个tf卡一般功率为2.5W 树莓派2更少</p>
+
+<p>每度电0.5元,一年不间断运行.按此计算 一年电费</p>
+
+<pre><code>2.5*24*365/1000*0.5=10.95
+</code></pre>
+
+<p>不足一顿午饭钱,相当于200W的台式机不间断工作5天</p>
 
 <p><a href="https://www.zhihu.com/question/37202806">https://www.zhihu.com/question/37202806</a></p>
 

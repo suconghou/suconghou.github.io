@@ -155,15 +155,7 @@ make -j$CPU_NUM &amp;amp;&amp;amp; make install
 
 &lt;p&gt;我编译好的二进制文件,能直接用于alpine系统&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/bin/ssh.xz&#34;&gt;ssh&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/bin/sshd.xz&#34;&gt;sshd&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;编译出来的这些工具的合集&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/bin/sshbin.tar.gz&#34;&gt;sshbin&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/bin/sshtool.tar.gz&#34;&gt;sshtool&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/bin/sshd.xz&#34;&gt;sshd&lt;/a&gt;  包含 sshd,与ssh-keygen&lt;/p&gt;
 
 &lt;p&gt;配合Linux&lt;code&gt;adduser&lt;/code&gt;,可以ssh到docker中&lt;/p&gt;
 

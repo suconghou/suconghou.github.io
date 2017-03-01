@@ -92,6 +92,12 @@ axel &lt;a href=&#34;ftp://ftp.{us,uk,br,fr}.kernel.org/pub/linux/kernel/v2.6/pa
 &lt;p&gt;&lt;code&gt;aria2c -s 30 -c -o localfilename http://xx.com/downloadfile&lt;/code&gt; 30个线程分段下载,存储为localfilename,并断点续传&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;aria2c file1.torrent file2.torrent&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;On CentOS 7.2.1511, I was able to install it through the EPEL repository:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;yum install epel-release -y
+yum install aria2 -y
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     

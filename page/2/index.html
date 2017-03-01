@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.18.1" />
+	<meta name="generator" content="Hugo 0.19" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -319,6 +319,14 @@ window.addEventListener('error', function (err)
     ga('send', 'event', 'JavaScript Error', err.message, location.href+' =&gt; '+err.filename + lineAndColumnInfo + ' -&gt; ' +  navigator.userAgent, 0, true );
 });
 
+</code></pre>
+
+<h3 id="并发发送ajax">并发发送ajax</h3>
+
+<pre><code>$.when($.get('assets/misc/1.json'), $.get('assets/misc/2.json')).then(function(r1, r2)
+{
+    console.log(r1[0].message + &quot; &quot; + r2[0].message);
+})
 </code></pre>
 
 <p><code>UA-xxx-1</code>使用自己的统计ID</p>

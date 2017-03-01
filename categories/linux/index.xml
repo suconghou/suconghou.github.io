@@ -512,13 +512,19 @@ fi
 
 &lt;h2 id=&#34;时间同步&#34;&gt;时间同步&lt;/h2&gt;
 
+&lt;p&gt;&lt;a href=&#34;http://www.pool.ntp.org/zh/&#34;&gt;http://www.pool.ntp.org/zh/&lt;/a&gt;&lt;/p&gt;
+
 &lt;p&gt;&lt;a href=&#34;http://www.ntp.org.cn/&#34;&gt;http://www.ntp.org.cn/&lt;/a&gt; 提供 ntp server&lt;/p&gt;
 
 &lt;p&gt;使用 &lt;code&gt;sudo ntpdate us.ntp.org.cn&lt;/code&gt; 来同步时间.&lt;/p&gt;
 
+&lt;p&gt;&lt;code&gt;time.pool.aliyun.com&lt;/code&gt;  &lt;code&gt;time.asia.apple.com&lt;/code&gt;&lt;/p&gt;
+
 &lt;p&gt;/usr/bin/tzselect 来设置时区&lt;/p&gt;
 
 &lt;p&gt;Alpine Linux 3.4  &lt;code&gt;ntpd -d -n -q -p us.ntp.org.cn&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;还可以&lt;code&gt;sudo date -s &amp;quot;2017-02-08 21:28:00&amp;quot;&lt;/code&gt;手动设置时间&lt;/p&gt;
 
 &lt;p&gt;alpine中设置时区执行&lt;/p&gt;
 
@@ -717,6 +723,20 @@ ack是一个perl脚本，是grep的一个可选替换品&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;grep &amp;quot;Failed password for&amp;quot; /var/log/secure | awk &#39;{print $11}&#39; | sort | uniq -c | sort -nr&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;查看最近登录失败的统计&lt;/p&gt;
+
+&lt;h3 id=&#34;查看进程的线程&#34;&gt;查看进程的线程&lt;/h3&gt;
+
+&lt;p&gt;在ps命令中，“-T”选项可以开启线程查看。 &lt;code&gt;ps -T aux&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;ps -T -p &lt;pid&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;top -H&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;在top运行时，你也可以通过按“H”键将线程查看模式切换为开或关。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;top -H -p &amp;lt;pid&amp;gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;top -H -b -n1&lt;/code&gt;&lt;/p&gt;
 </description>
     </item>
     

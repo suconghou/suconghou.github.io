@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.18.1" />
+	<meta name="generator" content="Hugo 0.19" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -179,15 +179,7 @@ make -j$CPU_NUM &amp;&amp; make install
 
 <p>我编译好的二进制文件,能直接用于alpine系统</p>
 
-<p><a href="http://share.suconghou.cn/bin/ssh.xz">ssh</a></p>
-
-<p><a href="http://share.suconghou.cn/bin/sshd.xz">sshd</a></p>
-
-<p>编译出来的这些工具的合集</p>
-
-<p><a href="http://share.suconghou.cn/bin/sshbin.tar.gz">sshbin</a></p>
-
-<p><a href="http://share.suconghou.cn/bin/sshtool.tar.gz">sshtool</a></p>
+<p><a href="http://share.suconghou.cn/bin/sshd.xz">sshd</a>  包含 sshd,与ssh-keygen</p>
 
 <p>配合Linux<code>adduser</code>,可以ssh到docker中</p>
 
@@ -509,9 +501,7 @@ enabled=1
 
 <p>获取你的内网IP和外网IP<a href="https://github.com/diafygi/webrtc-ips">webrtc-ips</a> 通过Webrtc技术连接stun服务器,取得IP</p>
 
-<p><a href="https://github.com/amsul/pickadate.js">https://github.com/amsul/pickadate.js</a>
-<a href="https://github.com/xdan/datetimepicker">https://github.com/xdan/datetimepicker</a>
-<a href="https://github.com/rmm5t/jquery-timeago">https://github.com/rmm5t/jquery-timeago</a>
+<p><a href="https://github.com/rmm5t/jquery-timeago">https://github.com/rmm5t/jquery-timeago</a>
 <a href="http://c3js.org/">http://c3js.org/</a>
 <a href="https://github.com/datejs/Datejs/blob/master/build/date.js">https://github.com/datejs/Datejs/blob/master/build/date.js</a>
 <a href="https://github.com/Teamweek/instadate">https://github.com/Teamweek/instadate</a></p>
@@ -519,6 +509,14 @@ enabled=1
 <h2 id="js插件">JS插件</h2>
 
 <p><a href="http://www.swiper.com.cn/">swiper滑动插件</a></p>
+
+<p><a href="http://www.dowebok.com/demo/2014/93/">轮播图</a></p>
+
+<p><a href="https://chmln.github.io/flatpickr/">datetimepicker</a></p>
+
+<p><a href="https://github.com/amsul/pickadate.js">https://github.com/amsul/pickadate.js</a></p>
+
+<p><a href="https://github.com/xdan/datetimepicker">https://github.com/xdan/datetimepicker</a></p>
 
 <h2 id="测试工具">测试工具</h2>
 
@@ -731,6 +729,14 @@ docker 分为两部分,一分部是docker daemon , 一部分是docker client</p>
 
 <p>这里一份脚本可以快速生成证书,只需修改DOMAIN变量即可. <a href="https://gist.github.com/suconghou/707d9c61367c4bb91e8ed2585b094853">https://gist.github.com/suconghou/707d9c61367c4bb91e8ed2585b094853</a></p>
 
+<p>将证书放在<code>~/.docker</code>目录下可以免去设置<code>DOCKER_CERT_PATH</code></p>
+
+<p>放置生成的证书</p>
+
+<pre><code>sudo yum install -y zip curl
+mkdir -pv ~/.docker &amp;&amp; cp -vf ca.pem ~/.docker &amp;&amp; mv server-cert.pem ~/.docker/cert.pem &amp;&amp; mv server-key.pem ~/.docker/key.pem &amp;&amp; zip -r client.zip ca.pem cert.pem key.pem &amp;&amp; rm ca.pem cert.pem key.pem
+</code></pre>
+
 <p><code>docker service</code>的配置<code>vim /usr/lib/systemd/system/docker.service</code></p>
 
 <pre><code>ExecStart=/usr/bin/dockerd -H unix:///var/run/docker.sock -H tcp://0.0.0.0:2376 --tlsverify --tlscacert=/root/.docker/ca.pem --tlscert=/root/.docker/cert.pem --tlskey=/root/.docker/key.pem -s devicemapper --storage-opt dm.datadev=/dev/centos/docker-data --storage-opt dm.metadatadev=/dev/centos/docker-metadata
@@ -758,6 +764,8 @@ docker 分为两部分,一分部是docker daemon , 一部分是docker client</p>
 }
 </code></pre>
 
+<p><code>sudo systemctl restart docker</code></p>
+
 <p>client端配置下面这几个变量就好</p>
 
 <pre><code>export DOCKER_HOST=tcp://some.domain:2376
@@ -777,8 +785,6 @@ export DOCKER_CERT_PATH=$(cd `dirname $0`; pwd)
 <p><a href="https://gist.github.com/bradrydzewski/a6090115b3fecfc25280">https://gist.github.com/bradrydzewski/a6090115b3fecfc25280</a></p>
 
 <p><a href="https://gist.github.com/cameron/10797040">https://gist.github.com/cameron/10797040</a></p>
-
-<p><code>mkdir -pv ~/.docker;cp -v {ca,cert,key}.pem ~/.docker</code>,将证书放在<code>~/.docker</code>目录下可以免去设置<code>DOCKER_CERT_PATH</code></p>
 
 <p>搜索 <code>docker search 镜像名字</code>
 下载 <code>docker pull learn/tutorial</code>, 下载时要写完整名字</p>
@@ -1124,7 +1130,7 @@ newgrp docker
 <p><code>ls -lh /var/lib/docker/graph/</code>,进入一个文件夹,文件夹内保存着:</p>
 
 <blockquote>
-<p>json -保存着关于这个镜像的元数据, <code>cat json | python -mjson.tool</code></p>
+<p>json -保存着关于这个镜像的元数据, <code>cat json | python -m json.tool</code></p>
 
 <p>layersize – 一个整数,表示layer的大小.</p>
 

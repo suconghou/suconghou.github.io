@@ -319,6 +319,14 @@ window.addEventListener('error', function (err)
 
 </code></pre>
 
+<h3 id="并发发送ajax">并发发送ajax</h3>
+
+<pre><code>$.when($.get('assets/misc/1.json'), $.get('assets/misc/2.json')).then(function(r1, r2)
+{
+    console.log(r1[0].message + &quot; &quot; + r2[0].message);
+})
+</code></pre>
+
 <p><code>UA-xxx-1</code>使用自己的统计ID</p>
 
 <h3 id="fetch跨域带cookie">Fetch跨域带cookie</h3>
