@@ -145,6 +145,12 @@ us, sy, id, wa, st：这些都是平均了所有 CPU 的 CPU 分解时间。它�
 
 <p><code>top -b -n1</code> 可以只执行一次,用于将结果重定向到文件.</p>
 
+<h2 id="tload">tload</h2>
+
+<p><code>tload</code></p>
+
+<p><code>cat /proc/net/arp</code> 查看连接到本机的远端ip的mac地址</p>
+
 <h2 id="free">free</h2>
 
 <p><code>free -m</code> <code>free -h</code></p>
@@ -542,6 +548,8 @@ fi
 
 <p><a href="http://www.pool.ntp.org/zh/">http://www.pool.ntp.org/zh/</a></p>
 
+<p>cn.pool.ntp.org</p>
+
 <p><a href="http://www.ntp.org.cn/">http://www.ntp.org.cn/</a> 提供 ntp server</p>
 
 <p>使用 <code>sudo ntpdate us.ntp.org.cn</code> 来同步时间.</p>
@@ -751,6 +759,19 @@ ack是一个perl脚本，是grep的一个可选替换品</p>
 <p><code>grep &quot;Failed password for&quot; /var/log/secure | awk '{print $11}' | sort | uniq -c | sort -nr</code></p>
 
 <p>查看最近登录失败的统计</p>
+
+<p><code>/var/log/journal/</code> 为系统systemd的日志,长期不清理可能会持续占用磁盘空间</p>
+
+<p><code>vim /etc/systemd/journald.conf</code> 可修改占用的最大磁盘空间等配置,例如需修改<code>SystemMaxUse=100M</code></p>
+
+<p><code>journalctl --vacuum-size=100M</code> 手动执行修改也可以,仅仅保存最近100M的日志</p>
+
+<p>在rhel7系统中有两个日志服务，分别是传统的rsyslog和systemd-journal
+systemd-journald是一个改进型日志管理服务，可以收集来自内核、系统早期启动阶段的日志、系统守护进程在启动和运行中的标准输出和错误信息，还有syslog的日志。</p>
+
+<p>该日志服务仅仅把日志集中保存在单一结构的日志文件/run/log中，由于日志是经历过压缩和格式化的二进制数据，所以在查看和定位的时候很迅速。默认情况下并不会持久化保存日志，只会保留一个月的日志。另外，一些rsyslog无法收集的日志也会被journal记录到。</p>
+
+<p>rsyslog作为传统的系统日志服务，把所有收集到的日志都记录到/var/log/目录下的各个日志文件中。常见的日志文件如下： /var/log/messages 绝大多数的系统日志都记录到该文件 /var/log/secure 所有跟安全和认证授权等日志都会记录到此文件 /var/log/maillog 邮件服务的日志 /var/log/cron crond计划任务的日志 /var/log/boot.log 系统启动的相关日志。</p>
 
 <h3 id="查看进程的线程">查看进程的线程</h3>
 

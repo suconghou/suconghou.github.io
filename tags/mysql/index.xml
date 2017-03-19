@@ -1066,6 +1066,10 @@ sudo chkconfig --list nginx
 &lt;pre&gt;&lt;code&gt;rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;p&gt;安装之前还需要 &lt;code&gt;epel-release&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;yum -y install epel-release&lt;/code&gt;&lt;/p&gt;
+
 &lt;p&gt;安装php7 &lt;code&gt;yum install php70w php70w-cli php70w-fpm php70w-gd php70w-process php70w-mbstring php70w-mcrypt php70w-pdo php70w-xml php70w-mysqlnd php70w-pear php70w-opcache&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;安装 memcached和redis &lt;code&gt;yum install memcached redis&lt;/code&gt;&lt;/p&gt;

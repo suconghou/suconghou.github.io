@@ -117,6 +117,12 @@ us, sy, id, wa, st：这些都是平均了所有 CPU 的 CPU 分解时间。它�
 
 &lt;p&gt;&lt;code&gt;top -b -n1&lt;/code&gt; 可以只执行一次,用于将结果重定向到文件.&lt;/p&gt;
 
+&lt;h2 id=&#34;tload&#34;&gt;tload&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;tload&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;cat /proc/net/arp&lt;/code&gt; 查看连接到本机的远端ip的mac地址&lt;/p&gt;
+
 &lt;h2 id=&#34;free&#34;&gt;free&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;free -m&lt;/code&gt; &lt;code&gt;free -h&lt;/code&gt;&lt;/p&gt;
@@ -514,6 +520,8 @@ fi
 
 &lt;p&gt;&lt;a href=&#34;http://www.pool.ntp.org/zh/&#34;&gt;http://www.pool.ntp.org/zh/&lt;/a&gt;&lt;/p&gt;
 
+&lt;p&gt;cn.pool.ntp.org&lt;/p&gt;
+
 &lt;p&gt;&lt;a href=&#34;http://www.ntp.org.cn/&#34;&gt;http://www.ntp.org.cn/&lt;/a&gt; 提供 ntp server&lt;/p&gt;
 
 &lt;p&gt;使用 &lt;code&gt;sudo ntpdate us.ntp.org.cn&lt;/code&gt; 来同步时间.&lt;/p&gt;
@@ -723,6 +731,19 @@ ack是一个perl脚本，是grep的一个可选替换品&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;grep &amp;quot;Failed password for&amp;quot; /var/log/secure | awk &#39;{print $11}&#39; | sort | uniq -c | sort -nr&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;查看最近登录失败的统计&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;/var/log/journal/&lt;/code&gt; 为系统systemd的日志,长期不清理可能会持续占用磁盘空间&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;vim /etc/systemd/journald.conf&lt;/code&gt; 可修改占用的最大磁盘空间等配置,例如需修改&lt;code&gt;SystemMaxUse=100M&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;journalctl --vacuum-size=100M&lt;/code&gt; 手动执行修改也可以,仅仅保存最近100M的日志&lt;/p&gt;
+
+&lt;p&gt;在rhel7系统中有两个日志服务，分别是传统的rsyslog和systemd-journal
+systemd-journald是一个改进型日志管理服务，可以收集来自内核、系统早期启动阶段的日志、系统守护进程在启动和运行中的标准输出和错误信息，还有syslog的日志。&lt;/p&gt;
+
+&lt;p&gt;该日志服务仅仅把日志集中保存在单一结构的日志文件/run/log中，由于日志是经历过压缩和格式化的二进制数据，所以在查看和定位的时候很迅速。默认情况下并不会持久化保存日志，只会保留一个月的日志。另外，一些rsyslog无法收集的日志也会被journal记录到。&lt;/p&gt;
+
+&lt;p&gt;rsyslog作为传统的系统日志服务，把所有收集到的日志都记录到/var/log/目录下的各个日志文件中。常见的日志文件如下： /var/log/messages 绝大多数的系统日志都记录到该文件 /var/log/secure 所有跟安全和认证授权等日志都会记录到此文件 /var/log/maillog 邮件服务的日志 /var/log/cron crond计划任务的日志 /var/log/boot.log 系统启动的相关日志。&lt;/p&gt;
 
 &lt;h3 id=&#34;查看进程的线程&#34;&gt;查看进程的线程&lt;/h3&gt;
 
