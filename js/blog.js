@@ -4,6 +4,7 @@
 	var globalCache = [],
 		goonData={},
 		audio = new Audio();
+	var $body=$('body');
 	var cover = $('.cover'),
 		elapse = $('.elapse'),
 		foredrag = $('.foredrag'),
@@ -12,9 +13,13 @@
 		rendered = $.Deferred();
 	var option =
 	{
-		defaultVolume: 0.5,
+		defaultVolume: 0.8,
 		coverSize: '?param=350y350',
-		cacheAmount: 3
+		cacheAmount: 1
+	};
+	audio.onerror=function()
+	{
+		music.next();
 	};
 	var music=
 	{
@@ -24,11 +29,11 @@
 			{
 				if(show)
 				{
-					$('body').addClass('player');
-					cover = $('.cover'),
-					elapse = $('.elapse'),
-					foredrag = $('.foredrag'),
-					detail = $('.detail'),
+					$body.addClass('player');
+					cover = $('.cover');
+					elapse = $('.elapse');
+					foredrag = $('.foredrag');
+					detail = $('.detail');
 					foredrag.click(function ()
 					{
 					   audio.src&&audio.paused ? audio.play() : (inited?audio.pause():music.init());

@@ -144,7 +144,7 @@ GatewayPorts yes
 &lt;pre&gt;&lt;code&gt;apk update &amp;amp;&amp;amp; apk upgrade
 apk --update add make curl gcc g++ zlib-dev openssl-dev
 cd /tmp
-OPENSSH_VERSION=openssh-7.4p1
+OPENSSH_VERSION=openssh-7.5p1
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
 curl http://ftp.jaist.ac.jp/pub/OpenBSD/OpenSSH/portable/${OPENSSH_VERSION}.tar.gz | tar xz
 cd ${OPENSSH_VERSION}
@@ -155,17 +155,17 @@ make -j$CPU_NUM &amp;amp;&amp;amp; make install
 
 &lt;p&gt;我编译好的二进制文件,能直接用于alpine系统&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/bin/sshd.xz&#34;&gt;sshd&lt;/a&gt;  包含 sshd,与ssh-keygen&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/bin/sshd.xz&#34;&gt;sshd&lt;/a&gt;  包含 sshd,与ssh-keygen&lt;/p&gt;
 
 &lt;p&gt;配合Linux&lt;code&gt;adduser&lt;/code&gt;,可以ssh到docker中&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;curl -o /usr/local/bin/sshd.xz http://share.suconghou.cn/bin/sshd.xz&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;curl -o /usr/local/bin/sshd.xz http://share.suconghou.cn/files/bin/sshd.xz&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;sshd运行不能直接执行sshd,需要执行&lt;code&gt;/usr/local/bin/sshd&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;配置文件为&lt;code&gt;/usr/local/etc/sshd_config&lt;/code&gt;,同时还需要几个密匙文件.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;curl -o /usr/local/bin/sshd.xz http://share.suconghou.cn/bin/sshd.xz
+&lt;pre&gt;&lt;code&gt;curl -o /usr/local/bin/sshd.xz http://share.suconghou.cn/files/bin/sshd.xz
 xz -d /usr/local/bin/sshd.xz
 chmod +x /usr/local/bin/sshd
 mkdir -p /usr/local/etc/
@@ -177,6 +177,8 @@ ssh-keygen -t ed25519 -f /usr/local/etc/ssh_host_ed25519_key -N &#39;&#39;
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;添加一个用户:&lt;code&gt;adduser work&lt;/code&gt; ,Alpine里是&lt;code&gt;adduser&lt;/code&gt;,Linux发行版里是&lt;code&gt;useradd&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;adduser work -M -N&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;cat /etc/passwd 可以查看所有用户的列表,只输出用户名可以&lt;code&gt;cat /etc/passwd |cut -f 1 -d :&lt;/code&gt;&lt;/p&gt;
 

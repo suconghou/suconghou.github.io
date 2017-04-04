@@ -23,11 +23,11 @@
 
 &lt;p&gt;苹果出品的&lt;code&gt;Monaco&lt;/code&gt;,看起来十分圆润,首选推荐的编程字体&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/fonts/monaco.ttf&#34;&gt;monaco&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/fonts/monaco.ttf&#34;&gt;monaco&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;或许还有很多人喜欢&lt;code&gt;YaHei.Consolas&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/fonts/YaHei.Consolas.1.12.zip&#34;&gt;YaHei.Consolas.1.12.zip&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/fonts/YaHei.Consolas.1.12.zip&#34;&gt;YaHei.Consolas.1.12.zip&lt;/a&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;一些从-linux-迁移到windows的东西&#34;&gt;一些从&lt;code&gt;Linux&lt;/code&gt;迁移到Windows的东西&lt;/h3&gt;
 
@@ -47,7 +47,7 @@
 
 &lt;p&gt;&lt;code&gt;sourceforge&lt;/code&gt;上速度太慢,这里提供加速下载.&lt;/p&gt;
 
-&lt;p&gt;win-bash下载&lt;a href=&#34;http://share.suconghou.cn/Windows/shell.w32-ix86.zip&#34;&gt;shell.w32-ix86.zip&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;win-bash下载&lt;a href=&#34;http://share.suconghou.cn/files/Windows/shell.w32-ix86.zip&#34;&gt;shell.w32-ix86.zip&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;我的github也收集了一些&lt;code&gt;windows&lt;/code&gt;上常用的小工具&lt;code&gt;axel&lt;/code&gt;,&lt;code&gt;putty&lt;/code&gt;,&lt;code&gt;ab&lt;/code&gt;,&lt;code&gt;hugo&lt;/code&gt;,&lt;code&gt;rsync&lt;/code&gt;等&lt;/p&gt;
 
@@ -74,15 +74,15 @@
 
 &lt;h3 id=&#34;windows平台&#34;&gt;windows平台&lt;/h3&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/shadowsocks/Shadowsocks-3.4.2.zip&#34;&gt;Shadowsocks-3.4.2&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/shadowsocks/Shadowsocks-3.4.2.zip&#34;&gt;Shadowsocks-3.4.2&lt;/a&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;mac平台&#34;&gt;mac平台&lt;/h3&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/shadowsocks/ShadowsocksX-2.6.3.dmg&#34;&gt;ShadowsocksX-2.6.3&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/shadowsocks/ShadowsocksX-2.6.3.dmg&#34;&gt;ShadowsocksX-2.6.3&lt;/a&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;android平台&#34;&gt;android平台&lt;/h3&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/shadowsocks/shadowsocks-nightly-3.3.1.apk&#34;&gt;shadowsocks-nightly-3.3.1&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/shadowsocks/shadowsocks-nightly-3.3.1.apk&#34;&gt;shadowsocks-nightly-3.3.1&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;服务端可以使用docker更方便 &lt;a href=&#34;https://hub.docker.com/r/suconghou/shadowsocks/&#34;&gt;shadowsocks docker&lt;/a&gt;&lt;/p&gt;
 </description>
@@ -102,7 +102,7 @@
 
 &lt;p&gt;只有1.7MB,启动速度快,十分好用,有一个缺点是可能因为版权问题未对GIF做支持.&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/ImageView/PicasaPhotoViewer_3.9.136.9.exe&#34;&gt;PicasaPhotoViewerv3.9.136.9&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/ImageView/PicasaPhotoViewer_3.9.136.9.exe&#34;&gt;PicasaPhotoViewerv3.9.136.9&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     
@@ -122,15 +122,15 @@
 
 &lt;h3 id=&#34;32位资源&#34;&gt;32位资源&lt;/h3&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/Git-2.12.0-32-bit.exe&#34;&gt;32位安装版&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/git/Git-2.12.0-32-bit.exe&#34;&gt;32位安装版&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/PortableGit-2.12.0-64-bit.7z.exe&#34;&gt;32位绿色版&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/git/PortableGit-2.12.0-64-bit.7z.exe&#34;&gt;32位绿色版&lt;/a&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;64位资源&#34;&gt;64位资源&lt;/h3&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/Git-2.12.0-64-bit.exe&#34;&gt;64位安装版&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/git/Git-2.12.0-64-bit.exe&#34;&gt;64位安装版&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/git/PortableGit-2.12.0-64-bit.7z.exe&#34;&gt;64位绿色版&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/git/PortableGit-2.12.0-64-bit.7z.exe&#34;&gt;64位绿色版&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     

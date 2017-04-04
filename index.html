@@ -34,6 +34,86 @@
 		
 		<div class="post">
 			<h1 class="post-title">
+				<a href="/post/gcc/"> gcc</a>
+			</h1>
+			<p class="post-date">Fri, Jan 13, 2017</p>
+			<div class="post-text">
+				
+
+<h2 id="gcc-静态编译">gcc 静态编译</h2>
+
+<p><code>1.c</code></p>
+
+<pre><code>#include &lt;stdio.h&gt;
+
+void main()
+{
+	printf(&quot;hello&quot;);
+}
+
+</code></pre>
+
+<p><code>gcc -static --verbose -fno-builtin 1.c</code></p>
+
+<blockquote>
+<p><code>--verbose</code>是为了输入编译的详细信息</p>
+
+<p><code>-fno-builtin</code>是阻止编译器把printf变成puts</p>
+</blockquote>
+
+<p>如果出现错误</p>
+
+<pre><code>/usr/bin/ld: cannot find -lc
+collect2: 错误：ld 返回 1
+</code></pre>
+
+<p>可能你还需要安装glibc的静态库</p>
+
+<p><code>yum update &amp;&amp; yum install glibc-static -y</code></p>
+
+<p>优化选项</p>
+
+<p><a href="https://www.zhihu.com/question/27090458">https://www.zhihu.com/question/27090458</a></p>
+
+<pre><code>gcc -static -O  1.c
+gcc -static -O2 1.c
+gcc -static -O3 1.c
+gcc -static -Os 1.c
+</code></pre>
+
+<h2 id="错误提示">错误提示</h2>
+
+<p><code>-pedantic</code>编译选项并不能保证被编译程序与ANSI/ISO C标准的完全兼容，它仅仅只能用来帮助Linux程序员离这个目标越来越近。或者换句话说，<code>-pedantic</code>选项能够帮助程序员发现一些不符合 ANSI/ISO C标准的代码，但不是全部，事实上只有ANSI/ISO C语言标准中要求进行编译器诊断的那些情况，才有可能被GCC发现并提出警告。</p>
+
+<p>除了<code>-pedantic</code>之外，GCC还有一些其它编译选项也能够产生有用的警告信息。这些选项大多以-W开头，其中最有价值的当数<code>-Wall</code>了，使用它能够使GCC产生尽可能多的警告信息。</p>
+
+<pre><code>gcc -Wall test.c -o test
+</code></pre>
+
+<p>GCC给出的警告信息虽然从严格意义上说不能算作错误，但却很可能成为错误的栖身之所。一个优秀的Linux程序员应该尽量避免产生警告信息，使自己的代码始终保持标准、健壮的特性。所以将警告信息当成编码错误来对待，是一种值得赞扬的行为！所以，在编译程序时带上-Werror选项，那么GCC会在所有产生警告的地方停止编译，迫使程序员对自己的代码进行修改，如下：</p>
+
+<pre><code>gcc -Werror test.c -o test
+</code></pre>
+
+<h2 id="调试选项">调试选项</h2>
+
+<p>1) -g选项，产生供gdb调试用的可执行文件：<code>gcc -g helloworld.c</code></p>
+
+<blockquote>
+<p>产生一个叫作a.out的可执行文件，大小明显比只用-o选项编译汇编连接后的文件大。</p>
+</blockquote>
+
+<p>2) -pg选项，产生供gprof剖析用的可执行文件：<code>gcc -pg helloworld.c</code></p>
+
+<blockquote>
+<p>产生一个叫作a.out的执行文件，大小明显比用-g选项后产生的文件还大。</p>
+</blockquote>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
 				<a href="/post/server-safe/"> 系统安全</a>
 			</h1>
 			<p class="post-date">Sun, Nov 20, 2016</p>
@@ -468,7 +548,7 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 
 <p>本机 <code>virt-viewer --connect qemu:///system windows2012</code></p>
 
-<p>windows系统可使用 vncviewer (<a href="http://share.suconghou.cn/bin/vncviewer.zip">http://share.suconghou.cn/bin/vncviewer.zip</a>) 连接</p>
+<p>windows系统可使用 vncviewer (<a href="http://share.suconghou.cn/files/bin/vncviewer.zip">http://share.suconghou.cn/files/bin/vncviewer.zip</a>) 连接</p>
 
 <p>全屏下用F8键可唤出菜单.</p>
 
@@ -500,8 +580,12 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 
 <p>建议写入<code>/usr/iptab.sh</code>,加入<code>crontab</code>,每个整点执行</p>
 
-<pre><code>sudo iptables -F
-sudo iptables -X
+<pre><code>iptables -P INPUT ACCEPT
+iptables -P OUTPUT ACCEPT
+iptables -P FORWARD ACCEPT
+iptables -F
+iptables -X
+iptables -Z
 </code></pre>
 
 <h2 id="查看本机关于iptables的设置情况">查看本机关于IPTABLES的设置情况</h2>
@@ -609,6 +693,56 @@ iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 
 <p>iptables并不是一个普通的daemon，只是一个普通的工具，添加一些规则到kernel的filter列表里面。</p>
 
+<h3 id="ip-拦截">IP 拦截</h3>
+
+<p>拦截一个IP</p>
+
+<p><code>iptables -I INPUT -s 1.2.3.4 -j DROP</code></p>
+
+<p>解封此IP</p>
+
+<p><code>iptables -D INPUT -s 1.2.3.4 -j DROP</code></p>
+
+<p>参数-I是表示Insert（添加），-D表示Delete（删除）</p>
+
+<p>INPUT表示入站，DROP表示放弃连接</p>
+
+<p>IP段</p>
+
+<p>192.168.1.x 可以写 <code>192.168.1.0/24</code></p>
+
+<p>192.168.x.x 可以写 <code>192.168.0.0/16</code></p>
+
+<p>192.x.x.x   可以写 <code>192.0.0.0/8</code></p>
+
+<pre><code>
+#清除配置
+/sbin/iptables -P INPUT ACCEPT
+/sbin/iptables -F
+/sbin/iptables -X
+#开放本地和Ping
+/sbin/iptables -A INPUT -i lo -j ACCEPT
+/sbin/iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+/sbin/iptables -A INPUT -p icmp -j ACCEPT
+#配置内网白名单
+/sbin/iptables -A INPUT -s 10.0.0.0/8 -j ACCEPT
+/sbin/iptables -A INPUT -s 172.16.0.0/12 -j ACCEPT
+/sbin/iptables -A INPUT -s 192.168.0.0/16 -j ACCEPT
+#配置外网白名单
+/sbin/iptables -A INPUT -s 180.168.36.198 -j ACCEPT
+/sbin/iptables -A INPUT -s 180.168.34.218 -j ACCEPT
+/sbin/iptables -A INPUT -s 222.73.202.251 -j ACCEPT
+#控制端口
+/sbin/iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+/sbin/iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+#拒绝其它
+/sbin/iptables -A INPUT -j DROP
+/sbin/iptables -A FORWARD -j DROP
+#开放出口
+/sbin/iptables -A OUTPUT -j ACCEPT
+
+</code></pre>
+
 			</div>
 		</div>
 		
@@ -654,88 +788,19 @@ iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 
 <h2 id="性能天梯图">性能天梯图</h2>
 
+<p>在新标签查看大图</p>
+
 <p>CPU天梯图</p>
 
-<p><img src="http://suconghou.sinaapp.com/e7d6741f4b703c5057fa6c4f0f3cf971.jpg" alt="CPU天梯图简化版" /></p>
+<p><img src="https://img.alicdn.com/imgextra/i4/693806815/TB2ulpikCxjpuFjSszeXXaeMVXa_!!693806815.jpg" alt="CPU天梯图1" /></p>
 
-<p>CPU天梯图详细</p>
+<p>CPU天梯图其他版本</p>
 
-<p><img src="http://suconghou.sinaapp.com/33f41a782ceddd3a78a7f40321329777.jpg" alt="CPU天梯图详细" /></p>
+<p><img src="https://img.alicdn.com/imgextra/i3/693806815/TB2KExqkwRkpuFjy1zeXXc.6FXa_!!693806815.jpg" alt="CPU天梯图2" /></p>
 
 <p>显卡天梯图</p>
 
-<p><img src="http://suconghou.sinaapp.com/14db00815cebc3e46f9647515b384815.jpg" alt="显卡天梯图" /></p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/memcached-usage/"> memcached usage</a>
-			</h1>
-			<p class="post-date">Wed, Aug 24, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="安装memcached">安装memcached</h2>
-
-<p><a href="http://memcached.org/downloads">http://memcached.org/downloads</a></p>
-
-<p>memcached所有版本见<a href="http://www.memcached.org/files/">http://www.memcached.org/files/</a></p>
-
-<pre><code>cd /tmp
-MEMCACHE_VERSION=memcached-1.4.31
-CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
-wget http://www.memcached.org/files/${MEMCACHE_VERSION}.tar.gz
-tar xzf ${MEMCACHE_VERSION}.tar.gz
-cd ${MEMCACHE_VERSION}
-export CFLAGS=&quot;-O3&quot;
-./configure
-make -j$CPU_NUM &amp;&amp; make install
-</code></pre>
-
-<p>docker版本见:<a href="https://hub.docker.com/r/suconghou/memcached/">https://hub.docker.com/r/suconghou/memcached/</a></p>
-
-<h2 id="启动memcached">启动Memcached</h2>
-
-<pre><code>memcached -d -u memcached -p 11211 -m 8 -P /var/run/memcached/memcached.pid
-
-</code></pre>
-
-<p>说明</p>
-
-<ul>
-<li>-d 以daemon方式运行</li>
-<li>-u 绑定使用指定用户运行进程(仅在以root运行的时候有效)</li>
-<li>-p 设置TCP端口号(默认11211)</li>
-<li>-m 允许最大内存用量，单位M (默认: 64 MB)</li>
-<li>-M 内存耗尽时返回错误，而不是删除项</li>
-<li>-l 是监听的服务器IP地址，默认应该是本机</li>
-<li>-P 将PID写入文件<file>，这样可以使得后边进行快速进程终止, 需要与-d 一起使用</li>
-<li>-c 最大同时连接数，默认是1024</li>
-<li>-t 线程数,默认为4</li>
-<li>-v 输出警告和错误信息</li>
-<li>-vv 打印客户端的请求和返回信息</li>
-</ul>
-
-<p>默认情况下是不限制访问IP的,相当于是外网和内网都能访问,-l 使只有这个IP能访问</p>
-
-<p>尽量不要用root用户运行.</p>
-
-<p><strong>状态查看</strong></p>
-
-<p>使用 telnet 连接 memcached
-<code>stats settings</code>可以查看所有参数设置</p>
-
-<p>memcached状态和性能查看</p>
-
-<p>stats命令</p>
-
-<p><img src="http://static.suconghou.cn/document/memcached.jpg" alt="memcached stats命令" /></p>
-
-<p>官方也提供监控工具</p>
-
-<p><a href="https://github.com/memcached/memcached/blob/master/scripts/memcached-tool">https://github.com/memcached/memcached/blob/master/scripts/memcached-tool</a></p>
+<p><img src="https://img.alicdn.com/imgextra/i1/693806815/TB2heFDkB8lpuFjSspaXXXJKpXa_!!693806815.jpg" alt="显卡天梯图" /></p>
 
 			</div>
 		</div>

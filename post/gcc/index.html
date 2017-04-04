@@ -7,7 +7,7 @@
 	<meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
 	<meta name='description' content='记录学习的点点滴滴'>
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
-	<title>pc hardware &middot; 苏苏的博客</title>
+	<title>gcc &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.min.css">
 	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
@@ -31,60 +31,81 @@
 <div class="content container">
 	<div class="post">
 		<h1 class="post-title">
-			<a href="javascript:void(0)"> pc hardware</a>
+			<a href="javascript:void(0)"> gcc</a>
 		</h1>
-		<p class="post-date">Sun, Sep 4, 2016</p>
+		<p class="post-date">Fri, Jan 13, 2017</p>
 		
 		<div class="post-text">
 			
 
-<h2 id="修电脑相关知识">修电脑相关知识</h2>
+<h2 id="gcc-静态编译">gcc 静态编译</h2>
 
-<h3 id="较好的pe">较好的PE</h3>
+<p><code>1.c</code></p>
 
-<p><strong>微PE</strong></p>
+<pre><code>#include &lt;stdio.h&gt;
 
-<p><a href="http://www.wepe.com.cn/">http://www.wepe.com.cn/</a> 自带刻录,可以一键安装到U盘,硬盘等,支持UEFI,CMS等多种启动方式.</p>
+void main()
+{
+	printf(&quot;hello&quot;);
+}
 
-<blockquote>
-<p>一般的BIOS里找不到UEFI/CMS的切换设置,可能是<code>security boot</code>的配置,禁用<code>security boot</code>试试</p>
-
-<p>如果在BIOS里找不到U盘,可能是<code>fastboot</code>的问题,可以禁用fastboot,安装好系统后在开启.</p>
-
-<p>硬盘的设置模式里,找不到U盘或者硬盘,可以尝试切换<code>AHCI/IDE</code>,注意安装好系统后,此选项不能够再随意切换,否知导致系统进不去.</p>
-</blockquote>
-
-<p>休眠能将现有所有工作保存到硬盘,下次开机恢复上次的会话,Windows8及以后采用了混合休眠机制</p>
-
-<p>你可能找不到单纯的休眠按钮.</p>
-
-<p>可以使用<code>shutdown -h</code>休眠</p>
-
-<p>其他一些补充</p>
-
-<pre><code>关机计算机：shutdown.exe -s -t 00
-重启计算机：shutdown.exe -r -t 00
-注销计算机：shutdown.exe -l -t 00
-锁定计算机：rundll32.exe user32.dll,LockWorkStation
-休眠计算机：rundll32.exe powrProf.dll,SetSuspendState
-睡眠计算机：rundll32.exe powrprof.dll,SetSuspendState 0,1,0,
 </code></pre>
 
-<h2 id="性能天梯图">性能天梯图</h2>
+<p><code>gcc -static --verbose -fno-builtin 1.c</code></p>
 
-<p>在新标签查看大图</p>
+<blockquote>
+<p><code>--verbose</code>是为了输入编译的详细信息</p>
 
-<p>CPU天梯图</p>
+<p><code>-fno-builtin</code>是阻止编译器把printf变成puts</p>
+</blockquote>
 
-<p><img src="https://img.alicdn.com/imgextra/i4/693806815/TB2ulpikCxjpuFjSszeXXaeMVXa_!!693806815.jpg" alt="CPU天梯图1" /></p>
+<p>如果出现错误</p>
 
-<p>CPU天梯图其他版本</p>
+<pre><code>/usr/bin/ld: cannot find -lc
+collect2: 错误：ld 返回 1
+</code></pre>
 
-<p><img src="https://img.alicdn.com/imgextra/i3/693806815/TB2KExqkwRkpuFjy1zeXXc.6FXa_!!693806815.jpg" alt="CPU天梯图2" /></p>
+<p>可能你还需要安装glibc的静态库</p>
 
-<p>显卡天梯图</p>
+<p><code>yum update &amp;&amp; yum install glibc-static -y</code></p>
 
-<p><img src="https://img.alicdn.com/imgextra/i1/693806815/TB2heFDkB8lpuFjSspaXXXJKpXa_!!693806815.jpg" alt="显卡天梯图" /></p>
+<p>优化选项</p>
+
+<p><a href="https://www.zhihu.com/question/27090458">https://www.zhihu.com/question/27090458</a></p>
+
+<pre><code>gcc -static -O  1.c
+gcc -static -O2 1.c
+gcc -static -O3 1.c
+gcc -static -Os 1.c
+</code></pre>
+
+<h2 id="错误提示">错误提示</h2>
+
+<p><code>-pedantic</code>编译选项并不能保证被编译程序与ANSI/ISO C标准的完全兼容，它仅仅只能用来帮助Linux程序员离这个目标越来越近。或者换句话说，<code>-pedantic</code>选项能够帮助程序员发现一些不符合 ANSI/ISO C标准的代码，但不是全部，事实上只有ANSI/ISO C语言标准中要求进行编译器诊断的那些情况，才有可能被GCC发现并提出警告。</p>
+
+<p>除了<code>-pedantic</code>之外，GCC还有一些其它编译选项也能够产生有用的警告信息。这些选项大多以-W开头，其中最有价值的当数<code>-Wall</code>了，使用它能够使GCC产生尽可能多的警告信息。</p>
+
+<pre><code>gcc -Wall test.c -o test
+</code></pre>
+
+<p>GCC给出的警告信息虽然从严格意义上说不能算作错误，但却很可能成为错误的栖身之所。一个优秀的Linux程序员应该尽量避免产生警告信息，使自己的代码始终保持标准、健壮的特性。所以将警告信息当成编码错误来对待，是一种值得赞扬的行为！所以，在编译程序时带上-Werror选项，那么GCC会在所有产生警告的地方停止编译，迫使程序员对自己的代码进行修改，如下：</p>
+
+<pre><code>gcc -Werror test.c -o test
+</code></pre>
+
+<h2 id="调试选项">调试选项</h2>
+
+<p>1) -g选项，产生供gdb调试用的可执行文件：<code>gcc -g helloworld.c</code></p>
+
+<blockquote>
+<p>产生一个叫作a.out的可执行文件，大小明显比只用-o选项编译汇编连接后的文件大。</p>
+</blockquote>
+
+<p>2) -pg选项，产生供gprof剖析用的可执行文件：<code>gcc -pg helloworld.c</code></p>
+
+<blockquote>
+<p>产生一个叫作a.out的执行文件，大小明显比用-g选项后产生的文件还大。</p>
+</blockquote>
 
 		</div>
 	</div>

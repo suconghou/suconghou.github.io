@@ -26,6 +26,10 @@
 
 &lt;p&gt;&lt;code&gt;wget --user-agent=&amp;quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36&amp;quot; URL-TO-DOWNLOAD&lt;/code&gt;&lt;/p&gt;
 
+&lt;p&gt;wget 断点续传 使用 &lt;code&gt;-c&lt;/code&gt; 限速使用&lt;code&gt;--limit-rate=300k&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;wget -c --limit-rate=30k http://...&lt;/code&gt;&lt;/p&gt;
+
 &lt;h2 id=&#34;curl&#34;&gt;curl&lt;/h2&gt;
 
 &lt;p&gt;常用的命令&lt;/p&gt;

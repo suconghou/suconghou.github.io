@@ -34,6 +34,144 @@
 		
 		<div class="post">
 			<h1 class="post-title">
+				<a href="/post/sublime-usage/"> Sublime使用和设置</a>
+			</h1>
+			<p class="post-date">Fri, Jan 8, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="配置文件">配置文件</h2>
+
+<p>最喜欢的字体<code>Monaco</code>,<a href="http://share.suconghou.cn/files/fonts/MONACO.TTF">此处下载</a></p>
+
+<p>配置文件
+<code>Preferences.sublime-settings</code></p>
+
+<pre><code>{
+	&quot;close_windows_when_empty&quot;: true,
+	&quot;default_encoding&quot;: &quot;UTF-8&quot;,
+	&quot;default_line_ending&quot;: &quot;unix&quot;,
+	&quot;ensure_newline_at_eof_on_save&quot;: true,
+	&quot;font_face&quot;: &quot;Monaco&quot;,
+	&quot;font_size&quot;: 13,
+	&quot;highlight_line&quot;: true,
+	&quot;highlight_modified_tabs&quot;: true,
+	&quot;ignored_packages&quot;:
+	[
+		&quot;Vintage&quot;
+	],
+	&quot;show_encoding&quot;: true,
+	&quot;show_line_endings&quot;: true,
+	&quot;tab_size&quot;: 4,
+	&quot;translate_tabs_to_spaces&quot;: false,
+	&quot;trim_trailing_white_space_on_save&quot;: true,
+	&quot;update_check&quot;: false,
+	&quot;word_wrap&quot;: false
+}
+</code></pre>
+
+<h2 id="插件">插件</h2>
+
+<p><code>open_browser.py</code> 插件</p>
+
+<pre><code>import sublime, sublime_plugin
+import webbrowser
+import os
+
+url_map = {
+    'D:\\git\\bbs\\' : 'http://127.0.0.3/',
+    'D:\\php\\su\\' : 'http://127.0.0.2/',
+    'D:\\php\\htdocs\\' : 'http://127.0.0.1/'
+}
+
+class OpenBrowserCommand(sublime_plugin.TextCommand):
+    def run(self,edit):
+        window = sublime.active_window()
+        window.run_command('save')
+        url = self.view.file_name()
+        flag = False
+        for path, domain in url_map.items():
+            if url.startswith(path):
+                url = url.replace(path, domain).replace('\\', '/')
+                flag = True
+                break
+        if not flag:
+            cmd1='taskkill /f /im php.exe'
+            cmd2='php -S 0.0.0.0:8088 -t '+os.path.abspath(os.path.dirname(self.view.file_name()))
+            os.system(cmd1)
+            os.popen(cmd2)
+            url =  'http://127.0.0.1:8088/'+os.path.basename(self.view.file_name())
+        webbrowser.open_new(url)
+</code></pre>
+
+<h2 id="编译系统">编译系统</h2>
+
+<p><code>node.sublime-build</code> 执行nodejs代码</p>
+
+<pre><code>{
+	&quot;shell_cmd&quot;: &quot;node ${file}&quot;
+}
+</code></pre>
+
+<h2 id="快捷键配置">快捷键配置</h2>
+
+<p><code>Default (OSX).sublime-keymap</code></p>
+
+<pre><code>[
+	{ &quot;keys&quot;: [&quot;alt+d&quot;], &quot;command&quot;: &quot;open_dir&quot;, &quot;args&quot;: {&quot;dir&quot;: &quot;$file_path&quot;, &quot;file&quot;: &quot;$file_name&quot;} },
+	{ &quot;keys&quot;: [&quot;ctrl+shift+c&quot;], &quot;command&quot;: &quot;copy_path&quot; },
+	{ &quot;keys&quot;: [&quot;ctrl+f11&quot;], &quot;command&quot;: &quot;toggle_distraction_free&quot; }
+]
+</code></pre>
+
+<h2 id="添加sublime到命令行">添加sublime到命令行</h2>
+
+<p><code>MacOs</code>下</p>
+
+<pre><code>ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/local/bin/sublime
+</code></pre>
+
+<h2 id="激活码">激活码</h2>
+
+<p>3103可用激活码</p>
+
+<pre><code>—– BEGIN LICENSE —–
+Ryan Clark
+Single User License
+EA7E-812479
+2158A7DE B690A7A3 8EC04710 006A5EEB
+34E77CA3 9C82C81F 0DB6371B 79704E6F
+93F36655 B031503A 03257CCC 01B20F60
+D304FA8D B1B4F0AF 8A76C7BA 0FA94D55
+56D46BCE 5237A341 CD837F30 4D60772D
+349B1179 A996F826 90CDB73C 24D41245
+FD032C30 AD5E7241 4EAA66ED 167D91FB
+55896B16 EA125C81 F550AF6B A6820916
+—— END LICENSE ——
+</code></pre>
+
+<p>3103之前版本可用</p>
+
+<pre><code>----- BEGIN LICENSE -----
+Andrew Weber
+Single User License
+EA7E-855605
+813A03DD 5E4AD9E6 6C0EEB94 BC99798F
+942194A6 02396E98 E62C9979 4BB979FE
+91424C9D A45400BF F6747D88 2FB88078
+90F5CC94 1CDC92DC 8457107A F151657B
+1D22E383 A997F016 42397640 33F41CFC
+E1D0AE85 A0BBD039 0E9C8D55 E1B89D5D
+5CDB7036 E56DE1C0 EFCC0840 650CD3A6
+B98FC99C 8FAC73EE D2B95564 DF450523
+------ END LICENSE ------
+</code></pre>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
 				<a href="/post/linux-ssh/"> SSH</a>
 			</h1>
 			<p class="post-date">Thu, Jan 7, 2016</p>
@@ -168,7 +306,7 @@ GatewayPorts yes
 <pre><code>apk update &amp;&amp; apk upgrade
 apk --update add make curl gcc g++ zlib-dev openssl-dev
 cd /tmp
-OPENSSH_VERSION=openssh-7.4p1
+OPENSSH_VERSION=openssh-7.5p1
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
 curl http://ftp.jaist.ac.jp/pub/OpenBSD/OpenSSH/portable/${OPENSSH_VERSION}.tar.gz | tar xz
 cd ${OPENSSH_VERSION}
@@ -179,17 +317,17 @@ make -j$CPU_NUM &amp;&amp; make install
 
 <p>我编译好的二进制文件,能直接用于alpine系统</p>
 
-<p><a href="http://share.suconghou.cn/bin/sshd.xz">sshd</a>  包含 sshd,与ssh-keygen</p>
+<p><a href="http://share.suconghou.cn/files/bin/sshd.xz">sshd</a>  包含 sshd,与ssh-keygen</p>
 
 <p>配合Linux<code>adduser</code>,可以ssh到docker中</p>
 
-<p><code>curl -o /usr/local/bin/sshd.xz http://share.suconghou.cn/bin/sshd.xz</code></p>
+<p><code>curl -o /usr/local/bin/sshd.xz http://share.suconghou.cn/files/bin/sshd.xz</code></p>
 
 <p>sshd运行不能直接执行sshd,需要执行<code>/usr/local/bin/sshd</code></p>
 
 <p>配置文件为<code>/usr/local/etc/sshd_config</code>,同时还需要几个密匙文件.</p>
 
-<pre><code>curl -o /usr/local/bin/sshd.xz http://share.suconghou.cn/bin/sshd.xz
+<pre><code>curl -o /usr/local/bin/sshd.xz http://share.suconghou.cn/files/bin/sshd.xz
 xz -d /usr/local/bin/sshd.xz
 chmod +x /usr/local/bin/sshd
 mkdir -p /usr/local/etc/
@@ -201,6 +339,8 @@ ssh-keygen -t ed25519 -f /usr/local/etc/ssh_host_ed25519_key -N ''
 </code></pre>
 
 <p>添加一个用户:<code>adduser work</code> ,Alpine里是<code>adduser</code>,Linux发行版里是<code>useradd</code></p>
+
+<p><code>adduser work -M -N</code></p>
 
 <p>cat /etc/passwd 可以查看所有用户的列表,只输出用户名可以<code>cat /etc/passwd |cut -f 1 -d :</code></p>
 
@@ -361,6 +501,8 @@ enabled=1
 <p><a href="http://baichuan.taobao.com/">阿里百川</a>
 <a href="http://open.taobao.com/">淘宝开放平台</a></p>
 
+<p><a href="http://yunpan.taobao.com/">淘宝云盘,也外链图片做图床</a> 淘宝CDN,速度很快,https,仅仅图片限制3M以内</p>
+
 <blockquote>
 <p>包含容器引擎（TAE）, 多媒体存储处理分发, 可免费使用一年</p>
 </blockquote>
@@ -518,6 +660,10 @@ enabled=1
 
 <p><a href="https://github.com/xdan/datetimepicker">https://github.com/xdan/datetimepicker</a></p>
 
+<h2 id="js图标库">JS图标库</h2>
+
+<p><a href="https://github.com/danvk/dygraphs">dygraphs</a> <a href="http://dygraphs.com/">http://dygraphs.com/</a>  性能很好的Canvas图标,带交互效果,支持局部缩放,实测几万数据毫无压力,</p>
+
 <h2 id="测试工具">测试工具</h2>
 
 <p><a href="http://www.alibench.com/">阿里测</a> 测试你的服务器在全国各地的响应速度</p>
@@ -540,11 +686,9 @@ enabled=1
 
 <p><a href="http://www.50kvm.com/new_index/vps.php">50kvm</a> kvm最低20人民币每月(512MB),支持支付宝,旗下openvzvps即为下面的连接</p>
 
-<p><a href="https://www.openvzvps.cc/cart.php?gid=10">openvzvps</a> 最低48年付(openvz 64M),中文,集成锐速,可支付宝</p>
+<p><a href="https://www.openvzvps.cc/cart.php?gid=10">openvzvps</a> 最低70年付(openvz 128M),中文,集成锐速,可支付宝</p>
 
-<p><a href="http://www.idcbuster.com/specials.html">idcbuster</a> 最低39年付(openvz 128M),99年付kvm 256M 支持支付宝</p>
-
-<p><a href="http://technetcal.com/us-vps/">technetcal</a> 最低60年付(openvz 128M),支持支付宝,香港虚拟主机最低28年付,<a href="http://technetcal.com/the-regius/">http://technetcal.com/the-regius/</a></p>
+<p><a href="http://www.idcbuster.com/specials.html">idcbuster</a> 最低69年付(openvz 512M),88年付kvm 128M 支持支付宝</p>
 
 <p><a href="http://yecaoyun.com/Service/vps_servers.html">yecaoyun</a> 美国最低10元每月(kvm 128M)</p>
 
@@ -557,6 +701,10 @@ enabled=1
 <p><a href="http://www.fyzhuji.com/">fyzhuji</a> 香港虚拟主机年付60 美国Xen-512M月付25,国内速度都较快.</p>
 
 <p><a href="https://www.starrydns.com/sc/shared-hosting">starrydns</a> 香港¥ 10.2 /月虚拟主机</p>
+
+<p><a href="http://eyun.ac.cn/">翼云</a> 提供贵州低价VPS</p>
+
+<p><a href="hostdare.com">hostdare.com</a> 支持支付宝.微信,亚洲优化,年付最低12$</p>
 
 <h2 id="内网穿透">内网穿透</h2>
 
@@ -603,612 +751,6 @@ enabled=1
 			<div class="post-text">
 				<p>发现MacOs的Chrome中,input为submit的按钮,添加其他样式不生效,任然是默认样式,
 解决方法是为其添加一个border或者backgroud就好了</p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/using-docker/"> 开启docker之旅</a>
-			</h1>
-			<p class="post-date">Tue, Jan 5, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="安装docker">安装Docker</h2>
-
-<p>docker 安装需要Linux内核在3.10.0以上,仅支持Linux,在Windows和MacOs上也是基于虚拟机方式运行,需要提前安装虚拟机</p>
-
-<p>OpenVZ的VPS内核版本较低,且不能升级,并不能作为docker server,但是可以使用docker client</p>
-
-<ul>
-<li>通过<code>df -lhT</code> 看到Type为simfs,而不是ext3,ext4,一般就代表使用的是OpenVZ虚拟化的</li>
-<li>查看系统内核版本<code>uname -r</code></li>
-</ul>
-
-<p>查看安装的系统版本
-<code>lsb_release -a</code> 或者 <code>cat /etc/issue</code></p>
-
-<p>以下二种方法适用于RedHat,CentOS</p>
-
-<ul>
-<li><code>cat /etc/redhat-release</code> 或者 <code>cat /etc/centos-release</code></li>
-<li><code>rpm -q centos-release</code> 或者 <code>rpm -q redhat-release</code></li>
-</ul>
-
-<p>查看是否是64位系统<code>uname -i</code></p>
-
-<h3 id="下载安装">下载安装</h3>
-
-<p>Ubuntu/Debian: curl -fsSL <a href="https://get.docker.com/">https://get.docker.com/</a> | sh
-Linux 64bit binary: <a href="https://get.docker.com/builds/Linux/x86_64/docker">https://get.docker.com/builds/Linux/x86_64/docker</a>
-Darwin/OSX 64bit client binary: <a href="https://get.docker.com/builds/Darwin/x86_64/docker-1.12.0.tgz">https://get.docker.com/builds/Darwin/x86_64/docker-1.12.0.tgz</a>
-Linux 64bit tgz: <a href="https://get.docker.com/builds/Linux/x86_64/docker-1.12.0.tgz">https://get.docker.com/builds/Linux/x86_64/docker-1.12.0.tgz</a>
-Windows 64bit: <a href="https://get.docker.com/builds/Windows/x86_64/docker-1.12.0.zip">https://get.docker.com/builds/Windows/x86_64/docker-1.12.0.zip</a>
-Windows 32bit client binary: <a href="https://get.docker.com/builds/Windows/i386/docker-1.12.0.zip">https://get.docker.com/builds/Windows/i386/docker-1.12.0.zip</a></p>
-
-<p><a href="https://docs.docker.com/engine/installation/linux/centos/">官方安装教程</a></p>
-
-<blockquote>
-<p>使用二进制方式安装的docker不支持<code>devicemapper</code>驱动,yum安装的支持.
-yum安装的版本落后于官方最新版,可以使用官方的yum源</p>
-</blockquote>
-
-<pre><code>sudo tee /etc/yum.repos.d/docker.repo &lt;&lt;-'EOF'
-[dockerrepo]
-name=Docker Repository
-baseurl=https://yum.dockerproject.org/repo/main/centos/$releasever/
-enabled=1
-gpgcheck=1
-gpgkey=https://yum.dockerproject.org/gpg
-EOF
-sudo yum install docker-engine
-</code></pre>
-
-<p>设置开机启动并启动</p>
-
-<pre><code>sudo systemctl enable docker.service
-sudo systemctl start docker
-</code></pre>
-
-<p>清华大学镜像源提供docker安装镜像与说明</p>
-
-<p><code>https://mirror.tuna.tsinghua.edu.cn/help/docker/</code></p>
-
-<p>或者<code>http://get.daocloud.io/docker/builds/</code>查看</p>
-
-<p>阿里云也提供安装脚本 见<code>http://mirrors.aliyun.com/help/docker-engine</code>,</p>
-
-<p>阿里云的软件源可以使用内网源不占用外网流量</p>
-
-<p>然后<code>yum info docker-engine</code>可以看到官方的docker版本.执行<code>yum install docker-engine</code>安装</p>
-
-<p><code>sudo service docker start</code> 启动服务,开机启动<code>sudo chkconfig docker on</code></p>
-
-<p>如果你以前采用<code>yum install docker</code>安装过非官方源里的docker,需要先卸载<code>yum remove docker*</code></p>
-
-<p>docker采用Go语言编写,编译以后生成一个无依赖的可执行文件.</p>
-
-<pre><code>DOCKER_VERSION=docker-1.12.0
-wget https://get.docker.com/builds/Linux/x86_64/${DOCKER_VERSION}.tgz
-tar zxvf ${DOCKER_VERSION}.tgz
-cd docker
-ls -lh
-</code></pre>
-
-<p>得到如下:</p>
-
-<pre><code>total 94M
--rwxr-xr-x 1 root root  15M Jul 29 07:59 docker
--rwxr-xr-x 1 root root  11M Jul 29 07:59 docker-containerd
--rwxr-xr-x 1 root root  11M Jul 29 07:59 docker-containerd-ctr
--rwxr-xr-x 1 root root 3.6M Jul 29 07:59 docker-containerd-shim
--rwxr-xr-x 1 root root  44M Jul 29 07:59 dockerd
--rwxr-xr-x 1 root root 2.8M Jul 29 07:59 docker-proxy
--rwxr-xr-x 1 root root 8.4M Jul 29 07:59 docker-runc
-</code></pre>
-
-<p>移动到<code>/usr/local/bin/</code>,即可使用<code>docker</code>命令,<code>mv * /usr/local/bin/</code>即可替换旧版本</p>
-
-<h2 id="基本使用">基本使用</h2>
-
-<p>运行<code>docker -v</code>即可查看当前docker版本
-docker 分为两部分,一分部是docker daemon , 一部分是docker client</p>
-
-<p>1.12.0及以后版本,采用<code>dockerd</code>启动<code>daemon</code>服务,之前版本采用<code>docker daemon</code>启动<code>daemon</code>服务.</p>
-
-<p>docker daemon 与 client 可分离部署运行,如</p>
-
-<p><code>docker daemon -H=unix:///var/run/docker.sock -H=0.0.0.0:4243 --default-ulimit nofile=1024:4096</code></p>
-
-<p>服务器同时监听unixsocket和tcp端口,然后客户端设置远端服务变量<code>export DOCKER_HOST=tcp://1.1.1.1:4243</code>,就可以使用docker client,不过这种没有认证,适合局域网玩.</p>
-
-<p>如果是在公网上,最好做一些身份认证</p>
-
-<p>生成证书可参考官网 <a href="https://docs.docker.com/engine/security/https/">https://docs.docker.com/engine/security/https/</a></p>
-
-<p>这里一份脚本可以快速生成证书,只需修改DOMAIN变量即可. <a href="https://gist.github.com/suconghou/707d9c61367c4bb91e8ed2585b094853">https://gist.github.com/suconghou/707d9c61367c4bb91e8ed2585b094853</a></p>
-
-<p>将证书放在<code>~/.docker</code>目录下可以免去设置<code>DOCKER_CERT_PATH</code></p>
-
-<p>放置生成的证书</p>
-
-<pre><code>sudo yum install -y zip curl
-mkdir -pv ~/.docker &amp;&amp; cp -vf ca.pem ~/.docker &amp;&amp; mv server-cert.pem ~/.docker/cert.pem &amp;&amp; mv server-key.pem ~/.docker/key.pem &amp;&amp; zip -r client.zip ca.pem cert.pem key.pem &amp;&amp; rm ca.pem cert.pem key.pem
-</code></pre>
-
-<p><code>docker service</code>的配置<code>vim /usr/lib/systemd/system/docker.service</code></p>
-
-<pre><code>ExecStart=/usr/bin/dockerd -H unix:///var/run/docker.sock -H tcp://0.0.0.0:2376 --tlsverify --tlscacert=/root/.docker/ca.pem --tlscert=/root/.docker/cert.pem --tlskey=/root/.docker/key.pem -s devicemapper --storage-opt dm.datadev=/dev/centos/docker-data --storage-opt dm.metadatadev=/dev/centos/docker-metadata
-</code></pre>
-
-<p>最好是将这些配置写入<code>/etc/docker/daemon.json</code> 防止更新docker覆盖配置文件</p>
-
-<pre><code>{
-    &quot;registry-mirrors&quot;: [
-        &quot;https://docker.mirrors.ustc.edu.cn&quot;
-    ],
-    &quot;hosts&quot;: [
-        &quot;unix:///var/run/docker.sock&quot;,
-        &quot;tcp://0.0.0.0:2376&quot;
-    ],
-    &quot;storage-driver&quot;: &quot;devicemapper&quot;,
-    &quot;storage-opts&quot;: [
-        &quot;dm.datadev=/dev/centos/docker-data&quot;,
-        &quot;dm.metadatadev=/dev/centos/docker-metadata&quot;
-    ],
-    &quot;tlsverify&quot;: true,
-    &quot;tlscacert&quot;: &quot;/root/.docker/ca.pem&quot;,
-    &quot;tlscert&quot;: &quot;/root/.docker/cert.pem&quot;,
-    &quot;tlskey&quot;: &quot;/root/.docker/key.pem&quot;
-}
-</code></pre>
-
-<p><code>sudo systemctl restart docker</code></p>
-
-<p>client端配置下面这几个变量就好</p>
-
-<pre><code>export DOCKER_HOST=tcp://some.domain:2376
-export DOCKER_TLS_VERIFY=1
-export DOCKER_CERT_PATH=$DIR
-</code></pre>
-
-<p>动态设置$DIR,将你的docker.env和证书放在相同文件夹下.</p>
-
-<pre><code>export DOCKER_HOST=tcp://some.domain:2376
-export DOCKER_TLS_VERIFY=1
-export DOCKER_CERT_PATH=$(cd `dirname $0`; pwd)
-</code></pre>
-
-<p>其他脚本参考</p>
-
-<p><a href="https://gist.github.com/bradrydzewski/a6090115b3fecfc25280">https://gist.github.com/bradrydzewski/a6090115b3fecfc25280</a></p>
-
-<p><a href="https://gist.github.com/cameron/10797040">https://gist.github.com/cameron/10797040</a></p>
-
-<p>搜索 <code>docker search 镜像名字</code>
-下载 <code>docker pull learn/tutorial</code>, 下载时要写完整名字</p>
-
-<p>若证书始终验证不通过可能是两者的时间不一致
-<code>ntpdate cn.pool.ntp.org</code> 同步一下服务器时间.</p>
-
-<p>改动后,重启docker服务生效.</p>
-
-<pre><code>sudo systemctl daemon-reload
-sudo systemctl restart docker
-</code></pre>
-
-<p><a href="https://hub.docker.com/explore/">官方Docker镜像一览</a></p>
-
-<p>下载官方ubuntu <code>docker pull ubuntu</code></p>
-
-<p>运行此ubuntu <code>docker run ubuntu echo &quot;hello&quot;</code></p>
-
-<p>运行完以后docker容器就退出了.</p>
-
-<p>进入此ubuntu的shell
-<code>docker run -i -t ubuntu /bin/bash</code> 也可以写为 <code>docker run -it ubuntu /bin/bash</code></p>
-
-<p>期间如果有需要退出按 <code>Ctrl+P+Q</code>,退出后,容器任然是运行的,<code>Ctrl+D</code>退出后容器停止</p>
-
-<p><code>docker ps</code> 查看正在运行的docker容器,可以看到后台的docker</p>
-
-<p>重新进入容器需要<code>docker attach CONTAINER</code> 此命令代表<code>Attach to a running container</code>.</p>
-
-<p>CONTAINER可以是最前面的CONTAINER ID ,也可以是最后面的NAMES</p>
-
-<p>你还可以使用 <code>docker run -it --name myname ubuntu /bin/bash</code> 来指定它使用的名字,否则名字的随机的</p>
-
-<p>你可以用不同的名字同时运行多个此种镜像</p>
-
-<p>使用 <code>docker rename hello hello2</code> 将原先名字为hello的容器改名为hello2</p>
-
-<p>使用 <code>docker top hello2</code> 查看运行在hello2中的所有进程</p>
-
-<p>使用<code>docker stats</code> 查看容器运行的CPU,内存,网络等消耗统计</p>
-
-<p>使用 <code>docker pause hello2</code> 将docker hello2 中的所有进程暂停,使用<code>docker ps</code> 可以看到容器已经暂停了</p>
-
-<p>使用 <code>docker unpass hello2</code> 恢复暂停的容器</p>
-
-<p>使用 <code>docker stop hello2</code> 将名字为hello2的容器停止</p>
-
-<p>使用 <code>docker ps -a</code> 查看所有的容器,将会看到很多容器,因为每次执行<code>docker run</code>命令都是<code>Run a command in a new container</code>新建了一个容器,
-可以考虑使用 <code>docker start 容器名称</code> 然后再<code>docker attach</code> 进去,你上次的改动依然在那.</p>
-
-<p>也可以考虑使用<code>docker rm 容器名称</code> 删除容器以节约资源,rm后可用空格分隔多个容器名称,此命令执行较慢</p>
-
-<p>也可以在创建的时候指明结束运行时清除docker容器<code>docker run --rm ubuntu echo &quot;hello&quot;</code></p>
-
-<p>或者将要执行的命令附加到正在运行的容器上<code>docker exec hello2  echo &quot;hihi&quot;</code></p>
-
-<p>当<code>docker start</code>后立即退出,来不及attach时,使用<code>docker start -ia vps</code> 这种方式</p>
-
-<p>使用<code>docker rmi</code>来删除镜像
-<code>docker ps</code> 默认显示当前正在运行中的container
-<code>docker ps -a</code> 查看包括已经停止的所有容器
-<code>docker ps -l</code> 显示最新启动的一个容器（包括已停止的）</p>
-
-<p>使用<code>docker info</code>查看机器的配置,docker版本,容器和镜像的数量,存储驱动等</p>
-
-<p>技巧:
-attach是可以带上<code>--sig-proxy=false</code>来确保<code>CTRL-D</code>或<code>CTRL-C</code>不会关闭容器</p>
-
-<p>这是一些经常使用的镜像相关的数据：</p>
-
-<table>
-<thead>
-<tr>
-<th>名称</th>
-<th>描述</th>
-<th>大小</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>scratch</td>
-<td>基础镜像</td>
-<td>大小为0</td>
-</tr>
-
-<tr>
-<td>busybox</td>
-<td>最小Unix系统 (uClibc)</td>
-<td>1.1MB</td>
-</tr>
-
-<tr>
-<td>Alpine</td>
-<td>基于busybox(musl)</td>
-<td>4.8MB</td>
-</tr>
-
-<tr>
-<td>CirrOS</td>
-<td>最小化的Linux发行版</td>
-<td>7.7MB</td>
-</tr>
-
-<tr>
-<td>ubuntu:16.04</td>
-<td>Ubuntu</td>
-<td>121MB</td>
-</tr>
-
-<tr>
-<td>debian:jessie</td>
-<td>Debian最新版</td>
-<td>125MB</td>
-</tr>
-
-<tr>
-<td>centos:latest</td>
-<td>Centos最新版</td>
-<td>196MB</td>
-</tr>
-</tbody>
-</table>
-
-<h2 id="文件系统">文件系统</h2>
-
-<p>把一个宿主机上的目录挂载到镜像里</p>
-
-<p><strong>通过挂载的方式</strong></p>
-
-<blockquote>
-<p>通过-v参数,冒号前为宿主机目录,必须为绝对路径,冒号后为镜像内挂载的路径.</p>
-</blockquote>
-
-<p><code>docker run -it --name tmp -v /data/tmp:/home ubuntu /bin/bash</code></p>
-
-<p>宿主目录不存在会自动创建,但是镜像内挂载路径必须存在,挂载后双向可写,实时生效
-此镜像将一直保持挂载,stop,exit后重新进入,依然是挂载状态.</p>
-
-<p>默认挂载的路径权限为读写.如果指定为只读可以用：ro
-<code>docker run -it --name tmp -v /data/tmp:/home:ro ubuntu /bin/bash</code>
-挂载后,镜像内对挂载的数据不可写</p>
-
-<p>docker还提供了一种高级的用法,叫数据卷.
-数据卷：&rdquo;其实就是一个正常的容器,专门用来提供数据卷供其它容器挂载的&rdquo;.感觉像是由一个容器定义的一个数据挂载信息.其他的容器启动可以直接挂载数据卷容器中定义的挂载信息.</p>
-
-<p>创建一个普通容器,定义一个名称,挂载目录. 数据容器是不需要运行的.</p>
-
-<p><code>docker run -v /data/tmp:/home  --name datafs busybox</code></p>
-
-<p>其他容器使用这个数据卷
-<code>docker run -it --name tmp --volumes-from datafs ubuntu /bin/bash</code></p>
-
-<p><strong>通过volume方式(建议使用这种最新的方式)</strong></p>
-
-<p>docker1.9及以上可以使用<code>docker volume create --name datafs</code>创建<code>volume</code>
-使用时类似<code>docker run --name=yourcontainername -p 10022:22 -p 10080:3000 -v datafs:/data ubuntu</code></p>
-
-<p><code>docker volume ls</code> 查看创建的<code>volume</code></p>
-
-<p><code>docker volume rm</code>用来删除</p>
-
-<p><code>docker volume inspect datafs</code>查看详情</p>
-
-<p>这些数据是放在<code>/var/lib/docker/volumes/</code>下面的</p>
-
-<p>docker的container是无状态的,也就是说标记状态的数据,例如：数据库数据,应用程序的log等等,是不应该放到container里的,而是放到 Data Volume Container里</p>
-
-<p>建议使用Data Volume Container不要使用过去的方法了</p>
-
-<h2 id="网络系统">网络系统</h2>
-
-<p>使用<code>-p</code>进行映射端口,第一个是外部端口,第二个是内部端口</p>
-
-<p>默认的规则是TCP,如果需要UDP,采用类似<code>-p 1234:1234/udp</code></p>
-
-<p><code>-p 80:8080</code>容器内部的8080端口,对外暴漏于80端口
-<code>-p 22</code>内部是22端口映射,外部则为一个随机可用的端口,<code>-P</code>则是将Dockerfile里EXPOSE的所有端口分配到宿主机的动态端口上,EXPOSE的端口不创建和宿主机的映射,是不能直接访问的</p>
-
-<p>-p参数只能在<code>docker run</code>时指明,一旦生成了container就不能修改端口映射
-可以采用如下方式生成新的容器修改</p>
-
-<pre><code>docker stop vps
-docker commit vps vpsimage
-docker rm vps
-docker run -it -p 8080:8000 --name vps vpsimage bash
-</code></pre>
-
-<p>多个端口类似<code>docker run -it --name vps -p 443:443 -p 80:8080 -p 8000:80 vpsimage bash</code></p>
-
-<p>使用<code>docker port vps</code>可以查看此容器当前的端口映射,容器停止后,<code>docker port vps</code>不会显示出来,他显示的是正在工作的.</p>
-
-<p><code>docker inspect vps</code> 查看容器的详细配置信息,包括端口映射,来源镜像,日志存储路径,内存,CPU等</p>
-
-<h2 id="容器与镜像">容器与镜像</h2>
-
-<p><code>docker export</code> <code>docker import</code>  与  <code>docker save</code>  <code>docker load</code></p>
-
-<p>导出后再导入<code>exported-imported</code>的镜像会丢失所有的历史.</p>
-
-<p>而保存后再加载<code>saveed-loaded</code>的镜像没有丢失历史和层(layer).</p>
-
-<p>这意味着使用导出后再导入的方式,你将无法回滚到之前的层(layer),</p>
-
-<p>同时,使用保存后再加载的方式持久化整个镜像,就可以做到层回滚（可以执行<code>docker tag &lt;LAYER ID&gt; &lt;IMAGE NAME&gt;</code>来回滚之前的层）</p>
-
-<p><code>docker history vpsimage</code> 查看镜像的变迁历史</p>
-
-<blockquote>
-<p>Export命令用于持久化容器[Export a container&rsquo;s filesystem as a tar archive]</p>
-
-<p>Save命令用于持久化镜像[Save an image(s) to a tar archive]</p>
-</blockquote>
-
-<p><strong>容器</strong></p>
-
-<p><code>docker ps -a</code> 查看所有的容器,包含已经停止的,暂停的,在运行的等,可以恢复运行,停止等,删除使用<code>docker rm xx</code></p>
-
-<p>修改容器名字:<code>docker rename old new</code></p>
-
-<p>导出:<code>docker export vps &gt; vpsdata.tar</code></p>
-
-<p>导入:<code>cat /home/vpsdata.tar | docker import – yourname</code>,也可以通过指定 URL 或者某个目录来导入<code>docker import http://example.com/exampleimage.tgz example/imagerepo</code></p>
-
-<p><strong>镜像</strong></p>
-
-<p><code>docker images</code> 显示本机上存在的资源,大部分是<code>docker pull</code>下来的,可以使用 <code>docker rmi xx</code> 删除</p>
-
-<p>修改镜像名字:<code>docker tag old new</code> 然后 <code>docker rmi old</code></p>
-
-<p>导出:<code>docker save vpsimage &gt; image.tar</code></p>
-
-<p>导入:<code>docker load &lt; /home/image.tar</code></p>
-
-<p>docker server 与 client 分离时,save,export等操作会非常慢,因为会通过网络把生成的文件下载到本地.</p>
-
-<blockquote>
-<p><code>docker rm $(docker ps -q -a)</code> 一次性删除所有的容器</p>
-
-<p><code>docker rm $(docker ps -a -q)</code> 删除所有停止运行的容器</p>
-
-<p><code>docker rmi $(docker images -q)</code> 一次性删除所有的镜像</p>
-
-<p><code>docker ps -l -q</code> 获取最后(-l)一个启动的容器id(-q)</p>
-
-<p><code>docker rmi $(docker images | grep &quot;^&lt;none&gt;&quot; | awk &quot;{print \$3}&quot;)</code> 清除none标签的镜像</p>
-</blockquote>
-
-<p>Docker 1.13 引进了新的管理命令，如下：</p>
-
-<p>命令 <code>docker system df</code> 提供 Docker 整体磁盘使用率的概况，包括镜像、容器和（本地） volume</p>
-
-<h2 id="国内加速">国内加速</h2>
-
-<p><code>docker pull</code> 默认采用https通信,国内一般提供镜像,或者自己的registry,可以采用
-例如<code>docker pull registry.aliyuncs.com/suconghou/http</code> 这种方式指明registry</p>
-
-<p><strong><a href="https://dev.aliyun.com/search.html">阿里云的registry</a>,提供私有,公开docker镜像,单独https域名官方镜像加速</strong></p>
-
-<p><strong>Daocloud提供的Docker服务地址 daocloud.io</strong>
-并提供单独域名的加速器, 还有写好的脚本可以指定docker启动时使用的registry</p>
-
-<p>网易提供的镜像 <code>https://hub-mirror.c.163.com/</code></p>
-
-<p>同时中科大USTC也提供镜像加速 <code>https://docker.mirrors.ustc.edu.cn/</code> 见 <a href="https://servers.ustclug.org/2015/05/new-docker-hub-registry-mirror/">https://servers.ustclug.org/2015/05/new-docker-hub-registry-mirror/</a></p>
-
-<p>最新的配置帮助 <a href="https://lug.ustc.edu.cn/wiki/mirrors/help/docker">https://lug.ustc.edu.cn/wiki/mirrors/help/docker</a></p>
-
-<p>docker 配置文件 <code>/etc/docker/daemon.json</code></p>
-
-<p>配置镜像加速.</p>
-
-<pre><code>{
-  &quot;registry-mirrors&quot;: [&quot;https://docker.mirrors.ustc.edu.cn&quot;]
-}
-</code></pre>
-
-<p>配置文件介绍见 <a href="https://docs.docker.com/engine/reference/commandline/dockerd/">https://docs.docker.com/engine/reference/commandline/dockerd/</a></p>
-
-<h2 id="修改alpine-linux-的镜像源地址">修改alpine linux 的镜像源地址</h2>
-
-<p><code>vi /etc/apk/repositories</code></p>
-
-<pre><code>http://nl.alpinelinux.org/alpine/v3.4/main
-http://nl.alpinelinux.org/alpine/v3.4/community
-</code></pre>
-
-<p>可替换为</p>
-
-<pre><code>http://mirror.tuna.tsinghua.edu.cn/alpine/v3.4/main
-http://mirror.tuna.tsinghua.edu.cn/alpine/v3.4/community
-</code></pre>
-
-<p>简化为</p>
-
-<pre><code>echo -e 'http://mirror.tuna.tsinghua.edu.cn/alpine/v3.4/main\nhttp://mirror.tuna.tsinghua.edu.cn/alpine/v3.4/community' &gt; /etc/apk/repositories
-</code></pre>
-
-<h2 id="使用流程">使用流程</h2>
-
-<pre><code>sudo groupadd docker
-</code></pre>
-
-<p>重新加载配置</p>
-
-<p><code>sudo systemctl daemon-reload</code>
-<code>sudo systemctl restart docker</code></p>
-
-<p>当你的docker不支持<code>devicemapper</code>存储驱动时,会报错
-可以使用<code>-s overlay</code> 参数指定存储驱动</p>
-
-<p><code>ExecStart=/usr/bin/docker daemon -s overlay -H fd://</code></p>
-
-<p>如果已经启动<code>docker daemon</code>但是任然无法连接上,查看<code>systemctl status  docker.service</code>
-监听是否正确,如正确,查看当前登录的用户是否和docker用户一个组内
-假设当前登录用户是root</p>
-
-<pre><code>sudo usermod -aG docker root
-newgrp docker
-</code></pre>
-
-<p>再次重启docker daemon,退出当前用户再次登录</p>
-
-<h2 id="根据dockerfile创建">根据Dockerfile创建</h2>
-
-<p><code>sudo docker build -t=&quot;user/imgname:tag&quot; .</code></p>
-
-<p>其中-t标记来添加 tag,指定新的镜像的用户信息.</p>
-
-<p>&rdquo;.&rdquo; 是 Dockerfile 所在的路径（当前目录）,也可以替换为一个具体的 Dockerfile 的路径.</p>
-
-<h2 id="文件结构">文件结构</h2>
-
-<p>进入目录查看 <code>/var/lib/docker</code></p>
-
-<p><code>volumes</code> 目录里存放着创建的<code>Data Volume Container</code></p>
-
-<p><code>containers</code> 目录存储启动的容器配置信息,查看<code>docker ps -a</code>里的CONTAINER ID和此文件夹下某些目录的前几位是相同的</p>
-
-<p><code>graph</code> pull的镜像信息保存在了graph文件夹下,镜像的内容存在了<code>devicemapper/devicemapper/data</code> 下,根据存储驱动不同,也可能存放在<code>overlay</code>目录,这些目录都比较大</p>
-
-<p><code>ls -lh /var/lib/docker/graph/</code>,进入一个文件夹,文件夹内保存着:</p>
-
-<blockquote>
-<p>json -保存着关于这个镜像的元数据, <code>cat json | python -m json.tool</code></p>
-
-<p>layersize – 一个整数,表示layer的大小.</p>
-
-<p>checksum - 一个sha256值</p>
-</blockquote>
-
-<p><code>image</code></p>
-
-<h3 id="存储驱动">存储驱动</h3>
-
-<p>做paas一般使用aufs驱动,用于存储大量的docker,但是aufs只在ubuntu系的内核才自带此功能.</p>
-
-<p>devicemapper驱动将所有文件存储在一个100G的虚拟磁盘,但是静态编译好的二进制文件不支持此驱动</p>
-
-<p>overlay驱动将镜像里的各个文件还是存储在磁盘的各个文件,镜像过多存储的文件数量也很多,一般兼容性较好</p>
-
-<p>devicemapper是比较推荐的存储驱动</p>
-
-<h2 id="构建镜像">构建镜像</h2>
-
-<p>build images 使用
-<code>docker build -t=&quot;http&quot; .</code></p>
-
-<p>-t 指明tag
-后面的.指明Dockerfile所在的目录</p>
-
-<p>如果想要使用非Dockerfile为名字的构建文件可以使用-f参数指定构建文件</p>
-
-<p><code>docker build -t=myimage -f mydockerfile .</code></p>
-
-<p>还可以使用<code>docker build -t=myimage - &lt; mydockerfile</code> , 不过尝试发现这种方式好像对路径处理有问题,还是推荐上面一种自定义的方式.</p>
-
-<h2 id="关联远端docker-hub仓库">关联远端Docker Hub仓库</h2>
-
-<p><code>docker login</code>
-输入用户名,密码,邮箱登陆</p>
-
-<p><code>docker push yourname/imagename</code></p>
-
-<h2 id="技巧">技巧</h2>
-
-<h3 id="清除docker-container-log">清除docker container log</h3>
-
-<p>使用 <code>docker logs &lt;container_name_or_id&gt;</code> 可以查看容器的log,也可以将重定向到一个文件,可以类似于<code>tail -f</code>一样跟踪变化.</p>
-
-<p>但是未提供清空log的选项.</p>
-
-<p>其实可以使用<code>$(docker inspect --format='{{.LogPath}}' &lt;container_name_or_id&gt;)</code>得出此容器的日志存储文件.</p>
-
-<pre><code>sudo ls -lh $(docker inspect --format='{{.LogPath}}' &lt;container_name_or_id&gt;) //查看日志文件
-echo &quot;&quot; &gt; $(docker inspect --format='{{.LogPath}}' &lt;container_name_or_id&gt;) //可以清空日志文件
-</code></pre>
-
-<p>还可以使用<code>truncate -s 0 /var/lib/docker/containers/*/*-json.log</code>清空所有的日志文件.</p>
-
-<p>不过这个都是需要<code>docker daemon</code>和<code>docker client</code>在同一台机器上.</p>
-
-<p><code>docker 1.8</code>及以后版本可以使用参数<code>--log-opt max-size=10m</code>限制日志文件的大小,更多详细介绍 <a href="https://docs.docker.com/engine/admin/logging/overview/">https://docs.docker.com/engine/admin/logging/overview/</a></p>
-
-<p>使用<code>docker -m</code>可以限制内存的使用,这个是直到程序内存使用超过此限定的2倍,才会因OOM而被进程杀掉.容器仍会正常运行.</p>
-
-<p>要使超过限定大小如100,就杀死,可以 <code>-m 100m --memory-swap=100m</code></p>
-
-<h2 id="问题排查">问题排查</h2>
-
-<p><code>systemctl status docker.service -l</code> 可查看docker工作状态,为什么启动失败等</p>
-
-<h2 id="coreos">CoreOs</h2>
-
-<p>docker 配置远程访问.</p>
-
-<pre><code>sudo touch /run/flannel_docker_opts.env &amp;&amp; sudo chmod 777 /run/flannel_docker_opts.env
-sudo echo 'DOCKER_OPTS=&quot; -H=unix:///var/run/docker.sock -H=0.0.0.0:4243  --registry-mirror=https://docker.mirrors.ustc.edu.cn&quot;' &gt; /run/flannel_docker_opts.env
-sudo systemctl restart docker
-</code></pre>
-
-<p>解决
-<code>Usage of loopback devices is strongly discouraged for production use. Use</code>&ndash;storage-opt dm.thinpooldev<code>to specify a custom block storage device.</code></p>
 
 			</div>
 		</div>

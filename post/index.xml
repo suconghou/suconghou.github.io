@@ -6,8 +6,87 @@
     <description>Recent content in Posts on 苏苏的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 20 Nov 2016 22:12:25 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 13 Jan 2017 14:01:02 +0800</lastBuildDate>
     <atom:link href="http://blog.suconghou.cn/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>gcc</title>
+      <link>http://blog.suconghou.cn/post/gcc/</link>
+      <pubDate>Fri, 13 Jan 2017 14:01:02 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/gcc/</guid>
+      <description>
+
+&lt;h2 id=&#34;gcc-静态编译&#34;&gt;gcc 静态编译&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;1.c&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;stdio.h&amp;gt;
+
+void main()
+{
+	printf(&amp;quot;hello&amp;quot;);
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;gcc -static --verbose -fno-builtin 1.c&lt;/code&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;--verbose&lt;/code&gt;是为了输入编译的详细信息&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;-fno-builtin&lt;/code&gt;是阻止编译器把printf变成puts&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;如果出现错误&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/usr/bin/ld: cannot find -lc
+collect2: 错误：ld 返回 1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可能你还需要安装glibc的静态库&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;yum update &amp;amp;&amp;amp; yum install glibc-static -y&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;优化选项&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://www.zhihu.com/question/27090458&#34;&gt;https://www.zhihu.com/question/27090458&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;gcc -static -O  1.c
+gcc -static -O2 1.c
+gcc -static -O3 1.c
+gcc -static -Os 1.c
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;错误提示&#34;&gt;错误提示&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;-pedantic&lt;/code&gt;编译选项并不能保证被编译程序与ANSI/ISO C标准的完全兼容，它仅仅只能用来帮助Linux程序员离这个目标越来越近。或者换句话说，&lt;code&gt;-pedantic&lt;/code&gt;选项能够帮助程序员发现一些不符合 ANSI/ISO C标准的代码，但不是全部，事实上只有ANSI/ISO C语言标准中要求进行编译器诊断的那些情况，才有可能被GCC发现并提出警告。&lt;/p&gt;
+
+&lt;p&gt;除了&lt;code&gt;-pedantic&lt;/code&gt;之外，GCC还有一些其它编译选项也能够产生有用的警告信息。这些选项大多以-W开头，其中最有价值的当数&lt;code&gt;-Wall&lt;/code&gt;了，使用它能够使GCC产生尽可能多的警告信息。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;gcc -Wall test.c -o test
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;GCC给出的警告信息虽然从严格意义上说不能算作错误，但却很可能成为错误的栖身之所。一个优秀的Linux程序员应该尽量避免产生警告信息，使自己的代码始终保持标准、健壮的特性。所以将警告信息当成编码错误来对待，是一种值得赞扬的行为！所以，在编译程序时带上-Werror选项，那么GCC会在所有产生警告的地方停止编译，迫使程序员对自己的代码进行修改，如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;gcc -Werror test.c -o test
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;调试选项&#34;&gt;调试选项&lt;/h2&gt;
+
+&lt;p&gt;1) -g选项，产生供gdb调试用的可执行文件：&lt;code&gt;gcc -g helloworld.c&lt;/code&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;产生一个叫作a.out的可执行文件，大小明显比只用-o选项编译汇编连接后的文件大。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;2) -pg选项，产生供gprof剖析用的可执行文件：&lt;code&gt;gcc -pg helloworld.c&lt;/code&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;产生一个叫作a.out的执行文件，大小明显比用-g选项后产生的文件还大。&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+    </item>
     
     <item>
       <title>系统安全</title>
@@ -444,7 +523,7 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 
 &lt;p&gt;本机 &lt;code&gt;virt-viewer --connect qemu:///system windows2012&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;windows系统可使用 vncviewer (&lt;a href=&#34;http://share.suconghou.cn/bin/vncviewer.zip&#34;&gt;http://share.suconghou.cn/bin/vncviewer.zip&lt;/a&gt;) 连接&lt;/p&gt;
+&lt;p&gt;windows系统可使用 vncviewer (&lt;a href=&#34;http://share.suconghou.cn/files/bin/vncviewer.zip&#34;&gt;http://share.suconghou.cn/files/bin/vncviewer.zip&lt;/a&gt;) 连接&lt;/p&gt;
 
 &lt;p&gt;全屏下用F8键可唤出菜单.&lt;/p&gt;
 
@@ -475,8 +554,12 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 
 &lt;p&gt;建议写入&lt;code&gt;/usr/iptab.sh&lt;/code&gt;,加入&lt;code&gt;crontab&lt;/code&gt;,每个整点执行&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;sudo iptables -F
-sudo iptables -X
+&lt;pre&gt;&lt;code&gt;iptables -P INPUT ACCEPT
+iptables -P OUTPUT ACCEPT
+iptables -P FORWARD ACCEPT
+iptables -F
+iptables -X
+iptables -Z
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h2 id=&#34;查看本机关于iptables的设置情况&#34;&gt;查看本机关于IPTABLES的设置情况&lt;/h2&gt;
@@ -583,6 +666,56 @@ iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 &lt;p&gt;iptables只是一个工具，将IP规则写入内核，让内核去处理。所以iptables只有在加规则的时候才会看得到进程，加完了就退出了&lt;/p&gt;
 
 &lt;p&gt;iptables并不是一个普通的daemon，只是一个普通的工具，添加一些规则到kernel的filter列表里面。&lt;/p&gt;
+
+&lt;h3 id=&#34;ip-拦截&#34;&gt;IP 拦截&lt;/h3&gt;
+
+&lt;p&gt;拦截一个IP&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;iptables -I INPUT -s 1.2.3.4 -j DROP&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;解封此IP&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;iptables -D INPUT -s 1.2.3.4 -j DROP&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;参数-I是表示Insert（添加），-D表示Delete（删除）&lt;/p&gt;
+
+&lt;p&gt;INPUT表示入站，DROP表示放弃连接&lt;/p&gt;
+
+&lt;p&gt;IP段&lt;/p&gt;
+
+&lt;p&gt;192.168.1.x 可以写 &lt;code&gt;192.168.1.0/24&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;192.168.x.x 可以写 &lt;code&gt;192.168.0.0/16&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;192.x.x.x   可以写 &lt;code&gt;192.0.0.0/8&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+#清除配置
+/sbin/iptables -P INPUT ACCEPT
+/sbin/iptables -F
+/sbin/iptables -X
+#开放本地和Ping
+/sbin/iptables -A INPUT -i lo -j ACCEPT
+/sbin/iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+/sbin/iptables -A INPUT -p icmp -j ACCEPT
+#配置内网白名单
+/sbin/iptables -A INPUT -s 10.0.0.0/8 -j ACCEPT
+/sbin/iptables -A INPUT -s 172.16.0.0/12 -j ACCEPT
+/sbin/iptables -A INPUT -s 192.168.0.0/16 -j ACCEPT
+#配置外网白名单
+/sbin/iptables -A INPUT -s 180.168.36.198 -j ACCEPT
+/sbin/iptables -A INPUT -s 180.168.34.218 -j ACCEPT
+/sbin/iptables -A INPUT -s 222.73.202.251 -j ACCEPT
+#控制端口
+/sbin/iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+/sbin/iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+#拒绝其它
+/sbin/iptables -A INPUT -j DROP
+/sbin/iptables -A FORWARD -j DROP
+#开放出口
+/sbin/iptables -A OUTPUT -j ACCEPT
+
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
@@ -628,17 +761,19 @@ iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 
 &lt;h2 id=&#34;性能天梯图&#34;&gt;性能天梯图&lt;/h2&gt;
 
+&lt;p&gt;在新标签查看大图&lt;/p&gt;
+
 &lt;p&gt;CPU天梯图&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://suconghou.sinaapp.com/e7d6741f4b703c5057fa6c4f0f3cf971.jpg&#34; alt=&#34;CPU天梯图简化版&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img.alicdn.com/imgextra/i4/693806815/TB2ulpikCxjpuFjSszeXXaeMVXa_!!693806815.jpg&#34; alt=&#34;CPU天梯图1&#34; /&gt;&lt;/p&gt;
 
-&lt;p&gt;CPU天梯图详细&lt;/p&gt;
+&lt;p&gt;CPU天梯图其他版本&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://suconghou.sinaapp.com/33f41a782ceddd3a78a7f40321329777.jpg&#34; alt=&#34;CPU天梯图详细&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img.alicdn.com/imgextra/i3/693806815/TB2KExqkwRkpuFjy1zeXXc.6FXa_!!693806815.jpg&#34; alt=&#34;CPU天梯图2&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;显卡天梯图&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://suconghou.sinaapp.com/14db00815cebc3e46f9647515b384815.jpg&#34; alt=&#34;显卡天梯图&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img.alicdn.com/imgextra/i1/693806815/TB2heFDkB8lpuFjSspaXXXJKpXa_!!693806815.jpg&#34; alt=&#34;显卡天梯图&#34; /&gt;&lt;/p&gt;
 </description>
     </item>
     
@@ -873,6 +1008,38 @@ String.prototype.rtrim=function(){return this.replace(/(\s*$)/g,&amp;quot;&amp;q
 });
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;h3 id=&#34;运行js代码&#34;&gt;运行JS代码&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;// execute code in the content page scope
+var injectScript = function(source) {
+    var script = document.createElement(&#39;script&#39;);
+    script.setAttribute(&#39;type&#39;, &#39;text/javascript&#39;);
+    script.textContent = &#39;;(&#39; + source.toString() + &#39;)()&#39;;
+    document.body.appendChild(script);
+    document.body.removeChild(script)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;添加css代码&#34;&gt;添加CSS代码&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;// insert css
+function injectStyle(css) {
+    var script = document.createElement(&#39;style&#39;)
+    script.setAttribute(&#39;type&#39;, &#39;text/css&#39;)
+    script.textContent = css
+    document.head.appendChild(script)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;利用注释,可也生成html,css,js 等代码&lt;/p&gt;
+
+&lt;p&gt;如&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(function(){/* body{background:#f00} */}).toString().slice(15,-4)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;当然利用es6的字符串模板更加方便,&lt;a href=&#34;http://babeljs.io/repl/&#34;&gt;http://babeljs.io/repl/&lt;/a&gt; 在线转换为es5代码&lt;/p&gt;
+
 &lt;h3 id=&#34;一些正则验证&#34;&gt;一些正则验证&lt;/h3&gt;
 
 &lt;p&gt;验证邮箱&lt;/p&gt;
@@ -929,7 +1096,8 @@ String.prototype.rtrim=function(){return this.replace(/(\s*$)/g,&amp;quot;&amp;q
 &lt;pre&gt;&lt;code&gt;var t=(((1+Math.random())*0x10000000)|0).toString(16);
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;生成指定长度随机字符串&lt;/p&gt;
+&lt;p&gt;生成指定长度随机字符串
+&lt;code&gt;PHP代码&lt;/code&gt;&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;function code($nc, $a=&#39;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&#39;)
 {
@@ -973,8 +1141,7 @@ jQuery(&amp;quot;form&amp;quot;).serializeObject(); //{username:&amp;quot;&amp;q
 	var link = document.createElement(&amp;quot;link&amp;quot;);
 	link.href = url;
 	link.rel=&amp;quot;prefetch&amp;quot;;
-	var s = document.getElementsByTagName(&amp;quot;head&amp;quot;)[0];
-	s.appendChild(link);
+	document.head.appendChild(link);
 }
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -1001,6 +1168,8 @@ window.addEventListener(&#39;error&#39;, function (err)
 
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;p&gt;&lt;code&gt;UA-xxx-1&lt;/code&gt;使用自己的统计ID&lt;/p&gt;
+
 &lt;h3 id=&#34;并发发送ajax&#34;&gt;并发发送ajax&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code&gt;$.when($.get(&#39;assets/misc/1.json&#39;), $.get(&#39;assets/misc/2.json&#39;)).then(function(r1, r2)
@@ -1008,8 +1177,6 @@ window.addEventListener(&#39;error&#39;, function (err)
     console.log(r1[0].message + &amp;quot; &amp;quot; + r2[0].message);
 })
 &lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;UA-xxx-1&lt;/code&gt;使用自己的统计ID&lt;/p&gt;
 
 &lt;h3 id=&#34;fetch跨域带cookie&#34;&gt;Fetch跨域带cookie&lt;/h3&gt;
 
@@ -1200,9 +1367,9 @@ make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 -j$CPU_NUM &amp;amp;&amp;amp
 &lt;p&gt;我编译好的haproxy version 1.7.0&lt;/p&gt;
 
 &lt;blockquote&gt;
-&lt;p&gt;64位 &lt;a href=&#34;http://share.suconghou.cn/bin/haproxy.xz&#34;&gt;http://share.suconghou.cn/bin/haproxy.xz&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;64位 &lt;a href=&#34;http://share.suconghou.cn/files/bin/haproxy.xz&#34;&gt;http://share.suconghou.cn/files/bin/haproxy.xz&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;32位 &lt;a href=&#34;http://share.suconghou.cn/bin/haproxy.gz&#34;&gt;http://share.suconghou.cn/bin/haproxy.gz&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;32位 &lt;a href=&#34;http://share.suconghou.cn/files/bin/haproxy.gz&#34;&gt;http://share.suconghou.cn/files/bin/haproxy.gz&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;h3 id=&#34;使用docker版本的haproxy&#34;&gt;使用Docker版本的HAProxy&lt;/h3&gt;
@@ -1840,6 +2007,10 @@ ZLIB_ENCODING_DEFLATE 对应于ZLIB格式（注意不是纯DEFLATE格式）&lt;/
 &lt;p&gt;Unicode的中文字范围是u4e00-u9fa5，4e00对应的字是&amp;rdquo;一&amp;rdquo;,9fa5对应的汉字是&amp;rdquo;龥&amp;rdquo;&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;/[\x{4e00}-\x{9fa5}]/u&lt;/code&gt; 等同于 &lt;code&gt;/[一-龥]/u&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;readfile-stream-copy-to-stream&#34;&gt;readfile stream_copy_to_stream&lt;/h2&gt;
+
+&lt;p&gt;大文件操作&lt;/p&gt;
 </description>
     </item>
     
@@ -2028,7 +2199,7 @@ make install
 &lt;p&gt;我编译好的tcpdump version 4.7.4&lt;/p&gt;
 
 &lt;blockquote&gt;
-&lt;p&gt;64位 &lt;a href=&#34;http://share.suconghou.cn/bin/tcpdump.xz&#34;&gt;http://share.suconghou.cn/bin/tcpdump.xz&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;64位 &lt;a href=&#34;http://share.suconghou.cn/files/bin/tcpdump.xz&#34;&gt;http://share.suconghou.cn/files/bin/tcpdump.xz&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;也可以直接&lt;code&gt;yum install tcpdump&lt;/code&gt;&lt;/p&gt;
@@ -2250,46 +2421,6 @@ varnishd  -V
 &lt;h4 id=&#34;varnish基本使用&#34;&gt;varnish基本使用&lt;/h4&gt;
 
 &lt;p&gt;varnish / squid / nginx 优缺点讨论 见 &lt;a href=&#34;http://www.zhihu.com/question/20143441&#34;&gt;http://www.zhihu.com/question/20143441&lt;/a&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>在树莓派上使用Docker</title>
-      <link>http://blog.suconghou.cn/post/use-docker-on-raspberry/</link>
-      <pubDate>Sun, 08 May 2016 20:01:56 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/post/use-docker-on-raspberry/</guid>
-      <description>
-
-&lt;h2 id=&#34;安装支持docker的系统&#34;&gt;安装支持Docker的系统&lt;/h2&gt;
-
-&lt;p&gt;树莓派官方系统并不支持Docker,需要安装.&lt;/p&gt;
-
-&lt;p&gt;查看 &lt;a href=&#34;http://blog.hypriot.com/downloads/&#34;&gt;集成Dcoker的树莓派系统&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;aria2c -s 50 -c https://downloads.hypriot.com/hypriotos-rpi-v0.8.0.img.zip
-
-
-diskutil list
-diskutil unmountdisk /dev/disk2
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;用以下命令前必须卸载u盘&lt;code&gt;diskutil unmountdisk /dev/disk2&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sudo dd if=hypriotos-rpi-v0.8.0.img of=/dev/disk2 bs=8k
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;安装完成重启就可以啦,启动后登陆的用户是pirate,密码hypriot&lt;/p&gt;
-
-&lt;p&gt;修改密码:执行&lt;code&gt;passwd&lt;/code&gt;,输入当前密码,输入新密码,再输入新密码,更新完成&lt;/p&gt;
-
-&lt;p&gt;执行&lt;code&gt;exit&lt;/code&gt;退出,或者&lt;code&gt;sudo reboot&lt;/code&gt;重启&lt;/p&gt;
-
-&lt;p&gt;创建用户:&lt;code&gt;useradd -g test -d /home/test1 -s /etc/bash -m test1&lt;/code&gt;
-注解：-g 所属组 -d 家目录 -s 所用的SHELL
-passwd abc&lt;/p&gt;
-
-&lt;p&gt;获得sudo权限:编辑&lt;code&gt;/etc/sudoers&lt;/code&gt; 加入新添加的用户名&lt;/p&gt;
 </description>
     </item>
     

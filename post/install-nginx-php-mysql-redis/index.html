@@ -244,6 +244,32 @@ location @goapp {
 
 <p>使用匹配跳转后也加上之前访问的路径和<code>query_string</code>,可以转为https协议,也可以让多个域名301到一个域名</p>
 
+<p><code>proxy_pass</code> 后面再三种模式下不能添加URI</p>
+
+<blockquote>
+<ol>
+<li>Regular Expression Locations</li>
+<li>Named Locations</li>
+<li>if Blocks</li>
+</ol>
+</blockquote>
+
+<p>使用重写达到类似的效果</p>
+
+<pre><code>try_files $uri $uri/  @goapp;
+location @goapp{
+        rewrite ^(.*)$ /www$1 break;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Server $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection &quot;upgrade&quot;;
+        proxy_pass http://127.0.0.1:18080;
+}
+</code></pre>
+
+<p>在我们请求的URI上拼接上<code>/www</code> 于是请求 <code>/home/index</code> 后端转发到<code>/www/home/index</code></p>
+
 <h3 id="代理与后端保持长连接">代理与后端保持长连接</h3>
 
 <pre><code>

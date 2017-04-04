@@ -63,34 +63,32 @@
 
 <h3 id="下载安装">下载安装</h3>
 
-<p>Ubuntu/Debian: curl -fsSL <a href="https://get.docker.com/">https://get.docker.com/</a> | sh
-Linux 64bit binary: <a href="https://get.docker.com/builds/Linux/x86_64/docker">https://get.docker.com/builds/Linux/x86_64/docker</a>
-Darwin/OSX 64bit client binary: <a href="https://get.docker.com/builds/Darwin/x86_64/docker-1.12.0.tgz">https://get.docker.com/builds/Darwin/x86_64/docker-1.12.0.tgz</a>
-Linux 64bit tgz: <a href="https://get.docker.com/builds/Linux/x86_64/docker-1.12.0.tgz">https://get.docker.com/builds/Linux/x86_64/docker-1.12.0.tgz</a>
-Windows 64bit: <a href="https://get.docker.com/builds/Windows/x86_64/docker-1.12.0.zip">https://get.docker.com/builds/Windows/x86_64/docker-1.12.0.zip</a>
-Windows 32bit client binary: <a href="https://get.docker.com/builds/Windows/i386/docker-1.12.0.zip">https://get.docker.com/builds/Windows/i386/docker-1.12.0.zip</a></p>
+<p><a href="http://www.oschina.net/news/83328/docker-17-03-1-ce-released">http://www.oschina.net/news/83328/docker-17-03-1-ce-released</a></p>
+
+<pre><code>deb/rpm install: curl -fsSL https://get.docker.com/ | sh
+
+Linux 64bits tgz: https://get.docker.com/builds/Linux/x86_64/docker-17.03.1-ce.tgz
+
+Darwin/OSX 64bits client tgz: https://get.docker.com/builds/Darwin/x86_64/docker-17.03.1-ce.tgz
+
+Linux 32bits arm tgz: https://get.docker.com/builds/Linux/armel/docker-17.03.1-ce.tgz
+
+Windows 64bits zip: https://get.docker.com/builds/Windows/x86_64/docker-17.03.1-ce.zip
+
+Windows 32bits client zip: https://get.docker.com/builds/Windows/i386/docker-17.03.1-ce.zip
+</code></pre>
+
+<h3 id="快速安装docker并启动">快速安装docker并启动</h3>
 
 <p><a href="https://docs.docker.com/engine/installation/linux/centos/">官方安装教程</a></p>
 
-<blockquote>
-<p>使用二进制方式安装的docker不支持<code>devicemapper</code>驱动,yum安装的支持.
-yum安装的版本落后于官方最新版,可以使用官方的yum源</p>
-</blockquote>
+<p>新版的docker包名改为<code>docker-ce</code></p>
 
-<pre><code>sudo tee /etc/yum.repos.d/docker.repo &lt;&lt;-'EOF'
-[dockerrepo]
-name=Docker Repository
-baseurl=https://yum.dockerproject.org/repo/main/centos/$releasever/
-enabled=1
-gpgcheck=1
-gpgkey=https://yum.dockerproject.org/gpg
-EOF
-sudo yum install docker-engine
-</code></pre>
-
-<p>设置开机启动并启动</p>
-
-<pre><code>sudo systemctl enable docker.service
+<pre><code>sudo yum install -y yum-utils
+sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+sudo yum makecache fast
+sudo yum install -y docker-ce
+sudo systemctl enable docker
 sudo systemctl start docker
 </code></pre>
 
@@ -103,35 +101,6 @@ sudo systemctl start docker
 <p>阿里云也提供安装脚本 见<code>http://mirrors.aliyun.com/help/docker-engine</code>,</p>
 
 <p>阿里云的软件源可以使用内网源不占用外网流量</p>
-
-<p>然后<code>yum info docker-engine</code>可以看到官方的docker版本.执行<code>yum install docker-engine</code>安装</p>
-
-<p><code>sudo service docker start</code> 启动服务,开机启动<code>sudo chkconfig docker on</code></p>
-
-<p>如果你以前采用<code>yum install docker</code>安装过非官方源里的docker,需要先卸载<code>yum remove docker*</code></p>
-
-<p>docker采用Go语言编写,编译以后生成一个无依赖的可执行文件.</p>
-
-<pre><code>DOCKER_VERSION=docker-1.12.0
-wget https://get.docker.com/builds/Linux/x86_64/${DOCKER_VERSION}.tgz
-tar zxvf ${DOCKER_VERSION}.tgz
-cd docker
-ls -lh
-</code></pre>
-
-<p>得到如下:</p>
-
-<pre><code>total 94M
--rwxr-xr-x 1 root root  15M Jul 29 07:59 docker
--rwxr-xr-x 1 root root  11M Jul 29 07:59 docker-containerd
--rwxr-xr-x 1 root root  11M Jul 29 07:59 docker-containerd-ctr
--rwxr-xr-x 1 root root 3.6M Jul 29 07:59 docker-containerd-shim
--rwxr-xr-x 1 root root  44M Jul 29 07:59 dockerd
--rwxr-xr-x 1 root root 2.8M Jul 29 07:59 docker-proxy
--rwxr-xr-x 1 root root 8.4M Jul 29 07:59 docker-runc
-</code></pre>
-
-<p>移动到<code>/usr/local/bin/</code>,即可使用<code>docker</code>命令,<code>mv * /usr/local/bin/</code>即可替换旧版本</p>
 
 <h2 id="基本使用">基本使用</h2>
 
@@ -202,6 +171,10 @@ export DOCKER_CERT_PATH=$DIR
 export DOCKER_TLS_VERIFY=1
 export DOCKER_CERT_PATH=$(cd `dirname $0`; pwd)
 </code></pre>
+
+<p>可能防火墙<code>iptanles</code>或者<code>firewalld</code>拦截了其他端口,需要开放</p>
+
+<p><code>systemctl stop firewalld</code></p>
 
 <p>其他脚本参考</p>
 
@@ -616,6 +589,8 @@ echo &quot;&quot; &gt; $(docker inspect --format='{{.LogPath}}' &lt;container_na
 <p>使用<code>docker -m</code>可以限制内存的使用,这个是直到程序内存使用超过此限定的2倍,才会因OOM而被进程杀掉.容器仍会正常运行.</p>
 
 <p>要使超过限定大小如100,就杀死,可以 <code>-m 100m --memory-swap=100m</code></p>
+
+<p><code>docker update</code> 可以动态修改容器的资源限制</p>
 
 <h2 id="问题排查">问题排查</h2>
 

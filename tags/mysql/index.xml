@@ -208,6 +208,32 @@ location @goapp {
 
 &lt;p&gt;使用匹配跳转后也加上之前访问的路径和&lt;code&gt;query_string&lt;/code&gt;,可以转为https协议,也可以让多个域名301到一个域名&lt;/p&gt;
 
+&lt;p&gt;&lt;code&gt;proxy_pass&lt;/code&gt; 后面再三种模式下不能添加URI&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;Regular Expression Locations&lt;/li&gt;
+&lt;li&gt;Named Locations&lt;/li&gt;
+&lt;li&gt;if Blocks&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;使用重写达到类似的效果&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;try_files $uri $uri/  @goapp;
+location @goapp{
+        rewrite ^(.*)$ /www$1 break;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Server $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection &amp;quot;upgrade&amp;quot;;
+        proxy_pass http://127.0.0.1:18080;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在我们请求的URI上拼接上&lt;code&gt;/www&lt;/code&gt; 于是请求 &lt;code&gt;/home/index&lt;/code&gt; 后端转发到&lt;code&gt;/www/home/index&lt;/code&gt;&lt;/p&gt;
+
 &lt;h3 id=&#34;代理与后端保持长连接&#34;&gt;代理与后端保持长连接&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code&gt;

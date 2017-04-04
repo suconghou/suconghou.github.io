@@ -34,6 +34,29 @@
 		
 		<div class="post">
 			<h1 class="post-title">
+				<a href="/post/broswer-chrome/"> Chrome浏览器安装</a>
+			</h1>
+			<p class="post-date">Thu, Jan 14, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="配置chrome跨域">配置Chrome跨域</h2>
+
+<p>Chrome 浏览器配置可以跨域</p>
+
+<p><code>/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --disable-web-security</code></p>
+
+<p>或者</p>
+
+<p><code>open -a &quot;Google Chrome&quot; --args --disable-web-security</code></p>
+
+<p>必须完全退出Chrome,再使用上述方法.</p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
 				<a href="/post/use-crontab-in-your-server/"> Crontab与自动备份</a>
 			</h1>
 			<p class="post-date">Tue, Jan 12, 2016</p>
@@ -1002,6 +1025,8 @@ git config --global alias.lg &quot;log --graph --all --pretty=format:'%Cred%h%Cr
 解决冲突，然后调用<code>git add</code>或<code>git rm</code>将解决后的文件暂存。
 所有冲突解决后，<code>git commit</code>提交更改。</p>
 
+<p><code>git merge  brancha branchb</code>  合并其他分支 到当前所在的分支,当然也可以合并master分支的修改到当前分支</p>
+
 <h2 id="5-删除分支">5.删除分支</h2>
 
 <p>删除本地分支,删除分支之前记得先合并,以免数据丢失</p>
@@ -1136,144 +1161,6 @@ make install
 <h1 id="svn">svn</h1>
 
 <p><code>svn revert xx.html</code> 和<code>git checkout xx.html</code> 类似,还原文件的更改</p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/sublime-usage/"> Sublime使用和设置</a>
-			</h1>
-			<p class="post-date">Fri, Jan 8, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="配置文件">配置文件</h2>
-
-<p>最喜欢的字体<code>Monaco</code>,<a href="http://share.suconghou.cn/fonts/MONACO.TTF">此处下载</a></p>
-
-<p>配置文件
-<code>Preferences.sublime-settings</code></p>
-
-<pre><code>{
-	&quot;close_windows_when_empty&quot;: true,
-	&quot;default_encoding&quot;: &quot;UTF-8&quot;,
-	&quot;default_line_ending&quot;: &quot;unix&quot;,
-	&quot;ensure_newline_at_eof_on_save&quot;: true,
-	&quot;font_face&quot;: &quot;Monaco&quot;,
-	&quot;font_size&quot;: 13,
-	&quot;highlight_line&quot;: true,
-	&quot;highlight_modified_tabs&quot;: true,
-	&quot;ignored_packages&quot;:
-	[
-		&quot;Vintage&quot;
-	],
-	&quot;show_encoding&quot;: true,
-	&quot;show_line_endings&quot;: true,
-	&quot;tab_size&quot;: 4,
-	&quot;translate_tabs_to_spaces&quot;: false,
-	&quot;trim_trailing_white_space_on_save&quot;: true,
-	&quot;update_check&quot;: false,
-	&quot;word_wrap&quot;: false
-}
-</code></pre>
-
-<h2 id="插件">插件</h2>
-
-<p><code>open_browser.py</code> 插件</p>
-
-<pre><code>import sublime, sublime_plugin
-import webbrowser
-import os
-
-url_map = {
-    'D:\\git\\bbs\\' : 'http://127.0.0.3/',
-    'D:\\php\\su\\' : 'http://127.0.0.2/',
-    'D:\\php\\htdocs\\' : 'http://127.0.0.1/'
-}
-
-class OpenBrowserCommand(sublime_plugin.TextCommand):
-    def run(self,edit):
-        window = sublime.active_window()
-        window.run_command('save')
-        url = self.view.file_name()
-        flag = False
-        for path, domain in url_map.items():
-            if url.startswith(path):
-                url = url.replace(path, domain).replace('\\', '/')
-                flag = True
-                break
-        if not flag:
-            cmd1='taskkill /f /im php.exe'
-            cmd2='php -S 0.0.0.0:8088 -t '+os.path.abspath(os.path.dirname(self.view.file_name()))
-            os.system(cmd1)
-            os.popen(cmd2)
-            url =  'http://127.0.0.1:8088/'+os.path.basename(self.view.file_name())
-        webbrowser.open_new(url)
-</code></pre>
-
-<h2 id="编译系统">编译系统</h2>
-
-<p><code>node.sublime-build</code> 执行nodejs代码</p>
-
-<pre><code>{
-	&quot;shell_cmd&quot;: &quot;node ${file}&quot;
-}
-</code></pre>
-
-<h2 id="快捷键配置">快捷键配置</h2>
-
-<p><code>Default (OSX).sublime-keymap</code></p>
-
-<pre><code>[
-	{ &quot;keys&quot;: [&quot;alt+d&quot;], &quot;command&quot;: &quot;open_dir&quot;, &quot;args&quot;: {&quot;dir&quot;: &quot;$file_path&quot;, &quot;file&quot;: &quot;$file_name&quot;} },
-	{ &quot;keys&quot;: [&quot;ctrl+shift+c&quot;], &quot;command&quot;: &quot;copy_path&quot; },
-	{ &quot;keys&quot;: [&quot;ctrl+f11&quot;], &quot;command&quot;: &quot;toggle_distraction_free&quot; }
-]
-</code></pre>
-
-<h2 id="添加sublime到命令行">添加sublime到命令行</h2>
-
-<p><code>MacOs</code>下</p>
-
-<pre><code>ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/local/bin/sublime
-</code></pre>
-
-<h2 id="激活码">激活码</h2>
-
-<p>3103可用激活码</p>
-
-<pre><code>—– BEGIN LICENSE —–
-Ryan Clark
-Single User License
-EA7E-812479
-2158A7DE B690A7A3 8EC04710 006A5EEB
-34E77CA3 9C82C81F 0DB6371B 79704E6F
-93F36655 B031503A 03257CCC 01B20F60
-D304FA8D B1B4F0AF 8A76C7BA 0FA94D55
-56D46BCE 5237A341 CD837F30 4D60772D
-349B1179 A996F826 90CDB73C 24D41245
-FD032C30 AD5E7241 4EAA66ED 167D91FB
-55896B16 EA125C81 F550AF6B A6820916
-—— END LICENSE ——
-</code></pre>
-
-<p>3103之前版本可用</p>
-
-<pre><code>----- BEGIN LICENSE -----
-Andrew Weber
-Single User License
-EA7E-855605
-813A03DD 5E4AD9E6 6C0EEB94 BC99798F
-942194A6 02396E98 E62C9979 4BB979FE
-91424C9D A45400BF F6747D88 2FB88078
-90F5CC94 1CDC92DC 8457107A F151657B
-1D22E383 A997F016 42397640 33F41CFC
-E1D0AE85 A0BBD039 0E9C8D55 E1B89D5D
-5CDB7036 E56DE1C0 EFCC0840 650CD3A6
-B98FC99C 8FAC73EE D2B95564 DF450523
------- END LICENSE ------
-</code></pre>
 
 			</div>
 		</div>

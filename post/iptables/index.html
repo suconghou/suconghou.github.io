@@ -44,8 +44,12 @@
 
 <p>建议写入<code>/usr/iptab.sh</code>,加入<code>crontab</code>,每个整点执行</p>
 
-<pre><code>sudo iptables -F
-sudo iptables -X
+<pre><code>iptables -P INPUT ACCEPT
+iptables -P OUTPUT ACCEPT
+iptables -P FORWARD ACCEPT
+iptables -F
+iptables -X
+iptables -Z
 </code></pre>
 
 <h2 id="查看本机关于iptables的设置情况">查看本机关于IPTABLES的设置情况</h2>
@@ -152,6 +156,56 @@ iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 <p>iptables只是一个工具，将IP规则写入内核，让内核去处理。所以iptables只有在加规则的时候才会看得到进程，加完了就退出了</p>
 
 <p>iptables并不是一个普通的daemon，只是一个普通的工具，添加一些规则到kernel的filter列表里面。</p>
+
+<h3 id="ip-拦截">IP 拦截</h3>
+
+<p>拦截一个IP</p>
+
+<p><code>iptables -I INPUT -s 1.2.3.4 -j DROP</code></p>
+
+<p>解封此IP</p>
+
+<p><code>iptables -D INPUT -s 1.2.3.4 -j DROP</code></p>
+
+<p>参数-I是表示Insert（添加），-D表示Delete（删除）</p>
+
+<p>INPUT表示入站，DROP表示放弃连接</p>
+
+<p>IP段</p>
+
+<p>192.168.1.x 可以写 <code>192.168.1.0/24</code></p>
+
+<p>192.168.x.x 可以写 <code>192.168.0.0/16</code></p>
+
+<p>192.x.x.x   可以写 <code>192.0.0.0/8</code></p>
+
+<pre><code>
+#清除配置
+/sbin/iptables -P INPUT ACCEPT
+/sbin/iptables -F
+/sbin/iptables -X
+#开放本地和Ping
+/sbin/iptables -A INPUT -i lo -j ACCEPT
+/sbin/iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+/sbin/iptables -A INPUT -p icmp -j ACCEPT
+#配置内网白名单
+/sbin/iptables -A INPUT -s 10.0.0.0/8 -j ACCEPT
+/sbin/iptables -A INPUT -s 172.16.0.0/12 -j ACCEPT
+/sbin/iptables -A INPUT -s 192.168.0.0/16 -j ACCEPT
+#配置外网白名单
+/sbin/iptables -A INPUT -s 180.168.36.198 -j ACCEPT
+/sbin/iptables -A INPUT -s 180.168.34.218 -j ACCEPT
+/sbin/iptables -A INPUT -s 222.73.202.251 -j ACCEPT
+#控制端口
+/sbin/iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+/sbin/iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+#拒绝其它
+/sbin/iptables -A INPUT -j DROP
+/sbin/iptables -A FORWARD -j DROP
+#开放出口
+/sbin/iptables -A OUTPUT -j ACCEPT
+
+</code></pre>
 
 		</div>
 	</div>

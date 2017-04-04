@@ -191,6 +191,38 @@ String.prototype.rtrim=function(){return this.replace(/(\s*$)/g,&quot;&quot;); }
 });
 </code></pre>
 
+<h3 id="运行js代码">运行JS代码</h3>
+
+<pre><code>// execute code in the content page scope
+var injectScript = function(source) {
+    var script = document.createElement('script');
+    script.setAttribute('type', 'text/javascript');
+    script.textContent = ';(' + source.toString() + ')()';
+    document.body.appendChild(script);
+    document.body.removeChild(script)
+}
+</code></pre>
+
+<h3 id="添加css代码">添加CSS代码</h3>
+
+<pre><code>// insert css
+function injectStyle(css) {
+    var script = document.createElement('style')
+    script.setAttribute('type', 'text/css')
+    script.textContent = css
+    document.head.appendChild(script)
+}
+</code></pre>
+
+<p>利用注释,可也生成html,css,js 等代码</p>
+
+<p>如</p>
+
+<pre><code>(function(){/* body{background:#f00} */}).toString().slice(15,-4)
+</code></pre>
+
+<p>当然利用es6的字符串模板更加方便,<a href="http://babeljs.io/repl/">http://babeljs.io/repl/</a> 在线转换为es5代码</p>
+
 <h3 id="一些正则验证">一些正则验证</h3>
 
 <p>验证邮箱</p>
@@ -247,7 +279,8 @@ String.prototype.rtrim=function(){return this.replace(/(\s*$)/g,&quot;&quot;); }
 <pre><code>var t=(((1+Math.random())*0x10000000)|0).toString(16);
 </code></pre>
 
-<p>生成指定长度随机字符串</p>
+<p>生成指定长度随机字符串
+<code>PHP代码</code></p>
 
 <pre><code>function code($nc, $a='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
 {
@@ -291,8 +324,7 @@ jQuery(&quot;form&quot;).serializeObject(); //{username:&quot;&quot;,password:&q
 	var link = document.createElement(&quot;link&quot;);
 	link.href = url;
 	link.rel=&quot;prefetch&quot;;
-	var s = document.getElementsByTagName(&quot;head&quot;)[0];
-	s.appendChild(link);
+	document.head.appendChild(link);
 }
 </code></pre>
 
@@ -319,6 +351,8 @@ window.addEventListener('error', function (err)
 
 </code></pre>
 
+<p><code>UA-xxx-1</code>使用自己的统计ID</p>
+
 <h3 id="并发发送ajax">并发发送ajax</h3>
 
 <pre><code>$.when($.get('assets/misc/1.json'), $.get('assets/misc/2.json')).then(function(r1, r2)
@@ -326,8 +360,6 @@ window.addEventListener('error', function (err)
     console.log(r1[0].message + &quot; &quot; + r2[0].message);
 })
 </code></pre>
-
-<p><code>UA-xxx-1</code>使用自己的统计ID</p>
 
 <h3 id="fetch跨域带cookie">Fetch跨域带cookie</h3>
 

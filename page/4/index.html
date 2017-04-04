@@ -34,6 +34,199 @@
 		
 		<div class="post">
 			<h1 class="post-title">
+				<a href="/post/php-best-way/"> PHP最佳实践</a>
+			</h1>
+			<p class="post-date">Thu, Jun 30, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="性能优化">性能优化</h2>
+
+<h3 id="数组相关">数组相关</h3>
+
+<p><strong><code>in_array</code>在大数据量(数万以上元素)下效率低下</strong></p>
+
+<p>在分析nginx log得出所有不重复IP时,采用<code>in_array</code>判断,50多万的数据耗时需要五六分钟,而采用存键的方法,用<code>isset</code>判断仅需要十几秒,效率差别非常大. [php7环境下]</p>
+
+<p>判断一个数组是否存在某个元素,远比查找一个键消耗的要多.前者时间复杂度O(n),而后者O(1)</p>
+
+<p>即时使用<code>in_array</code>,也需要加上第三个参数,设置为严格模式,省略数据类型转化的开销,设置为<code>true</code>比设置为<code>false</code>性能要提升好几倍.</p>
+
+<p>这种情况下使用<code>array_search</code>情况比<code>in_array</code>更加糟糕</p>
+
+<p>如果条件允许使用<code>array_flip</code>交换键值,在用<code>isset</code>来判断要比<code>in_array</code>好得多</p>
+
+<p>同时,使用<code>isset</code>来判断数组的键,也比使用<code>array_key_exists</code>要好</p>
+
+<p>而对于本题,还可以使用<code>array_unique</code>最后去重,用空间换时间,效率仅次于用<code>isset</code></p>
+
+<h2 id="bugs">Bugs</h2>
+
+<h3 id="php-pdo-mysql-server-has-gone-away">php pdo <code>MySQL server has gone away</code></h3>
+
+<p>在使用PDO长连接时,执行过一次PDO初始化后,php-fpm进程会与mysql server开启一条TCP长连接,下次连接数据库就能加快速度.</p>
+
+<p>但是却存在一定问题,PDO维持了长连接并没有较好的检测其可用性,如果mysql server kill 掉这个连接,或者mysql重启,都会造成</p>
+
+<p>重新实例化PDO时得到旧的链接,导致出现<code>MySQL server has gone away</code>,更让人郁闷的是这个错误并不是一个Exception,无法被catch捕获,即使设置<code>PDO::ATTR_ERRMODE=&gt;PDO::ERRMODE_EXCEPTION</code>,也不行,还是直接在页面上提示.</p>
+
+<p>如果你使用了<code>set_error_handler</code>,那么这个<code>Warning</code>将会被捕捉,不会直接显示在页面上,但也改变了程序的原有执行逻辑.</p>
+
+<p>如果你不使用<code>set_error_handler</code>,页面上报出<code>Warning</code>,但其实PDO已经返回一个可用的链接了.</p>
+
+<p>猜测可能是PDO首先得到了不可用的然后报警告,然后又创建了一个新的.</p>
+
+<p>较好的解决方法是设置<code>set_error_handler</code>若捕获了这个<code>MySQL server has gone away</code>,则返回null,程序继续按原有逻辑执行.</p>
+
+<p>或者不使用PDO长连接.</p>
+
+<p>注意,<code>set_error_handler</code>返回false的话,这个错误还是会被交到上一级错误程序处理的.</p>
+
+<h3 id="编码转换中的若干问题">编码转换中的若干问题</h3>
+
+<p>我们经常会遇到将utf8编码字符转化为gbk编码的字符,例如生成csv表格,在windows上的cmd窗口输出文字,以及操作windows上的有关文件路径的操作都需要使用gbk编码.</p>
+
+<p>常使用<code>iconv('utf-8', 'gbk', $str);</code>将utf8字符转为gbk</p>
+
+<p>这里 utf gbk 不区分大小写,也可以混写,不区分是<code>utf8</code>还是<code>utf-8</code>,都能都正常使用</p>
+
+<p><code>iconv('utf-8', 'gbk//ignore', $str);</code> 加上<code>//ignore</code>使有些字符无法装换时略过.</p>
+
+<p>但是<code>//ignore</code>在php5.4及以下,和个别php5.6版本上无效,任然是报NOTICE错误.</p>
+
+<pre><code>&lt;?php
+	echo iconv('UTF8', 'GBK//IGNORE', 'l l l');
+?&gt;
+</code></pre>
+
+<p>见 <code>https://3v4l.org/7vCFW</code> 和 <code>http://www.php.net/manual/en/function.iconv.php</code>第一条评论</p>
+
+<p>可以考虑使用<code>$content = mb_convert_encoding($content, &quot;GBK&quot;,&quot;UTF-8&quot;);</code> 从UTF8转为GBK</p>
+
+<p>这样不会报错,不能装换的被替换为?,参数也是不区分大小写,utf8和utf-8</p>
+
+<h3 id="filter-var-filter-validate-url">filter_var FILTER_VALIDATE_URL</h3>
+
+<p>filter_var FILTER_VALIDATE_URL 中不能包含中文,包含中文被判定为false</p>
+
+<h3 id="内存是拷贝还是内存引用">内存是拷贝还是内存引用</h3>
+
+<p>例1</p>
+
+<pre><code>$a=str_repeat('hello world',81920);
+echo intval(memory_get_usage()/1024);
+</code></pre>
+
+<p>例2</p>
+
+<pre><code>$a=str_repeat('hello world',81920);
+$b=$a;
+$c=$a;
+$d=$a;
+echo intval(memory_get_usage()/1024);
+
+</code></pre>
+
+<p>例3</p>
+
+<pre><code>$a=str_repeat('hello world',81920);
+$b=$a.'';
+$c=$a.'';
+$d=$a.'';
+echo intval(memory_get_usage()/1024);
+</code></pre>
+
+<p>例1与例2,内存差距基本不大,例2与例3有较大差距,例3约为例2的3倍,但小于3倍</p>
+
+<p>一般数据类型</p>
+
+<p>php在内存上是写时拷贝,一个变量复制多份内存不会占用多份,只有变量被改变时才会新申请一份内存给此变量.</p>
+
+<h3 id="memcached-中的问题">Memcached 中的问题</h3>
+
+<p>如果你安装了php的<code>memcached</code>扩展,但是<code>igbinary</code>扩展没有被启用,</p>
+
+<p>会使得memcache存储简单数据类型没有问题,但是存储复杂数据类型,如数组等,便会出现问题,</p>
+
+<p>对一个复杂数据类型的set将会导致php worker进程崩溃,类似<code>[pool www] child 4573 exited on signal 5 (SIGTRAP) after 20.831438 seconds from start</code></p>
+
+<p>nginx将会收到类似<code>upstream prematurely closed connection while reading response header from upstream</code>,用户看到的将是502错误.</p>
+
+<p>故启用<code>memcached</code>时最好启用<code>igbinary</code></p>
+
+<h3 id="php-worker">php worker</h3>
+
+<p>python 简单的空worker 消耗内存比php空worker更少,但是随着python<code>import</code>的模块增加,消耗的内存也随之上升,</p>
+
+<p><code>import</code>大多数常用模块后,内存消耗较php稍大,php进程只有业务处理会波动内存,python的CPU占用明显比php高.</p>
+
+<p>但python有多线程,多线程下内存消耗也较少,都适合写一些worker,相比之下,node的worker占用较多内存,引入常用模块后内存更是占用更大,CPU占用也比PHP多,优点是异步可以媲美多线程</p>
+
+<h3 id="domdocument-loadhtml-内存泄漏">DOMDocument loadHTML 内存泄漏</h3>
+
+<p>在大量使用DOMDocument的loadHTML后,php的进程占用内存不断增长,最终内存泄漏被强行杀死.</p>
+
+<p>其实这是<code>libxml_use_internal_errors</code>所引起的问题,<code>loadHTML</code>产生的警告被内部收集,但没有清除,所以一直堆积.</p>
+
+<p>见 <a href="http://stackoverflow.com/questions/8379829/domdocument-php-memory-leak">http://stackoverflow.com/questions/8379829/domdocument-php-memory-leak</a></p>
+
+<h3 id="php-gzip-压缩">php gzip 压缩</h3>
+
+<p>压缩函数：gzcompress gzdeflate gzencode</p>
+
+<p>解压函数：gzuncompress gzinflate gzdecode</p>
+
+<p>他们都有第三个参数,并且第三个参数相同时,产生的结果也相同,其实他们都是使用了DEFLATE压缩算法,第三个参数控制他们压缩后添加的一些其他信息,只不过默认参数不同.</p>
+
+<p>ZLIB_ENCODING_RAW 对应于纯DEFLATE格式；
+ZLIB_ENCODING_GZIP 对应于GZIP格式；
+ZLIB_ENCODING_DEFLATE 对应于ZLIB格式（注意不是纯DEFLATE格式）</p>
+
+<p>默认配置下压缩后大小 gzdeflate &lt; gzcompress &lt; gzencode</p>
+
+<p>大小差别是6字节,12字节,18字节</p>
+
+<p>函数 <code>readgzfile</code>类似于<code>readfile</code>但是可以在输出之前解压然后输出</p>
+
+<p>Content-Encoding:deflate  对应于 gzdeflate</p>
+
+<h2 id="foreach-vs-array-filter">foreach vs array_filter</h2>
+
+<p>大数据量下,使用foreach过滤数组控制不如用array_filter,array_filter不加第二个参数,默认就是返回值,</p>
+
+<p>array_filter加上array_values也要比foreach快,在php7下更加明显</p>
+
+<h2 id="php5-与-php7">php5 与 php7</h2>
+
+<p>php5下关键字<code>list</code>既不能作为一个函数也不能作为一个方法,也不能作为一个类.</p>
+
+<p>在php7下有了改善,能作为一个类中的方法了.</p>
+
+<h2 id="array-merge-vs-array-array">array_merge vs array+array</h2>
+
+<p><a href="http://stackoverflow.com/questions/7059721/array-merge-versus">http://stackoverflow.com/questions/7059721/array-merge-versus</a></p>
+
+<h2 id="正则-w匹不匹配中文">正则\w匹不匹配中文</h2>
+
+<p>\w在ASCII下等价于[A-Za-z0-9_],在Unicode下表示字符(包括汉字)和数字和下划线.</p>
+
+<p><code>/\w+/u</code> 不添加u修饰符是不能匹配汉字的.</p>
+
+<p>匹配全是汉字的正则<code>/^[\x{4e00}-\x{9fa5}]+$/u</code></p>
+
+<p>Unicode的中文字范围是u4e00-u9fa5，4e00对应的字是&rdquo;一&rdquo;,9fa5对应的汉字是&rdquo;龥&rdquo;</p>
+
+<p><code>/[\x{4e00}-\x{9fa5}]/u</code> 等同于 <code>/[一-龥]/u</code></p>
+
+<h2 id="readfile-stream-copy-to-stream">readfile stream_copy_to_stream</h2>
+
+<p>大文件操作</p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
 				<a href="/post/shadowsocks-libev/"> shadowsocks libev</a>
 			</h1>
 			<p class="post-date">Wed, May 18, 2016</p>
@@ -218,7 +411,7 @@ make install
 <p>我编译好的tcpdump version 4.7.4</p>
 
 <blockquote>
-<p>64位 <a href="http://share.suconghou.cn/bin/tcpdump.xz">http://share.suconghou.cn/bin/tcpdump.xz</a></p>
+<p>64位 <a href="http://share.suconghou.cn/files/bin/tcpdump.xz">http://share.suconghou.cn/files/bin/tcpdump.xz</a></p>
 </blockquote>
 
 <p>也可以直接<code>yum install tcpdump</code></p>
@@ -482,30 +675,6 @@ diskutil unmountdisk /dev/disk2
 passwd abc</p>
 
 <p>获得sudo权限:编辑<code>/etc/sudoers</code> 加入新添加的用户名</p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/software/android-studio/"> Android Studio</a>
-			</h1>
-			<p class="post-date">Fri, Apr 8, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="下载-android-studio">下载 Android Studio</h2>
-
-<p><a href="http://www.oschina.net/news/77839/android-studio-2-2-1">http://www.oschina.net/news/77839/android-studio-2-2-1</a></p>
-
-<pre><code>Windows: https://dl.google.com/dl/android/studio/ide-zips/2.2.1.0/android-studio-ide-145.3330264-windows.zip (437.1 MiB)
-Mac: https://dl.google.com/dl/android/studio/ide-zips/2.2.1.0/android-studio-ide-145.3330264-mac.zip (437.7 MiB)
-Linux: https://dl.google.com/dl/android/studio/ide-zips/2.2.1.0/android-studio-ide-145.3330264-linux.zip (436.8 MiB)
-</code></pre>
-
-<h2 id="安装android-sdk">安装android-sdk</h2>
-
-<p><code>brew install android-sdk</code> 或者使用Android Studio SDK Manager</p>
 
 			</div>
 		</div>
