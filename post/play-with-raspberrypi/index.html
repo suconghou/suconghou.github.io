@@ -121,6 +121,18 @@ ls -lh
 
 <p>OSMC默认的ssh连接用户是 osmc 密码 osmc</p>
 
+<p>但是发现 OSMC 无法播放<code>rmvb</code>,只有声音,没有图像</p>
+
+<p>由于rmvb无法硬解,又不是开源格式,树莓派无法解码,只能通过ffmpeg转换格式,</p>
+
+<p>转换为MP4格式最为通用,但是发现较慢,也不能边转码,边播放.</p>
+
+<p>可以转换到flv格式,flv格式能够播放,并且还能边转码边播放!</p>
+
+<p>设置比特率高些,不然会不清楚.这里分辨率设置为1280x720,更大分辨率要适当加大比特率.</p>
+
+<p><code>ffmpeg -i xx.rmvb -s 1280x720 -b 4M a.flv</code></p>
+
 <p>osmc 启用 root 登陆</p>
 
 <pre><code>sudo passwd --unlock root

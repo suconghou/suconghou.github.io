@@ -178,14 +178,13 @@ OPENSSH_VERSION=openssh-7.5p1
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
 curl http://ftp.jaist.ac.jp/pub/OpenBSD/OpenSSH/portable/${OPENSSH_VERSION}.tar.gz | tar xz
 cd ${OPENSSH_VERSION}
-export CFLAGS=&quot;-O3&quot;
 ./configure
-make -j$CPU_NUM &amp;&amp; make install
+make -j$CPU_NUM CFLAGS=&quot;-Os&quot; LDFLAGS=&quot;-static -L./ -L./openbsd-compat/&quot;  &amp;&amp; make install
 </code></pre>
 
-<p>我编译好的二进制文件,能直接用于alpine系统</p>
+<p>即可静态编译.</p>
 
-<p><a href="http://share.suconghou.cn/files/bin/sshd.xz">sshd</a>  包含 sshd,与ssh-keygen</p>
+<p>我编译好的二进制文件,能直接用于alpine系统</p>
 
 <p>配合Linux<code>adduser</code>,可以ssh到docker中</p>
 
@@ -252,6 +251,19 @@ cd autossh-1.4e
 ./configure &amp;&amp; make
 
 </code></pre>
+
+<h2 id="zsh">zsh</h2>
+
+<blockquote>
+<p>Ctrl + a ：移到命令行首
+Ctrl + e ：移到命令行尾
+Ctrl + r：逆向搜索命令历史
+Ctrl + g：从历史搜索模式退出
+Ctrl + p：历史中的上一条命令
+Ctrl + n：历史中的下一条命令</p>
+</blockquote>
+
+<p><a href="http://jaywcjlove.github.io/handbook/html/Vim%E7%90%86%E8%A7%A3.html">http://jaywcjlove.github.io/handbook/html/Vim%E7%90%86%E8%A7%A3.html</a></p>
 
 		</div>
 	</div>

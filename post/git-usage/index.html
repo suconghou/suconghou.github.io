@@ -123,6 +123,18 @@ git config --global alias.lg &quot;log --graph --all --pretty=format:'%Cred%h%Cr
 
 <p>以后可以使用<code>git push all master</code>一次推送到多个后端</p>
 
+<h1 id="git回退">git回退</h1>
+
+<p>当前工作目录的修改都放弃 <code>git checkout .</code></p>
+
+<p>如果不小心添加了不必要的文件,但是还没有<code>commit</code>,想要撤销添加 <code>git reset FILE_TO_PATH</code></p>
+
+<p>如果最近的几次的提交完全是错误的,想要放弃,回滚到之前的某一个点继续开发</p>
+
+<p><code>git reset --hard  要恢复的点HASH</code> 然后 <code>git push -f</code>  强制提交,原先的错误提交将被强制清除,同时团队其他开发人员,也需要重新clone</p>
+
+<p>更好的是 在要恢复的点新建分支,继续开发.</p>
+
 <h1 id="git分支管理">git分支管理</h1>
 
 <h2 id="1-创建分支">1.创建分支</h2>
@@ -150,6 +162,49 @@ git config --global alias.lg &quot;log --graph --all --pretty=format:'%Cred%h%Cr
 </blockquote>
 
 <p>后面是跟一个master说明创建的develop分支是基于当前的master， 如果当前就在master分支，则可以不写。 如果当前分支HEAD指向的是别的分支，又想基于master分支创建，就必须写master</p>
+
+<h2 id="git-new-branch-from-scratch">git new branch from scratch</h2>
+
+<p>新建一个孤立的分支  <code>git checkout --orphan &lt;branchname&gt;</code></p>
+
+<p>清除不必要的数据 <code>git rm --cached -r . &amp;&amp; git rm -rf .</code></p>
+
+<p>总结为</p>
+
+<pre><code>git checkout --orphan newbranch
+git rm -rf .
+&lt;do work&gt;
+git add your files
+git commit -m 'Initial commit'
+</code></pre>
+
+<p>如果版本小于1.7.2 不支持<code>--orphan</code> 可以</p>
+
+<pre><code>git symbolic-ref HEAD refs/heads/newbranch
+rm .git/index
+git clean -fdx
+&lt;do work&gt;
+git add your files
+git commit -m 'Initial commit'
+</code></pre>
+
+<p>在没有任何提交之前<code>git branch</code>不会检查到这个分支</p>
+
+<p><strong>更简便的方法新建一个空白的分支</strong></p>
+
+<p><code>true | git mktree | xargs git commit-tree | xargs git branch branchname</code></p>
+
+<p>新建立的分支无任何文件和提交历史,超级赞!</p>
+
+<p>执行<code>git push --set-upstream origin branchname</code>将新建的分支提交到远程并设置本地分支与远程分支的关联</p>
+
+<p>参考</p>
+
+<blockquote>
+<p><a href="http://stackoverflow.com/questions/13969050/how-to-create-a-new-empty-branch-for-a-new-project">http://stackoverflow.com/questions/13969050/how-to-create-a-new-empty-branch-for-a-new-project</a></p>
+
+<p><a href="http://stackoverflow.com/questions/1384325/in-git-is-there-a-simple-way-of-introducing-an-unrelated-branch-to-a-repository">http://stackoverflow.com/questions/1384325/in-git-is-there-a-simple-way-of-introducing-an-unrelated-branch-to-a-repository</a></p>
+</blockquote>
 
 <h2 id="4-分支合并">4.分支合并</h2>
 
@@ -236,6 +291,26 @@ git stash pop
 <p>3.当你多次使用<code>git stash</code>命令后，你的栈里将充满了未提交的代码，这时候你会对将哪个版本应用回来有些困惑，
 <code>git stash list</code> 命令可以将当前的Git栈信息打印出来，你只需要将找到对应的版本号，例如使用<code>git stash apply stash@{1}</code>就可以将你指定版本号为stash@{1}的工作取出来，当你将所有的栈都应用回来的时候，可以使用<code>git stash clear</code>来将栈清空。</p>
 
+<h2 id="git-diff">git diff</h2>
+
+<p><code>git diff</code> 默认是工作目录(Working tree)和暂存区域快照(index)之间的差异</p>
+
+<p>查看已经暂存起来的文件(staged)和上次提交时的快照之间(HEAD)的差异</p>
+
+<p><code>git diff --cached</code></p>
+
+<p><code>git diff --staged</code></p>
+
+<p>显示工作版本(Working tree)和HEAD的差别 <code>git diff HEAD</code></p>
+
+<p>直接将两个分支上最新的提交做diff  <code>git diff topic master</code> 或 <code>git diff topic..master</code></p>
+
+<p>比较上次提交commit和上上次提交 <code>git diff HEAD^ HEAD</code></p>
+
+<p>比较两个历史版本之间的差异 <code>git diff SHA1 SHA2</code></p>
+
+<p><code>git diff HEAD application/config/config.php</code></p>
+
 <h1 id="给git仓库瘦身">给Git仓库瘦身</h1>
 
 <p>使用<code>git gc --aggressive</code>来整理仓库,压缩合并碎片文件能减小仓库大小.</p>
@@ -296,6 +371,13 @@ make install
 <h1 id="svn">svn</h1>
 
 <p><code>svn revert xx.html</code> 和<code>git checkout xx.html</code> 类似,还原文件的更改</p>
+
+<p>账号文件：<code>/etc/svn-auth-users</code>
+密码重置：<code>htpasswd  /etc/svn-auth-users  conghou.su</code>
+新添加用户：同上
+删除用户：打开账号文件删除用户所在行即可</p>
+
+<p>修改文件以后需要 <code>service httpd restart</code> 或 <code>systemctl restart  httpd</code></p>
 
 		</div>
 	</div>

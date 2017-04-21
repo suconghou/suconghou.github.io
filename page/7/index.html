@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.19" />
+	<meta name="generator" content="Hugo 0.20.2" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -310,14 +310,13 @@ OPENSSH_VERSION=openssh-7.5p1
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
 curl http://ftp.jaist.ac.jp/pub/OpenBSD/OpenSSH/portable/${OPENSSH_VERSION}.tar.gz | tar xz
 cd ${OPENSSH_VERSION}
-export CFLAGS=&quot;-O3&quot;
 ./configure
-make -j$CPU_NUM &amp;&amp; make install
+make -j$CPU_NUM CFLAGS=&quot;-Os&quot; LDFLAGS=&quot;-static -L./ -L./openbsd-compat/&quot;  &amp;&amp; make install
 </code></pre>
 
-<p>我编译好的二进制文件,能直接用于alpine系统</p>
+<p>即可静态编译.</p>
 
-<p><a href="http://share.suconghou.cn/files/bin/sshd.xz">sshd</a>  包含 sshd,与ssh-keygen</p>
+<p>我编译好的二进制文件,能直接用于alpine系统</p>
 
 <p>配合Linux<code>adduser</code>,可以ssh到docker中</p>
 
@@ -384,6 +383,19 @@ cd autossh-1.4e
 ./configure &amp;&amp; make
 
 </code></pre>
+
+<h2 id="zsh">zsh</h2>
+
+<blockquote>
+<p>Ctrl + a ：移到命令行首
+Ctrl + e ：移到命令行尾
+Ctrl + r：逆向搜索命令历史
+Ctrl + g：从历史搜索模式退出
+Ctrl + p：历史中的上一条命令
+Ctrl + n：历史中的下一条命令</p>
+</blockquote>
+
+<p><a href="http://jaywcjlove.github.io/handbook/html/Vim%E7%90%86%E8%A7%A3.html">http://jaywcjlove.github.io/handbook/html/Vim%E7%90%86%E8%A7%A3.html</a></p>
 
 			</div>
 		</div>
@@ -662,7 +674,7 @@ enabled=1
 
 <h2 id="js图标库">JS图标库</h2>
 
-<p><a href="https://github.com/danvk/dygraphs">dygraphs</a> <a href="http://dygraphs.com/">http://dygraphs.com/</a>  性能很好的Canvas图标,带交互效果,支持局部缩放,实测几万数据毫无压力,</p>
+<p><a href="https://github.com/danvk/dygraphs">dygraphs</a> <a href="http://dygraphs.com/">http://dygraphs.com/</a>  性能很好的Canvas图表,带交互效果,支持局部缩放,实测几万数据毫无压力,</p>
 
 <h2 id="测试工具">测试工具</h2>
 
@@ -704,7 +716,9 @@ enabled=1
 
 <p><a href="http://eyun.ac.cn/">翼云</a> 提供贵州低价VPS</p>
 
-<p><a href="hostdare.com">hostdare.com</a> 支持支付宝.微信,亚洲优化,年付最低12$</p>
+<p><a href="hostdare.com">hostdare.com</a> 支持支付宝.微信,亚洲优化,优惠码可年付最低12$,联通直连,速度很快,下载达2M/s,推荐</p>
+
+<p><a href="https://www.gigsgigscloud.com/hongkong-openvz/">gigsgigscloud</a> 香港openvz,最低2$月付(年付18$)可支付宝,百兆出口,另有kvm中国优化线路,可以一试.</p>
 
 <h2 id="内网穿透">内网穿透</h2>
 

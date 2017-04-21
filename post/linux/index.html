@@ -196,6 +196,8 @@ ps -o rss,vsz,pid,ppid,time,etime,args
 
 <p>根据名字或其他属性查询出进程的PID</p>
 
+<p><code>pidof</code> 命令也有类似用法</p>
+
 <p>如:<code>pgrep nginx -fl</code></p>
 
 <h2 id="pkill">pkill</h2>
@@ -278,10 +280,10 @@ count = blocks 只拷贝输入的blocks块</p>
 
 <p>有个高性能的方法：
 1.先在接收方执行:
-nc -l 6677 | tar -C 接收文件的目录 -zxf - #接收目录最好是个空目录，防止覆盖的风险</p>
+<code>nc -l 6677 | tar -C 接收文件的目录 -zxf -</code>  #接收目录最好是个空目录，防止覆盖的风险</p>
 
 <p>2.再在发送方执行:
-tar -zcvf - 要发送的目录 | nc 接收方 ip 6677</p>
+<code>tar -zcvf - 要发送的目录 | nc 接收方ip 6677</code></p>
 
 <p>ssh 也可以使用 pipe 传送 <code>tar zcf - attaches | ssh root@ip &quot;tar zxf - -C /path/to/&quot;</code></p>
 
@@ -415,7 +417,7 @@ echo &quot;*****************************&quot;
 
 <h2 id="使用脚本清理一些文件">使用脚本清理一些文件</h2>
 
-<p>查看大于XX且XX多少天未变动过的文件</p>
+<p>查看XX多少天未变动过且大于XX的文件</p>
 
 <pre><code>oldfiles() { day=${1:-30}; size=${2:-100}; find . -mtime +&quot;$day&quot; -type f -size +&quot;$size&quot;k |xargs  ls  -lhS ; }
 </code></pre>
@@ -471,6 +473,11 @@ echo &quot;*****************************&quot;
 </code></pre>
 
 <pre><code>o=http://cdn.ourwill.cn/fed-static r=http://cdn.ourwill.cn/fed-static/fedv2 sed -i &quot;s#$o#$r#g&quot; *.html
+</code></pre>
+
+<p>以当前时间命名</p>
+
+<pre><code>filename=html`date +&quot;%Y%m%d%H%M%S&quot;`.tar.gz
 </code></pre>
 
 <h2 id="vim乱码解决">Vim乱码解决</h2>
@@ -635,6 +642,18 @@ echo &quot;Asia/Shanghai&quot; &gt; /etc/timezone
 
 <p>赋值使用<code>arr[5]=5555</code></p>
 
+<p><strong>for in</strong></p>
+
+<p>for in 遍历文件 <code>for i in *.less ; do echo $i;done;</code></p>
+
+<pre><code>
+while true;do for i in *.less ; do echo $i;done; sleep 6 ;done;
+
+# 压缩所有LESS
+while true;do for i in *.less ; do air compress $i -r;done; sleep 6 ;done;
+
+</code></pre>
+
 <h2 id="dns配置">DNS配置</h2>
 
 <p><code>/etc/resolv.conf</code>内配置</p>
@@ -755,7 +774,7 @@ mtr</p>
 
 <h3 id="查看网络流量">查看网络流量</h3>
 
-<p>查看连接某服务端口最多的的IP地址</p>
+<p>统计连接某服务端口最多的的IP地址</p>
 
 <p><code>netstat -nat | grep &quot;192.168.1.3:443&quot; |awk '{print $5}'|awk -F: '{print $1}'|sort|uniq -c|sort -nr|head -20</code></p>
 
@@ -864,6 +883,29 @@ systemd-journald是一个改进型日志管理服务，可以收集来自内核�
 
 <p>rsyslog作为传统的系统日志服务，把所有收集到的日志都记录到/var/log/目录下的各个日志文件中。常见的日志文件如下： /var/log/messages 绝大多数的系统日志都记录到该文件 /var/log/secure 所有跟安全和认证授权等日志都会记录到此文件 /var/log/maillog 邮件服务的日志 /var/log/cron crond计划任务的日志 /var/log/boot.log 系统启动的相关日志。</p>
 
+<h2 id="测试网络丢包">测试网络丢包</h2>
+
+<pre><code>apk update &amp;&amp; apk upgrade
+apk add curl make gcc g++
+cd /tmp
+curl -sSL https://github.com/esnet/iperf/archive/3.1.7.tar.gz | tar xz --strip 1
+./configure &amp;&amp; make LDFLAGS=-static &amp;&amp; make install
+</code></pre>
+
+<p><code>alpine</code>中编译失败</p>
+
+<pre><code>curl -sSL https://github.com/esnet/iperf/archive/3.1.7.tar.gz | tar xz --strip 1
+./configure &amp;&amp; make LDFLAGS=&quot;-L/lib64/libc.a -L/lib64/libm.a  -static-libstdc++ -static-libgcc -static&quot; &amp;&amp; make install
+</code></pre>
+
+<p>在centos上编译成功</p>
+
+<p><a href="http://share.suconghou.cn/files/bin/iperf3.xz">下载iperf3.xz</a></p>
+
+<p>服务器端: <code>iperf3 -s -f M -V -p 3340</code></p>
+
+<p>客户端: <code>iperf3 -c 服务器IP -f M -V -R -k 1000 -b 3M -l 1400 -w 8192 -p 3340</code></p>
+
 <h3 id="查看进程的线程">查看进程的线程</h3>
 
 <p>在ps命令中，“-T”选项可以开启线程查看。 <code>ps -T aux</code></p>
@@ -877,6 +919,112 @@ systemd-journald是一个改进型日志管理服务，可以收集来自内核�
 <p><code>top -H -p &lt;pid&gt;</code></p>
 
 <p><code>top -H -b -n1</code></p>
+
+<h2 id="性能测试">性能测试</h2>
+
+<p><code>yum install -y sysbench bc htop</code></p>
+
+<p><strong>单核心CPU测试</strong></p>
+
+<p>计算5000位PI值,能使单核心跑满,只能测试单核心性能
+<code>time echo &quot;scale=5000; 4*a(1)&quot; | bc -l -q</code></p>
+
+<blockquote>
+<p>MacBookPro 13年末13寸  Intel&reg; Core&trade; i5-4258U CPU @ 2.40GHz  : 23.977s
+腾讯云 kvm             Intel&reg; Xeon&reg; CPU E5-26xx v2 @2.60GHz   :  24.017s
+某OPENVZ单核VPS测试     Intel&reg; Xeon&reg; CPU X5675  @ 3.07GHz     : 26.611s
+阿里云 xen-hvm         Intel&reg; Xeon&reg; CPU E5-2650 v2 @ 2.60GHz  :  26.659s
+搬瓦工OPENVZ单核VPS     Intel&reg; Xeon&reg; CPU X5650  @ 2.67GHz     : 31.821s
+独享物理机              Intel&reg; Xeon&reg; CPU E5506  @ 2.13GHz      : 37.454s
+4核独享物理机            Intel&reg; Xeon&reg; CPU E7- 4820  @ 2.00GHz   : 39.464s
+某VMWARE虚拟化VPS       Intel&reg; Xeon&reg; CPU X7560  @ 2.27GHz      : 45.866s
+独享物理机              Intel&reg; Xeon&reg; CPU E3-1230 v3 @ 3.30GHz  : 1m12.240s</p>
+</blockquote>
+
+<p>** sysbench测试 **</p>
+
+<p>测试<code>cpu</code>性能</p>
+
+<p><code>sysbench --test=cpu --cpu-max-prime=10000 --num-threads=4 run</code></p>
+
+<p>测试计算素数直到某个最大值所需的时间</p>
+
+<p>可跑满指定核心数,所有核心参与测试,测试出CPU整体性能</p>
+
+<p>下面全部核心参与计算</p>
+
+<blockquote>
+<p>独享物理机4核心4线程   Intel&reg; Xeon&reg; CPU E5506  @ 2.13GHz      :  3.1261s
+独享物理机4核心8线程   Intel&reg; Xeon&reg; CPU E3-1230 v3 @ 3.30GHz  :  5.4672s</p>
+
+<p>搬瓦工OPENVZ单核VPS  Intel&reg; Xeon&reg; CPU X5650  @ 2.67GHz       :  5.5206s
+某OPENVZ单核VPS测试   Intel&reg; Xeon&reg; CPU X5675  @ 3.07GHz      :  9.5783s
+腾讯云 kvm  单核      Intel&reg; Xeon&reg; CPU E5-26xx v2 @2.60GHz   :  12.5962s
+阿里云 xen-hvm 单核   Intel&reg; Xeon&reg; CPU E5-2650 v2 @ 2.60GHz  :  12.8241s
+某VMWARE虚拟化VPS单核  Intel&reg; Xeon&reg; CPU X7560  @ 2.27GHz      :  13.7159s</p>
+</blockquote>
+
+<p>E3单核性能不行;搬瓦工CPU性能不错,单核媲美E3四核;I5单核性能竟然比E3强那么多</p>
+
+<p>不同日期测试,发现搬瓦工CPU性能波动5.5~11秒之间,但是上一步的单核性能测试基本一致,可能是母鸡CPU资源使用较多.</p>
+
+<p>线程测试</p>
+
+<p><code>sysbench --test=threads --num-threads=64 --thread-yields=100 --thread-locks=2 run</code></p>
+
+<p>测试<code>fileio</code>性能</p>
+
+<p><code>sysbench --test=fileio --file-total-size=1G --file-test-mode=rnd rw --init-rng=on --max-time=30 --max-requests=0 run</code></p>
+
+<p>参数指定了最大创建16个线程，创建的文件总大小为3G，文件读写模式为随机读。</p>
+
+<pre><code>sysbench --test=fileio --num-threads=16 --file-total-size=3G --file-test-mode=rndrw prepare
+sysbench --test=fileio --num-threads=16 --file-total-size=3G --file-test-mode=rndrw run
+sysbench --test=fileio --num-threads=16 --file-total-size=3G --file-test-mode=rndrw cleanup
+</code></pre>
+
+<p>内存测试</p>
+
+<p><code>sysbench --test=memory --memory-block-size=8k --memory-total-size=4G run</code></p>
+
+<h2 id="资源下载">资源下载</h2>
+
+<p>ArchLinux  <code>http://mirror.bit.edu.cn/archlinux/iso/latest/</code></p>
+
+<p>CentOS  <code>http://mirror.bit.edu.cn/centos/7.3.1611/isos/x86_64/</code></p>
+
+<p>Debian   <code>http://mirror.bit.edu.cn/debian-cd/8.7.1/amd64/iso-cd/</code></p>
+
+<p>Ubuntu  <code>http://mirror.bit.edu.cn/ubuntu-releases/</code></p>
+
+<p><code>https://mirrors.tuna.tsinghua.edu.cn/#</code> 右侧也有直接选择下载地址</p>
+
+<h2 id="busybox">busybox</h2>
+
+<p><code>https://www.busybox.net/downloads/binaries/</code> 静态编译好的二进制可执行文件,包含各个平台,可作为急救用.</p>
+
+<p>可在下载<code>busybox_ASH</code>存储为<code>/usr/bin/ash</code>,这样即使系统的bash无法运行,也能ssh进来使用指定的ash</p>
+
+<p>不能Ctrl+C 或者运行 top htop 等交互式命令 <code>ssh root@vpsip ash</code></p>
+
+<p>不能Ctrl+C 或者运行 top htop 等交互式命令,可设置环境变量<code>TERM=xterm-256color</code>勉强运行htop <code>ssh root@vpsip ash -i</code></p>
+
+<p>分配tty,这样得到一个功能完备的终端,可以运行 Ctrl+C 和 top,htop等交互式命令 <code>ssh -t root@vpsip ash</code></p>
+
+<p>得出脚本存放的路径</p>
+
+<p>linux: <code>DIR=&quot;$( cd &quot;$( dirname &quot;${BASH_SOURCE[0]}&quot; )&quot; &amp;&amp; pwd )&quot;</code></p>
+
+<p>mac: <code>$(cd</code>dirname $0<code>; pwd)</code></p>
+
+<h2 id="shell-统计-nginx-日志">shell 统计 nginx 日志</h2>
+
+<p>统计共多少IP访问 <code>awk '{print $1}'  access.log</code>  按IP计数 <code>awk '{print $1}' access.log|sort | uniq -c |sort -n -k 1 -r|more</code></p>
+
+<p>URL访问统计 <code>awk '{print $7}' access.log | sort | uniq -c | sort</code> 访问最频繁的URL <code>awk '{print $7}' access.log|sort | uniq -c |sort -n -k 1 -r|more</code></p>
+
+<pre><code>
+</code></pre>
 
 		</div>
 	</div>

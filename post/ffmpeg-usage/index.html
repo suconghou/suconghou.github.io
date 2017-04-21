@@ -167,6 +167,8 @@ hash -r
 
 <p><a href="http://johnvansickle.com/ffmpeg/">ffmpeg</a></p>
 
+<p>armhf比armel硬件要求,树莓派2可用armhf,树莓派1使用armel</p>
+
 <p>Windows版本也提供编译好的下载</p>
 
 <p><a href="https://ffmpeg.zeranoe.com/builds/">https://ffmpeg.zeranoe.com/builds/</a></p>
@@ -178,11 +180,17 @@ hash -r
 <p>使用brew安装
 <code>brew install ffmpeg --with-ffplay</code></p>
 
-<p>让ffmpeg转为MP4边下边播</p>
+<h3 id="让ffmpeg转为mp4边下边播">让ffmpeg转为MP4边下边播</h3>
 
 <p><code>ffmpeg -i input.xxoo -c copy -movflags faststart output.mp4</code></p>
 
-<p>flv to mp4</p>
+<p><code>-movflags faststart</code> 可修改MP4的moov</p>
+
+<p>关于<code>faststart</code>还有一个python项目,类似于ffmpeg软件包中的<code>qt-faststart</code>  <a href="https://github.com/danielgtaylor/qtfaststart">https://github.com/danielgtaylor/qtfaststart</a></p>
+
+<p>可以使用<code>pip install qtfaststart</code>,仅需10KB+</p>
+
+<h3 id="flv-to-mp4">flv to mp4</h3>
 
 <p><code>ffmpeg -i input.flv -codec copy output.mp4</code> 快速转化flv到mp4,高质量转化( only changes container without reencoding )</p>
 
@@ -195,6 +203,40 @@ hash -r
 <p>处理m3u8地址视频</p>
 
 <p>下载转码 <code>ffmpeg -i &quot;http://m3u8的地址&quot;&quot; -c copy -bsf:a aac_adtstoasc output.mp4</code></p>
+
+<p><code>ffmepg -i http://xxx.m3u8 &quot;文件名.mp4&quot;</code></p>
+
+<p><code>ffmpeg -i xx.rmvb   -c:a copy -movflags faststart output.mp4</code></p>
+
+<p>ffmpeg 大文件转换为mp4速度很慢通常低配机器是0.5X倍速, 可以转换为flv文件,转换为flv相比转换为mp4速度快很多,一般能3X倍速,还能边转换,边播放</p>
+
+<p>转换为flv,需要设置码率高一些,不然视频画面,严重模糊,设置比特率高些不很影响转码速度</p>
+
+<p>使用<code>-b</code>设置比特率,默认为200Kbit/s,这里改为2048</p>
+
+<p><code>ffmepg -i xx.rmvb -b 2M a.flv</code></p>
+
+<p>2M 适用于1280X720 普通清晰度. 如果分辨率更大需调整4M 或 6M</p>
+
+<p>ffmpeg 合并 MP4文件
+<code>ffmpeg-sound.txt</code></p>
+
+<pre><code>file 1.mp4
+file 2.mp4
+file 3.mp4
+file 4.mp4
+</code></pre>
+
+<p><code>ffmpeg -f concat -i ffmpeg-sound.txt -c copy final_output.mp4</code></p>
+
+<p><a href="http://askubuntu.com/questions/352920/fastest-way-to-convert-videos-batch-or-single">http://askubuntu.com/questions/352920/fastest-way-to-convert-videos-batch-or-single</a></p>
+
+<p><a href="https://www.zhouchun.net/blog/show/293">https://www.zhouchun.net/blog/show/293</a></p>
+
+<h2 id="mpv-播放多个url">mpv 播放多个url</h2>
+
+<p>直接 <code>mpv url1 url2 url3 url4</code>
+就可以连起来播放</p>
 
 		</div>
 	</div>

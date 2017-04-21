@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.19" />
+	<meta name="generator" content="Hugo 0.20.2" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -233,7 +233,9 @@ ZLIB_ENCODING_DEFLATE 对应于ZLIB格式（注意不是纯DEFLATE格式）</p>
 			<div class="post-text">
 				
 
-<h2 id="编译">编译</h2>
+<h2 id="静态编译shadowsocks-libev">静态编译shadowsocks libev</h2>
+
+<p>centos7 编译</p>
 
 <pre><code>yum update &amp;&amp; yum install -y zip unzip xz curl wget git gcc make zlib zlib-devel openssl openssl-devel
 git clone https://github.com/shadowsocks/shadowsocks-libev.git
@@ -243,23 +245,51 @@ export CFLAGS=&quot;-O3&quot;
 make -j4 &amp;&amp; make install
 </code></pre>
 
-<p>在alpine里静态编译</p>
+<p>在alpine里编译</p>
+
+<p>先安装依赖</p>
+
+<pre><code># Installation of Libsodium
+cd /tmp
+export LIBSODIUM_VER=1.0.12
+wget https://download.libsodium.org/libsodium/releases/libsodium-$LIBSODIUM_VER.tar.gz
+tar xvf libsodium-$LIBSODIUM_VER.tar.gz
+cd libsodium-$LIBSODIUM_VER
+./configure --prefix=/usr &amp;&amp; make &amp;&amp; make install
+cd /tmp
+ldconfig
+
+# Installation of MbedTLS
+cd /tmp
+export MBEDTLS_VER=2.4.2
+wget https://tls.mbed.org/download/mbedtls-$MBEDTLS_VER-gpl.tgz
+tar xvf mbedtls-$MBEDTLS_VER-gpl.tgz
+cd mbedtls-$MBEDTLS_VER
+make SHARED=1 CFLAGS=-fPIC &amp;&amp; make DESTDIR=/usr install
+cd /tmp
+ldconfig
+</code></pre>
 
 <p>需要将生成的<code>./src/Makefile</code>修改<code>LDFLAGS = -all-static</code></p>
 
 <pre><code>apk update &amp;&amp; apk upgrade
-apk --update add gcc g++ make curl zlib-dev pcre-dev openssl-dev linux-headers asciidoc xmlto
-cd /tmp
-SHADOWSOCKS_LIBEV_VERSION=2.5.6
+apk --update add gcc g++ make autoconf curl wget build-base linux-headers libev-dev libtool udns-dev libsodium-dev mbedtls-dev pcre-dev
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
-curl -sSL https://github.com/shadowsocks/shadowsocks-libev/archive/v${SHADOWSOCKS_LIBEV_VERSION}.tar.gz |  tar xz
-cd shadowsocks-libev-${SHADOWSOCKS_LIBEV_VERSION}
-export CFLAGS=&quot;-O3&quot;
-./configure
-LDFLAGS=&quot;-all-static&quot; make -j$CPU_NUM &amp;&amp; make install
-strip -s /usr/local/bin/ss-server
-
+export CFLAGS=&quot;-Os&quot;
+SS_VER=3.0.5
+cd /tmp
+curl -sSL https://github.com/shadowsocks/shadowsocks-libev/releases/download/v${SS_VER}/shadowsocks-libev-${SS_VER}.tar.gz |  tar xz --strip 1
+./configure --prefix=/usr --enable-static --disable-documentation
+sed -i &quot;s/LDFLAGS = /LDFLAGS = -all-static/g&quot; ./src/Makefile
+sed -i &quot;s/LDFLAGS = /LDFLAGS = -all-static/g&quot; ./Makefile
+make -j$CPU_NUM LDFLAGS=&quot;-static -pthread -lrt -ldl -L/usr&quot; &amp;&amp; make install
 </code></pre>
+
+<p>其中 需要 <code>libudns.a</code> 可以到<code>http://www.corpit.ru/mjt/udns.html</code>下载编译</p>
+
+<p>然后查找 <code>src/Makefile</code> <code>ss_local_LINK</code>  大约242行 <code>-o</code>之前添加 如下</p>
+
+<p><code>-static -all-static -pthread -lrt -ldl /usr/lib/libev.a /usr/lib/libsodium.a /usr/lib/libmbedcrypto.a  /usr/lib/libpcre.a /usr/lib/libc.a /usr/lib/libudns.a</code></p>
 
 <p>启动server端</p>
 
@@ -337,6 +367,12 @@ net.ipv4.tcp_congestion_control = hybla
 
 <p>然后<code>sysctl -p</code>使之生效</p>
 
+<p>也可以使用命令使本次生效</p>
+
+<p><code>sysctl -w net.ipv4.tcp_congestion_control=hybla</code></p>
+
+<p><code>sysctl -w net.ipv4.tcp_fastopen=3</code></p>
+
 <p>可参见 <a href="https://github.com/Long-live-shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks">https://github.com/Long-live-shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks</a></p>
 
 <p>OPENVZ只能修改</p>
@@ -371,6 +407,59 @@ net.netfilter.nf_conntrack_max = 64000
 </code></pre>
 
 <p><code>--upgrade 同 -U</code> 代表如果已安装则升级到最新版</p>
+
+<p><code>/etc/systemd/system/</code>目录下<code>shadowsocks.service</code></p>
+
+<pre><code>[Unit]
+Description=Shadowsocks
+
+[Service]
+TimeoutStartSec=0
+ExecStart=/usr/bin/ssserver -c /etc/shadowsocks.json
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+
+<h3 id="使用-kcptun-加速">使用 kcptun 加速</h3>
+
+<p><code>https://github.com/xtaci/kcptun</code> go语言编写,直接下载使用即可</p>
+
+<pre><code>alias kcptun_start='server_linux_amd64 -t 127.0.0.1:443 -l :serverPort -sndwnd 2048 -rcvwnd 2048 -mode fast2 &gt; /var/log/kcptun.log 2&gt;&amp;1 &amp; '
+</code></pre>
+
+<p>client端: <code>client_linux_amd64 -r serverIp:serverPort -l :443 -sndwnd 2048 -rcvwnd 2048 -mode fast2</code></p>
+
+<p>kcptun 使用<code>udp</code>通信,监听的udp端口,未开启tcp端口. <code>python shadowsocks</code>是tcp端口和udp端口都开启.</p>
+
+<p>使用<code>netstat -anlup</code>查看本机的udp端口使用情况,远端可以使用nc测试UDP端口 <code>nc -vuz  172.168.1.3 137</code></p>
+
+<p>配置文件的json格式参见 <code>http://zhangyongcun.com/2016/11/22/使用-Kcptun-加速-shadowsocks/</code></p>
+
+<p>client <code>wget http://share.suconghou.cn/files/shadowsocks/kcp/client_config.json</code></p>
+
+<p>server <code>wget http://share.suconghou.cn/files/shadowsocks/kcp/server_config.json</code></p>
+
+<p><code>server_config.json</code></p>
+
+<p><code>/etc/systemd/system/kcpserver.service</code></p>
+
+<pre><code>[Unit]
+Description=kcptun-server
+
+[Service]
+TimeoutStartSec=0
+ExecStart=/usr/local/bin/server_linux_amd64 -c /etc/server_config.json
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+
+<h3 id="统计ss当前的链接">统计ss当前的链接</h3>
+
+<p>统计当前连接ss的客户端,并统计连接数</p>
+
+<p><code>netstat -nat | grep &quot;192.168.1.3:443&quot; |awk '{print $5}'|awk -F: '{print $1}'|sort|uniq -c|sort -nr|head -20</code></p>
 
 			</div>
 		</div>

@@ -48,30 +48,6 @@
 
 <h3 id="编译安装">编译安装</h3>
 
-<p>编译haproxy时必须制定target,不能直接make</p>
-
-<pre><code>Due to too many reports of suboptimized setups, building without
-specifying the target is no longer supported. Please specify the
-target OS in the TARGET variable, in the following form:
-
-   make TARGET=xxx
-
-Please choose the target among the following supported list :
-
-   linux2628, linux26, linux24, linux24e, linux22, solaris
-   freebsd, openbsd, cygwin, custom, generic
-
-Use &quot;generic&quot; if you don't want any optimization, &quot;custom&quot; if you
-want to precisely tweak every option, or choose the target which
-matches your OS the most in order to gain the maximum performance
-out of it. Please check the Makefile in case of doubts.
-
-</code></pre>
-
-<blockquote>
-<p>linux2628 表示  内核版本&gt;=2.6.28</p>
-</blockquote>
-
 <pre><code>apt-get update &amp;&amp; apt-get install -y wget gcc g++ make libpcre++0v5 libpcre++-dev
 </code></pre>
 
@@ -99,6 +75,22 @@ make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 -j$CPU_NUM &amp;&amp; make i
 
 <p>32位 <a href="http://share.suconghou.cn/files/bin/haproxy.gz">http://share.suconghou.cn/files/bin/haproxy.gz</a></p>
 </blockquote>
+
+<h3 id="alpine里静态编译">alpine里静态编译</h3>
+
+<pre><code>apk update &amp;&amp; apk upgrade
+apk --update add gcc g++ make wget linux-headers pcre-dev
+cd /tmp
+HAPROXY_VERSION=haproxy-1.7.5
+CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
+wget http://www.haproxy.org/download/1.7/src/${HAPROXY_VERSION}.tar.gz
+tar zxf ${HAPROXY_VERSION}.tar.gz
+cd ${HAPROXY_VERSION}
+make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 LDFLAGS=&quot;-static -pthread -lrt -ldl -l:/usr/lib/libc.a&quot; -j$CPU_NUM  &amp;&amp; make install
+</code></pre>
+
+<p>需要将 <code>/usr/lib/libc.a</code> 静态链接到最终文件内,经过strip后大大减小目标文件.
+link 阶段加入<code>/usr/lib/libc.a</code></p>
 
 <h3 id="使用docker版本的haproxy">使用Docker版本的HAProxy</h3>
 
@@ -158,7 +150,7 @@ frontend http-in
     default_backend  servers
 
 backend servers
-	option http-keep-alive
+    option http-keep-alive
     server myserver 192.243.115.210:80 check maxconn 6000
 </code></pre>
 
@@ -174,6 +166,21 @@ backend servers
 &lsquo;hdr(name)&rsquo; 根据HTTP请求头来锁定每一次HTTP请求
  &lsquo;rdp-cookie(name)&rsquo; 很据cookie(name)来锁定并哈希每一次TCP请求</p>
 </blockquote>
+
+<h2 id="长连接">长连接</h2>
+
+<p>KeepAlive 就是通常所称的长连接,KeepAlive带来的好处是可以减少tcp连接的开销,这对于短response body的请求效果更加明显。</p>
+
+<p>HAProxy后端keepalive指的是在HAProxy服务完一次与后端的交互后，不关闭HAProxy和后端的连接，而是维护这个连接以备后续的请求复用。</p>
+
+<p>HAProxy后端Keepalive 配置，启用HAProxy后端长连接需要配置如下</p>
+
+<pre><code>option http-pretend-keepalive
+option srvtcpka
+option forwardfor
+</code></pre>
+
+<p>其中option forwardfor允许在转发请求到后端时加上X-Forwarded-For头部</p>
 
 <p>还有一个在应对高并发时通常都需要改的
 <code>ulimit -n 8192</code></p>
@@ -225,6 +232,8 @@ backend ss-out
 </code></pre>
 
 <p><code>haproxy -D -f /etc/haproxy/haproxy.cfg</code>启动,参数<code>-D</code>为goes daemon</p>
+
+<p>参考 <code>http://liaoph.com/haproxy-tutorial/</code></p>
 
 <h2 id="升级-glibc-版本-最新发布-http-www-gnu-org-software-libc">升级<code>glibc</code>版本,最新发布 <a href="http://www.gnu.org/software/libc/">http://www.gnu.org/software/libc/</a></h2>
 
@@ -286,6 +295,10 @@ fi
 </code></pre>
 
 <p>先手动启动一次 <code>sh /data/bin/connect.sh &gt; /tmp/dog.log 2&gt;&amp;1 &amp;</code></p>
+
+<p>TCP 端口转发</p>
+
+<p><code>https://boutell.com/rinetd/http/rinetd.tar.gz</code></p>
 
 		</div>
 	</div>

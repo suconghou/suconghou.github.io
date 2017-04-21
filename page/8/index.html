@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.19" />
+	<meta name="generator" content="Hugo 0.20.2" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -120,6 +120,8 @@ docker 分为两部分,一分部是docker daemon , 一部分是docker client</p>
 <p>如果是在公网上,最好做一些身份认证</p>
 
 <p>生成证书可参考官网 <a href="https://docs.docker.com/engine/security/https/">https://docs.docker.com/engine/security/https/</a></p>
+
+<p>其他参考 <code>https://github.com/chenzhiwei/linux/tree/master/ssl-cert</code></p>
 
 <p>这里一份脚本可以快速生成证书,只需修改DOMAIN变量即可. <a href="https://gist.github.com/suconghou/707d9c61367c4bb91e8ed2585b094853">https://gist.github.com/suconghou/707d9c61367c4bb91e8ed2585b094853</a></p>
 
@@ -360,6 +362,10 @@ attach是可以带上<code>--sig-proxy=false</code>来确保<code>CTRL-D</code>�
 
 <p>默认的规则是TCP,如果需要UDP,采用类似<code>-p 1234:1234/udp</code></p>
 
+<p><code>-p</code> 参数详解</p>
+
+<p><code>http://udn.yyuap.com/doc/docker_practice/advanced_network/port_mapping.html</code></p>
+
 <p><code>-p 80:8080</code>容器内部的8080端口,对外暴漏于80端口
 <code>-p 22</code>内部是22端口映射,外部则为一个随机可用的端口,<code>-P</code>则是将Dockerfile里EXPOSE的所有端口分配到宿主机的动态端口上,EXPOSE的端口不创建和宿主机的映射,是不能直接访问的</p>
 
@@ -467,19 +473,19 @@ docker run -it -p 8080:8000 --name vps vpsimage bash
 
 <p><code>vi /etc/apk/repositories</code></p>
 
-<pre><code>http://nl.alpinelinux.org/alpine/v3.4/main
-http://nl.alpinelinux.org/alpine/v3.4/community
+<pre><code>http://dl-cdn.alpinelinux.org/alpine/v3.5/main
+http://dl-cdn.alpinelinux.org/alpine/v3.5/community
 </code></pre>
 
 <p>可替换为</p>
 
-<pre><code>http://mirror.tuna.tsinghua.edu.cn/alpine/v3.4/main
-http://mirror.tuna.tsinghua.edu.cn/alpine/v3.4/community
+<pre><code>https://mirror.tuna.tsinghua.edu.cn/alpine/v3.5/main
+https://mirror.tuna.tsinghua.edu.cn/alpine/v3.5/community
 </code></pre>
 
 <p>简化为</p>
 
-<pre><code>echo -e 'http://mirror.tuna.tsinghua.edu.cn/alpine/v3.4/main\nhttp://mirror.tuna.tsinghua.edu.cn/alpine/v3.4/community' &gt; /etc/apk/repositories
+<pre><code>echo -e 'https://mirror.tuna.tsinghua.edu.cn/alpine/v3.5/main\nhttps://mirror.tuna.tsinghua.edu.cn/alpine/v3.5/community' &gt; /etc/apk/repositories
 </code></pre>
 
 <h2 id="使用流程">使用流程</h2>
@@ -598,7 +604,7 @@ echo &quot;&quot; &gt; $(docker inspect --format='{{.LogPath}}' &lt;container_na
 
 <p><code>systemctl status docker.service -l</code> 可查看docker工作状态,为什么启动失败等</p>
 
-<h2 id="coreos">CoreOs</h2>
+<h2 id="coreos使用docker">CoreOs使用docker</h2>
 
 <p>docker 配置远程访问.</p>
 
@@ -607,8 +613,21 @@ sudo echo 'DOCKER_OPTS=&quot; -H=unix:///var/run/docker.sock -H=0.0.0.0:4243  --
 sudo systemctl restart docker
 </code></pre>
 
+<p><code>semanage port -a -t http_port_t -p tcp 2376</code></p>
+
 <p>解决
 <code>Usage of loopback devices is strongly discouraged for production use. Use</code>&ndash;storage-opt dm.thinpooldev<code>to specify a custom block storage device.</code></p>
+
+<h2 id="备份docker-volume数据卷">备份docker volume数据卷</h2>
+
+<p>文件接收端执行 <code>nc -l 9090 &gt; data.tar.gz</code></p>
+
+<p>以只读模式挂载数据卷,挂载数据卷到<code>/data</code>路径</p>
+
+<pre><code>docker run --rm -it -v gogs-data:/data:ro busybox sh -c &quot;cd /data &amp;&amp; tar czvf - . | nc host 9090&quot;
+</code></pre>
+
+<p>打包文件并发送到目标主机</p>
 
 			</div>
 		</div>
@@ -626,6 +645,8 @@ sudo systemctl restart docker
 <p><code>wget -c -O filename &quot;http://xx.com&quot;</code> 下载存储到指定文件,并指定断点续传</p>
 
 <p><code>wget -nc -c -i url.txt</code> 批量下载文件中指定的资源(每行一个连接),跳过已下载的(同名的),并且断点续传.</p>
+
+<p><code>wget -i url.txt -O - | mpv -</code> 下载url.txt里的链接,输出到标准输出</p>
 
 <p>使用user-agent</p>
 
@@ -729,8 +750,6 @@ yum install aria2 -y
 <pre><code>apt-get update
 apt-get -y install gcc make  openssl libssl-dev libpcre3 libpcre3-dev
 </code></pre>
-
-<p>Nginx最新版本<a href="http://www.oschina.net/news/73922/nginx-1-10-1">查看</a></p>
 
 <p><strong>编译安装</strong></p>
 
@@ -937,6 +956,8 @@ location @goapp{
 
 <p>在我们请求的URI上拼接上<code>/www</code> 于是请求 <code>/home/index</code> 后端转发到<code>/www/home/index</code></p>
 
+<p>参考 <code>https://lufficc.com/blog/configure-nginx-as-a-web-server</code></p>
+
 <h3 id="代理与后端保持长连接">代理与后端保持长连接</h3>
 
 <pre><code>
@@ -1044,7 +1065,7 @@ rpm -e httpd-tools
 <p>如果你在国内下载,将<code>php.net</code>改为<code>cn.php.net</code>下载会更快</p>
 
 <pre><code>cd /tmp
-PHP_VERSION=php-7.0.11
+PHP_VERSION=php-7.0.18
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
 wget http://php.net/distributions/${PHP_VERSION}.tar.xz
 tar -xJf ${PHP_VERSION}.tar.xz
@@ -1070,29 +1091,53 @@ make -j$CPU_NUM &amp;&amp; make install
 
 <h3 id="静态编译php7">静态编译php7</h3>
 
+<p>alpine</p>
+
 <pre><code>apk update &amp;&amp; apk upgrade
-apk --update add xz gcc g++ make wget file openssl-dev pcre-dev zlib-dev libxml2-dev curl-dev jpeg-dev libpng-dev freetype-dev libmcrypt-dev bzip2-dev libxslt-dev
+apk --update add xz gcc g++ make wget file pcre-dev zlib-dev  jpeg-dev libpng-dev freetype-dev bzip2-dev
 cd /tmp
-PHP_VERSION=php-7.0.13
+PHP_VERSION=php-7.1.4
 wget http://php.net/distributions/${PHP_VERSION}.tar.xz
 tar xJf ${PHP_VERSION}.tar.xz
 cd ${PHP_VERSION}
-export CFLAGS=&quot;-Os&quot;
 
-./configure --enable-inline-optimization --enable-static=yes --enable-shared=no --prefix=/usr/local --with-config-file-path=/etc --without-pear --disable-cgi --disable-opcache --disable-fpm --disable-phpdbg --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath  --enable-zip --enable-mbstring --enable-gd-native-ttf --with-mysqli --with-pdo-mysql --with-openssl  --enable-exif --enable-calendar  --with-bz2 LDFLAGS=-static
-
+./configure --enable-inline-optimization --enable-static=yes --enable-shared=no --prefix=/usr/local --with-config-file-path=/etc --without-pear --disable-cgi --disable-opcache --enable-fpm  --disable-phpdbg --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath  --enable-zip --enable-mbstring --enable-gd-native-ttf --with-mysqli --with-pdo-mysql --with-openssl  --enable-exif --enable-calendar --with-bz2 --enable-sysvsem --enable-sysvshm --enable-sysvmsg --enable-shmop --with-xsl --with-curl=/usr/local/  LDFLAGS=&quot;-static&quot; LIBS=&quot;/usr/local/lib/libcurl.a -L/lib -lssl -lcrypto -lssl -lcrypto -lz&quot; CFLAGS=&quot;-Os&quot;
 </code></pre>
 
 <p>如果报<code>libxml2</code>错误需要自己下载编译官方xml2</p>
 
-<pre><code>wget ftp://xmlsoft.org/libxml2/libxml2-2.9.4.tar.gz
-tar zxvf libxml2-2.9.4.tar.gz
+<pre><code>cd /tmp
+wget ftp://xmlsoft.org/libxml2/libxml2-2.9.4.tar.gz
+tar zxf libxml2-2.9.4.tar.gz
 cd libxml2-2.9.4
-./configure
-make &amp;&amp; make install
+./configure &amp;&amp; make -j4 &amp;&amp; make install &amp;&amp; cd /tmp
 </code></pre>
 
-<p>之后出来一大堆东西,打开 Makefile,搜索<code>-export-dynamic</code> ,如果你还开启了编译php-fpm phpdbg 等会有多个,如果只编译php-cli就只会有一个.</p>
+<p><code>libexslt.a(crypto.o)</code>相关问题</p>
+
+<pre><code>cd /tmp
+wget ftp://xmlsoft.org/libxslt/libxslt-1.1.29.tar.gz
+tar zxf libxslt-1.1.29.tar.gz
+cd libxslt-1.1.29
+./configure &amp;&amp; make -j4 &amp;&amp; make install &amp;&amp; cd /tmp
+</code></pre>
+
+<p>添加<code>--with-curl=</code> 注意,需要有静态库<code>libcurl.a</code> 参见 <code>http://php.net/manual/zh/curl.installation.php</code></p>
+
+<pre><code>cd /tmp
+wget https://curl.haxx.se/download/curl-7.53.1.tar.gz
+tar zxf curl-7.53.1.tar.gz
+cd curl-7.53.1
+./configure &amp;&amp; make -j4 &amp;&amp; make install &amp;&amp; cd /tmp
+</code></pre>
+
+<p>并且需要设置变量LIBS,可以使用<code>curl-config --static-libs</code> 得出其值,若没有可能需要自己先下载curl编译.</p>
+
+<p><code>/usr/local/lib/libcurl.a -L/lib -lssl -lcrypto -lssl -lcrypto -lz</code></p>
+
+<p><code>/usr/local/lib/libcurl.a -L/lib -lssh2 -lssl -lcrypto -lssl -lcrypto -lz</code></p>
+
+<p>生成Makefile后,打开 Makefile,搜索<code>-export-dynamic</code> ,如果你还开启了编译php-fpm phpdbg 等会有多个,如果只编译php-cli就只会有一个.</p>
 
 <pre><code>BUILD_CLI = $(LIBTOOL) --mode=link $(CC) -export-dynamic $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_CLI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -o $(SAPI_CLI_PATH)
 </code></pre>
@@ -1104,7 +1149,7 @@ make &amp;&amp; make install
 <pre><code>sed -i &quot;s{-export-dynamic{-all-static{&quot; Makefile
 </code></pre>
 
-<p>之后开开心心 make -j8, make install 后便可得到静态编译的PHP</p>
+<p>之后开开心心 <code>make -j4, make install</code> 后便可得到静态编译的PHP</p>
 
 <p>php安装过后就可以使用<code>php</code>命令了,但是<code>php-fpm</code>还需要配置一下</p>
 
@@ -1496,11 +1541,38 @@ access_log off;
 group = www-data
 </code></pre>
 
+<h2 id="使用-goaccess-nginx-日式分析">使用 goaccess nginx 日式分析</h2>
+
 <p>nginx日志分析工具 <a href="https://goaccess.io/">https://goaccess.io/</a>  <a href="https://github.com/allinurl/goaccess/">https://github.com/allinurl/goaccess/</a> 采用c语言编写,还能生成网页</p>
 
-<pre><code>GOACCESS_VERSION=goaccess-1.0.2
+<h3 id="静态编辑goaccess">静态编辑goaccess</h3>
+
+<pre><code>cd /tmp
+wget -k --no-check-certificate https://github.com/maxmind/geoip-api-c/releases/download/v1.6.10/GeoIP-1.6.10.tar.gz
+tar zxf GeoIP-1.6.10.tar.gz &amp;&amp; cd GeoIP-1.6.10
+./configure &amp;&amp; make &amp;&amp; make install
+</code></pre>
+
+<pre><code>apk update &amp;&amp; apk upgrade &amp;&amp; apk add wget make gcc g++ ncurses-dev
+GOACCESS_VERSION=goaccess-1.2
+cd /tmp
 wget http://tar.goaccess.io/${GOACCESS_VERSION}.tar.gz
 tar xzf ${GOACCESS_VERSION}.tar.gz
+cd $GOACCESS_VERSION
+./configure --enable-utf8 --enable-geoip=legacy
+</code></pre>
+
+<p>若要静态编译,需要修改link步骤 添加 -static  并将-lncurses 替换为 ncurses.a 的静态库</p>
+
+<p>提供静态编译好的无依赖可执行文件 <a href="http://share.suconghou.cn/files/bin/goaccess.xz">http://share.suconghou.cn/files/bin/goaccess.xz</a></p>
+
+<p>提示缺少<code>Missing development libraries for ncursesw</code>需<code>apk add ncurses-dev</code></p>
+
+<p><code>http://www.gnu.org/software/ncurses/</code> <code>http://ftp.gnu.org/gnu/ncurses/</code></p>
+
+<pre><code>wget http://ftp.gnu.org/gnu/ncurses/ncurses-6.0.tar.gz
+tar zxf ncurses-6.0.tar.gz &amp;&amp; cd ncurses-6.0
+./configure &amp;&amp; make &amp;&amp; make install
 </code></pre>
 
 <h2 id="安装mariadb">安装MariaDB</h2>
@@ -1572,6 +1644,11 @@ perfschema</p>
 
 <pre><code>update mysql.user set password=PASSWORD('123456') where user='root';
 
+</code></pre>
+
+<p>注意 mysql5.7 user表 密码列不再是<code>Password</code> ，而是<code>authentication_string</code></p>
+
+<pre><code>update mysql.user set authentication_string=PASSWORD('abcd1234') where user='root';
 </code></pre>
 
 <p>也可以这样添加用户并授权.</p>
@@ -1853,12 +1930,23 @@ systemctl start php-fpm
 systemctl start mariadb
 </code></pre>
 
-<p>mongodb</p>
+<h3 id="docker-通过docker运行mysql">docker 通过docker运行mysql</h3>
+
+<p><code>docker pull mysql</code></p>
+
+<pre><code>docker run -d --name mysqlserver --restart always -m 500m --log-opt max-size=2m -v mysql-data:/var/lib/mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456  mysql
+</code></pre>
+
+<h3 id="mongodb">mongodb</h3>
 
 <pre><code>yum install mongodb mongodb-server
 systemctl enable mongod
 systemctl start mongod
 </code></pre>
+
+<h2 id="sqlite">sqlite</h2>
+
+<p>执行 <code>VACUUM</code> 整理sqlite文件,缩小体积</p>
 
 			</div>
 		</div>

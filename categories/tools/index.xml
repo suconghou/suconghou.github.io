@@ -2,11 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tools on 苏苏的博客</title>
-    <link>http://blog.suconghou.cn/categories/tools/index.xml</link>
+    <link>http://blog.suconghou.cn/categories/tools/</link>
     <description>Recent content in Tools on 苏苏的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="http://blog.suconghou.cn/categories/tools/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 01 Jan 2016 23:54:20 +0800</lastBuildDate>
+    
+	<atom:link href="http://blog.suconghou.cn/categories/tools/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>Linux下常用的下载利器</title>
@@ -14,95 +17,19 @@
       <pubDate>Fri, 01 Jan 2016 23:54:20 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/linux-download-tools/</guid>
-      <description>
-
-&lt;h2 id=&#34;wget&#34;&gt;wget&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;wget -c -O filename &amp;quot;http://xx.com&amp;quot;&lt;/code&gt; 下载存储到指定文件,并指定断点续传&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;wget -nc -c -i url.txt&lt;/code&gt; 批量下载文件中指定的资源(每行一个连接),跳过已下载的(同名的),并且断点续传.&lt;/p&gt;
-
-&lt;p&gt;使用user-agent&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;wget --user-agent=&amp;quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36&amp;quot; URL-TO-DOWNLOAD&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;wget 断点续传 使用 &lt;code&gt;-c&lt;/code&gt; 限速使用&lt;code&gt;--limit-rate=300k&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;wget -c --limit-rate=30k http://...&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;curl&#34;&gt;curl&lt;/h2&gt;
-
-&lt;p&gt;常用的命令&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;curl http://xx.com&lt;/code&gt; 只获取http消息正文&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;curl -I http://xx.com&lt;/code&gt; 只获取http消息头&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;curl -i http://xx.com&lt;/code&gt; 获取http消息头和正文&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;curl -d &amp;quot;name=abc&amp;amp;pass=123&amp;quot; http://xx.com&lt;/code&gt; 发送&lt;code&gt;http post&lt;/code&gt;请求,采用的是&lt;code&gt;application/x-www-form-urlencoded&lt;/code&gt;形式&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;curl -F &amp;quot;name=abc&amp;quot; -F &amp;quot;pass=123&amp;quot; http://xx.com&lt;/code&gt; 发送&lt;code&gt;http post&lt;/code&gt;请求,采用的是&lt;code&gt;multipart/form-data&lt;/code&gt; 形式,此两种方式都可以由 $_POST 接收&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;curl -F &amp;quot;name=abc&amp;quot; -F &amp;quot;file=@/tmp/1.jpg&amp;quot; http://xx.com&lt;/code&gt; 发送 &lt;code&gt;http post&lt;/code&gt;请求, &lt;code&gt;multipart/form-data&lt;/code&gt; 形式还可以上传文件,只需改为@加路径&lt;/p&gt;
-
-&lt;p&gt;curl 不仅能用来下载,还是网络调试的利器,Chrome的网络请求也可以直接另存为curl请求格式&lt;/p&gt;
-
-&lt;p&gt;批量下载规则的URL资源&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;curl -O &amp;quot;http://www.example.com/[0001-9999].jpg&amp;quot;
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;在shell中可以这样用,实现同样功能&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;for i in {10001..19999}; do
-wget www.example.com/${i:1}.jpg;
-done
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;或&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;for i in {0001..9999}; do
-echo www.example.com/${i}.jpg;
-done
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;下载一个压缩包-不存储直接解压&#34;&gt;下载一个压缩包,不存储直接解压&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;curl -sSL http://www.memcached.org/files/memcached-1.4.30.tar.gz | tar xz&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;其中&lt;code&gt;-L&lt;/code&gt;表示更随重定向&lt;code&gt;-s&lt;/code&gt;为安静模式,不输出任何信息,&lt;code&gt;-S&lt;/code&gt;为在安静模式下出错的话要输出错误信息.&lt;/p&gt;
-
-&lt;p&gt;要解压到指定目录,后面的可以使用 tar xzC ./path/to/dir ,当然这个路径要存在&lt;/p&gt;
-
-&lt;p&gt;用curl下载的好处是不会像wget那样出现多个已下载的重复文件&lt;/p&gt;
-
-&lt;h2 id=&#34;axel&#34;&gt;Axel&lt;/h2&gt;
-
-&lt;p&gt;下载速度最快,分段下载速度优异
-&lt;code&gt;axel -n 30 -a -o localfilename http://xx.com/downloadfile&lt;/code&gt; 30个线程分段下载,存储为localfilename
-参数&lt;code&gt;-a&lt;/code&gt;更新进度条而不是每次都输出
-参数&lt;code&gt;-H&lt;/code&gt; 添加header,参数&lt;code&gt;-U&lt;/code&gt;设定&lt;code&gt;user-agent&lt;/code&gt;
-&lt;strong&gt;Downloads patch from 4 ftp mirrors&lt;/strong&gt;
-axel &lt;a href=&#34;ftp://ftp.{us,uk,br,fr}.kernel.org/pub/linux/kernel/v2.6/patch-2.6.39.gz&#34;&gt;ftp://ftp.{us,uk,br,fr}.kernel.org/pub/linux/kernel/v2.6/patch-2.6.39.gz&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;axel &lt;a href=&#34;http://itmp.suconghou.cn&#34;&gt;http://itmp.suconghou.cn&lt;/a&gt; hypriot-rpi-20160306-192317.img.zip &lt;a href=&#34;http://wtmp.suconghou.cn&#34;&gt;http://wtmp.suconghou.cn&lt;/a&gt; hypriot-rpi-20160306-192317.img.zip &lt;a href=&#34;http://btmp.suconghou.cn&#34;&gt;http://btmp.suconghou.cn&lt;/a&gt; hypriot-rpi-20160306-192317.img.zip&lt;/p&gt;
-
-&lt;h2 id=&#34;aria2c&#34;&gt;Aria2c&lt;/h2&gt;
-
-&lt;p&gt;aria2c支持多种协议,&lt;code&gt;URI&lt;/code&gt; &lt;code&gt;MAGNET&lt;/code&gt; &lt;code&gt;TORRENT_FILE&lt;/code&gt; &lt;code&gt;METALINK_FILE&lt;/code&gt;,也支持axel类似的分段下载&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;aria2c -s 30 -c -o localfilename http://xx.com/downloadfile&lt;/code&gt; 30个线程分段下载,存储为localfilename,并断点续传&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;aria2c file1.torrent file2.torrent&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;On CentOS 7.2.1511, I was able to install it through the EPEL repository:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;yum install epel-release -y
-yum install aria2 -y
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>wget wget -c -O filename &amp;quot;http://xx.com&amp;quot; 下载存储到指定文件,并指定断点续传
+wget -nc -c -i url.txt 批量下载文件中指定的资源(每行一个连接),跳过已下载的(同名的),并且断点续传.
+wget -i url.txt -O - | mpv - 下载url.txt里的链接,输出到标准输出
+使用user-agent
+wget --user-agent=&amp;quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36&amp;quot; URL-TO-DOWNLOAD
+wget 断点续传 使用 -c 限速使用--limit-rate=300k
+wget -c --limit-rate=30k http://...
+curl 常用的命令
+curl http://xx.com 只获取http消息正文
+curl -I http://xx.com 只获取http消息头
+curl -i http://xx.com 获取http消息头和正文
+curl -d &amp;quot;name=abc&amp;amp;pass=123&amp;quot; http://xx.com 发送http post请求,采用的是application/x-www-form-urlencoded形式
+curl -F &amp;quot;name=abc&amp;quot; -F &amp;quot;pass=123&amp;quot; http://xx.</description>
     </item>
     
   </channel>

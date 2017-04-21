@@ -7,7 +7,7 @@
 	<meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
 	<meta name='description' content='记录学习的点点滴滴'>
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
-	<title>iptables &middot; 苏苏的博客</title>
+	<title>iptables与firewalld &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.min.css">
 	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
@@ -31,7 +31,7 @@
 <div class="content container">
 	<div class="post">
 		<h1 class="post-title">
-			<a href="javascript:void(0)"> iptables</a>
+			<a href="javascript:void(0)"> iptables与firewalld</a>
 		</h1>
 		<p class="post-date">Wed, Sep 14, 2016</p>
 		
@@ -179,6 +179,8 @@ iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 
 <p>192.x.x.x   可以写 <code>192.0.0.0/8</code></p>
 
+<p><code>iptables -I INPUT -s 112.198.0.0/16 -j DROP</code></p>
+
 <pre><code>
 #清除配置
 /sbin/iptables -P INPUT ACCEPT
@@ -206,6 +208,17 @@ iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 /sbin/iptables -A OUTPUT -j ACCEPT
 
 </code></pre>
+
+<h1 id="firewalld">firewalld</h1>
+
+<p><code>firewall-cmd --state</code> 常看当前的状态</p>
+
+<p><code>firewall-cmd --get-active-zones</code> 查看区域信息</p>
+
+<p>查看某区域打开的端口
+<code>firewall-cmd --zone=public --list-ports</code>
+添加一个开放端口
+<code>firewall-cmd --zone=public --add-port=8080/tcp</code></p>
 
 		</div>
 	</div>

@@ -510,7 +510,7 @@ SET GLOBAL general_log = &lsquo;ON&rsquo;;
 <li>需要指定<code>innodb_file_per_table</code>参数,单独保存每个表的数据,否则MySQL的数据都会存放在ibdata1文件里，文件只增加不减小,时间久了这个文件就会变的非常大。</li>
 </ol>
 
-<p><code>show variables like '%innodb%';</code>查看目前innodb的配置</p>
+<p><code>show variables like '%innodb%';</code>查看目前innodb的配置, ON为开启.否则会造成都存储到一个文件内</p>
 
 <p>需要给<code>my.cnf</code>添加一行<code>innodb_file_per_table</code>,记得这个需要在<code>[mysqld]</code>段下面</p>
 

@@ -52,6 +52,8 @@
 
 <p><code>wget -nc -c -i url.txt</code> 批量下载文件中指定的资源(每行一个连接),跳过已下载的(同名的),并且断点续传.</p>
 
+<p><code>wget -i url.txt -O - | mpv -</code> 下载url.txt里的链接,输出到标准输出</p>
+
 <p>使用user-agent</p>
 
 <p><code>wget --user-agent=&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36&quot; URL-TO-DOWNLOAD</code></p>

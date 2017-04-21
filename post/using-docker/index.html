@@ -119,6 +119,8 @@ docker 分为两部分,一分部是docker daemon , 一部分是docker client</p>
 
 <p>生成证书可参考官网 <a href="https://docs.docker.com/engine/security/https/">https://docs.docker.com/engine/security/https/</a></p>
 
+<p>其他参考 <code>https://github.com/chenzhiwei/linux/tree/master/ssl-cert</code></p>
+
 <p>这里一份脚本可以快速生成证书,只需修改DOMAIN变量即可. <a href="https://gist.github.com/suconghou/707d9c61367c4bb91e8ed2585b094853">https://gist.github.com/suconghou/707d9c61367c4bb91e8ed2585b094853</a></p>
 
 <p>将证书放在<code>~/.docker</code>目录下可以免去设置<code>DOCKER_CERT_PATH</code></p>
@@ -358,6 +360,10 @@ attach是可以带上<code>--sig-proxy=false</code>来确保<code>CTRL-D</code>�
 
 <p>默认的规则是TCP,如果需要UDP,采用类似<code>-p 1234:1234/udp</code></p>
 
+<p><code>-p</code> 参数详解</p>
+
+<p><code>http://udn.yyuap.com/doc/docker_practice/advanced_network/port_mapping.html</code></p>
+
 <p><code>-p 80:8080</code>容器内部的8080端口,对外暴漏于80端口
 <code>-p 22</code>内部是22端口映射,外部则为一个随机可用的端口,<code>-P</code>则是将Dockerfile里EXPOSE的所有端口分配到宿主机的动态端口上,EXPOSE的端口不创建和宿主机的映射,是不能直接访问的</p>
 
@@ -465,19 +471,19 @@ docker run -it -p 8080:8000 --name vps vpsimage bash
 
 <p><code>vi /etc/apk/repositories</code></p>
 
-<pre><code>http://nl.alpinelinux.org/alpine/v3.4/main
-http://nl.alpinelinux.org/alpine/v3.4/community
+<pre><code>http://dl-cdn.alpinelinux.org/alpine/v3.5/main
+http://dl-cdn.alpinelinux.org/alpine/v3.5/community
 </code></pre>
 
 <p>可替换为</p>
 
-<pre><code>http://mirror.tuna.tsinghua.edu.cn/alpine/v3.4/main
-http://mirror.tuna.tsinghua.edu.cn/alpine/v3.4/community
+<pre><code>https://mirror.tuna.tsinghua.edu.cn/alpine/v3.5/main
+https://mirror.tuna.tsinghua.edu.cn/alpine/v3.5/community
 </code></pre>
 
 <p>简化为</p>
 
-<pre><code>echo -e 'http://mirror.tuna.tsinghua.edu.cn/alpine/v3.4/main\nhttp://mirror.tuna.tsinghua.edu.cn/alpine/v3.4/community' &gt; /etc/apk/repositories
+<pre><code>echo -e 'https://mirror.tuna.tsinghua.edu.cn/alpine/v3.5/main\nhttps://mirror.tuna.tsinghua.edu.cn/alpine/v3.5/community' &gt; /etc/apk/repositories
 </code></pre>
 
 <h2 id="使用流程">使用流程</h2>
@@ -596,7 +602,7 @@ echo &quot;&quot; &gt; $(docker inspect --format='{{.LogPath}}' &lt;container_na
 
 <p><code>systemctl status docker.service -l</code> 可查看docker工作状态,为什么启动失败等</p>
 
-<h2 id="coreos">CoreOs</h2>
+<h2 id="coreos使用docker">CoreOs使用docker</h2>
 
 <p>docker 配置远程访问.</p>
 
@@ -605,8 +611,21 @@ sudo echo 'DOCKER_OPTS=&quot; -H=unix:///var/run/docker.sock -H=0.0.0.0:4243  --
 sudo systemctl restart docker
 </code></pre>
 
+<p><code>semanage port -a -t http_port_t -p tcp 2376</code></p>
+
 <p>解决
 <code>Usage of loopback devices is strongly discouraged for production use. Use</code>&ndash;storage-opt dm.thinpooldev<code>to specify a custom block storage device.</code></p>
+
+<h2 id="备份docker-volume数据卷">备份docker volume数据卷</h2>
+
+<p>文件接收端执行 <code>nc -l 9090 &gt; data.tar.gz</code></p>
+
+<p>以只读模式挂载数据卷,挂载数据卷到<code>/data</code>路径</p>
+
+<pre><code>docker run --rm -it -v gogs-data:/data:ro busybox sh -c &quot;cd /data &amp;&amp; tar czvf - . | nc host 9090&quot;
+</code></pre>
+
+<p>打包文件并发送到目标主机</p>
 
 		</div>
 	</div>

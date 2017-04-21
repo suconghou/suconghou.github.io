@@ -2,12 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Softwares on 苏苏的博客</title>
-    <link>http://blog.suconghou.cn/software/index.xml</link>
+    <link>http://blog.suconghou.cn/software/</link>
     <description>Recent content in Softwares on 苏苏的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 17 Jul 2016 20:48:49 +0800</lastBuildDate>
-    <atom:link href="http://blog.suconghou.cn/software/index.xml" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="http://blog.suconghou.cn/software/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>some dev tools</title>
@@ -15,49 +17,22 @@
       <pubDate>Sun, 17 Jul 2016 20:48:49 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/software/some-dev-tools/</guid>
-      <description>
-
-&lt;h2 id=&#34;一些开发会用到的小工具&#34;&gt;一些开发会用到的小工具&lt;/h2&gt;
-
-&lt;h3 id=&#34;编程字体&#34;&gt;编程字体&lt;/h3&gt;
-
-&lt;p&gt;苹果出品的&lt;code&gt;Monaco&lt;/code&gt;,看起来十分圆润,首选推荐的编程字体&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/fonts/monaco.ttf&#34;&gt;monaco&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;或许还有很多人喜欢&lt;code&gt;YaHei.Consolas&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/fonts/YaHei.Consolas.1.12.zip&#34;&gt;YaHei.Consolas.1.12.zip&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;一些从-linux-迁移到windows的东西&#34;&gt;一些从&lt;code&gt;Linux&lt;/code&gt;迁移到Windows的东西&lt;/h3&gt;
-
-&lt;p&gt;最常用的当属&lt;code&gt;bash&lt;/code&gt;了,包含&lt;code&gt;md5sum&lt;/code&gt;,&lt;code&gt;wget&lt;/code&gt;,&lt;code&gt;curl&lt;/code&gt;,&lt;code&gt;awk&lt;/code&gt;等等.&lt;/p&gt;
-
-&lt;p&gt;有两个比较好的项目在移植&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;&lt;em&gt;unxutils&lt;/em&gt; &lt;a href=&#34;http://unxutils.sourceforge.net/&#34;&gt;http://unxutils.sourceforge.net/&lt;/a&gt;  源码 &lt;a href=&#34;https://sourceforge.net/projects/unxutils/&#34;&gt;https://sourceforge.net/projects/unxutils/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;win-bash&lt;/em&gt; &lt;a href=&#34;https://sourceforge.net/projects/win-bash/&#34;&gt;https://sourceforge.net/projects/win-bash/&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;code&gt;unxutils&lt;/code&gt;最后更新2014-04-03&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;win-bash&lt;/code&gt;最后更新2015-03-30&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;sourceforge&lt;/code&gt;上速度太慢,这里提供加速下载.&lt;/p&gt;
-
-&lt;p&gt;win-bash下载&lt;a href=&#34;http://share.suconghou.cn/files/Windows/shell.w32-ix86.zip&#34;&gt;shell.w32-ix86.zip&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;我的github也收集了一些&lt;code&gt;windows&lt;/code&gt;上常用的小工具&lt;code&gt;axel&lt;/code&gt;,&lt;code&gt;putty&lt;/code&gt;,&lt;code&gt;ab&lt;/code&gt;,&lt;code&gt;hugo&lt;/code&gt;,&lt;code&gt;rsync&lt;/code&gt;等&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://github.com/suconghou/tools&#34;&gt;http://github.com/suconghou/tools&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Curl 官网 &lt;a href=&#34;https://curl.haxx.se/download.html&#34;&gt;https://curl.haxx.se/download.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Curl 这里可以下载windows版的
-&lt;a href=&#34;http://www.paehl.com/open_source/?CURL_7.49.1&#34;&gt;http://www.paehl.com/open_source/?CURL_7.49.1&lt;/a&gt;&lt;/p&gt;
-</description>
+      <description>一些开发会用到的小工具 编程字体 苹果出品的Monaco,看起来十分圆润,首选推荐的编程字体
+monaco
+或许还有很多人喜欢YaHei.Consolas
+YaHei.Consolas.1.12.zip
+一些从Linux迁移到Windows的东西 最常用的当属bash了,包含md5sum,wget,curl,awk等等.
+有两个比较好的项目在移植
+ unxutils http://unxutils.sourceforge.net/ 源码 https://sourceforge.net/projects/unxutils/
+win-bash https://sourceforge.net/projects/win-bash/
+ unxutils最后更新2014-04-03
+win-bash最后更新2015-03-30
+sourceforge上速度太慢,这里提供加速下载.
+win-bash下载shell.w32-ix86.zip
+我的github也收集了一些windows上常用的小工具axel,putty,ab,hugo,rsync等
+http://github.com/suconghou/tools
+Curl 官网 https://curl.haxx.se/download.html
+Curl 这里可以下载windows版的 http://www.paehl.com/open_source/?CURL_7.49.1</description>
     </item>
     
     <item>
@@ -66,26 +41,11 @@
       <pubDate>Sun, 17 Jul 2016 20:37:31 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/software/shadowsocks-client/</guid>
-      <description>
-
-&lt;h2 id=&#34;shadowsocks-各平台客户端&#34;&gt;shadowsocks 各平台客户端&lt;/h2&gt;
-
-&lt;p&gt;文件来源于&lt;code&gt;github.com&lt;/code&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;windows平台&#34;&gt;windows平台&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/shadowsocks/Shadowsocks-3.4.2.zip&#34;&gt;Shadowsocks-3.4.2&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;mac平台&#34;&gt;mac平台&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/shadowsocks/ShadowsocksX-2.6.3.dmg&#34;&gt;ShadowsocksX-2.6.3&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;android平台&#34;&gt;android平台&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/shadowsocks/shadowsocks-nightly-3.3.1.apk&#34;&gt;shadowsocks-nightly-3.3.1&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;服务端可以使用docker更方便 &lt;a href=&#34;https://hub.docker.com/r/suconghou/shadowsocks/&#34;&gt;shadowsocks docker&lt;/a&gt;&lt;/p&gt;
-</description>
+      <description>shadowsocks 各平台客户端 文件来源于github.com
+windows平台 Shadowsocks-3.4.2
+mac平台 ShadowsocksX-2.6.3
+android平台 shadowsocks-nightly-3.3.1
+服务端可以使用docker更方便 shadowsocks docker</description>
     </item>
     
     <item>
@@ -94,16 +54,9 @@
       <pubDate>Sun, 17 Jul 2016 20:30:43 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/software/picasa-photo-viewer/</guid>
-      <description>
-
-&lt;h2 id=&#34;picasaphotoviewer-图片查看器-v3-9-136-9&#34;&gt;PicasaPhotoViewer(图片查看器) v3.9.136.9&lt;/h2&gt;
-
-&lt;p&gt;Picasa内置的图片浏览器,Google出品,此版本为独木成林提取出来的.&lt;/p&gt;
-
-&lt;p&gt;只有1.7MB,启动速度快,十分好用,有一个缺点是可能因为版权问题未对GIF做支持.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/ImageView/PicasaPhotoViewer_3.9.136.9.exe&#34;&gt;PicasaPhotoViewerv3.9.136.9&lt;/a&gt;&lt;/p&gt;
-</description>
+      <description>PicasaPhotoViewer(图片查看器) v3.9.136.9 Picasa内置的图片浏览器,Google出品,此版本为独木成林提取出来的.
+只有1.7MB,启动速度快,十分好用,有一个缺点是可能因为版权问题未对GIF做支持.
+PicasaPhotoViewerv3.9.136.9</description>
     </item>
     
     <item>
@@ -112,26 +65,12 @@
       <pubDate>Sun, 17 Jul 2016 20:11:26 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/software/git-for-windows/</guid>
-      <description>
-
-&lt;h2 id=&#34;git-for-windows-国内下载&#34;&gt;git for windows 国内下载&lt;/h2&gt;
-
-&lt;p&gt;所有资源均来源于官网&lt;code&gt;http://git-scm.com/download/win&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;版本2.12.0&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;32位资源&#34;&gt;32位资源&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/git/Git-2.12.0-32-bit.exe&#34;&gt;32位安装版&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/git/PortableGit-2.12.0-64-bit.7z.exe&#34;&gt;32位绿色版&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;64位资源&#34;&gt;64位资源&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/git/Git-2.12.0-64-bit.exe&#34;&gt;64位安装版&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/git/PortableGit-2.12.0-64-bit.7z.exe&#34;&gt;64位绿色版&lt;/a&gt;&lt;/p&gt;
-</description>
+      <description>git for windows 国内下载 所有资源均来源于官网http://git-scm.com/download/win
+版本2.12.0
+32位资源 32位安装版
+32位绿色版
+64位资源 64位安装版
+64位绿色版</description>
     </item>
     
     <item>
@@ -140,21 +79,8 @@
       <pubDate>Fri, 08 Apr 2016 10:08:24 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/software/android-studio/</guid>
-      <description>
-
-&lt;h2 id=&#34;下载-android-studio&#34;&gt;下载 Android Studio&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.oschina.net/news/77839/android-studio-2-2-1&#34;&gt;http://www.oschina.net/news/77839/android-studio-2-2-1&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Windows: https://dl.google.com/dl/android/studio/ide-zips/2.2.1.0/android-studio-ide-145.3330264-windows.zip (437.1 MiB)
-Mac: https://dl.google.com/dl/android/studio/ide-zips/2.2.1.0/android-studio-ide-145.3330264-mac.zip (437.7 MiB)
-Linux: https://dl.google.com/dl/android/studio/ide-zips/2.2.1.0/android-studio-ide-145.3330264-linux.zip (436.8 MiB)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;安装android-sdk&#34;&gt;安装android-sdk&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;brew install android-sdk&lt;/code&gt; 或者使用Android Studio SDK Manager&lt;/p&gt;
-</description>
+      <description>下载 Android Studio http://www.oschina.net/news/77839/android-studio-2-2-1
+Windows: https://dl.google.com/dl/android/studio/ide-zips/2.2.1.0/android-studio-ide-145.3330264-windows.zip (437.1 MiB) Mac: https://dl.google.com/dl/android/studio/ide-zips/2.2.1.0/android-studio-ide-145.3330264-mac.zip (437.7 MiB) Linux: https://dl.google.com/dl/android/studio/ide-zips/2.2.1.0/android-studio-ide-145.3330264-linux.zip (436.8 MiB)  安装android-sdk brew install android-sdk 或者使用Android Studio SDK Manager</description>
     </item>
     
   </channel>

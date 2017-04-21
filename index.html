@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.19" />
+	<meta name="generator" content="Hugo 0.20.2" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -108,6 +108,8 @@ gcc -static -Os 1.c
 <blockquote>
 <p>产生一个叫作a.out的执行文件，大小明显比用-g选项后产生的文件还大。</p>
 </blockquote>
+
+<p><a href="https://www.systutorials.com/5217/how-to-statically-link-c-and-c-programs-on-linux-with-gcc/">https://www.systutorials.com/5217/how-to-statically-link-c-and-c-programs-on-linux-with-gcc/</a></p>
 
 			</div>
 		</div>
@@ -568,7 +570,7 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 		
 		<div class="post">
 			<h1 class="post-title">
-				<a href="/post/iptables/"> iptables</a>
+				<a href="/post/iptables/"> iptables与firewalld</a>
 			</h1>
 			<p class="post-date">Wed, Sep 14, 2016</p>
 			<div class="post-text">
@@ -715,6 +717,8 @@ iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 
 <p>192.x.x.x   可以写 <code>192.0.0.0/8</code></p>
 
+<p><code>iptables -I INPUT -s 112.198.0.0/16 -j DROP</code></p>
+
 <pre><code>
 #清除配置
 /sbin/iptables -P INPUT ACCEPT
@@ -742,6 +746,17 @@ iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 /sbin/iptables -A OUTPUT -j ACCEPT
 
 </code></pre>
+
+<h1 id="firewalld">firewalld</h1>
+
+<p><code>firewall-cmd --state</code> 常看当前的状态</p>
+
+<p><code>firewall-cmd --get-active-zones</code> 查看区域信息</p>
+
+<p>查看某区域打开的端口
+<code>firewall-cmd --zone=public --list-ports</code>
+添加一个开放端口
+<code>firewall-cmd --zone=public --add-port=8080/tcp</code></p>
 
 			</div>
 		</div>

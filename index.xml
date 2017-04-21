@@ -2,12 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>苏苏的博客</title>
-    <link>http://blog.suconghou.cn/index.xml</link>
+    <link>http://blog.suconghou.cn/</link>
     <description>Recent content on 苏苏的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 13 Jan 2017 14:01:02 +0800</lastBuildDate>
-    <atom:link href="http://blog.suconghou.cn/index.xml" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="http://blog.suconghou.cn/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>gcc</title>
@@ -15,77 +17,18 @@
       <pubDate>Fri, 13 Jan 2017 14:01:02 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/gcc/</guid>
-      <description>
-
-&lt;h2 id=&#34;gcc-静态编译&#34;&gt;gcc 静态编译&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;1.c&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;#include &amp;lt;stdio.h&amp;gt;
-
-void main()
-{
-	printf(&amp;quot;hello&amp;quot;);
-}
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;gcc -static --verbose -fno-builtin 1.c&lt;/code&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;&lt;code&gt;--verbose&lt;/code&gt;是为了输入编译的详细信息&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;-fno-builtin&lt;/code&gt;是阻止编译器把printf变成puts&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;如果出现错误&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;/usr/bin/ld: cannot find -lc
-collect2: 错误：ld 返回 1
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;可能你还需要安装glibc的静态库&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;yum update &amp;amp;&amp;amp; yum install glibc-static -y&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;优化选项&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://www.zhihu.com/question/27090458&#34;&gt;https://www.zhihu.com/question/27090458&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;gcc -static -O  1.c
-gcc -static -O2 1.c
-gcc -static -O3 1.c
-gcc -static -Os 1.c
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;错误提示&#34;&gt;错误提示&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;-pedantic&lt;/code&gt;编译选项并不能保证被编译程序与ANSI/ISO C标准的完全兼容，它仅仅只能用来帮助Linux程序员离这个目标越来越近。或者换句话说，&lt;code&gt;-pedantic&lt;/code&gt;选项能够帮助程序员发现一些不符合 ANSI/ISO C标准的代码，但不是全部，事实上只有ANSI/ISO C语言标准中要求进行编译器诊断的那些情况，才有可能被GCC发现并提出警告。&lt;/p&gt;
-
-&lt;p&gt;除了&lt;code&gt;-pedantic&lt;/code&gt;之外，GCC还有一些其它编译选项也能够产生有用的警告信息。这些选项大多以-W开头，其中最有价值的当数&lt;code&gt;-Wall&lt;/code&gt;了，使用它能够使GCC产生尽可能多的警告信息。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;gcc -Wall test.c -o test
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;GCC给出的警告信息虽然从严格意义上说不能算作错误，但却很可能成为错误的栖身之所。一个优秀的Linux程序员应该尽量避免产生警告信息，使自己的代码始终保持标准、健壮的特性。所以将警告信息当成编码错误来对待，是一种值得赞扬的行为！所以，在编译程序时带上-Werror选项，那么GCC会在所有产生警告的地方停止编译，迫使程序员对自己的代码进行修改，如下：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;gcc -Werror test.c -o test
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;调试选项&#34;&gt;调试选项&lt;/h2&gt;
-
-&lt;p&gt;1) -g选项，产生供gdb调试用的可执行文件：&lt;code&gt;gcc -g helloworld.c&lt;/code&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;产生一个叫作a.out的可执行文件，大小明显比只用-o选项编译汇编连接后的文件大。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;2) -pg选项，产生供gprof剖析用的可执行文件：&lt;code&gt;gcc -pg helloworld.c&lt;/code&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;产生一个叫作a.out的执行文件，大小明显比用-g选项后产生的文件还大。&lt;/p&gt;
-&lt;/blockquote&gt;
-</description>
+      <description>gcc 静态编译 1.c
+#include &amp;lt;stdio.h&amp;gt; void main() { printf(&amp;quot;hello&amp;quot;); }  gcc -static --verbose -fno-builtin 1.c
+ --verbose是为了输入编译的详细信息
+-fno-builtin是阻止编译器把printf变成puts
+ 如果出现错误
+/usr/bin/ld: cannot find -lc collect2: 错误：ld 返回 1  可能你还需要安装glibc的静态库
+yum update &amp;amp;&amp;amp; yum install glibc-static -y
+优化选项
+https://www.zhihu.com/question/27090458
+gcc -static -O 1.c gcc -static -O2 1.c gcc -static -O3 1.c gcc -static -Os 1.c  错误提示 -pedantic编译选项并不能保证被编译程序与ANSI/ISO C标准的完全兼容，它仅仅只能用来帮助Linux程序员离这个目标越来越近。或者换句话说，-pedantic选项能够帮助程序员发现一些不符合 ANSI/ISO C标准的代码，但不是全部，事实上只有ANSI/ISO C语言标准中要求进行编译器诊断的那些情况，才有可能被GCC发现并提出警告。
+除了-pedantic之外，GCC还有一些其它编译选项也能够产生有用的警告信息。这些选项大多以-W开头，其中最有价值的当数-Wall了，使用它能够使GCC产生尽可能多的警告信息。
+gcc -Wall test.c -o test  GCC给出的警告信息虽然从严格意义上说不能算作错误，但却很可能成为错误的栖身之所。一个优秀的Linux程序员应该尽量避免产生警告信息，使自己的代码始终保持标准、健壮的特性。所以将警告信息当成编码错误来对待，是一种值得赞扬的行为！所以，在编译程序时带上-Werror选项，那么GCC会在所有产生警告的地方停止编译，迫使程序员对自己的代码进行修改，如下：</description>
     </item>
     
     <item>
@@ -94,169 +37,12 @@ gcc -static -Os 1.c
       <pubDate>Sun, 20 Nov 2016 22:12:25 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/server-safe/</guid>
-      <description>
-
-&lt;h2 id=&#34;nginx安全配置&#34;&gt;Nginx安全配置&lt;/h2&gt;
-
-&lt;p&gt;如果你是用&lt;code&gt;git&lt;/code&gt;或者&lt;code&gt;svn&lt;/code&gt;来部署代码,默认情况下,你的网站很可能已经泄露了&lt;code&gt;.git&lt;/code&gt;目录,或者&lt;code&gt;.svn&lt;/code&gt;目录&lt;/p&gt;
-
-&lt;p&gt;使用nginx配置过滤一切以&lt;code&gt;.&lt;/code&gt;开头的文件和文件夹,防止被用户下载.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;location ~ /\. {
-	deny all;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;每个网站都需要这么配置可能有些麻烦,你可以在统一的文件中定义好&lt;code&gt;/etc/nginx/default.d/php.conf&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;listen 80;
-index index.html index.php;
-try_files $uri $uri/ /index.php?$args;
-location ~ /\. {
-	deny all;
-}
-location ~ ^.+\.php$ {
-	try_files $uri =404;
-	fastcgi_pass 127.0.0.1:9000;
-	include fastcgi.conf;
-}
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;使用时,类似与下面,还不用每次写这么多配置了.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;server{
-  server_name fed-wx.xxx.cn;
-  root /data/www/fed-wx;
-  include /etc/nginx/default.d/php.conf;
-}
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;给http段添加,开启一些gzip特性,关闭显示服务器版本&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;default_type        application/octet-stream;
-sendfile            on;
-tcp_nopush          on;
-tcp_nodelay         on;
-keepalive_timeout   65;
-types_hash_max_size 2048;
-server_tokens off;
-ssi on;
-gzip on;
-gzip_min_length 1024;
-gzip_proxied any;
-gzip_comp_level 3;
-gzip_types text/plain text/javascript text/css text/json application/xml application/javascript  application/json image/jpeg image/gif image/png;
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;修改你的ssh默认端口-并且使用强密码&#34;&gt;修改你的SSH默认端口,并且使用强密码&lt;/h2&gt;
-
-&lt;p&gt;每天都有大量的端口扫描来扫描你服务器IP的22端口,如果你的22端口密码又不强,很可能已被黑客侵入.&lt;/p&gt;
-
-&lt;p&gt;如果发现已经有大量的错误登陆,请立即更换端口.必要时考虑使用&lt;code&gt;fail2ban&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;所有的网络通信都应该使用-https&#34;&gt;所有的网络通信都应该使用&lt;code&gt;HTTPS&lt;/code&gt;&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;http&lt;/code&gt;并不安全,很有可能你收到和发出的信息,已被中间人劫持.&lt;/p&gt;
-
-&lt;p&gt;中间人劫持能查看你发送的信息,修改返回给你的数据包.&lt;/p&gt;
-
-&lt;p&gt;为此,使用http时,务必加盐加密你的密码,以减少在传输过程中被窃取的可能.&lt;/p&gt;
-
-&lt;p&gt;更有效的是使用&lt;code&gt;https&lt;/code&gt;来有效防止中间人劫持.&lt;/p&gt;
-
-&lt;h2 id=&#34;你的身份认证令牌应该多方关联&#34;&gt;你的身份认证令牌应该多方关联.&lt;/h2&gt;
-
-&lt;p&gt;即便使用&lt;code&gt;https&lt;/code&gt;,你的身份认证令牌,一旦从其他渠道泄漏,黑客便能使用你的身份进行操作.&lt;/p&gt;
-
-&lt;p&gt;特别是具有管理员权限的身份令牌,更是会带来严重后果,在&lt;code&gt;CSRF&lt;/code&gt;攻击中偷走令牌是常有的事.&lt;/p&gt;
-
-&lt;p&gt;因此你起码需要将cookie关键信息设置为&lt;code&gt;httponly&lt;/code&gt;和&lt;code&gt;security&lt;/code&gt;(使用https时),并小心过滤允许用户输入的链接地址(包含图片,视频地址)和富文本等.
-必要时开启&lt;code&gt;csrf-token&lt;/code&gt;认证.&lt;/p&gt;
-
-&lt;p&gt;还需要确保你的认证&lt;code&gt;token&lt;/code&gt;在丢失以后也不能在黑客手中登陆.&lt;/p&gt;
-
-&lt;p&gt;这需要你在生成&lt;code&gt;token&lt;/code&gt;时,进行多方关联,哈希时可包括&lt;code&gt;IP地址&lt;/code&gt;,&lt;code&gt;User Agent&lt;/code&gt;,当然用户ID也需要关联,这个&lt;code&gt;token&lt;/code&gt;只能这个用户用.&lt;/p&gt;
-
-&lt;p&gt;服务器验证时并不是从&lt;code&gt;token&lt;/code&gt;能找到用户,就验证通过,还需要对这些信息进行校验,验证还是不是那个客户端发出的.&lt;/p&gt;
-
-&lt;p&gt;除此之外,哈希时不能简单的哈希,还需要加盐哈希,防止黑客拆解出哈希包含的字段进而可以自己算出token.&lt;/p&gt;
-
-&lt;p&gt;即使黑客不能拆解你的哈希算法,也不知道哈希字段有哪些,只要他能捕获你发出的请求,(或窃取走你的token和所有可能参与哈希的字段),一样可以模拟请求,使用你的身份进行操作,除非你哈希时包含了IP.
-因为来源IP黑客是无法模拟的,除非他和你在同一个外网出口IP路由下.&lt;/p&gt;
-
-&lt;p&gt;但如果客户的IP经常变动,IP参与哈希可能体验太不好了,于是还是回到最初的问题,&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;使用&lt;code&gt;https&lt;/code&gt;,使用&lt;code&gt;httponly&lt;/code&gt;和&lt;code&gt;security&lt;/code&gt;的cookie,便能有效防止黑客捕获你的请求和偷走&lt;code&gt;token&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;再加上&lt;strong&gt;&lt;code&gt;token&lt;/code&gt;关联校验策略&lt;/strong&gt;, 再加上&lt;strong&gt;&lt;code&gt;token&lt;/code&gt;有效期滚动延期策略&lt;/strong&gt;,三道屏障保护你的身份不被黑客冒用.&lt;/p&gt;
-
-&lt;h2 id=&#34;合适和正确的验证码&#34;&gt;合适和正确的验证码&lt;/h2&gt;
-
-&lt;p&gt;一上来就给用户弹验证码未免也太不友好了,合适的做法是账户最近连续3次登陆都是错误登陆再弹出高强度的验证码.&lt;/p&gt;
-
-&lt;p&gt;这很好实现,只需一个字段就能带来好的体验.&lt;/p&gt;
-
-&lt;p&gt;毕竟正常的用户大部分时间都是一次登陆成功.&lt;/p&gt;
-
-&lt;p&gt;用户使用过的验证码一定不能再次用来验证,要保证每次身份验证都是一个新的验证码.&lt;/p&gt;
-
-&lt;p&gt;不能拿一次对的验证码去重复尝试验证用户名,密码,否则等同于没有验证码.&lt;/p&gt;
-
-&lt;p&gt;即便使用了验证码,也是不可信的,现在的打码平台已近非常成熟了,简单的验证码也很容易做到机器识别了.&lt;/p&gt;
-
-&lt;p&gt;还应该限制用户登陆错误次数,一小时10次或一天30次不能再多了.&lt;/p&gt;
-
-&lt;h2 id=&#34;登陆和找回密码返回合适的信息&#34;&gt;登陆和找回密码返回合适的信息&lt;/h2&gt;
-
-&lt;p&gt;别再返回&lt;code&gt;用户名不存在&lt;/code&gt;了,或者&lt;code&gt;密码不正确&lt;/code&gt;了&lt;/p&gt;
-
-&lt;p&gt;为了这一点点的客户体验,你将带来巨大的安全隐患.你的网站存在用户遍历漏洞.&lt;/p&gt;
-
-&lt;p&gt;黑客可以很轻松的知道一个用户有没有在你的网站注册.&lt;/p&gt;
-
-&lt;p&gt;黑客手中有大量的泄漏账户信息,一些有价值的账户就值得黑客深挖,通过此漏洞,黑客很容易找到哪些用户都有哪些账户.&lt;/p&gt;
-
-&lt;p&gt;更可怕的是,大部分人不同网站的密码是相同的.也许你的网站安全性很好,还使用了https,但是黑客只要攻破了防线最弱的那个网站拿到用户的密码,你所说的安全也就全瓦解了.&lt;/p&gt;
-
-&lt;p&gt;因此给出&lt;code&gt;用户名或密码错误&lt;/code&gt;和找回密码每次都需要高强度验证码,并且返回&lt;code&gt;如果你已注册,邮件已发送到您注册时的邮箱&lt;/code&gt;才是有效安全的方式.&lt;/p&gt;
-
-&lt;h2 id=&#34;可怕的撞库&#34;&gt;可怕的撞库&lt;/h2&gt;
-
-&lt;p&gt;大部分人不同网站的密码相同,作为使用者个人值得注意,需要为每个网站设置不同的密码,防止一个的密码泄露,其他网站的密码也不安全了.&lt;/p&gt;
-
-&lt;p&gt;作为系统设计者,也需要注意,最基本的密码不能明文存储,其次密码需要加盐存储.再者所有用户的盐不能都是一个,需要每个用户都有自己的盐.&lt;/p&gt;
-
-&lt;p&gt;做到即使被脱库,也不能直接得到密码,即使观测所有密文和盐,知道部分用户的明文密码,也不能拆解出其他用户的明文密码.(这就需要每个用户有自己的盐)&lt;/p&gt;
-
-&lt;p&gt;密文切记不要直接md5,或者md5加固定盐.这些都已不在安全.&lt;/p&gt;
-
-&lt;h2 id=&#34;修改关键信息时必须验证&#34;&gt;修改关键信息时必须验证&lt;/h2&gt;
-
-&lt;p&gt;为避免黑客盗取了身份认证信息,冒用正常用户,去修改邮箱,手机号等关键信息.&lt;/p&gt;
-
-&lt;p&gt;在修改之前一定需要二次验证.&lt;/p&gt;
-
-&lt;p&gt;否则手机号被修改,您账户里的财产在做变动时,验证码就发送到黑客修改过的手机上了,黑客顺利成章的就完成了交易.&lt;/p&gt;
-
-&lt;h2 id=&#34;邮箱和手机号已不在是有效凭据&#34;&gt;邮箱和手机号已不在是有效凭据&lt;/h2&gt;
-
-&lt;p&gt;即使使用手机号和邮箱来标示一个用户,那也不一定是正确的.&lt;/p&gt;
-
-&lt;p&gt;目前黑市上已经有很多成熟的产业链,黑客花少量的钱就能很快拥有数以万计的手机号和邮箱,能便捷的发送和接收验证码.&lt;/p&gt;
-
-&lt;p&gt;有利可图的地方就有黑客存在,在发放红利时须倍加小心.&lt;/p&gt;
-
-&lt;h2 id=&#34;手势解锁安全吗&#34;&gt;手势解锁安全吗&lt;/h2&gt;
-
-&lt;p&gt;大部分的手势解锁都是靠次数和时间限制,但是程序在客户端,黑客很容易修改程序配置文件,达到无限次尝试.&lt;/p&gt;
-
-&lt;p&gt;并且手势密码的验证大部分都是本地验证,意味着黑客根本不需要与服务器端交互,有很多方式攻破程序里的本地认证&lt;/p&gt;
-
-&lt;p&gt;因此手势密码只防君子,不妨小人,不要把它作为十分安全的验证,在做敏感操作时务必联网验证用户密码.&lt;/p&gt;
-</description>
+      <description>Nginx安全配置 如果你是用git或者svn来部署代码,默认情况下,你的网站很可能已经泄露了.git目录,或者.svn目录
+使用nginx配置过滤一切以.开头的文件和文件夹,防止被用户下载.
+location ~ /\. { deny all; }  每个网站都需要这么配置可能有些麻烦,你可以在统一的文件中定义好/etc/nginx/default.d/php.conf
+listen 80; index index.html index.php; try_files $uri $uri/ /index.php?$args; location ~ /\. { deny all; } location ~ ^.+\.php$ { try_files $uri =404; fastcgi_pass 127.0.0.1:9000; include fastcgi.conf; }  使用时,类似与下面,还不用每次写这么多配置了.
+server{ server_name fed-wx.xxx.cn; root /data/www/fed-wx; include /etc/nginx/default.d/php.conf; }  给http段添加,开启一些gzip特性,关闭显示服务器版本
+default_type application/octet-stream; sendfile on; tcp_nopush on; tcp_nodelay on; keepalive_timeout 65; types_hash_max_size 2048; server_tokens off; ssi on; gzip on; gzip_min_length 1024; gzip_proxied any; gzip_comp_level 3; gzip_types text/plain text/javascript text/css text/json application/xml application/javascript application/json image/jpeg image/gif image/png;  修改你的SSH默认端口,并且使用强密码 每天都有大量的端口扫描来扫描你服务器IP的22端口,如果你的22端口密码又不强,很可能已被黑客侵入.</description>
     </item>
     
     <item>
@@ -265,458 +51,42 @@ gzip_types text/plain text/javascript text/css text/json application/xml applica
       <pubDate>Tue, 18 Oct 2016 19:18:24 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/use-kvm/</guid>
-      <description>
-
-&lt;h1 id=&#34;安装和配置kvm&#34;&gt;安装和配置KVM&lt;/h1&gt;
-
-&lt;h2 id=&#34;kvm与xen区别&#34;&gt;KVM与XEN区别&lt;/h2&gt;
-
-&lt;p&gt;OPENVZ就不说了,是半虚拟化,不能安装Windows操作系统&lt;/p&gt;
-
-&lt;p&gt;KVM是内核模块,从2.6.20内核开始,kvm模块就包含在Linux内核中,只需加载此模块即可&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;#查看宿主机CPU是否在硬件上支持虚拟化扩展特性
-cat /proc/cpuinfo | grep -E &amp;quot;(vmx|svm)&amp;quot;
-
-#加载kvm模块（Intel VT）
-modprobe kvm
-modprobe kvm-intel
-#注意：如果加载失败，说明服务器硬件不支持或BIOS中未开启虚拟化扩展
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;运行命令&lt;code&gt;lsmod | grep kvm&lt;/code&gt;检查 KVM 模块是否成功安装&lt;/p&gt;
-
-&lt;p&gt;XEN是一套虚拟化方案,可以直接安装,不需要先安装操作系统.&lt;/p&gt;
-
-&lt;p&gt;KVM起步较晚,XEN起步早发展成熟,但目前KVM潜力较大.&lt;/p&gt;
-
-&lt;h2 id=&#34;kvm-与-qemu&#34;&gt;KVM 与 qemu&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;yum install qemu-kvm libvirt virt-install bridge-utils&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;qemu-kvm 该软件包主要包含KVM内核模块和适用于KVM的QEMU模拟器。KVM模块负责CPU和内存的调度，QEMU负责虚拟机I/O设备的模拟。&lt;/p&gt;
-
-&lt;p&gt;libvirt 提供Hypervisor和虚拟机的管理功能。&lt;/p&gt;
-
-&lt;p&gt;virt-install 创建和克隆虚拟机的命令行工具包。&lt;/p&gt;
-
-&lt;p&gt;bridge-utils 网桥管理工具包，负责桥接网络的创建、配置和管理等工作。&lt;/p&gt;
-
-&lt;h2 id=&#34;激活并启动libvirtd服务&#34;&gt;激活并启动libvirtd服务&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;systemctl enable libvirtd
-systemctl start libvirtd
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;安装centos7&#34;&gt;安装CentOS7&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;diskutil list&lt;/code&gt;查看所有磁盘&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;diskutil unmountdisk /dev/disk1&lt;/code&gt; 解除其挂载&lt;/p&gt;
-
-&lt;p&gt;用dd将ISO文件写入&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;sudo dd if=/data/files/iso/CentOS-7-x86_64-Minimal-1511.iso of=/dev/disk2 bs=1m&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;安装好系统后,更换网易的源 &lt;a href=&#34;http://mirrors.163.com/.help/centos.html&#34;&gt;http://mirrors.163.com/.help/centos.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
-cd /etc/yum.repos.d
-wget http://mirrors.163.com/.help/CentOS7-Base-163.repo
-yum clean all
-yum makecache
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;搜狐也有,但版本太老 &lt;a href=&#34;http://mirrors.sohu.com/help/centos.html&#34;&gt;http://mirrors.sohu.com/help/centos.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;可以使用清华大学的. &lt;a href=&#34;https://lug.ustc.edu.cn/wiki/mirrors/help/centos&#34;&gt;https://lug.ustc.edu.cn/wiki/mirrors/help/centos&lt;/a&gt; 速度都十分快.&lt;/p&gt;
-
-&lt;h2 id=&#34;启用kvm后-需要配置网卡&#34;&gt;启用KVM后,需要配置网卡&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;cd /etc/sysconfig/network-scripts/&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;桥接网卡&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;brctl addbr br0&lt;/code&gt; 添加一个虚拟网卡&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;brctl addif br0 em2&lt;/code&gt; 将网卡&lt;code&gt;br0&lt;/code&gt;桥接到&lt;code&gt;em2&lt;/code&gt; ,这一步将会导致em2断网,远程ssh将会断开&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;brctl stp br0 on&lt;/code&gt; 将br0设置为启用STP协议&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;ifconfig em2 0&lt;/code&gt; #将em2的IP设置为0&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;dhclient br0&lt;/code&gt; #将br0网络配置好&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;brctl show&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;然后&lt;code&gt;systemctl restart network&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;route&lt;/code&gt; 查看默认网关&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://wiki.centos.org/zh/HowTos/KVM&#34;&gt;https://wiki.centos.org/zh/HowTos/KVM&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;创建虚拟机磁盘镜像文件&#34;&gt;创建虚拟机磁盘镜像文件&lt;/h2&gt;
-
-&lt;p&gt;不能创建太小,建议5G-50G&lt;/p&gt;
-
-&lt;p&gt;qcow2格式是kvm支持的标准格式，raw格式为虚拟磁盘文件通用格式。有测试数据表明raw格式的I/O性能略高于qcow2格式，但是在加密，容量，快照方面qcow2格式有优势&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;qemu-img create -f qcow2 test.qcow2 20G  //建立qcow2格式磁盘文件
-qemu-img create -f raw test.raw 20G      //建立raw格式磁盘文件
-qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文件
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;创建虚拟机&#34;&gt;创建虚拟机&lt;/h2&gt;
-
-&lt;p&gt;使用&lt;code&gt;osinfo-query os&lt;/code&gt;可以查看&lt;code&gt;os-variant&lt;/code&gt;都有哪些代号&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://raymii.org/s/articles/virt-install_introduction_and_copy_paste_distro_install_commands.html&#34;&gt;https://raymii.org/s/articles/virt-install_introduction_and_copy_paste_distro_install_commands.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;创建 Ubuntu&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;virt-install \
---name ubuntu \
---ram 512 --vcpus 1 \
---boot network,cdrom,menu=on \
---disk path=/disk/kvm/disk1,size=10,format=qcow2,bus=virtio \
---os-type linux \
---os-variant generic \
---nographics --accelerate \
---bridge=br0,model=virtio --keymap=en-us \
---console pty,target_type=serial \
---cdrom=/data/iso/ubuntu-16.04.1-server-amd64.iso \
---extra-args=&#39;console=tty0 console=ttyS0,115200n8 serial&#39; \
---hvm --dry-run
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;创建CentOS&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;virt-install \
---name centos \
---ram 512 --vcpus 1 \
---disk path=/disk/kvm/disk1,size=10,format=qcow2,bus=virtio \
---os-type linux \
---os-variant generic \
---accelerate \
---bridge=br0,model=virtio --keymap=en-us \
---console pty,target_type=serial \
---location=/data/iso/CentOS-7-x86_64-Minimal-1511.iso \
---extra-args=&#39;console=tty0 console=ttyS0,115200n8 serial&#39; \
---hvm --dry-run
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;virsh &amp;ndash;connect qemu:///system&lt;/p&gt;
-
-&lt;p&gt;创建Debain&lt;/p&gt;
-
-&lt;p&gt;先挂载 &lt;code&gt;sudo mount -o loop,unhide -t iso9660 -r /data/iso/debian-8.6.0-amd64-CD-1.iso /mnt/cdrom&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;需要nfs启动 &lt;code&gt;service nfs start&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;添加&lt;code&gt;/mnt/cdrom    *(ro,insecure,all_squash)&lt;/code&gt;到文件&lt;code&gt;/etc/exports&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;并刷新&lt;code&gt;exportfs -r&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;virt-install \
---name debain \
---ram 512 --vcpus 1 \
---boot network,cdrom,menu=on \
---disk path=/disk/kvm/disk4,size=10,format=qcow2,bus=virtio \
---os-type linux \
---os-variant generic \
---bridge=br0,model=virtio --keymap=en-us \
---console pty,target_type=serial \
---accelerate \
---location=/mnt/cdrom \
---extra-args=&#39;console=tty0 console=ttyS0,115200n8 serial&#39; \
---vnc --vncport=5911 --vnclisten=0.0.0.0 \
---hvm --dry-run
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;创建Windows Server&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;qemu-img create -f qcow2 /disk/kvm/windisk1 50G&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;针对Windows需要安装一些驱动&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;sudo wget https://fedorapeople.org/groups/virt/virtio-win/virtio-win.repo -O /etc/yum.repos.d/virtio-win.repo&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;sudo yum install virtio-win&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://fedoraproject.org/wiki/Windows_Virtio_Drivers&#34;&gt;https://fedoraproject.org/wiki/Windows_Virtio_Drivers&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;virt-install \
---name windows2012 \
---ram 4096 --vcpus 2 \
---disk path=/data/iso/cn_windows_server_2012_r2_with_update_x64_dvd_4048415.iso,device=cdrom \
---disk path=/disk/kvm/windisk1,size=50,format=qcow2,bus=virtio,cache=writeback \
---cdrom=/usr/share/virtio-win/virtio-win-0.1.126.iso \
---os-type windows \
---os-variant win2k12r2 \
---bridge=br0,model=virtio \
---accelerate \
---graphics vnc,port=5999,listen=0.0.0.0 \
---console pty,target_type=serial \
---hvm --dry-run
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;virt-install \
---name xp1 \
---ram 1024 --vcpus 1 \
---disk path=/data/iso/Deepin_Windows_LiteXP_v6.2_SP3.iso,device=cdrom \
---disk path=/disk/kvm/winxp1,size=10,format=qcow2,bus=virtio,cache=writeback \
---cdrom=/usr/share/virtio-win/virtio-win-0.1.126.iso \
---os-type windows \
---os-variant winxp \
---bridge=br0,model=virtio \
---accelerate \
---graphics vnc,port=5999,listen=0.0.0.0 \
---console pty,target_type=serial \
---hvm --dry-run
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;出现&lt;code&gt;ERROR    不能混用 --graphics 和旧式的图形选项&lt;/code&gt;可能是需要去掉&lt;code&gt;--keymap&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;关于 加载 virtio 驱动可以参考  &lt;a href=&#34;http://www.ilanni.com/?p=5877&#34;&gt;http://www.ilanni.com/?p=5877&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;选择加载&lt;code&gt;viostor&lt;/code&gt;磁盘驱动&lt;/strong&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;disk属性就是指虚拟机使用哪一个磁盘镜像文件作为存储地方，指定刚才创建的镜像文件位置即可，size=10,format=qcow2,bus=virtio分别是指大小，格式（跟镜像格式一致），磁盘总线类型（指Value can be ’ide’, ’scsi’, ’usb’, ’virtio’ or ’xen’，virtio是专门为kvm制定的bus，比较常用），大小需要比镜像文件大小要小，相当于镜像是容器，这个disk是里面的水，水太多就溢出了。&lt;/p&gt;
-
-&lt;p&gt;bridge=br0,model=virtio –keymap=en-us分别指网卡使用，网卡模式即驱动模式，和键盘制式，桥接模式都使用br0，而虚拟机需要使用virtio这个驱动才能使用虚拟网卡，这个虚拟网卡驱动在linux下支持很好，在windows下支持一般，键盘制式如果不指定的话会出现键位错乱的情况，一般我们使用英式。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;使用&lt;code&gt;virsh&lt;/code&gt;可以管理已创建的虚拟机&lt;/p&gt;
-
-&lt;p&gt;virsh shutdown demo 正常关闭虚拟机&lt;/p&gt;
-
-&lt;p&gt;virsh destroy demo 直接销毁虚拟机&lt;/p&gt;
-
-&lt;p&gt;可见 &lt;a href=&#34;http://www.cnblogs.com/lin1/p/5776280.html&#34;&gt;http://www.cnblogs.com/lin1/p/5776280.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;启动并进入虚拟机&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;virsh start 域名 --console
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;10，彻底删除虚拟机&lt;/p&gt;
-
-&lt;p&gt;1,删除虚拟机   virsh destroy +域名&lt;/p&gt;
-
-&lt;p&gt;2，解除标记     virsh undefine +域名&lt;/p&gt;
-
-&lt;p&gt;3，删除虚拟机文件&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;virsh destroy windows2012 &amp;amp;&amp;amp;  virsh undefine windows2012&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;通过virt-clone命令克隆虚拟机&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;virt-clone -o centos -n centos2 -f /disk/kvm/disk2&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;virsh -c qemu:///system list&lt;/code&gt; 可以查看正在运行的机器&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;virsh vncdisplay windows2012&lt;/code&gt;查看vnc端口&lt;/p&gt;
-
-&lt;p&gt;可以使用其他机器上的vnc  viewer 连接&lt;/p&gt;
-
-&lt;p&gt;本机 &lt;code&gt;virt-viewer --connect qemu:///system windows2012&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;windows系统可使用 vncviewer (&lt;a href=&#34;http://share.suconghou.cn/files/bin/vncviewer.zip&#34;&gt;http://share.suconghou.cn/files/bin/vncviewer.zip&lt;/a&gt;) 连接&lt;/p&gt;
-
-&lt;p&gt;全屏下用F8键可唤出菜单.&lt;/p&gt;
-
-&lt;h3 id=&#34;修改相关&#34;&gt;修改相关&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;hostnamectl&lt;/code&gt; 可以查看主机相关信息,主机名,内核版本,64位等&lt;/p&gt;
-
-&lt;p&gt;只查看静态、瞬态或灵活主机名，分别使用&lt;code&gt;--static&lt;/code&gt;,&lt;code&gt;--transient&lt;/code&gt;或&lt;code&gt;--pretty&lt;/code&gt;选项&lt;/p&gt;
-
-&lt;p&gt;要同时修改所有三个主机名：静态、瞬态和灵活主机名：
-&lt;code&gt;hostnamectl set-hostname Linuxidc&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;hostname -I&lt;/code&gt; 可以获取所有网卡上配置的IP&lt;/p&gt;
-</description>
+      <description>安装和配置KVM KVM与XEN区别 OPENVZ就不说了,是半虚拟化,不能安装Windows操作系统
+KVM是内核模块,从2.6.20内核开始,kvm模块就包含在Linux内核中,只需加载此模块即可
+#查看宿主机CPU是否在硬件上支持虚拟化扩展特性 cat /proc/cpuinfo | grep -E &amp;quot;(vmx|svm)&amp;quot; #加载kvm模块（Intel VT） modprobe kvm modprobe kvm-intel #注意：如果加载失败，说明服务器硬件不支持或BIOS中未开启虚拟化扩展  运行命令lsmod | grep kvm检查 KVM 模块是否成功安装
+XEN是一套虚拟化方案,可以直接安装,不需要先安装操作系统.
+KVM起步较晚,XEN起步早发展成熟,但目前KVM潜力较大.
+KVM 与 qemu yum install qemu-kvm libvirt virt-install bridge-utils
+qemu-kvm 该软件包主要包含KVM内核模块和适用于KVM的QEMU模拟器。KVM模块负责CPU和内存的调度，QEMU负责虚拟机I/O设备的模拟。
+libvirt 提供Hypervisor和虚拟机的管理功能。
+virt-install 创建和克隆虚拟机的命令行工具包。
+bridge-utils 网桥管理工具包，负责桥接网络的创建、配置和管理等工作。
+激活并启动libvirtd服务 systemctl enable libvirtd systemctl start libvirtd  安装CentOS7 diskutil list查看所有磁盘
+diskutil unmountdisk /dev/disk1 解除其挂载
+用dd将ISO文件写入
+sudo dd if=/data/files/iso/CentOS-7-x86_64-Minimal-1511.iso of=/dev/disk2 bs=1m
+安装好系统后,更换网易的源 http://mirrors.163.com/.help/centos.html
+mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.</description>
     </item>
     
     <item>
-      <title>iptables</title>
+      <title>iptables与firewalld</title>
       <link>http://blog.suconghou.cn/post/iptables/</link>
       <pubDate>Wed, 14 Sep 2016 12:24:02 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/iptables/</guid>
-      <description>
-
-&lt;h1 id=&#34;iptables相关配置&#34;&gt;iptables相关配置&lt;/h1&gt;
-
-&lt;p&gt;配置&lt;code&gt;iptables&lt;/code&gt;之前,建议添加一个crontab定时重置iptables,防止将自己阻挡.&lt;/p&gt;
-
-&lt;p&gt;建议写入&lt;code&gt;/usr/iptab.sh&lt;/code&gt;,加入&lt;code&gt;crontab&lt;/code&gt;,每个整点执行&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;iptables -P INPUT ACCEPT
-iptables -P OUTPUT ACCEPT
-iptables -P FORWARD ACCEPT
-iptables -F
-iptables -X
-iptables -Z
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;查看本机关于iptables的设置情况&#34;&gt;查看本机关于IPTABLES的设置情况&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;iptables -L -n
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;清除原有规则&#34;&gt;清除原有规则.&lt;/h2&gt;
-
-&lt;p&gt;不管你在安装linux时是否启动了防火墙,如果你想配置属于自己的防火墙,那就清除现在filter的所有规则.
-清除预设表filter中的所有规则链的规则&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;iptables -F
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;清除预设表filter中使用者自定链中的规则&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;iptables -X
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;保存配置&#34;&gt;保存配置&lt;/h2&gt;
-
-&lt;p&gt;刚刚配置的重启以后就会丢失,想要保存使用&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;iptables save
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;有的可能是&lt;code&gt;iptables-save&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;这样就写到&lt;code&gt;/etc/sysconfig/iptables&lt;/code&gt; 文件里了.
-写入后记得把防火墙重起一下,才能起作用.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;service iptables restart
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;设定预设规则&#34;&gt;设定预设规则&lt;/h2&gt;
-
-&lt;p&gt;默认的入口,出口,转发策略都是ACCEPT
-下面要改变这种规则&lt;/p&gt;
-
-&lt;p&gt;iptables 采用黑名单加白名单的方式, 未命中白名单的将采用预设规则&lt;/p&gt;
-
-&lt;p&gt;下面操作注意,为避免ssh端口22被拦截,首先添加&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;iptables -A INPUT -p tcp --dport 22 -j ACCEPT
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;保证22端口入口畅通,注意如果你的OUTPUT模式设置为DROP(上面已经清空了,默认为ACCEPT),还需要添加&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;iptables -A OUTPUT -p tcp --sport 22 -j ACCEPT
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;保证出口22端口畅通
-下面开始折腾吧&lt;/p&gt;
-
-&lt;p&gt;1.修改入口流量默认规则为DROP,除非命中用户规则,否则拦截所有入口流量(注意上面一定要排除ssh的端口,否则直接掉线)&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;iptables -P INPUT DROP
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;如果你使用了docker,这里好像会对docker的网络造成影响&lt;/p&gt;
-
-&lt;p&gt;2.允许所有出口流量(重置iptables时,这其实就是默认的规则)&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;iptables -P OUTPUT ACCEPT
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;3.禁止所有转发流量,除了命中用户规则的&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;iptables -P FORWARD DROP
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;常用端口开启&#34;&gt;常用端口开启&lt;/h3&gt;
-
-&lt;p&gt;开启80,443端口,http,https服务&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;iptables -A INPUT -p tcp --dport 80 -j ACCEPT
-iptables -A INPUT -p tcp --dport 443 -j ACCEPT
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;开启21端口,ftp服务&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;iptables -A INPUT -p tcp --dport 21 -j ACCEPT
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;开启基本端口&#34;&gt;开启基本端口&lt;/h3&gt;
-
-&lt;p&gt;允许icmp包通过,也就是允许ping&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;iptables -A INPUT -p icmp -j ACCEPT
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;允许loopback!(不然会导致DNS无法正常关闭等问题)&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;如果未启用此项,常见的fastcgi_pass 127.0.0.1 将会有问题&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;iptables -A INPUT -i lo -p all -j ACCEPT
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;iptables 配置实时生效,如果拦截了ssh端口,将立即掉线!&lt;/p&gt;
-
-&lt;p&gt;无论iptabes启动与否，ps -ef都不会看到iptables的进程，这是因为iptables是由内核来实现的，也就是说iptables的功能已经融入到内核里面了&lt;/p&gt;
-
-&lt;p&gt;iptables只是一个工具，将IP规则写入内核，让内核去处理。所以iptables只有在加规则的时候才会看得到进程，加完了就退出了&lt;/p&gt;
-
-&lt;p&gt;iptables并不是一个普通的daemon，只是一个普通的工具，添加一些规则到kernel的filter列表里面。&lt;/p&gt;
-
-&lt;h3 id=&#34;ip-拦截&#34;&gt;IP 拦截&lt;/h3&gt;
-
-&lt;p&gt;拦截一个IP&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;iptables -I INPUT -s 1.2.3.4 -j DROP&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;解封此IP&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;iptables -D INPUT -s 1.2.3.4 -j DROP&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;参数-I是表示Insert（添加），-D表示Delete（删除）&lt;/p&gt;
-
-&lt;p&gt;INPUT表示入站，DROP表示放弃连接&lt;/p&gt;
-
-&lt;p&gt;IP段&lt;/p&gt;
-
-&lt;p&gt;192.168.1.x 可以写 &lt;code&gt;192.168.1.0/24&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;192.168.x.x 可以写 &lt;code&gt;192.168.0.0/16&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;192.x.x.x   可以写 &lt;code&gt;192.0.0.0/8&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;
-#清除配置
-/sbin/iptables -P INPUT ACCEPT
-/sbin/iptables -F
-/sbin/iptables -X
-#开放本地和Ping
-/sbin/iptables -A INPUT -i lo -j ACCEPT
-/sbin/iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
-/sbin/iptables -A INPUT -p icmp -j ACCEPT
-#配置内网白名单
-/sbin/iptables -A INPUT -s 10.0.0.0/8 -j ACCEPT
-/sbin/iptables -A INPUT -s 172.16.0.0/12 -j ACCEPT
-/sbin/iptables -A INPUT -s 192.168.0.0/16 -j ACCEPT
-#配置外网白名单
-/sbin/iptables -A INPUT -s 180.168.36.198 -j ACCEPT
-/sbin/iptables -A INPUT -s 180.168.34.218 -j ACCEPT
-/sbin/iptables -A INPUT -s 222.73.202.251 -j ACCEPT
-#控制端口
-/sbin/iptables -A INPUT -p tcp --dport 80 -j ACCEPT
-/sbin/iptables -A INPUT -p tcp --dport 22 -j ACCEPT
-#拒绝其它
-/sbin/iptables -A INPUT -j DROP
-/sbin/iptables -A FORWARD -j DROP
-#开放出口
-/sbin/iptables -A OUTPUT -j ACCEPT
-
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>iptables相关配置 配置iptables之前,建议添加一个crontab定时重置iptables,防止将自己阻挡.
+建议写入/usr/iptab.sh,加入crontab,每个整点执行
+iptables -P INPUT ACCEPT iptables -P OUTPUT ACCEPT iptables -P FORWARD ACCEPT iptables -F iptables -X iptables -Z  查看本机关于IPTABLES的设置情况 iptables -L -n  清除原有规则. 不管你在安装linux时是否启动了防火墙,如果你想配置属于自己的防火墙,那就清除现在filter的所有规则. 清除预设表filter中的所有规则链的规则
+iptables -F  清除预设表filter中使用者自定链中的规则
+iptables -X  保存配置 刚刚配置的重启以后就会丢失,想要保存使用
+iptables save  有的可能是iptables-save
+这样就写到/etc/sysconfig/iptables 文件里了. 写入后记得把防火墙重起一下,才能起作用.
+service iptables restart  设定预设规则 默认的入口,出口,转发策略都是ACCEPT 下面要改变这种规则
+iptables 采用黑名单加白名单的方式, 未命中白名单的将采用预设规则
+下面操作注意,为避免ssh端口22被拦截,首先添加
+iptables -A INPUT -p tcp --dport 22 -j ACCEPT  保证22端口入口畅通,注意如果你的OUTPUT模式设置为DROP(上面已经清空了,默认为ACCEPT),还需要添加
+iptables -A OUTPUT -p tcp --sport 22 -j ACCEPT  保证出口22端口畅通 下面开始折腾吧</description>
     </item>
     
     <item>
@@ -725,56 +95,19 @@ iptables -A INPUT -p tcp --dport 443 -j ACCEPT
       <pubDate>Sun, 04 Sep 2016 14:37:51 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/pc-hardware/</guid>
-      <description>
-
-&lt;h2 id=&#34;修电脑相关知识&#34;&gt;修电脑相关知识&lt;/h2&gt;
-
-&lt;h3 id=&#34;较好的pe&#34;&gt;较好的PE&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;微PE&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.wepe.com.cn/&#34;&gt;http://www.wepe.com.cn/&lt;/a&gt; 自带刻录,可以一键安装到U盘,硬盘等,支持UEFI,CMS等多种启动方式.&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;一般的BIOS里找不到UEFI/CMS的切换设置,可能是&lt;code&gt;security boot&lt;/code&gt;的配置,禁用&lt;code&gt;security boot&lt;/code&gt;试试&lt;/p&gt;
-
-&lt;p&gt;如果在BIOS里找不到U盘,可能是&lt;code&gt;fastboot&lt;/code&gt;的问题,可以禁用fastboot,安装好系统后在开启.&lt;/p&gt;
-
-&lt;p&gt;硬盘的设置模式里,找不到U盘或者硬盘,可以尝试切换&lt;code&gt;AHCI/IDE&lt;/code&gt;,注意安装好系统后,此选项不能够再随意切换,否知导致系统进不去.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;休眠能将现有所有工作保存到硬盘,下次开机恢复上次的会话,Windows8及以后采用了混合休眠机制&lt;/p&gt;
-
-&lt;p&gt;你可能找不到单纯的休眠按钮.&lt;/p&gt;
-
-&lt;p&gt;可以使用&lt;code&gt;shutdown -h&lt;/code&gt;休眠&lt;/p&gt;
-
-&lt;p&gt;其他一些补充&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;关机计算机：shutdown.exe -s -t 00
-重启计算机：shutdown.exe -r -t 00
-注销计算机：shutdown.exe -l -t 00
-锁定计算机：rundll32.exe user32.dll,LockWorkStation
-休眠计算机：rundll32.exe powrProf.dll,SetSuspendState
-睡眠计算机：rundll32.exe powrprof.dll,SetSuspendState 0,1,0,
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;性能天梯图&#34;&gt;性能天梯图&lt;/h2&gt;
-
-&lt;p&gt;在新标签查看大图&lt;/p&gt;
-
-&lt;p&gt;CPU天梯图&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://img.alicdn.com/imgextra/i4/693806815/TB2ulpikCxjpuFjSszeXXaeMVXa_!!693806815.jpg&#34; alt=&#34;CPU天梯图1&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;CPU天梯图其他版本&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://img.alicdn.com/imgextra/i3/693806815/TB2KExqkwRkpuFjy1zeXXc.6FXa_!!693806815.jpg&#34; alt=&#34;CPU天梯图2&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;显卡天梯图&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://img.alicdn.com/imgextra/i1/693806815/TB2heFDkB8lpuFjSspaXXXJKpXa_!!693806815.jpg&#34; alt=&#34;显卡天梯图&#34; /&gt;&lt;/p&gt;
-</description>
+      <description>修电脑相关知识 较好的PE 微PE
+http://www.wepe.com.cn/ 自带刻录,可以一键安装到U盘,硬盘等,支持UEFI,CMS等多种启动方式.
+ 一般的BIOS里找不到UEFI/CMS的切换设置,可能是security boot的配置,禁用security boot试试
+如果在BIOS里找不到U盘,可能是fastboot的问题,可以禁用fastboot,安装好系统后在开启.
+硬盘的设置模式里,找不到U盘或者硬盘,可以尝试切换AHCI/IDE,注意安装好系统后,此选项不能够再随意切换,否知导致系统进不去.
+ 休眠能将现有所有工作保存到硬盘,下次开机恢复上次的会话,Windows8及以后采用了混合休眠机制
+你可能找不到单纯的休眠按钮.
+可以使用shutdown -h休眠
+其他一些补充
+关机计算机：shutdown.exe -s -t 00 重启计算机：shutdown.exe -r -t 00 注销计算机：shutdown.exe -l -t 00 锁定计算机：rundll32.exe user32.dll,LockWorkStation 休眠计算机：rundll32.exe powrProf.dll,SetSuspendState 睡眠计算机：rundll32.exe powrprof.dll,SetSuspendState 0,1,0,  性能天梯图 在新标签查看大图
+CPU天梯图
+CPU天梯图其他版本
+显卡天梯图</description>
     </item>
     
     <item>
@@ -783,68 +116,11 @@ iptables -A INPUT -p tcp --dport 443 -j ACCEPT
       <pubDate>Wed, 24 Aug 2016 14:44:23 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/memcached-usage/</guid>
-      <description>
-
-&lt;h2 id=&#34;安装memcached&#34;&gt;安装memcached&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://memcached.org/downloads&#34;&gt;http://memcached.org/downloads&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;memcached所有版本见&lt;a href=&#34;http://www.memcached.org/files/&#34;&gt;http://www.memcached.org/files/&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;cd /tmp
-MEMCACHE_VERSION=memcached-1.4.31
-CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
-wget http://www.memcached.org/files/${MEMCACHE_VERSION}.tar.gz
-tar xzf ${MEMCACHE_VERSION}.tar.gz
-cd ${MEMCACHE_VERSION}
-export CFLAGS=&amp;quot;-O3&amp;quot;
-./configure
-make -j$CPU_NUM &amp;amp;&amp;amp; make install
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;docker版本见:&lt;a href=&#34;https://hub.docker.com/r/suconghou/memcached/&#34;&gt;https://hub.docker.com/r/suconghou/memcached/&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;启动memcached&#34;&gt;启动Memcached&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;memcached -d -u memcached -p 11211 -m 8 -P /var/run/memcached/memcached.pid
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;说明&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;-d 以daemon方式运行&lt;/li&gt;
-&lt;li&gt;-u 绑定使用指定用户运行进程(仅在以root运行的时候有效)&lt;/li&gt;
-&lt;li&gt;-p 设置TCP端口号(默认11211)&lt;/li&gt;
-&lt;li&gt;-m 允许最大内存用量，单位M (默认: 64 MB)&lt;/li&gt;
-&lt;li&gt;-M 内存耗尽时返回错误，而不是删除项&lt;/li&gt;
-&lt;li&gt;-l 是监听的服务器IP地址，默认应该是本机&lt;/li&gt;
-&lt;li&gt;-P 将PID写入文件&lt;file&gt;，这样可以使得后边进行快速进程终止, 需要与-d 一起使用&lt;/li&gt;
-&lt;li&gt;-c 最大同时连接数，默认是1024&lt;/li&gt;
-&lt;li&gt;-t 线程数,默认为4&lt;/li&gt;
-&lt;li&gt;-v 输出警告和错误信息&lt;/li&gt;
-&lt;li&gt;-vv 打印客户端的请求和返回信息&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;默认情况下是不限制访问IP的,相当于是外网和内网都能访问,-l 使只有这个IP能访问&lt;/p&gt;
-
-&lt;p&gt;尽量不要用root用户运行.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;状态查看&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;使用 telnet 连接 memcached
-&lt;code&gt;stats settings&lt;/code&gt;可以查看所有参数设置&lt;/p&gt;
-
-&lt;p&gt;memcached状态和性能查看&lt;/p&gt;
-
-&lt;p&gt;stats命令&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://static.suconghou.cn/document/memcached.jpg&#34; alt=&#34;memcached stats命令&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;官方也提供监控工具&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/memcached/memcached/blob/master/scripts/memcached-tool&#34;&gt;https://github.com/memcached/memcached/blob/master/scripts/memcached-tool&lt;/a&gt;&lt;/p&gt;
-</description>
+      <description>安装memcached http://memcached.org/downloads
+memcached所有版本见http://www.memcached.org/files/
+cd /tmp MEMCACHE_VERSION=memcached-1.4.31 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l` wget http://www.memcached.org/files/${MEMCACHE_VERSION}.tar.gz tar xzf ${MEMCACHE_VERSION}.tar.gz cd ${MEMCACHE_VERSION} export CFLAGS=&amp;quot;-O3&amp;quot; ./configure make -j$CPU_NUM &amp;amp;&amp;amp; make install  docker版本见:https://hub.docker.com/r/suconghou/memcached/
+启动Memcached memcached -d -u memcached -p 11211 -m 8 -P /var/run/memcached/memcached.pid  说明
+ -d 以daemon方式运行 -u 绑定使用指定用户运行进程(仅在以root运行的时候有效) -p 设置TCP端口号(默认11211) -m 允许最大内存用量，单位M (默认: 64 MB) -M 内存耗尽时返回错误，而不是删除项 -l 是监听的服务器IP地址，默认应该是本机 -P 将PID写入文件，这样可以使得后边进行快速进程终止, 需要与-d 一起使用 -c 最大同时连接数，默认是1024 -t 线程数,默认为4 -v 输出警告和错误信息 -vv 打印客户端的请求和返回信息  默认情况下是不限制访问IP的,相当于是外网和内网都能访问,-l 使只有这个IP能访问</description>
     </item>
     
     <item>
@@ -853,341 +129,8 @@ make -j$CPU_NUM &amp;amp;&amp;amp; make install
       <pubDate>Thu, 11 Aug 2016 10:27:18 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/javascript-code-snippet/</guid>
-      <description>
-
-&lt;h2 id=&#34;实用的javascript代码锦集&#34;&gt;实用的Javascript代码锦集&lt;/h2&gt;
-
-&lt;h3 id=&#34;获取查询查询字符串get参数值&#34;&gt;获取查询查询字符串get参数值&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;function getParam()
-{
-	var data = decodeURIComponent(location.href).split(&amp;quot;?&amp;quot;)[1].split(&amp;quot;&amp;amp;&amp;quot;);
-	var param = {};
-	for(var i = 0; i&amp;lt;data .length; i++)
-	{
-		param[data [i].split(&amp;quot;=&amp;quot;)[0]] = data [i].split(&amp;quot;=&amp;quot;)[1];
-	}
-	return param;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;类似于PHP中的&lt;code&gt;$_GET&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var $_GET = (function()
-{
-	var url = decodeURIComponent(location.href);
-	var u = url.split( &amp;quot;?&amp;quot; );
-	if ( typeof (u[1]) == &amp;quot;string&amp;quot; )
-	{
-		u = u[1].split( &amp;quot;&amp;amp;&amp;quot; );
-		var get = {};
-		for ( var i in u)
-		{
-			var j = u[i].split( &amp;quot;=&amp;quot; );
-			get[j[0]] = j[1];
-		}
-		return get;
-	}
-	else
-	{
-		return {};
-	}
-})();
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;给出要获取的参数,每次都会解析一遍&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;function getPar(par)
-{
-	//获取当前URL
-	var local_url = decodeURIComponent(location.href);
-	//获取要取得的get参数位置
-	var get = local_url.indexOf(par + &amp;quot;=&amp;quot; );
-	if (get == -1)
-	{
-		return false ;
-	}
-	//截取字符串
-	var get_par = local_url.slice(par.length + get + 1);
-	//判断截取后的字符串是否还有其他get参数
-	var nextPar = get_par.indexOf( &amp;quot;&amp;amp;&amp;quot; );
-	if (nextPar != -1)
-	{
-		get_par = get_par.slice(0, nextPar);
-	}
-	return get_par;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;QueryString&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;function QueryString(item)
-{
-	var value = location.search.match(new RegExp(&#39;[\?\&amp;amp;]&#39; + item + &#39;=([^\&amp;amp;]*)(\&amp;amp;?)&#39;,&#39;i&#39;));
-	return value ? value[1] : value;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;取得cookie中某个键的值&#34;&gt;取得Cookie中某个键的值&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;$.getCookie = function(name)
-{
-	 if(document.cookie.indexOf(name)!=-1) return document.cookie.split(name+&#39;=&#39;)[1].split(&#39;;&#39;)[0]
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;另一个&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;function getcookie(cookieid)
-{
-	//获取cookie字符串
-	var strCookie=document.cookie;
-	//将多cookie切割为多个名/值对
-	var arrCookie=strCookie.split(&amp;quot;; &amp;quot;);
-	var cookieval;
-	//遍历cookie数组，处理每个cookie对
-	for(var i=0;i&amp;lt;arrCookie.length;i++)
-	{
-		var arr=arrCookie[i].split(&amp;quot;=&amp;quot;);
-		//找到名称为userId的cookie，并返回它的值
-		if(cookieid==arr[0])
-		{
-			cookieval=arr[1];
-			break;
-		}
-	}
-	return(cookieval);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;进入全屏&#34;&gt;进入全屏&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;function gofull()
-{
-	var el=document.documentElement;
-	el.webkitRequestFullScreen&amp;amp;&amp;amp;el.webkitRequestFullScreen();
-	el.mozRequestFullScreen&amp;amp;&amp;amp;el.mozRequestFullScreen();
-	el.requestFullscreen&amp;amp;&amp;amp;el.requestFullscreen();
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;字符串去空格&#34;&gt;字符串去空格&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;String.prototype.trim=function() {return this.replace(/(^\s*)|(\s*$)/g,&amp;quot;&amp;quot;); }
-String.prototype.ltrim=function(){return this.replace(/(^\s*)/g,&amp;quot;&amp;quot;); }
-String.prototype.rtrim=function(){return this.replace(/(\s*$)/g,&amp;quot;&amp;quot;); }
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;字节格式化&#34;&gt;字节格式化&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;function size(size)
-{
-	var name=[&#39;B&#39;,&#39;KB&#39;,&#39;MB&#39;,&#39;GB&#39;,&#39;TB&#39;,&#39;PB&#39;];
-	var pos=0;
-	while(size&amp;gt;=1204)
-	{
-	    size/=1024;
-	    pos++;
-	}
-	return size.toFixed(2)+&amp;quot; &amp;quot;+name[pos];
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;判断页面滚动到底部和顶部&#34;&gt;判断页面滚动到底部和顶部&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;$(document).scroll(function()
-{
-	if ($(document).scrollTop()&amp;lt;=0)
-	{
-		console.log(&amp;quot;滚动条已经到达顶部为0&amp;quot;);
-	}
-	if ($(document).scrollTop() &amp;gt;= $(document).height() - $(window).height())
-	{
-		console.log(&amp;quot;滚动条已经到达底部为&amp;quot; + $(document).scrollTop());
-	}
-});
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;运行js代码&#34;&gt;运行JS代码&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;// execute code in the content page scope
-var injectScript = function(source) {
-    var script = document.createElement(&#39;script&#39;);
-    script.setAttribute(&#39;type&#39;, &#39;text/javascript&#39;);
-    script.textContent = &#39;;(&#39; + source.toString() + &#39;)()&#39;;
-    document.body.appendChild(script);
-    document.body.removeChild(script)
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;添加css代码&#34;&gt;添加CSS代码&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;// insert css
-function injectStyle(css) {
-    var script = document.createElement(&#39;style&#39;)
-    script.setAttribute(&#39;type&#39;, &#39;text/css&#39;)
-    script.textContent = css
-    document.head.appendChild(script)
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;利用注释,可也生成html,css,js 等代码&lt;/p&gt;
-
-&lt;p&gt;如&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;(function(){/* body{background:#f00} */}).toString().slice(15,-4)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;当然利用es6的字符串模板更加方便,&lt;a href=&#34;http://babeljs.io/repl/&#34;&gt;http://babeljs.io/repl/&lt;/a&gt; 在线转换为es5代码&lt;/p&gt;
-
-&lt;h3 id=&#34;一些正则验证&#34;&gt;一些正则验证&lt;/h3&gt;
-
-&lt;p&gt;验证邮箱&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;function is_mail(str)
-{
-	return(new RegExp(/^[0-9a-zA-Z]+@(([0-9a-zA-Z]+)[.])+[a-z]{2,4}$/i).test(str));
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;验证手机号&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;function is_tel(str)
-{
-	return(new RegExp(/^1[34578][0-9]{9}$/).test(str));
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;base64的1x1像素间隔gif&#34;&gt;Base64的1x1像素间隔gif&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;img src=&amp;quot;data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7&amp;quot;&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;一个range函数&#34;&gt;一个range函数&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;function range(start, count)
-{
-	return Array.apply(0, Array(count)).map(function (element, index)
-	{
-		return index + start;
-	});
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;简化-console-log&#34;&gt;简化&lt;code&gt;console.log&lt;/code&gt;&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;var log = console.log.bind(console);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;生成较短的唯一id&#34;&gt;生成较短的唯一ID&lt;/h3&gt;
-
-&lt;p&gt;一定年限内单线程非连续调用唯一&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;function shortId()
-{
-	var time=Date.now()+&#39;&#39;;
-	time=parseInt(time.substr(1));
-	return time.toString(36);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;生成随机短ID,仅具备较低的不重复性&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var t=(((1+Math.random())*0x10000000)|0).toString(16);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;生成指定长度随机字符串
-&lt;code&gt;PHP代码&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;function code($nc, $a=&#39;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&#39;)
-{
-    $l=strlen($a)-1; $r=&#39;&#39;;
-    while($nc--&amp;gt;0) $r.=$a{mt_rand(0,$l)};
-    return $r;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;给jquery的form添加-serializeobject&#34;&gt;给jQuery的form添加&lt;code&gt;serializeObject&lt;/code&gt;&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;jQuery.prototype.serializeObject=function()
-{
-	var a,o,h,i,e;
-	a=this.serializeArray();
-	o={};
-	h=o.hasOwnProperty;
-	for(i=0;i&amp;lt;a.length;i++)
-	{
-		e=a[i];
-		if(!h.call(o,e.name))
-		{
-			o[e.name]=e.value;
-		}
-	}
-	return o;
-};
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;使用效果如下&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;jQuery(&amp;quot;form&amp;quot;).serialize(); //&amp;quot;username=&amp;amp;password=&amp;quot;
-jQuery(&amp;quot;form&amp;quot;).serializeArray(); //[{name:&amp;quot;username&amp;quot;,value:&amp;quot;&amp;quot;},{name:&amp;quot;password&amp;quot;,value:&amp;quot;&amp;quot;}]
-jQuery(&amp;quot;form&amp;quot;).serializeObject(); //{username:&amp;quot;&amp;quot;,password:&amp;quot;&amp;quot;}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;资源预取&#34;&gt;资源预取&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;function prefetch(url)
-{
-	var link = document.createElement(&amp;quot;link&amp;quot;);
-	link.href = url;
-	link.rel=&amp;quot;prefetch&amp;quot;;
-	document.head.appendChild(link);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;cookie操作&#34;&gt;Cookie操作&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;function setCookie(cookiename, cookievalue, hours)
-{
-	var date = new Date();
-	date.setTime(date.getTime() + Number(hours) * 3600 * 1000);
-	document.cookie = cookiename + &amp;quot;=&amp;quot; + cookievalue + &amp;quot;; path=/;expires = &amp;quot; + date.toGMTString();
-}
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;用-google-analytics-统计js错误&#34;&gt;用&lt;code&gt;Google Analytics&lt;/code&gt;统计JS错误&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;(function(i,s,o,g,r,a,m){i[&#39;GoogleAnalyticsObject&#39;]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,&#39;script&#39;,&#39;https://www.google-analytics.com/analytics.js&#39;,&#39;ga&#39;);
-window.addEventListener(&#39;error&#39;, function (err)
-{
-	ga(&#39;create&#39;, &#39;UA-xxx-1&#39;, &#39;auto&#39;);
-    var lineAndColumnInfo = err.colno ? &#39; line:&#39; + err.lineno +&#39;, column:&#39;+ err.colno : &#39; line:&#39; + err.lineno;
-    ga(&#39;send&#39;, &#39;event&#39;, &#39;JavaScript Error&#39;, err.message, location.href+&#39; =&amp;gt; &#39;+err.filename + lineAndColumnInfo + &#39; -&amp;gt; &#39; +  navigator.userAgent, 0, true );
-});
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;UA-xxx-1&lt;/code&gt;使用自己的统计ID&lt;/p&gt;
-
-&lt;h3 id=&#34;并发发送ajax&#34;&gt;并发发送ajax&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;$.when($.get(&#39;assets/misc/1.json&#39;), $.get(&#39;assets/misc/2.json&#39;)).then(function(r1, r2)
-{
-    console.log(r1[0].message + &amp;quot; &amp;quot; + r2[0].message);
-})
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;fetch跨域带cookie&#34;&gt;Fetch跨域带cookie&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;fetch(url, {credentials: &#39;include&#39;})
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;jQuery ajax 跨域带 cookie&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$.ajaxSetup({xhrFields: {withCredentials: true }});
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>实用的Javascript代码锦集 获取查询查询字符串get参数值 function getParam() { var data = decodeURIComponent(location.href).split(&amp;quot;?&amp;quot;)[1].split(&amp;quot;&amp;amp;&amp;quot;); var param = {}; for(var i = 0; i&amp;lt;data .length; i++) { param[data [i].split(&amp;quot;=&amp;quot;)[0]] = data [i].split(&amp;quot;=&amp;quot;)[1]; } return param; }  类似于PHP中的$_GET
+var $_GET = (function() { var url = decodeURIComponent(location.href); var u = url.split( &amp;quot;?&amp;quot; ); if ( typeof (u[1]) == &amp;quot;string&amp;quot; ) { u = u[1].split( &amp;quot;&amp;amp;&amp;quot; ); var get = {}; for ( var i in u) { var j = u[i].</description>
     </item>
     
     <item>
@@ -1196,110 +139,36 @@ window.addEventListener(&#39;error&#39;, function (err)
       <pubDate>Tue, 09 Aug 2016 21:27:39 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/javascript-senior/</guid>
-      <description>
-
-&lt;h2 id=&#34;javascript-参数传递&#34;&gt;Javascript 参数传递&lt;/h2&gt;
-
-&lt;p&gt;说起参数传递,首先需要弄清楚javascript里的数据类型&lt;/p&gt;
-
-&lt;p&gt;原始数据类型
-&lt;code&gt;Undefined&lt;/code&gt; &lt;code&gt;Null&lt;/code&gt; &lt;code&gt;Boolean&lt;/code&gt; &lt;code&gt;Number&lt;/code&gt; &lt;code&gt;String&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;引用数据类型&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;Object&lt;/code&gt; &lt;code&gt;Array&lt;/code&gt; &lt;code&gt;Function&lt;/code&gt; &lt;code&gt;Date&lt;/code&gt; 等&lt;/p&gt;
-
-&lt;p&gt;原始数据类型存储在栈的简单数据段,他们的值直接存储在变量访问的位置(因原始数据类型占据的空间是固定的,可以存储在较小的内存区域&lt;code&gt;栈&lt;/code&gt;中)&lt;/p&gt;
-
-&lt;p&gt;引用数据类型是存储在堆中的对象,存储在变量处的值只是一个指针,指向存储对象的内存地址,这是因为引用类型的大小会改变.&lt;/p&gt;
-
-&lt;p&gt;不同的内存分配机制带来不同的访问机制&lt;/p&gt;
-
-&lt;p&gt;在JavaScript中,是不允许直接访问保存在堆内存中的对象的,访问对象时必须取得对象在堆内存中的地址,然后按地址去取得对象中的值.&lt;/p&gt;
-
-&lt;p&gt;这便是传说中的按引用访问.&lt;/p&gt;
-
-&lt;p&gt;而原始类型则是直接访问到的.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;复制变量时的不同&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;原始值:&lt;/p&gt;
-
-&lt;p&gt;会将原始值的副本赋值给新变量.此后两个变量完全独立.&lt;/p&gt;
-
-&lt;p&gt;引用值:&lt;/p&gt;
-
-&lt;p&gt;会把内存地址赋值给新变量,也就是说两个变量都指向堆内存中的同一个对象.
-他们中任何一个改变都会反映到另一个身上.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;参数传递的不同&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;最重要的一点:&lt;code&gt;ECMAScript&lt;/code&gt;中所有函数的参数都是按值传递的.&lt;/p&gt;
-
-&lt;p&gt;但原始值和引用值仍会造成不同的后果.&lt;/p&gt;
-
-&lt;p&gt;原始值:&lt;/p&gt;
-
-&lt;p&gt;把变量里的值传递给参数,之后两个变量互不影响.(就是把实参复制给形参的过程)&lt;/p&gt;
-
-&lt;p&gt;引用值:&lt;/p&gt;
-
-&lt;p&gt;任然是将实参里面的值复制到形参,但是注意&lt;em&gt;对象变量它里面的值是这个对象的堆内存地址&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;也就是说形参和实参都是指向同一个堆内存对象.&lt;/p&gt;
-
-&lt;p&gt;但是也要记住另外一点:如果形参被赋值为另外一个对象时,那么这个形参将会丢弃对上次指向的堆内存地址,而指向新对象的堆内存地址.&lt;/p&gt;
-
-&lt;p&gt;此时,形参和实参相互脱离,互不影响,原先的实参任然指向原先对象的堆内存地址.&lt;/p&gt;
-
-&lt;p&gt;如果是添加修改形参的属性,那么就是修改堆内存中的对象,形参和实参将同时得到反映,因为他们指向的是同一个堆内存对象.&lt;/p&gt;
-
-&lt;p&gt;这种传递方式被称为&lt;code&gt;Call By Sharing&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;function box(obj)
-{
-	obj.name=&#39;hello&#39;;
-	var obj=new Object();
-	obj.name=&#39;world&#39;;
-}
-var obj=new Object();
-box(obj);
-console.log(obj.name);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;注意两点:
-1. &lt;code&gt;var obj=new Object()&lt;/code&gt; 声明提升&lt;/p&gt;
-
-&lt;p&gt;变为&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var obj;
-obj.name=&#39;hello&#39;;
-obj=new Object();
-obj.name=&#39;world&#39;;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;函数的已存在一个变量形参&lt;code&gt;obj&lt;/code&gt;,再次的变量申明会忽略&lt;/p&gt;
-
-&lt;p&gt;2.&lt;code&gt;obj=new Object()&lt;/code&gt; 时,obj的修改就不会影响外层obj变量了,因为他此时已经脱离执行那个堆内存对象了.&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;参考 &lt;a href=&#34;http://www.zhihu.com/question/27114726&#34;&gt;http://www.zhihu.com/question/27114726&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&#34;object-create&#34;&gt;Object.create&lt;/h2&gt;
-
-&lt;p&gt;简单来讲，new Object()是一种通过构造函数来创建object的方式，而Object.create(proto, [ propertiesObject ])
-不需要通过构造函数就可以创建一个object，Object.create()的第一个参数是必须要的，第二个参数可选。其实Object.create()内部依然是通过new一个构造函数的方式来实现的，它有构造函数，不过这个构造函数是隐式存在的，看一下使老旧浏览器支持Object.create方法的“polyfill”就可以对它们之间的区别一目了然了：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;if (!Object.create) {
-    Object.create = function (o) {
-    function F() {}  //定义了一个隐式的构造函数
-    F.prototype = o;
-    return new F();  //其实还是通过new来实现的
-    };
-  }
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>Javascript 参数传递 说起参数传递,首先需要弄清楚javascript里的数据类型
+原始数据类型 Undefined Null Boolean Number String
+引用数据类型
+Object Array Function Date 等
+原始数据类型存储在栈的简单数据段,他们的值直接存储在变量访问的位置(因原始数据类型占据的空间是固定的,可以存储在较小的内存区域栈中)
+引用数据类型是存储在堆中的对象,存储在变量处的值只是一个指针,指向存储对象的内存地址,这是因为引用类型的大小会改变.
+不同的内存分配机制带来不同的访问机制
+在JavaScript中,是不允许直接访问保存在堆内存中的对象的,访问对象时必须取得对象在堆内存中的地址,然后按地址去取得对象中的值.
+这便是传说中的按引用访问.
+而原始类型则是直接访问到的.
+复制变量时的不同
+原始值:
+会将原始值的副本赋值给新变量.此后两个变量完全独立.
+引用值:
+会把内存地址赋值给新变量,也就是说两个变量都指向堆内存中的同一个对象. 他们中任何一个改变都会反映到另一个身上.
+参数传递的不同
+最重要的一点:ECMAScript中所有函数的参数都是按值传递的.
+但原始值和引用值仍会造成不同的后果.
+原始值:
+把变量里的值传递给参数,之后两个变量互不影响.(就是把实参复制给形参的过程)
+引用值:
+任然是将实参里面的值复制到形参,但是注意对象变量它里面的值是这个对象的堆内存地址
+也就是说形参和实参都是指向同一个堆内存对象.
+但是也要记住另外一点:如果形参被赋值为另外一个对象时,那么这个形参将会丢弃对上次指向的堆内存地址,而指向新对象的堆内存地址.
+此时,形参和实参相互脱离,互不影响,原先的实参任然指向原先对象的堆内存地址.
+如果是添加修改形参的属性,那么就是修改堆内存中的对象,形参和实参将同时得到反映,因为他们指向的是同一个堆内存对象.
+这种传递方式被称为Call By Sharing
+function box(obj) { obj.name=&#39;hello&#39;; var obj=new Object(); obj.name=&#39;world&#39;; } var obj=new Object(); box(obj); console.log(obj.name);  注意两点: 1. var obj=new Object() 声明提升
+变为
+var obj; obj.name=&#39;hello&#39;; obj=new Object(); obj.name=&#39;world&#39;;  函数的已存在一个变量形参obj,再次的变量申明会忽略</description>
     </item>
     
     <item>
@@ -1308,257 +177,13 @@ obj.name=&#39;world&#39;;
       <pubDate>Fri, 29 Jul 2016 14:27:54 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/use-haproxy/</guid>
-      <description>
-
-&lt;h2 id=&#34;haproxy&#34;&gt;HAProxy&lt;/h2&gt;
-
-&lt;p&gt;HAProxy高性能的反向代理软件,更专注于TCP,HTTP处理,它可以基于四层或七层进行反向代理,尤其适合于高负载且需要进行七层处理的 Web 站点.&lt;/p&gt;
-
-&lt;p&gt;单进程、事件驱动模型,通常用于超高流量的负载均衡.&lt;/p&gt;
-
-&lt;p&gt;我们也可以使用它来作为中转站,使直连连通率不好的请求进过中转提升速度.&lt;/p&gt;
-
-&lt;h3 id=&#34;编译安装&#34;&gt;编译安装&lt;/h3&gt;
-
-&lt;p&gt;编译haproxy时必须制定target,不能直接make&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Due to too many reports of suboptimized setups, building without
-specifying the target is no longer supported. Please specify the
-target OS in the TARGET variable, in the following form:
-
-   make TARGET=xxx
-
-Please choose the target among the following supported list :
-
-   linux2628, linux26, linux24, linux24e, linux22, solaris
-   freebsd, openbsd, cygwin, custom, generic
-
-Use &amp;quot;generic&amp;quot; if you don&#39;t want any optimization, &amp;quot;custom&amp;quot; if you
-want to precisely tweak every option, or choose the target which
-matches your OS the most in order to gain the maximum performance
-out of it. Please check the Makefile in case of doubts.
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;linux2628 表示  内核版本&amp;gt;=2.6.28&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code&gt;apt-get update &amp;amp;&amp;amp; apt-get install -y wget gcc g++ make libpcre++0v5 libpcre++-dev
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;yum update &amp;amp;&amp;amp; yum install wget gcc make
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;HAPROXY_VERSION=haproxy-1.7.0
-CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
-wget http://www.haproxy.org/download/1.7/src/${HAPROXY_VERSION}.tar.gz
-tar zxf ${HAPROXY_VERSION}.tar.gz
-cd ${HAPROXY_VERSION}
-export CFLAGS=&amp;quot;-O3&amp;quot;
-make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 -j$CPU_NUM &amp;amp;&amp;amp; make install
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;编译32位版本&lt;code&gt;make TARGET=linux26 ARCH=i686 USE_STATIC_PCRE=1 -j$CPU_NUM&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;在64位系统下编译32位需要&lt;code&gt;apt-get install gcc-multilib g++-multilib&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;我编译好的haproxy version 1.7.0&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;64位 &lt;a href=&#34;http://share.suconghou.cn/files/bin/haproxy.xz&#34;&gt;http://share.suconghou.cn/files/bin/haproxy.xz&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;32位 &lt;a href=&#34;http://share.suconghou.cn/files/bin/haproxy.gz&#34;&gt;http://share.suconghou.cn/files/bin/haproxy.gz&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&#34;使用docker版本的haproxy&#34;&gt;使用Docker版本的HAProxy&lt;/h3&gt;
-
-&lt;p&gt;这里提供一份编译好的最新版HAProxy镜像 &lt;a href=&#34;https://hub.docker.com/r/suconghou/haproxy/&#34;&gt;https://hub.docker.com/r/suconghou/haproxy/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;useradd -M -s /sbin/nologin haproxy&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;-M：不创建家目录&lt;/p&gt;
-
-&lt;p&gt;-s：指定用户登陆时使用的shell，nologin就是登陆不了&lt;/p&gt;
-
-&lt;h3 id=&#34;优化国外主机速度&#34;&gt;优化国外主机速度&lt;/h3&gt;
-
-&lt;p&gt;HAProxy有多种连接模型,还有多种负载均衡算法,由于只有一台机器,我们主要侧重于使用它的反向代理.&lt;/p&gt;
-
-&lt;p&gt;HAProxy可以一边保持与代理后端的长连接,一边又保持对客户端的连接.
-这样双向保持持久连接,省去了中间反复创建连接可以在一定程度上优化速度.&lt;/p&gt;
-
-&lt;p&gt;其只需要一个配置文件,配置主要有以下几部分功能&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;default&lt;/code&gt;：用于为所有其它配置段提供默认参数&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;frontend&lt;/code&gt;：用于定义一系列监听的套接字，这些套接字可接受客户端请求并与之建立连接&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;backend&lt;/code&gt;：用于定义一系列后端服务器，代理将会将对应客户端的请求转发至这些服务器&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;listen&lt;/code&gt;： 通过关联前端和后端定义了一个完整的代理&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;配置写在&lt;code&gt;haproxy.cfg&lt;/code&gt;文件中,启动的时候指定使用的配置文件.&lt;/p&gt;
-
-&lt;p&gt;如&lt;code&gt;haproxy -c -f /etc/haproxy/haproxy.cfg&lt;/code&gt;检查配置文件,&lt;code&gt;haproxy -f /etc/haproxy/haproxy.cfg&lt;/code&gt;使用此配置文件启动&lt;/p&gt;
-
-&lt;p&gt;一个简单的配置文件如下&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;global
-    pidfile     /var/run/haproxy.pid
-    user        haproxy
-    group       haproxy
-    daemon
-
-defaults
-    mode                    http
-    log                     global
-    retries                 3
-    timeout http-request    10s
-    timeout queue           1m
-    timeout connect         10s
-    timeout client          1m
-    timeout server          1m
-    timeout http-keep-alive 10s
-    timeout check           10s
-    maxconn                 30000
-
-frontend http-in
-    mode http
-    bind 0.0.0.0:1080
-    option http-keep-alive
-    default_backend  servers
-
-backend servers
-	option http-keep-alive
-    server myserver 192.243.115.210:80 check maxconn 6000
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;八种负载算法&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;&amp;lsquo;roundrobin&amp;rsquo;,  简单的轮询
-&amp;lsquo;static-rr&amp;rsquo;,    根据权重
- &amp;lsquo;leastconn&amp;rsquo;, 最少连接者先处理
-&amp;lsquo;source&amp;rsquo;,  根据请求源IP
-&amp;lsquo;uri&amp;rsquo;,    根据请求的URI
-&amp;lsquo;url_param&amp;rsquo;,  根据请求的URl参数
-&amp;lsquo;hdr(name)&amp;rsquo; 根据HTTP请求头来锁定每一次HTTP请求
- &amp;lsquo;rdp-cookie(name)&amp;rsquo; 很据cookie(name)来锁定并哈希每一次TCP请求&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;还有一个在应对高并发时通常都需要改的
-&lt;code&gt;ulimit -n 8192&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;ulimit -n&lt;/code&gt; 可以查看当前的&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;-st&lt;/code&gt; 是立即结束原有进程(SIGTERM,立即重启)&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;-sf&lt;/code&gt; 是原有进程执行完后退出(SIGUSR1,平滑重启)&lt;/p&gt;
-
-&lt;p&gt;重启HAProxy&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;haproxy -f /etc/haproxy/haproxy.cfg -st `cat /var/run/haproxy.pid`
-
-# 不能放入.bashrc,``会立即执行的
-# haproxy-reload
-haproxy -f /etc/haproxy/haproxy.cfg -st `cat /var/run/haproxy.pid`
-# haproxy-hot-reload
-haproxy -f /etc/haproxy/haproxy.cfg -sf `cat /var/run/haproxy.pid`
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;/etc/rc.local&lt;/code&gt;(软连接到&lt;code&gt;/etc/rc.d/rc.local&lt;/code&gt;)是开机后自动执行的脚本&lt;/p&gt;
-
-&lt;p&gt;可以加入&lt;code&gt;haproxy -f /etc/haproxy/haproxy.cfg&lt;/code&gt;到其中实现开机启动.&lt;/p&gt;
-
-&lt;p&gt;配置文件参考 &lt;a href=&#34;https://github.com/chenzhiwei/linux/tree/master/haproxy&#34;&gt;https://github.com/chenzhiwei/linux/tree/master/haproxy&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;一份haproxy加速ss&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;global
-        pidfile   /var/run/haproxy.pid
-        ulimit-n  15000
-
-defaults
-        log global
-        mode    tcp
-        option  dontlognull
-        timeout connect 1000
-        timeout client  150000
-        timeout server  150000
-
-frontend ss-in
-        bind *:80
-        default_backend ss-out
-
-backend ss-out
-        server server1 208.81.202.208:443 maxconn 20480
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;haproxy -D -f /etc/haproxy/haproxy.cfg&lt;/code&gt;启动,参数&lt;code&gt;-D&lt;/code&gt;为goes daemon&lt;/p&gt;
-
-&lt;h2 id=&#34;升级-glibc-版本-最新发布-http-www-gnu-org-software-libc&#34;&gt;升级&lt;code&gt;glibc&lt;/code&gt;版本,最新发布 &lt;a href=&#34;http://www.gnu.org/software/libc/&#34;&gt;http://www.gnu.org/software/libc/&lt;/a&gt;&lt;/h2&gt;
-
-&lt;p&gt;所有版本见&lt;code&gt;http://mirror.hust.edu.cn/gnu/libc/&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;错误 &lt;code&gt;libc.so.6: version GLIBC_2.14 not found&lt;/code&gt; 表明当前系统的glibc版本较低&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;strings libc.so.6 |grep GLIBC_&lt;/code&gt;可以查看当前系统支持的版本&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;wget http://mirror.hust.edu.cn/gnu/libc/glibc-2.19.tar.xz
-tar Jxf glibc-2.19.tar.xz
-cd glibc-2.19
-mkdir build
-cd build
-../configure
-make -j4 &amp;amp;&amp;amp; make install
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;见 &lt;a href=&#34;https://cnodejs.org/topic/56dc21f1502596633dc2c3dc&#34;&gt;https://cnodejs.org/topic/56dc21f1502596633dc2c3dc&lt;/a&gt;
-此编译需要较长时间&lt;/p&gt;
-
-&lt;h2 id=&#34;dog-tunnel端口映射&#34;&gt;dog-tunnel端口映射&lt;/h2&gt;
-
-&lt;p&gt;开启服务器端(须有外网IP)&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;dtunnel_lite -service 0.0.0.0:1234 -v -tcp -xor 121333 &amp;gt; /tmp/dog.log 2&amp;gt;&amp;amp;1 &amp;amp;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;开启客户端(任意一台可联网的机器)&lt;/p&gt;
-
-&lt;p&gt;反向映射客户机22端口到服务器的30222端口,代理ssh建议使用tcp,pipe通道为1&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;dtunnel_lite -service 服务器端IP:1234 -v -action 127.0.0.1:22 -encrypt -tcp -xor 121333 -local 172.168.1.99:30222 -r &amp;gt; /tmp/dog.log 2&amp;gt;&amp;amp;1 &amp;amp;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;可以使用客户端连接多个服务器,将22端口映射到多个服务器端.&lt;/p&gt;
-
-&lt;p&gt;用&lt;code&gt;crontab&lt;/code&gt;守护进程,每5分钟检查一次&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;*/5 * * * * sh /data/bin/connect.sh &amp;gt; /tmp/dog.log 2&amp;gt;&amp;amp;1&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;#!/bin/bash
-echo &amp;quot;`date` start shell process &amp;quot;&amp;gt;&amp;gt; /tmp/connect.log
-if test $( pgrep -f dtunnel_lite | wc -l ) -eq 0
-then
-    while true
-    do
-        echo &amp;quot;`date` dtunnel_lite process is starting...&amp;quot;&amp;gt;&amp;gt; /tmp/connect.log
-        touch /run/connect.lock
-        dtunnel_lite -service 114.242.25.173:1234 -v -action 127.0.0.1:22 -encrypt -tcp -xor 121333 -local 172.168.1.99:30222  -r
-        echo &amp;quot;`date` dtunnel_lite process killed,todo restart &amp;quot;&amp;gt;&amp;gt; /tmp/connect.log
-        sleep 5
-    done
-else
-    touch /run/connect.lock
-    echo &amp;quot;`date` dtunnel_lite process is already running &amp;quot;&amp;gt;&amp;gt; /tmp/connect.log
-fi
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;先手动启动一次 &lt;code&gt;sh /data/bin/connect.sh &amp;gt; /tmp/dog.log 2&amp;gt;&amp;amp;1 &amp;amp;&lt;/code&gt;&lt;/p&gt;
-</description>
+      <description>HAProxy HAProxy高性能的反向代理软件,更专注于TCP,HTTP处理,它可以基于四层或七层进行反向代理,尤其适合于高负载且需要进行七层处理的 Web 站点.
+单进程、事件驱动模型,通常用于超高流量的负载均衡.
+我们也可以使用它来作为中转站,使直连连通率不好的请求进过中转提升速度.
+编译安装 apt-get update &amp;amp;&amp;amp; apt-get install -y wget gcc g++ make libpcre++0v5 libpcre++-dev  yum update &amp;amp;&amp;amp; yum install wget gcc make  HAPROXY_VERSION=haproxy-1.7.0 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l` wget http://www.haproxy.org/download/1.7/src/${HAPROXY_VERSION}.tar.gz tar zxf ${HAPROXY_VERSION}.tar.gz cd ${HAPROXY_VERSION} export CFLAGS=&amp;quot;-O3&amp;quot; make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 -j$CPU_NUM &amp;amp;&amp;amp; make install  编译32位版本make TARGET=linux26 ARCH=i686 USE_STATIC_PCRE=1 -j$CPU_NUM
+在64位系统下编译32位需要apt-get install gcc-multilib g++-multilib
+我编译好的haproxy version 1.7.0
+ 64位 http://share.</description>
     </item>
     
     <item>
@@ -1567,49 +192,22 @@ fi
       <pubDate>Sun, 17 Jul 2016 20:48:49 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/software/some-dev-tools/</guid>
-      <description>
-
-&lt;h2 id=&#34;一些开发会用到的小工具&#34;&gt;一些开发会用到的小工具&lt;/h2&gt;
-
-&lt;h3 id=&#34;编程字体&#34;&gt;编程字体&lt;/h3&gt;
-
-&lt;p&gt;苹果出品的&lt;code&gt;Monaco&lt;/code&gt;,看起来十分圆润,首选推荐的编程字体&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/fonts/monaco.ttf&#34;&gt;monaco&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;或许还有很多人喜欢&lt;code&gt;YaHei.Consolas&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/fonts/YaHei.Consolas.1.12.zip&#34;&gt;YaHei.Consolas.1.12.zip&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;一些从-linux-迁移到windows的东西&#34;&gt;一些从&lt;code&gt;Linux&lt;/code&gt;迁移到Windows的东西&lt;/h3&gt;
-
-&lt;p&gt;最常用的当属&lt;code&gt;bash&lt;/code&gt;了,包含&lt;code&gt;md5sum&lt;/code&gt;,&lt;code&gt;wget&lt;/code&gt;,&lt;code&gt;curl&lt;/code&gt;,&lt;code&gt;awk&lt;/code&gt;等等.&lt;/p&gt;
-
-&lt;p&gt;有两个比较好的项目在移植&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;&lt;em&gt;unxutils&lt;/em&gt; &lt;a href=&#34;http://unxutils.sourceforge.net/&#34;&gt;http://unxutils.sourceforge.net/&lt;/a&gt;  源码 &lt;a href=&#34;https://sourceforge.net/projects/unxutils/&#34;&gt;https://sourceforge.net/projects/unxutils/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;win-bash&lt;/em&gt; &lt;a href=&#34;https://sourceforge.net/projects/win-bash/&#34;&gt;https://sourceforge.net/projects/win-bash/&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;code&gt;unxutils&lt;/code&gt;最后更新2014-04-03&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;win-bash&lt;/code&gt;最后更新2015-03-30&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;sourceforge&lt;/code&gt;上速度太慢,这里提供加速下载.&lt;/p&gt;
-
-&lt;p&gt;win-bash下载&lt;a href=&#34;http://share.suconghou.cn/files/Windows/shell.w32-ix86.zip&#34;&gt;shell.w32-ix86.zip&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;我的github也收集了一些&lt;code&gt;windows&lt;/code&gt;上常用的小工具&lt;code&gt;axel&lt;/code&gt;,&lt;code&gt;putty&lt;/code&gt;,&lt;code&gt;ab&lt;/code&gt;,&lt;code&gt;hugo&lt;/code&gt;,&lt;code&gt;rsync&lt;/code&gt;等&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://github.com/suconghou/tools&#34;&gt;http://github.com/suconghou/tools&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Curl 官网 &lt;a href=&#34;https://curl.haxx.se/download.html&#34;&gt;https://curl.haxx.se/download.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Curl 这里可以下载windows版的
-&lt;a href=&#34;http://www.paehl.com/open_source/?CURL_7.49.1&#34;&gt;http://www.paehl.com/open_source/?CURL_7.49.1&lt;/a&gt;&lt;/p&gt;
-</description>
+      <description>一些开发会用到的小工具 编程字体 苹果出品的Monaco,看起来十分圆润,首选推荐的编程字体
+monaco
+或许还有很多人喜欢YaHei.Consolas
+YaHei.Consolas.1.12.zip
+一些从Linux迁移到Windows的东西 最常用的当属bash了,包含md5sum,wget,curl,awk等等.
+有两个比较好的项目在移植
+ unxutils http://unxutils.sourceforge.net/ 源码 https://sourceforge.net/projects/unxutils/
+win-bash https://sourceforge.net/projects/win-bash/
+ unxutils最后更新2014-04-03
+win-bash最后更新2015-03-30
+sourceforge上速度太慢,这里提供加速下载.
+win-bash下载shell.w32-ix86.zip
+我的github也收集了一些windows上常用的小工具axel,putty,ab,hugo,rsync等
+http://github.com/suconghou/tools
+Curl 官网 https://curl.haxx.se/download.html
+Curl 这里可以下载windows版的 http://www.paehl.com/open_source/?CURL_7.49.1</description>
     </item>
     
     <item>
@@ -1618,26 +216,11 @@ fi
       <pubDate>Sun, 17 Jul 2016 20:37:31 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/software/shadowsocks-client/</guid>
-      <description>
-
-&lt;h2 id=&#34;shadowsocks-各平台客户端&#34;&gt;shadowsocks 各平台客户端&lt;/h2&gt;
-
-&lt;p&gt;文件来源于&lt;code&gt;github.com&lt;/code&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;windows平台&#34;&gt;windows平台&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/shadowsocks/Shadowsocks-3.4.2.zip&#34;&gt;Shadowsocks-3.4.2&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;mac平台&#34;&gt;mac平台&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/shadowsocks/ShadowsocksX-2.6.3.dmg&#34;&gt;ShadowsocksX-2.6.3&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;android平台&#34;&gt;android平台&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/shadowsocks/shadowsocks-nightly-3.3.1.apk&#34;&gt;shadowsocks-nightly-3.3.1&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;服务端可以使用docker更方便 &lt;a href=&#34;https://hub.docker.com/r/suconghou/shadowsocks/&#34;&gt;shadowsocks docker&lt;/a&gt;&lt;/p&gt;
-</description>
+      <description>shadowsocks 各平台客户端 文件来源于github.com
+windows平台 Shadowsocks-3.4.2
+mac平台 ShadowsocksX-2.6.3
+android平台 shadowsocks-nightly-3.3.1
+服务端可以使用docker更方便 shadowsocks docker</description>
     </item>
     
     <item>
@@ -1646,16 +229,9 @@ fi
       <pubDate>Sun, 17 Jul 2016 20:30:43 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/software/picasa-photo-viewer/</guid>
-      <description>
-
-&lt;h2 id=&#34;picasaphotoviewer-图片查看器-v3-9-136-9&#34;&gt;PicasaPhotoViewer(图片查看器) v3.9.136.9&lt;/h2&gt;
-
-&lt;p&gt;Picasa内置的图片浏览器,Google出品,此版本为独木成林提取出来的.&lt;/p&gt;
-
-&lt;p&gt;只有1.7MB,启动速度快,十分好用,有一个缺点是可能因为版权问题未对GIF做支持.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/ImageView/PicasaPhotoViewer_3.9.136.9.exe&#34;&gt;PicasaPhotoViewerv3.9.136.9&lt;/a&gt;&lt;/p&gt;
-</description>
+      <description>PicasaPhotoViewer(图片查看器) v3.9.136.9 Picasa内置的图片浏览器,Google出品,此版本为独木成林提取出来的.
+只有1.7MB,启动速度快,十分好用,有一个缺点是可能因为版权问题未对GIF做支持.
+PicasaPhotoViewerv3.9.136.9</description>
     </item>
     
     <item>
@@ -1664,26 +240,12 @@ fi
       <pubDate>Sun, 17 Jul 2016 20:11:26 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/software/git-for-windows/</guid>
-      <description>
-
-&lt;h2 id=&#34;git-for-windows-国内下载&#34;&gt;git for windows 国内下载&lt;/h2&gt;
-
-&lt;p&gt;所有资源均来源于官网&lt;code&gt;http://git-scm.com/download/win&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;版本2.12.0&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;32位资源&#34;&gt;32位资源&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/git/Git-2.12.0-32-bit.exe&#34;&gt;32位安装版&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/git/PortableGit-2.12.0-64-bit.7z.exe&#34;&gt;32位绿色版&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;64位资源&#34;&gt;64位资源&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/git/Git-2.12.0-64-bit.exe&#34;&gt;64位安装版&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://share.suconghou.cn/files/git/PortableGit-2.12.0-64-bit.7z.exe&#34;&gt;64位绿色版&lt;/a&gt;&lt;/p&gt;
-</description>
+      <description>git for windows 国内下载 所有资源均来源于官网http://git-scm.com/download/win
+版本2.12.0
+32位资源 32位安装版
+32位绿色版
+64位资源 64位安装版
+64位绿色版</description>
     </item>
     
     <item>
@@ -1692,134 +254,16 @@ fi
       <pubDate>Mon, 11 Jul 2016 11:39:08 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/react-native/</guid>
-      <description>
-
-&lt;h2 id=&#34;react-native&#34;&gt;react native&lt;/h2&gt;
-
-&lt;h3 id=&#34;环境准备&#34;&gt;环境准备&lt;/h3&gt;
-
-&lt;p&gt;前提是需要node和npm,这里不在赘述.介绍一个npm加速的.&lt;/p&gt;
-
-&lt;p&gt;使用淘宝的npm镜像.控制台运行,或者加入你的bashrc中永久生效&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;alias cnpm=&amp;quot;npm --registry=https://registry.npm.taobao.org --cache=$HOME/.npm/.cache/cnpm --disturl=https://npm.taobao.org/dist --userconfig=$HOME/.cnpmrc&amp;quot;;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;安装开发必备的一些package&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;cnpm install -g react-native-cli webpack
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;react-native&lt;/code&gt;也调用了&lt;code&gt;npm&lt;/code&gt;命令,所以我们可以再来个alias加速&lt;code&gt;react-native init&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;alias npm=&#39;cnpm&#39;&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;或者直接将仓库改为淘宝的NPM镜像&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;npm config set registry https://registry.npm.taobao.org
-npm config set disturl https://npm.taobao.org/dist
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;在mac上还需要一些东西&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;brew install flow watchman
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;安装完以后可以开始helloworld了.&lt;/p&gt;
-
-&lt;h3 id=&#34;开始第一个例子&#34;&gt;开始第一个例子&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;cd /data/tmp
-react-native init HelloWorld
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;然后正在初始化大致如下&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;This will walk you through creating a new React Native project in /data/tmp/HelloWorld
-Installing react-native package from npm...
-Setting up new React Native app in /data/tmp/HelloWorld
-HelloWorld@0.0.1 /data/tmp/HelloWorld
-└── react@15.2.1
-
-To run your app on iOS:
-   cd /data/tmp/HelloWorld
-   react-native run-ios
-   - or -
-   Open /data/tmp/HelloWorld/ios/HelloWorld.xcodeproj in Xcode
-   Hit the Run button
-To run your app on Android:
-   Have an Android emulator running (quickest way to get started), or a device connected
-   cd /data/tmp/HelloWorld
-   react-native run-android
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;使用&lt;code&gt;React&lt;/code&gt;类名(组件名)必须首字母大写才会被认为是一个组件,否则在JSX里只会当做普通标签&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;下面是一些针对开发IOS的教程&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;我们执行&lt;code&gt;react-native run-ios&lt;/code&gt;开始编译运行,前提是你必须安装了&lt;code&gt;xcode&lt;/code&gt;哦.&lt;/p&gt;
-
-&lt;p&gt;执行后,出现&lt;code&gt;BUILD SUCCEEDED&lt;/code&gt;,同时自动打开新的终端运行了一个server在8081端口.&lt;/p&gt;
-
-&lt;p&gt;模拟器中也会出现刚编译好的app的窗口,使用&lt;code&gt;cmd+r&lt;/code&gt;刷新,&lt;code&gt;cmd+d&lt;/code&gt;弹出开发菜单.&lt;/p&gt;
-
-&lt;p&gt;我们可以修改&lt;code&gt;index.ios.js&lt;/code&gt;开始开发了.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;下面是一些针对开发Android的教程&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;问题&#34;&gt;问题&lt;/h3&gt;
-
-&lt;p&gt;在使用&lt;code&gt;fetch&lt;/code&gt;调用接口时,可能会出现&lt;code&gt;The resource could not be loaded because the App Transport Security policy requires the use of a secure connection.&lt;/code&gt;错误&lt;/p&gt;
-
-&lt;p&gt;这是IOS9要求必须使用https通信,需要修改 &lt;a href=&#34;http://stackoverflow.com/questions/30731785/how-do-i-load-an-http-url-with-app-transport-security-enabled-in-ios-9&#34;&gt;http://stackoverflow.com/questions/30731785/how-do-i-load-an-http-url-with-app-transport-security-enabled-in-ios-9&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;其实&lt;code&gt;react native&lt;/code&gt;创建&lt;code&gt;Info.plist&lt;/code&gt;时就已经为我们说明了,在&lt;code&gt;NSExceptionDomains&lt;/code&gt;下面的&lt;code&gt;dict&lt;/code&gt;里添加一个排除域名就OK了.&lt;/p&gt;
-
-&lt;p&gt;注意,不能将默认的&lt;code&gt;localhost&lt;/code&gt;去掉,否则会出现&lt;code&gt;_fbBatchedBridge is undefined&lt;/code&gt;错误.&lt;/p&gt;
-
-&lt;h2 id=&#34;打包&#34;&gt;打包&lt;/h2&gt;
-
-&lt;h3 id=&#34;对android项目打包&#34;&gt;对android项目打包&lt;/h3&gt;
-
-&lt;p&gt;使用&lt;code&gt;keytool&lt;/code&gt;生成签名文件,在任意目录下执行&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;keytool -genkey -v -keystore my-release-key.keystore  -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;上面&lt;code&gt;my-release-key&lt;/code&gt;可以自己定义,后面的&lt;code&gt;my-key-alias&lt;/code&gt;也可以自己定义.运行后输入一下相关信息后,生成&lt;code&gt;my-release-key.keystore&lt;/code&gt;文件.&lt;/p&gt;
-
-&lt;p&gt;其中输入的两次密码,需要记住.将这个文件移动到&lt;code&gt;android/app&lt;/code&gt;目录下,编译&lt;code&gt;android/app&lt;/code&gt;里的&lt;code&gt;build.gradle&lt;/code&gt;,添加下面的内容&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;android {
-    ...
-    defaultConfig { ... }
-    signingConfigs {
-        release {
-            storeFile file(MYAPP_RELEASE_STORE_FILE)
-            storePassword MYAPP_RELEASE_STORE_PASSWORD
-            keyAlias MYAPP_RELEASE_KEY_ALIAS
-            keyPassword MYAPP_RELEASE_KEY_PASSWORD
-        }
-    }
-    ...
-    buildTypes {
-        release {
-              ...
-              signingConfig signingConfigs.release
-        }
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;在&lt;code&gt;android&lt;/code&gt;目录下运行如下命令,就可以打包,安装到自己手机上,前提是手机已usb调试连接到电脑&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;./gradlew assembleRelease
-cd app/build/outputs/apk
-adb install -r app-release.apk
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;参考 &lt;a href=&#34;https://facebook.github.io/react-native/docs/signed-apk-android.html&#34;&gt;https://facebook.github.io/react-native/docs/signed-apk-android.html&lt;/a&gt;&lt;/p&gt;
-</description>
+      <description>react native 环境准备 前提是需要node和npm,这里不在赘述.介绍一个npm加速的.
+使用淘宝的npm镜像.控制台运行,或者加入你的bashrc中永久生效
+alias cnpm=&amp;quot;npm --registry=https://registry.npm.taobao.org --cache=$HOME/.npm/.cache/cnpm --disturl=https://npm.taobao.org/dist --userconfig=$HOME/.cnpmrc&amp;quot;;  安装开发必备的一些package
+cnpm install -g react-native-cli webpack  react-native也调用了npm命令,所以我们可以再来个alias加速react-native init
+alias npm=&#39;cnpm&#39;
+或者直接将仓库改为淘宝的NPM镜像
+npm config set registry https://registry.npm.taobao.org npm config set disturl https://npm.taobao.org/dist  在mac上还需要一些东西
+brew install flow watchman  安装完以后可以开始helloworld了.
+开始第一个例子 cd /data/tmp react-native init HelloWorld  然后正在初始化大致如下
+This will walk you through creating a new React Native project in /data/tmp/HelloWorld Installing react-native package from npm... Setting up new React Native app in /data/tmp/HelloWorld HelloWorld@0.</description>
     </item>
     
     <item>
@@ -1828,123 +272,443 @@ adb install -r app-release.apk
       <pubDate>Thu, 07 Jul 2016 15:46:03 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/some-hole/</guid>
-      <description>
-
-&lt;h2 id=&#34;总结一下遇到的坑&#34;&gt;总结一下遇到的坑&lt;/h2&gt;
-
-&lt;h3 id=&#34;微信&#34;&gt;微信&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;关于横竖屏的坑&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;css3可以使用媒体查询判断设备是横屏还是竖屏&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;//横屏时显示
-@media all and (orientation : landscape) {
-#screenMask{display:block}
-}
-
-//竖屏时隐藏
-@media all and (orientation : portrait) {
-#screenMask{display:none}
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;在手机浏览器中表现良好,微信中看样子也可以,但是微信网页中如果聚焦输入框,弹起键盘就有问题了.&lt;/p&gt;
-
-&lt;p&gt;软键盘弹起后,网页可用面积减小,安卓就自动识别为横屏了,原有的页面消失了,影响非常大.IOS则没有这个问题,媒体查询判断横竖屏在IOS上工作良好.&lt;/p&gt;
-
-&lt;p&gt;并且由此发现,css3媒体查询就是根据宽度是否比高度小来判断横竖屏的.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;解决方案1&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;使用&lt;code&gt;javascript&lt;/code&gt;的&lt;code&gt;orientation&lt;/code&gt;和&lt;code&gt;orientationchange&lt;/code&gt;判断&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;window.orientation   属于window对象上一个属性；共有三个值 ：0为竖屏模式（portrait）,90为向左反转变为横屏模式（landscape），-90为向右反转变为横屏模式（landscape），最后180就是设备上下互换还是竖屏模式。&lt;/li&gt;
-&lt;li&gt;orientationchange    是一个event，在设备旋转时，会触发此事件，如同PC上使用的resize事件。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;(function(){
-    var init = function(){
-        var updateOrientation = function(){
-            var orientation = window.orientation;
-            switch(orientation){
-                case 90:
-                case -90:
-                    orientation = &#39;landscape&#39;;
-                    break;
-                default:
-                    orientation = &#39;portrait&#39;;
-                    break;
-            }
-
-           //do something
-           //比如在html标签加一个状态
-            //然后根据不同状态，显示不同大小
-            document.body.parentNode.setAttribute(&#39;class&#39;,orientation);
-        };
-
-        window.addEventListener(&#39;orientationchange&#39;,updateOrientation,false);
-        updateOrientation();
-    };
-
-    window.addEventListener(&#39;DOMContentLoaded&#39;,init,false);
-})();
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;经测试使用JS判断能够正确得出安卓微信客户端里输入框聚焦时的横竖屏状态.&lt;/p&gt;
-
-&lt;p&gt;orientation和orientationchange只有移动设备有这些属性和事件.&lt;/p&gt;
-
-&lt;p&gt;在不支持这种属性和事件的设备上使用宽高比来判断做一下兼容,这样在不支持&lt;code&gt;orientation&lt;/code&gt;的设备上就相当于使用了媒体查询&lt;/p&gt;
-
-&lt;p&gt;最终总结代码如下:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;(function(w)
-{
-    var supportOrientation = (typeof w.orientation === &#39;number&#39; &amp;amp;&amp;amp; typeof w.onorientationchange === &#39;object&#39;);
-    var init = function()
-    {
-        var htmlNode = document.body.parentNode, orientation;
-        var updateOrientation = function()
-        {
-            if(supportOrientation)
-            {
-                orientation = w.orientation;
-                switch(orientation)
-                {
-                    case 90:
-                    case -90:
-                        orientation = &#39;landscape&#39;;
-                        break;
-                    default:
-                        orientation = &#39;portrait&#39;;
-                        break;
-                }
-            }
-            else
-            {
-                orientation = (w.innerWidth &amp;gt; w.innerHeight) ? &#39;landscape&#39; : &#39;portrait&#39;;
-            }
-            htmlNode.setAttribute(&#39;class&#39;,orientation);
-        };
-        if(supportOrientation)
-        {
-            w.addEventListener(&#39;orientationchange&#39;,updateOrientation,false);
-        }
-        else
-        {
-            //监听resize事件
-            w.addEventListener(&#39;resize&#39;,updateOrientation,false);
-        }
-        updateOrientation();
-    };
-    w.addEventListener(&#39;DOMContentLoaded&#39;,init,false);
-})(window);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;可以访问如下网址测试: /html/wx&lt;/p&gt;
-</description>
+      <description>总结一下遇到的坑 微信 关于横竖屏的坑
+css3可以使用媒体查询判断设备是横屏还是竖屏
+//横屏时显示 @media all and (orientation : landscape) { #screenMask{display:block} } //竖屏时隐藏 @media all and (orientation : portrait) { #screenMask{display:none} }  在手机浏览器中表现良好,微信中看样子也可以,但是微信网页中如果聚焦输入框,弹起键盘就有问题了.
+软键盘弹起后,网页可用面积减小,安卓就自动识别为横屏了,原有的页面消失了,影响非常大.IOS则没有这个问题,媒体查询判断横竖屏在IOS上工作良好.
+并且由此发现,css3媒体查询就是根据宽度是否比高度小来判断横竖屏的.
+解决方案1
+使用javascript的orientation和orientationchange判断
+ window.orientation 属于window对象上一个属性；共有三个值 ：0为竖屏模式（portrait）,90为向左反转变为横屏模式（landscape），-90为向右反转变为横屏模式（landscape），最后180就是设备上下互换还是竖屏模式。 orientationchange 是一个event，在设备旋转时，会触发此事件，如同PC上使用的resize事件。  (function(){ var init = function(){ var updateOrientation = function(){ var orientation = window.orientation; switch(orientation){ case 90: case -90: orientation = &#39;landscape&#39;; break; default: orientation = &#39;portrait&#39;; break; } //do something //比如在html标签加一个状态 //然后根据不同状态，显示不同大小 document.</description>
+    </item>
+    
+    <item>
+      <title>PHP最佳实践</title>
+      <link>http://blog.suconghou.cn/post/php-best-way/</link>
+      <pubDate>Thu, 30 Jun 2016 16:40:13 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/php-best-way/</guid>
+      <description>性能优化 数组相关 in_array在大数据量(数万以上元素)下效率低下
+在分析nginx log得出所有不重复IP时,采用in_array判断,50多万的数据耗时需要五六分钟,而采用存键的方法,用isset判断仅需要十几秒,效率差别非常大. [php7环境下]
+判断一个数组是否存在某个元素,远比查找一个键消耗的要多.前者时间复杂度O(n),而后者O(1)
+即时使用in_array,也需要加上第三个参数,设置为严格模式,省略数据类型转化的开销,设置为true比设置为false性能要提升好几倍.
+这种情况下使用array_search情况比in_array更加糟糕
+如果条件允许使用array_flip交换键值,在用isset来判断要比in_array好得多
+同时,使用isset来判断数组的键,也比使用array_key_exists要好
+而对于本题,还可以使用array_unique最后去重,用空间换时间,效率仅次于用isset
+Bugs php pdo MySQL server has gone away 在使用PDO长连接时,执行过一次PDO初始化后,php-fpm进程会与mysql server开启一条TCP长连接,下次连接数据库就能加快速度.
+但是却存在一定问题,PDO维持了长连接并没有较好的检测其可用性,如果mysql server kill 掉这个连接,或者mysql重启,都会造成
+重新实例化PDO时得到旧的链接,导致出现MySQL server has gone away,更让人郁闷的是这个错误并不是一个Exception,无法被catch捕获,即使设置PDO::ATTR_ERRMODE=&amp;gt;PDO::ERRMODE_EXCEPTION,也不行,还是直接在页面上提示.
+如果你使用了set_error_handler,那么这个Warning将会被捕捉,不会直接显示在页面上,但也改变了程序的原有执行逻辑.
+如果你不使用set_error_handler,页面上报出Warning,但其实PDO已经返回一个可用的链接了.
+猜测可能是PDO首先得到了不可用的然后报警告,然后又创建了一个新的.
+较好的解决方法是设置set_error_handler若捕获了这个MySQL server has gone away,则返回null,程序继续按原有逻辑执行.
+或者不使用PDO长连接.
+注意,set_error_handler返回false的话,这个错误还是会被交到上一级错误程序处理的.
+编码转换中的若干问题 我们经常会遇到将utf8编码字符转化为gbk编码的字符,例如生成csv表格,在windows上的cmd窗口输出文字,以及操作windows上的有关文件路径的操作都需要使用gbk编码.
+常使用iconv(&#39;utf-8&#39;, &#39;gbk&#39;, $str);将utf8字符转为gbk
+这里 utf gbk 不区分大小写,也可以混写,不区分是utf8还是utf-8,都能都正常使用
+iconv(&#39;utf-8&#39;, &#39;gbk//ignore&#39;, $str); 加上//ignore使有些字符无法装换时略过.
+但是//ignore在php5.4及以下,和个别php5.6版本上无效,任然是报NOTICE错误.
+&amp;lt;?php echo iconv(&#39;UTF8&#39;, &#39;GBK//IGNORE&#39;, &#39;l l l&#39;); ?&amp;gt;  见 https://3v4l.org/7vCFW 和 http://www.php.net/manual/en/function.iconv.php第一条评论
+可以考虑使用$content = mb_convert_encoding($content, &amp;quot;GBK&amp;quot;,&amp;quot;UTF-8&amp;quot;); 从UTF8转为GBK</description>
+    </item>
+    
+    <item>
+      <title>shadowsocks libev</title>
+      <link>http://blog.suconghou.cn/post/shadowsocks-libev/</link>
+      <pubDate>Wed, 18 May 2016 17:37:16 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/shadowsocks-libev/</guid>
+      <description>静态编译shadowsocks libev centos7 编译
+yum update &amp;amp;&amp;amp; yum install -y zip unzip xz curl wget git gcc make zlib zlib-devel openssl openssl-devel git clone https://github.com/shadowsocks/shadowsocks-libev.git cd shadowsocks-libev ./configure --enable-static=yes export CFLAGS=&amp;quot;-O3&amp;quot; make -j4 &amp;amp;&amp;amp; make install  在alpine里编译
+先安装依赖
+# Installation of Libsodium cd /tmp export LIBSODIUM_VER=1.0.12 wget https://download.libsodium.org/libsodium/releases/libsodium-$LIBSODIUM_VER.tar.gz tar xvf libsodium-$LIBSODIUM_VER.tar.gz cd libsodium-$LIBSODIUM_VER ./configure --prefix=/usr &amp;amp;&amp;amp; make &amp;amp;&amp;amp; make install cd /tmp ldconfig # Installation of MbedTLS cd /tmp export MBEDTLS_VER=2.</description>
+    </item>
+    
+    <item>
+      <title>使用tcpdump与ngrep</title>
+      <link>http://blog.suconghou.cn/post/tcpdump/</link>
+      <pubDate>Mon, 16 May 2016 18:21:04 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/tcpdump/</guid>
+      <description>各版本 http://www.tcpdump.org/release/
+安装依赖 yum install -y flex gcc make byacc or apt-get install flex gcc make byacc wget bzip2
+cd /tmp wget http://www.tcpdump.org/release/libpcap-1.7.4.tar.gz tar zxf libpcap-1.7.4.tar.gz cd libpcap-1.7.4 ./configure --prefix=/tmp/lib make -j4 &amp;amp;&amp;amp; make install cd ../ wget http://www.tcpdump.org/release/tcpdump-4.7.4.tar.gz tar zxf tcpdump-4.7.4.tar.gz cd tcpdump-4.7.4 ./configure --prefix=/tmp --disable-ipv6 CFLAGS=&#39;-O3 -I/tmp/lib/include&#39; LDFLAGS=&#39;-L/tmp/lib/lib/libpcap.a&#39; make -j4 make install  安装成功后,位于ls -lh /tmp/sbin/tcpdump ldd查看此文件依赖较少,可直接复制到其他Linux上使用.
+采用CFLAGS=&amp;quot;-O3&amp;quot;编译后为1.2MB
+tcpdump -h 查看版本号以及用法
+我编译好的tcpdump version 4.7.4
+ 64位 http://share.suconghou.cn/files/bin/tcpdump.xz</description>
+    </item>
+    
+    <item>
+      <title>编译安装Apache Traffic Server</title>
+      <link>http://blog.suconghou.cn/post/use-apache-traffic-server/</link>
+      <pubDate>Mon, 09 May 2016 22:24:14 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/use-apache-traffic-server/</guid>
+      <description>编译安装 Centos下编译安装
+yum update -y &amp;amp;&amp;amp; yum install wget gcc g++ gcc-c++ glibc-headers perl openssl openssl-devel tcl-devel libxml2-devel pcre-devel wget http://apache.fayea.com/trafficserver/trafficserver-6.1.1.tar.bz2 tar xvjf trafficserver-6.1.1.tar.bz2 cd trafficserver-6.1.1 ./configure make &amp;amp;&amp;amp; make install useradd -s /sbin/nologin trafficserver  Apache镜像http://archive.apache.org/dist/
+国内Apache镜像http://apache.fayea.com/
+编译完成后,就可以使用了,默认是安装在/usr/local/bin,编译后是比较大
+total 98M -rwxr-xr-x 1 root root 692K May 9 14:30 header_rewrite_test -rwxr-xr-x 1 root root 520K May 9 14:30 traffic_cop -rwxr-xr-x 1 root root 1.9M May 9 14:30 traffic_crashlog -rwxr-xr-x 1 root root 259K May 9 14:30 traffic_ctl -rwxr-xr-x 1 root root 1.</description>
+    </item>
+    
+    <item>
+      <title>在树莓派上使用Docker</title>
+      <link>http://blog.suconghou.cn/post/use-docker-on-raspberry/</link>
+      <pubDate>Sun, 08 May 2016 20:01:56 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/use-docker-on-raspberry/</guid>
+      <description>安装支持Docker的系统 树莓派官方系统并不支持Docker,需要安装.
+查看 集成Dcoker的树莓派系统
+aria2c -s 50 -c https://downloads.hypriot.com/hypriotos-rpi-v0.8.0.img.zip diskutil list diskutil unmountdisk /dev/disk2  用以下命令前必须卸载u盘diskutil unmountdisk /dev/disk2
+sudo dd if=hypriotos-rpi-v0.8.0.img of=/dev/disk2 bs=8k  安装完成重启就可以啦,启动后登陆的用户是pirate,密码hypriot
+修改密码:执行passwd,输入当前密码,输入新密码,再输入新密码,更新完成
+执行exit退出,或者sudo reboot重启
+创建用户:useradd -g test -d /home/test1 -s /etc/bash -m test1 注解：-g 所属组 -d 家目录 -s 所用的SHELL passwd abc
+获得sudo权限:编辑/etc/sudoers 加入新添加的用户名</description>
+    </item>
+    
+    <item>
+      <title>Android Studio</title>
+      <link>http://blog.suconghou.cn/software/android-studio/</link>
+      <pubDate>Fri, 08 Apr 2016 10:08:24 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/software/android-studio/</guid>
+      <description>下载 Android Studio http://www.oschina.net/news/77839/android-studio-2-2-1
+Windows: https://dl.google.com/dl/android/studio/ide-zips/2.2.1.0/android-studio-ide-145.3330264-windows.zip (437.1 MiB) Mac: https://dl.google.com/dl/android/studio/ide-zips/2.2.1.0/android-studio-ide-145.3330264-mac.zip (437.7 MiB) Linux: https://dl.google.com/dl/android/studio/ide-zips/2.2.1.0/android-studio-ide-145.3330264-linux.zip (436.8 MiB)  安装android-sdk brew install android-sdk 或者使用Android Studio SDK Manager</description>
+    </item>
+    
+    <item>
+      <title>air</title>
+      <link>http://blog.suconghou.cn/project/air/</link>
+      <pubDate>Thu, 18 Feb 2016 20:49:27 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/project/air/</guid>
+      <description>serve static files in the air 在线解析压缩合并Less,打包压缩Javascript.
+手动压缩打包,执行Lint,静态服务器,缓存版本控制,完美结合CDN
+安装 npm install airs -g
+基本参数  纯静态项目,在项目根目录直接执行air   即可开启http服务,直接输出编译后的结果
+  PHP项目,项目根目录执行air develop   会开启静态服务器,同时开启一个PHP Server
+PHP Server 端口号为静态服务器端口号+1
+  服务器模式 air server   编译将做优化和代码压缩
+ 指令
+ 使用air lint 执行Jslint,而不开启http服务,文件修改实时触发
+使用air lint jsfile1.js jsfile2.js jsfile3.js 可对指定文件进行Jslint,可对一个或多个文件
+使用air compress 在static目录下执行,将会根据static.json文件描述,压缩合并输出到指定文件
+使用air compress lessfile1.less lessfile2.less 将对less文件解析压缩,多个less文件将会压缩合并为一个css文件
+使用air compress jsfile1.js jsfile2.js 将对js文件压缩,多个js文件将合并为一个js文件
+可以参数中同时存在less文件和js文件,air compress less1.less file1.js file2.less file3.js 工具自动按类型分组,less文件和js文件,各自压缩合并,其他文件类型忽略.</description>
+    </item>
+    
+    <item>
+      <title>linux相关操作</title>
+      <link>http://blog.suconghou.cn/post/linux/</link>
+      <pubDate>Thu, 21 Jan 2016 13:40:53 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/linux/</guid>
+      <description>读取文件的前几字节 head 或 tail 以字节而不是以行为单位，那该怎么办呢？您可以用 -c 选项代替 -n 选项
+前100字节,并以hex格式显示 head -c 100 file | hexdump
+后100字节tail -c 100 file | hexdump
+还可以使用管道交给 md5sum,可比较前100字节或后100字节是否相同
+head -c 100 file | hexdump | md5sum
+Linux用户管理 添加用户adduser 假如用户名为work
+adduser work -M
+# add rslsync user without home dir and cannot login sudo adduser --shell /bin/nologin --no-create-home --group rslsync  -M, &amp;ndash;no-create-home 不创建用户的主目录 -s, &amp;ndash;shell SHELL 新账户的登录 shell,nologin就是登陆不了 -G, &amp;ndash;groups GROUPS 新账户的附加组列表
+adduser -h查看完整帮助</description>
+    </item>
+    
+    <item>
+      <title>玩转树莓派</title>
+      <link>http://blog.suconghou.cn/post/play-with-raspberrypi/</link>
+      <pubDate>Sun, 17 Jan 2016 22:21:49 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/play-with-raspberrypi/</guid>
+      <description>官方操作系统 https://www.raspberrypi.org/downloads/raspbian/
+带桌面版1.4G
+精简版293MB 下载 wget https://downloads.raspberrypi.org/raspbian_lite_latest
+安装其他操作系统 CentOS CentOS7官方支持了AMRV7发布了树莓派2、香蕉派、以及CubitTruck单片机的版本
+CentOS7官方下载 root 密码 centos 大约275MB
+CentOS7.3也已发布
+http://mirror.centos.org/altarch/7.3.1611/isos/armhfp/
+树莓派2版254M
+ArchLinux https://archlinuxarm.org/
+树莓派1 https://archlinuxarm.org/platforms/armv6/raspberry-pi
+树莓派2 https://archlinuxarm.org/platforms/armv7/broadcom/raspberry-pi-2
+树莓派3 https://archlinuxarm.org/platforms/armv8/broadcom/raspberry-pi-3
+有国内的下载镜像 https://mirrors.tuna.tsinghua.edu.cn/archlinuxarm/os/
+大约293MB
+安装OSMC 下载一览,选择Disk images,此系统较省资源,默认开机进入OSMC,img.gz 大小约160M
+OSMC_FILE=OSMC_TGT_rbp2_20160621.img.gz cd /data/tmp axel -n 20 http://download.osmc.tv/installers/diskimages/$OSMC_FILE md5sum $OSMC_FILE ls -lh  查看所有版本 http://download.osmc.tv/installers/diskimages/
+ 使用清华大学镜像站国内下载速度更快: https://mirrors.tuna.tsinghua.edu.cn/osmc/osmc/download/installers/
+ 插入内存卡,开始烧写到内存卡中.烧写之前需要取消挂载
+diskutil list 查看你的内存卡的挂载位置,取消挂载
+执行diskutil unmountdisk /dev/disk2 取消挂载,需要稍等一小会.
+烧写,烧写过程中读卡器不断闪烁.
+gzip -dc /data/tmp/$OSMC_FILE | sudo dd of=/dev/disk2 bs=8k  dd的用法: dd if=/dev/zero of=hello.</description>
+    </item>
+    
+    <item>
+      <title>使用镜像加速homebrew</title>
+      <link>http://blog.suconghou.cn/post/homebrew-speedup/</link>
+      <pubDate>Fri, 15 Jan 2016 12:56:53 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/homebrew-speedup/</guid>
+      <description>中国科大镜像站 提供 Debian, Ubuntu, Fedora, Archlinux, CentOS 等多个发行版的官方源. 还有brew 的二进制源,brew使用此配置能大大提升速度.
+cd /usr/local/Homebrew git remote set-url origin git://mirrors.ustc.edu.cn/brew.git git remote -v brew update  修改源：https://lug.ustc.edu.cn/wiki/mirrors/help/brew.git 和 https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-core.git 修改二进制源见https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-bottles
+即export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
+使用brew config 查看ORIGIN和HOMEBREW_BOTTLE_DOMAIN已经是新的mirrors.ustc.edu.cn即为配置成功
+brew list 列出所有安装的模块
+brew search mysql 查找
+brew commands 查看所有命令
+安装（需要 Ruby）： ruby -e &amp;quot;$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)&amp;quot;
+搜索：brew search mysql
+查询：brew info mysql 主要看具体的信息，比如目前的版本，依赖，安装后注意事项等
+更新：brew update 这会更新 Homebrew 自己，并且使得接下来的两个操作有意义——
+检查过时（是否有新版本）：brew outdated 这回列出所有安装的软件里可以升级的那些
+升级：brew upgrade 升级所有可以升级的软件们
+清理：brew cleanup 清理不需要的版本极其安装包缓存</description>
+    </item>
+    
+    <item>
+      <title>Chrome浏览器安装</title>
+      <link>http://blog.suconghou.cn/post/broswer-chrome/</link>
+      <pubDate>Thu, 14 Jan 2016 17:11:34 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/broswer-chrome/</guid>
+      <description>配置Chrome跨域 Chrome 浏览器配置可以跨域
+/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --disable-web-security
+或者
+open -a &amp;quot;Google Chrome&amp;quot; --args --disable-web-security
+必须完全退出Chrome,再使用上述方法.</description>
+    </item>
+    
+    <item>
+      <title>Crontab与自动备份</title>
+      <link>http://blog.suconghou.cn/post/use-crontab-in-your-server/</link>
+      <pubDate>Tue, 12 Jan 2016 13:10:21 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/use-crontab-in-your-server/</guid>
+      <description>Crontab使用 crontab -l 查看当前用户的crontab列表 使用crontab -e开始编辑规则
+基本格式 : *　*　*　*　*　command 分　时 日 月　周　命令 * 第1列表示分钟1～59 每分钟用*或者*/1表示 * 第2列表示小时1～23（0表示0点） * 第3列表示日期1～31 * 第4列表示月份1～12 * 第5列标识号星期0～6（0表示星期天） * 第6列要运行的命令  禁止Crontab产生邮件: 在crontab末尾加上&amp;gt; /dev/null 2&amp;gt;&amp;amp;1 或者 &amp;gt; &amp;amp;&amp;gt; /dev/null
+例如
+0 1 5 10 * /path/to/script.sh &amp;gt; /dev/null 2&amp;gt;&amp;amp;1 0 1 5 10 * /path/to/script.sh &amp;gt; &amp;amp;&amp;gt; /dev/null  你也可以将/dev/null换成你想要存储日志的文件地址
+定时备份数据库 先写好shell脚本存入/home/cron1.sh
+user=&amp;quot;root&amp;quot; pass=&amp;quot;root&amp;quot; host=&amp;quot;127.0.0.1&amp;quot; port=&amp;quot;3306&amp;quot; dbs=&amp;quot;db1 db2 db3&amp;quot; dir=&amp;quot;/data/backup/&amp;quot; nowDate=`date &#39;+%Y%m%d&#39;` nowTime=`date &#39;+%H%M&#39;` backupdir=$dir$nowDate timeold=`date -d &amp;quot;-1 week&amp;quot; +%Y%m%d` delold=$dir$timeold if [ !</description>
+    </item>
+    
+    <item>
+      <title>MySQL性能优化</title>
+      <link>http://blog.suconghou.cn/post/improve-mysqldb/</link>
+      <pubDate>Mon, 11 Jan 2016 12:02:40 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/improve-mysqldb/</guid>
+      <description>配置文件 配置文件一般放在/etc/my.cnf 或者 /etc/mysql/my.cnf
+默认的配置文件示例存放于/usr/share/mysql
+各个文件适配不同内存的配置
+   文件 内存大小     my-small.cnf &amp;lt;= 64M 不经常开启mysql   my-medium.cnf 32M–64M 经常其他程序搭配mysql   my-large.cnf 512M   my-huge.cnf 1G-2G   my-innodb-heavy-4G.cnf 4GB 使用InnoDB    使用SHOW VARIABLES来查看系统参数,通过SHOW STATUS来判断系统状态
+show 命令还有很多用途
+   命令 描述     show databases 或show tables from database_name 显示mysql中所有数据库的名称   show tables 显示当前数据库中所有表的名称   show columns from table_name from database_name 显示表中列名称   show grants for user_name 显示一个用户的权限，显示结果类似于grant命令   show table status 显示当前使用或者指定的database中的每个表的信息。</description>
+    </item>
+    
+    <item>
+      <title>ffmpeg安装使用</title>
+      <link>http://blog.suconghou.cn/post/ffmpeg-usage/</link>
+      <pubDate>Mon, 11 Jan 2016 10:19:20 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/ffmpeg-usage/</guid>
+      <description>编译安装 yum install autoconf automake cmake freetype-devel gcc gcc-c++ git libtool make mercurial nasm pkgconfig zlib-devel mkdir ~/ffmpeg_sources  Yasm is an assembler used by x264 and FFmpeg
+cd ~/ffmpeg_sources git clone --depth 1 git://github.com/yasm/yasm.git cd yasm autoreconf -fiv ./configure --prefix=&amp;quot;$HOME/ffmpeg_build&amp;quot; --bindir=&amp;quot;$HOME/bin&amp;quot; make make install make distclean  H.264 video encoder. Requires ffmpeg to be configured with --enable-gpl --enable-libx264
+cd ~/ffmpeg_sources git clone --depth 1 git://git.videolan.org/x264 cd x264 PKG_CONFIG_PATH=&amp;quot;$HOME/ffmpeg_build/lib/pkgconfig&amp;quot; .</description>
+    </item>
+    
+    <item>
+      <title>git基本使用</title>
+      <link>http://blog.suconghou.cn/post/git-usage/</link>
+      <pubDate>Fri, 08 Jan 2016 23:43:00 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/git-usage/</guid>
+      <description>git配置 git config --global user.email &amp;quot;1126045770@qq.com&amp;quot; git config --global user.name &amp;quot;sucongohu&amp;quot; git config --global core.autocrlf false git config --global color.ui true git config --global credential.helper store git config --global alias.lg &amp;quot;log --graph --all --pretty=format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci,%cr) %C(bold blue)&amp;lt;%an&amp;gt;%Creset&#39; --abbrev-commit --date=relative&amp;quot;   以上分别是设置用户信息,禁止转换换行符,颜色高亮,记住密码,设置别名列出分支图. 设置别名后,可以使用 git lg 查看各个分支关系
+ 使用git还经常碰到文件权限发生变化,也显示文件变动了,需要提交,如果你不想将文件权限的变动纳入版本控制可以
+git config core.filemode false  对于一些本地和服务器不一致的配置文件,git status每次查看都显示出来,git add -u又会一不小心提交,可以使用 忽略已追踪文件的变动
+git update-index --assume-unchanged PATH_TO_FILE  参数 说明
+ %H	commit hash %h	commit short hash %T	tree hash %t	tree short hash %P	parent hash %p	parent short hash %an	作者名字 %aN	.</description>
+    </item>
+    
+    <item>
+      <title>Sublime使用和设置</title>
+      <link>http://blog.suconghou.cn/post/sublime-usage/</link>
+      <pubDate>Fri, 08 Jan 2016 23:21:12 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/sublime-usage/</guid>
+      <description>配置文件 最喜欢的字体Monaco,此处下载
+配置文件 Preferences.sublime-settings
+{ &amp;quot;close_windows_when_empty&amp;quot;: true, &amp;quot;default_encoding&amp;quot;: &amp;quot;UTF-8&amp;quot;, &amp;quot;default_line_ending&amp;quot;: &amp;quot;unix&amp;quot;, &amp;quot;ensure_newline_at_eof_on_save&amp;quot;: true, &amp;quot;font_face&amp;quot;: &amp;quot;Monaco&amp;quot;, &amp;quot;font_size&amp;quot;: 13, &amp;quot;highlight_line&amp;quot;: true, &amp;quot;highlight_modified_tabs&amp;quot;: true, &amp;quot;ignored_packages&amp;quot;: [ &amp;quot;Vintage&amp;quot; ], &amp;quot;show_encoding&amp;quot;: true, &amp;quot;show_line_endings&amp;quot;: true, &amp;quot;tab_size&amp;quot;: 4, &amp;quot;translate_tabs_to_spaces&amp;quot;: false, &amp;quot;trim_trailing_white_space_on_save&amp;quot;: true, &amp;quot;update_check&amp;quot;: false, &amp;quot;word_wrap&amp;quot;: false }  插件 open_browser.py 插件
+import sublime, sublime_plugin import webbrowser import os url_map = { &#39;D:\\git\\bbs\\&#39; : &#39;http://127.0.0.3/&#39;, &#39;D:\\php\\su\\&#39; : &#39;http://127.0.0.2/&#39;, &#39;D:\\php\\htdocs\\&#39; : &#39;http://127.0.0.1/&#39; } class OpenBrowserCommand(sublime_plugin.TextCommand): def run(self,edit): window = sublime.</description>
+    </item>
+    
+    <item>
+      <title>SSH</title>
+      <link>http://blog.suconghou.cn/post/linux-ssh/</link>
+      <pubDate>Thu, 07 Jan 2016 13:47:22 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/linux-ssh/</guid>
+      <description>避免SSH自动断开连接 如果有一段时间在SSH连接上无数据传输，连接就会断开,以下设定可以解决这个问题
+方案一：在客户端设置
+sudo vim /etc/ssh/ssh_config
+开启 ServerAliveInterval 60 开启 TCPKeepAlive yes
+此后该系统里的用户连接SSH时，每60秒会发一个KeepAlive请求，避免被踢。
+方案二：在服务器端设置
+sudo vim /etc/ssh/sshd_config
+开启ClientAliveInterval 60 开启 TCPKeepAlive yes
+如果您只想让当前的 ssh 保持连接，可以使用以下的命令：
+ssh -o ServerAliveInterval=60 user@sshserver
+ssh隧道 CfNg参数  C表示压缩数据传输 f表示后台用户验证,这个选项很有用,没有shell的不可登陆账号也能使用. N表示不执行脚本或命令 g表示允许远程主机连接转发端口,往往会没有效果,需要修改/etc/ssh/sshd_config添加gatewayports yes  -L本地转发 -L [本地监听IP:]本地监听端口号:目标主机IP:目标端口号 (其中,“本地监听IP”可以省略，省略的话就认为是“0.0.0.0”，但为了安全性考虑，请务必使用“127.0.0.1”做为本地监听端口， 而不要使用默认的“0.0.0.0”。）
+ssh -D 8080 user@host SSH会建立一个socket，去监听本地的8080端口。一旦有数据传向那个端口，就自动把它转移到SSH连接上面，发往远程主机。可以想象，如果8080端口原来是一个不加密端口，现在将变成一个加密端口。
+ssh -L 2121:host2:21 host3 命令中的L参数一共接受三个值，分别是&amp;rdquo;本地端口:目标主机:目标主机端口&amp;rdquo;，它们之间用冒号分隔。这条命令的意思，就是指定SSH绑定本地端口2121，然后指定host3将所有的数据，转发到目标主机host2的21端口（假定host2运行FTP，默认端口为21）。 这样一来，我们只要连接host1的2121端口，就等于连上了host2的21端口。
+ssh -CfNg -L 6300:127.0.0.1:1521 oracle@172.16.1.164  本机的6300端口就是远程主机172.16.1.164的1521端口
+-R远程转发  ssh -CfNg -R 1521:127.0.0.1:6300 oracle@172.16.1.164  在远程主机172.</description>
+    </item>
+    
+    <item>
+      <title>安装NodeJs和npm</title>
+      <link>http://blog.suconghou.cn/post/install-nodejs/</link>
+      <pubDate>Thu, 07 Jan 2016 10:29:59 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/install-nodejs/</guid>
+      <description>安装NodeJs nodejs官方提供了编译好的二进制的包,全平台都有,十分方便 最新版本NodeJs官方库
+其他信息http://www.oschina.net/news/73974/node-v6-2-1-current
+例如安装Linux版本
+wget https://nodejs.org/dist/v6.0.0/node-v6.0.0-linux-x64.tar.xz tar -xJf node-v6.0.0-linux-x64.tar.xz sudo mv node-v6.0.0-linux-x64 /usr/local/nodejs sudo ln -s /usr/local/nodejs/bin/node /usr/local/bin/node sudo ln -s /usr/local/nodejs/bin/npm /usr/local/bin/npm node -v npm -v  单文件版node.exe单独安装npm 1.clone npm 源码 git clone --recursive git://github.com/isaacs/npm.git
+2.进入npm目录,安装npm node cli.js install npm -gf
+版本切换 使用n来管理node的版本,npm install -g n,小巧无依赖,仅一个文件.
+也不会搞乱你的node_modules文件夹,node的可执行文件位置也始终不会变化.
+一些必备package sudo npm install -g less autoprefixer express jshint uglify-js webpack react-native-cli airs  ** npm加速 **
+使用淘宝的npm镜像.控制台运行,或者加入你的bashrc中永久生效
+alias cnpm=&amp;quot;npm --registry=https://registry.</description>
+    </item>
+    
+    <item>
+      <title>网摘</title>
+      <link>http://blog.suconghou.cn/post/some-good-useful-things/</link>
+      <pubDate>Wed, 06 Jan 2016 15:58:03 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/some-good-useful-things/</guid>
+      <description>云计算,存储,分发等 阿里百川 淘宝开放平台
+淘宝云盘,也外链图片做图床 淘宝CDN,速度很快,https,仅仅图片限制3M以内
+ 包含容器引擎（TAE）, 多媒体存储处理分发, 可免费使用一年
+ 网易的Docker服务
+ 价格略贵最低29/月
+ bmob移动后端云,网友示例项目BandwaghonhostAPP,结合mui移动开发框架开发手机APP
+短信,推动消息等  阿里大鱼   阿里巴巴旗下的短信验证码通知服务,价格实惠,短信通知≤0.045元／条,还有文本转语音通知≤0.055元／条
+  SendCloud   短信和邮件发送服务,邮件有每日免费200封,短信5.5分每条
+ 图像压缩软件 ImageOptim无损压缩
+mozjpeg Mozilla的jpg压缩技术,支持无损,有损压缩在线压缩,最大2M.
+tinypng 众多压缩软件中压缩效果较好的,支持png,jpg在线批量压缩
+kraken 类似于tinypng,也提供在线压缩
+pngquant 开源的压缩png,据说tinypng基于此项目
+nodejs imagemin NodeJs模块,压缩jpg,png,压缩效果一般
+移动混合应用/HHTML5开发 国产mui 最接近原生APP体验的高性能前端框架,不依赖任何第三方JS库,压缩后的JS和CSS文件仅有100+K和60+K
+SUI Mobile 淘宝移动UI框架,轻量，小巧且精美的UI库 方便迅速搭建手机H5应用,兼容iOS 6.0+ 和 Android 4.0+，非常适合开发跨平台Web App。
+mobiscroll 移动开发UI,丰富的时间选择器控件还有一些WEBAPP展示,https://github.com/acidb/mobiscroll
+桌面开发 nwjs Mac版钉钉使用的就是这个技术,界面还算漂亮
+网页动画 百度zrender 基于Canvas的图形仓库交互工具,可以方便的画出很多图形
+游戏引擎 阿里Hilo 游戏渲染引擎,实现2048,切水果等.
+http://www.egret.com/ 白鹭也是做这个的
+https://github.com/iioinc/iio.js 也是canvas的游戏
+网页富文本编辑器 wangeditor 轻量简介的富文本编辑器,使用容易,相比百度umeditor更简洁</description>
+    </item>
+    
+    <item>
+      <title>MacOs上Chrome中的submit按钮默认样式问题</title>
+      <link>http://blog.suconghou.cn/post/mac-chrome-input-submit/</link>
+      <pubDate>Tue, 05 Jan 2016 16:44:47 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/mac-chrome-input-submit/</guid>
+      <description>发现MacOs的Chrome中,input为submit的按钮,添加其他样式不生效,任然是默认样式, 解决方法是为其添加一个border或者backgroud就好了</description>
+    </item>
+    
+    <item>
+      <title>开启docker之旅</title>
+      <link>http://blog.suconghou.cn/post/using-docker/</link>
+      <pubDate>Tue, 05 Jan 2016 10:28:49 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/using-docker/</guid>
+      <description>安装Docker docker 安装需要Linux内核在3.10.0以上,仅支持Linux,在Windows和MacOs上也是基于虚拟机方式运行,需要提前安装虚拟机
+OpenVZ的VPS内核版本较低,且不能升级,并不能作为docker server,但是可以使用docker client
+ 通过df -lhT 看到Type为simfs,而不是ext3,ext4,一般就代表使用的是OpenVZ虚拟化的 查看系统内核版本uname -r  查看安装的系统版本 lsb_release -a 或者 cat /etc/issue
+以下二种方法适用于RedHat,CentOS
+ cat /etc/redhat-release 或者 cat /etc/centos-release rpm -q centos-release 或者 rpm -q redhat-release  查看是否是64位系统uname -i
+下载安装 http://www.oschina.net/news/83328/docker-17-03-1-ce-released
+deb/rpm install: curl -fsSL https://get.docker.com/ | sh Linux 64bits tgz: https://get.docker.com/builds/Linux/x86_64/docker-17.03.1-ce.tgz Darwin/OSX 64bits client tgz: https://get.docker.com/builds/Darwin/x86_64/docker-17.03.1-ce.tgz Linux 32bits arm tgz: https://get.docker.com/builds/Linux/armel/docker-17.03.1-ce.tgz Windows 64bits zip: https://get.docker.com/builds/Windows/x86_64/docker-17.03.1-ce.zip Windows 32bits client zip: https://get.docker.com/builds/Windows/i386/docker-17.03.1-ce.zip  快速安装docker并启动 官方安装教程</description>
+    </item>
+    
+    <item>
+      <title>Linux下常用的下载利器</title>
+      <link>http://blog.suconghou.cn/post/linux-download-tools/</link>
+      <pubDate>Fri, 01 Jan 2016 23:54:20 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/linux-download-tools/</guid>
+      <description>wget wget -c -O filename &amp;quot;http://xx.com&amp;quot; 下载存储到指定文件,并指定断点续传
+wget -nc -c -i url.txt 批量下载文件中指定的资源(每行一个连接),跳过已下载的(同名的),并且断点续传.
+wget -i url.txt -O - | mpv - 下载url.txt里的链接,输出到标准输出
+使用user-agent
+wget --user-agent=&amp;quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36&amp;quot; URL-TO-DOWNLOAD
+wget 断点续传 使用 -c 限速使用--limit-rate=300k
+wget -c --limit-rate=30k http://...
+curl 常用的命令
+curl http://xx.com 只获取http消息正文
+curl -I http://xx.com 只获取http消息头
+curl -i http://xx.com 获取http消息头和正文
+curl -d &amp;quot;name=abc&amp;amp;pass=123&amp;quot; http://xx.com 发送http post请求,采用的是application/x-www-form-urlencoded形式
+curl -F &amp;quot;name=abc&amp;quot; -F &amp;quot;pass=123&amp;quot; http://xx.</description>
+    </item>
+    
+    <item>
+      <title>安装PHP7和NGINX</title>
+      <link>http://blog.suconghou.cn/post/install-nginx-php-mysql-redis/</link>
+      <pubDate>Fri, 01 Jan 2016 23:51:02 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/install-nginx-php-mysql-redis/</guid>
+      <description>编译安装NGINX 首先安装一些依赖
+yum -y install gcc make autoconf automake install zlib zlib-devel openssl openssl-devel pcre-devel  apt-get update apt-get -y install gcc make openssl libssl-dev libpcre3 libpcre3-dev  编译安装
+Chrome51以后版本废弃了NPN的支持,要让Chrome51以后版本支持http2,需要更新OpenSSL到1.0.2及以上.
+查看当前系统的OpenSSL版本:openssl version
+更新OpenSSL
+OPENSSL_VERSION=openssl-1.0.2h cd /tmp wget https://www.openssl.org/source/${OPENSSL_VERSION}.tar.gz tar zxvf ${OPENSSL_VERSION}.tar.gz cd ${OPENSSL_VERSION} ./config --prefix=/usr --shared make -j4 sudo make install openssl version  最后一句查看版本是否更新了
+如果没有www-data用户和组,可以先创建
+groupadd www-data adduser -M -s /sbin/nologin www-data -g www-data  编译nginx NGINX_VERSION=nginx-1.11.3 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l` cd /tmp wget http://nginx.</description>
+    </item>
+    
+    <item>
+      <title>使用hugo搭建静态博客</title>
+      <link>http://blog.suconghou.cn/post/start-your-blog-with-hugo/</link>
+      <pubDate>Fri, 01 Jan 2016 19:00:18 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/start-your-blog-with-hugo/</guid>
+      <description>什么是hugo hugo是用Go语言编写的静态网站生成器,与此类似的工具还有Hexo,相比Hexo,他的编译速度更快,而易于使用,主要表现在:
+ 无依赖,无论是Linux环境,还是MacOs,Windows,下载一个二进制的可执行文件即可使用 即时刷新,无论是对于文章还是样式的修改都能够自动重新编译,自动刷新,无需配置,当你修改了文章,切换回浏览器,看到的已经是新页面了. 主题丰富,易于定制,编写一个主题也十分简单.  如何使用 hugo 是开源的,在github上下载即可.
+基本命令  新建一个站点/初始化 hugo new site /path/myblog 新建一篇博文hugo new post/some-post.md 开启http服务器并指定使用主题 hugo server --theme=su --buildDrafts --watch 编译文件,直接执行hugo  当然如果在config.toml里配置好了主题等,直接使用hugo server就可以开始写博文.
+如果想让草稿也被渲染,使用hugo server -D
+编写主题 在平级的themes目录下,建立一个文件夹为你主题的名字,里面有static,layouts,archetypes文件夹.
+static为你的静态目录,layouts为模板目录,archetypes为</description>
+    </item>
+    
+    <item>
+      <title>关于</title>
+      <link>http://blog.suconghou.cn/about/</link>
+      <pubDate>Fri, 01 Jan 2016 18:58:18 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/about/</guid>
+      <description>关于博客 博客使用hugo搭建,自己编写的主题.
+hugo把Markdown解析为html,托管于github pages,DNSPOD双线解析.
+国内解析到coding page服务
+国外解析到github pages服务
+博客常记录一些自己折腾的东西,以备必要时查阅.
+关于我 90后,计算机宅男,PHP程序猿,前端攻城狮,也常写一些Node,Go,Python
+Mac用户,Linux党,常混迹于各大编程社区.
+热爱编程,目前正向全栈发展.</description>
     </item>
     
   </channel>
