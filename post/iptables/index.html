@@ -157,6 +157,10 @@ iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 
 <p>iptables并不是一个普通的daemon，只是一个普通的工具，添加一些规则到kernel的filter列表里面。</p>
 
+<p><code>systemctl stop iptables</code> 也与进程无关,他只是执行了<code>/usr/libexec/iptables/iptables.init stop</code></p>
+
+<p>将规则从内核清除到存到文件.</p>
+
 <h3 id="ip-拦截">IP 拦截</h3>
 
 <p>拦截一个IP</p>
@@ -180,6 +184,21 @@ iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 <p>192.x.x.x   可以写 <code>192.0.0.0/8</code></p>
 
 <p><code>iptables -I INPUT -s 112.198.0.0/16 -j DROP</code></p>
+
+<blockquote>
+<p>iptables 过滤大量IP地址任然是挨个遍历,如需拦截数以万计的IP地址,需使用<code>ipset</code>,能获取最佳性能.
+<code>yum info ipset -y</code> 安装<code>ipset</code></p>
+</blockquote>
+
+<h3 id="端口转发">端口转发</h3>
+
+<p>允许服务器的IP转发功能： <code>echo 1 &gt; /proc/sys/net/ipv4/ip_forward</code></p>
+
+<p><code>iptables -t nat -A POSTROUTING -j MASQUERADE</code></p>
+
+<p><code>iptables -t nat -A PREROUTING -p tcp -i eth0 --dport 31521 -j DNAT --to 192.168.0.211:1521</code></p>
+
+<p>相同端口后面可省略不写 <code>iptables -t nat -I PREROUTING -p tcp --dport 1521 -j DNAT --to 192.168.0.211</code></p>
 
 <pre><code>
 #清除配置
@@ -219,6 +238,8 @@ iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 <code>firewall-cmd --zone=public --list-ports</code>
 添加一个开放端口
 <code>firewall-cmd --zone=public --add-port=8080/tcp</code></p>
+
+<p>更多可参考 <a href="https://linux.cn/article-8098-1.html">https://linux.cn/article-8098-1.html</a></p>
 
 		</div>
 	</div>

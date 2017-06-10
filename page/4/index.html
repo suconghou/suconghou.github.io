@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.20.2" />
+	<meta name="generator" content="Hugo 0.21" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -31,6 +31,132 @@
 
 <div class="content container">
 	<div class="posts">
+		
+		<div class="post">
+			<h1 class="post-title">
+				<a href="/post/some-hole/"> 都有哪些坑</a>
+			</h1>
+			<p class="post-date">Thu, Jul 7, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="总结一下遇到的坑">总结一下遇到的坑</h2>
+
+<h3 id="微信">微信</h3>
+
+<p><strong>关于横竖屏的坑</strong></p>
+
+<p>css3可以使用媒体查询判断设备是横屏还是竖屏</p>
+
+<pre><code>//横屏时显示
+@media all and (orientation : landscape) {
+#screenMask{display:block}
+}
+
+//竖屏时隐藏
+@media all and (orientation : portrait) {
+#screenMask{display:none}
+}
+</code></pre>
+
+<p>在手机浏览器中表现良好,微信中看样子也可以,但是微信网页中如果聚焦输入框,弹起键盘就有问题了.</p>
+
+<p>软键盘弹起后,网页可用面积减小,安卓就自动识别为横屏了,原有的页面消失了,影响非常大.IOS则没有这个问题,媒体查询判断横竖屏在IOS上工作良好.</p>
+
+<p>并且由此发现,css3媒体查询就是根据宽度是否比高度小来判断横竖屏的.</p>
+
+<p><strong>解决方案1</strong></p>
+
+<p>使用<code>javascript</code>的<code>orientation</code>和<code>orientationchange</code>判断</p>
+
+<ul>
+<li>window.orientation   属于window对象上一个属性；共有三个值 ：0为竖屏模式（portrait）,90为向左反转变为横屏模式（landscape），-90为向右反转变为横屏模式（landscape），最后180就是设备上下互换还是竖屏模式。</li>
+<li>orientationchange    是一个event，在设备旋转时，会触发此事件，如同PC上使用的resize事件。</li>
+</ul>
+
+<pre><code>(function(){
+    var init = function(){
+        var updateOrientation = function(){
+            var orientation = window.orientation;
+            switch(orientation){
+                case 90:
+                case -90:
+                    orientation = 'landscape';
+                    break;
+                default:
+                    orientation = 'portrait';
+                    break;
+            }
+
+           //do something
+           //比如在html标签加一个状态
+            //然后根据不同状态，显示不同大小
+            document.body.parentNode.setAttribute('class',orientation);
+        };
+
+        window.addEventListener('orientationchange',updateOrientation,false);
+        updateOrientation();
+    };
+
+    window.addEventListener('DOMContentLoaded',init,false);
+})();
+</code></pre>
+
+<p>经测试使用JS判断能够正确得出安卓微信客户端里输入框聚焦时的横竖屏状态.</p>
+
+<p>orientation和orientationchange只有移动设备有这些属性和事件.</p>
+
+<p>在不支持这种属性和事件的设备上使用宽高比来判断做一下兼容,这样在不支持<code>orientation</code>的设备上就相当于使用了媒体查询</p>
+
+<p>最终总结代码如下:</p>
+
+<pre><code>(function(w)
+{
+    var supportOrientation = (typeof w.orientation === 'number' &amp;&amp; typeof w.onorientationchange === 'object');
+    var init = function()
+    {
+        var htmlNode = document.body.parentNode, orientation;
+        var updateOrientation = function()
+        {
+            if(supportOrientation)
+            {
+                orientation = w.orientation;
+                switch(orientation)
+                {
+                    case 90:
+                    case -90:
+                        orientation = 'landscape';
+                        break;
+                    default:
+                        orientation = 'portrait';
+                        break;
+                }
+            }
+            else
+            {
+                orientation = (w.innerWidth &gt; w.innerHeight) ? 'landscape' : 'portrait';
+            }
+            htmlNode.setAttribute('class',orientation);
+        };
+        if(supportOrientation)
+        {
+            w.addEventListener('orientationchange',updateOrientation,false);
+        }
+        else
+        {
+            //监听resize事件
+            w.addEventListener('resize',updateOrientation,false);
+        }
+        updateOrientation();
+    };
+    w.addEventListener('DOMContentLoaded',init,false);
+})(window);
+</code></pre>
+
+<p>可以访问如下网址测试: /html/wx</p>
+
+			</div>
+		</div>
 		
 		<div class="post">
 			<h1 class="post-title">
@@ -192,9 +318,11 @@ ZLIB_ENCODING_DEFLATE 对应于ZLIB格式（注意不是纯DEFLATE格式）</p>
 
 <h2 id="foreach-vs-array-filter">foreach vs array_filter</h2>
 
-<p>大数据量下,使用foreach过滤数组控制不如用array_filter,array_filter不加第二个参数,默认就是返回值,</p>
+<p>大数据量下,使用foreach过滤数组控制不如用array_filter,array_filter不加第二个参数,默认就是返回值,可用作去除非true值.</p>
 
 <p>array_filter加上array_values也要比foreach快,在php7下更加明显</p>
+
+<p>在php7之前的foreach其实是复制出一个副本出来，然后进行循环的。这个时候建议使用array_map(), array_walk(), array_filter()等函数来处理你的问题</p>
 
 <h2 id="php5-与-php7">php5 与 php7</h2>
 
@@ -235,16 +363,6 @@ ZLIB_ENCODING_DEFLATE 对应于ZLIB格式（注意不是纯DEFLATE格式）</p>
 
 <h2 id="静态编译shadowsocks-libev">静态编译shadowsocks libev</h2>
 
-<p>centos7 编译</p>
-
-<pre><code>yum update &amp;&amp; yum install -y zip unzip xz curl wget git gcc make zlib zlib-devel openssl openssl-devel
-git clone https://github.com/shadowsocks/shadowsocks-libev.git
-cd shadowsocks-libev
-./configure --enable-static=yes
-export CFLAGS=&quot;-O3&quot;
-make -j4 &amp;&amp; make install
-</code></pre>
-
 <p>在alpine里编译</p>
 
 <p>先安装依赖</p>
@@ -255,7 +373,7 @@ export LIBSODIUM_VER=1.0.12
 wget https://download.libsodium.org/libsodium/releases/libsodium-$LIBSODIUM_VER.tar.gz
 tar xvf libsodium-$LIBSODIUM_VER.tar.gz
 cd libsodium-$LIBSODIUM_VER
-./configure --prefix=/usr &amp;&amp; make &amp;&amp; make install
+./configure --prefix=/usr &amp;&amp; make -j2 &amp;&amp; make install
 cd /tmp
 ldconfig
 
@@ -270,26 +388,29 @@ cd /tmp
 ldconfig
 </code></pre>
 
-<p>需要将生成的<code>./src/Makefile</code>修改<code>LDFLAGS = -all-static</code></p>
+<p>安装完这两个依赖后,下面准备开始静态编译</p>
 
-<pre><code>apk update &amp;&amp; apk upgrade
-apk --update add gcc g++ make autoconf curl wget build-base linux-headers libev-dev libtool udns-dev libsodium-dev mbedtls-dev pcre-dev
-CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
-export CFLAGS=&quot;-Os&quot;
-SS_VER=3.0.5
+<pre><code>apk update &amp;&amp; apk upgrade &amp;&amp; apk add gcc g++ make autoconf curl wget build-base linux-headers libev-dev libtool udns-dev libsodium-dev mbedtls-dev pcre-dev
+SS_VER=3.0.6
 cd /tmp
 curl -sSL https://github.com/shadowsocks/shadowsocks-libev/releases/download/v${SS_VER}/shadowsocks-libev-${SS_VER}.tar.gz |  tar xz --strip 1
-./configure --prefix=/usr --enable-static --disable-documentation
+CFLAGS=-Os ./configure --prefix=/usr --enable-static --disable-documentation
 sed -i &quot;s/LDFLAGS = /LDFLAGS = -all-static/g&quot; ./src/Makefile
 sed -i &quot;s/LDFLAGS = /LDFLAGS = -all-static/g&quot; ./Makefile
-make -j$CPU_NUM LDFLAGS=&quot;-static -pthread -lrt -ldl -L/usr&quot; &amp;&amp; make install
 </code></pre>
 
 <p>其中 需要 <code>libudns.a</code> 可以到<code>http://www.corpit.ru/mjt/udns.html</code>下载编译</p>
 
-<p>然后查找 <code>src/Makefile</code> <code>ss_local_LINK</code>  大约242行 <code>-o</code>之前添加 如下</p>
+<pre><code>curl -sSL http://www.corpit.ru/mjt/udns/udns-0.4.tar.gz | tar xz &amp;&amp; cd udns-0.4 &amp;&amp; ./configure  &amp;&amp; make -j2
+</code></pre>
 
-<p><code>-static -all-static -pthread -lrt -ldl /usr/lib/libev.a /usr/lib/libsodium.a /usr/lib/libmbedcrypto.a  /usr/lib/libpcre.a /usr/lib/libc.a /usr/lib/libudns.a</code></p>
+<p>复制编译好的<code>libudns.a</code>到<code>/usr/lib/libudns.a</code></p>
+
+<p>make 之前需要存在以下文件<code>/usr/lib/libev.a /usr/lib/libsodium.a /usr/lib/libmbedcrypto.a  /usr/lib/libpcre.a  /usr/lib/libudns.a</code></p>
+
+<p><code>make -j2</code>编译完成后即可在src目录得到静态编译的ss-local,ss-server等</p>
+
+<h3 id="使用">使用</h3>
 
 <p>启动server端</p>
 
@@ -727,97 +848,134 @@ varnishd  -V
 			</div>
 		</div>
 		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/use-docker-on-raspberry/"> 在树莓派上使用Docker</a>
-			</h1>
-			<p class="post-date">Sun, May 8, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="安装支持docker的系统">安装支持Docker的系统</h2>
-
-<p>树莓派官方系统并不支持Docker,需要安装.</p>
-
-<p>查看 <a href="http://blog.hypriot.com/downloads/">集成Dcoker的树莓派系统</a></p>
-
-<pre><code>aria2c -s 50 -c https://downloads.hypriot.com/hypriotos-rpi-v0.8.0.img.zip
-
-
-diskutil list
-diskutil unmountdisk /dev/disk2
-</code></pre>
-
-<p>用以下命令前必须卸载u盘<code>diskutil unmountdisk /dev/disk2</code></p>
-
-<pre><code>sudo dd if=hypriotos-rpi-v0.8.0.img of=/dev/disk2 bs=8k
-</code></pre>
-
-<p>安装完成重启就可以啦,启动后登陆的用户是pirate,密码hypriot</p>
-
-<p>修改密码:执行<code>passwd</code>,输入当前密码,输入新密码,再输入新密码,更新完成</p>
-
-<p>执行<code>exit</code>退出,或者<code>sudo reboot</code>重启</p>
-
-<p>创建用户:<code>useradd -g test -d /home/test1 -s /etc/bash -m test1</code>
-注解：-g 所属组 -d 家目录 -s 所用的SHELL
-passwd abc</p>
-
-<p>获得sudo权限:编辑<code>/etc/sudoers</code> 加入新添加的用户名</p>
-
-			</div>
-		</div>
-		
 	</div>
 	<nav>
 		
+
+<ul class="pagination">
     
-    <ul class="pagination">
-        
-        <li>
-            <a href="/" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
-        </li>
-        
-        <li
-        >
-        <a href="/page/3/" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-        </li>
-        
-        <li
-        ><a href="/">1</a></li>
-        
-        <li
-        ><a href="/page/2/">2</a></li>
-        
-        <li
-        ><a href="/page/3/">3</a></li>
-        
-        <li
-        class="active"><a href="/page/4/">4</a></li>
-        
-        <li
-        ><a href="/page/5/">5</a></li>
-        
-        <li
-        ><a href="/page/6/">6</a></li>
-        
-        <li
-        ><a href="/page/7/">7</a></li>
-        
-        <li
-        ><a href="/page/8/">8</a></li>
-        
-        <li
-        >
-        <a href="/page/5/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-        </li>
-        
-        <li>
-            <a href="/page/8/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
-        </li>
-        
-    </ul>
+    <li>
+        <a href="/" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+    </li>
     
+    <li
+    >
+    <a href="/page/3/" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/">1</a></li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/page/2/">2</a></li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/page/3/">3</a></li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    class="active"><a href="/page/4/">4</a></li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/page/5/">5</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="disabled"><span aria-hidden="true">&hellip;</span></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/page/9/">9</a></li>
+    
+    
+    <li
+    >
+    <a href="/page/5/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+    
+    <li>
+        <a href="/page/9/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+    </li>
+    
+</ul>
+
 	</nav>
 </div>
 	<div class="music-container">

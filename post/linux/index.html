@@ -56,6 +56,61 @@
 
 <p><code>head -c 100 file | hexdump | md5sum</code></p>
 
+<p>取文件1G(1073741824)至+819200处的md5值</p>
+
+<p><code>head -c 1074561024 file | tail -c 819200 |md5sum</code></p>
+
+<p>使用dd会更加方便,也更高效</p>
+
+<p><code>dd if=file bs=1 skip=1073741824 count=819200 | md5sum</code></p>
+
+<p>拆分文件 <code>split -b 1kb /tmp/file sfile</code></p>
+
+<p>拆分文件大小为1k，也可以是1b，或者1m之类的单位</p>
+
+<p><code>xxd</code> <code>hexdump</code> <code>od</code>
+<a href="https://www.zhihu.com/question/40441308/answer/86637730">https://www.zhihu.com/question/40441308/answer/86637730</a></p>
+
+<h2 id="使用-sed-修改二进制文件">使用 sed 修改二进制文件</h2>
+
+<p>先找到查找的目标</p>
+
+<p>例如<code>/opt/local</code>则对应<code>echo /opt/local | xxd</code></p>
+
+<pre><code>0000000: 2f6f 7074 2f6c 6f63 616c 0a              /opt/local.
+</code></pre>
+
+<p>要替换为<code>/usr/local</code>,则目标为<code>echo /usr/local | xxd</code></p>
+
+<pre><code>0000000: 2f75 7372 2f6c 6f63 616c 0a              /usr/local.
+</code></pre>
+
+<p>使用sed替换</p>
+
+<pre><code>xxd file | sed 's/2f6f 7074/2f75 7372/g' | xxd -r &gt; newfile
+</code></pre>
+
+<p><code>echo /lib/ld-linux.so.3 | xdd</code></p>
+
+<pre><code>0000000: 2f6c 6962 2f6c 642d 6c69 6e75 782e 736f  /lib/ld-linux.so
+0000010: 2e33 0a                                  .3.
+</code></pre>
+
+<p><code>echo ld.so | xxd</code></p>
+
+<pre><code>0000000: 6c64 2e73 6f0a                           ld.so.
+</code></pre>
+
+<pre><code>xxd file | sed 's/\x2f\x6c\x69\x62\x2f\x6c\x64\x2d\x6c\x69\x6e\x75\x78\x2e\x73\x6f\x2e\x33\x0a/\x6c\x64\x2e\x73\x6f\x0a/g' | xxd -r &gt; bb
+</code></pre>
+
+<pre><code>sed 's/\x2f\x6c\x69\x62\x2f\x6c\x64\x2d\x6c\x69\x6e\x75\x78\x2e\x73\x6f\x2e\x33\x0a/\x6c\x64\x2e\x73\x6f\x0a/g' file &gt; newfile
+
+</code></pre>
+
+<pre><code>LD_LIBRARY_PATH=`pwd` ~/tmp/qemu-arm-static ~/aa/aa -v
+</code></pre>
+
 <h2 id="linux用户管理">Linux用户管理</h2>
 
 <h3 id="添加用户adduser">添加用户adduser</h3>
@@ -189,8 +244,43 @@ ps -o rss,vsz,pid,ppid,time,etime,args
 <p>如果是其他端口可以-p指定端口
 <code>ssh-copy-id -i ~/.ssh/id_rsa.pub -p 26671 root@host</code></p>
 
-<p>使用指定私钥登陆
+<p>此过程相当于</p>
+
+<p><code>ssh user@host 'mkdir -p .ssh &amp;&amp; cat &gt;&gt; .ssh/authorized_keys' &lt; ~/.ssh/id_rsa.pub</code></p>
+
+<p>默认会使用<code>~/.ssh/id_rsa</code> 私钥文件,也可以指定
+使用指定私钥登陆
 <code>ssh –i  id_rsa root@host</code></p>
+
+<p>针对无效问题,可以检查服务端</p>
+
+<pre><code>chmod 700 ~/.ssh ; chmod 600 ~/.ssh/authorized_keys ; chmod g-w,o-w ~
+</code></pre>
+
+<p><code>/etc/ssh/sshd_config</code>文件配置</p>
+
+<pre><code>RSAAuthentication yes
+PubkeyAuthentication yes
+AuthorizedKeysFile  %h/.ssh/authorized_keys
+</code></pre>
+
+<p>必要时可禁止密码登陆</p>
+
+<pre><code>passwordAuthentication no
+</code></pre>
+
+<p>在<code>/var/log/secure</code>文件中,查找IP地址</p>
+
+<p><code>grep -E -o &quot;([0-9]{1,3}\.){3}[0-9]{1,3}&quot; /var/log/secure</code></p>
+
+<blockquote>
+<p>-E选项表示使用grep扩展的正则表达式
+-o选项是只显示匹配到的字符串</p>
+</blockquote>
+
+<p>统计这些IP的数量,并排序,查看哪些IP登陆错误次数较多</p>
+
+<p><code>grep -E -o &quot;([0-9]{1,3}\.){3}[0-9]{1,3}&quot; /var/log/secure|sort|uniq -c|sort -nr | head -30</code></p>
 
 <h2 id="pgrep">pgrep</h2>
 
@@ -262,6 +352,41 @@ count = blocks 只拷贝输入的blocks块</p>
 
 <p><code>mpstat  -P ALL 2</code></p>
 
+<h2 id="dig">dig</h2>
+
+<p><code>sudo apt-get install dnsutils</code> 或者 <code>yum install bind-utils -y</code></p>
+
+<p>DNS域名查询</p>
+
+<p><code>dig www.baidu.com</code></p>
+
+<p>查询的dns服务器将采用系统配置的服务器，即/etc/resovle.conf 中的</p>
+
+<p>如果要查询其他类型的记录，比如MX，CNAME，NS，PTR等，只需将类型加在命令后面即可</p>
+
+<pre><code>dig www.baidu.com mx
+dig www.baidu.com ns
+</code></pre>
+
+<p>可以查看使用的DNS服务器及端口,域名对应的IP,查询耗时等.</p>
+
+<p>默认情况下dig将采用udp协议进行查询，如果要采用tcp方式，可以加上 +tcp参数
+<code>dig www.baidu.com +tcp</code></p>
+
+<p>如果你是一个系统管理员，部署好了一台dns服务器之后想对它进行解析测试，就必须要显式指定待测试的dns服务器地址了，例如
+<code>dig @202.106.0.20 www.baidu.com a</code></p>
+
+<p>另外一个重要的功能是+trace参数，使用这个参数之后将显示从根域逐级查询的过程
+<code>dig www.baidu.com a +trace</code></p>
+
+<p><code>dig @223.6.6.6 blog.suconghou.cn +short</code> 简介模式列出IP</p>
+
+<p><strong>nslookup</strong> 也可以获取域名对应的IP</p>
+
+<p><code>nslookup www.baidu.com</code></p>
+
+<p>还可以指定DNS SERVER查询 <code>nslookup www.baidu.com 8.8.8.8</code></p>
+
 <h2 id="nc">nc</h2>
 
 <p>nc 命令默认没有安装,需要自己安装,<code>yum install nc</code></p>
@@ -287,6 +412,10 @@ count = blocks 只拷贝输入的blocks块</p>
 
 <p>ssh 也可以使用 pipe 传送 <code>tar zcf - attaches | ssh root@ip &quot;tar zxf - -C /path/to/&quot;</code></p>
 
+<p>使用端口如 <code>tar czf - public_html | ssh root@ip -p 5678 tar xzf - -C /www/web/myweb/public_html</code></p>
+
+<p>边打包边传输边解压,一条命令解决</p>
+
 <p>传送大量大文件 使用 <code>lftp</code>也是一个好方案</p>
 
 <pre><code>Use lftp, its much faster than rsync and its best for mirroring websites (many small files). It can also transfer in parallel using multiple connections:
@@ -305,6 +434,18 @@ If one connection breaks it will reconnect and continue. If you break the transf
 
 <p><strong>端口转发</strong></p>
 
+<pre><code>mknod tunnel p #创建一个临时的管道文件tunnel 或者下面的
+mkfifo tunnel
+</code></pre>
+
+<pre><code>nc -l -p 8081  &lt; tunnel | nc 127.0.0.1 9090 | tee tunnel
+</code></pre>
+
+<p>或者</p>
+
+<pre><code>cat tunnel | nc 127.0.0.1 9090 | nc -l -p 8081 &gt; tunnel
+</code></pre>
+
 <p>使用之前需要了解其他的命令</p>
 
 <p><code>tee</code>命令将标准输入的数据写入标准输出和tee命令指定的文件参数</p>
@@ -318,9 +459,22 @@ stdout	1
 stderr	2
 </code></pre>
 
-<p>** listener-to-client模式(用于外网访问内网) **</p>
+<p>使用<code>nc</code>建立一个简易webserver</p>
 
-<p>见 <a href="http://onestraw.net/cybersecurity/netcat-advanced-usage/">http://onestraw.net/cybersecurity/netcat-advanced-usage/</a></p>
+<p><code>while true;do sudo nc -l 8080 &lt; index.html;done</code></p>
+
+<p>用curl/wget可以访问,浏览器访问可能存在问题.</p>
+
+<p>nc 建立的server,比用 busybox 建立的server内存占用稍大,约<code>2MB</code> <code>busybox httpd -p 9797 -h /home/</code></p>
+
+<h2 id="history">history</h2>
+
+<p>不记录本次会话的history</p>
+
+<pre><code>HISTFILE=/dev/null; HISTSIZE=0; HISTFILESIZE=0;
+</code></pre>
+
+<p>执行的任何命令都不会写入 <code>~/.bash_history</code> , 按上键也不可复用执行过的命令. 这条设置也不会被记录</p>
 
 <h2 id="一份linux别名和函数库">一份Linux别名和函数库</h2>
 
@@ -359,8 +513,25 @@ topmem()
 	ps aux | sort -k6nr | head -n5;
 }
 
-
 </code></pre>
+
+<p>Linux 还可以使用 <code>bind</code> 定义快捷键执行的命令</p>
+
+<p>如让 <code>Ctrl+a</code> 执行 ls  <code>bind -x '&quot;\C-a&quot;: ls -lh'</code></p>
+
+<p>使用<code>unalias</code>取消alias</p>
+
+<p>内存增序 <code>ps aux --sort rss</code></p>
+
+<p>内存减序 <code>ps aux --sort -rss</code></p>
+
+<p>cpu增序 <code>ps auxw --sort=%cpu</code></p>
+
+<p>cpu减序 <code>ps auxw --sort=-%cpu</code></p>
+
+<p>可写为alias <code>alias mem=&quot;ps aux --sort -rss  | head -n20 &amp;&amp; ps auxw --sort=-%cpu | head -n5&quot;</code></p>
+
+<p><code>netstat -anltup</code> 与 <code>ss -ln</code> 都能查看网络链接信息</p>
 
 <p>部分快捷键</p>
 
@@ -414,6 +585,8 @@ echo &quot;*****************************&quot;
 }
 
 </code></pre>
+
+<p><code>lscpu</code> 命令也能简单查看CPU信息</p>
 
 <h2 id="使用脚本清理一些文件">使用脚本清理一些文件</h2>
 
@@ -654,6 +827,28 @@ while true;do for i in *.less ; do air compress $i -r;done; sleep 6 ;done;
 
 </code></pre>
 
+<p>shell 命令查询 <a href="https://explainshell.com/">https://explainshell.com/</a></p>
+
+<p>常用 Linux命令 一览 <a href="https://github.com/Idnan/bash-guide">https://github.com/Idnan/bash-guide</a></p>
+
+<h3 id="shell多行转化为一行">shell多行转化为一行</h3>
+
+<p>例如当前目录下所有less,但排除指定文件,按字母排序成一行</p>
+
+<pre><code>ls *.less | grep -v &quot;base.less\|config.less\|mixins.less&quot; |  xargs echo
+</code></pre>
+
+<p>直接执行</p>
+
+<pre><code>air compress ` ls *.less | grep -v &quot;base.less\|config.less\|mixins.less&quot; | xargs echo`
+</code></pre>
+
+<p>来合并这些文件.</p>
+
+<p><a href="http://blog.csdn.net/hjxhjh/article/details/17264739">http://blog.csdn.net/hjxhjh/article/details/17264739</a></p>
+
+<p><a href="http://blog.sina.com.cn/s/blog_4a3c301c0100lqbm.html">http://blog.sina.com.cn/s/blog_4a3c301c0100lqbm.html</a></p>
+
 <h2 id="dns配置">DNS配置</h2>
 
 <p><code>/etc/resolv.conf</code>内配置</p>
@@ -664,6 +859,16 @@ while true;do for i in *.less ; do air compress $i -r;done; sleep 6 ;done;
 nameserver 4.2.2.1
 nameserver 8.8.4.4
 nameserver 4.2.2.2
+</code></pre>
+
+<p>国内</p>
+
+<pre><code>nameserver 1.2.4.8
+nameserver 119.29.29.29
+nameserver 119.28.28.28
+nameserver 114.114.114.114
+nameserver 223.5.5.5
+nameserver 223.6.6.6
 </code></pre>
 
 <h2 id="测试vps宽带">测试VPS宽带</h2>
@@ -780,7 +985,11 @@ mtr</p>
 
 <p>iftop和iptraf可以用来查看当前网络链接的一些流量情况。</p>
 
-<p><code>ifstat</code> 能查看系统大致的网络流量</p>
+<p><code>ifstat</code> 能查看系统大致的网络流量,直接执行<code>ifstat</code>即可</p>
+
+<p><code>ifstat -v</code>打印版本并退出</p>
+
+<p><code>ifstat -a</code>显示所有的网卡统计,<code>-b</code>以<code>Kbps</code>为单位.<code>-S</code>持续更新而不滚动更新,直接加上数字可控制计算的间隔<code>ifstat -tT 5</code></p>
 
 <p><code>iftop</code> 在<code>epel</code>源中,系统不自带,功能更加全面</p>
 
@@ -938,8 +1147,11 @@ curl -sSL https://github.com/esnet/iperf/archive/3.1.7.tar.gz | tar xz --strip 1
 独享物理机              Intel&reg; Xeon&reg; CPU E5506  @ 2.13GHz      : 37.454s
 4核独享物理机            Intel&reg; Xeon&reg; CPU E7- 4820  @ 2.00GHz   : 39.464s
 某VMWARE虚拟化VPS       Intel&reg; Xeon&reg; CPU X7560  @ 2.27GHz      : 45.866s
-独享物理机              Intel&reg; Xeon&reg; CPU E3-1230 v3 @ 3.30GHz  : 1m12.240s</p>
+独享物理机              Intel&reg; Xeon&reg; CPU E3-1230 v3 @ 3.30GHz  : 1m12.240s
+树莓派2                ARMv7 Processor rev 5 (v7l)                 :  2m12.017s</p>
 </blockquote>
+
+<p>树莓派2的2000位计算时间是<code>12.864s</code> E3-1230 的是<code>6.993s</code></p>
 
 <p>** sysbench测试 **</p>
 
@@ -962,7 +1174,11 @@ curl -sSL https://github.com/esnet/iperf/archive/3.1.7.tar.gz | tar xz --strip 1
 腾讯云 kvm  单核      Intel&reg; Xeon&reg; CPU E5-26xx v2 @2.60GHz   :  12.5962s
 阿里云 xen-hvm 单核   Intel&reg; Xeon&reg; CPU E5-2650 v2 @ 2.60GHz  :  12.8241s
 某VMWARE虚拟化VPS单核  Intel&reg; Xeon&reg; CPU X7560  @ 2.27GHz      :  13.7159s</p>
+
+<p>树莓派2全部核心运算  ARMv7 Processor rev 5 (v7l)  : 81.7271s</p>
 </blockquote>
+
+<p>树莓派2 系统是OSMC sysbench 0.4.12</p>
 
 <p>E3单核性能不行;搬瓦工CPU性能不错,单核媲美E3四核;I5单核性能竟然比E3强那么多</p>
 
@@ -986,6 +1202,30 @@ sysbench --test=fileio --num-threads=16 --file-total-size=3G --file-test-mode=rn
 <p>内存测试</p>
 
 <p><code>sysbench --test=memory --memory-block-size=8k --memory-total-size=4G run</code></p>
+
+<p>磁盘性能测试还可以使用 <code>ioping</code>   使用 <code>yum install ioping</code> 安装</p>
+
+<p>对搬瓦工1G的测试如下</p>
+
+<pre><code>[root@suconghou ~]# ioping -RL .
+
+--- . (simfs /dev/simfs) ioping statistics ---
+8.17 k requests completed in 2.45 s, 2.00 GiB read, 3.33 k iops, 833.0 MiB/s
+generated 8.17 k requests in 3.00 s, 2.00 GiB, 2.72 k iops, 681.1 MiB/s
+min/avg/max/mdev = 52.4 us / 300.1 us / 3.08 ms / 127.9 us
+[root@suconghou ~]# ioping -R .
+
+--- . (simfs /dev/simfs) ioping statistics ---
+51.6 k requests completed in 2.05 s, 201.6 MiB read, 25.2 k iops, 98.3 MiB/s
+generated 51.6 k requests in 3.00 s, 201.6 MiB, 17.2 k iops, 67.2 MiB/s
+min/avg/max/mdev = 785 ns / 39.7 us / 2.87 ms / 60.4 us
+</code></pre>
+
+<h2 id="vps性能综合测试脚本">VPS性能综合测试脚本</h2>
+
+<p><a href="https://bench.sh/">https://bench.sh/</a> 提供bash脚本测试</p>
+
+<p><code>wget -qO- bench.sh | bash</code> 或者 <code>curl -Lso- bench.sh | bash</code> 即可测试</p>
 
 <h2 id="资源下载">资源下载</h2>
 
@@ -1023,7 +1263,10 @@ sysbench --test=fileio --num-threads=16 --file-total-size=3G --file-test-mode=rn
 
 <p>URL访问统计 <code>awk '{print $7}' access.log | sort | uniq -c | sort</code> 访问最频繁的URL <code>awk '{print $7}' access.log|sort | uniq -c |sort -n -k 1 -r|more</code></p>
 
-<pre><code>
+<p><code>~/.shell.sh</code></p>
+
+<pre><code>alias mem=&quot;ps aux --sort -rss  | head -n20 &amp;&amp; ps auxw --sort=-%cpu | head -n5&quot;
+alias topip='grep -E -o &quot;([0-9]{1,3}\.){3}[0-9]{1,3}&quot; /var/log/secure|sort|uniq -c|sort -nr | head -30'
 </code></pre>
 
 		</div>

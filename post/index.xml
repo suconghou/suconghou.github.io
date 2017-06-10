@@ -6,10 +6,29 @@
     <description>Recent content in Posts on 苏苏的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 13 Jan 2017 14:01:02 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 27 Mar 2017 12:11:21 +0800</lastBuildDate>
     
 	<atom:link href="http://blog.suconghou.cn/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>lego and acme to enable https</title>
+      <link>http://blog.suconghou.cn/post/lego-and-acme-to-enable-https/</link>
+      <pubDate>Mon, 27 Mar 2017 12:11:21 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/lego-and-acme-to-enable-https/</guid>
+      <description>acme https://github.com/Neilpang/acme.sh
+https://github.com/xenolf/lego
+lego使用golang编写,acme.sh使用bash编写;使用都非常方便
+使用lego签发证书 签发证书之前,确保要签发的域名的解析是指向当前要运行lego服务器的IP
+签发过程中,lego需要监听80和443端口,请确保有权限且未被占用.
+证书的签发使用的当前服务器的IP和后续证书的使用没有关系
+一次生成包含多个域名的证书.
+./lego --email=&amp;quot;suconghou@126.com&amp;quot; --domains=&amp;quot;g.suconghou.cn&amp;quot; --domains=&amp;quot;share.suconghou.cn&amp;quot; --domains=&amp;quot;play.suconghou.cn&amp;quot; --domains=&amp;quot;go.suconghou.cn&amp;quot; run  运行成功无报错的话,将会在目录下生成.lego目录,里面存放证书
+生成的 域名.crt 文件 和 域名.key 文件
+key文件即为nginx中ssl_certificate_key需配置的文件. 被称为 证书密钥
+.crt 文件即为nginx中ssl_certificate需配置的文件. 有的也称 fullchain.cer 被称为 授权证书</description>
+    </item>
     
     <item>
       <title>gcc</title>
@@ -104,7 +123,8 @@ http://www.wepe.com.cn/ 自带刻录,可以一键安装到U盘,硬盘等,支持U
 你可能找不到单纯的休眠按钮.
 可以使用shutdown -h休眠
 其他一些补充
-关机计算机：shutdown.exe -s -t 00 重启计算机：shutdown.exe -r -t 00 注销计算机：shutdown.exe -l -t 00 锁定计算机：rundll32.exe user32.dll,LockWorkStation 休眠计算机：rundll32.exe powrProf.dll,SetSuspendState 睡眠计算机：rundll32.exe powrprof.dll,SetSuspendState 0,1,0,  性能天梯图 在新标签查看大图
+关机计算机：shutdown.exe -s -t 00 重启计算机：shutdown.exe -r -t 00 注销计算机：shutdown.exe -l -t 00 锁定计算机：rundll32.exe user32.dll,LockWorkStation 休眠计算机：rundll32.exe powrProf.dll,SetSuspendState 睡眠计算机：rundll32.exe powrprof.dll,SetSuspendState 0,1,0,  性能天梯图 CPU性能列表 https://www.cpubenchmark.net/cpu_list.php
+在新标签查看大图
 CPU天梯图
 CPU天梯图其他版本
 显卡天梯图</description>
@@ -129,8 +149,13 @@ cd /tmp MEMCACHE_VERSION=memcached-1.4.31 CPU_NUM=`cat /proc/cpuinfo | grep proc
       <pubDate>Thu, 11 Aug 2016 10:27:18 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/javascript-code-snippet/</guid>
-      <description>实用的Javascript代码锦集 获取查询查询字符串get参数值 function getParam() { var data = decodeURIComponent(location.href).split(&amp;quot;?&amp;quot;)[1].split(&amp;quot;&amp;amp;&amp;quot;); var param = {}; for(var i = 0; i&amp;lt;data .length; i++) { param[data [i].split(&amp;quot;=&amp;quot;)[0]] = data [i].split(&amp;quot;=&amp;quot;)[1]; } return param; }  类似于PHP中的$_GET
-var $_GET = (function() { var url = decodeURIComponent(location.href); var u = url.split( &amp;quot;?&amp;quot; ); if ( typeof (u[1]) == &amp;quot;string&amp;quot; ) { u = u[1].split( &amp;quot;&amp;amp;&amp;quot; ); var get = {}; for ( var i in u) { var j = u[i].</description>
+      <description>实用的Javascript代码锦集 Date.parse(&amp;quot;2016-04-4&amp;quot;)  Date.parse safari 不能使用单位数字的月份和日期,否则解析为NaN
+火狐较低版本(火狐43)也是如此
+IE10 has not anchorNode focusNode 属性, 取得选中的文字需要读取 text 属性, IE11 一切正常 , 取得选中文字可以直接 toString
+IE10,IE11 不支持 html5 的 download 属性, 无法点击下载自定义名称的html和图片等文件. 可以使用 下载的 downloadFile,利用ajax下载,顺便说 ajax 下载也不能使用fetch IE系统统不支持fetch,到EDGE14才支持fetch, https://github.com/github/fetch 可支持IE10+
+火狐不支持和chrome的scrollTop表现也不相同
+// 兼容处理 chrome 和 firefox let scrollTop=document.body.scrollTop?document.body.scrollTop:document.documentElement.scrollTop; if(scrollTop&amp;lt;20){ this.headerShowStatus=true; }else if(scrollTop&amp;gt;170){ this.headerShowStatus=false; } if(document.documentElement.scrollHeight-scrollTop- document.documentElement.clientHeight&amp;lt; 400 ){ this.loadMore(); }  火狐不支持 e.srcElement 需要使用 e.target 代替
+IE10,IE11, 不支持location.origin var origin = location.origin?location.origin:location.protocol+&amp;quot;//&amp;quot;+location.host;  firefox 浏览器下载接受的后端header 不支持单引号</description>
     </item>
     
     <item>
@@ -258,10 +283,10 @@ iconv(&#39;utf-8&#39;, &#39;gbk//ignore&#39;, $str); 加上//ignore使有些字�
       <pubDate>Wed, 18 May 2016 17:37:16 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/shadowsocks-libev/</guid>
-      <description>静态编译shadowsocks libev centos7 编译
-yum update &amp;amp;&amp;amp; yum install -y zip unzip xz curl wget git gcc make zlib zlib-devel openssl openssl-devel git clone https://github.com/shadowsocks/shadowsocks-libev.git cd shadowsocks-libev ./configure --enable-static=yes export CFLAGS=&amp;quot;-O3&amp;quot; make -j4 &amp;amp;&amp;amp; make install  在alpine里编译
+      <description>静态编译shadowsocks libev 在alpine里编译
 先安装依赖
-# Installation of Libsodium cd /tmp export LIBSODIUM_VER=1.0.12 wget https://download.libsodium.org/libsodium/releases/libsodium-$LIBSODIUM_VER.tar.gz tar xvf libsodium-$LIBSODIUM_VER.tar.gz cd libsodium-$LIBSODIUM_VER ./configure --prefix=/usr &amp;amp;&amp;amp; make &amp;amp;&amp;amp; make install cd /tmp ldconfig # Installation of MbedTLS cd /tmp export MBEDTLS_VER=2.</description>
+# Installation of Libsodium cd /tmp export LIBSODIUM_VER=1.0.12 wget https://download.libsodium.org/libsodium/releases/libsodium-$LIBSODIUM_VER.tar.gz tar xvf libsodium-$LIBSODIUM_VER.tar.gz cd libsodium-$LIBSODIUM_VER ./configure --prefix=/usr &amp;amp;&amp;amp; make -j2 &amp;amp;&amp;amp; make install cd /tmp ldconfig # Installation of MbedTLS cd /tmp export MBEDTLS_VER=2.4.2 wget https://tls.mbed.org/download/mbedtls-$MBEDTLS_VER-gpl.tgz tar xvf mbedtls-$MBEDTLS_VER-gpl.tgz cd mbedtls-$MBEDTLS_VER make SHARED=1 CFLAGS=-fPIC &amp;amp;&amp;amp; make DESTDIR=/usr install cd /tmp ldconfig  安装完这两个依赖后,下面准备开始静态编译
+apk update &amp;amp;&amp;amp; apk upgrade &amp;amp;&amp;amp; apk add gcc g++ make autoconf curl wget build-base linux-headers libev-dev libtool udns-dev libsodium-dev mbedtls-dev pcre-dev SS_VER=3.</description>
     </item>
     
     <item>
@@ -319,10 +344,15 @@ sudo dd if=hypriotos-rpi-v0.8.0.img of=/dev/disk2 bs=8k  安装完成重启就�
 后100字节tail -c 100 file | hexdump
 还可以使用管道交给 md5sum,可比较前100字节或后100字节是否相同
 head -c 100 file | hexdump | md5sum
-Linux用户管理 添加用户adduser 假如用户名为work
-adduser work -M
-# add rslsync user without home dir and cannot login sudo adduser --shell /bin/nologin --no-create-home --group rslsync  -M, &amp;ndash;no-create-home 不创建用户的主目录 -s, &amp;ndash;shell SHELL 新账户的登录 shell,nologin就是登陆不了 -G, &amp;ndash;groups GROUPS 新账户的附加组列表
-adduser -h查看完整帮助</description>
+取文件1G(1073741824)至+819200处的md5值
+head -c 1074561024 file | tail -c 819200 |md5sum
+使用dd会更加方便,也更高效
+dd if=file bs=1 skip=1073741824 count=819200 | md5sum
+拆分文件 split -b 1kb /tmp/file sfile
+拆分文件大小为1k，也可以是1b，或者1m之类的单位
+xxd hexdump od https://www.zhihu.com/question/40441308/answer/86637730
+使用 sed 修改二进制文件 先找到查找的目标
+例如/opt/local则对应echo /opt/local | xxd</description>
     </item>
     
     <item>
@@ -424,9 +454,23 @@ show 命令还有很多用途
       <pubDate>Mon, 11 Jan 2016 10:19:20 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/ffmpeg-usage/</guid>
-      <description>编译安装 yum install autoconf automake cmake freetype-devel gcc gcc-c++ git libtool make mercurial nasm pkgconfig zlib-devel mkdir ~/ffmpeg_sources  Yasm is an assembler used by x264 and FFmpeg
-cd ~/ffmpeg_sources git clone --depth 1 git://github.com/yasm/yasm.git cd yasm autoreconf -fiv ./configure --prefix=&amp;quot;$HOME/ffmpeg_build&amp;quot; --bindir=&amp;quot;$HOME/bin&amp;quot; make make install make distclean  H.264 video encoder. Requires ffmpeg to be configured with --enable-gpl --enable-libx264
-cd ~/ffmpeg_sources git clone --depth 1 git://git.videolan.org/x264 cd x264 PKG_CONFIG_PATH=&amp;quot;$HOME/ffmpeg_build/lib/pkgconfig&amp;quot; .</description>
+      <description>下载官方的静态编译的Linux通用二进制包,同时也包含ARM版本的 ffmpeg
+armhf比armel硬件要求,树莓派2可用armhf,树莓派1使用armel
+Windows版本也提供编译好的下载
+https://ffmpeg.zeranoe.com/builds/
+Mac编译好的下载(FFmpeg,FFserver,FFprobe,FFplay)
+http://evermeet.cx/ffmpeg/
+使用brew安装 brew install ffmpeg --with-ffplay
+让ffmpeg转为MP4边下边播 ffmpeg -i input.xx -c copy -movflags faststart output.mp4
+-movflags faststart 可修改MP4的moov
+关于faststart还有一个python项目,类似于ffmpeg软件包中的qt-faststart https://github.com/danielgtaylor/qtfaststart
+可以使用pip install qtfaststart,仅需10KB+
+flv to mp4 ffmpeg -i input.flv -codec copy output.mp4 快速转化flv到mp4,高质量转化( only changes container without reencoding )
+ffmpeg -i input.flv -c copy -copyts output.mp4 也比较快,高质量转化
+ffmpeg -i aaa.flv -c:v libx264 -crf 28 output.mp4 带压缩的转换,非常消耗CPU和时间
+更多用法可以参考 http://www.jianshu.com/p/053665062f22
+处理m3u8地址视频
+下载转码 ffmpeg -i &amp;quot;http://m3u8的地址&amp;quot;&amp;quot; -c copy -bsf:a aac_adtstoasc output.</description>
     </item>
     
     <item>
@@ -435,11 +479,10 @@ cd ~/ffmpeg_sources git clone --depth 1 git://git.videolan.org/x264 cd x264 PKG_
       <pubDate>Fri, 08 Jan 2016 23:43:00 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/git-usage/</guid>
-      <description>git配置 git config --global user.email &amp;quot;1126045770@qq.com&amp;quot; git config --global user.name &amp;quot;sucongohu&amp;quot; git config --global core.autocrlf false git config --global color.ui true git config --global credential.helper store git config --global alias.lg &amp;quot;log --graph --all --pretty=format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci,%cr) %C(bold blue)&amp;lt;%an&amp;gt;%Creset&#39; --abbrev-commit --date=relative&amp;quot;   以上分别是设置用户信息,禁止转换换行符,颜色高亮,记住密码,设置别名列出分支图. 设置别名后,可以使用 git lg 查看各个分支关系
+      <description>git配置 git config --global user.email &amp;quot;1126045770@qq.com&amp;quot; git config --global user.name &amp;quot;sucongohu&amp;quot; git config --global core.autocrlf false git config --global color.ui true git config --global credential.helper store git config --global alias.lg &amp;quot;log --graph --all --pretty=format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci,%cr) %C(bold blue)&amp;lt;%an&amp;gt;%Creset&#39; --abbrev-commit --date=relative&amp;quot; git config --global alias.laststash =&amp;quot;diff stash@{0}^!&amp;quot;   以上分别是设置用户信息,禁止转换换行符,颜色高亮,记住密码,设置别名列出分支图. 设置别名后,可以使用 git lg 查看各个分支关系
  使用git还经常碰到文件权限发生变化,也显示文件变动了,需要提交,如果你不想将文件权限的变动纳入版本控制可以
 git config core.filemode false  对于一些本地和服务器不一致的配置文件,git status每次查看都显示出来,git add -u又会一不小心提交,可以使用 忽略已追踪文件的变动
-git update-index --assume-unchanged PATH_TO_FILE  参数 说明
- %H	commit hash %h	commit short hash %T	tree hash %t	tree short hash %P	parent hash %p	parent short hash %an	作者名字 %aN	.</description>
+git update-index --assume-unchanged PATH_TO_FILE  批量操作当前目录下的所有仓库</description>
     </item>
     
     <item>
@@ -473,8 +516,8 @@ ssh -o ServerAliveInterval=60 user@sshserver
 ssh隧道 CfNg参数  C表示压缩数据传输 f表示后台用户验证,这个选项很有用,没有shell的不可登陆账号也能使用. N表示不执行脚本或命令 g表示允许远程主机连接转发端口,往往会没有效果,需要修改/etc/ssh/sshd_config添加gatewayports yes  -L本地转发 -L [本地监听IP:]本地监听端口号:目标主机IP:目标端口号 (其中,“本地监听IP”可以省略，省略的话就认为是“0.0.0.0”，但为了安全性考虑，请务必使用“127.0.0.1”做为本地监听端口， 而不要使用默认的“0.0.0.0”。）
 ssh -D 8080 user@host SSH会建立一个socket，去监听本地的8080端口。一旦有数据传向那个端口，就自动把它转移到SSH连接上面，发往远程主机。可以想象，如果8080端口原来是一个不加密端口，现在将变成一个加密端口。
 ssh -L 2121:host2:21 host3 命令中的L参数一共接受三个值，分别是&amp;rdquo;本地端口:目标主机:目标主机端口&amp;rdquo;，它们之间用冒号分隔。这条命令的意思，就是指定SSH绑定本地端口2121，然后指定host3将所有的数据，转发到目标主机host2的21端口（假定host2运行FTP，默认端口为21）。 这样一来，我们只要连接host1的2121端口，就等于连上了host2的21端口。
-ssh -CfNg -L 6300:127.0.0.1:1521 oracle@172.16.1.164  本机的6300端口就是远程主机172.16.1.164的1521端口
--R远程转发  ssh -CfNg -R 1521:127.0.0.1:6300 oracle@172.16.1.164  在远程主机172.</description>
+ssh -CTfNg -L 6300:127.0.0.1:1521 oracle@172.16.1.164  本机的6300端口就是远程主机172.16.1.164的1521端口
+-R远程转发  ssh -CTfNg -R 1521:127.0.0.1:6300 oracle@172.16.1.164  在远程主机172.</description>
     </item>
     
     <item>
@@ -490,9 +533,9 @@ wget https://nodejs.org/dist/v6.0.0/node-v6.0.0-linux-x64.tar.xz tar -xJf node-v
 2.进入npm目录,安装npm node cli.js install npm -gf
 版本切换 使用n来管理node的版本,npm install -g n,小巧无依赖,仅一个文件.
 也不会搞乱你的node_modules文件夹,node的可执行文件位置也始终不会变化.
-一些必备package sudo npm install -g less autoprefixer express jshint uglify-js webpack react-native-cli airs  ** npm加速 **
-使用淘宝的npm镜像.控制台运行,或者加入你的bashrc中永久生效
-alias cnpm=&amp;quot;npm --registry=https://registry.</description>
+node-compiler 编译nodejs为可执行文件. https://github.com/pmq20/node-compiler 需要 node npm ,编译过程会安装依赖npm install
+https://sourceforge.net/projects/squashfs/files/
+yum install make gcc zlib-devel glibc-static gcc-c++ -y make -j4  一些必备package sudo npm install -g less autoprefixer express jshint uglify-js webpack react-native-cli airs  ** npm加速 **</description>
     </item>
     
     <item>
@@ -501,7 +544,8 @@ alias cnpm=&amp;quot;npm --registry=https://registry.</description>
       <pubDate>Wed, 06 Jan 2016 15:58:03 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/some-good-useful-things/</guid>
-      <description>云计算,存储,分发等 阿里百川 淘宝开放平台
+      <description>基于网页的P2P文件分享 https://www.sharedrop.io/
+云计算,存储,分发等 阿里百川 淘宝开放平台
 淘宝云盘,也外链图片做图床 淘宝CDN,速度很快,https,仅仅图片限制3M以内
  包含容器引擎（TAE）, 多媒体存储处理分发, 可免费使用一年
  网易的Docker服务
@@ -522,8 +566,7 @@ mobiscroll 移动开发UI,丰富的时间选择器控件还有一些WEBAPP展示
 网页动画 百度zrender 基于Canvas的图形仓库交互工具,可以方便的画出很多图形
 游戏引擎 阿里Hilo 游戏渲染引擎,实现2048,切水果等.
 http://www.egret.com/ 白鹭也是做这个的
-https://github.com/iioinc/iio.js 也是canvas的游戏
-网页富文本编辑器 wangeditor 轻量简介的富文本编辑器,使用容易,相比百度umeditor更简洁</description>
+https://github.com/iioinc/iio.js 也是canvas的游戏</description>
     </item>
     
     <item>

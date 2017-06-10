@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.20.2" />
+	<meta name="generator" content="Hugo 0.21" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -31,6 +31,411 @@
 
 <div class="content container">
 	<div class="posts">
+		
+		<div class="post">
+			<h1 class="post-title">
+				<a href="/post/git-usage/"> git基本使用</a>
+			</h1>
+			<p class="post-date">Fri, Jan 8, 2016</p>
+			<div class="post-text">
+				
+
+<h1 id="git配置">git配置</h1>
+
+<pre><code>git config --global user.email &quot;1126045770@qq.com&quot;
+git config --global user.name &quot;sucongohu&quot;
+
+git config --global core.autocrlf false
+git config --global color.ui true
+git config --global credential.helper store
+
+git config --global alias.lg &quot;log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci,%cr) %C(bold blue)&lt;%an&gt;%Creset' --abbrev-commit --date=relative&quot;
+git config --global alias.laststash =&quot;diff stash@{0}^!&quot;
+</code></pre>
+
+<blockquote>
+<p>以上分别是设置用户信息,禁止转换换行符,颜色高亮,记住密码,设置别名列出分支图. 设置别名后,可以使用 <code>git lg</code> 查看各个分支关系</p>
+</blockquote>
+
+<p>使用git还经常碰到文件权限发生变化,也显示文件变动了,需要提交,如果你不想将文件权限的变动纳入版本控制可以</p>
+
+<pre><code>git config core.filemode false
+</code></pre>
+
+<p>对于一些本地和服务器不一致的配置文件,<code>git status</code>每次查看都显示出来,<code>git add -u</code>又会一不小心提交,可以使用
+<em>忽略已追踪文件的变动</em></p>
+
+<pre><code>git update-index --assume-unchanged PATH_TO_FILE
+</code></pre>
+
+<p>批量操作当前目录下的所有仓库</p>
+
+<pre><code>for i in * ;do cd $i &amp;&amp; pwd &amp;&amp; git gc; cd -;done;
+</code></pre>
+
+<p>参数  说明</p>
+
+<pre><code>
+%H	commit hash
+%h	commit short hash
+%T	tree hash
+%t	tree short hash
+%P	parent hash
+%p	parent short hash
+%an	作者名字
+%aN	.mailmap 中对应的作者名字
+%ae	作者邮箱
+%aE	.mailmap 中对应的作者邮箱
+%ad	–date=制定的日期格式
+%aD	RFC2822 日期格式
+%ar	日期格式，例如：1 day ago
+%at	UNIX timestamp 日期格式
+%ai	ISO 8601 日期格式
+%cn	提交者名字
+%cN	.mailmap 对应的提交的名字
+%ce	提交者邮箱
+%cE	.mailmap 对应的提交者的邮箱
+%cd	–data=制定的提交日期的格式
+%cD	RFC2822 提交日期的格式
+%cr	提交日期的格式，例如：1day ago
+%ct	UNIX timestamp 提交日期的格式
+%ci	ISO 8601 提交日期的格式
+%d	ref 名称
+%e	encoding
+%s	commit 信息标题
+%f	过滤 commit 信息的标题使之可以作为文件名
+%b	commit 信息内容
+%N	commit notes
+%gD	reflog selector, e.g., refs/stash@{1}
+%gd	shortened reflog selector, e.g., stash@{1}
+%gs	reflog subject
+%Cred	切换至红色
+%Cgreen	切换至绿色
+%Cblue	切换至蓝色
+%Creset	重设颜色
+%C(color)	制定颜色，as described in color.branch.* config option
+%m	left right or boundary mark
+%n	换行
+%%	a raw %
+%x00	print a byte from a hex code
+%w([[,[,]]])	switch line wrapping, like the -w option of git-shortlog(1).
+</code></pre>
+
+<p>一个命令推送到多个服务端<code>vim .git/config</code> ,添加一个区段,例如:</p>
+
+<pre><code>[remote &quot;all&quot;]
+        url = https://git.oschina.net/suconghou/mvc.git
+        url = https://suconghou@git.coding.net/suconghou/mvc.git
+        url = https://github.com/suconghou/mvc.git
+</code></pre>
+
+<p>以后可以使用<code>git push all master</code>一次推送到多个后端</p>
+
+<h1 id="git使用代理">git使用代理</h1>
+
+<p>使用代理</p>
+
+<pre><code>git config --global http.proxy http://127.0.0.1:1080
+git config --global https.proxy https://127.0.0.1:1080
+</code></pre>
+
+<p>取消使用代理</p>
+
+<pre><code>git config --global --unset http.proxy
+git config --global --unset https.proxy
+</code></pre>
+
+<p>执行git的时候动态指定</p>
+
+<pre><code>git clone -c https.proxy=socks5://127.0.0.1:1080  https://github.com/me/test.git
+</code></pre>
+
+<p>使用本地shadowsocks代理</p>
+
+<pre><code>git config --global http.proxy 'socks5://127.0.0.1:1080'
+git config --global https.proxy 'socks5://127.0.0.1:1080'
+</code></pre>
+
+<p><a href="https://segmentfault.com/a/1190000007834504">https://segmentfault.com/a/1190000007834504</a></p>
+
+<h1 id="git回退">git回退</h1>
+
+<p>当前工作目录的修改都放弃 <code>git checkout .</code></p>
+
+<p>如果不小心添加了不必要的文件,但是还没有<code>commit</code>,想要撤销添加 <code>git reset FILE_TO_PATH</code></p>
+
+<p>如果最近的几次的提交完全是错误的,想要放弃,回滚到之前的某一个点继续开发</p>
+
+<p><code>git reset --hard  要恢复的点HASH</code> 然后 <code>git push -f</code>  强制提交,原先的错误提交将被强制清除,同时团队其他开发人员,也需要重新clone</p>
+
+<p>更好的是 在要恢复的点新建分支,继续开发.</p>
+
+<h1 id="git分支管理">git分支管理</h1>
+
+<h2 id="1-创建分支">1.创建分支</h2>
+
+<blockquote>
+<p>git branch &lt;分支名&gt;</p>
+</blockquote>
+
+<h2 id="2-切换到分支">2.切换到分支</h2>
+
+<blockquote>
+<p>git checkout &lt;分支名&gt;</p>
+</blockquote>
+
+<h2 id="3-创建一个分支并切换过去">3.创建一个分支并切换过去</h2>
+
+<blockquote>
+<p>git checkout -b &lt;分支名&gt;</p>
+</blockquote>
+
+<p>或者</p>
+
+<blockquote>
+<p>git checkout -b &lt;分支名&gt; master</p>
+</blockquote>
+
+<p>后面是跟一个master说明创建的develop分支是基于当前的master， 如果当前就在master分支，则可以不写。 如果当前分支HEAD指向的是别的分支，又想基于master分支创建，就必须写master</p>
+
+<h2 id="git-new-branch-from-scratch">git new branch from scratch</h2>
+
+<p>新建一个孤立的分支  <code>git checkout --orphan &lt;branchname&gt;</code></p>
+
+<p>清除不必要的数据 <code>git rm --cached -r . &amp;&amp; git rm -rf .</code></p>
+
+<p>总结为</p>
+
+<pre><code>git checkout --orphan newbranch
+git rm -rf .
+&lt;do work&gt;
+git add your files
+git commit -m 'Initial commit'
+</code></pre>
+
+<p>如果版本小于1.7.2 不支持<code>--orphan</code> 可以</p>
+
+<pre><code>git symbolic-ref HEAD refs/heads/newbranch
+rm .git/index
+git clean -fdx
+&lt;do work&gt;
+git add your files
+git commit -m 'Initial commit'
+</code></pre>
+
+<p>在没有任何提交之前<code>git branch</code>不会检查到这个分支</p>
+
+<p><strong>更简便的方法新建一个空白的分支</strong></p>
+
+<p><code>true | git mktree | xargs git commit-tree | xargs git branch branchname</code></p>
+
+<p>然后直接切换到这个分支,<code>git checkout branchname</code></p>
+
+<p>新建立的分支无任何文件和提交历史,超级赞!</p>
+
+<p>执行<code>git push --set-upstream origin branchname</code>将新建的分支提交到远程并设置本地分支与远程分支的关联</p>
+
+<p>参考</p>
+
+<blockquote>
+<p><a href="http://stackoverflow.com/questions/13969050/how-to-create-a-new-empty-branch-for-a-new-project">http://stackoverflow.com/questions/13969050/how-to-create-a-new-empty-branch-for-a-new-project</a></p>
+
+<p><a href="http://stackoverflow.com/questions/1384325/in-git-is-there-a-simple-way-of-introducing-an-unrelated-branch-to-a-repository">http://stackoverflow.com/questions/1384325/in-git-is-there-a-simple-way-of-introducing-an-unrelated-branch-to-a-repository</a></p>
+</blockquote>
+
+<h2 id="4-分支合并">4.分支合并</h2>
+
+<p>如:要将develop分支合并和master分支
+首先切换的master分支：<code>git checkout master</code>
+然后执行合并操作：<code>git merge develop</code>
+如果有冲突，会提示你，调用<code>git status</code>查看冲突文件。
+解决冲突，然后调用<code>git add</code>或<code>git rm</code>将解决后的文件暂存。
+所有冲突解决后，<code>git commit</code>提交更改。</p>
+
+<p><code>git merge  brancha branchb</code>  合并其他分支 到当前所在的分支,当然也可以合并master分支的修改到当前分支</p>
+
+<h2 id="5-删除分支">5.删除分支</h2>
+
+<p>删除本地分支,删除分支之前记得先合并,以免数据丢失</p>
+
+<blockquote>
+<p>git branch -d &lt;分支名&gt;</p>
+</blockquote>
+
+<p><code>git push [远程名] [本地分支]:[远程分支]</code> 本地分支的数据推送到远程分支,如果远程分支不存在,将会自动创建</p>
+
+<p>如果本地分支为空格,则将删除远程分支 <code>git push origin :deletebranch</code></p>
+
+<h2 id="6-显示所有分支">6.显示所有分支</h2>
+
+<blockquote>
+<p>git branch -a</p>
+</blockquote>
+
+<p>显示远端分支</p>
+
+<blockquote>
+<p>git branch -r</p>
+</blockquote>
+
+<p><code>git push -all</code> 把所有本地分支都推到远端</p>
+
+<p><code>git pull origin remotebranch:localbranch</code>
+将远程某分支拉倒本地某分支,当本地分支和远程分支名称相同时，只写一个就可以</p>
+
+<h1 id="git-tag-管理">git tag 管理</h1>
+
+<h2 id="1-git-tag">1.git tag</h2>
+
+<p>在控制台打印出当前仓库的所有标签</p>
+
+<h2 id="2-git-tag-l-v0-1">2.git tag -l &lsquo;v0.1.*&rsquo;</h2>
+
+<p>搜索符合模式的标签</p>
+
+<h2 id="3-git-tag-v0-1-2-light">3.git tag v0.1.2-light</h2>
+
+<p>创建轻量标签</p>
+
+<h2 id="4-git-tag-a-v0-1-2-m-0-1-2版本">4.git tag -a v0.1.2 -m &ldquo;0.1.2版本&rdquo;</h2>
+
+<p>创建附注标签</p>
+
+<p>git标签分为两种类型：轻量标签和附注标签。轻量标签是指向提交对象的引用，附注标签则是仓库中的一个独立对象。建议使用附注标签。</p>
+
+<h2 id="5-git-tag-d-v0-1-2">5.git tag -d v0.1.2</h2>
+
+<p>删除标签</p>
+
+<h2 id="6-git-push-origin-v0-1-2">6.git push origin v0.1.2</h2>
+
+<p>将v0.1.2标签提交到git服务器
+git push origin –-tags
+将本地所有标签一次性提交到git服务器
+通常的git push不会将标签对象提交到git服务器，所以我们需要进行显式的操作：</p>
+
+<h1 id="git-stash-操作">git stash 操作</h1>
+
+<p>1.git stash 可用来暂存当前正在进行的工作， 比如想pull 最新代码， 又不想加新commit， 或者另外一种情况，为了fix 一个紧急的bug,  先stash, 使返回到自己上一个commit, 改完bug之后再stash pop, 继续原来的工作。</p>
+
+<pre><code>git stash
+//do some work
+git stash pop
+</code></pre>
+
+<p>2.同样可以使用 git stash save &ldquo;work in progress for foo feature&rdquo; 添加标记</p>
+
+<p>3.当你多次使用<code>git stash</code>命令后，你的栈里将充满了未提交的代码，这时候你会对将哪个版本应用回来有些困惑，
+<code>git stash list</code> 命令可以将当前的Git栈信息打印出来，你只需要将找到对应的版本号，例如使用<code>git stash apply stash@{1}</code>就可以将你指定版本号为stash@{1}的工作取出来，当你将所有的栈都应用回来的时候，可以使用<code>git stash clear</code>来将栈清空。</p>
+
+<h3 id="查看stash与当前的差异">查看stash与当前的差异</h3>
+
+<p><code>git stash show -p</code> 最新的差异</p>
+
+<p><code>git stash show -p stash@{1}</code> 指定 stash</p>
+
+<p><code>git diff stash@{0} master</code> 与与任意版本对比</p>
+
+<p><code>git diff --name-only stash@{0} master</code> 仅仅查看哪些文件变化</p>
+
+<h2 id="git-diff">git diff</h2>
+
+<p><code>git diff</code> 默认是工作目录(Working tree)和暂存区域快照(index)之间的差异</p>
+
+<p>查看已经暂存起来的文件(staged)和上次提交时的快照之间(HEAD)的差异</p>
+
+<p><code>git diff --cached</code></p>
+
+<p><code>git diff --staged</code></p>
+
+<p>显示工作版本(Working tree)和HEAD的差别 <code>git diff HEAD</code></p>
+
+<p>直接将两个分支上最新的提交做diff  <code>git diff topic master</code> 或 <code>git diff topic..master</code></p>
+
+<p>比较上次提交commit和上上次提交 <code>git diff HEAD^ HEAD</code></p>
+
+<p>比较两个历史版本之间的差异 <code>git diff SHA1 SHA2</code></p>
+
+<p><code>git diff HEAD application/config/config.php</code></p>
+
+<h1 id="给git仓库瘦身">给Git仓库瘦身</h1>
+
+<p>使用<code>git gc --aggressive</code>来整理仓库,压缩合并碎片文件能减小仓库大小.</p>
+
+<p>使用<code>git prune</code> 删除一些不会被使用的残留数据,使用<code>git prune -n</code>可以查看将要被删除的数据.</p>
+
+<p>如果想要更加暴力的操作git减小仓库大小,一般使用<code>git-filter-branch</code>,不过操作比较麻烦,可以参考官方的操作 <a href="http://git-scm.com/book/zh/v1/Git-内部原理-维护及数据恢复">http://git-scm.com/book/zh/v1/Git-内部原理-维护及数据恢复</a></p>
+
+<p>这里提供一个工具<a href="https://rtyley.github.io/bfg-repo-cleaner/">https://rtyley.github.io/bfg-repo-cleaner/</a></p>
+
+<p>使用这个操作更加方便</p>
+
+<p>下载<code>bfg</code>jar文件,使用<code>java -jar bfg.jar</code>运行,也可以自己写一个<code>alias</code></p>
+
+<p>首先<code>git clone --mirror 地址</code></p>
+
+<pre><code>bfg --strip-blobs-bigger-than 10M .
+</code></pre>
+
+<p><code>bfg --strip-blobs-bigger-than 1M --delete-files '{*.jar,*.zip,*.gz,*.war,*.jpg,*.png,*.jpeg}'</code></p>
+
+<p>最后执行<code>git reflog expire --expire=now --all &amp;&amp; git gc --prune=now --aggressive</code></p>
+
+<p>使用<code>du -sh</code>查看最终文件夹大小.</p>
+
+<h1 id="git-查找">git 查找</h1>
+
+<p><code>git grep</code>搜索仓库下的代码,比<code>grep</code>更加快</p>
+
+<p>使用:<code>https://git-scm.com/docs/git-grep</code></p>
+
+<p>如只在markdown文件中搜索 <code>git grep &quot;make&quot; '*.MD'</code></p>
+
+<h1 id="git打包">git打包</h1>
+
+<p>时常我们会使用<code>github</code>或者其他git托管网站的下载zip包功能,下载的压缩包仅包含仓库里的现有文件,不含<code>.git</code>文件夹</p>
+
+<p>那么我们本地的仓库如何做到呢,需要自己使用<code>zip</code>命令自己压缩排除文件吗.</p>
+
+<p>其实git已经自带这个功能了,可以将任意版本的数据导出为压缩包.</p>
+
+<p>将 master以zip格式打包到指定文件<code>git archive --format zip --output /path/to/file.zip master</code></p>
+
+<pre><code>git archive v0.1 | gzip &gt; site.tgz
+git archive master &gt; ./fds.zip
+</code></pre>
+
+<p>最快捷的直接使用<code>git archive master -o a.tgz</code></p>
+
+<p>使用 -o a.tgz 或者 a.tar.gz 生成gzip格式的, -o a.zip 生成zip格式的.</p>
+
+<p><img src="http://static.suconghou.cn/document/git-usage.jpg" alt="git-usage" /></p>
+
+<h1 id="从源码静态编译git">从源码静态编译git</h1>
+
+<pre><code>apk update &amp;&amp; apk upgrade
+apk add curl gcc g++ make zlib-dev perl
+curl https://www.kernel.org/pub/software/scm/git/git-2.10.2.tar.xz | tar xJ
+cd git-2.10.2
+./configure --prefix=/usr/local --with-curl   CFLAGS=&quot;${CFLAGS} -Os -static `pkg-config --static --libs libcurl`&quot;  NO_TCLTK=1 NO_PERL=1 NO_GETTEXT=1
+make -j4
+make install
+
+</code></pre>
+
+<h1 id="svn">svn</h1>
+
+<p><code>svn revert xx.html</code> 和<code>git checkout xx.html</code> 类似,还原文件的更改</p>
+
+<p>账号文件：<code>/etc/svn-auth-users</code>
+密码重置：<code>htpasswd  /etc/svn-auth-users  conghou.su</code>
+新添加用户：同上
+删除用户：打开账号文件删除用户所在行即可</p>
+
+<p>修改文件以后需要 <code>service httpd restart</code> 或 <code>systemctl restart  httpd</code></p>
+
+			</div>
+		</div>
 		
 		<div class="post">
 			<h1 class="post-title">
@@ -225,21 +630,21 @@ SSH会建立一个socket，去监听本地的8080端口。一旦有数据传向�
 命令中的L参数一共接受三个值，分别是&rdquo;本地端口:目标主机:目标主机端口&rdquo;，它们之间用冒号分隔。这条命令的意思，就是指定SSH绑定本地端口2121，然后指定host3将所有的数据，转发到目标主机host2的21端口（假定host2运行FTP，默认端口为21）。
 这样一来，我们只要连接host1的2121端口，就等于连上了host2的21端口。</p>
 
-<pre><code>ssh -CfNg -L 6300:127.0.0.1:1521 oracle@172.16.1.164
+<pre><code>ssh -CTfNg -L 6300:127.0.0.1:1521 oracle@172.16.1.164
 </code></pre>
 
 <p>本机的6300端口就是远程主机172.16.1.164的1521端口</p>
 
 <h3 id="r远程转发">-R远程转发</h3>
 
-<pre><code> ssh -CfNg -R 1521:127.0.0.1:6300 oracle@172.16.1.164
+<pre><code> ssh -CTfNg -R 1521:127.0.0.1:6300 oracle@172.16.1.164
 </code></pre>
 
 <p>在远程主机172.16.1.164上打开1521端口, 来映射本机的6300端口.</p>
 
 <p><strong>在树莓派上映射ssh到外网</strong></p>
 
-<pre><code>ssh -CfNg -R 2222:127.0.0.1:22 username@yourvps.com
+<pre><code>ssh -CTfNg -R 2222:127.0.0.1:22 username@yourvps.com
 </code></pre>
 
 <p>这样就映射vps的2222端口到树莓派上了.但是这样映射的是服务器的127.0.0.1:2222,外网无法连接这个2222端口</p>
@@ -250,7 +655,7 @@ SSH会建立一个socket，去监听本地的8080端口。一旦有数据传向�
 
 <p>可以使用</p>
 
-<pre><code>ssh -CfNg -R 0.0.0.0:2222:127.0.0.1:22 username@yourvps.com
+<pre><code>ssh -CTfNg -R 0.0.0.0:2222:127.0.0.1:22 username@yourvps.com
 </code></pre>
 
 <p>再在服务器上配置<code>/etc/ssh/sshd_config</code></p>
@@ -270,6 +675,109 @@ GatewayPorts yes
 <p>使用<code>netstat -anltp</code>查看,监听的已经是<code>0.0.0.0</code>了,不过即使你指定-R参数<code>127.0.0.1:2222</code>,也不会监听<code>127.0.0.1</code>而始终是<code>0.0.0.0</code></p>
 
 <p>若没有<code>netstat</code>可考虑安装<code>yum install lsof net-tools</code></p>
+
+<h3 id="使用下面的脚本可以保持断开自动重连-可以作为-frp-穿透的简单替代">使用下面的脚本可以保持断开自动重连,可以作为<code>frp</code>穿透的简单替代</h3>
+
+<p><strong>需事先配置好ssh免密码登陆</strong></p>
+
+<p>先编写一个可执行脚本,例如
+<code>/home/osmc/.autossh</code></p>
+
+<pre><code>#!/bin/bash
+while true; do ssh -CTNg -R 2222:127.0.0.1:2222 -p 23 username@yourvps.com; sleep 5;done;
+</code></pre>
+
+<p>赋予执行权限 <code>chmod +x /home/osmc/.autossh</code></p>
+
+<p>编写service文件 使用<code>systemd</code>开机启动</p>
+
+<p><code>/etc/systemd/system/autossh.service</code></p>
+
+<pre><code>[Unit]
+Description=autossh service
+After=network.target network-online.target
+
+[Service]
+User=osmc
+Restart=on-failure
+TimeoutStartSec=0
+ExecStart=/home/osmc/.autossh
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+
+<p><code>sudo systemctl daemon-reload</code>
+<code>sudo systemctl enable autossh</code>
+<code>sudo systemctl start autossh</code></p>
+
+<p><code>sudo systemctl status autossh -l</code> 查看状态
+此方法存在缺陷,有时候断开无法连接上,最好还是使用<code>frp</code></p>
+
+<h3 id="配置frp服务器端">配置frp服务器端</h3>
+
+<p>查看 <a href="https://github.com/fatedier/frp">https://github.com/fatedier/frp</a></p>
+
+<p>服务器端配置文件<code>/etc/ftps.ini</code></p>
+
+<pre><code>[common]
+bind_port = 7000
+privilege_allow_ports = 7700,7800-7900
+</code></pre>
+
+<p>编写<code>/etc/systemd/system/frps.service</code>文件使开机启动</p>
+
+<pre><code>[Unit]
+Description=frps service
+After=network.target network-online.target
+
+[Service]
+Restart=on-failure
+TimeoutStartSec=0
+ExecStart=/usr/local/bin/frps -c /etc/frps.ini
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+
+<p><code>sudo systemctl daemon-reload</code>
+<code>sudo systemctl enable frps</code>
+<code>sudo systemctl start frps</code></p>
+
+<h3 id="配置frp客户端">配置frp客户端</h3>
+
+<p>要穿透的代理配置 <code>/etc/frpc.ini</code></p>
+
+<pre><code>[common]
+server_addr = x.x.x.x
+server_port = 7000
+
+[ssh]
+type = tcp
+local_ip = 127.0.0.1
+local_port = 22
+remote_port = 7822
+use_compression = true
+</code></pre>
+
+<p>编写<code>/etc/systemd/system/frpc.service</code>开机启动</p>
+
+<pre><code>[Unit]
+Description=frpc service
+After=network.target network-online.target
+
+[Service]
+Restart=on-failure
+TimeoutStartSec=0
+ExecStart=/usr/local/bin/frpc -c /etc/frpc.ini
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+
+<p><code>sudo systemctl daemon-reload</code>
+<code>sudo systemctl enable frpc</code>
+<code>sudo systemctl start frpc</code></p>
 
 <h3 id="使用socks5代理">使用socks5代理</h3>
 
@@ -440,6 +948,17 @@ npm -v
 
 <p>也不会搞乱你的node_modules文件夹,node的可执行文件位置也始终不会变化.</p>
 
+<h2 id="node-compiler-编译nodejs为可执行文件">node-compiler 编译nodejs为可执行文件.</h2>
+
+<p><a href="https://github.com/pmq20/node-compiler">https://github.com/pmq20/node-compiler</a>
+需要 node npm ,编译过程会安装依赖<code>npm install</code></p>
+
+<p><a href="https://sourceforge.net/projects/squashfs/files/">https://sourceforge.net/projects/squashfs/files/</a></p>
+
+<pre><code>yum install make gcc zlib-devel glibc-static gcc-c++ -y
+make -j4
+</code></pre>
+
 <h2 id="一些必备package">一些必备package</h2>
 
 <pre><code>sudo npm install -g less autoprefixer express jshint uglify-js webpack react-native-cli airs
@@ -507,6 +1026,10 @@ enabled=1
 			<p class="post-date">Wed, Jan 6, 2016</p>
 			<div class="post-text">
 				
+
+<h2 id="基于网页的p2p文件分享">基于网页的P2P文件分享</h2>
+
+<p><a href="https://www.sharedrop.io/">https://www.sharedrop.io/</a></p>
 
 <h2 id="云计算-存储-分发等">云计算,存储,分发等</h2>
 
@@ -688,6 +1211,10 @@ enabled=1
 
 <p>将python代码转化为可执行文件<a href="http://nuitka.net/pages/download.html">nuitka</a></p>
 
+<p><a href="http://www.py2exe.org/">py2exe</a>支持windows平台的打包</p>
+
+<p><a href="https://github.com/pyinstaller/pyinstaller">https://github.com/pyinstaller/pyinstaller</a> 跨平台打包</p>
+
 <h2 id="便宜服务器vps">便宜服务器VPS</h2>
 
 <p><a href="http://cheapwindowsvps.com/">cheapwindowsvps</a> G口亚洲越南和新加坡不限流量支持Windows,较贵</p>
@@ -702,15 +1229,17 @@ enabled=1
 
 <p><a href="http://www.idcbuster.com/specials.html">idcbuster</a> 最低69年付(openvz 512M),88年付kvm 128M 支持支付宝</p>
 
-<p><a href="http://yecaoyun.com/Service/vps_servers.html">yecaoyun</a> 美国最低10元每月(kvm 128M)</p>
-
 <p><a href="https://my.hostus.us/cart.php?a=confproduct&amp;i=0">hostus</a> 最低16美元(约106人民币)每年(768M)</p>
 
 <p><a href="http://www.cloudleft.com/lax-vps">cloudleft</a> 洛杉矶-512MB 最低年付299人民币</p>
 
 <p><a href="http://vps.sh/vhost.html">vps.sh</a> 香港虚拟主机最低50年付,美国Xen-512M月付25</p>
 
-<p><a href="http://www.fyzhuji.com/">fyzhuji</a> 香港虚拟主机年付60 美国Xen-512M月付25,国内速度都较快.</p>
+<p><a href="http://yecaoyun.com/Service/vps_servers.html">野草云</a> 美国最低10元每月(kvm 128M)</p>
+
+<p><a href="http://www.fyzhuji.com/">枫叶主机</a> 香港虚拟主机年付60 美国Xen-512M月付25,国内速度都较快.</p>
+
+<p><a href="https://www.rkecloud.com/vhost">锐壳云</a> 带前端CDN,价格稍贵,可git部署,支持PHP5.3至7.0,最低年付150,折扣后120</p>
 
 <p><a href="https://www.starrydns.com/sc/shared-hosting">starrydns</a> 香港¥ 10.2 /月虚拟主机</p>
 
@@ -754,17 +1283,9 @@ enabled=1
 
 <p>xpdf,各种平台都支持,只需一个文件,提供编译好的文件 <a href="https://mirrors.tuna.tsinghua.edu.cn/CTAN/support/xpdf/">https://mirrors.tuna.tsinghua.edu.cn/CTAN/support/xpdf/</a></p>
 
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/mac-chrome-input-submit/"> MacOs上Chrome中的submit按钮默认样式问题</a>
-			</h1>
-			<p class="post-date">Tue, Jan 5, 2016</p>
-			<div class="post-text">
-				<p>发现MacOs的Chrome中,input为submit的按钮,添加其他样式不生效,任然是默认样式,
-解决方法是为其添加一个border或者backgroud就好了</p>
+<h2 id="汉字转拼音">汉字转拼音</h2>
+
+<p>Web版可用: <a href="https://github.com/liuxianan/pinyinjs">https://github.com/liuxianan/pinyinjs</a></p>
 
 			</div>
 		</div>
@@ -772,53 +1293,134 @@ enabled=1
 	</div>
 	<nav>
 		
+
+<ul class="pagination">
     
-    <ul class="pagination">
-        
-        <li>
-            <a href="/" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
-        </li>
-        
-        <li
-        >
-        <a href="/page/6/" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-        </li>
-        
-        <li
-        ><a href="/">1</a></li>
-        
-        <li
-        ><a href="/page/2/">2</a></li>
-        
-        <li
-        ><a href="/page/3/">3</a></li>
-        
-        <li
-        ><a href="/page/4/">4</a></li>
-        
-        <li
-        ><a href="/page/5/">5</a></li>
-        
-        <li
-        ><a href="/page/6/">6</a></li>
-        
-        <li
-        class="active"><a href="/page/7/">7</a></li>
-        
-        <li
-        ><a href="/page/8/">8</a></li>
-        
-        <li
-        >
-        <a href="/page/8/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-        </li>
-        
-        <li>
-            <a href="/page/8/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
-        </li>
-        
-    </ul>
+    <li>
+        <a href="/" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+    </li>
     
+    <li
+    >
+    <a href="/page/6/" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/">1</a></li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/page/2/">2</a></li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/page/3/">3</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="disabled"><span aria-hidden="true">&hellip;</span></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/page/6/">6</a></li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    class="active"><a href="/page/7/">7</a></li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/page/8/">8</a></li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/page/9/">9</a></li>
+    
+    
+    <li
+    >
+    <a href="/page/8/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+    
+    <li>
+        <a href="/page/9/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+    </li>
+    
+</ul>
+
 	</nav>
 </div>
 	<div class="music-container">

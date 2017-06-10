@@ -93,21 +93,21 @@ SSH会建立一个socket，去监听本地的8080端口。一旦有数据传向�
 命令中的L参数一共接受三个值，分别是&rdquo;本地端口:目标主机:目标主机端口&rdquo;，它们之间用冒号分隔。这条命令的意思，就是指定SSH绑定本地端口2121，然后指定host3将所有的数据，转发到目标主机host2的21端口（假定host2运行FTP，默认端口为21）。
 这样一来，我们只要连接host1的2121端口，就等于连上了host2的21端口。</p>
 
-<pre><code>ssh -CfNg -L 6300:127.0.0.1:1521 oracle@172.16.1.164
+<pre><code>ssh -CTfNg -L 6300:127.0.0.1:1521 oracle@172.16.1.164
 </code></pre>
 
 <p>本机的6300端口就是远程主机172.16.1.164的1521端口</p>
 
 <h3 id="r远程转发">-R远程转发</h3>
 
-<pre><code> ssh -CfNg -R 1521:127.0.0.1:6300 oracle@172.16.1.164
+<pre><code> ssh -CTfNg -R 1521:127.0.0.1:6300 oracle@172.16.1.164
 </code></pre>
 
 <p>在远程主机172.16.1.164上打开1521端口, 来映射本机的6300端口.</p>
 
 <p><strong>在树莓派上映射ssh到外网</strong></p>
 
-<pre><code>ssh -CfNg -R 2222:127.0.0.1:22 username@yourvps.com
+<pre><code>ssh -CTfNg -R 2222:127.0.0.1:22 username@yourvps.com
 </code></pre>
 
 <p>这样就映射vps的2222端口到树莓派上了.但是这样映射的是服务器的127.0.0.1:2222,外网无法连接这个2222端口</p>
@@ -118,7 +118,7 @@ SSH会建立一个socket，去监听本地的8080端口。一旦有数据传向�
 
 <p>可以使用</p>
 
-<pre><code>ssh -CfNg -R 0.0.0.0:2222:127.0.0.1:22 username@yourvps.com
+<pre><code>ssh -CTfNg -R 0.0.0.0:2222:127.0.0.1:22 username@yourvps.com
 </code></pre>
 
 <p>再在服务器上配置<code>/etc/ssh/sshd_config</code></p>
@@ -138,6 +138,109 @@ GatewayPorts yes
 <p>使用<code>netstat -anltp</code>查看,监听的已经是<code>0.0.0.0</code>了,不过即使你指定-R参数<code>127.0.0.1:2222</code>,也不会监听<code>127.0.0.1</code>而始终是<code>0.0.0.0</code></p>
 
 <p>若没有<code>netstat</code>可考虑安装<code>yum install lsof net-tools</code></p>
+
+<h3 id="使用下面的脚本可以保持断开自动重连-可以作为-frp-穿透的简单替代">使用下面的脚本可以保持断开自动重连,可以作为<code>frp</code>穿透的简单替代</h3>
+
+<p><strong>需事先配置好ssh免密码登陆</strong></p>
+
+<p>先编写一个可执行脚本,例如
+<code>/home/osmc/.autossh</code></p>
+
+<pre><code>#!/bin/bash
+while true; do ssh -CTNg -R 2222:127.0.0.1:2222 -p 23 username@yourvps.com; sleep 5;done;
+</code></pre>
+
+<p>赋予执行权限 <code>chmod +x /home/osmc/.autossh</code></p>
+
+<p>编写service文件 使用<code>systemd</code>开机启动</p>
+
+<p><code>/etc/systemd/system/autossh.service</code></p>
+
+<pre><code>[Unit]
+Description=autossh service
+After=network.target network-online.target
+
+[Service]
+User=osmc
+Restart=on-failure
+TimeoutStartSec=0
+ExecStart=/home/osmc/.autossh
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+
+<p><code>sudo systemctl daemon-reload</code>
+<code>sudo systemctl enable autossh</code>
+<code>sudo systemctl start autossh</code></p>
+
+<p><code>sudo systemctl status autossh -l</code> 查看状态
+此方法存在缺陷,有时候断开无法连接上,最好还是使用<code>frp</code></p>
+
+<h3 id="配置frp服务器端">配置frp服务器端</h3>
+
+<p>查看 <a href="https://github.com/fatedier/frp">https://github.com/fatedier/frp</a></p>
+
+<p>服务器端配置文件<code>/etc/ftps.ini</code></p>
+
+<pre><code>[common]
+bind_port = 7000
+privilege_allow_ports = 7700,7800-7900
+</code></pre>
+
+<p>编写<code>/etc/systemd/system/frps.service</code>文件使开机启动</p>
+
+<pre><code>[Unit]
+Description=frps service
+After=network.target network-online.target
+
+[Service]
+Restart=on-failure
+TimeoutStartSec=0
+ExecStart=/usr/local/bin/frps -c /etc/frps.ini
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+
+<p><code>sudo systemctl daemon-reload</code>
+<code>sudo systemctl enable frps</code>
+<code>sudo systemctl start frps</code></p>
+
+<h3 id="配置frp客户端">配置frp客户端</h3>
+
+<p>要穿透的代理配置 <code>/etc/frpc.ini</code></p>
+
+<pre><code>[common]
+server_addr = x.x.x.x
+server_port = 7000
+
+[ssh]
+type = tcp
+local_ip = 127.0.0.1
+local_port = 22
+remote_port = 7822
+use_compression = true
+</code></pre>
+
+<p>编写<code>/etc/systemd/system/frpc.service</code>开机启动</p>
+
+<pre><code>[Unit]
+Description=frpc service
+After=network.target network-online.target
+
+[Service]
+Restart=on-failure
+TimeoutStartSec=0
+ExecStart=/usr/local/bin/frpc -c /etc/frpc.ini
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+
+<p><code>sudo systemctl daemon-reload</code>
+<code>sudo systemctl enable frpc</code>
+<code>sudo systemctl start frpc</code></p>
 
 <h3 id="使用socks5代理">使用socks5代理</h3>
 

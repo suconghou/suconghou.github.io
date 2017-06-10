@@ -48,6 +48,7 @@ git config --global color.ui true
 git config --global credential.helper store
 
 git config --global alias.lg &quot;log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci,%cr) %C(bold blue)&lt;%an&gt;%Creset' --abbrev-commit --date=relative&quot;
+git config --global alias.laststash =&quot;diff stash@{0}^!&quot;
 </code></pre>
 
 <blockquote>
@@ -63,6 +64,11 @@ git config --global alias.lg &quot;log --graph --all --pretty=format:'%Cred%h%Cr
 <em>忽略已追踪文件的变动</em></p>
 
 <pre><code>git update-index --assume-unchanged PATH_TO_FILE
+</code></pre>
+
+<p>批量操作当前目录下的所有仓库</p>
+
+<pre><code>for i in * ;do cd $i &amp;&amp; pwd &amp;&amp; git gc; cd -;done;
 </code></pre>
 
 <p>参数  说明</p>
@@ -122,6 +128,33 @@ git config --global alias.lg &quot;log --graph --all --pretty=format:'%Cred%h%Cr
 </code></pre>
 
 <p>以后可以使用<code>git push all master</code>一次推送到多个后端</p>
+
+<h1 id="git使用代理">git使用代理</h1>
+
+<p>使用代理</p>
+
+<pre><code>git config --global http.proxy http://127.0.0.1:1080
+git config --global https.proxy https://127.0.0.1:1080
+</code></pre>
+
+<p>取消使用代理</p>
+
+<pre><code>git config --global --unset http.proxy
+git config --global --unset https.proxy
+</code></pre>
+
+<p>执行git的时候动态指定</p>
+
+<pre><code>git clone -c https.proxy=socks5://127.0.0.1:1080  https://github.com/me/test.git
+</code></pre>
+
+<p>使用本地shadowsocks代理</p>
+
+<pre><code>git config --global http.proxy 'socks5://127.0.0.1:1080'
+git config --global https.proxy 'socks5://127.0.0.1:1080'
+</code></pre>
+
+<p><a href="https://segmentfault.com/a/1190000007834504">https://segmentfault.com/a/1190000007834504</a></p>
 
 <h1 id="git回退">git回退</h1>
 
@@ -193,6 +226,8 @@ git commit -m 'Initial commit'
 <p><strong>更简便的方法新建一个空白的分支</strong></p>
 
 <p><code>true | git mktree | xargs git commit-tree | xargs git branch branchname</code></p>
+
+<p>然后直接切换到这个分支,<code>git checkout branchname</code></p>
 
 <p>新建立的分支无任何文件和提交历史,超级赞!</p>
 
@@ -291,6 +326,16 @@ git stash pop
 <p>3.当你多次使用<code>git stash</code>命令后，你的栈里将充满了未提交的代码，这时候你会对将哪个版本应用回来有些困惑，
 <code>git stash list</code> 命令可以将当前的Git栈信息打印出来，你只需要将找到对应的版本号，例如使用<code>git stash apply stash@{1}</code>就可以将你指定版本号为stash@{1}的工作取出来，当你将所有的栈都应用回来的时候，可以使用<code>git stash clear</code>来将栈清空。</p>
 
+<h3 id="查看stash与当前的差异">查看stash与当前的差异</h3>
+
+<p><code>git stash show -p</code> 最新的差异</p>
+
+<p><code>git stash show -p stash@{1}</code> 指定 stash</p>
+
+<p><code>git diff stash@{0} master</code> 与与任意版本对比</p>
+
+<p><code>git diff --name-only stash@{0} master</code> 仅仅查看哪些文件变化</p>
+
 <h2 id="git-diff">git diff</h2>
 
 <p><code>git diff</code> 默认是工作目录(Working tree)和暂存区域快照(index)之间的差异</p>
@@ -335,6 +380,14 @@ git stash pop
 <p>最后执行<code>git reflog expire --expire=now --all &amp;&amp; git gc --prune=now --aggressive</code></p>
 
 <p>使用<code>du -sh</code>查看最终文件夹大小.</p>
+
+<h1 id="git-查找">git 查找</h1>
+
+<p><code>git grep</code>搜索仓库下的代码,比<code>grep</code>更加快</p>
+
+<p>使用:<code>https://git-scm.com/docs/git-grep</code></p>
+
+<p>如只在markdown文件中搜索 <code>git grep &quot;make&quot; '*.MD'</code></p>
 
 <h1 id="git打包">git打包</h1>
 

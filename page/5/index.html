@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.20.2" />
+	<meta name="generator" content="Hugo 0.21" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -34,6 +34,47 @@
 		
 		<div class="post">
 			<h1 class="post-title">
+				<a href="/post/use-docker-on-raspberry/"> 在树莓派上使用Docker</a>
+			</h1>
+			<p class="post-date">Sun, May 8, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="安装支持docker的系统">安装支持Docker的系统</h2>
+
+<p>树莓派官方系统并不支持Docker,需要安装.</p>
+
+<p>查看 <a href="http://blog.hypriot.com/downloads/">集成Dcoker的树莓派系统</a></p>
+
+<pre><code>aria2c -s 50 -c https://downloads.hypriot.com/hypriotos-rpi-v0.8.0.img.zip
+
+
+diskutil list
+diskutil unmountdisk /dev/disk2
+</code></pre>
+
+<p>用以下命令前必须卸载u盘<code>diskutil unmountdisk /dev/disk2</code></p>
+
+<pre><code>sudo dd if=hypriotos-rpi-v0.8.0.img of=/dev/disk2 bs=8k
+</code></pre>
+
+<p>安装完成重启就可以啦,启动后登陆的用户是pirate,密码hypriot</p>
+
+<p>修改密码:执行<code>passwd</code>,输入当前密码,输入新密码,再输入新密码,更新完成</p>
+
+<p>执行<code>exit</code>退出,或者<code>sudo reboot</code>重启</p>
+
+<p>创建用户:<code>useradd -g test -d /home/test1 -s /etc/bash -m test1</code>
+注解：-g 所属组 -d 家目录 -s 所用的SHELL
+passwd abc</p>
+
+<p>获得sudo权限:编辑<code>/etc/sudoers</code> 加入新添加的用户名</p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
 				<a href="/software/android-studio/"> Android Studio</a>
 			</h1>
 			<p class="post-date">Fri, Apr 8, 2016</p>
@@ -42,16 +83,11 @@
 
 <h2 id="下载-android-studio">下载 Android Studio</h2>
 
-<p><a href="http://www.oschina.net/news/77839/android-studio-2-2-1">http://www.oschina.net/news/77839/android-studio-2-2-1</a></p>
-
-<pre><code>Windows: https://dl.google.com/dl/android/studio/ide-zips/2.2.1.0/android-studio-ide-145.3330264-windows.zip (437.1 MiB)
-Mac: https://dl.google.com/dl/android/studio/ide-zips/2.2.1.0/android-studio-ide-145.3330264-mac.zip (437.7 MiB)
-Linux: https://dl.google.com/dl/android/studio/ide-zips/2.2.1.0/android-studio-ide-145.3330264-linux.zip (436.8 MiB)
-</code></pre>
-
 <h2 id="安装android-sdk">安装android-sdk</h2>
 
 <p><code>brew install android-sdk</code> 或者使用Android Studio SDK Manager</p>
+
+<p>android studio 下载的sdk 位于 <code>/Users/admin/Library/Android/sdk</code></p>
 
 			</div>
 		</div>
@@ -284,6 +320,61 @@ Linux: https://dl.google.com/dl/android/studio/ide-zips/2.2.1.0/android-studio-i
 
 <p><code>head -c 100 file | hexdump | md5sum</code></p>
 
+<p>取文件1G(1073741824)至+819200处的md5值</p>
+
+<p><code>head -c 1074561024 file | tail -c 819200 |md5sum</code></p>
+
+<p>使用dd会更加方便,也更高效</p>
+
+<p><code>dd if=file bs=1 skip=1073741824 count=819200 | md5sum</code></p>
+
+<p>拆分文件 <code>split -b 1kb /tmp/file sfile</code></p>
+
+<p>拆分文件大小为1k，也可以是1b，或者1m之类的单位</p>
+
+<p><code>xxd</code> <code>hexdump</code> <code>od</code>
+<a href="https://www.zhihu.com/question/40441308/answer/86637730">https://www.zhihu.com/question/40441308/answer/86637730</a></p>
+
+<h2 id="使用-sed-修改二进制文件">使用 sed 修改二进制文件</h2>
+
+<p>先找到查找的目标</p>
+
+<p>例如<code>/opt/local</code>则对应<code>echo /opt/local | xxd</code></p>
+
+<pre><code>0000000: 2f6f 7074 2f6c 6f63 616c 0a              /opt/local.
+</code></pre>
+
+<p>要替换为<code>/usr/local</code>,则目标为<code>echo /usr/local | xxd</code></p>
+
+<pre><code>0000000: 2f75 7372 2f6c 6f63 616c 0a              /usr/local.
+</code></pre>
+
+<p>使用sed替换</p>
+
+<pre><code>xxd file | sed 's/2f6f 7074/2f75 7372/g' | xxd -r &gt; newfile
+</code></pre>
+
+<p><code>echo /lib/ld-linux.so.3 | xdd</code></p>
+
+<pre><code>0000000: 2f6c 6962 2f6c 642d 6c69 6e75 782e 736f  /lib/ld-linux.so
+0000010: 2e33 0a                                  .3.
+</code></pre>
+
+<p><code>echo ld.so | xxd</code></p>
+
+<pre><code>0000000: 6c64 2e73 6f0a                           ld.so.
+</code></pre>
+
+<pre><code>xxd file | sed 's/\x2f\x6c\x69\x62\x2f\x6c\x64\x2d\x6c\x69\x6e\x75\x78\x2e\x73\x6f\x2e\x33\x0a/\x6c\x64\x2e\x73\x6f\x0a/g' | xxd -r &gt; bb
+</code></pre>
+
+<pre><code>sed 's/\x2f\x6c\x69\x62\x2f\x6c\x64\x2d\x6c\x69\x6e\x75\x78\x2e\x73\x6f\x2e\x33\x0a/\x6c\x64\x2e\x73\x6f\x0a/g' file &gt; newfile
+
+</code></pre>
+
+<pre><code>LD_LIBRARY_PATH=`pwd` ~/tmp/qemu-arm-static ~/aa/aa -v
+</code></pre>
+
 <h2 id="linux用户管理">Linux用户管理</h2>
 
 <h3 id="添加用户adduser">添加用户adduser</h3>
@@ -417,8 +508,43 @@ ps -o rss,vsz,pid,ppid,time,etime,args
 <p>如果是其他端口可以-p指定端口
 <code>ssh-copy-id -i ~/.ssh/id_rsa.pub -p 26671 root@host</code></p>
 
-<p>使用指定私钥登陆
+<p>此过程相当于</p>
+
+<p><code>ssh user@host 'mkdir -p .ssh &amp;&amp; cat &gt;&gt; .ssh/authorized_keys' &lt; ~/.ssh/id_rsa.pub</code></p>
+
+<p>默认会使用<code>~/.ssh/id_rsa</code> 私钥文件,也可以指定
+使用指定私钥登陆
 <code>ssh –i  id_rsa root@host</code></p>
+
+<p>针对无效问题,可以检查服务端</p>
+
+<pre><code>chmod 700 ~/.ssh ; chmod 600 ~/.ssh/authorized_keys ; chmod g-w,o-w ~
+</code></pre>
+
+<p><code>/etc/ssh/sshd_config</code>文件配置</p>
+
+<pre><code>RSAAuthentication yes
+PubkeyAuthentication yes
+AuthorizedKeysFile  %h/.ssh/authorized_keys
+</code></pre>
+
+<p>必要时可禁止密码登陆</p>
+
+<pre><code>passwordAuthentication no
+</code></pre>
+
+<p>在<code>/var/log/secure</code>文件中,查找IP地址</p>
+
+<p><code>grep -E -o &quot;([0-9]{1,3}\.){3}[0-9]{1,3}&quot; /var/log/secure</code></p>
+
+<blockquote>
+<p>-E选项表示使用grep扩展的正则表达式
+-o选项是只显示匹配到的字符串</p>
+</blockquote>
+
+<p>统计这些IP的数量,并排序,查看哪些IP登陆错误次数较多</p>
+
+<p><code>grep -E -o &quot;([0-9]{1,3}\.){3}[0-9]{1,3}&quot; /var/log/secure|sort|uniq -c|sort -nr | head -30</code></p>
 
 <h2 id="pgrep">pgrep</h2>
 
@@ -490,6 +616,41 @@ count = blocks 只拷贝输入的blocks块</p>
 
 <p><code>mpstat  -P ALL 2</code></p>
 
+<h2 id="dig">dig</h2>
+
+<p><code>sudo apt-get install dnsutils</code> 或者 <code>yum install bind-utils -y</code></p>
+
+<p>DNS域名查询</p>
+
+<p><code>dig www.baidu.com</code></p>
+
+<p>查询的dns服务器将采用系统配置的服务器，即/etc/resovle.conf 中的</p>
+
+<p>如果要查询其他类型的记录，比如MX，CNAME，NS，PTR等，只需将类型加在命令后面即可</p>
+
+<pre><code>dig www.baidu.com mx
+dig www.baidu.com ns
+</code></pre>
+
+<p>可以查看使用的DNS服务器及端口,域名对应的IP,查询耗时等.</p>
+
+<p>默认情况下dig将采用udp协议进行查询，如果要采用tcp方式，可以加上 +tcp参数
+<code>dig www.baidu.com +tcp</code></p>
+
+<p>如果你是一个系统管理员，部署好了一台dns服务器之后想对它进行解析测试，就必须要显式指定待测试的dns服务器地址了，例如
+<code>dig @202.106.0.20 www.baidu.com a</code></p>
+
+<p>另外一个重要的功能是+trace参数，使用这个参数之后将显示从根域逐级查询的过程
+<code>dig www.baidu.com a +trace</code></p>
+
+<p><code>dig @223.6.6.6 blog.suconghou.cn +short</code> 简介模式列出IP</p>
+
+<p><strong>nslookup</strong> 也可以获取域名对应的IP</p>
+
+<p><code>nslookup www.baidu.com</code></p>
+
+<p>还可以指定DNS SERVER查询 <code>nslookup www.baidu.com 8.8.8.8</code></p>
+
 <h2 id="nc">nc</h2>
 
 <p>nc 命令默认没有安装,需要自己安装,<code>yum install nc</code></p>
@@ -515,6 +676,10 @@ count = blocks 只拷贝输入的blocks块</p>
 
 <p>ssh 也可以使用 pipe 传送 <code>tar zcf - attaches | ssh root@ip &quot;tar zxf - -C /path/to/&quot;</code></p>
 
+<p>使用端口如 <code>tar czf - public_html | ssh root@ip -p 5678 tar xzf - -C /www/web/myweb/public_html</code></p>
+
+<p>边打包边传输边解压,一条命令解决</p>
+
 <p>传送大量大文件 使用 <code>lftp</code>也是一个好方案</p>
 
 <pre><code>Use lftp, its much faster than rsync and its best for mirroring websites (many small files). It can also transfer in parallel using multiple connections:
@@ -533,6 +698,18 @@ If one connection breaks it will reconnect and continue. If you break the transf
 
 <p><strong>端口转发</strong></p>
 
+<pre><code>mknod tunnel p #创建一个临时的管道文件tunnel 或者下面的
+mkfifo tunnel
+</code></pre>
+
+<pre><code>nc -l -p 8081  &lt; tunnel | nc 127.0.0.1 9090 | tee tunnel
+</code></pre>
+
+<p>或者</p>
+
+<pre><code>cat tunnel | nc 127.0.0.1 9090 | nc -l -p 8081 &gt; tunnel
+</code></pre>
+
 <p>使用之前需要了解其他的命令</p>
 
 <p><code>tee</code>命令将标准输入的数据写入标准输出和tee命令指定的文件参数</p>
@@ -546,9 +723,22 @@ stdout	1
 stderr	2
 </code></pre>
 
-<p>** listener-to-client模式(用于外网访问内网) **</p>
+<p>使用<code>nc</code>建立一个简易webserver</p>
 
-<p>见 <a href="http://onestraw.net/cybersecurity/netcat-advanced-usage/">http://onestraw.net/cybersecurity/netcat-advanced-usage/</a></p>
+<p><code>while true;do sudo nc -l 8080 &lt; index.html;done</code></p>
+
+<p>用curl/wget可以访问,浏览器访问可能存在问题.</p>
+
+<p>nc 建立的server,比用 busybox 建立的server内存占用稍大,约<code>2MB</code> <code>busybox httpd -p 9797 -h /home/</code></p>
+
+<h2 id="history">history</h2>
+
+<p>不记录本次会话的history</p>
+
+<pre><code>HISTFILE=/dev/null; HISTSIZE=0; HISTFILESIZE=0;
+</code></pre>
+
+<p>执行的任何命令都不会写入 <code>~/.bash_history</code> , 按上键也不可复用执行过的命令. 这条设置也不会被记录</p>
 
 <h2 id="一份linux别名和函数库">一份Linux别名和函数库</h2>
 
@@ -587,8 +777,25 @@ topmem()
 	ps aux | sort -k6nr | head -n5;
 }
 
-
 </code></pre>
+
+<p>Linux 还可以使用 <code>bind</code> 定义快捷键执行的命令</p>
+
+<p>如让 <code>Ctrl+a</code> 执行 ls  <code>bind -x '&quot;\C-a&quot;: ls -lh'</code></p>
+
+<p>使用<code>unalias</code>取消alias</p>
+
+<p>内存增序 <code>ps aux --sort rss</code></p>
+
+<p>内存减序 <code>ps aux --sort -rss</code></p>
+
+<p>cpu增序 <code>ps auxw --sort=%cpu</code></p>
+
+<p>cpu减序 <code>ps auxw --sort=-%cpu</code></p>
+
+<p>可写为alias <code>alias mem=&quot;ps aux --sort -rss  | head -n20 &amp;&amp; ps auxw --sort=-%cpu | head -n5&quot;</code></p>
+
+<p><code>netstat -anltup</code> 与 <code>ss -ln</code> 都能查看网络链接信息</p>
 
 <p>部分快捷键</p>
 
@@ -642,6 +849,8 @@ echo &quot;*****************************&quot;
 }
 
 </code></pre>
+
+<p><code>lscpu</code> 命令也能简单查看CPU信息</p>
 
 <h2 id="使用脚本清理一些文件">使用脚本清理一些文件</h2>
 
@@ -882,6 +1091,28 @@ while true;do for i in *.less ; do air compress $i -r;done; sleep 6 ;done;
 
 </code></pre>
 
+<p>shell 命令查询 <a href="https://explainshell.com/">https://explainshell.com/</a></p>
+
+<p>常用 Linux命令 一览 <a href="https://github.com/Idnan/bash-guide">https://github.com/Idnan/bash-guide</a></p>
+
+<h3 id="shell多行转化为一行">shell多行转化为一行</h3>
+
+<p>例如当前目录下所有less,但排除指定文件,按字母排序成一行</p>
+
+<pre><code>ls *.less | grep -v &quot;base.less\|config.less\|mixins.less&quot; |  xargs echo
+</code></pre>
+
+<p>直接执行</p>
+
+<pre><code>air compress ` ls *.less | grep -v &quot;base.less\|config.less\|mixins.less&quot; | xargs echo`
+</code></pre>
+
+<p>来合并这些文件.</p>
+
+<p><a href="http://blog.csdn.net/hjxhjh/article/details/17264739">http://blog.csdn.net/hjxhjh/article/details/17264739</a></p>
+
+<p><a href="http://blog.sina.com.cn/s/blog_4a3c301c0100lqbm.html">http://blog.sina.com.cn/s/blog_4a3c301c0100lqbm.html</a></p>
+
 <h2 id="dns配置">DNS配置</h2>
 
 <p><code>/etc/resolv.conf</code>内配置</p>
@@ -892,6 +1123,16 @@ while true;do for i in *.less ; do air compress $i -r;done; sleep 6 ;done;
 nameserver 4.2.2.1
 nameserver 8.8.4.4
 nameserver 4.2.2.2
+</code></pre>
+
+<p>国内</p>
+
+<pre><code>nameserver 1.2.4.8
+nameserver 119.29.29.29
+nameserver 119.28.28.28
+nameserver 114.114.114.114
+nameserver 223.5.5.5
+nameserver 223.6.6.6
 </code></pre>
 
 <h2 id="测试vps宽带">测试VPS宽带</h2>
@@ -1008,7 +1249,11 @@ mtr</p>
 
 <p>iftop和iptraf可以用来查看当前网络链接的一些流量情况。</p>
 
-<p><code>ifstat</code> 能查看系统大致的网络流量</p>
+<p><code>ifstat</code> 能查看系统大致的网络流量,直接执行<code>ifstat</code>即可</p>
+
+<p><code>ifstat -v</code>打印版本并退出</p>
+
+<p><code>ifstat -a</code>显示所有的网卡统计,<code>-b</code>以<code>Kbps</code>为单位.<code>-S</code>持续更新而不滚动更新,直接加上数字可控制计算的间隔<code>ifstat -tT 5</code></p>
 
 <p><code>iftop</code> 在<code>epel</code>源中,系统不自带,功能更加全面</p>
 
@@ -1166,8 +1411,11 @@ curl -sSL https://github.com/esnet/iperf/archive/3.1.7.tar.gz | tar xz --strip 1
 独享物理机              Intel&reg; Xeon&reg; CPU E5506  @ 2.13GHz      : 37.454s
 4核独享物理机            Intel&reg; Xeon&reg; CPU E7- 4820  @ 2.00GHz   : 39.464s
 某VMWARE虚拟化VPS       Intel&reg; Xeon&reg; CPU X7560  @ 2.27GHz      : 45.866s
-独享物理机              Intel&reg; Xeon&reg; CPU E3-1230 v3 @ 3.30GHz  : 1m12.240s</p>
+独享物理机              Intel&reg; Xeon&reg; CPU E3-1230 v3 @ 3.30GHz  : 1m12.240s
+树莓派2                ARMv7 Processor rev 5 (v7l)                 :  2m12.017s</p>
 </blockquote>
+
+<p>树莓派2的2000位计算时间是<code>12.864s</code> E3-1230 的是<code>6.993s</code></p>
 
 <p>** sysbench测试 **</p>
 
@@ -1190,7 +1438,11 @@ curl -sSL https://github.com/esnet/iperf/archive/3.1.7.tar.gz | tar xz --strip 1
 腾讯云 kvm  单核      Intel&reg; Xeon&reg; CPU E5-26xx v2 @2.60GHz   :  12.5962s
 阿里云 xen-hvm 单核   Intel&reg; Xeon&reg; CPU E5-2650 v2 @ 2.60GHz  :  12.8241s
 某VMWARE虚拟化VPS单核  Intel&reg; Xeon&reg; CPU X7560  @ 2.27GHz      :  13.7159s</p>
+
+<p>树莓派2全部核心运算  ARMv7 Processor rev 5 (v7l)  : 81.7271s</p>
 </blockquote>
+
+<p>树莓派2 系统是OSMC sysbench 0.4.12</p>
 
 <p>E3单核性能不行;搬瓦工CPU性能不错,单核媲美E3四核;I5单核性能竟然比E3强那么多</p>
 
@@ -1214,6 +1466,30 @@ sysbench --test=fileio --num-threads=16 --file-total-size=3G --file-test-mode=rn
 <p>内存测试</p>
 
 <p><code>sysbench --test=memory --memory-block-size=8k --memory-total-size=4G run</code></p>
+
+<p>磁盘性能测试还可以使用 <code>ioping</code>   使用 <code>yum install ioping</code> 安装</p>
+
+<p>对搬瓦工1G的测试如下</p>
+
+<pre><code>[root@suconghou ~]# ioping -RL .
+
+--- . (simfs /dev/simfs) ioping statistics ---
+8.17 k requests completed in 2.45 s, 2.00 GiB read, 3.33 k iops, 833.0 MiB/s
+generated 8.17 k requests in 3.00 s, 2.00 GiB, 2.72 k iops, 681.1 MiB/s
+min/avg/max/mdev = 52.4 us / 300.1 us / 3.08 ms / 127.9 us
+[root@suconghou ~]# ioping -R .
+
+--- . (simfs /dev/simfs) ioping statistics ---
+51.6 k requests completed in 2.05 s, 201.6 MiB read, 25.2 k iops, 98.3 MiB/s
+generated 51.6 k requests in 3.00 s, 201.6 MiB, 17.2 k iops, 67.2 MiB/s
+min/avg/max/mdev = 785 ns / 39.7 us / 2.87 ms / 60.4 us
+</code></pre>
+
+<h2 id="vps性能综合测试脚本">VPS性能综合测试脚本</h2>
+
+<p><a href="https://bench.sh/">https://bench.sh/</a> 提供bash脚本测试</p>
+
+<p><code>wget -qO- bench.sh | bash</code> 或者 <code>curl -Lso- bench.sh | bash</code> 即可测试</p>
 
 <h2 id="资源下载">资源下载</h2>
 
@@ -1251,7 +1527,10 @@ sysbench --test=fileio --num-threads=16 --file-total-size=3G --file-test-mode=rn
 
 <p>URL访问统计 <code>awk '{print $7}' access.log | sort | uniq -c | sort</code> 访问最频繁的URL <code>awk '{print $7}' access.log|sort | uniq -c |sort -n -k 1 -r|more</code></p>
 
-<pre><code>
+<p><code>~/.shell.sh</code></p>
+
+<pre><code>alias mem=&quot;ps aux --sort -rss  | head -n20 &amp;&amp; ps auxw --sort=-%cpu | head -n5&quot;
+alias topip='grep -E -o &quot;([0-9]{1,3}\.){3}[0-9]{1,3}&quot; /var/log/secure|sort|uniq -c|sort -nr | head -30'
 </code></pre>
 
 			</div>
@@ -1335,6 +1614,16 @@ ls -lh
 
 <p>dd过程中看不到进度,如果确实想要了解进度,可以再开一个终端<code>pkill -USR1 -n -x dd</code>查看进度.</p>
 
+<p>确定内存卡的最佳写入块大小,分别执行如下命令,查看速度</p>
+
+<pre><code>dd if=/dev/zero bs=1024 count=65536 of=/tmp/64mb
+dd if=/dev/zero bs=2048 count=32768 of=/tmp/64mb
+dd if=/dev/zero bs=4096 count=16384 of=/tmp/64mb
+dd if=/dev/zero bs=8192 count=8192 of=/tmp/64mb
+</code></pre>
+
+<p>我的内存卡 4096 比较快,能有90MB/s</p>
+
 <p>如果是iso文件,需要装换为img文件,</p>
 
 <pre><code>hdiutil convert -format UDRW -o /path/to/generate/img/file /path/to/your/iso/file
@@ -1348,9 +1637,14 @@ ls -lh
 
 <p>OSMC默认的ssh连接用户是 osmc 密码 osmc</p>
 
+<p>播放界面
+&gt; 切换字幕快捷键 <code>t</code>
+&gt; 查看属性 <code>i</code>
+&gt; 播放器菜单 <code>m</code></p>
+
 <p>但是发现 OSMC 无法播放<code>rmvb</code>,只有声音,没有图像</p>
 
-<p>由于rmvb无法硬解,又不是开源格式,树莓派无法解码,只能通过ffmpeg转换格式,</p>
+<p>由于rmvb无法硬解,又不是开源格式,树莓派无法解码,只能通过ffmpeg转换格式 (OSMC2017.05版本已可播放<code>Real Video</code>文件,播放超清1080P大文件CPU近乎满载,基本流畅播放)</p>
 
 <p>转换为MP4格式最为通用,但是发现较慢,也不能边转码,边播放.</p>
 
@@ -1369,6 +1663,8 @@ ls -lh
 
 <pre><code>sudo passwd root
 </code></pre>
+
+<p>定时关机 <code>sudo shutdown -t 60</code>(一个小时后关机) -t参数后面是分钟.</p>
 
 <p>修改为国内镜像源
 <code>/etc/apt/sources.list</code>原先内容</p>
@@ -1397,11 +1693,13 @@ deb http://mirrors.tuna.tsinghua.edu.cn/osmc/osmc/apt/  jessie main
 
 </code></pre>
 
+<p>arm php7.1  <code>http://repozytorium.mati75.eu/raspbian/pool/main/p/php7.1/</code></p>
+
 <p>在 <a href="http://www.debian.org/mirror/list">http://www.debian.org/mirror/list</a> 查看有多个国内镜像源</p>
 
-<p>执行更新<code>sudo apt-get update -y &amp;&amp; sudo apt-get upgrade -y</code></p>
+<p>执行更新<code>sudo apt update -y &amp;&amp; sudo apt upgrade -y</code></p>
 
-<p>安装常用工具<code>sudo apt-get install htop tree file telnet screen</code></p>
+<p>安装常用工具<code>sudo apt install htop tree file telnet screen curlftpfs</code></p>
 
 <p>安装<code>zsh</code>,可通过CURL或者WGET安装 <a href="https://github.com/robbyrussell/oh-my-zsh">https://github.com/robbyrussell/oh-my-zsh</a></p>
 
@@ -1488,83 +1786,67 @@ deb-src http://mirrors.ustc.edu.cn/raspbian/raspbian/ wheezy main non-free contr
 
 <p><code>https://www.zybuluo.com/yangxuan/note/321467</code></p>
 
+<h2 id="关于-arm-cpu性能">关于 arm cpu性能</h2>
+
+<p>大八核A80以问鼎国内主控芯片性能第一位的姿态把控着专业游戏盒子市场</p>
+
+<p>搜索到a53-a15好像是快48%</p>
+
+<p>A80 H8 H5都是八核。</p>
+
+<p>A80是全志最初面向平板市场开发的高性能处理器，不过生不逢时，现在也用到了盒子上。A80处理器基于四核A15+四核A7的架构，GPU配置出色，安兔兔跑分能突破5W大关。它支持4K解码和4K输出，界面本身为1080P规格。相关产品多配备2GB内存，个别机型甚至会用上4GB内存，多出现于一些主打高性能的盒子产品上</p>
+
+<p>四核A53架构的H64与八核A53架构的H5方案都在规划当中，将逐渐取代现有的H8和H3方案</p>
+
+<p>全志OTT处理器以H3、H5和H8为主，其中H3和H8都是老旧的Cortex-A7架构设计，而H5则升级到了最新Cortex-A53架构，并集成Mali-450MP6 GPU。</p>
+
+<p>以由高到低的方式来看，ARM处理器大体上可以排序为：Cortex-A57处理器、Cortex-A53处理器、Cortex-A15处理器、Cortex-A12处理器、Cortex-A9处理器、Cortex-A8处理器、Cortex-A7处理器、Cortex-A5处理器。其中A53、A9、A7和A5是网络机顶盒芯片厂商使用最多的。</p>
+
+<p>官方介绍 <a href="https://www.arm.com/products/processors/cortex-a">https://www.arm.com/products/processors/cortex-a</a></p>
+
+<p><a href="http://dkmc.tv/2016/11/24/how-to-detect-performance-of-smart-tv-and-tv-box/?lang=pt">http://dkmc.tv/2016/11/24/how-to-detect-performance-of-smart-tv-and-tv-box/?lang=pt</a></p>
+
+<p><a href="http://irunhuayou.com/keji/ruanjian/1120329.html">http://irunhuayou.com/keji/ruanjian/1120329.html</a></p>
+
+<p><a href="http://www.allwinnertech.com/uploads/150416/7-15041610492JA.jpg">http://www.allwinnertech.com/uploads/150416/7-15041610492JA.jpg</a></p>
+
+<p><a href="http://dkmc.tv/wp-content/uploads/2016/11/arm-cortex-xxx.jpg">http://dkmc.tv/wp-content/uploads/2016/11/arm-cortex-xxx.jpg</a></p>
+
+<p><a href="http://www.21ic.com/eva/MCU/201604/669727.htm">http://www.21ic.com/eva/MCU/201604/669727.htm</a></p>
+
 <h2 id="bash-乱码设置">bash 乱码设置</h2>
 
-<p><code>env|grep LANG</code> 查看当前编码</p>
+<p><code>env</code> 查看当前编码</p>
 
-<p>清除 <code>unset LANG</code></p>
+<p>之前的值<code>LANG=C</code></p>
+
+<p>需要清除 <code>unset LANG</code></p>
 
 <p><code>export LANG=zh_CN.UTF-8</code></p>
 
+<p>有时候可能还需要设置<code>LC_ALL=zh_CN.utf8</code> , 可直接<code>export LC_ALL=zh_CN.utf8</code>加入<code>~/.bashrc</code>中</p>
+
 <p>sudo apt-get install zhcon</p>
 
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/homebrew-speedup/"> 使用镜像加速homebrew</a>
-			</h1>
-			<p class="post-date">Fri, Jan 15, 2016</p>
-			<div class="post-text">
-				
+<h2 id="我的树莓派">我的树莓派</h2>
 
-<p><a href="http://mirrors.ustc.edu.cn/">中国科大镜像站</a> 提供 Debian, Ubuntu, Fedora, Archlinux, CentOS 等多个发行版的官方源.
-还有brew 的二进制源,brew使用此配置能大大提升速度.</p>
+<ol>
+<li>osmc 系统 ssh-copy-id配置</li>
+<li>rslsync 分布式同步网盘  开机启动</li>
+<li>syncting 开机启动</li>
+<li>docker daemon 开机启动</li>
+<li>aria2 下载</li>
+<li>frp</li>
+</ol>
 
-<pre><code>cd /usr/local/Homebrew
-git remote set-url origin git://mirrors.ustc.edu.cn/brew.git
-git remote -v
-brew update
-</code></pre>
+<p><code>curlftpfs</code> 用于挂载ftp</p>
 
-<p>修改源：<a href="https://lug.ustc.edu.cn/wiki/mirrors/help/brew.git">https://lug.ustc.edu.cn/wiki/mirrors/help/brew.git</a> 和 <a href="https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-core.git">https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-core.git</a>
-修改二进制源见<a href="https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-bottles">https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-bottles</a></p>
+<h2 id="android-linux-arm">android linux arm</h2>
 
-<p>即<code>export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles</code></p>
-
-<p>使用<code>brew config</code> 查看<code>ORIGIN</code>和<code>HOMEBREW_BOTTLE_DOMAIN</code>已经是新的<code>mirrors.ustc.edu.cn</code>即为配置成功</p>
-
-<p><code>brew list</code> 列出所有安装的模块</p>
-
-<p><code>brew search mysql</code> 查找</p>
-
-<p><code>brew commands</code> 查看所有命令</p>
-
-<p>安装（需要 Ruby）：
-<code>ruby -e &quot;$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)&quot;</code></p>
-
-<p>搜索：<code>brew search mysql</code></p>
-
-<p>查询：<code>brew info mysql</code> 主要看具体的信息，比如目前的版本，依赖，安装后注意事项等</p>
-
-<p>更新：<code>brew update</code> 这会更新 Homebrew 自己，并且使得接下来的两个操作有意义——</p>
-
-<p>检查过时（是否有新版本）：<code>brew outdated</code> 这回列出所有安装的软件里可以升级的那些</p>
-
-<p>升级：<code>brew upgrade</code> 升级所有可以升级的软件们</p>
-
-<p>清理：<code>brew cleanup</code> 清理不需要的版本极其安装包缓存</p>
-
-<h2 id="其他镜像源">其他镜像源</h2>
-
-<p><a href="http://ban.ninja/">http://ban.ninja/</a></p>
-
-<p><a href="http://homebrew-mirror-china.tycdn.net/">http://homebrew-mirror-china.tycdn.net/</a></p>
-
-<p>清华大学镜像 <a href="https://mirrors.tuna.tsinghua.edu.cn/help/homebrew/">https://mirrors.tuna.tsinghua.edu.cn/help/homebrew/</a></p>
-
-<p>相对来说中国科大镜像站更新的更及时</p>
-
-<p>编程语言</p>
-
-<pre><code>brew install node go python3 rust lua
-</code></pre>
-
-<p>一些必备的软件.</p>
-
-<pre><code> brew install vim git subversion nginx hugo openssl htop ngrep ffmpeg xz aria2 wget axel memcached redis mcrypt md5sha1sum fswatch mpv pv
-</code></pre>
+<ol>
+<li>php server static build</li>
+<li>busybox httpd</li>
+</ol>
 
 			</div>
 		</div>
@@ -1572,53 +1854,134 @@ brew update
 	</div>
 	<nav>
 		
+
+<ul class="pagination">
     
-    <ul class="pagination">
-        
-        <li>
-            <a href="/" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
-        </li>
-        
-        <li
-        >
-        <a href="/page/4/" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-        </li>
-        
-        <li
-        ><a href="/">1</a></li>
-        
-        <li
-        ><a href="/page/2/">2</a></li>
-        
-        <li
-        ><a href="/page/3/">3</a></li>
-        
-        <li
-        ><a href="/page/4/">4</a></li>
-        
-        <li
-        class="active"><a href="/page/5/">5</a></li>
-        
-        <li
-        ><a href="/page/6/">6</a></li>
-        
-        <li
-        ><a href="/page/7/">7</a></li>
-        
-        <li
-        ><a href="/page/8/">8</a></li>
-        
-        <li
-        >
-        <a href="/page/6/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-        </li>
-        
-        <li>
-            <a href="/page/8/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
-        </li>
-        
-    </ul>
+    <li>
+        <a href="/" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+    </li>
     
+    <li
+    >
+    <a href="/page/4/" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/">1</a></li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/page/2/">2</a></li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/page/3/">3</a></li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/page/4/">4</a></li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    class="active"><a href="/page/5/">5</a></li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/page/6/">6</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="disabled"><span aria-hidden="true">&hellip;</span></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/page/9/">9</a></li>
+    
+    
+    <li
+    >
+    <a href="/page/6/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+    
+    <li>
+        <a href="/page/9/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+    </li>
+    
+</ul>
+
 	</nav>
 </div>
 	<div class="music-container">

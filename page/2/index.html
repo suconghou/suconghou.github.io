@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.20.2" />
+	<meta name="generator" content="Hugo 0.21" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -31,6 +31,67 @@
 
 <div class="content container">
 	<div class="posts">
+		
+		<div class="post">
+			<h1 class="post-title">
+				<a href="/post/pc-hardware/"> pc hardware</a>
+			</h1>
+			<p class="post-date">Sun, Sep 4, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="修电脑相关知识">修电脑相关知识</h2>
+
+<h3 id="较好的pe">较好的PE</h3>
+
+<p><strong>微PE</strong></p>
+
+<p><a href="http://www.wepe.com.cn/">http://www.wepe.com.cn/</a> 自带刻录,可以一键安装到U盘,硬盘等,支持UEFI,CMS等多种启动方式.</p>
+
+<blockquote>
+<p>一般的BIOS里找不到UEFI/CMS的切换设置,可能是<code>security boot</code>的配置,禁用<code>security boot</code>试试</p>
+
+<p>如果在BIOS里找不到U盘,可能是<code>fastboot</code>的问题,可以禁用fastboot,安装好系统后在开启.</p>
+
+<p>硬盘的设置模式里,找不到U盘或者硬盘,可以尝试切换<code>AHCI/IDE</code>,注意安装好系统后,此选项不能够再随意切换,否知导致系统进不去.</p>
+</blockquote>
+
+<p>休眠能将现有所有工作保存到硬盘,下次开机恢复上次的会话,Windows8及以后采用了混合休眠机制</p>
+
+<p>你可能找不到单纯的休眠按钮.</p>
+
+<p>可以使用<code>shutdown -h</code>休眠</p>
+
+<p>其他一些补充</p>
+
+<pre><code>关机计算机：shutdown.exe -s -t 00
+重启计算机：shutdown.exe -r -t 00
+注销计算机：shutdown.exe -l -t 00
+锁定计算机：rundll32.exe user32.dll,LockWorkStation
+休眠计算机：rundll32.exe powrProf.dll,SetSuspendState
+睡眠计算机：rundll32.exe powrprof.dll,SetSuspendState 0,1,0,
+</code></pre>
+
+<h2 id="性能天梯图">性能天梯图</h2>
+
+<p>CPU性能列表 <a href="https://www.cpubenchmark.net/cpu_list.php">https://www.cpubenchmark.net/cpu_list.php</a></p>
+
+<p>在新标签查看大图</p>
+
+<p>CPU天梯图</p>
+
+<p><img src="https://img.alicdn.com/imgextra/i4/693806815/TB2ulpikCxjpuFjSszeXXaeMVXa_!!693806815.jpg" alt="CPU天梯图1" /></p>
+
+<p>CPU天梯图其他版本</p>
+
+<p><img src="https://img.alicdn.com/imgextra/i3/693806815/TB2KExqkwRkpuFjy1zeXXc.6FXa_!!693806815.jpg" alt="CPU天梯图2" /></p>
+
+<p>显卡天梯图</p>
+
+<p><img src="https://img.alicdn.com/imgextra/i1/693806815/TB2heFDkB8lpuFjSspaXXXJKpXa_!!693806815.jpg" alt="显卡天梯图" /></p>
+
+			</div>
+		</div>
 		
 		<div class="post">
 			<h1 class="post-title">
@@ -112,6 +173,111 @@ make -j$CPU_NUM &amp;&amp; make install
 				
 
 <h2 id="实用的javascript代码锦集">实用的Javascript代码锦集</h2>
+
+<pre><code>Date.parse(&quot;2016-04-4&quot;)
+</code></pre>
+
+<p><code>Date.parse</code> safari 不能使用单位数字的月份和日期,否则解析为NaN</p>
+
+<p>火狐较低版本(火狐43)也是如此</p>
+
+<p>IE10 has not  anchorNode focusNode 属性, 取得选中的文字需要读取 text 属性, IE11 一切正常 , 取得选中文字可以直接 toString</p>
+
+<p>IE10,IE11 不支持 html5 的 download 属性, 无法点击下载自定义名称的html和图片等文件.
+可以使用 下载的 downloadFile,利用ajax下载,顺便说 ajax 下载也不能使用fetch
+IE系统统不支持fetch,到EDGE14才支持fetch, <a href="https://github.com/github/fetch">https://github.com/github/fetch</a> 可支持IE10+</p>
+
+<p>火狐不支持和chrome的<code>scrollTop</code>表现也不相同</p>
+
+<pre><code>// 兼容处理 chrome 和 firefox
+let scrollTop=document.body.scrollTop?document.body.scrollTop:document.documentElement.scrollTop;
+if(scrollTop&lt;20){
+    this.headerShowStatus=true;
+}else if(scrollTop&gt;170){
+    this.headerShowStatus=false;
+}
+if(document.documentElement.scrollHeight-scrollTop- document.documentElement.clientHeight&lt; 400 ){
+    this.loadMore();
+}
+</code></pre>
+
+<p>火狐不支持 <code>e.srcElement</code> 需要使用 <code>e.target</code> 代替</p>
+
+<h2 id="ie10-ie11-不支持-location-origin">IE10,IE11, 不支持<code>location.origin</code></h2>
+
+<pre><code>var origin = location.origin?location.origin:location.protocol+&quot;//&quot;+location.host;
+</code></pre>
+
+<p>firefox 浏览器下载接受的后端header 不支持单引号</p>
+
+<h2 id="旧版firefox-不支持-insertadjacentelement-直到火狐48才支持">旧版firefox 不支持<code>insertAdjacentElement</code>,直到火狐48才支持</h2>
+
+<p><a href="https://gist.github.com/kafene/8e56adaf3c1ca4188938">https://gist.github.com/kafene/8e56adaf3c1ca4188938</a></p>
+
+<pre><code>if (&quot;undefined&quot; === typeof (Element.prototype.insertAdjacentElement)) {
+    Object.defineProperty(Element.prototype, &quot;insertAdjacentElement&quot;, {
+        enumerable: false,
+        writable: true,
+        configurable: true,
+        value: function (position, elem) {
+            switch (position.toString().toUpperCase()) {
+                case &quot;BEFOREBEGIN&quot;:
+                    return this.parentNode.insertBefore(elem, this);
+                case &quot;AFTERBEGIN&quot;:
+                    return this.insertBefore(elem, this.firstChild);
+                case &quot;BEFOREEND&quot;:
+                    return this.appendChild(elem);
+                case &quot;AFTEREND&quot;:
+                    return this.parentNode.insertBefore(elem, this.nextSibling);
+                default:
+                    throw new Error(&quot;Invalid element position `&quot; + position + &quot;`&quot;);
+            }
+        }
+    });
+}
+</code></pre>
+
+<h2 id="safari8-safari10-对于父元素是border-radius-overflow-hidden">safari8 safari10 对于父元素是border-radius,overflow:hidden;</h2>
+
+<p>子元素可以被父元素相切,只显示父元素相切后的内容, 但是子元素如果使用了keyframe帧动画,则出现bug,相切的并不是border-radius后的结果.</p>
+
+<h2 id="ie">IE</h2>
+
+<p><code>word-wrap: break-word;</code> 文字换行, Chrome,Safari,Firefox  无论中英文,还是超长英文单词,都能够自动换行不溢出.</p>
+
+<p>但是IE10,IE11对于超长单词仍然溢出,需要添加<code>word-break: break-all;</code></p>
+
+<h2 id="chrome-31-or-搜狗5-0-9-2014年">chrome 31 or 搜狗5.0.9 (2014年)</h2>
+
+<p>chrome 31 内核 bug , supports  函数不能赋值给其他变量执行</p>
+
+<pre><code>var support = (window.CSS &amp;&amp; window.CSS.supports) || window.supportsCSS || false;
+if(support){
+    return support('-webkit-text-decoration-style','wavy')||support('text-decoration-style','wavy');
+}
+return false;
+</code></pre>
+
+<p>如上,会报<code>TypeError:Illegal invocation</code></p>
+
+<p>可修改为如下</p>
+
+<pre><code> if(window.CSS&amp;&amp;window.CSS.supports){
+    return window.CSS.supports('-webkit-text-decoration-style','wavy')||window.CSS.supports('text-decoration-style','wavy');
+}else if(window.supportsCSS){
+    return window.supportsCSS('-webkit-text-decoration-style','wavy')||window.supportsCSS('text-decoration-style','wavy');
+}else{
+    return false;
+}
+</code></pre>
+
+<h3 id="异步之中的下载文件">异步之中的下载文件</h3>
+
+<p>在异步中使用window.open是无法生效的</p>
+
+<p>发现异次元的下载链接</p>
+
+<p>使用 form.submit 向后端提交下载地址,后端302即可实现异步调用文件下载</p>
 
 <h3 id="获取查询查询字符串get参数值">获取查询查询字符串get参数值</h3>
 
@@ -389,6 +555,63 @@ function injectStyle(css) {
 jQuery(&quot;form&quot;).serializeArray(); //[{name:&quot;username&quot;,value:&quot;&quot;},{name:&quot;password&quot;,value:&quot;&quot;}]
 jQuery(&quot;form&quot;).serializeObject(); //{username:&quot;&quot;,password:&quot;&quot;}
 </code></pre>
+
+<h3 id="直接下载blob数据">直接下载blob数据</h3>
+
+<pre><code>function downFile(blob, fileName)
+{
+    if (window.navigator.msSaveOrOpenBlob)
+    {
+        navigator.msSaveBlob(blob, fileName);
+    }
+    else
+    {
+        var link = document.createElement('a');
+        link.style.display='none';
+        link.href = window.URL.createObjectURL(blob);
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        setTimeout(function()
+        {
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(link.href);
+        },200);
+    }
+}
+</code></pre>
+
+<p>兼容IE,Chrome,Firefox,Safari,注意 appendChild 这一步不能缺,否则Firefox不兼容</p>
+
+<pre><code>var blob = new Blob([res.data], {type: &quot;application/vnd.ms-excel&quot;}),
+    fileName = '下载.xls';
+downFile(blob, fileName);
+</code></pre>
+
+<pre><code>fetch('/files/bin/http.xz').then(res=&gt;res.blob()).then(res=&gt;{console.log(res);downFile(res,&quot;http.xz&quot;)})
+</code></pre>
+
+<h3 id="iso-8-html5-canvas-限制">iso 8 html5 canvas 限制</h3>
+
+<p><a href="https://stackoverflow.com/questions/18565395/why-does-canvas-context-drawimage-fail-on-iphone">https://stackoverflow.com/questions/18565395/why-does-canvas-context-drawimage-fail-on-iphone</a></p>
+
+<p>ios 的canvas 有像素限制,由于像素过大,实测拍出来的图片不能使用 <code>canvasContext.drawImage</code>处理.</p>
+
+<p>现象是canvas画出来的图片为空白,toBlob和toDataUrl也不能取到该canvas的数据.</p>
+
+<p>解决方案</p>
+
+<p><a href="https://github.com/stomita/ios-imagefile-megapixel">https://github.com/stomita/ios-imagefile-megapixel</a>  (未测试)</p>
+
+<p>还有更加全面的方案</p>
+
+<p><a href="https://github.com/blueimp/javascript-load-image">https://github.com/blueimp/javascript-load-image</a></p>
+
+<p>加上 <a href="https://github.com/blueimp/JavaScript-Canvas-to-Blob">https://github.com/blueimp/JavaScript-Canvas-to-Blob</a></p>
+
+<p>能更加方便的处理图片,实测可以解决拍出的图片过大无法处理的问题.</p>
+
+<p><a href="https://blueimp.github.io/JavaScript-Load-Image/">https://blueimp.github.io/JavaScript-Load-Image/</a> 提供在线检查Exif meta data</p>
 
 <h3 id="资源预取">资源预取</h3>
 
@@ -833,108 +1056,128 @@ fi
 			</div>
 		</div>
 		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/software/some-dev-tools/"> some dev tools</a>
-			</h1>
-			<p class="post-date">Sun, Jul 17, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="一些开发会用到的小工具">一些开发会用到的小工具</h2>
-
-<h3 id="编程字体">编程字体</h3>
-
-<p>苹果出品的<code>Monaco</code>,看起来十分圆润,首选推荐的编程字体</p>
-
-<p><a href="http://share.suconghou.cn/files/fonts/monaco.ttf">monaco</a></p>
-
-<p>或许还有很多人喜欢<code>YaHei.Consolas</code></p>
-
-<p><a href="http://share.suconghou.cn/files/fonts/YaHei.Consolas.1.12.zip">YaHei.Consolas.1.12.zip</a></p>
-
-<h3 id="一些从-linux-迁移到windows的东西">一些从<code>Linux</code>迁移到Windows的东西</h3>
-
-<p>最常用的当属<code>bash</code>了,包含<code>md5sum</code>,<code>wget</code>,<code>curl</code>,<code>awk</code>等等.</p>
-
-<p>有两个比较好的项目在移植</p>
-
-<blockquote>
-<p><em>unxutils</em> <a href="http://unxutils.sourceforge.net/">http://unxutils.sourceforge.net/</a>  源码 <a href="https://sourceforge.net/projects/unxutils/">https://sourceforge.net/projects/unxutils/</a></p>
-
-<p><em>win-bash</em> <a href="https://sourceforge.net/projects/win-bash/">https://sourceforge.net/projects/win-bash/</a></p>
-</blockquote>
-
-<p><code>unxutils</code>最后更新2014-04-03</p>
-
-<p><code>win-bash</code>最后更新2015-03-30</p>
-
-<p><code>sourceforge</code>上速度太慢,这里提供加速下载.</p>
-
-<p>win-bash下载<a href="http://share.suconghou.cn/files/Windows/shell.w32-ix86.zip">shell.w32-ix86.zip</a></p>
-
-<p>我的github也收集了一些<code>windows</code>上常用的小工具<code>axel</code>,<code>putty</code>,<code>ab</code>,<code>hugo</code>,<code>rsync</code>等</p>
-
-<p><a href="http://github.com/suconghou/tools">http://github.com/suconghou/tools</a></p>
-
-<p>Curl 官网 <a href="https://curl.haxx.se/download.html">https://curl.haxx.se/download.html</a></p>
-
-<p>Curl 这里可以下载windows版的
-<a href="http://www.paehl.com/open_source/?CURL_7.49.1">http://www.paehl.com/open_source/?CURL_7.49.1</a></p>
-
-			</div>
-		</div>
-		
 	</div>
 	<nav>
 		
+
+<ul class="pagination">
     
-    <ul class="pagination">
-        
-        <li>
-            <a href="/" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
-        </li>
-        
-        <li
-        >
-        <a href="/" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-        </li>
-        
-        <li
-        ><a href="/">1</a></li>
-        
-        <li
-        class="active"><a href="/page/2/">2</a></li>
-        
-        <li
-        ><a href="/page/3/">3</a></li>
-        
-        <li
-        ><a href="/page/4/">4</a></li>
-        
-        <li
-        ><a href="/page/5/">5</a></li>
-        
-        <li
-        ><a href="/page/6/">6</a></li>
-        
-        <li
-        ><a href="/page/7/">7</a></li>
-        
-        <li
-        ><a href="/page/8/">8</a></li>
-        
-        <li
-        >
-        <a href="/page/3/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-        </li>
-        
-        <li>
-            <a href="/page/8/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
-        </li>
-        
-    </ul>
+    <li>
+        <a href="/" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+    </li>
     
+    <li
+    >
+    <a href="/" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/">1</a></li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    class="active"><a href="/page/2/">2</a></li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/page/3/">3</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="disabled"><span aria-hidden="true">&hellip;</span></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/page/9/">9</a></li>
+    
+    
+    <li
+    >
+    <a href="/page/3/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+    
+    <li>
+        <a href="/page/9/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+    </li>
+    
+</ul>
+
 	</nav>
 </div>
 	<div class="music-container">

@@ -79,8 +79,8 @@ PicasaPhotoViewerv3.9.136.9</description>
       <pubDate>Fri, 08 Apr 2016 10:08:24 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/software/android-studio/</guid>
-      <description>下载 Android Studio http://www.oschina.net/news/77839/android-studio-2-2-1
-Windows: https://dl.google.com/dl/android/studio/ide-zips/2.2.1.0/android-studio-ide-145.3330264-windows.zip (437.1 MiB) Mac: https://dl.google.com/dl/android/studio/ide-zips/2.2.1.0/android-studio-ide-145.3330264-mac.zip (437.7 MiB) Linux: https://dl.google.com/dl/android/studio/ide-zips/2.2.1.0/android-studio-ide-145.3330264-linux.zip (436.8 MiB)  安装android-sdk brew install android-sdk 或者使用Android Studio SDK Manager</description>
+      <description>下载 Android Studio 安装android-sdk brew install android-sdk 或者使用Android Studio SDK Manager
+android studio 下载的sdk 位于 /Users/admin/Library/Android/sdk</description>
     </item>
     
   </channel>

@@ -440,6 +440,10 @@ docker run -it -p 8080:8000 --name vps vpsimage bash
 
 <p>命令 <code>docker system df</code> 提供 Docker 整体磁盘使用率的概况，包括镜像、容器和（本地） volume</p>
 
+<p>docker 提供命令可以直接查看容器的差异</p>
+
+<p>提供 shell 用于分析两个 image的差异 <code>https://github.com/moul/docker-diff</code></p>
+
 <h2 id="国内加速">国内加速</h2>
 
 <p><code>docker pull</code> 默认采用https通信,国内一般提供镜像,或者自己的registry,可以采用
@@ -518,6 +522,18 @@ newgrp docker
 <p>其中-t标记来添加 tag,指定新的镜像的用户信息.</p>
 
 <p>&rdquo;.&rdquo; 是 Dockerfile 所在的路径（当前目录）,也可以替换为一个具体的 Dockerfile 的路径.</p>
+
+<p><code>-f</code> 指定dockerfile 的文件名称</p>
+
+<p><strong>如何使构建的镜像更小</strong></p>
+
+<blockquote>
+<ol>
+<li>基于busybox或者alpine等构建</li>
+<li>RUN 命令要尽量写在一条里，每次 RUN 命令都是在之前的镜像上封装，只会增大不会减小</li>
+<li>新版本docker可以使用 多阶段构建(multi-stage build)</li>
+</ol>
+</blockquote>
 
 <h2 id="文件结构">文件结构</h2>
 

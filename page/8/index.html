@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.20.2" />
+	<meta name="generator" content="Hugo 0.21" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -31,6 +31,18 @@
 
 <div class="content container">
 	<div class="posts">
+		
+		<div class="post">
+			<h1 class="post-title">
+				<a href="/post/mac-chrome-input-submit/"> MacOs上Chrome中的submit按钮默认样式问题</a>
+			</h1>
+			<p class="post-date">Tue, Jan 5, 2016</p>
+			<div class="post-text">
+				<p>发现MacOs的Chrome中,input为submit的按钮,添加其他样式不生效,任然是默认样式,
+解决方法是为其添加一个border或者backgroud就好了</p>
+
+			</div>
+		</div>
 		
 		<div class="post">
 			<h1 class="post-title">
@@ -442,6 +454,10 @@ docker run -it -p 8080:8000 --name vps vpsimage bash
 
 <p>命令 <code>docker system df</code> 提供 Docker 整体磁盘使用率的概况，包括镜像、容器和（本地） volume</p>
 
+<p>docker 提供命令可以直接查看容器的差异</p>
+
+<p>提供 shell 用于分析两个 image的差异 <code>https://github.com/moul/docker-diff</code></p>
+
 <h2 id="国内加速">国内加速</h2>
 
 <p><code>docker pull</code> 默认采用https通信,国内一般提供镜像,或者自己的registry,可以采用
@@ -520,6 +536,18 @@ newgrp docker
 <p>其中-t标记来添加 tag,指定新的镜像的用户信息.</p>
 
 <p>&rdquo;.&rdquo; 是 Dockerfile 所在的路径（当前目录）,也可以替换为一个具体的 Dockerfile 的路径.</p>
+
+<p><code>-f</code> 指定dockerfile 的文件名称</p>
+
+<p><strong>如何使构建的镜像更小</strong></p>
+
+<blockquote>
+<ol>
+<li>基于busybox或者alpine等构建</li>
+<li>RUN 命令要尽量写在一条里，每次 RUN 命令都是在之前的镜像上封装，只会增大不会减小</li>
+<li>新版本docker可以使用 多阶段构建(multi-stage build)</li>
+</ol>
+</blockquote>
 
 <h2 id="文件结构">文件结构</h2>
 
@@ -869,9 +897,123 @@ make -j$CPU_NUM &amp;&amp; make install
 }
 </code></pre>
 
+<p>使用<code>nginx</code>正向代理</p>
+
+<pre><code>server {
+    listen 127.0.0.1:3128;
+    resolver 8.8.8.8 8.8.4.4 valid=300s;
+    resolver_timeout 5s;
+    location / {
+		proxy_pass $scheme://$host$request_uri;
+        proxy_set_header Host $http_host;
+
+        proxy_buffers 256 4k;
+        proxy_max_temp_file_size 0;
+        proxy_buffering off;
+
+        proxy_connect_timeout 30;
+
+        proxy_cache_valid 200 302 10m;
+        proxy_cache_valid 301 1h;
+        proxy_cache_valid any 1m;
+   }
+}
+</code></pre>
+
+<p>正向代理必须配置<code>dns解析resolver</code></p>
+
+<p>配置DNS服务器IP地址。可以指定多个，以轮询方式请求</p>
+
+<p><code>resolver_timeout 5s;</code> DNS解析超时时间（5秒）</p>
+
+<p>nginx会缓存解析的结果。默认情况下，缓存时间是名字解析响应中的TTL字段的值，可以通过valid参数更改。</p>
+
+<p><code>resolver 8.8.8.8 8.8.4.4 valid=300s;</code></p>
+
+<pre><code>proxy_pass $scheme://$host$request_uri;
+proxy_set_header Host $http_host;
+</code></pre>
+
+<p>配置缓存大小，关闭磁盘缓存读写减少I/O，以及代理连接超时时间。</p>
+
+<pre><code>proxy_buffers 256 4k;
+proxy_max_temp_file_size 0;
+proxy_connect_timeout 30;
+</code></pre>
+
+<p>配置代理服务器 Http 状态缓存时间。</p>
+
+<pre><code>proxy_cache_valid 200 302 10m;
+proxy_cache_valid 301 1h;
+proxy_cache_valid any 1m;
+</code></pre>
+
+<p><code>host</code> <code>http_host</code> 变量可参考  <a href="http://www.pureage.info/2014/02/22/host-variable-in-nginx.html">http://www.pureage.info/2014/02/22/host-variable-in-nginx.html</a></p>
+
+<p><code>uri</code> <code>request_uri</code> <a href="http://blog.sina.com.cn/s/blog_4ff12f66010158lk.html">http://blog.sina.com.cn/s/blog_4ff12f66010158lk.html</a></p>
+
+<p>不支持代理 Https 网站</p>
+
 <blockquote>
 <p>使用我编译的google代理的docker版本更易部署 <a href="https://hub.docker.com/r/suconghou/nginx-google/">https://hub.docker.com/r/suconghou/nginx-google/</a></p>
 </blockquote>
+
+<p>使用Map,根据请求得出不同变量值</p>
+
+<pre><code>map $http_user_agent $fileServe {
+    default /data/www/dir;
+    ~*&quot;Baiduspider|Sosospider|Googlebot|YoudaoBot|MSNBot|ia_archiver|twiceler|Scrubby|Gigabot|spider|bot|slurp|crawler&quot;  /data/www/dir1;
+}
+server {
+	listen 80;
+	server_name  xxx.net;
+	root $fileServe;
+	index index.html;
+	try_files $uri $uri/ @backend;
+	location @backend{
+		proxy_pass http://127.0.0.1:4000;
+		proxy_set_header Host $host;
+		proxy_set_header X-Forwarded-Ssl off;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header X-Forwarded-Port 80;
+	}
+}
+
+</code></pre>
+
+<p>更好玩的,代理任意IP和端口号.</p>
+
+<pre><code>server{
+    listen 80;
+    server_name *.proxy.ourwill.cn;
+    if ($host ~* ^((\d+)\.(\d+)\.(\d+)\.(\d+)\.(\d+)\.proxy\.ourwill\.cn)$) {
+        set $proxy $2.$3.$4.$5;
+        set $port $6;
+    }
+    if ($host ~* ^(?:(?&lt;proxydomain&gt;([\w\-]+\.){2,4})(?:(?&lt;proxyport&gt;\d+)\.)?proxy\.ourwill\.cn)$) {
+	    set $proxy $2.$3.
+	}
+    add_header 'Access-Control-Allow-Origin' &quot;$http_origin&quot;;
+    add_header 'Access-Control-Allow-Credentials' &quot;true&quot;;
+    add_header 'Access-Control-Max-Age' 86400;
+    add_header 'Access-Control-Allow-Methods' 'GET,PUT,POST,OPTIONS,DELETE,PATCH';
+    add_header 'Access-Control-Allow-Headers' 'X-OAUTH-TOKEN,Cache-Control,Pragma, reqid, nid, host, x-real-ip, x-forwarded-ip, accept, content-type';
+    add_header 'X-proxy' $proxy:$port;
+    client_max_body_size 20m;
+    if ($request_method = 'OPTIONS') {
+        return 200;
+    }
+    location / {
+        proxy_pass http://$proxy:$port;
+        proxy_set_header Host $proxy;
+        proxy_set_header X-Forwarded-Ssl off;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Port 443;
+    }
+
+}
+
+</code></pre>
 
 <h3 id="nginx转发的权限问题">nginx转发的权限问题</h3>
 
@@ -1010,6 +1152,26 @@ upstream backend {
 <p><strong>注意</strong></p>
 
 <p>使用if判断时,if和括号之间是必须要加空格的,判断文件,目录是否存在<code>!-f</code>,<code>!-d</code>也是连起来的不能有空格</p>
+
+<h3 id="nginx-sni-反带">Nginx SNI 反带</h3>
+
+<p>nginx1.11.5以上版本支持SNI反带,此模块默认不是启用的,需要在编译的启用<code>--with-stream_ssl_preread_module</code></p>
+
+<p><code>https://www.v2ex.com/t/341913</code></p>
+
+<p>最外部添加</p>
+
+<pre><code>stream {
+    server {
+        listen 443;
+        ssl_preread on;
+        resolver 8.8.8.8;
+        proxy_pass $ssl_preread_server_name:$server_port;
+    }
+}
+</code></pre>
+
+<p>还可以结合map使用<code>https://nginx.org/en/docs/stream/ngx_stream_ssl_preread_module.html</code></p>
 
 <p>nginx 官方yum源.</p>
 
@@ -1995,87 +2157,134 @@ systemctl start mongod
 			</div>
 		</div>
 		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/about/"> 关于</a>
-			</h1>
-			<p class="post-date">Fri, Jan 1, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="关于博客">关于博客</h2>
-
-<p>博客使用<code>hugo</code>搭建,自己编写的主题.</p>
-
-<p><code>hugo</code>把<code>Markdown</code>解析为<code>html</code>,托管于<code>github pages</code>,<code>DNSPOD</code>双线解析.</p>
-
-<p>国内解析到<code>coding page</code>服务</p>
-
-<p>国外解析到<code>github pages</code>服务</p>
-
-<p>博客常记录一些自己折腾的东西,以备必要时查阅.</p>
-
-<h2 id="关于我">关于我</h2>
-
-<p>90后,计算机宅男,<code>PHP程序猿</code>,<code>前端攻城狮</code>,也常写一些<code>Node</code>,<code>Go</code>,<code>Python</code></p>
-
-<p><code>Mac</code>用户,<code>Linux</code>党,常混迹于各大编程社区.</p>
-
-<p>热爱编程,目前正向全栈发展.</p>
-
-			</div>
-		</div>
-		
 	</div>
 	<nav>
 		
+
+<ul class="pagination">
     
-    <ul class="pagination">
-        
-        <li>
-            <a href="/" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
-        </li>
-        
-        <li
-        >
-        <a href="/page/7/" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-        </li>
-        
-        <li
-        ><a href="/">1</a></li>
-        
-        <li
-        ><a href="/page/2/">2</a></li>
-        
-        <li
-        ><a href="/page/3/">3</a></li>
-        
-        <li
-        ><a href="/page/4/">4</a></li>
-        
-        <li
-        ><a href="/page/5/">5</a></li>
-        
-        <li
-        ><a href="/page/6/">6</a></li>
-        
-        <li
-        ><a href="/page/7/">7</a></li>
-        
-        <li
-        class="active"><a href="/page/8/">8</a></li>
-        
-        <li
-        class="disabled">
-        <a href="" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-        </li>
-        
-        <li>
-            <a href="/page/8/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
-        </li>
-        
-    </ul>
+    <li>
+        <a href="/" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+    </li>
     
+    <li
+    >
+    <a href="/page/7/" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/">1</a></li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/page/2/">2</a></li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/page/3/">3</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="disabled"><span aria-hidden="true">&hellip;</span></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/page/7/">7</a></li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    class="active"><a href="/page/8/">8</a></li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/page/9/">9</a></li>
+    
+    
+    <li
+    >
+    <a href="/page/9/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+    
+    <li>
+        <a href="/page/9/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+    </li>
+    
+</ul>
+
 	</nav>
 </div>
 	<div class="music-container">

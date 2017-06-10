@@ -38,131 +38,6 @@
 		<div class="post-text">
 			
 
-<h2 id="编译安装">编译安装</h2>
-
-<pre><code>yum install autoconf automake cmake freetype-devel gcc gcc-c++ git libtool make mercurial nasm pkgconfig zlib-devel
-mkdir ~/ffmpeg_sources
-</code></pre>
-
-<p>Yasm is an assembler used by x264 and FFmpeg</p>
-
-<pre><code>cd ~/ffmpeg_sources
-git clone --depth 1 git://github.com/yasm/yasm.git
-cd yasm
-autoreconf -fiv
-./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --bindir=&quot;$HOME/bin&quot;
-make
-make install
-make distclean
-</code></pre>
-
-<p>H.264 video encoder.
-Requires ffmpeg to be configured with <code>--enable-gpl --enable-libx264</code></p>
-
-<pre><code>cd ~/ffmpeg_sources
-git clone --depth 1 git://git.videolan.org/x264
-cd x264
-PKG_CONFIG_PATH=&quot;$HOME/ffmpeg_build/lib/pkgconfig&quot; ./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --bindir=&quot;$HOME/bin&quot; --enable-static
-make
-make install
-make distclean
-</code></pre>
-
-<p>H.265/HEVC video encoder. Requires ffmpeg to be configured with <code>--enable-gpl --enable-libx265</code></p>
-
-<pre><code>cd ~/ffmpeg_sources
-hg clone https://bitbucket.org/multicoreware/x265
-cd ~/ffmpeg_sources/x265/build/linux
-cmake -G &quot;Unix Makefiles&quot; -DCMAKE_INSTALL_PREFIX=&quot;$HOME/ffmpeg_build&quot; -DENABLE_SHARED:bool=off ../../source
-make
-make install
-</code></pre>
-
-<p>AAC audio encoder. Requires ffmpeg to be configured with <code>--enable-libfdk-aac</code> (and <code>--enable-nonfree</code> if you also included <code>--enable-gpl</code>)</p>
-
-<pre><code>cd ~/ffmpeg_sources
-git clone --depth 1 git://git.code.sf.net/p/opencore-amr/fdk-aac
-cd fdk-aac
-autoreconf -fiv
-./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --disable-shared
-make
-make install
-make distclean
-</code></pre>
-
-<p>MP3 audio encoder. Requires ffmpeg to be configured with <code>--enable-libmp3lame</code></p>
-
-<pre><code>cd ~/ffmpeg_sources
-curl -L -O http://downloads.sourceforge.net/project/lame/lame/3.99/lame-3.99.5.tar.gz
-tar xzvf lame-3.99.5.tar.gz
-cd lame-3.99.5
-./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --bindir=&quot;$HOME/bin&quot; --disable-shared --enable-nasm
-make
-make install
-make distclean
-</code></pre>
-
-<p>Opus audio decoder and encoder. Requires ffmpeg to be configured with <code>--enable-libopus</code></p>
-
-<pre><code>cd ~/ffmpeg_sources
-git clone git://git.opus-codec.org/opus.git
-cd opus
-autoreconf -fiv
-./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --disable-shared
-make
-make install
-make distclean
-</code></pre>
-
-<p>Ogg bitstream library. Required by libtheora and libvorbis.</p>
-
-<pre><code>cd ~/ffmpeg_sources
-curl -O http://downloads.xiph.org/releases/ogg/libogg-1.3.2.tar.gz
-tar xzvf libogg-1.3.2.tar.gz
-cd libogg-1.3.2
-./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --disable-shared
-make
-make install
-make distclean
-</code></pre>
-
-<p>Vorbis audio encoder. Requires libogg. Requires ffmpeg to be configured with <code>--enable-libvorbis</code></p>
-
-<pre><code>cd ~/ffmpeg_sources
-curl -O http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.4.tar.gz
-tar xzvf libvorbis-1.3.4.tar.gz
-cd libvorbis-1.3.4
-LDFLAGS=&quot;-L$HOME/ffmeg_build/lib&quot; CPPFLAGS=&quot;-I$HOME/ffmpeg_build/include&quot; ./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --with-ogg=&quot;$HOME/ffmpeg_build&quot; --disable-shared
-make
-make install
-make distclean
-</code></pre>
-
-<p>VP8/VP9 video encoder. Requires ffmpeg to be configured with <code>--enable-libvpx</code></p>
-
-<pre><code>cd ~/ffmpeg_sources
-git clone --depth 1 https://chromium.googlesource.com/webm/libvpx.git
-cd libvpx
-./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --disable-examples
-make
-make install
-make clean
-</code></pre>
-
-<p>Compilation is now complete and ffmpeg (also ffprobe, ffserver, lame, and x264) should now be ready to use.</p>
-
-<pre><code>cd ~/ffmpeg_sources
-git clone https://github.com/FFmpeg/FFmpeg ffmpeg
-cd ffmpeg
-PKG_CONFIG_PATH=&quot;$HOME/ffmpeg_build/lib/pkgconfig&quot; ./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --extra-cflags=&quot;-I$HOME/ffmpeg_build/include&quot; --extra-ldflags=&quot;-L$HOME/ffmpeg_build/lib&quot; --bindir=&quot;$HOME/bin&quot; --pkg-config-flags=&quot;--static&quot; --enable-gpl --enable-nonfree --enable-libfdk-aac --enable-libfreetype --enable-libmp3lame --enable-libopus --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libx265
-make -j4
-make install
-make distclean
-hash -r
-</code></pre>
-
-<p>生成的可执行文件存放在<code>~/bin</code></p>
-
 <h2 id="下载官方的静态编译的linux通用二进制包-同时也包含arm版本的">下载官方的静态编译的Linux通用二进制包,同时也包含ARM版本的</h2>
 
 <p><a href="http://johnvansickle.com/ffmpeg/">ffmpeg</a></p>
@@ -182,7 +57,7 @@ hash -r
 
 <h3 id="让ffmpeg转为mp4边下边播">让ffmpeg转为MP4边下边播</h3>
 
-<p><code>ffmpeg -i input.xxoo -c copy -movflags faststart output.mp4</code></p>
+<p><code>ffmpeg -i input.xx -c copy -movflags faststart output.mp4</code></p>
 
 <p><code>-movflags faststart</code> 可修改MP4的moov</p>
 

@@ -70,6 +70,17 @@ npm -v
 
 <p>也不会搞乱你的node_modules文件夹,node的可执行文件位置也始终不会变化.</p>
 
+<h2 id="node-compiler-编译nodejs为可执行文件">node-compiler 编译nodejs为可执行文件.</h2>
+
+<p><a href="https://github.com/pmq20/node-compiler">https://github.com/pmq20/node-compiler</a>
+需要 node npm ,编译过程会安装依赖<code>npm install</code></p>
+
+<p><a href="https://sourceforge.net/projects/squashfs/files/">https://sourceforge.net/projects/squashfs/files/</a></p>
+
+<pre><code>yum install make gcc zlib-devel glibc-static gcc-c++ -y
+make -j4
+</code></pre>
+
 <h2 id="一些必备package">一些必备package</h2>
 
 <pre><code>sudo npm install -g less autoprefixer express jshint uglify-js webpack react-native-cli airs

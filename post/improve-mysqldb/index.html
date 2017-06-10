@@ -522,6 +522,26 @@ SET GLOBAL general_log = &lsquo;ON&rsquo;;
 
 <h2 id="mysql导出数据">mysql导出数据</h2>
 
+<p>导出全部数据</p>
+
+<pre><code>USER=kris
+PASS=myPassword
+HOST=database-server.mydomain.com
+
+# Databases to exclude
+DBEXCLUDE=db_name_i_dont_want
+
+MYSQL=$(mysql -N -u${USER} -p${PASS} -h${HOST} &lt;&lt;&lt;&quot;SHOW DATABASES&quot; | grep -v ${DBEXCLUDE} | grep -v mysql | grep -v information_schema | grep -v test | tr &quot;\n&quot; &quot; &quot;)
+
+mysqldump -v -u${USER} -p${PASS} -h${HOST} --databases  --skip-lock-tables ${MYSQL} &gt; DB-DUMP.sql
+
+
+</code></pre>
+
+<p><code>mysqldump -uroot -p --all-databases | gzip  &gt; sqlfile.sql.gz</code></p>
+
+<p><code>mysqldump -uroot -p --databases bureau_datasix_c caascms cas indoor_positioning jeecms ourcat test ucenter  | gzip &gt; backup.sql.gz</code></p>
+
 <p>命令行下具体用法如下：  mysqldump -u用戶名 -p密码 -d 數據库名 表名 脚本名;</p>
 
 <p>1、导出數據库為dbname的表结构（其中用戶名為root,密码為dbpasswd,生成的脚本名為db.sql）

@@ -117,7 +117,7 @@
 			{
 				return;
 			}
-			var url='http://media.suconghou.cn/music.php';
+			var url='http://api.suconghou.cn/music.php';
 			if(window.list)
 			{
 				url=url+'?list='+window.list;

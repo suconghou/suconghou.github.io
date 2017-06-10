@@ -181,9 +181,123 @@ make -j$CPU_NUM &amp;&amp; make install
 }
 </code></pre>
 
+<p>使用<code>nginx</code>正向代理</p>
+
+<pre><code>server {
+    listen 127.0.0.1:3128;
+    resolver 8.8.8.8 8.8.4.4 valid=300s;
+    resolver_timeout 5s;
+    location / {
+		proxy_pass $scheme://$host$request_uri;
+        proxy_set_header Host $http_host;
+
+        proxy_buffers 256 4k;
+        proxy_max_temp_file_size 0;
+        proxy_buffering off;
+
+        proxy_connect_timeout 30;
+
+        proxy_cache_valid 200 302 10m;
+        proxy_cache_valid 301 1h;
+        proxy_cache_valid any 1m;
+   }
+}
+</code></pre>
+
+<p>正向代理必须配置<code>dns解析resolver</code></p>
+
+<p>配置DNS服务器IP地址。可以指定多个，以轮询方式请求</p>
+
+<p><code>resolver_timeout 5s;</code> DNS解析超时时间（5秒）</p>
+
+<p>nginx会缓存解析的结果。默认情况下，缓存时间是名字解析响应中的TTL字段的值，可以通过valid参数更改。</p>
+
+<p><code>resolver 8.8.8.8 8.8.4.4 valid=300s;</code></p>
+
+<pre><code>proxy_pass $scheme://$host$request_uri;
+proxy_set_header Host $http_host;
+</code></pre>
+
+<p>配置缓存大小，关闭磁盘缓存读写减少I/O，以及代理连接超时时间。</p>
+
+<pre><code>proxy_buffers 256 4k;
+proxy_max_temp_file_size 0;
+proxy_connect_timeout 30;
+</code></pre>
+
+<p>配置代理服务器 Http 状态缓存时间。</p>
+
+<pre><code>proxy_cache_valid 200 302 10m;
+proxy_cache_valid 301 1h;
+proxy_cache_valid any 1m;
+</code></pre>
+
+<p><code>host</code> <code>http_host</code> 变量可参考  <a href="http://www.pureage.info/2014/02/22/host-variable-in-nginx.html">http://www.pureage.info/2014/02/22/host-variable-in-nginx.html</a></p>
+
+<p><code>uri</code> <code>request_uri</code> <a href="http://blog.sina.com.cn/s/blog_4ff12f66010158lk.html">http://blog.sina.com.cn/s/blog_4ff12f66010158lk.html</a></p>
+
+<p>不支持代理 Https 网站</p>
+
 <blockquote>
 <p>使用我编译的google代理的docker版本更易部署 <a href="https://hub.docker.com/r/suconghou/nginx-google/">https://hub.docker.com/r/suconghou/nginx-google/</a></p>
 </blockquote>
+
+<p>使用Map,根据请求得出不同变量值</p>
+
+<pre><code>map $http_user_agent $fileServe {
+    default /data/www/dir;
+    ~*&quot;Baiduspider|Sosospider|Googlebot|YoudaoBot|MSNBot|ia_archiver|twiceler|Scrubby|Gigabot|spider|bot|slurp|crawler&quot;  /data/www/dir1;
+}
+server {
+	listen 80;
+	server_name  xxx.net;
+	root $fileServe;
+	index index.html;
+	try_files $uri $uri/ @backend;
+	location @backend{
+		proxy_pass http://127.0.0.1:4000;
+		proxy_set_header Host $host;
+		proxy_set_header X-Forwarded-Ssl off;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header X-Forwarded-Port 80;
+	}
+}
+
+</code></pre>
+
+<p>更好玩的,代理任意IP和端口号.</p>
+
+<pre><code>server{
+    listen 80;
+    server_name *.proxy.ourwill.cn;
+    if ($host ~* ^((\d+)\.(\d+)\.(\d+)\.(\d+)\.(\d+)\.proxy\.ourwill\.cn)$) {
+        set $proxy $2.$3.$4.$5;
+        set $port $6;
+    }
+    if ($host ~* ^(?:(?&lt;proxydomain&gt;([\w\-]+\.){2,4})(?:(?&lt;proxyport&gt;\d+)\.)?proxy\.ourwill\.cn)$) {
+	    set $proxy $2.$3.
+	}
+    add_header 'Access-Control-Allow-Origin' &quot;$http_origin&quot;;
+    add_header 'Access-Control-Allow-Credentials' &quot;true&quot;;
+    add_header 'Access-Control-Max-Age' 86400;
+    add_header 'Access-Control-Allow-Methods' 'GET,PUT,POST,OPTIONS,DELETE,PATCH';
+    add_header 'Access-Control-Allow-Headers' 'X-OAUTH-TOKEN,Cache-Control,Pragma, reqid, nid, host, x-real-ip, x-forwarded-ip, accept, content-type';
+    add_header 'X-proxy' $proxy:$port;
+    client_max_body_size 20m;
+    if ($request_method = 'OPTIONS') {
+        return 200;
+    }
+    location / {
+        proxy_pass http://$proxy:$port;
+        proxy_set_header Host $proxy;
+        proxy_set_header X-Forwarded-Ssl off;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Port 443;
+    }
+
+}
+
+</code></pre>
 
 <h3 id="nginx转发的权限问题">nginx转发的权限问题</h3>
 
@@ -322,6 +436,26 @@ upstream backend {
 <p><strong>注意</strong></p>
 
 <p>使用if判断时,if和括号之间是必须要加空格的,判断文件,目录是否存在<code>!-f</code>,<code>!-d</code>也是连起来的不能有空格</p>
+
+<h3 id="nginx-sni-反带">Nginx SNI 反带</h3>
+
+<p>nginx1.11.5以上版本支持SNI反带,此模块默认不是启用的,需要在编译的启用<code>--with-stream_ssl_preread_module</code></p>
+
+<p><code>https://www.v2ex.com/t/341913</code></p>
+
+<p>最外部添加</p>
+
+<pre><code>stream {
+    server {
+        listen 443;
+        ssl_preread on;
+        resolver 8.8.8.8;
+        proxy_pass $ssl_preread_server_name:$server_port;
+    }
+}
+</code></pre>
+
+<p>还可以结合map使用<code>https://nginx.org/en/docs/stream/ngx_stream_ssl_preread_module.html</code></p>
 
 <p>nginx 官方yum源.</p>
 

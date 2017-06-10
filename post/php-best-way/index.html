@@ -190,9 +190,11 @@ ZLIB_ENCODING_DEFLATE 对应于ZLIB格式（注意不是纯DEFLATE格式）</p>
 
 <h2 id="foreach-vs-array-filter">foreach vs array_filter</h2>
 
-<p>大数据量下,使用foreach过滤数组控制不如用array_filter,array_filter不加第二个参数,默认就是返回值,</p>
+<p>大数据量下,使用foreach过滤数组控制不如用array_filter,array_filter不加第二个参数,默认就是返回值,可用作去除非true值.</p>
 
 <p>array_filter加上array_values也要比foreach快,在php7下更加明显</p>
+
+<p>在php7之前的foreach其实是复制出一个副本出来，然后进行循环的。这个时候建议使用array_map(), array_walk(), array_filter()等函数来处理你的问题</p>
 
 <h2 id="php5-与-php7">php5 与 php7</h2>
 

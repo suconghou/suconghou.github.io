@@ -108,6 +108,16 @@ ls -lh
 
 <p>dd过程中看不到进度,如果确实想要了解进度,可以再开一个终端<code>pkill -USR1 -n -x dd</code>查看进度.</p>
 
+<p>确定内存卡的最佳写入块大小,分别执行如下命令,查看速度</p>
+
+<pre><code>dd if=/dev/zero bs=1024 count=65536 of=/tmp/64mb
+dd if=/dev/zero bs=2048 count=32768 of=/tmp/64mb
+dd if=/dev/zero bs=4096 count=16384 of=/tmp/64mb
+dd if=/dev/zero bs=8192 count=8192 of=/tmp/64mb
+</code></pre>
+
+<p>我的内存卡 4096 比较快,能有90MB/s</p>
+
 <p>如果是iso文件,需要装换为img文件,</p>
 
 <pre><code>hdiutil convert -format UDRW -o /path/to/generate/img/file /path/to/your/iso/file
@@ -121,9 +131,14 @@ ls -lh
 
 <p>OSMC默认的ssh连接用户是 osmc 密码 osmc</p>
 
+<p>播放界面
+&gt; 切换字幕快捷键 <code>t</code>
+&gt; 查看属性 <code>i</code>
+&gt; 播放器菜单 <code>m</code></p>
+
 <p>但是发现 OSMC 无法播放<code>rmvb</code>,只有声音,没有图像</p>
 
-<p>由于rmvb无法硬解,又不是开源格式,树莓派无法解码,只能通过ffmpeg转换格式,</p>
+<p>由于rmvb无法硬解,又不是开源格式,树莓派无法解码,只能通过ffmpeg转换格式 (OSMC2017.05版本已可播放<code>Real Video</code>文件,播放超清1080P大文件CPU近乎满载,基本流畅播放)</p>
 
 <p>转换为MP4格式最为通用,但是发现较慢,也不能边转码,边播放.</p>
 
@@ -142,6 +157,8 @@ ls -lh
 
 <pre><code>sudo passwd root
 </code></pre>
+
+<p>定时关机 <code>sudo shutdown -t 60</code>(一个小时后关机) -t参数后面是分钟.</p>
 
 <p>修改为国内镜像源
 <code>/etc/apt/sources.list</code>原先内容</p>
@@ -170,11 +187,13 @@ deb http://mirrors.tuna.tsinghua.edu.cn/osmc/osmc/apt/  jessie main
 
 </code></pre>
 
+<p>arm php7.1  <code>http://repozytorium.mati75.eu/raspbian/pool/main/p/php7.1/</code></p>
+
 <p>在 <a href="http://www.debian.org/mirror/list">http://www.debian.org/mirror/list</a> 查看有多个国内镜像源</p>
 
-<p>执行更新<code>sudo apt-get update -y &amp;&amp; sudo apt-get upgrade -y</code></p>
+<p>执行更新<code>sudo apt update -y &amp;&amp; sudo apt upgrade -y</code></p>
 
-<p>安装常用工具<code>sudo apt-get install htop tree file telnet screen</code></p>
+<p>安装常用工具<code>sudo apt install htop tree file telnet screen curlftpfs</code></p>
 
 <p>安装<code>zsh</code>,可通过CURL或者WGET安装 <a href="https://github.com/robbyrussell/oh-my-zsh">https://github.com/robbyrussell/oh-my-zsh</a></p>
 
@@ -261,15 +280,67 @@ deb-src http://mirrors.ustc.edu.cn/raspbian/raspbian/ wheezy main non-free contr
 
 <p><code>https://www.zybuluo.com/yangxuan/note/321467</code></p>
 
+<h2 id="关于-arm-cpu性能">关于 arm cpu性能</h2>
+
+<p>大八核A80以问鼎国内主控芯片性能第一位的姿态把控着专业游戏盒子市场</p>
+
+<p>搜索到a53-a15好像是快48%</p>
+
+<p>A80 H8 H5都是八核。</p>
+
+<p>A80是全志最初面向平板市场开发的高性能处理器，不过生不逢时，现在也用到了盒子上。A80处理器基于四核A15+四核A7的架构，GPU配置出色，安兔兔跑分能突破5W大关。它支持4K解码和4K输出，界面本身为1080P规格。相关产品多配备2GB内存，个别机型甚至会用上4GB内存，多出现于一些主打高性能的盒子产品上</p>
+
+<p>四核A53架构的H64与八核A53架构的H5方案都在规划当中，将逐渐取代现有的H8和H3方案</p>
+
+<p>全志OTT处理器以H3、H5和H8为主，其中H3和H8都是老旧的Cortex-A7架构设计，而H5则升级到了最新Cortex-A53架构，并集成Mali-450MP6 GPU。</p>
+
+<p>以由高到低的方式来看，ARM处理器大体上可以排序为：Cortex-A57处理器、Cortex-A53处理器、Cortex-A15处理器、Cortex-A12处理器、Cortex-A9处理器、Cortex-A8处理器、Cortex-A7处理器、Cortex-A5处理器。其中A53、A9、A7和A5是网络机顶盒芯片厂商使用最多的。</p>
+
+<p>官方介绍 <a href="https://www.arm.com/products/processors/cortex-a">https://www.arm.com/products/processors/cortex-a</a></p>
+
+<p><a href="http://dkmc.tv/2016/11/24/how-to-detect-performance-of-smart-tv-and-tv-box/?lang=pt">http://dkmc.tv/2016/11/24/how-to-detect-performance-of-smart-tv-and-tv-box/?lang=pt</a></p>
+
+<p><a href="http://irunhuayou.com/keji/ruanjian/1120329.html">http://irunhuayou.com/keji/ruanjian/1120329.html</a></p>
+
+<p><a href="http://www.allwinnertech.com/uploads/150416/7-15041610492JA.jpg">http://www.allwinnertech.com/uploads/150416/7-15041610492JA.jpg</a></p>
+
+<p><a href="http://dkmc.tv/wp-content/uploads/2016/11/arm-cortex-xxx.jpg">http://dkmc.tv/wp-content/uploads/2016/11/arm-cortex-xxx.jpg</a></p>
+
+<p><a href="http://www.21ic.com/eva/MCU/201604/669727.htm">http://www.21ic.com/eva/MCU/201604/669727.htm</a></p>
+
 <h2 id="bash-乱码设置">bash 乱码设置</h2>
 
-<p><code>env|grep LANG</code> 查看当前编码</p>
+<p><code>env</code> 查看当前编码</p>
 
-<p>清除 <code>unset LANG</code></p>
+<p>之前的值<code>LANG=C</code></p>
+
+<p>需要清除 <code>unset LANG</code></p>
 
 <p><code>export LANG=zh_CN.UTF-8</code></p>
 
+<p>有时候可能还需要设置<code>LC_ALL=zh_CN.utf8</code> , 可直接<code>export LC_ALL=zh_CN.utf8</code>加入<code>~/.bashrc</code>中</p>
+
 <p>sudo apt-get install zhcon</p>
+
+<h2 id="我的树莓派">我的树莓派</h2>
+
+<ol>
+<li>osmc 系统 ssh-copy-id配置</li>
+<li>rslsync 分布式同步网盘  开机启动</li>
+<li>syncting 开机启动</li>
+<li>docker daemon 开机启动</li>
+<li>aria2 下载</li>
+<li>frp</li>
+</ol>
+
+<p><code>curlftpfs</code> 用于挂载ftp</p>
+
+<h2 id="android-linux-arm">android linux arm</h2>
+
+<ol>
+<li>php server static build</li>
+<li>busybox httpd</li>
+</ol>
 
 		</div>
 	</div>

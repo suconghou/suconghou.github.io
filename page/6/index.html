@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.20.2" />
+	<meta name="generator" content="Hugo 0.21" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -31,6 +31,86 @@
 
 <div class="content container">
 	<div class="posts">
+		
+		<div class="post">
+			<h1 class="post-title">
+				<a href="/post/homebrew-speedup/"> 使用镜像加速homebrew</a>
+			</h1>
+			<p class="post-date">Fri, Jan 15, 2016</p>
+			<div class="post-text">
+				
+
+<p><a href="http://mirrors.ustc.edu.cn/">中国科大镜像站</a> 提供 Debian, Ubuntu, Fedora, Archlinux, CentOS 等多个发行版的官方源.
+还有brew 的二进制源,brew使用此配置能大大提升速度.</p>
+
+<pre><code>cd /usr/local/Homebrew
+git remote set-url origin git://mirrors.ustc.edu.cn/brew.git
+git remote -v
+brew update
+</code></pre>
+
+<p>修改源：<a href="https://lug.ustc.edu.cn/wiki/mirrors/help/brew.git">https://lug.ustc.edu.cn/wiki/mirrors/help/brew.git</a> 和 <a href="https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-core.git">https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-core.git</a>
+修改二进制源见<a href="https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-bottles">https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-bottles</a></p>
+
+<p>即<code>export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles</code></p>
+
+<p>使用<code>brew config</code> 查看<code>ORIGIN</code>和<code>HOMEBREW_BOTTLE_DOMAIN</code>已经是新的<code>mirrors.ustc.edu.cn</code>即为配置成功</p>
+
+<p><code>brew list</code> 列出所有安装的模块</p>
+
+<p><code>brew search mysql</code> 查找</p>
+
+<p><code>brew commands</code> 查看所有命令</p>
+
+<p>安装（需要 Ruby）：
+<code>ruby -e &quot;$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)&quot;</code></p>
+
+<p>搜索：<code>brew search mysql</code></p>
+
+<p>查询：<code>brew info mysql</code> 主要看具体的信息，比如目前的版本，依赖，安装后注意事项等</p>
+
+<p>更新：<code>brew update</code> 这会更新 Homebrew 自己，并且使得接下来的两个操作有意义——</p>
+
+<p>检查过时（是否有新版本）：<code>brew outdated</code> 这回列出所有安装的软件里可以升级的那些</p>
+
+<p>升级：<code>brew upgrade</code> 升级所有可以升级的软件们</p>
+
+<p>清理：<code>brew cleanup</code> 清理不需要的版本极其安装包缓存</p>
+
+<h2 id="其他镜像源">其他镜像源</h2>
+
+<p><a href="http://ban.ninja/">http://ban.ninja/</a></p>
+
+<p><a href="http://homebrew-mirror-china.tycdn.net/">http://homebrew-mirror-china.tycdn.net/</a></p>
+
+<p>清华大学镜像 <a href="https://mirrors.tuna.tsinghua.edu.cn/help/homebrew/">https://mirrors.tuna.tsinghua.edu.cn/help/homebrew/</a></p>
+
+<p>相对来说中国科大镜像站更新的更及时</p>
+
+<p>编程语言</p>
+
+<pre><code>brew install node go python3 rust lua
+</code></pre>
+
+<p>brew 是没有java源的</p>
+
+<p>可以使用cask <code>brew cask search java</code></p>
+
+<p><code>brew cask install java</code> 即可下载<code>oracle</code>官方java</p>
+
+<p>安装执行完成以后,即可使用java命令,<code>brew cask list</code>查看都安装了哪些cask</p>
+
+<p><code>brew cask info java</code>查看有关java的说明</p>
+
+<p><code>brew cask</code> 可以安装常用的带GUI的软件</p>
+
+<p>一些必备的软件.</p>
+
+<pre><code> brew install vim git subversion nginx hugo openssl htop ngrep ffmpeg xz aria2 wget axel memcached redis mcrypt md5sha1sum fswatch mpv pv
+</code></pre>
+
+			</div>
+		</div>
 		
 		<div class="post">
 			<h1 class="post-title">
@@ -679,6 +759,26 @@ SET GLOBAL general_log = &lsquo;ON&rsquo;;
 
 <h2 id="mysql导出数据">mysql导出数据</h2>
 
+<p>导出全部数据</p>
+
+<pre><code>USER=kris
+PASS=myPassword
+HOST=database-server.mydomain.com
+
+# Databases to exclude
+DBEXCLUDE=db_name_i_dont_want
+
+MYSQL=$(mysql -N -u${USER} -p${PASS} -h${HOST} &lt;&lt;&lt;&quot;SHOW DATABASES&quot; | grep -v ${DBEXCLUDE} | grep -v mysql | grep -v information_schema | grep -v test | tr &quot;\n&quot; &quot; &quot;)
+
+mysqldump -v -u${USER} -p${PASS} -h${HOST} --databases  --skip-lock-tables ${MYSQL} &gt; DB-DUMP.sql
+
+
+</code></pre>
+
+<p><code>mysqldump -uroot -p --all-databases | gzip  &gt; sqlfile.sql.gz</code></p>
+
+<p><code>mysqldump -uroot -p --databases bureau_datasix_c caascms cas indoor_positioning jeecms ourcat test ucenter  | gzip &gt; backup.sql.gz</code></p>
+
 <p>命令行下具体用法如下：  mysqldump -u用戶名 -p密码 -d 數據库名 表名 脚本名;</p>
 
 <p>1、导出數據库為dbname的表结构（其中用戶名為root,密码為dbpasswd,生成的脚本名為db.sql）
@@ -734,131 +834,6 @@ mysqldump -uroot -pdbpasswd dbname test&gt;db.sql;</p>
 			<div class="post-text">
 				
 
-<h2 id="编译安装">编译安装</h2>
-
-<pre><code>yum install autoconf automake cmake freetype-devel gcc gcc-c++ git libtool make mercurial nasm pkgconfig zlib-devel
-mkdir ~/ffmpeg_sources
-</code></pre>
-
-<p>Yasm is an assembler used by x264 and FFmpeg</p>
-
-<pre><code>cd ~/ffmpeg_sources
-git clone --depth 1 git://github.com/yasm/yasm.git
-cd yasm
-autoreconf -fiv
-./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --bindir=&quot;$HOME/bin&quot;
-make
-make install
-make distclean
-</code></pre>
-
-<p>H.264 video encoder.
-Requires ffmpeg to be configured with <code>--enable-gpl --enable-libx264</code></p>
-
-<pre><code>cd ~/ffmpeg_sources
-git clone --depth 1 git://git.videolan.org/x264
-cd x264
-PKG_CONFIG_PATH=&quot;$HOME/ffmpeg_build/lib/pkgconfig&quot; ./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --bindir=&quot;$HOME/bin&quot; --enable-static
-make
-make install
-make distclean
-</code></pre>
-
-<p>H.265/HEVC video encoder. Requires ffmpeg to be configured with <code>--enable-gpl --enable-libx265</code></p>
-
-<pre><code>cd ~/ffmpeg_sources
-hg clone https://bitbucket.org/multicoreware/x265
-cd ~/ffmpeg_sources/x265/build/linux
-cmake -G &quot;Unix Makefiles&quot; -DCMAKE_INSTALL_PREFIX=&quot;$HOME/ffmpeg_build&quot; -DENABLE_SHARED:bool=off ../../source
-make
-make install
-</code></pre>
-
-<p>AAC audio encoder. Requires ffmpeg to be configured with <code>--enable-libfdk-aac</code> (and <code>--enable-nonfree</code> if you also included <code>--enable-gpl</code>)</p>
-
-<pre><code>cd ~/ffmpeg_sources
-git clone --depth 1 git://git.code.sf.net/p/opencore-amr/fdk-aac
-cd fdk-aac
-autoreconf -fiv
-./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --disable-shared
-make
-make install
-make distclean
-</code></pre>
-
-<p>MP3 audio encoder. Requires ffmpeg to be configured with <code>--enable-libmp3lame</code></p>
-
-<pre><code>cd ~/ffmpeg_sources
-curl -L -O http://downloads.sourceforge.net/project/lame/lame/3.99/lame-3.99.5.tar.gz
-tar xzvf lame-3.99.5.tar.gz
-cd lame-3.99.5
-./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --bindir=&quot;$HOME/bin&quot; --disable-shared --enable-nasm
-make
-make install
-make distclean
-</code></pre>
-
-<p>Opus audio decoder and encoder. Requires ffmpeg to be configured with <code>--enable-libopus</code></p>
-
-<pre><code>cd ~/ffmpeg_sources
-git clone git://git.opus-codec.org/opus.git
-cd opus
-autoreconf -fiv
-./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --disable-shared
-make
-make install
-make distclean
-</code></pre>
-
-<p>Ogg bitstream library. Required by libtheora and libvorbis.</p>
-
-<pre><code>cd ~/ffmpeg_sources
-curl -O http://downloads.xiph.org/releases/ogg/libogg-1.3.2.tar.gz
-tar xzvf libogg-1.3.2.tar.gz
-cd libogg-1.3.2
-./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --disable-shared
-make
-make install
-make distclean
-</code></pre>
-
-<p>Vorbis audio encoder. Requires libogg. Requires ffmpeg to be configured with <code>--enable-libvorbis</code></p>
-
-<pre><code>cd ~/ffmpeg_sources
-curl -O http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.4.tar.gz
-tar xzvf libvorbis-1.3.4.tar.gz
-cd libvorbis-1.3.4
-LDFLAGS=&quot;-L$HOME/ffmeg_build/lib&quot; CPPFLAGS=&quot;-I$HOME/ffmpeg_build/include&quot; ./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --with-ogg=&quot;$HOME/ffmpeg_build&quot; --disable-shared
-make
-make install
-make distclean
-</code></pre>
-
-<p>VP8/VP9 video encoder. Requires ffmpeg to be configured with <code>--enable-libvpx</code></p>
-
-<pre><code>cd ~/ffmpeg_sources
-git clone --depth 1 https://chromium.googlesource.com/webm/libvpx.git
-cd libvpx
-./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --disable-examples
-make
-make install
-make clean
-</code></pre>
-
-<p>Compilation is now complete and ffmpeg (also ffprobe, ffserver, lame, and x264) should now be ready to use.</p>
-
-<pre><code>cd ~/ffmpeg_sources
-git clone https://github.com/FFmpeg/FFmpeg ffmpeg
-cd ffmpeg
-PKG_CONFIG_PATH=&quot;$HOME/ffmpeg_build/lib/pkgconfig&quot; ./configure --prefix=&quot;$HOME/ffmpeg_build&quot; --extra-cflags=&quot;-I$HOME/ffmpeg_build/include&quot; --extra-ldflags=&quot;-L$HOME/ffmpeg_build/lib&quot; --bindir=&quot;$HOME/bin&quot; --pkg-config-flags=&quot;--static&quot; --enable-gpl --enable-nonfree --enable-libfdk-aac --enable-libfreetype --enable-libmp3lame --enable-libopus --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libx265
-make -j4
-make install
-make distclean
-hash -r
-</code></pre>
-
-<p>生成的可执行文件存放在<code>~/bin</code></p>
-
 <h2 id="下载官方的静态编译的linux通用二进制包-同时也包含arm版本的">下载官方的静态编译的Linux通用二进制包,同时也包含ARM版本的</h2>
 
 <p><a href="http://johnvansickle.com/ffmpeg/">ffmpeg</a></p>
@@ -878,7 +853,7 @@ hash -r
 
 <h3 id="让ffmpeg转为mp4边下边播">让ffmpeg转为MP4边下边播</h3>
 
-<p><code>ffmpeg -i input.xxoo -c copy -movflags faststart output.mp4</code></p>
+<p><code>ffmpeg -i input.xx -c copy -movflags faststart output.mp4</code></p>
 
 <p><code>-movflags faststart</code> 可修改MP4的moov</p>
 
@@ -937,408 +912,139 @@ file 4.mp4
 			</div>
 		</div>
 		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/git-usage/"> git基本使用</a>
-			</h1>
-			<p class="post-date">Fri, Jan 8, 2016</p>
-			<div class="post-text">
-				
-
-<h1 id="git配置">git配置</h1>
-
-<pre><code>git config --global user.email &quot;1126045770@qq.com&quot;
-git config --global user.name &quot;sucongohu&quot;
-
-git config --global core.autocrlf false
-git config --global color.ui true
-git config --global credential.helper store
-
-git config --global alias.lg &quot;log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci,%cr) %C(bold blue)&lt;%an&gt;%Creset' --abbrev-commit --date=relative&quot;
-</code></pre>
-
-<blockquote>
-<p>以上分别是设置用户信息,禁止转换换行符,颜色高亮,记住密码,设置别名列出分支图. 设置别名后,可以使用 <code>git lg</code> 查看各个分支关系</p>
-</blockquote>
-
-<p>使用git还经常碰到文件权限发生变化,也显示文件变动了,需要提交,如果你不想将文件权限的变动纳入版本控制可以</p>
-
-<pre><code>git config core.filemode false
-</code></pre>
-
-<p>对于一些本地和服务器不一致的配置文件,<code>git status</code>每次查看都显示出来,<code>git add -u</code>又会一不小心提交,可以使用
-<em>忽略已追踪文件的变动</em></p>
-
-<pre><code>git update-index --assume-unchanged PATH_TO_FILE
-</code></pre>
-
-<p>参数  说明</p>
-
-<pre><code>
-%H	commit hash
-%h	commit short hash
-%T	tree hash
-%t	tree short hash
-%P	parent hash
-%p	parent short hash
-%an	作者名字
-%aN	.mailmap 中对应的作者名字
-%ae	作者邮箱
-%aE	.mailmap 中对应的作者邮箱
-%ad	–date=制定的日期格式
-%aD	RFC2822 日期格式
-%ar	日期格式，例如：1 day ago
-%at	UNIX timestamp 日期格式
-%ai	ISO 8601 日期格式
-%cn	提交者名字
-%cN	.mailmap 对应的提交的名字
-%ce	提交者邮箱
-%cE	.mailmap 对应的提交者的邮箱
-%cd	–data=制定的提交日期的格式
-%cD	RFC2822 提交日期的格式
-%cr	提交日期的格式，例如：1day ago
-%ct	UNIX timestamp 提交日期的格式
-%ci	ISO 8601 提交日期的格式
-%d	ref 名称
-%e	encoding
-%s	commit 信息标题
-%f	过滤 commit 信息的标题使之可以作为文件名
-%b	commit 信息内容
-%N	commit notes
-%gD	reflog selector, e.g., refs/stash@{1}
-%gd	shortened reflog selector, e.g., stash@{1}
-%gs	reflog subject
-%Cred	切换至红色
-%Cgreen	切换至绿色
-%Cblue	切换至蓝色
-%Creset	重设颜色
-%C(color)	制定颜色，as described in color.branch.* config option
-%m	left right or boundary mark
-%n	换行
-%%	a raw %
-%x00	print a byte from a hex code
-%w([[,[,]]])	switch line wrapping, like the -w option of git-shortlog(1).
-</code></pre>
-
-<p>一个命令推送到多个服务端<code>vim .git/config</code> ,添加一个区段,例如:</p>
-
-<pre><code>[remote &quot;all&quot;]
-        url = https://git.oschina.net/suconghou/mvc.git
-        url = https://suconghou@git.coding.net/suconghou/mvc.git
-        url = https://github.com/suconghou/mvc.git
-</code></pre>
-
-<p>以后可以使用<code>git push all master</code>一次推送到多个后端</p>
-
-<h1 id="git回退">git回退</h1>
-
-<p>当前工作目录的修改都放弃 <code>git checkout .</code></p>
-
-<p>如果不小心添加了不必要的文件,但是还没有<code>commit</code>,想要撤销添加 <code>git reset FILE_TO_PATH</code></p>
-
-<p>如果最近的几次的提交完全是错误的,想要放弃,回滚到之前的某一个点继续开发</p>
-
-<p><code>git reset --hard  要恢复的点HASH</code> 然后 <code>git push -f</code>  强制提交,原先的错误提交将被强制清除,同时团队其他开发人员,也需要重新clone</p>
-
-<p>更好的是 在要恢复的点新建分支,继续开发.</p>
-
-<h1 id="git分支管理">git分支管理</h1>
-
-<h2 id="1-创建分支">1.创建分支</h2>
-
-<blockquote>
-<p>git branch &lt;分支名&gt;</p>
-</blockquote>
-
-<h2 id="2-切换到分支">2.切换到分支</h2>
-
-<blockquote>
-<p>git checkout &lt;分支名&gt;</p>
-</blockquote>
-
-<h2 id="3-创建一个分支并切换过去">3.创建一个分支并切换过去</h2>
-
-<blockquote>
-<p>git checkout -b &lt;分支名&gt;</p>
-</blockquote>
-
-<p>或者</p>
-
-<blockquote>
-<p>git checkout -b &lt;分支名&gt; master</p>
-</blockquote>
-
-<p>后面是跟一个master说明创建的develop分支是基于当前的master， 如果当前就在master分支，则可以不写。 如果当前分支HEAD指向的是别的分支，又想基于master分支创建，就必须写master</p>
-
-<h2 id="git-new-branch-from-scratch">git new branch from scratch</h2>
-
-<p>新建一个孤立的分支  <code>git checkout --orphan &lt;branchname&gt;</code></p>
-
-<p>清除不必要的数据 <code>git rm --cached -r . &amp;&amp; git rm -rf .</code></p>
-
-<p>总结为</p>
-
-<pre><code>git checkout --orphan newbranch
-git rm -rf .
-&lt;do work&gt;
-git add your files
-git commit -m 'Initial commit'
-</code></pre>
-
-<p>如果版本小于1.7.2 不支持<code>--orphan</code> 可以</p>
-
-<pre><code>git symbolic-ref HEAD refs/heads/newbranch
-rm .git/index
-git clean -fdx
-&lt;do work&gt;
-git add your files
-git commit -m 'Initial commit'
-</code></pre>
-
-<p>在没有任何提交之前<code>git branch</code>不会检查到这个分支</p>
-
-<p><strong>更简便的方法新建一个空白的分支</strong></p>
-
-<p><code>true | git mktree | xargs git commit-tree | xargs git branch branchname</code></p>
-
-<p>新建立的分支无任何文件和提交历史,超级赞!</p>
-
-<p>执行<code>git push --set-upstream origin branchname</code>将新建的分支提交到远程并设置本地分支与远程分支的关联</p>
-
-<p>参考</p>
-
-<blockquote>
-<p><a href="http://stackoverflow.com/questions/13969050/how-to-create-a-new-empty-branch-for-a-new-project">http://stackoverflow.com/questions/13969050/how-to-create-a-new-empty-branch-for-a-new-project</a></p>
-
-<p><a href="http://stackoverflow.com/questions/1384325/in-git-is-there-a-simple-way-of-introducing-an-unrelated-branch-to-a-repository">http://stackoverflow.com/questions/1384325/in-git-is-there-a-simple-way-of-introducing-an-unrelated-branch-to-a-repository</a></p>
-</blockquote>
-
-<h2 id="4-分支合并">4.分支合并</h2>
-
-<p>如:要将develop分支合并和master分支
-首先切换的master分支：<code>git checkout master</code>
-然后执行合并操作：<code>git merge develop</code>
-如果有冲突，会提示你，调用<code>git status</code>查看冲突文件。
-解决冲突，然后调用<code>git add</code>或<code>git rm</code>将解决后的文件暂存。
-所有冲突解决后，<code>git commit</code>提交更改。</p>
-
-<p><code>git merge  brancha branchb</code>  合并其他分支 到当前所在的分支,当然也可以合并master分支的修改到当前分支</p>
-
-<h2 id="5-删除分支">5.删除分支</h2>
-
-<p>删除本地分支,删除分支之前记得先合并,以免数据丢失</p>
-
-<blockquote>
-<p>git branch -d &lt;分支名&gt;</p>
-</blockquote>
-
-<p><code>git push [远程名] [本地分支]:[远程分支]</code> 本地分支的数据推送到远程分支,如果远程分支不存在,将会自动创建</p>
-
-<p>如果本地分支为空格,则将删除远程分支 <code>git push origin :deletebranch</code></p>
-
-<h2 id="6-显示所有分支">6.显示所有分支</h2>
-
-<blockquote>
-<p>git branch -a</p>
-</blockquote>
-
-<p>显示远端分支</p>
-
-<blockquote>
-<p>git branch -r</p>
-</blockquote>
-
-<p><code>git push -all</code> 把所有本地分支都推到远端</p>
-
-<p><code>git pull origin remotebranch:localbranch</code>
-将远程某分支拉倒本地某分支,当本地分支和远程分支名称相同时，只写一个就可以</p>
-
-<h1 id="git-tag-管理">git tag 管理</h1>
-
-<h2 id="1-git-tag">1.git tag</h2>
-
-<p>在控制台打印出当前仓库的所有标签</p>
-
-<h2 id="2-git-tag-l-v0-1">2.git tag -l &lsquo;v0.1.*&rsquo;</h2>
-
-<p>搜索符合模式的标签</p>
-
-<h2 id="3-git-tag-v0-1-2-light">3.git tag v0.1.2-light</h2>
-
-<p>创建轻量标签</p>
-
-<h2 id="4-git-tag-a-v0-1-2-m-0-1-2版本">4.git tag -a v0.1.2 -m &ldquo;0.1.2版本&rdquo;</h2>
-
-<p>创建附注标签</p>
-
-<p>git标签分为两种类型：轻量标签和附注标签。轻量标签是指向提交对象的引用，附注标签则是仓库中的一个独立对象。建议使用附注标签。</p>
-
-<h2 id="5-git-tag-d-v0-1-2">5.git tag -d v0.1.2</h2>
-
-<p>删除标签</p>
-
-<h2 id="6-git-push-origin-v0-1-2">6.git push origin v0.1.2</h2>
-
-<p>将v0.1.2标签提交到git服务器
-git push origin –-tags
-将本地所有标签一次性提交到git服务器
-通常的git push不会将标签对象提交到git服务器，所以我们需要进行显式的操作：</p>
-
-<h1 id="git-stash-操作">git stash 操作</h1>
-
-<p>1.git stash 可用来暂存当前正在进行的工作， 比如想pull 最新代码， 又不想加新commit， 或者另外一种情况，为了fix 一个紧急的bug,  先stash, 使返回到自己上一个commit, 改完bug之后再stash pop, 继续原来的工作。</p>
-
-<pre><code>git stash
-//do some work
-git stash pop
-</code></pre>
-
-<p>2.同样可以使用 git stash save &ldquo;work in progress for foo feature&rdquo; 添加标记</p>
-
-<p>3.当你多次使用<code>git stash</code>命令后，你的栈里将充满了未提交的代码，这时候你会对将哪个版本应用回来有些困惑，
-<code>git stash list</code> 命令可以将当前的Git栈信息打印出来，你只需要将找到对应的版本号，例如使用<code>git stash apply stash@{1}</code>就可以将你指定版本号为stash@{1}的工作取出来，当你将所有的栈都应用回来的时候，可以使用<code>git stash clear</code>来将栈清空。</p>
-
-<h2 id="git-diff">git diff</h2>
-
-<p><code>git diff</code> 默认是工作目录(Working tree)和暂存区域快照(index)之间的差异</p>
-
-<p>查看已经暂存起来的文件(staged)和上次提交时的快照之间(HEAD)的差异</p>
-
-<p><code>git diff --cached</code></p>
-
-<p><code>git diff --staged</code></p>
-
-<p>显示工作版本(Working tree)和HEAD的差别 <code>git diff HEAD</code></p>
-
-<p>直接将两个分支上最新的提交做diff  <code>git diff topic master</code> 或 <code>git diff topic..master</code></p>
-
-<p>比较上次提交commit和上上次提交 <code>git diff HEAD^ HEAD</code></p>
-
-<p>比较两个历史版本之间的差异 <code>git diff SHA1 SHA2</code></p>
-
-<p><code>git diff HEAD application/config/config.php</code></p>
-
-<h1 id="给git仓库瘦身">给Git仓库瘦身</h1>
-
-<p>使用<code>git gc --aggressive</code>来整理仓库,压缩合并碎片文件能减小仓库大小.</p>
-
-<p>使用<code>git prune</code> 删除一些不会被使用的残留数据,使用<code>git prune -n</code>可以查看将要被删除的数据.</p>
-
-<p>如果想要更加暴力的操作git减小仓库大小,一般使用<code>git-filter-branch</code>,不过操作比较麻烦,可以参考官方的操作 <a href="http://git-scm.com/book/zh/v1/Git-内部原理-维护及数据恢复">http://git-scm.com/book/zh/v1/Git-内部原理-维护及数据恢复</a></p>
-
-<p>这里提供一个工具<a href="https://rtyley.github.io/bfg-repo-cleaner/">https://rtyley.github.io/bfg-repo-cleaner/</a></p>
-
-<p>使用这个操作更加方便</p>
-
-<p>下载<code>bfg</code>jar文件,使用<code>java -jar bfg.jar</code>运行,也可以自己写一个<code>alias</code></p>
-
-<p>首先<code>git clone --mirror 地址</code></p>
-
-<pre><code>bfg --strip-blobs-bigger-than 10M .
-</code></pre>
-
-<p><code>bfg --strip-blobs-bigger-than 1M --delete-files '{*.jar,*.zip,*.gz,*.war,*.jpg,*.png,*.jpeg}'</code></p>
-
-<p>最后执行<code>git reflog expire --expire=now --all &amp;&amp; git gc --prune=now --aggressive</code></p>
-
-<p>使用<code>du -sh</code>查看最终文件夹大小.</p>
-
-<h1 id="git打包">git打包</h1>
-
-<p>时常我们会使用<code>github</code>或者其他git托管网站的下载zip包功能,下载的压缩包仅包含仓库里的现有文件,不含<code>.git</code>文件夹</p>
-
-<p>那么我们本地的仓库如何做到呢,需要自己使用<code>zip</code>命令自己压缩排除文件吗.</p>
-
-<p>其实git已经自带这个功能了,可以将任意版本的数据导出为压缩包.</p>
-
-<p>将 master以zip格式打包到指定文件<code>git archive --format zip --output /path/to/file.zip master</code></p>
-
-<pre><code>git archive v0.1 | gzip &gt; site.tgz
-git archive master &gt; ./fds.zip
-</code></pre>
-
-<p>最快捷的直接使用<code>git archive master -o a.tgz</code></p>
-
-<p>使用 -o a.tgz 或者 a.tar.gz 生成gzip格式的, -o a.zip 生成zip格式的.</p>
-
-<p><img src="http://static.suconghou.cn/document/git-usage.jpg" alt="git-usage" /></p>
-
-<h1 id="从源码静态编译git">从源码静态编译git</h1>
-
-<pre><code>apk update &amp;&amp; apk upgrade
-apk add curl gcc g++ make zlib-dev perl
-curl https://www.kernel.org/pub/software/scm/git/git-2.10.2.tar.xz | tar xJ
-cd git-2.10.2
-./configure --prefix=/usr/local --with-curl   CFLAGS=&quot;${CFLAGS} -Os -static `pkg-config --static --libs libcurl`&quot;  NO_TCLTK=1 NO_PERL=1 NO_GETTEXT=1
-make -j4
-make install
-
-</code></pre>
-
-<h1 id="svn">svn</h1>
-
-<p><code>svn revert xx.html</code> 和<code>git checkout xx.html</code> 类似,还原文件的更改</p>
-
-<p>账号文件：<code>/etc/svn-auth-users</code>
-密码重置：<code>htpasswd  /etc/svn-auth-users  conghou.su</code>
-新添加用户：同上
-删除用户：打开账号文件删除用户所在行即可</p>
-
-<p>修改文件以后需要 <code>service httpd restart</code> 或 <code>systemctl restart  httpd</code></p>
-
-			</div>
-		</div>
-		
 	</div>
 	<nav>
 		
+
+<ul class="pagination">
     
-    <ul class="pagination">
-        
-        <li>
-            <a href="/" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
-        </li>
-        
-        <li
-        >
-        <a href="/page/5/" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-        </li>
-        
-        <li
-        ><a href="/">1</a></li>
-        
-        <li
-        ><a href="/page/2/">2</a></li>
-        
-        <li
-        ><a href="/page/3/">3</a></li>
-        
-        <li
-        ><a href="/page/4/">4</a></li>
-        
-        <li
-        ><a href="/page/5/">5</a></li>
-        
-        <li
-        class="active"><a href="/page/6/">6</a></li>
-        
-        <li
-        ><a href="/page/7/">7</a></li>
-        
-        <li
-        ><a href="/page/8/">8</a></li>
-        
-        <li
-        >
-        <a href="/page/7/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-        </li>
-        
-        <li>
-            <a href="/page/8/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
-        </li>
-        
-    </ul>
+    <li>
+        <a href="/" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+    </li>
     
+    <li
+    >
+    <a href="/page/5/" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/">1</a></li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/page/2/">2</a></li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/page/3/">3</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="disabled"><span aria-hidden="true">&hellip;</span></li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/page/5/">5</a></li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    class="active"><a href="/page/6/">6</a></li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/page/7/">7</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="disabled"><span aria-hidden="true">&hellip;</span></li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/page/9/">9</a></li>
+    
+    
+    <li
+    >
+    <a href="/page/7/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+    
+    <li>
+        <a href="/page/9/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+    </li>
+    
+</ul>
+
 	</nav>
 </div>
 	<div class="music-container">

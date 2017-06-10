@@ -40,6 +40,111 @@
 
 <h2 id="实用的javascript代码锦集">实用的Javascript代码锦集</h2>
 
+<pre><code>Date.parse(&quot;2016-04-4&quot;)
+</code></pre>
+
+<p><code>Date.parse</code> safari 不能使用单位数字的月份和日期,否则解析为NaN</p>
+
+<p>火狐较低版本(火狐43)也是如此</p>
+
+<p>IE10 has not  anchorNode focusNode 属性, 取得选中的文字需要读取 text 属性, IE11 一切正常 , 取得选中文字可以直接 toString</p>
+
+<p>IE10,IE11 不支持 html5 的 download 属性, 无法点击下载自定义名称的html和图片等文件.
+可以使用 下载的 downloadFile,利用ajax下载,顺便说 ajax 下载也不能使用fetch
+IE系统统不支持fetch,到EDGE14才支持fetch, <a href="https://github.com/github/fetch">https://github.com/github/fetch</a> 可支持IE10+</p>
+
+<p>火狐不支持和chrome的<code>scrollTop</code>表现也不相同</p>
+
+<pre><code>// 兼容处理 chrome 和 firefox
+let scrollTop=document.body.scrollTop?document.body.scrollTop:document.documentElement.scrollTop;
+if(scrollTop&lt;20){
+    this.headerShowStatus=true;
+}else if(scrollTop&gt;170){
+    this.headerShowStatus=false;
+}
+if(document.documentElement.scrollHeight-scrollTop- document.documentElement.clientHeight&lt; 400 ){
+    this.loadMore();
+}
+</code></pre>
+
+<p>火狐不支持 <code>e.srcElement</code> 需要使用 <code>e.target</code> 代替</p>
+
+<h2 id="ie10-ie11-不支持-location-origin">IE10,IE11, 不支持<code>location.origin</code></h2>
+
+<pre><code>var origin = location.origin?location.origin:location.protocol+&quot;//&quot;+location.host;
+</code></pre>
+
+<p>firefox 浏览器下载接受的后端header 不支持单引号</p>
+
+<h2 id="旧版firefox-不支持-insertadjacentelement-直到火狐48才支持">旧版firefox 不支持<code>insertAdjacentElement</code>,直到火狐48才支持</h2>
+
+<p><a href="https://gist.github.com/kafene/8e56adaf3c1ca4188938">https://gist.github.com/kafene/8e56adaf3c1ca4188938</a></p>
+
+<pre><code>if (&quot;undefined&quot; === typeof (Element.prototype.insertAdjacentElement)) {
+    Object.defineProperty(Element.prototype, &quot;insertAdjacentElement&quot;, {
+        enumerable: false,
+        writable: true,
+        configurable: true,
+        value: function (position, elem) {
+            switch (position.toString().toUpperCase()) {
+                case &quot;BEFOREBEGIN&quot;:
+                    return this.parentNode.insertBefore(elem, this);
+                case &quot;AFTERBEGIN&quot;:
+                    return this.insertBefore(elem, this.firstChild);
+                case &quot;BEFOREEND&quot;:
+                    return this.appendChild(elem);
+                case &quot;AFTEREND&quot;:
+                    return this.parentNode.insertBefore(elem, this.nextSibling);
+                default:
+                    throw new Error(&quot;Invalid element position `&quot; + position + &quot;`&quot;);
+            }
+        }
+    });
+}
+</code></pre>
+
+<h2 id="safari8-safari10-对于父元素是border-radius-overflow-hidden">safari8 safari10 对于父元素是border-radius,overflow:hidden;</h2>
+
+<p>子元素可以被父元素相切,只显示父元素相切后的内容, 但是子元素如果使用了keyframe帧动画,则出现bug,相切的并不是border-radius后的结果.</p>
+
+<h2 id="ie">IE</h2>
+
+<p><code>word-wrap: break-word;</code> 文字换行, Chrome,Safari,Firefox  无论中英文,还是超长英文单词,都能够自动换行不溢出.</p>
+
+<p>但是IE10,IE11对于超长单词仍然溢出,需要添加<code>word-break: break-all;</code></p>
+
+<h2 id="chrome-31-or-搜狗5-0-9-2014年">chrome 31 or 搜狗5.0.9 (2014年)</h2>
+
+<p>chrome 31 内核 bug , supports  函数不能赋值给其他变量执行</p>
+
+<pre><code>var support = (window.CSS &amp;&amp; window.CSS.supports) || window.supportsCSS || false;
+if(support){
+    return support('-webkit-text-decoration-style','wavy')||support('text-decoration-style','wavy');
+}
+return false;
+</code></pre>
+
+<p>如上,会报<code>TypeError:Illegal invocation</code></p>
+
+<p>可修改为如下</p>
+
+<pre><code> if(window.CSS&amp;&amp;window.CSS.supports){
+    return window.CSS.supports('-webkit-text-decoration-style','wavy')||window.CSS.supports('text-decoration-style','wavy');
+}else if(window.supportsCSS){
+    return window.supportsCSS('-webkit-text-decoration-style','wavy')||window.supportsCSS('text-decoration-style','wavy');
+}else{
+    return false;
+}
+</code></pre>
+
+<h3 id="异步之中的下载文件">异步之中的下载文件</h3>
+
+<p>在异步中使用window.open是无法生效的</p>
+
+<p>发现异次元的下载链接</p>
+
+<p>使用 form.submit 向后端提交下载地址,后端302即可实现异步调用文件下载</p>
+
 <h3 id="获取查询查询字符串get参数值">获取查询查询字符串get参数值</h3>
 
 <pre><code>function getParam()
@@ -316,6 +421,63 @@ function injectStyle(css) {
 jQuery(&quot;form&quot;).serializeArray(); //[{name:&quot;username&quot;,value:&quot;&quot;},{name:&quot;password&quot;,value:&quot;&quot;}]
 jQuery(&quot;form&quot;).serializeObject(); //{username:&quot;&quot;,password:&quot;&quot;}
 </code></pre>
+
+<h3 id="直接下载blob数据">直接下载blob数据</h3>
+
+<pre><code>function downFile(blob, fileName)
+{
+    if (window.navigator.msSaveOrOpenBlob)
+    {
+        navigator.msSaveBlob(blob, fileName);
+    }
+    else
+    {
+        var link = document.createElement('a');
+        link.style.display='none';
+        link.href = window.URL.createObjectURL(blob);
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        setTimeout(function()
+        {
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(link.href);
+        },200);
+    }
+}
+</code></pre>
+
+<p>兼容IE,Chrome,Firefox,Safari,注意 appendChild 这一步不能缺,否则Firefox不兼容</p>
+
+<pre><code>var blob = new Blob([res.data], {type: &quot;application/vnd.ms-excel&quot;}),
+    fileName = '下载.xls';
+downFile(blob, fileName);
+</code></pre>
+
+<pre><code>fetch('/files/bin/http.xz').then(res=&gt;res.blob()).then(res=&gt;{console.log(res);downFile(res,&quot;http.xz&quot;)})
+</code></pre>
+
+<h3 id="iso-8-html5-canvas-限制">iso 8 html5 canvas 限制</h3>
+
+<p><a href="https://stackoverflow.com/questions/18565395/why-does-canvas-context-drawimage-fail-on-iphone">https://stackoverflow.com/questions/18565395/why-does-canvas-context-drawimage-fail-on-iphone</a></p>
+
+<p>ios 的canvas 有像素限制,由于像素过大,实测拍出来的图片不能使用 <code>canvasContext.drawImage</code>处理.</p>
+
+<p>现象是canvas画出来的图片为空白,toBlob和toDataUrl也不能取到该canvas的数据.</p>
+
+<p>解决方案</p>
+
+<p><a href="https://github.com/stomita/ios-imagefile-megapixel">https://github.com/stomita/ios-imagefile-megapixel</a>  (未测试)</p>
+
+<p>还有更加全面的方案</p>
+
+<p><a href="https://github.com/blueimp/javascript-load-image">https://github.com/blueimp/javascript-load-image</a></p>
+
+<p>加上 <a href="https://github.com/blueimp/JavaScript-Canvas-to-Blob">https://github.com/blueimp/JavaScript-Canvas-to-Blob</a></p>
+
+<p>能更加方便的处理图片,实测可以解决拍出的图片过大无法处理的问题.</p>
+
+<p><a href="https://blueimp.github.io/JavaScript-Load-Image/">https://blueimp.github.io/JavaScript-Load-Image/</a> 提供在线检查Exif meta data</p>
 
 <h3 id="资源预取">资源预取</h3>
 
