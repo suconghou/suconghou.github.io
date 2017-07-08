@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.21" />
+	<meta name="generator" content="Hugo 0.25" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -31,6 +31,132 @@
 
 <div class="content container">
 	<div class="posts">
+		
+		<div class="post">
+			<h1 class="post-title">
+				<a href="/post/use-apache-traffic-server/"> 编译安装Apache Traffic Server</a>
+			</h1>
+			<p class="post-date">Mon, May 9, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="编译安装">编译安装</h2>
+
+<p>Centos下编译安装</p>
+
+<pre><code>yum update -y &amp;&amp; yum install wget gcc g++ gcc-c++ glibc-headers perl openssl openssl-devel tcl-devel libxml2-devel pcre-devel
+wget http://apache.fayea.com/trafficserver/trafficserver-6.1.1.tar.bz2
+tar xvjf trafficserver-6.1.1.tar.bz2
+cd trafficserver-6.1.1
+./configure
+make &amp;&amp; make install
+useradd -s /sbin/nologin trafficserver
+</code></pre>
+
+<p>Apache镜像<a href="http://archive.apache.org/dist/">http://archive.apache.org/dist/</a></p>
+
+<p>国内Apache镜像<a href="http://apache.fayea.com/">http://apache.fayea.com/</a></p>
+
+<p>编译完成后,就可以使用了,默认是安装在<code>/usr/local/bin</code>,编译后是比较大</p>
+
+<pre><code>total 98M
+-rwxr-xr-x 1 root root 692K May  9 14:30 header_rewrite_test
+-rwxr-xr-x 1 root root 520K May  9 14:30 traffic_cop
+-rwxr-xr-x 1 root root 1.9M May  9 14:30 traffic_crashlog
+-rwxr-xr-x 1 root root 259K May  9 14:30 traffic_ctl
+-rwxr-xr-x 1 root root 1.9M May  9 14:30 traffic_layout
+-rwxr-xr-x 1 root root  41K May  9 14:30 traffic_line
+-rwxr-xr-x 1 root root 4.4M May  9 14:30 traffic_logcat
+-rwxr-xr-x 1 root root 5.0M May  9 14:30 traffic_logstats
+-rwxr-xr-x 1 root root 4.7M May  9 14:30 traffic_manager
+-rwxr-xr-x 1 root root  37M May  9 14:30 traffic_sac
+-rwxr-xr-x 1 root root  43M May  9 14:30 traffic_server
+-rwxr-xr-x 1 root root  42K May  9 14:30 traffic_via
+-rwxr-xr-x 1 root root  18K May  9 14:30 trafficserver
+-rwxr-xr-x 1 root root 2.1K May  9 14:30 tspush
+-rwxr-xr-x 1 root root 5.7K May  9 14:30 tsxs
+
+</code></pre>
+
+<p>运行<code>traffic_server -R 1</code>执行测试,经过一系列测试后,显示</p>
+
+<pre><code>Tests Passed: 177
+Tests Failed: 0
+    REGRESSION_RESULT PARENTSELECTION:                          PASSED
+REGRESSION_TEST DONE: PASSED
+</code></pre>
+
+<p>全部测试通过</p>
+
+<h2 id="使用">使用</h2>
+
+<p>默认的配置文件存放在<code>/usr/local/etc/trafficserver</code></p>
+
+<pre><code>drwxr-xr-x 3 nobody nobody 1.0K May  9 14:30 body_factory
+-rw-r--r-- 1 nobody nobody 1.7K May  9 14:30 cache.config
+-rw-r--r-- 1 nobody nobody  657 May  9 14:30 cluster.config
+-rw-r--r-- 1 nobody nobody 1.9K May  9 14:30 congestion.config
+-rw-r--r-- 1 nobody nobody  746 May  9 14:30 hosting.config
+-rw-r--r-- 1 nobody nobody 1.8K May  9 14:30 icp.config
+-rw-r--r-- 1 nobody nobody 1.2K May  9 14:30 ip_allow.config
+-rw-r--r-- 1 nobody nobody  328 May  9 14:30 log_hosts.config
+-rw-r--r-- 1 nobody nobody  17K May  9 14:30 logs_xml.config
+-rw-r--r-- 1 nobody nobody 1.4K May  9 14:30 parent.config
+-rw-r--r-- 1 nobody nobody  261 May  9 14:30 plugin.config
+-rw-r--r-- 1 nobody nobody  13K May  9 14:30 records.config
+-rw-r--r-- 1 nobody nobody 8.6K May  9 14:30 remap.config
+-rw-r--r-- 1 nobody nobody 1.7K May  9 14:30 socks.config
+-rw-r--r-- 1 nobody nobody 2.1K May  9 14:30 splitdns.config
+-rw-r--r-- 1 nobody nobody 2.7K May  9 14:30 ssl_multicert.config
+-rw-r--r-- 1 nobody nobody  76K May  9 14:30 stats.config.xml
+-rw-r--r-- 1 nobody nobody 1.9K May  9 14:30 storage.config
+-rw-r--r-- 1 root   root     19 May  9 14:30 trafficserver-release
+-rw-r--r-- 1 nobody nobody  649 May  9 14:30 vaddrs.config
+-rw-r--r-- 1 nobody nobody 1.3K May  9 14:30 volume.config
+
+</code></pre>
+
+<p><code>records.config</code>负责大部分全局的选项设置，即主要配置文件</p>
+
+<pre><code>CONFIG proxy.config.reverse_proxy.enabled INT 1                           # 开启反向代理
+CONFIG proxy.config.url_remap.remap_required INT 1                        # 1 代理反向代理，0代表正向+反向代理
+CONFIG proxy.config.http.cache.http INT 1                                 # 打开http缓存功能
+CONFIG proxy.config.cache.ram_cache.size INT 512M                         # RAM 缓存大小
+CONFIG proxy.config.http.keep_alive_no_activity_timeout_out INT 120       # 当一个事务结束后同原服务器保持连接的时间
+CONFIG proxy.config.cluster.ethernet_interface STRING eth0                # 修改成需要侦听的interface名称
+
+</code></pre>
+
+<p><code>remap.config</code>定义映射规则，用于请求的重定向（rewrite）,反向代理即在此配置</p>
+
+<p><code>storage.config</code> 用于指定磁盘存储</p>
+
+<p>启动<code>trafficserver start</code></p>
+
+<h3 id="varnish编译">varnish编译</h3>
+
+<p>alpine中编译</p>
+
+<pre><code>apk update &amp;&amp; apk upgrade
+apk --update add gcc g++ make wget curl m4 automake autoconf libtool linux-headers py-docutils ncurses-dev pcre-dev libedit-dev
+cd /tmp
+VARNISH_VERSION=varnish-4.1.3
+CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
+wget https://repo.varnish-cache.org/source/${VARNISH_VERSION}.tar.gz
+tar xzf ${VARNISH_VERSION}.tar.gz
+cd ${VARNISH_VERSION}
+./configure
+make CFLAGS=&quot;-Os&quot; CPPFLAGS=-D__NEED_mode_t -j$CPU_NUM &amp;&amp; make install
+strip -s /usr/local/bin/* /usr/local/sbin/* /usr/local/lib/varnish/*.so /usr/local/lib/varnish/vmods/*.so
+varnishd  -V
+</code></pre>
+
+<h4 id="varnish基本使用">varnish基本使用</h4>
+
+<p>varnish / squid / nginx 优缺点讨论 见 <a href="http://www.zhihu.com/question/20143441">http://www.zhihu.com/question/20143441</a></p>
+
+			</div>
+		</div>
 		
 		<div class="post">
 			<h1 class="post-title">
@@ -476,6 +602,8 @@ us, sy, id, wa, st：这些都是平均了所有 CPU 的 CPU 分解时间。它�
 
 <p><code>top -b -n1</code> 可以只执行一次,用于将结果重定向到文件.</p>
 
+<p>可参考 <a href="http://liaoph.com/inux-process-management/">http://liaoph.com/inux-process-management/</a></p>
+
 <h2 id="tload">tload</h2>
 
 <p><code>tload</code></p>
@@ -608,7 +736,33 @@ count = blocks 只拷贝输入的blocks块</p>
 
 <p>mac上无法使用<code>--sort</code>,可以采用<code>sort</code>排序,如rss在第六列,则<code>ps auxw | sort -k6,6n</code></p>
 
-<p>lscpu</p>
+<p>linux上进程有5种状态:
+1. 运行(正在运行或在运行队列中等待)
+2. 中断(休眠中, 受阻, 在等待某个条件的形成或接受到信号)
+3. 不可中断(收到信号不唤醒和不可运行, 进程必须等待直到有中断发生)
+4. 僵死(进程已终止, 但进程描述符存在, 直到父进程调用wait4()系统调用后释放)
+5. 停止(进程收到SIGSTOP, SIGSTP, SIGTIN, SIGTOU信号后停止运行运行)</p>
+
+<pre><code> D    uninterruptible sleep (usually IO)
+ R    running or runnable (on run queue)
+ S    interruptible sleep (waiting for an event to complete)
+ T    stopped by job control signal
+ t    stopped by debugger during the tracing
+ W    paging (not valid since the 2.6.xx kernel)
+ X    dead (should never be seen)
+ Z    defunct (&quot;zombie&quot;) process, terminated but not reaped by its parent
+
+For BSD formats and when the stat keyword is used, additional characters may be displayed:
+
+ &lt;    high-priority (not nice to other users)
+ N    low-priority (nice to other users)
+ L    has pages locked into memory (for real-time and custom IO)
+ s    is a session leader
+ l    is multi-threaded (using CLONE_THREAD, like NPTL pthreads do)
+ +    is in the foreground process group
+</code></pre>
+
+<p><code>lscpu</code></p>
 
 <h2 id="mpstat">mpstat</h2>
 
@@ -669,10 +823,10 @@ dig www.baidu.com ns
 
 <p>有个高性能的方法：
 1.先在接收方执行:
-<code>nc -l 6677 | tar -C 接收文件的目录 -zxf -</code>  #接收目录最好是个空目录，防止覆盖的风险</p>
+<code>nc -l 6677 | tar -C 接收文件的目录 -zxvf -</code>  #接收目录最好是个空目录，防止覆盖的风险</p>
 
 <p>2.再在发送方执行:
-<code>tar -zcvf - 要发送的目录 | nc 接收方ip 6677</code></p>
+<code>tar -czvf - 要发送的目录 | nc 接收方ip 6677</code></p>
 
 <p>ssh 也可以使用 pipe 传送 <code>tar zcf - attaches | ssh root@ip &quot;tar zxf - -C /path/to/&quot;</code></p>
 
@@ -723,6 +877,14 @@ stdout	1
 stderr	2
 </code></pre>
 
+<p>这样的转发只能接受单次请求
+可以改写,这里使用 busybox 里的nc</p>
+
+<pre><code>busybox  nc -ll -p 18081 -e busybox nc 127.0.0.1 9097
+</code></pre>
+
+<p>监听 18081 , 转发到 9097</p>
+
 <p>使用<code>nc</code>建立一个简易webserver</p>
 
 <p><code>while true;do sudo nc -l 8080 &lt; index.html;done</code></p>
@@ -738,7 +900,7 @@ stderr	2
 <pre><code>HISTFILE=/dev/null; HISTSIZE=0; HISTFILESIZE=0;
 </code></pre>
 
-<p>执行的任何命令都不会写入 <code>~/.bash_history</code> , 按上键也不可复用执行过的命令. 这条设置也不会被记录</p>
+<p>执行的任何命令都不会写入 <code>~/.bash_history</code> , 按上键也不可复用执行过的命令. 这条设置会被记录到对应的<code>.history</code>文件里,但你可以修改这个文件.</p>
 
 <h2 id="一份linux别名和函数库">一份Linux别名和函数库</h2>
 
@@ -823,6 +985,10 @@ Shift + Insert -向终端内粘贴文本
 </code></pre>
 
 <p>压缩率 xz &gt; 7z &gt; bzip2 &gt; gzip &gt; zip</p>
+
+<p>xz &gt; zstd &gt; gzip</p>
+
+<p>默认配置 zstd 比 gzip 快4倍, 并且比gzip更小.</p>
 
 <p>gzexe 创建自解压文件</p>
 
@@ -1255,7 +1421,7 @@ mtr</p>
 
 <p><code>ifstat -a</code>显示所有的网卡统计,<code>-b</code>以<code>Kbps</code>为单位.<code>-S</code>持续更新而不滚动更新,直接加上数字可控制计算的间隔<code>ifstat -tT 5</code></p>
 
-<p><code>iftop</code> 在<code>epel</code>源中,系统不自带,功能更加全面</p>
+<p><code>iftop</code> 在<code>epel</code>源中,系统不自带,功能更加全面, 同样功能全面的还有 <a href="https://github.com/tgraf/bmon">https://github.com/tgraf/bmon</a></p>
 
 <p><code>yum install iftop -y</code>   或  <code>sudo apt-get install iftop</code></p>
 
@@ -1329,19 +1495,37 @@ ack是一个perl脚本，是grep的一个可选替换品</p>
 
 <p><code>/var/log/yum.log</code> yum执行的log</p>
 
-<p><code>/var/log/messages</code> 系统实时log</p>
+<p><code>/var/log/messages</code> 系统报错日志</p>
 
 <p><code>/var/log/cron</code> crontab 的log</p>
 
-<p><code>/var/log/secure</code> sshd 的log</p>
+<p><code>/var/log/dmesg</code> 内核日志</p>
+
+<h3 id="关于ssh登陆的">关于ssh登陆的.</h3>
+
+<p><code>/var/log/secure</code> sshd 的log,记录所有成功登陆,失败登陆的日志.</p>
+
+<p><code>/var/log/wtmp</code> 二进制文件(DBase 3 index file), 记录每个用户的登录次数,IP和持续时间等信息.用<code>last</code>命令获取这些信息.</p>
+
+<p><code>/var/log/btmp</code> 二进制文件(DBase 3 index file), 记录登陆失败的用户,IP,日期等.用<code>lastb</code>命令来获取这些信息.</p>
+
+<p><code>/var/log/lastlog</code> 记录每个用户最后的登录信息,用命令<code>lastlog</code>获取这些信息.</p>
+
+<p><code>/var/run/utmp</code> 记录着现在登陆的用户.utmp文件被各种 命令使用，包括who、w、users和finger。</p>
+
+<p><code>ac</code>命令根据当前的/var/log/wtmp文件中的登录进入和退出来报告用户连接的时间（小时），如果不使用标志，则报告总的时间</p>
+
+<p><code>ac -d</code> 将显示每天的总的连接时间</p>
+
+<p><code>ac -p</code> 将显示每个用户的总的连接时间</p>
 
 <p>这些log的配置主要由<code>/etc/rsyslog.conf</code>配置</p>
 
 <p><code>grep &quot;Failed password for&quot; /var/log/secure</code> 查看最近登录失败的请求</p>
 
-<p><code>grep &quot;Failed password for&quot; /var/log/secure | awk '{print $11}' | sort | uniq -c | sort -nr</code></p>
+<p><code>grep -E -o &quot;([0-9]{1,3}\.){3}[0-9]{1,3}&quot; /var/log/secure|sort|uniq -c|sort -nr | head -30</code></p>
 
-<p>查看最近登录失败的统计</p>
+<p>查看登录失败的统计,根据<code>lastb</code>命令 <code>lastb | awk '{print $3}' | sort | uniq -c | sort -nr | head -30</code></p>
 
 <p><code>/var/log/journal/</code> 为系统systemd的日志,长期不清理可能会持续占用磁盘空间</p>
 
@@ -1532,321 +1716,6 @@ min/avg/max/mdev = 785 ns / 39.7 us / 2.87 ms / 60.4 us
 <pre><code>alias mem=&quot;ps aux --sort -rss  | head -n20 &amp;&amp; ps auxw --sort=-%cpu | head -n5&quot;
 alias topip='grep -E -o &quot;([0-9]{1,3}\.){3}[0-9]{1,3}&quot; /var/log/secure|sort|uniq -c|sort -nr | head -30'
 </code></pre>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/play-with-raspberrypi/"> 玩转树莓派</a>
-			</h1>
-			<p class="post-date">Sun, Jan 17, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="官方操作系统">官方操作系统</h2>
-
-<p><a href="https://www.raspberrypi.org/downloads/raspbian/">https://www.raspberrypi.org/downloads/raspbian/</a></p>
-
-<p>带桌面版1.4G</p>
-
-<p>精简版293MB  下载 <code>wget  https://downloads.raspberrypi.org/raspbian_lite_latest</code></p>
-
-<h2 id="安装其他操作系统">安装其他操作系统</h2>
-
-<h3 id="centos">CentOS</h3>
-
-<p>CentOS7官方支持了AMRV7发布了树莓派2、香蕉派、以及CubitTruck单片机的版本</p>
-
-<p><a href="http://mirror.centos.org/altarch/7/isos/armhfp/">CentOS7官方下载</a>
-root 密码 centos
-大约275MB</p>
-
-<p>CentOS7.3也已发布</p>
-
-<p><a href="http://mirror.centos.org/altarch/7.3.1611/isos/armhfp/">http://mirror.centos.org/altarch/7.3.1611/isos/armhfp/</a></p>
-
-<p>树莓派2版254M</p>
-
-<h3 id="archlinux">ArchLinux</h3>
-
-<p><a href="https://archlinuxarm.org/">https://archlinuxarm.org/</a></p>
-
-<p>树莓派1 <a href="https://archlinuxarm.org/platforms/armv6/raspberry-pi">https://archlinuxarm.org/platforms/armv6/raspberry-pi</a></p>
-
-<p>树莓派2 <a href="https://archlinuxarm.org/platforms/armv7/broadcom/raspberry-pi-2">https://archlinuxarm.org/platforms/armv7/broadcom/raspberry-pi-2</a></p>
-
-<p>树莓派3 <a href="https://archlinuxarm.org/platforms/armv8/broadcom/raspberry-pi-3">https://archlinuxarm.org/platforms/armv8/broadcom/raspberry-pi-3</a></p>
-
-<p>有国内的下载镜像 <a href="https://mirrors.tuna.tsinghua.edu.cn/archlinuxarm/os/">https://mirrors.tuna.tsinghua.edu.cn/archlinuxarm/os/</a></p>
-
-<p>大约293MB</p>
-
-<h2 id="安装osmc">安装OSMC</h2>
-
-<p><a href="https://osmc.tv/download/">下载一览</a>,选择<code>Disk images</code>,此系统较省资源,默认开机进入OSMC,img.gz 大小约160M</p>
-
-<pre><code>OSMC_FILE=OSMC_TGT_rbp2_20160621.img.gz
-cd /data/tmp
-axel -n 20 http://download.osmc.tv/installers/diskimages/$OSMC_FILE
-md5sum $OSMC_FILE
-ls -lh
-</code></pre>
-
-<p>查看所有版本 <a href="http://download.osmc.tv/installers/diskimages/">http://download.osmc.tv/installers/diskimages/</a></p>
-
-<blockquote>
-<p>使用清华大学镜像站国内下载速度更快: <a href="https://mirrors.tuna.tsinghua.edu.cn/osmc/osmc/download/installers/">https://mirrors.tuna.tsinghua.edu.cn/osmc/osmc/download/installers/</a></p>
-</blockquote>
-
-<p>插入内存卡,开始烧写到内存卡中.烧写之前需要取消挂载</p>
-
-<p><code>diskutil list</code> 查看你的内存卡的挂载位置,取消挂载</p>
-
-<p>执行<code>diskutil unmountdisk /dev/disk2</code> 取消挂载,需要稍等一小会.</p>
-
-<p>烧写,烧写过程中读卡器不断闪烁.</p>
-
-<pre><code>gzip -dc /data/tmp/$OSMC_FILE | sudo dd of=/dev/disk2 bs=8k
-</code></pre>
-
-<p>dd的用法: <code>dd if=/dev/zero of=hello.txt bs=1024</code></p>
-
-<p>dd过程中看不到进度,如果确实想要了解进度,可以再开一个终端<code>pkill -USR1 -n -x dd</code>查看进度.</p>
-
-<p>确定内存卡的最佳写入块大小,分别执行如下命令,查看速度</p>
-
-<pre><code>dd if=/dev/zero bs=1024 count=65536 of=/tmp/64mb
-dd if=/dev/zero bs=2048 count=32768 of=/tmp/64mb
-dd if=/dev/zero bs=4096 count=16384 of=/tmp/64mb
-dd if=/dev/zero bs=8192 count=8192 of=/tmp/64mb
-</code></pre>
-
-<p>我的内存卡 4096 比较快,能有90MB/s</p>
-
-<p>如果是iso文件,需要装换为img文件,</p>
-
-<pre><code>hdiutil convert -format UDRW -o /path/to/generate/img/file /path/to/your/iso/file
-</code></pre>
-
-<p>mac osx会默认追加一个.dmg,这个没有影响,然后就可以使用dd写入这个img文件了.</p>
-
-<p><code>diskutil eject /dev/disk1</code> 弹出USB,注意和卸载(<code>unmountdisk</code>)是不同的</p>
-
-<p><a href="http://forum.kodi.tv/forumdisplay.php?fid=26">官方论坛</a></p>
-
-<p>OSMC默认的ssh连接用户是 osmc 密码 osmc</p>
-
-<p>播放界面
-&gt; 切换字幕快捷键 <code>t</code>
-&gt; 查看属性 <code>i</code>
-&gt; 播放器菜单 <code>m</code></p>
-
-<p>但是发现 OSMC 无法播放<code>rmvb</code>,只有声音,没有图像</p>
-
-<p>由于rmvb无法硬解,又不是开源格式,树莓派无法解码,只能通过ffmpeg转换格式 (OSMC2017.05版本已可播放<code>Real Video</code>文件,播放超清1080P大文件CPU近乎满载,基本流畅播放)</p>
-
-<p>转换为MP4格式最为通用,但是发现较慢,也不能边转码,边播放.</p>
-
-<p>可以转换到flv格式,flv格式能够播放,并且还能边转码边播放!</p>
-
-<p>设置比特率高些,不然会不清楚.这里分辨率设置为1280x720,更大分辨率要适当加大比特率.</p>
-
-<p><code>ffmpeg -i xx.rmvb -s 1280x720 -b 4M a.flv</code></p>
-
-<p>osmc 启用 root 登陆</p>
-
-<pre><code>sudo passwd --unlock root
-</code></pre>
-
-<p>修改root密码</p>
-
-<pre><code>sudo passwd root
-</code></pre>
-
-<p>定时关机 <code>sudo shutdown -t 60</code>(一个小时后关机) -t参数后面是分钟.</p>
-
-<p>修改为国内镜像源
-<code>/etc/apt/sources.list</code>原先内容</p>
-
-<pre><code>
-deb http://ftp.debian.org/debian jessie main contrib non-free
-
-deb http://ftp.debian.org/debian/ jessie-updates main contrib non-free
-
-deb http://security.debian.org/ jessie/updates main contrib non-free
-
-deb http://apt.osmc.tv jessie main
-
-</code></pre>
-
-<p>修改为</p>
-
-<pre><code>
-deb http://mirrors.tuna.tsinghua.edu.cn/debian jessie main contrib non-free
-
-deb http://mirrors.tuna.tsinghua.edu.cn/debian/ jessie-updates contrib main non-free
-
-deb http://mirrors.tuna.tsinghua.edu.cn/debian-security/ jessie/updates main contrib non-free
-
-deb http://mirrors.tuna.tsinghua.edu.cn/osmc/osmc/apt/  jessie main
-
-</code></pre>
-
-<p>arm php7.1  <code>http://repozytorium.mati75.eu/raspbian/pool/main/p/php7.1/</code></p>
-
-<p>在 <a href="http://www.debian.org/mirror/list">http://www.debian.org/mirror/list</a> 查看有多个国内镜像源</p>
-
-<p>执行更新<code>sudo apt update -y &amp;&amp; sudo apt upgrade -y</code></p>
-
-<p>安装常用工具<code>sudo apt install htop tree file telnet screen curlftpfs</code></p>
-
-<p>安装<code>zsh</code>,可通过CURL或者WGET安装 <a href="https://github.com/robbyrussell/oh-my-zsh">https://github.com/robbyrussell/oh-my-zsh</a></p>
-
-<pre><code>chsh -s /bin/zsh
-</code></pre>
-
-<h2 id="安装openelec">安装openelec</h2>
-
-<p><a href="http://openelec.tv/get-openelec">openelec</a> 镜像下载,osmc是基于debain的,系统更加完善.此系统相比osmc更加精简,是专为跑kodi精简的系统. img.gz 大小约102M</p>
-
-<h2 id="安装xbian">安装xbian</h2>
-
-<p><a href="http://www.xbian.org/">http://www.xbian.org/</a></p>
-
-<p>与openelec,osmc都是类似,img.gz较大,大约316MB</p>
-
-<h2 id="安装chromeos">安装ChromeOs</h2>
-
-<p>ChromeOs已经有支持树莓派的版本了,<a href="www.chromiumosforsbc.org">www.chromiumosforsbc.org</a></p>
-
-<h2 id="配置镜像加速">配置镜像加速</h2>
-
-<p>一:树莓派常用软件源列表</p>
-
-<p>中山大学</p>
-
-<p>Raspbian <a href="http://mirror.sysu.edu.cn/raspbian/raspbian">http://mirror.sysu.edu.cn/raspbian/raspbian</a></p>
-
-<p>中国科学技术大学</p>
-
-<p>Raspbian <a href="http://mirrors.ustc.edu.cn/raspbian/raspbian/">http://mirrors.ustc.edu.cn/raspbian/raspbian/</a></p>
-
-<p>清华大学</p>
-
-<p>Raspbian <a href="http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/">http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/</a></p>
-
-<p>大连东软信息学院源（北方用户）</p>
-
-<p>Raspbian <a href="http://mirrors.neusoft.edu.cn/raspbian/raspbian/">http://mirrors.neusoft.edu.cn/raspbian/raspbian/</a></p>
-
-<p>重庆大学源（中西部用户）</p>
-
-<p>Raspbian <a href="http://mirrors.cqu.edu.cn/Raspbian/raspbian/">http://mirrors.cqu.edu.cn/Raspbian/raspbian/</a></p>
-
-<p>二、树莓派修改软件源的方法</p>
-
-<p>编辑/etc/apt/sources.list文件。删除原文件所有内容，用以下内容取代：</p>
-
-<pre><code>deb http://mirrors.ustc.edu.cn/raspbian/raspbian/ wheezy main non-free contrib
-
-deb-src http://mirrors.ustc.edu.cn/raspbian/raspbian/ wheezy main non-free contrib
-</code></pre>
-
-<p>编辑此文件后，请使用sudo apt-get update命令，更新软件列表。</p>
-
-<p>这样树莓派更新软件就会使用中国科学技术大学的镜像源，从而大大提高更新速度，要使用其他的软件源，根据以上代码就行修改。</p>
-
-<h2 id="关于各种派的性能比较">关于各种派的性能比较</h2>
-
-<p>树莓派3仅仅插单个tf卡一般功率为2.5W 树莓派2更少</p>
-
-<p>每度电0.5元,一年不间断运行.按此计算 一年电费</p>
-
-<pre><code>2.5*24*365/1000*0.5=10.95
-</code></pre>
-
-<p>不足一顿午饭钱,相当于200W的台式机不间断工作5天</p>
-
-<p><a href="https://www.zhihu.com/question/37202806">https://www.zhihu.com/question/37202806</a></p>
-
-<p>参数一览</p>
-
-<p><a href="https://cdn.shopify.com/s/files/1/1098/4826/files/comparisonupdate.png?13077955502273113275">https://cdn.shopify.com/s/files/1/1098/4826/files/comparisonupdate.png?13077955502273113275</a></p>
-
-<p>温度 <code>/opt/vc/bin/vcgencmd measure_temp</code></p>
-
-<p><code>watch /opt/vc/bin/vcgencmd measure_temp</code></p>
-
-<p>参考</p>
-
-<p><code>https://ky0n.xyz/osmc-init/</code></p>
-
-<p><code>http://blog.laolilin.com/posts/2016/10/config_raspberry_pi.html#.WBR2huF96Rs</code></p>
-
-<p><code>https://www.zybuluo.com/yangxuan/note/321467</code></p>
-
-<h2 id="关于-arm-cpu性能">关于 arm cpu性能</h2>
-
-<p>大八核A80以问鼎国内主控芯片性能第一位的姿态把控着专业游戏盒子市场</p>
-
-<p>搜索到a53-a15好像是快48%</p>
-
-<p>A80 H8 H5都是八核。</p>
-
-<p>A80是全志最初面向平板市场开发的高性能处理器，不过生不逢时，现在也用到了盒子上。A80处理器基于四核A15+四核A7的架构，GPU配置出色，安兔兔跑分能突破5W大关。它支持4K解码和4K输出，界面本身为1080P规格。相关产品多配备2GB内存，个别机型甚至会用上4GB内存，多出现于一些主打高性能的盒子产品上</p>
-
-<p>四核A53架构的H64与八核A53架构的H5方案都在规划当中，将逐渐取代现有的H8和H3方案</p>
-
-<p>全志OTT处理器以H3、H5和H8为主，其中H3和H8都是老旧的Cortex-A7架构设计，而H5则升级到了最新Cortex-A53架构，并集成Mali-450MP6 GPU。</p>
-
-<p>以由高到低的方式来看，ARM处理器大体上可以排序为：Cortex-A57处理器、Cortex-A53处理器、Cortex-A15处理器、Cortex-A12处理器、Cortex-A9处理器、Cortex-A8处理器、Cortex-A7处理器、Cortex-A5处理器。其中A53、A9、A7和A5是网络机顶盒芯片厂商使用最多的。</p>
-
-<p>官方介绍 <a href="https://www.arm.com/products/processors/cortex-a">https://www.arm.com/products/processors/cortex-a</a></p>
-
-<p><a href="http://dkmc.tv/2016/11/24/how-to-detect-performance-of-smart-tv-and-tv-box/?lang=pt">http://dkmc.tv/2016/11/24/how-to-detect-performance-of-smart-tv-and-tv-box/?lang=pt</a></p>
-
-<p><a href="http://irunhuayou.com/keji/ruanjian/1120329.html">http://irunhuayou.com/keji/ruanjian/1120329.html</a></p>
-
-<p><a href="http://www.allwinnertech.com/uploads/150416/7-15041610492JA.jpg">http://www.allwinnertech.com/uploads/150416/7-15041610492JA.jpg</a></p>
-
-<p><a href="http://dkmc.tv/wp-content/uploads/2016/11/arm-cortex-xxx.jpg">http://dkmc.tv/wp-content/uploads/2016/11/arm-cortex-xxx.jpg</a></p>
-
-<p><a href="http://www.21ic.com/eva/MCU/201604/669727.htm">http://www.21ic.com/eva/MCU/201604/669727.htm</a></p>
-
-<h2 id="bash-乱码设置">bash 乱码设置</h2>
-
-<p><code>env</code> 查看当前编码</p>
-
-<p>之前的值<code>LANG=C</code></p>
-
-<p>需要清除 <code>unset LANG</code></p>
-
-<p><code>export LANG=zh_CN.UTF-8</code></p>
-
-<p>有时候可能还需要设置<code>LC_ALL=zh_CN.utf8</code> , 可直接<code>export LC_ALL=zh_CN.utf8</code>加入<code>~/.bashrc</code>中</p>
-
-<p>sudo apt-get install zhcon</p>
-
-<h2 id="我的树莓派">我的树莓派</h2>
-
-<ol>
-<li>osmc 系统 ssh-copy-id配置</li>
-<li>rslsync 分布式同步网盘  开机启动</li>
-<li>syncting 开机启动</li>
-<li>docker daemon 开机启动</li>
-<li>aria2 下载</li>
-<li>frp</li>
-</ol>
-
-<p><code>curlftpfs</code> 用于挂载ftp</p>
-
-<h2 id="android-linux-arm">android linux arm</h2>
-
-<ol>
-<li>php server static build</li>
-<li>busybox httpd</li>
-</ol>
 
 			</div>
 		</div>

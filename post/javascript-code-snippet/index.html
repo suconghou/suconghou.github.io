@@ -515,12 +515,24 @@ window.addEventListener('error', function (err)
 
 <p><code>UA-xxx-1</code>使用自己的统计ID</p>
 
-<h3 id="并发发送ajax">并发发送ajax</h3>
+<h3 id="jquery并发发送ajax">jQuery并发发送ajax</h3>
 
 <pre><code>$.when($.get('assets/misc/1.json'), $.get('assets/misc/2.json')).then(function(r1, r2)
 {
     console.log(r1[0].message + &quot; &quot; + r2[0].message);
 })
+</code></pre>
+
+<h3 id="微信内js获取地理位置">微信内JS获取地理位置</h3>
+
+<pre><code>&lt;script type=&quot;text/javascript&quot; src=&quot;https://apis.map.qq.com/tools/geolocation/min?key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&amp;referer=mywxapp&quot;&gt;&lt;/script&gt;
+
+获取精确定位信息
+var options = {timeout: 9000};
+geolocation.getLocation(showPosition, showErr, options);
+
+粗糙定位信息
+geolocation.getIpLocation(showPosition, showErr)
 </code></pre>
 
 <h3 id="fetch跨域带cookie">Fetch跨域带cookie</h3>

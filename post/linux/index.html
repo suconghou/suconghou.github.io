@@ -212,6 +212,8 @@ us, sy, id, wa, st：这些都是平均了所有 CPU 的 CPU 分解时间。它�
 
 <p><code>top -b -n1</code> 可以只执行一次,用于将结果重定向到文件.</p>
 
+<p>可参考 <a href="http://liaoph.com/inux-process-management/">http://liaoph.com/inux-process-management/</a></p>
+
 <h2 id="tload">tload</h2>
 
 <p><code>tload</code></p>
@@ -344,7 +346,33 @@ count = blocks 只拷贝输入的blocks块</p>
 
 <p>mac上无法使用<code>--sort</code>,可以采用<code>sort</code>排序,如rss在第六列,则<code>ps auxw | sort -k6,6n</code></p>
 
-<p>lscpu</p>
+<p>linux上进程有5种状态:
+1. 运行(正在运行或在运行队列中等待)
+2. 中断(休眠中, 受阻, 在等待某个条件的形成或接受到信号)
+3. 不可中断(收到信号不唤醒和不可运行, 进程必须等待直到有中断发生)
+4. 僵死(进程已终止, 但进程描述符存在, 直到父进程调用wait4()系统调用后释放)
+5. 停止(进程收到SIGSTOP, SIGSTP, SIGTIN, SIGTOU信号后停止运行运行)</p>
+
+<pre><code> D    uninterruptible sleep (usually IO)
+ R    running or runnable (on run queue)
+ S    interruptible sleep (waiting for an event to complete)
+ T    stopped by job control signal
+ t    stopped by debugger during the tracing
+ W    paging (not valid since the 2.6.xx kernel)
+ X    dead (should never be seen)
+ Z    defunct (&quot;zombie&quot;) process, terminated but not reaped by its parent
+
+For BSD formats and when the stat keyword is used, additional characters may be displayed:
+
+ &lt;    high-priority (not nice to other users)
+ N    low-priority (nice to other users)
+ L    has pages locked into memory (for real-time and custom IO)
+ s    is a session leader
+ l    is multi-threaded (using CLONE_THREAD, like NPTL pthreads do)
+ +    is in the foreground process group
+</code></pre>
+
+<p><code>lscpu</code></p>
 
 <h2 id="mpstat">mpstat</h2>
 
@@ -405,10 +433,10 @@ dig www.baidu.com ns
 
 <p>有个高性能的方法：
 1.先在接收方执行:
-<code>nc -l 6677 | tar -C 接收文件的目录 -zxf -</code>  #接收目录最好是个空目录，防止覆盖的风险</p>
+<code>nc -l 6677 | tar -C 接收文件的目录 -zxvf -</code>  #接收目录最好是个空目录，防止覆盖的风险</p>
 
 <p>2.再在发送方执行:
-<code>tar -zcvf - 要发送的目录 | nc 接收方ip 6677</code></p>
+<code>tar -czvf - 要发送的目录 | nc 接收方ip 6677</code></p>
 
 <p>ssh 也可以使用 pipe 传送 <code>tar zcf - attaches | ssh root@ip &quot;tar zxf - -C /path/to/&quot;</code></p>
 
@@ -459,6 +487,14 @@ stdout	1
 stderr	2
 </code></pre>
 
+<p>这样的转发只能接受单次请求
+可以改写,这里使用 busybox 里的nc</p>
+
+<pre><code>busybox  nc -ll -p 18081 -e busybox nc 127.0.0.1 9097
+</code></pre>
+
+<p>监听 18081 , 转发到 9097</p>
+
 <p>使用<code>nc</code>建立一个简易webserver</p>
 
 <p><code>while true;do sudo nc -l 8080 &lt; index.html;done</code></p>
@@ -474,7 +510,7 @@ stderr	2
 <pre><code>HISTFILE=/dev/null; HISTSIZE=0; HISTFILESIZE=0;
 </code></pre>
 
-<p>执行的任何命令都不会写入 <code>~/.bash_history</code> , 按上键也不可复用执行过的命令. 这条设置也不会被记录</p>
+<p>执行的任何命令都不会写入 <code>~/.bash_history</code> , 按上键也不可复用执行过的命令. 这条设置会被记录到对应的<code>.history</code>文件里,但你可以修改这个文件.</p>
 
 <h2 id="一份linux别名和函数库">一份Linux别名和函数库</h2>
 
@@ -559,6 +595,10 @@ Shift + Insert -向终端内粘贴文本
 </code></pre>
 
 <p>压缩率 xz &gt; 7z &gt; bzip2 &gt; gzip &gt; zip</p>
+
+<p>xz &gt; zstd &gt; gzip</p>
+
+<p>默认配置 zstd 比 gzip 快4倍, 并且比gzip更小.</p>
 
 <p>gzexe 创建自解压文件</p>
 
@@ -991,7 +1031,7 @@ mtr</p>
 
 <p><code>ifstat -a</code>显示所有的网卡统计,<code>-b</code>以<code>Kbps</code>为单位.<code>-S</code>持续更新而不滚动更新,直接加上数字可控制计算的间隔<code>ifstat -tT 5</code></p>
 
-<p><code>iftop</code> 在<code>epel</code>源中,系统不自带,功能更加全面</p>
+<p><code>iftop</code> 在<code>epel</code>源中,系统不自带,功能更加全面, 同样功能全面的还有 <a href="https://github.com/tgraf/bmon">https://github.com/tgraf/bmon</a></p>
 
 <p><code>yum install iftop -y</code>   或  <code>sudo apt-get install iftop</code></p>
 
@@ -1065,19 +1105,37 @@ ack是一个perl脚本，是grep的一个可选替换品</p>
 
 <p><code>/var/log/yum.log</code> yum执行的log</p>
 
-<p><code>/var/log/messages</code> 系统实时log</p>
+<p><code>/var/log/messages</code> 系统报错日志</p>
 
 <p><code>/var/log/cron</code> crontab 的log</p>
 
-<p><code>/var/log/secure</code> sshd 的log</p>
+<p><code>/var/log/dmesg</code> 内核日志</p>
+
+<h3 id="关于ssh登陆的">关于ssh登陆的.</h3>
+
+<p><code>/var/log/secure</code> sshd 的log,记录所有成功登陆,失败登陆的日志.</p>
+
+<p><code>/var/log/wtmp</code> 二进制文件(DBase 3 index file), 记录每个用户的登录次数,IP和持续时间等信息.用<code>last</code>命令获取这些信息.</p>
+
+<p><code>/var/log/btmp</code> 二进制文件(DBase 3 index file), 记录登陆失败的用户,IP,日期等.用<code>lastb</code>命令来获取这些信息.</p>
+
+<p><code>/var/log/lastlog</code> 记录每个用户最后的登录信息,用命令<code>lastlog</code>获取这些信息.</p>
+
+<p><code>/var/run/utmp</code> 记录着现在登陆的用户.utmp文件被各种 命令使用，包括who、w、users和finger。</p>
+
+<p><code>ac</code>命令根据当前的/var/log/wtmp文件中的登录进入和退出来报告用户连接的时间（小时），如果不使用标志，则报告总的时间</p>
+
+<p><code>ac -d</code> 将显示每天的总的连接时间</p>
+
+<p><code>ac -p</code> 将显示每个用户的总的连接时间</p>
 
 <p>这些log的配置主要由<code>/etc/rsyslog.conf</code>配置</p>
 
 <p><code>grep &quot;Failed password for&quot; /var/log/secure</code> 查看最近登录失败的请求</p>
 
-<p><code>grep &quot;Failed password for&quot; /var/log/secure | awk '{print $11}' | sort | uniq -c | sort -nr</code></p>
+<p><code>grep -E -o &quot;([0-9]{1,3}\.){3}[0-9]{1,3}&quot; /var/log/secure|sort|uniq -c|sort -nr | head -30</code></p>
 
-<p>查看最近登录失败的统计</p>
+<p>查看登录失败的统计,根据<code>lastb</code>命令 <code>lastb | awk '{print $3}' | sort | uniq -c | sort -nr | head -30</code></p>
 
 <p><code>/var/log/journal/</code> 为系统systemd的日志,长期不清理可能会持续占用磁盘空间</p>
 

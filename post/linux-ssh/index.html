@@ -181,7 +181,7 @@ WantedBy=multi-user.target
 
 <p>查看 <a href="https://github.com/fatedier/frp">https://github.com/fatedier/frp</a></p>
 
-<p>服务器端配置文件<code>/etc/ftps.ini</code></p>
+<p>服务器端配置文件<code>/etc/frps.ini</code></p>
 
 <pre><code>[common]
 bind_port = 7000
@@ -242,14 +242,58 @@ WantedBy=multi-user.target
 <code>sudo systemctl enable frpc</code>
 <code>sudo systemctl start frpc</code></p>
 
-<h3 id="使用socks5代理">使用socks5代理</h3>
+<p>CentOS6 等没有<code>systemd</code>的系统可以利用<code>/etc/rc.d/rc.local</code>文件开机启动</p>
 
-<pre><code>alias socksproxy=&quot;ssh -NT -f -D 0.0.0.0:1090  -p 1234 root@host&quot;;
+<pre><code>/usr/local/bin/frps -c /etc/frps.ini &gt; /dev/null 2&gt;&amp;1 &amp;
 </code></pre>
 
-<p>-N 不打开远程的shell
+<p>对于<code>Ubuntu 14.04</code>可以编写脚本放置于<code>/etc/init.d/</code>,并赋予执行权限</p>
+
+<p>frpc 或者 frps 注意自己改写</p>
+
+<p><code>/etc/init.d/frpc.sh</code></p>
+
+<pre><code>#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides: frp
+# Required-Start: $syslog $remote_fs
+# Required-Stop:  $syslog $remote_fs
+# Default-Start:      2 3 4 5
+# Default-Stop:       0 1 6
+### END INIT INFO
+/usr/local/bin/frpc -c /etc/frpc.ini &gt; /dev/null 2&gt;&amp;1 &amp;
+exit 0
+</code></pre>
+
+<p><code>sudo update-rc.d frpc.sh defaults 90</code></p>
+
+<p>重复执行会有提示 <code>System start/stop links for /etc/init.d/frpc.sh already exist.</code></p>
+
+<p><code>sudo update-rc.d -f frpc.sh remove</code></p>
+
+<p>remove 会有提示</p>
+
+<pre><code> Removing any system startup links for /etc/init.d/frpc.sh ...
+   /etc/rc0.d/K90frpc.sh
+   /etc/rc1.d/K90frpc.sh
+   /etc/rc2.d/S90frpc.sh
+   /etc/rc3.d/S90frpc.sh
+   /etc/rc4.d/S90frpc.sh
+   /etc/rc5.d/S90frpc.sh
+   /etc/rc6.d/K90frpc.sh
+</code></pre>
+
+<h3 id="使用socks5代理">使用socks5代理</h3>
+
+<pre><code>alias socksproxy=&quot;ssh -NT -f -C -D 0.0.0.0:1090  -p 1234 root@host&quot;;
+</code></pre>
+
+<p>-D 绑定地址
+-N 不打开远程的shell
 -T 不分配tty
--f 后台运行</p>
+-f 后台运行
+-C 使用压缩</p>
 
 <p>执行<code>socksproxy</code>后就建立了一条ssh socks5 proxy,本地使用127.0.0.1:1090就可以使用服务器中转流量.</p>
 
@@ -367,6 +411,19 @@ Ctrl + n：历史中的下一条命令</p>
 </blockquote>
 
 <p><a href="http://jaywcjlove.github.io/handbook/html/Vim%E7%90%86%E8%A7%A3.html">http://jaywcjlove.github.io/handbook/html/Vim%E7%90%86%E8%A7%A3.html</a></p>
+
+<h2 id="sudo-记住密码时间">sudo 记住密码时间</h2>
+
+<p>mac 系统 在第一次执行sudo命令后，默认情况下密码将持续15分钟，因此您不需要为每个sudo命令键入密码</p>
+
+<p>可以修改 <code>/etc/sudoers</code> 文件配置该时间 使用 <code>sudo visudo</code> 修改此文件</p>
+
+<pre><code>Defaults        env_reset,timestamp_timeout=60
+</code></pre>
+
+<p>这里设置为1小时</p>
+
+<p>如果要为每个执行的sudo命令输入密码提示，也可以将时间设置为0</p>
 
 		</div>
 	</div>

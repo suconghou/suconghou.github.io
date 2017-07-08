@@ -384,6 +384,17 @@ location @goapp{
 
 <p>参考 <code>https://lufficc.com/blog/configure-nginx-as-a-web-server</code></p>
 
+<p>去除一个子目录也可以使用rewrite</p>
+
+<p>example.com/component/tag/whatever</p>
+
+<p>example.com/tag/whatever</p>
+
+<pre><code>rewrite ^/component(.*)$ $1 break;
+</code></pre>
+
+<p><a href="https://serverfault.com/questions/302509/how-to-quick-and-easy-remove-part-of-an-url-in-nginx-with-httprewritemodule">https://serverfault.com/questions/302509/how-to-quick-and-easy-remove-part-of-an-url-in-nginx-with-httprewritemodule</a></p>
+
 <h3 id="代理与后端保持长连接">代理与后端保持长连接</h3>
 
 <pre><code>

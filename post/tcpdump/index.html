@@ -111,7 +111,15 @@ make install
 
 <p><code>tcpdump host 210.27.48.1</code></p>
 
+<p><code>sudo tcpdump  host media.suconghou.cn  -v -X</code>  -X 能查看每个TCP报文的十六进制对照</p>
+
+<p><code>sudo tcpdump  host media.suconghou.cn  -v -A</code>  -A 能查看每个TCP报文的数据</p>
+
 <p><code>-A</code>和<code>-X</code>有助于你查看详细的报文数据</p>
+
+<p>tcpdump 对截获的数据并没有进行彻底解码，数据包内的大部分内容是使用十六进制的形式直接打印输出的。</p>
+
+<p>ngrep 对于http数据解析更加清晰.</p>
 
 <h2 id="ngrep">ngrep</h2>
 

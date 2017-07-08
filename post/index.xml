@@ -6,10 +6,32 @@
     <description>Recent content in Posts on 苏苏的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 27 Mar 2017 12:11:21 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 24 May 2017 13:25:49 +0800</lastBuildDate>
     
 	<atom:link href="http://blog.suconghou.cn/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>在Android上运行PHP</title>
+      <link>http://blog.suconghou.cn/post/php-on-android/</link>
+      <pubDate>Wed, 24 May 2017 13:25:49 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/php-on-android/</guid>
+      <description>为安卓交叉编译ARM版的PHP 本教程操作都在centosdocker容器内.基本工具都类似.
+yum install wget make perl -y
+ 下载交叉编译工具 https://pan.baidu.com/s/1micZBWc  直连下载 wget http://share.suconghou.cn/files/arm/crossx86-arm-linux-musleabi-1.1.12.tar.xz
+下载后解压,并添加bin到环境变量tar Jxf crossx86-arm-linux-musleabi-1.1.12.tar.xz
+export PATH=/arm-linux-musleabi/bin:$PATH
+之后,使用arm-linux-musleabi-gcc -v 可以验证
+ 修改musl-libc库,目的是修改查找的DNS配置文件.  cd /tmp &amp;amp;&amp;amp; wget --no-check-certificate https://www.musl-libc.org/releases/musl-1.1.16.tar.gz  下载并解压tar zxf musl-1.1.16.tar.gz &amp;amp;&amp;amp; cd musl-1.1.16
+替换1: 替换/etc/resolv.conf
+grep -rn &amp;quot;/etc/resolv.conf&amp;quot; . 即可查找到有两个文件包含它.
+接下来,我们把它替换掉,把路径替换为安卓安装文件夹可写的路径
+sed -i &amp;quot;s{/etc/resolv.conf{/data/data/cn.suconghou.hello/files/resolv.conf{&amp;quot; ./src/network/resolvconf.c sed -i &amp;quot;s{/etc/resolv.conf{/data/data/cn.suconghou.hello/files/resolv.conf{&amp;quot; ./include/resolv.h  可以再次查找,以验证是否替换成功
+替换2: 替换/etc/hosts
+grep -rn &amp;quot;/etc/hosts&amp;quot; . 即可查找到有三个文件,其中有一个是注释 下载执行替换,同样替换为一个我们可以写入的路径
+sed -i &amp;quot;s{/etc/hosts{/data/data/cn.suconghou.hello/files/hosts{&amp;quot; ./src/network/getnameinfo.c sed -i &amp;quot;s{/etc/hosts{/data/data/cn.</description>
+    </item>
     
     <item>
       <title>lego and acme to enable https</title>
@@ -205,9 +227,9 @@ var obj; obj.name=&#39;hello&#39;; obj=new Object(); obj.name=&#39;world&#39;;  
       <description>HAProxy HAProxy高性能的反向代理软件,更专注于TCP,HTTP处理,它可以基于四层或七层进行反向代理,尤其适合于高负载且需要进行七层处理的 Web 站点.
 单进程、事件驱动模型,通常用于超高流量的负载均衡.
 我们也可以使用它来作为中转站,使直连连通率不好的请求进过中转提升速度.
-编译安装 apt-get update &amp;amp;&amp;amp; apt-get install -y wget gcc g++ make libpcre++0v5 libpcre++-dev  yum update &amp;amp;&amp;amp; yum install wget gcc make  HAPROXY_VERSION=haproxy-1.7.0 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l` wget http://www.haproxy.org/download/1.7/src/${HAPROXY_VERSION}.tar.gz tar zxf ${HAPROXY_VERSION}.tar.gz cd ${HAPROXY_VERSION} export CFLAGS=&amp;quot;-O3&amp;quot; make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 -j$CPU_NUM &amp;amp;&amp;amp; make install  编译32位版本make TARGET=linux26 ARCH=i686 USE_STATIC_PCRE=1 -j$CPU_NUM
+编译安装 apt-get update &amp;amp;&amp;amp; apt-get install -y wget gcc g++ make libpcre++0v5 libpcre++-dev  yum update &amp;amp;&amp;amp; yum install wget gcc make  HAPROXY_VERSION=haproxy-1.7.8 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l` wget http://www.haproxy.org/download/1.7/src/${HAPROXY_VERSION}.tar.gz tar zxf ${HAPROXY_VERSION}.tar.gz cd ${HAPROXY_VERSION} export CFLAGS=&amp;quot;-O3&amp;quot; make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 -j$CPU_NUM &amp;amp;&amp;amp; make install  编译32位版本make TARGET=linux26 ARCH=i686 USE_STATIC_PCRE=1 -j$CPU_NUM
 在64位系统下编译32位需要apt-get install gcc-multilib g++-multilib
-我编译好的haproxy version 1.7.0
+我编译好的haproxy version 1.7.8
  64位 http://share.</description>
     </item>
     
@@ -381,8 +403,8 @@ OSMC_FILE=OSMC_TGT_rbp2_20160621.img.gz cd /data/tmp axel -n 20 http://download.
  插入内存卡,开始烧写到内存卡中.烧写之前需要取消挂载
 diskutil list 查看你的内存卡的挂载位置,取消挂载
 执行diskutil unmountdisk /dev/disk2 取消挂载,需要稍等一小会.
-烧写,烧写过程中读卡器不断闪烁.
-gzip -dc /data/tmp/$OSMC_FILE | sudo dd of=/dev/disk2 bs=8k  dd的用法: dd if=/dev/zero of=hello.</description>
+烧写,烧写过程中读卡器不断闪烁. gzip -dc /data/tmp/$OSMC_FILE | sudo dd of=/dev/disk2 bs=8k
+dd的用法: dd if=/dev/zero of=hello.</description>
     </item>
     
     <item>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.21" />
+	<meta name="generator" content="Hugo 0.25" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -31,6 +31,92 @@
 
 <div class="content container">
 	<div class="posts">
+		
+		<div class="post">
+			<h1 class="post-title">
+				<a href="/post/ffmpeg-usage/"> ffmpeg安装使用</a>
+			</h1>
+			<p class="post-date">Mon, Jan 11, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="下载官方的静态编译的linux通用二进制包-同时也包含arm版本的">下载官方的静态编译的Linux通用二进制包,同时也包含ARM版本的</h2>
+
+<p><a href="http://johnvansickle.com/ffmpeg/">ffmpeg</a></p>
+
+<p>armhf比armel硬件要求,树莓派2可用armhf,树莓派1使用armel</p>
+
+<p>Windows版本也提供编译好的下载</p>
+
+<p><a href="https://ffmpeg.zeranoe.com/builds/">https://ffmpeg.zeranoe.com/builds/</a></p>
+
+<p>Mac编译好的下载(FFmpeg,FFserver,FFprobe,FFplay)</p>
+
+<p><a href="http://evermeet.cx/ffmpeg/">http://evermeet.cx/ffmpeg/</a></p>
+
+<p>使用brew安装
+<code>brew install ffmpeg --with-ffplay</code></p>
+
+<h3 id="让ffmpeg转为mp4边下边播">让ffmpeg转为MP4边下边播</h3>
+
+<p><code>ffmpeg -i input.xx -c copy -movflags faststart output.mp4</code></p>
+
+<p><code>-movflags faststart</code> 可修改MP4的moov</p>
+
+<p>关于<code>faststart</code>还有一个python项目,类似于ffmpeg软件包中的<code>qt-faststart</code>  <a href="https://github.com/danielgtaylor/qtfaststart">https://github.com/danielgtaylor/qtfaststart</a></p>
+
+<p>可以使用<code>pip install qtfaststart</code>,仅需10KB+</p>
+
+<h3 id="flv-to-mp4">flv to mp4</h3>
+
+<p><code>ffmpeg -i input.flv -codec copy output.mp4</code> 快速转化flv到mp4,高质量转化( only changes container without reencoding )</p>
+
+<p><code>ffmpeg -i input.flv -c copy -copyts output.mp4</code> 也比较快,高质量转化</p>
+
+<p><code>ffmpeg -i aaa.flv -c:v libx264 -crf 28 output.mp4</code> 带压缩的转换,非常消耗CPU和时间</p>
+
+<p>更多用法可以参考 <a href="http://www.jianshu.com/p/053665062f22">http://www.jianshu.com/p/053665062f22</a></p>
+
+<p>处理m3u8地址视频</p>
+
+<p>下载转码 <code>ffmpeg -i &quot;http://m3u8的地址&quot;&quot; -c copy -bsf:a aac_adtstoasc output.mp4</code></p>
+
+<p><code>ffmepg -i http://xxx.m3u8 &quot;文件名.mp4&quot;</code></p>
+
+<p><code>ffmpeg -i xx.rmvb   -c:a copy -movflags faststart output.mp4</code></p>
+
+<p>ffmpeg 大文件转换为mp4速度很慢通常低配机器是0.5X倍速, 可以转换为flv文件,转换为flv相比转换为mp4速度快很多,一般能3X倍速,还能边转换,边播放</p>
+
+<p>转换为flv,需要设置码率高一些,不然视频画面,严重模糊,设置比特率高些不很影响转码速度</p>
+
+<p>使用<code>-b</code>设置比特率,默认为200Kbit/s,这里改为2048</p>
+
+<p><code>ffmepg -i xx.rmvb -b 2M a.flv</code></p>
+
+<p>2M 适用于1280X720 普通清晰度. 如果分辨率更大需调整4M 或 6M</p>
+
+<p>ffmpeg 合并 MP4文件
+<code>ffmpeg-sound.txt</code></p>
+
+<pre><code>file 1.mp4
+file 2.mp4
+file 3.mp4
+file 4.mp4
+</code></pre>
+
+<p><code>ffmpeg -f concat -i ffmpeg-sound.txt -c copy final_output.mp4</code></p>
+
+<p><a href="http://askubuntu.com/questions/352920/fastest-way-to-convert-videos-batch-or-single">http://askubuntu.com/questions/352920/fastest-way-to-convert-videos-batch-or-single</a></p>
+
+<p><a href="https://www.zhouchun.net/blog/show/293">https://www.zhouchun.net/blog/show/293</a></p>
+
+<h2 id="mpv-播放多个url">mpv 播放多个url</h2>
+
+<p>直接 <code>mpv url1 url2 url3 url4</code>
+就可以连起来播放</p>
+
+			</div>
+		</div>
 		
 		<div class="post">
 			<h1 class="post-title">
@@ -252,7 +338,7 @@ git commit -m 'Initial commit'
 解决冲突，然后调用<code>git add</code>或<code>git rm</code>将解决后的文件暂存。
 所有冲突解决后，<code>git commit</code>提交更改。</p>
 
-<p><code>git merge  brancha branchb</code>  合并其他分支 到当前所在的分支,当然也可以合并master分支的修改到当前分支</p>
+<p><code>git merge brancha branchb</code>  合并其他分支 到当前所在的分支,当然也可以合并master分支的修改到当前分支</p>
 
 <h2 id="5-删除分支">5.删除分支</h2>
 
@@ -382,6 +468,31 @@ git stash pop
 <p>最后执行<code>git reflog expire --expire=now --all &amp;&amp; git gc --prune=now --aggressive</code></p>
 
 <p>使用<code>du -sh</code>查看最终文件夹大小.</p>
+
+<h3 id="手动清除大文件">手动清除大文件</h3>
+
+<p><code>git count-objects -v</code> 可以查看git的磁盘使用量</p>
+
+<p>仓库中存在一个idx文件是索引文件 <code>.git/objects/pack/pack-*.idx</code></p>
+
+<p>从此文件中可查询一些大对象</p>
+
+<p><code>git verify-pack -v .git/objects/pack/*.idx | sort -k 3 -n | tail -10</code></p>
+
+<p>使用<code>git rev-list --objects --all</code>可以列出所有 commit SHA 值，blob SHA 值及相应的文件路径</p>
+
+<p>我们两者进行对比就找出了哪些大文件的名字及其SHA,使用下面的命令我们可以一下子得出有哪些大文件.</p>
+
+<p><code>git rev-list --objects --all | grep &quot;$(git verify-pack -v .git/objects/pack/*.idx | sort -k 3 -n | tail -5 | awk '{print$1}')&quot;</code></p>
+
+<pre><code>git filter-branch -f --prune-empty --index-filter 'git rm -rf --cached --ignore-unmatch your-file-name' --tag-name-filter cat -- --all
+</code></pre>
+
+<pre><code>rm -rf .git/refs/original .git/logs/
+git gc
+git prune
+git count-objects -v
+</code></pre>
 
 <h1 id="git-查找">git 查找</h1>
 
@@ -718,7 +829,7 @@ WantedBy=multi-user.target
 
 <p>查看 <a href="https://github.com/fatedier/frp">https://github.com/fatedier/frp</a></p>
 
-<p>服务器端配置文件<code>/etc/ftps.ini</code></p>
+<p>服务器端配置文件<code>/etc/frps.ini</code></p>
 
 <pre><code>[common]
 bind_port = 7000
@@ -779,14 +890,58 @@ WantedBy=multi-user.target
 <code>sudo systemctl enable frpc</code>
 <code>sudo systemctl start frpc</code></p>
 
-<h3 id="使用socks5代理">使用socks5代理</h3>
+<p>CentOS6 等没有<code>systemd</code>的系统可以利用<code>/etc/rc.d/rc.local</code>文件开机启动</p>
 
-<pre><code>alias socksproxy=&quot;ssh -NT -f -D 0.0.0.0:1090  -p 1234 root@host&quot;;
+<pre><code>/usr/local/bin/frps -c /etc/frps.ini &gt; /dev/null 2&gt;&amp;1 &amp;
 </code></pre>
 
-<p>-N 不打开远程的shell
+<p>对于<code>Ubuntu 14.04</code>可以编写脚本放置于<code>/etc/init.d/</code>,并赋予执行权限</p>
+
+<p>frpc 或者 frps 注意自己改写</p>
+
+<p><code>/etc/init.d/frpc.sh</code></p>
+
+<pre><code>#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides: frp
+# Required-Start: $syslog $remote_fs
+# Required-Stop:  $syslog $remote_fs
+# Default-Start:      2 3 4 5
+# Default-Stop:       0 1 6
+### END INIT INFO
+/usr/local/bin/frpc -c /etc/frpc.ini &gt; /dev/null 2&gt;&amp;1 &amp;
+exit 0
+</code></pre>
+
+<p><code>sudo update-rc.d frpc.sh defaults 90</code></p>
+
+<p>重复执行会有提示 <code>System start/stop links for /etc/init.d/frpc.sh already exist.</code></p>
+
+<p><code>sudo update-rc.d -f frpc.sh remove</code></p>
+
+<p>remove 会有提示</p>
+
+<pre><code> Removing any system startup links for /etc/init.d/frpc.sh ...
+   /etc/rc0.d/K90frpc.sh
+   /etc/rc1.d/K90frpc.sh
+   /etc/rc2.d/S90frpc.sh
+   /etc/rc3.d/S90frpc.sh
+   /etc/rc4.d/S90frpc.sh
+   /etc/rc5.d/S90frpc.sh
+   /etc/rc6.d/K90frpc.sh
+</code></pre>
+
+<h3 id="使用socks5代理">使用socks5代理</h3>
+
+<pre><code>alias socksproxy=&quot;ssh -NT -f -C -D 0.0.0.0:1090  -p 1234 root@host&quot;;
+</code></pre>
+
+<p>-D 绑定地址
+-N 不打开远程的shell
 -T 不分配tty
--f 后台运行</p>
+-f 后台运行
+-C 使用压缩</p>
 
 <p>执行<code>socksproxy</code>后就建立了一条ssh socks5 proxy,本地使用127.0.0.1:1090就可以使用服务器中转流量.</p>
 
@@ -905,6 +1060,19 @@ Ctrl + n：历史中的下一条命令</p>
 
 <p><a href="http://jaywcjlove.github.io/handbook/html/Vim%E7%90%86%E8%A7%A3.html">http://jaywcjlove.github.io/handbook/html/Vim%E7%90%86%E8%A7%A3.html</a></p>
 
+<h2 id="sudo-记住密码时间">sudo 记住密码时间</h2>
+
+<p>mac 系统 在第一次执行sudo命令后，默认情况下密码将持续15分钟，因此您不需要为每个sudo命令键入密码</p>
+
+<p>可以修改 <code>/etc/sudoers</code> 文件配置该时间 使用 <code>sudo visudo</code> 修改此文件</p>
+
+<pre><code>Defaults        env_reset,timestamp_timeout=60
+</code></pre>
+
+<p>这里设置为1小时</p>
+
+<p>如果要为每个执行的sudo命令输入密码提示，也可以将时间设置为0</p>
+
 			</div>
 		</div>
 		
@@ -1015,277 +1183,6 @@ enabled=1
 <p>查看状态 <code>systemctl status mongod</code></p>
 
 <p>停止 <code>systemctl stop mongod</code></p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/some-good-useful-things/"> 网摘</a>
-			</h1>
-			<p class="post-date">Wed, Jan 6, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="基于网页的p2p文件分享">基于网页的P2P文件分享</h2>
-
-<p><a href="https://www.sharedrop.io/">https://www.sharedrop.io/</a></p>
-
-<h2 id="云计算-存储-分发等">云计算,存储,分发等</h2>
-
-<p><a href="http://baichuan.taobao.com/">阿里百川</a>
-<a href="http://open.taobao.com/">淘宝开放平台</a></p>
-
-<p><a href="http://yunpan.taobao.com/">淘宝云盘,也外链图片做图床</a> 淘宝CDN,速度很快,https,仅仅图片限制3M以内</p>
-
-<blockquote>
-<p>包含容器引擎（TAE）, 多媒体存储处理分发, 可免费使用一年</p>
-</blockquote>
-
-<p><a href="https://c.163.com/">网易的Docker服务</a></p>
-
-<blockquote>
-<p>价格略贵最低29/月</p>
-</blockquote>
-
-<p><a href="http://bmob.cn/">bmob</a>移动后端云,网友示例项目<a href="https://github.com/bestony/BandwaghonhostAPP">BandwaghonhostAPP</a>,结合<a href="http://dev.dcloud.net.cn/mui/">mui移动开发框架</a>开发手机APP</p>
-
-<h2 id="短信-推动消息等">短信,推动消息等</h2>
-
-<ul>
-<li><a href="http://www.alidayu.com/">阿里大鱼</a></li>
-</ul>
-
-<blockquote>
-<p>阿里巴巴旗下的短信验证码通知服务,价格实惠,短信通知≤0.045元／条,还有文本转语音通知≤0.055元／条</p>
-</blockquote>
-
-<ul>
-<li><a href="http://sendcloud.sohu.com/price.html">SendCloud</a></li>
-</ul>
-
-<blockquote>
-<p>短信和邮件发送服务,邮件有每日免费200封,短信5.5分每条</p>
-</blockquote>
-
-<h2 id="图像压缩软件">图像压缩软件</h2>
-
-<p><a href="https://imageoptim.com/">ImageOptim无损压缩</a></p>
-
-<p><a href="http://mozjpeg.codelove.de/">mozjpeg</a> Mozilla的jpg压缩技术,支持无损,有损压缩在线压缩,最大2M.</p>
-
-<p><a href="https://tinypng.com/">tinypng</a> 众多压缩软件中压缩效果较好的,支持png,jpg在线批量压缩</p>
-
-<p><a href="https://kraken.io">kraken</a> 类似于tinypng,也提供在线压缩</p>
-
-<p><a href="https://pngquant.org/">pngquant</a> 开源的压缩png,据说tinypng基于此项目</p>
-
-<p><a href="https://www.npmjs.com/package/imagemin">nodejs imagemin</a> NodeJs模块,压缩jpg,png,压缩效果一般</p>
-
-<h2 id="移动混合应用-hhtml5开发">移动混合应用/HHTML5开发</h2>
-
-<p><a href="http://dev.dcloud.net.cn/mui/">国产mui</a> 最接近原生APP体验的高性能前端框架,不依赖任何第三方JS库,压缩后的JS和CSS文件仅有100+K和60+K</p>
-
-<p><a href="http://m.sui.taobao.org/">SUI Mobile</a> 淘宝移动UI框架,轻量，小巧且精美的UI库 方便迅速搭建手机H5应用,兼容iOS 6.0+ 和 Android 4.0+，非常适合开发跨平台Web App。</p>
-
-<p><a href="http://mobiscroll.com/">mobiscroll</a> 移动开发UI,丰富的时间选择器控件还有一些WEBAPP展示,<a href="https://github.com/acidb/mobiscroll">https://github.com/acidb/mobiscroll</a></p>
-
-<h2 id="桌面开发">桌面开发</h2>
-
-<p><a href="http://nwjs.io/">nwjs</a> Mac版钉钉使用的就是这个技术,界面还算漂亮</p>
-
-<h2 id="网页动画">网页动画</h2>
-
-<p><a href="http://ecomfe.github.io/zrender/index.html">百度zrender</a> 基于Canvas的图形仓库交互工具,可以方便的画出很多图形</p>
-
-<h2 id="游戏引擎">游戏引擎</h2>
-
-<p><a href="http://hiloteam.github.io/">阿里Hilo</a> 游戏渲染引擎,实现2048,切水果等.</p>
-
-<p><a href="http://www.egret.com/">http://www.egret.com/</a> 白鹭也是做这个的</p>
-
-<p><a href="https://github.com/iioinc/iio.js">https://github.com/iioinc/iio.js</a> 也是canvas的游戏</p>
-
-<h2 id="网页富文本编辑器">网页富文本编辑器</h2>
-
-<p><a href="http://wangeditor.github.io/">wangeditor</a> 轻量简介的富文本编辑器,使用容易,相比百度umeditor更简洁</p>
-
-<p><a href="https://github.com/yabwe/medium-editor">medium-editor</a> 一个非常简洁的输入框,支持很多插件扩充</p>
-
-<p><a href="https://github.com/quilljs/quill">quill</a> 功能丰富,样式简介</p>
-
-<h2 id="网页markdown编辑器">网页Markdown编辑器</h2>
-
-<p><a href="https://github.com/pandao/editor.md">Editor.md</a> 一款开源的、可嵌入的 Markdown 在线编辑器（组件），基于 CodeMirror、jQuery 和 Marked 构建。</p>
-
-<p><a href="https://github.com/tylingsoft/markdown-plus">markdown-plus</a> Markdown Plus,界面不是很漂亮,也有收费的桌面APP</p>
-
-<h2 id="markdown解析库">Markdown解析库</h2>
-
-<p><a href="https://github.com/chjj/marked">marked</a> 支持nodejs 和浏览器端</p>
-
-<p><a href="https://github.com/evilstreak/markdown-js">markdown-js</a> 支持nodejs 和浏览器端</p>
-
-<h2 id="字体相关">字体相关</h2>
-
-<p><a href="http://www.youziku.com/">有字库中文字体</a> 在线字体,CDN引用</p>
-
-<p><a href="http://font-spider.org/">字蛛</a> 中文字体压缩器,让网页自由引入中文字体成为可能</p>
-
-<p><a href="http://www.iconfont.cn/">阿里iconfont</a> 阿里巴巴的网页矢量图标在线生成工具,中文字体和矢量图标</p>
-
-<h2 id="镜像网站-cdn">镜像网站/CDN</h2>
-
-<p><a href="http://npm.taobao.org/">淘宝NPM镜像</a></p>
-
-<p><a href="https://css.net/">常用前端公共库css.net</a> 包括Gravatar,Google 字体库等反代,支持https</p>
-
-<p><a href="http://www.bootcdn.cn/">bootcdn</a> 支持https</p>
-
-<h2 id="云端ide">云端IDE</h2>
-
-<p><a href="https://coderpad.io/">coderpad</a> 在线运行多种语言代码,保存分享,不过是收费的</p>
-
-<h2 id="视频解析">视频解析</h2>
-
-<p><a href="http://keepvid.com/">keepvid</a> 支持多种国外视频网站解析,转码</p>
-
-<p><a href="http://www.clipconverter.cc/">clipconverter</a> 支持youtube视频解析,转码,多分辨率,速度又快.</p>
-
-<p><a href="https://www.tubeninja.net/en/">tubeninja</a> 支持多种国内外视频网站解析</p>
-
-<p><a href="http://www.youtube-dl.org/">youtube-dl</a> 全平台的YouTube视频下载工具</p>
-
-<h2 id="图床">图床</h2>
-
-<p><a href="https://sm.ms/">smms</a></p>
-
-<p><a href="https://get-link.xyz/">get-link</a></p>
-
-<p><a href="http://v2ex.com/t/278912#reply24">two.yt</a></p>
-
-<p><a href="https://www.niupic.com/">niupic</a></p>
-
-<h2 id="前端-node">前端/Node</h2>
-
-<p>Ajax库<a href="https://github.com/visionmedia/superagent">superagent</a> 同时兼容IE9+和NodeJs的Ajax小工具,Gzip后仅为4.4kb</p>
-
-<p>轮播图插件<a href="http://slidesjs.com/">slidesjs</a> 纯js的jQuery轮播图插件,简单易用响应式支持触摸,压缩后大小仅12kb,Gzip后3.3kb,但是单张图片存在bug,很久没有更新</p>
-
-<p>模板引擎<a href="http://aui.github.io/artTemplate/">artTemplate</a> 性能卓越的Js模板引擎,同时有NodeJs版本,压缩后5kb大小,Gzip后2.9kb</p>
-
-<p>url解析工具<a href="https://github.com/websanova/js-url">js-url</a> 解析url的query_string hostname protocol 等等,~1.7 Kb minified, ~0.7Kb gzipped</p>
-
-<p>获取你的内网IP和外网IP<a href="https://github.com/diafygi/webrtc-ips">webrtc-ips</a> 通过Webrtc技术连接stun服务器,取得IP</p>
-
-<p><a href="https://github.com/rmm5t/jquery-timeago">https://github.com/rmm5t/jquery-timeago</a>
-<a href="http://c3js.org/">http://c3js.org/</a>
-<a href="https://github.com/datejs/Datejs/blob/master/build/date.js">https://github.com/datejs/Datejs/blob/master/build/date.js</a>
-<a href="https://github.com/Teamweek/instadate">https://github.com/Teamweek/instadate</a></p>
-
-<h2 id="js插件">JS插件</h2>
-
-<p><a href="http://www.swiper.com.cn/">swiper滑动插件</a></p>
-
-<p><a href="http://www.dowebok.com/demo/2014/93/">轮播图</a></p>
-
-<p><a href="https://chmln.github.io/flatpickr/">datetimepicker</a></p>
-
-<p><a href="https://github.com/amsul/pickadate.js">https://github.com/amsul/pickadate.js</a></p>
-
-<p><a href="https://github.com/xdan/datetimepicker">https://github.com/xdan/datetimepicker</a></p>
-
-<h2 id="js图标库">JS图标库</h2>
-
-<p><a href="https://github.com/danvk/dygraphs">dygraphs</a> <a href="http://dygraphs.com/">http://dygraphs.com/</a>  性能很好的Canvas图表,带交互效果,支持局部缩放,实测几万数据毫无压力,</p>
-
-<h2 id="测试工具">测试工具</h2>
-
-<p><a href="http://www.alibench.com/">阿里测</a> 测试你的服务器在全国各地的响应速度</p>
-
-<p><a href="http://www.cloudping.info/">cloudping</a> 测试亚马逊云各节点到你电脑的延时</p>
-
-<p><a href="http://requestb.in/">requestb</a> 测试你发送的HTTP请求</p>
-
-<h2 id="代码转换">代码转换</h2>
-
-<p>将python代码转化为可执行文件<a href="http://nuitka.net/pages/download.html">nuitka</a></p>
-
-<p><a href="http://www.py2exe.org/">py2exe</a>支持windows平台的打包</p>
-
-<p><a href="https://github.com/pyinstaller/pyinstaller">https://github.com/pyinstaller/pyinstaller</a> 跨平台打包</p>
-
-<h2 id="便宜服务器vps">便宜服务器VPS</h2>
-
-<p><a href="http://cheapwindowsvps.com/">cheapwindowsvps</a> G口亚洲越南和新加坡不限流量支持Windows,较贵</p>
-
-<p><a href="https://dedistation.com/billing/order.php?step=0&amp;productGroup=13">dedistation</a></p>
-
-<p><a href="http://www.winode.org/cart.php?gid=15&amp;language=chinese">winode</a></p>
-
-<p><a href="http://www.50kvm.com/new_index/vps.php">50kvm</a> kvm最低20人民币每月(512MB),支持支付宝,旗下openvzvps即为下面的连接</p>
-
-<p><a href="https://www.openvzvps.cc/cart.php?gid=10">openvzvps</a> 最低70年付(openvz 128M),中文,集成锐速,可支付宝</p>
-
-<p><a href="http://www.idcbuster.com/specials.html">idcbuster</a> 最低69年付(openvz 512M),88年付kvm 128M 支持支付宝</p>
-
-<p><a href="https://my.hostus.us/cart.php?a=confproduct&amp;i=0">hostus</a> 最低16美元(约106人民币)每年(768M)</p>
-
-<p><a href="http://www.cloudleft.com/lax-vps">cloudleft</a> 洛杉矶-512MB 最低年付299人民币</p>
-
-<p><a href="http://vps.sh/vhost.html">vps.sh</a> 香港虚拟主机最低50年付,美国Xen-512M月付25</p>
-
-<p><a href="http://yecaoyun.com/Service/vps_servers.html">野草云</a> 美国最低10元每月(kvm 128M)</p>
-
-<p><a href="http://www.fyzhuji.com/">枫叶主机</a> 香港虚拟主机年付60 美国Xen-512M月付25,国内速度都较快.</p>
-
-<p><a href="https://www.rkecloud.com/vhost">锐壳云</a> 带前端CDN,价格稍贵,可git部署,支持PHP5.3至7.0,最低年付150,折扣后120</p>
-
-<p><a href="https://www.starrydns.com/sc/shared-hosting">starrydns</a> 香港¥ 10.2 /月虚拟主机</p>
-
-<p><a href="http://eyun.ac.cn/">翼云</a> 提供贵州低价VPS</p>
-
-<p><a href="hostdare.com">hostdare.com</a> 支持支付宝.微信,亚洲优化,优惠码可年付最低12$,联通直连,速度很快,下载达2M/s,推荐</p>
-
-<p><a href="https://www.gigsgigscloud.com/hongkong-openvz/">gigsgigscloud</a> 香港openvz,最低2$月付(年付18$)可支付宝,百兆出口,另有kvm中国优化线路,可以一试.</p>
-
-<h2 id="内网穿透">内网穿透</h2>
-
-<p><a href="https://github.com/fatedier/frp">frp</a> 由于ngrok2不开源,ngrok1不在维护而新创建的项目,使用GO编写</p>
-
-<p><a href="https://natapp.cn/">natapp</a> 国内服务提供商,基于ngrok</p>
-
-<p><a href="https://pc5s.com/">pc5s</a> 使用java编写的,需要jre</p>
-
-<p><a href="http://qydev.com/">qydev.com</a> 国内服务商基于ngrok</p>
-
-<p><a href="https://github.com/vzex/dog-tunnel">dog-tunnel</a> 使用GO编写的功能更加丰富,有一些不同之处,<a href="http://dog-tunnel.tk/">http://dog-tunnel.tk/</a></p>
-
-<p><a href="http://www.luyouxia.com/">路由侠</a> 是一个GUI客户端,貌似只有Windows</p>
-
-<h2 id="博客工具">博客工具</h2>
-
-<p><a href="http://www.inkpaper.io/index-zh.html">纸小墨</a> 和<code>hugo</code>类似的静态网站生成器,也是GO语言编写,<a href="https://github.com/InkProject/ink">https://github.com/InkProject/ink</a></p>
-
-<h2 id="html5播放器">HTML5播放器</h2>
-
-<p><a href="https://github.com/wangpengfei15975/ktPlayer/">ktPlayer视频播放器</a> 简介</p>
-
-<p><a href="https://github.com/Copay/cPlayer">cPlayer音乐播放器</a> 简介,支持歌词</p>
-
-<p><a href="https://github.com/DIYgod/DPlayer">DPlayer视频播放器</a> 支持弹幕</p>
-
-<p><a href="http://www.chengfeilong.com/skPlayer-info">skPlayer音乐播放器</a> 支持拉取网易云音乐歌单</p>
-
-<h2 id="pdf-to-images">pdf to images</h2>
-
-<p>imagemagick 可以转,各种图片格式也很容易转</p>
-
-<p>xpdf,各种平台都支持,只需一个文件,提供编译好的文件 <a href="https://mirrors.tuna.tsinghua.edu.cn/CTAN/support/xpdf/">https://mirrors.tuna.tsinghua.edu.cn/CTAN/support/xpdf/</a></p>
-
-<h2 id="汉字转拼音">汉字转拼音</h2>
-
-<p>Web版可用: <a href="https://github.com/liuxianan/pinyinjs">https://github.com/liuxianan/pinyinjs</a></p>
 
 			</div>
 		</div>

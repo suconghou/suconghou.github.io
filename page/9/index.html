@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.21" />
+	<meta name="generator" content="Hugo 0.25" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -31,6 +31,50 @@
 
 <div class="content container">
 	<div class="posts">
+		
+		<div class="post">
+			<h1 class="post-title">
+				<a href="/post/start-your-blog-with-hugo/"> 使用hugo搭建静态博客</a>
+			</h1>
+			<p class="post-date">Fri, Jan 1, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="什么是hugo">什么是hugo</h2>
+
+<p><code>hugo</code>是用Go语言编写的静态网站生成器,与此类似的工具还有Hexo,相比Hexo,他的编译速度更快,而易于使用,主要表现在:</p>
+
+<ol>
+<li>无依赖,无论是Linux环境,还是MacOs,Windows,下载一个二进制的可执行文件即可使用</li>
+<li>即时刷新,无论是对于文章还是样式的修改都能够自动重新编译,自动刷新,无需配置,当你修改了文章,切换回浏览器,看到的已经是新页面了.</li>
+<li>主题丰富,易于定制,编写一个主题也十分简单.</li>
+</ol>
+
+<h2 id="如何使用">如何使用</h2>
+
+<p><code>hugo</code> 是开源的,在<a href="https://github.com/spf13/hugo/releases">github</a>上下载即可.</p>
+
+<h3 id="基本命令">基本命令</h3>
+
+<ul>
+<li>新建一个站点/初始化 <code>hugo new site /path/myblog</code></li>
+<li>新建一篇博文<code>hugo new post/some-post.md</code></li>
+<li>开启http服务器并指定使用主题 <code>hugo server --theme=su --buildDrafts --watch</code></li>
+<li>编译文件,直接执行<code>hugo</code></li>
+</ul>
+
+<p>当然如果在<code>config.toml</code>里配置好了主题等,直接使用<code>hugo server</code>就可以开始写博文.</p>
+
+<p>如果想让草稿也被渲染,使用<code>hugo server -D</code></p>
+
+<h2 id="编写主题">编写主题</h2>
+
+<p>在平级的themes目录下,建立一个文件夹为你主题的名字,里面有<code>static</code>,<code>layouts</code>,<code>archetypes</code>文件夹.</p>
+
+<p><code>static</code>为你的静态目录,<code>layouts</code>为模板目录,<code>archetypes</code>为</p>
+
+			</div>
+		</div>
 		
 		<div class="post">
 			<h1 class="post-title">

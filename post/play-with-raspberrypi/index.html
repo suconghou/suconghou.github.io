@@ -99,14 +99,18 @@ ls -lh
 
 <p>执行<code>diskutil unmountdisk /dev/disk2</code> 取消挂载,需要稍等一小会.</p>
 
-<p>烧写,烧写过程中读卡器不断闪烁.</p>
-
-<pre><code>gzip -dc /data/tmp/$OSMC_FILE | sudo dd of=/dev/disk2 bs=8k
-</code></pre>
+<p>烧写,烧写过程中读卡器不断闪烁.
+<code>gzip -dc /data/tmp/$OSMC_FILE | sudo dd of=/dev/disk2 bs=8k</code></p>
 
 <p>dd的用法: <code>dd if=/dev/zero of=hello.txt bs=1024</code></p>
 
 <p>dd过程中看不到进度,如果确实想要了解进度,可以再开一个终端<code>pkill -USR1 -n -x dd</code>查看进度.</p>
+
+<p>Mac上不能使用-USR1方式查看dd进度,会直接kill掉,可以使用在执行dd时插入pv查看进度 , 先安装pv<code>brew install pv</code></p>
+
+<p><code>sudo dd if=file_1 | pv | dd of=file_2</code></p>
+
+<p><code>gzip -dc OSMC_TGT_rbp2_20170615.img.gz | pv | sudo dd of=/dev/disk2 bs=8k</code></p>
 
 <p>确定内存卡的最佳写入块大小,分别执行如下命令,查看速度</p>
 

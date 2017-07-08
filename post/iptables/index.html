@@ -228,6 +228,8 @@ iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 
 </code></pre>
 
+<p>参考 <a href="http://liaoph.com/iptables/">http://liaoph.com/iptables/</a></p>
+
 <h1 id="firewalld">firewalld</h1>
 
 <p><code>firewall-cmd --state</code> 常看当前的状态</p>
@@ -236,10 +238,15 @@ iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 
 <p>查看某区域打开的端口
 <code>firewall-cmd --zone=public --list-ports</code>
-添加一个开放端口
-<code>firewall-cmd --zone=public --add-port=8080/tcp</code></p>
+添加一个开放端口</p>
 
-<p>更多可参考 <a href="https://linux.cn/article-8098-1.html">https://linux.cn/article-8098-1.html</a></p>
+<p><code>firewall-cmd --zone=public --add-port=8080/tcp</code></p>
+
+<p>add-port 后只是本次生效,并没有保存到配置文件内,执行<code>firewall-cmd --reload</code>未保存到配置文件内的就丢失了.</p>
+
+<p>需要永久生效时,添加需加上<code>--permanent</code>,如 <code>firewall-cmd --permanent --zone=public --add-port=9090/tcp</code></p>
+
+<p>更多可参考 <a href="http://www.ywnds.com/?p=7570&amp;viewuser=30">http://www.ywnds.com/?p=7570&amp;viewuser=30</a>   <a href="https://linux.cn/article-8098-1.html">https://linux.cn/article-8098-1.html</a></p>
 
 		</div>
 	</div>

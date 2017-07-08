@@ -54,7 +54,7 @@
 <pre><code>yum update &amp;&amp; yum install wget gcc make
 </code></pre>
 
-<pre><code>HAPROXY_VERSION=haproxy-1.7.0
+<pre><code>HAPROXY_VERSION=haproxy-1.7.8
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
 wget http://www.haproxy.org/download/1.7/src/${HAPROXY_VERSION}.tar.gz
 tar zxf ${HAPROXY_VERSION}.tar.gz
@@ -68,7 +68,7 @@ make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 -j$CPU_NUM &amp;&amp; make i
 
 <p>在64位系统下编译32位需要<code>apt-get install gcc-multilib g++-multilib</code></p>
 
-<p>我编译好的haproxy version 1.7.0</p>
+<p>我编译好的haproxy version 1.7.8</p>
 
 <blockquote>
 <p>64位 <a href="http://share.suconghou.cn/files/bin/haproxy.xz">http://share.suconghou.cn/files/bin/haproxy.xz</a></p>
@@ -79,18 +79,22 @@ make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 -j$CPU_NUM &amp;&amp; make i
 <h3 id="alpine里静态编译">alpine里静态编译</h3>
 
 <pre><code>apk update &amp;&amp; apk upgrade
-apk --update add gcc g++ make wget linux-headers pcre-dev
+apk add gcc g++ make wget linux-headers pcre-dev
 cd /tmp
-HAPROXY_VERSION=haproxy-1.7.5
-CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
+HAPROXY_VERSION=haproxy-1.7.8
 wget http://www.haproxy.org/download/1.7/src/${HAPROXY_VERSION}.tar.gz
 tar zxf ${HAPROXY_VERSION}.tar.gz
 cd ${HAPROXY_VERSION}
-make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 LDFLAGS=&quot;-static -pthread -lrt -ldl -l:/usr/lib/libc.a&quot; -j$CPU_NUM  &amp;&amp; make install
+make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 LDFLAGS=&quot;-static&quot; ADDLIB=&quot;/usr/lib/libc.a&quot; -j2  &amp;&amp; make install
 </code></pre>
 
-<p>需要将 <code>/usr/lib/libc.a</code> 静态链接到最终文件内,经过strip后大大减小目标文件.
-link 阶段加入<code>/usr/lib/libc.a</code></p>
+<p>编译很快,一分钟即可编译完成.</p>
+
+<p>不能直接使用<code>LDFLAGS=&quot;-static&quot;</code>静态编译. 需要将 <code>/usr/lib/libc.a</code> 静态链接到最终文件内,因此需要添加<code>ADDLIB=&quot;/usr/lib/libc.a&quot;</code></p>
+
+<p>他使得在link 阶段静态链接<code>/usr/lib/libc.a</code></p>
+
+<p>上述脚本执行后,即可得到可执行文件. strip后大大减小目标文件.</p>
 
 <h3 id="使用docker版本的haproxy">使用Docker版本的HAProxy</h3>
 
@@ -122,6 +126,31 @@ link 阶段加入<code>/usr/lib/libc.a</code></p>
 
 <p>如<code>haproxy -c -f /etc/haproxy/haproxy.cfg</code>检查配置文件,<code>haproxy -f /etc/haproxy/haproxy.cfg</code>使用此配置文件启动</p>
 
+<p>使用listen 直接定义前端/后端</p>
+
+<pre><code>global
+        pidfile   /var/run/haproxy.pid
+        ulimit-n  15000
+        user        nobody
+        group       nobody
+        daemon
+
+defaults
+        log global
+        mode    tcp
+        retries 3
+        option  dontlognull
+        timeout connect 1000
+        timeout client  150000
+        timeout server  150000
+        option srvtcpka
+        option clitcpka
+
+listen sss
+        bind 0.0.0.0:9878
+        server v 1.2.3.4:443
+</code></pre>
+
 <p>一个简单的配置文件如下</p>
 
 <pre><code>global
@@ -131,9 +160,10 @@ link 阶段加入<code>/usr/lib/libc.a</code></p>
     daemon
 
 defaults
-    mode                    http
+    mode                    tcp
     log                     global
     retries                 3
+    option                  dontlognull
     timeout http-request    10s
     timeout queue           1m
     timeout connect         10s
@@ -151,7 +181,7 @@ frontend http-in
 
 backend servers
     option http-keep-alive
-    server myserver 192.243.115.210:80 check maxconn 6000
+    server myserver 1.2.3.4:80 check maxconn 6000
 </code></pre>
 
 <p>八种负载算法</p>
@@ -177,10 +207,11 @@ backend servers
 
 <pre><code>option http-pretend-keepalive
 option srvtcpka
+option clitcpka
 option forwardfor
 </code></pre>
 
-<p>其中option forwardfor允许在转发请求到后端时加上X-Forwarded-For头部</p>
+<p>其中option forwardfor允许在转发请求到后端时加上X-Forwarded-For头部,可以不使用.</p>
 
 <p>还有一个在应对高并发时通常都需要改的
 <code>ulimit -n 8192</code></p>
@@ -193,13 +224,10 @@ option forwardfor
 
 <p>重启HAProxy</p>
 
-<pre><code>haproxy -f /etc/haproxy/haproxy.cfg -st `cat /var/run/haproxy.pid`
-
-# 不能放入.bashrc,``会立即执行的
-# haproxy-reload
-haproxy -f /etc/haproxy/haproxy.cfg -st `cat /var/run/haproxy.pid`
+<pre><code># haproxy-reload
+haproxy -f /etc/haproxy/haproxy.cfg -st $(cat /var/run/haproxy.pid)
 # haproxy-hot-reload
-haproxy -f /etc/haproxy/haproxy.cfg -sf `cat /var/run/haproxy.pid`
+haproxy -f /etc/haproxy/haproxy.cfg -sf $(cat /var/run/haproxy.pid)
 </code></pre>
 
 <p><code>/etc/rc.local</code>(软连接到<code>/etc/rc.d/rc.local</code>)是开机后自动执行的脚本</p>
@@ -234,6 +262,8 @@ backend ss-out
 <p><code>haproxy -D -f /etc/haproxy/haproxy.cfg</code>启动,参数<code>-D</code>为goes daemon</p>
 
 <p>参考 <code>http://liaoph.com/haproxy-tutorial/</code></p>
+
+<p><a href="https://gist.github.com/SilverBut/32be4a41cbdc50dd3a02627738b2b9cb">https://gist.github.com/SilverBut/32be4a41cbdc50dd3a02627738b2b9cb</a></p>
 
 <h2 id="升级-glibc-版本-最新发布-http-www-gnu-org-software-libc">升级<code>glibc</code>版本,最新发布 <a href="http://www.gnu.org/software/libc/">http://www.gnu.org/software/libc/</a></h2>
 
@@ -299,6 +329,18 @@ fi
 <p>TCP 端口转发</p>
 
 <p><code>https://boutell.com/rinetd/http/rinetd.tar.gz</code></p>
+
+<p>Socat：</p>
+
+<p>优点：支持 TCP/UDP 转发。缺点：不支持端口段（多个端口需要开启多个转发）</p>
+
+<p>HaProxy：</p>
+
+<p>优点：支持 TCP 转发，支持 端口段 转发。缺点：不支持 UDP 转发。</p>
+
+<p>iptables：</p>
+
+<p>优点：支持 TCP/UDP 转发，支持 端口段 转发。缺点：配置麻烦，容易出错。</p>
 
 		</div>
 	</div>

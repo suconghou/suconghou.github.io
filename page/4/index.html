@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.21" />
+	<meta name="generator" content="Hugo 0.25" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -31,6 +31,143 @@
 
 <div class="content container">
 	<div class="posts">
+		
+		<div class="post">
+			<h1 class="post-title">
+				<a href="/post/react-native/"> react native</a>
+			</h1>
+			<p class="post-date">Mon, Jul 11, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="react-native">react native</h2>
+
+<h3 id="环境准备">环境准备</h3>
+
+<p>前提是需要node和npm,这里不在赘述.介绍一个npm加速的.</p>
+
+<p>使用淘宝的npm镜像.控制台运行,或者加入你的bashrc中永久生效</p>
+
+<pre><code>alias cnpm=&quot;npm --registry=https://registry.npm.taobao.org --cache=$HOME/.npm/.cache/cnpm --disturl=https://npm.taobao.org/dist --userconfig=$HOME/.cnpmrc&quot;;
+</code></pre>
+
+<p>安装开发必备的一些package</p>
+
+<pre><code>cnpm install -g react-native-cli webpack
+</code></pre>
+
+<p><code>react-native</code>也调用了<code>npm</code>命令,所以我们可以再来个alias加速<code>react-native init</code></p>
+
+<p><code>alias npm='cnpm'</code></p>
+
+<p>或者直接将仓库改为淘宝的NPM镜像</p>
+
+<pre><code>npm config set registry https://registry.npm.taobao.org
+npm config set disturl https://npm.taobao.org/dist
+</code></pre>
+
+<p>在mac上还需要一些东西</p>
+
+<pre><code>brew install flow watchman
+</code></pre>
+
+<p>安装完以后可以开始helloworld了.</p>
+
+<h3 id="开始第一个例子">开始第一个例子</h3>
+
+<pre><code>cd /data/tmp
+react-native init HelloWorld
+</code></pre>
+
+<p>然后正在初始化大致如下</p>
+
+<pre><code>This will walk you through creating a new React Native project in /data/tmp/HelloWorld
+Installing react-native package from npm...
+Setting up new React Native app in /data/tmp/HelloWorld
+HelloWorld@0.0.1 /data/tmp/HelloWorld
+└── react@15.2.1
+
+To run your app on iOS:
+   cd /data/tmp/HelloWorld
+   react-native run-ios
+   - or -
+   Open /data/tmp/HelloWorld/ios/HelloWorld.xcodeproj in Xcode
+   Hit the Run button
+To run your app on Android:
+   Have an Android emulator running (quickest way to get started), or a device connected
+   cd /data/tmp/HelloWorld
+   react-native run-android
+</code></pre>
+
+<p>使用<code>React</code>类名(组件名)必须首字母大写才会被认为是一个组件,否则在JSX里只会当做普通标签</p>
+
+<p><strong>下面是一些针对开发IOS的教程</strong></p>
+
+<p>我们执行<code>react-native run-ios</code>开始编译运行,前提是你必须安装了<code>xcode</code>哦.</p>
+
+<p>执行后,出现<code>BUILD SUCCEEDED</code>,同时自动打开新的终端运行了一个server在8081端口.</p>
+
+<p>模拟器中也会出现刚编译好的app的窗口,使用<code>cmd+r</code>刷新,<code>cmd+d</code>弹出开发菜单.</p>
+
+<p>我们可以修改<code>index.ios.js</code>开始开发了.</p>
+
+<p><strong>下面是一些针对开发Android的教程</strong></p>
+
+<h3 id="问题">问题</h3>
+
+<p>在使用<code>fetch</code>调用接口时,可能会出现<code>The resource could not be loaded because the App Transport Security policy requires the use of a secure connection.</code>错误</p>
+
+<p>这是IOS9要求必须使用https通信,需要修改 <a href="http://stackoverflow.com/questions/30731785/how-do-i-load-an-http-url-with-app-transport-security-enabled-in-ios-9">http://stackoverflow.com/questions/30731785/how-do-i-load-an-http-url-with-app-transport-security-enabled-in-ios-9</a></p>
+
+<p>其实<code>react native</code>创建<code>Info.plist</code>时就已经为我们说明了,在<code>NSExceptionDomains</code>下面的<code>dict</code>里添加一个排除域名就OK了.</p>
+
+<p>注意,不能将默认的<code>localhost</code>去掉,否则会出现<code>_fbBatchedBridge is undefined</code>错误.</p>
+
+<h2 id="打包">打包</h2>
+
+<h3 id="对android项目打包">对android项目打包</h3>
+
+<p>使用<code>keytool</code>生成签名文件,在任意目录下执行</p>
+
+<pre><code>keytool -genkey -v -keystore my-release-key.keystore  -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
+</code></pre>
+
+<p>上面<code>my-release-key</code>可以自己定义,后面的<code>my-key-alias</code>也可以自己定义.运行后输入一下相关信息后,生成<code>my-release-key.keystore</code>文件.</p>
+
+<p>其中输入的两次密码,需要记住.将这个文件移动到<code>android/app</code>目录下,编译<code>android/app</code>里的<code>build.gradle</code>,添加下面的内容</p>
+
+<pre><code>android {
+    ...
+    defaultConfig { ... }
+    signingConfigs {
+        release {
+            storeFile file(MYAPP_RELEASE_STORE_FILE)
+            storePassword MYAPP_RELEASE_STORE_PASSWORD
+            keyAlias MYAPP_RELEASE_KEY_ALIAS
+            keyPassword MYAPP_RELEASE_KEY_PASSWORD
+        }
+    }
+    ...
+    buildTypes {
+        release {
+              ...
+              signingConfig signingConfigs.release
+        }
+    }
+}
+</code></pre>
+
+<p>在<code>android</code>目录下运行如下命令,就可以打包,安装到自己手机上,前提是手机已usb调试连接到电脑</p>
+
+<pre><code>./gradlew assembleRelease
+cd app/build/outputs/apk
+adb install -r app-release.apk
+</code></pre>
+
+<p>参考 <a href="https://facebook.github.io/react-native/docs/signed-apk-android.html">https://facebook.github.io/react-native/docs/signed-apk-android.html</a></p>
+
+			</div>
+		</div>
 		
 		<div class="post">
 			<h1 class="post-title">
@@ -513,7 +650,7 @@ net.netfilter.nf_conntrack_max = 64000
 
 <p>客户机上</p>
 
-<pre><code>alias kcptun_start='kcptun_client -r 192.243.115.210:4433 -l :4433 -sndwnd 2048 -rcvwnd 2048 -mode fast2 &gt; /var/log/kcptun.log 2&gt;&amp;1 &amp;'
+<pre><code>alias kcptun_start='kcptun_client -r vpsIP:4433 -l :4433 -sndwnd 2048 -rcvwnd 2048 -mode fast2 &gt; /var/log/kcptun.log 2&gt;&amp;1 &amp;'
 
 </code></pre>
 
@@ -666,7 +803,15 @@ make install
 
 <p><code>tcpdump host 210.27.48.1</code></p>
 
+<p><code>sudo tcpdump  host media.suconghou.cn  -v -X</code>  -X 能查看每个TCP报文的十六进制对照</p>
+
+<p><code>sudo tcpdump  host media.suconghou.cn  -v -A</code>  -A 能查看每个TCP报文的数据</p>
+
 <p><code>-A</code>和<code>-X</code>有助于你查看详细的报文数据</p>
+
+<p>tcpdump 对截获的数据并没有进行彻底解码，数据包内的大部分内容是使用十六进制的形式直接打印输出的。</p>
+
+<p>ngrep 对于http数据解析更加清晰.</p>
 
 <h2 id="ngrep">ngrep</h2>
 
@@ -718,132 +863,6 @@ make install
 
 <p>具体使用见
 <a href="http://man.linuxde.net/ngrep">http://man.linuxde.net/ngrep</a></p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/use-apache-traffic-server/"> 编译安装Apache Traffic Server</a>
-			</h1>
-			<p class="post-date">Mon, May 9, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="编译安装">编译安装</h2>
-
-<p>Centos下编译安装</p>
-
-<pre><code>yum update -y &amp;&amp; yum install wget gcc g++ gcc-c++ glibc-headers perl openssl openssl-devel tcl-devel libxml2-devel pcre-devel
-wget http://apache.fayea.com/trafficserver/trafficserver-6.1.1.tar.bz2
-tar xvjf trafficserver-6.1.1.tar.bz2
-cd trafficserver-6.1.1
-./configure
-make &amp;&amp; make install
-useradd -s /sbin/nologin trafficserver
-</code></pre>
-
-<p>Apache镜像<a href="http://archive.apache.org/dist/">http://archive.apache.org/dist/</a></p>
-
-<p>国内Apache镜像<a href="http://apache.fayea.com/">http://apache.fayea.com/</a></p>
-
-<p>编译完成后,就可以使用了,默认是安装在<code>/usr/local/bin</code>,编译后是比较大</p>
-
-<pre><code>total 98M
--rwxr-xr-x 1 root root 692K May  9 14:30 header_rewrite_test
--rwxr-xr-x 1 root root 520K May  9 14:30 traffic_cop
--rwxr-xr-x 1 root root 1.9M May  9 14:30 traffic_crashlog
--rwxr-xr-x 1 root root 259K May  9 14:30 traffic_ctl
--rwxr-xr-x 1 root root 1.9M May  9 14:30 traffic_layout
--rwxr-xr-x 1 root root  41K May  9 14:30 traffic_line
--rwxr-xr-x 1 root root 4.4M May  9 14:30 traffic_logcat
--rwxr-xr-x 1 root root 5.0M May  9 14:30 traffic_logstats
--rwxr-xr-x 1 root root 4.7M May  9 14:30 traffic_manager
--rwxr-xr-x 1 root root  37M May  9 14:30 traffic_sac
--rwxr-xr-x 1 root root  43M May  9 14:30 traffic_server
--rwxr-xr-x 1 root root  42K May  9 14:30 traffic_via
--rwxr-xr-x 1 root root  18K May  9 14:30 trafficserver
--rwxr-xr-x 1 root root 2.1K May  9 14:30 tspush
--rwxr-xr-x 1 root root 5.7K May  9 14:30 tsxs
-
-</code></pre>
-
-<p>运行<code>traffic_server -R 1</code>执行测试,经过一系列测试后,显示</p>
-
-<pre><code>Tests Passed: 177
-Tests Failed: 0
-    REGRESSION_RESULT PARENTSELECTION:                          PASSED
-REGRESSION_TEST DONE: PASSED
-</code></pre>
-
-<p>全部测试通过</p>
-
-<h2 id="使用">使用</h2>
-
-<p>默认的配置文件存放在<code>/usr/local/etc/trafficserver</code></p>
-
-<pre><code>drwxr-xr-x 3 nobody nobody 1.0K May  9 14:30 body_factory
--rw-r--r-- 1 nobody nobody 1.7K May  9 14:30 cache.config
--rw-r--r-- 1 nobody nobody  657 May  9 14:30 cluster.config
--rw-r--r-- 1 nobody nobody 1.9K May  9 14:30 congestion.config
--rw-r--r-- 1 nobody nobody  746 May  9 14:30 hosting.config
--rw-r--r-- 1 nobody nobody 1.8K May  9 14:30 icp.config
--rw-r--r-- 1 nobody nobody 1.2K May  9 14:30 ip_allow.config
--rw-r--r-- 1 nobody nobody  328 May  9 14:30 log_hosts.config
--rw-r--r-- 1 nobody nobody  17K May  9 14:30 logs_xml.config
--rw-r--r-- 1 nobody nobody 1.4K May  9 14:30 parent.config
--rw-r--r-- 1 nobody nobody  261 May  9 14:30 plugin.config
--rw-r--r-- 1 nobody nobody  13K May  9 14:30 records.config
--rw-r--r-- 1 nobody nobody 8.6K May  9 14:30 remap.config
--rw-r--r-- 1 nobody nobody 1.7K May  9 14:30 socks.config
--rw-r--r-- 1 nobody nobody 2.1K May  9 14:30 splitdns.config
--rw-r--r-- 1 nobody nobody 2.7K May  9 14:30 ssl_multicert.config
--rw-r--r-- 1 nobody nobody  76K May  9 14:30 stats.config.xml
--rw-r--r-- 1 nobody nobody 1.9K May  9 14:30 storage.config
--rw-r--r-- 1 root   root     19 May  9 14:30 trafficserver-release
--rw-r--r-- 1 nobody nobody  649 May  9 14:30 vaddrs.config
--rw-r--r-- 1 nobody nobody 1.3K May  9 14:30 volume.config
-
-</code></pre>
-
-<p><code>records.config</code>负责大部分全局的选项设置，即主要配置文件</p>
-
-<pre><code>CONFIG proxy.config.reverse_proxy.enabled INT 1                           # 开启反向代理
-CONFIG proxy.config.url_remap.remap_required INT 1                        # 1 代理反向代理，0代表正向+反向代理
-CONFIG proxy.config.http.cache.http INT 1                                 # 打开http缓存功能
-CONFIG proxy.config.cache.ram_cache.size INT 512M                         # RAM 缓存大小
-CONFIG proxy.config.http.keep_alive_no_activity_timeout_out INT 120       # 当一个事务结束后同原服务器保持连接的时间
-CONFIG proxy.config.cluster.ethernet_interface STRING eth0                # 修改成需要侦听的interface名称
-
-</code></pre>
-
-<p><code>remap.config</code>定义映射规则，用于请求的重定向（rewrite）,反向代理即在此配置</p>
-
-<p><code>storage.config</code> 用于指定磁盘存储</p>
-
-<p>启动<code>trafficserver start</code></p>
-
-<h3 id="varnish编译">varnish编译</h3>
-
-<p>alpine中编译</p>
-
-<pre><code>apk update &amp;&amp; apk upgrade
-apk --update add gcc g++ make wget curl m4 automake autoconf libtool linux-headers py-docutils ncurses-dev pcre-dev libedit-dev
-cd /tmp
-VARNISH_VERSION=varnish-4.1.3
-CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
-wget https://repo.varnish-cache.org/source/${VARNISH_VERSION}.tar.gz
-tar xzf ${VARNISH_VERSION}.tar.gz
-cd ${VARNISH_VERSION}
-./configure
-make CFLAGS=&quot;-Os&quot; CPPFLAGS=-D__NEED_mode_t -j$CPU_NUM &amp;&amp; make install
-strip -s /usr/local/bin/* /usr/local/sbin/* /usr/local/lib/varnish/*.so /usr/local/lib/varnish/vmods/*.so
-varnishd  -V
-</code></pre>
-
-<h4 id="varnish基本使用">varnish基本使用</h4>
-
-<p>varnish / squid / nginx 优缺点讨论 见 <a href="http://www.zhihu.com/question/20143441">http://www.zhihu.com/question/20143441</a></p>
 
 			</div>
 		</div>

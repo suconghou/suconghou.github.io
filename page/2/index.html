@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.21" />
+	<meta name="generator" content="Hugo 0.25" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -31,6 +31,227 @@
 
 <div class="content container">
 	<div class="posts">
+		
+		<div class="post">
+			<h1 class="post-title">
+				<a href="/post/iptables/"> iptables与firewalld</a>
+			</h1>
+			<p class="post-date">Wed, Sep 14, 2016</p>
+			<div class="post-text">
+				
+
+<h1 id="iptables相关配置">iptables相关配置</h1>
+
+<p>配置<code>iptables</code>之前,建议添加一个crontab定时重置iptables,防止将自己阻挡.</p>
+
+<p>建议写入<code>/usr/iptab.sh</code>,加入<code>crontab</code>,每个整点执行</p>
+
+<pre><code>iptables -P INPUT ACCEPT
+iptables -P OUTPUT ACCEPT
+iptables -P FORWARD ACCEPT
+iptables -F
+iptables -X
+iptables -Z
+</code></pre>
+
+<h2 id="查看本机关于iptables的设置情况">查看本机关于IPTABLES的设置情况</h2>
+
+<pre><code>iptables -L -n
+</code></pre>
+
+<h2 id="清除原有规则">清除原有规则.</h2>
+
+<p>不管你在安装linux时是否启动了防火墙,如果你想配置属于自己的防火墙,那就清除现在filter的所有规则.
+清除预设表filter中的所有规则链的规则</p>
+
+<pre><code>iptables -F
+</code></pre>
+
+<p>清除预设表filter中使用者自定链中的规则</p>
+
+<pre><code>iptables -X
+</code></pre>
+
+<h2 id="保存配置">保存配置</h2>
+
+<p>刚刚配置的重启以后就会丢失,想要保存使用</p>
+
+<pre><code>iptables save
+</code></pre>
+
+<p>有的可能是<code>iptables-save</code></p>
+
+<p>这样就写到<code>/etc/sysconfig/iptables</code> 文件里了.
+写入后记得把防火墙重起一下,才能起作用.</p>
+
+<pre><code>service iptables restart
+</code></pre>
+
+<h2 id="设定预设规则">设定预设规则</h2>
+
+<p>默认的入口,出口,转发策略都是ACCEPT
+下面要改变这种规则</p>
+
+<p>iptables 采用黑名单加白名单的方式, 未命中白名单的将采用预设规则</p>
+
+<p>下面操作注意,为避免ssh端口22被拦截,首先添加</p>
+
+<pre><code>iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+</code></pre>
+
+<p>保证22端口入口畅通,注意如果你的OUTPUT模式设置为DROP(上面已经清空了,默认为ACCEPT),还需要添加</p>
+
+<pre><code>iptables -A OUTPUT -p tcp --sport 22 -j ACCEPT
+</code></pre>
+
+<p>保证出口22端口畅通
+下面开始折腾吧</p>
+
+<p>1.修改入口流量默认规则为DROP,除非命中用户规则,否则拦截所有入口流量(注意上面一定要排除ssh的端口,否则直接掉线)</p>
+
+<pre><code>iptables -P INPUT DROP
+</code></pre>
+
+<p>如果你使用了docker,这里好像会对docker的网络造成影响</p>
+
+<p>2.允许所有出口流量(重置iptables时,这其实就是默认的规则)</p>
+
+<pre><code>iptables -P OUTPUT ACCEPT
+</code></pre>
+
+<p>3.禁止所有转发流量,除了命中用户规则的</p>
+
+<pre><code>iptables -P FORWARD DROP
+</code></pre>
+
+<h3 id="常用端口开启">常用端口开启</h3>
+
+<p>开启80,443端口,http,https服务</p>
+
+<pre><code>iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+</code></pre>
+
+<p>开启21端口,ftp服务</p>
+
+<pre><code>iptables -A INPUT -p tcp --dport 21 -j ACCEPT
+</code></pre>
+
+<h3 id="开启基本端口">开启基本端口</h3>
+
+<p>允许icmp包通过,也就是允许ping</p>
+
+<pre><code>iptables -A INPUT -p icmp -j ACCEPT
+</code></pre>
+
+<p>允许loopback!(不然会导致DNS无法正常关闭等问题)</p>
+
+<p><strong>如果未启用此项,常见的fastcgi_pass 127.0.0.1 将会有问题</strong></p>
+
+<pre><code>iptables -A INPUT -i lo -p all -j ACCEPT
+</code></pre>
+
+<p>iptables 配置实时生效,如果拦截了ssh端口,将立即掉线!</p>
+
+<p>无论iptabes启动与否，ps -ef都不会看到iptables的进程，这是因为iptables是由内核来实现的，也就是说iptables的功能已经融入到内核里面了</p>
+
+<p>iptables只是一个工具，将IP规则写入内核，让内核去处理。所以iptables只有在加规则的时候才会看得到进程，加完了就退出了</p>
+
+<p>iptables并不是一个普通的daemon，只是一个普通的工具，添加一些规则到kernel的filter列表里面。</p>
+
+<p><code>systemctl stop iptables</code> 也与进程无关,他只是执行了<code>/usr/libexec/iptables/iptables.init stop</code></p>
+
+<p>将规则从内核清除到存到文件.</p>
+
+<h3 id="ip-拦截">IP 拦截</h3>
+
+<p>拦截一个IP</p>
+
+<p><code>iptables -I INPUT -s 1.2.3.4 -j DROP</code></p>
+
+<p>解封此IP</p>
+
+<p><code>iptables -D INPUT -s 1.2.3.4 -j DROP</code></p>
+
+<p>参数-I是表示Insert（添加），-D表示Delete（删除）</p>
+
+<p>INPUT表示入站，DROP表示放弃连接</p>
+
+<p>IP段</p>
+
+<p>192.168.1.x 可以写 <code>192.168.1.0/24</code></p>
+
+<p>192.168.x.x 可以写 <code>192.168.0.0/16</code></p>
+
+<p>192.x.x.x   可以写 <code>192.0.0.0/8</code></p>
+
+<p><code>iptables -I INPUT -s 112.198.0.0/16 -j DROP</code></p>
+
+<blockquote>
+<p>iptables 过滤大量IP地址任然是挨个遍历,如需拦截数以万计的IP地址,需使用<code>ipset</code>,能获取最佳性能.
+<code>yum info ipset -y</code> 安装<code>ipset</code></p>
+</blockquote>
+
+<h3 id="端口转发">端口转发</h3>
+
+<p>允许服务器的IP转发功能： <code>echo 1 &gt; /proc/sys/net/ipv4/ip_forward</code></p>
+
+<p><code>iptables -t nat -A POSTROUTING -j MASQUERADE</code></p>
+
+<p><code>iptables -t nat -A PREROUTING -p tcp -i eth0 --dport 31521 -j DNAT --to 192.168.0.211:1521</code></p>
+
+<p>相同端口后面可省略不写 <code>iptables -t nat -I PREROUTING -p tcp --dport 1521 -j DNAT --to 192.168.0.211</code></p>
+
+<pre><code>
+#清除配置
+/sbin/iptables -P INPUT ACCEPT
+/sbin/iptables -F
+/sbin/iptables -X
+#开放本地和Ping
+/sbin/iptables -A INPUT -i lo -j ACCEPT
+/sbin/iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+/sbin/iptables -A INPUT -p icmp -j ACCEPT
+#配置内网白名单
+/sbin/iptables -A INPUT -s 10.0.0.0/8 -j ACCEPT
+/sbin/iptables -A INPUT -s 172.16.0.0/12 -j ACCEPT
+/sbin/iptables -A INPUT -s 192.168.0.0/16 -j ACCEPT
+#配置外网白名单
+/sbin/iptables -A INPUT -s 180.168.36.198 -j ACCEPT
+/sbin/iptables -A INPUT -s 180.168.34.218 -j ACCEPT
+/sbin/iptables -A INPUT -s 222.73.202.251 -j ACCEPT
+#控制端口
+/sbin/iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+/sbin/iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+#拒绝其它
+/sbin/iptables -A INPUT -j DROP
+/sbin/iptables -A FORWARD -j DROP
+#开放出口
+/sbin/iptables -A OUTPUT -j ACCEPT
+
+</code></pre>
+
+<p>参考 <a href="http://liaoph.com/iptables/">http://liaoph.com/iptables/</a></p>
+
+<h1 id="firewalld">firewalld</h1>
+
+<p><code>firewall-cmd --state</code> 常看当前的状态</p>
+
+<p><code>firewall-cmd --get-active-zones</code> 查看区域信息</p>
+
+<p>查看某区域打开的端口
+<code>firewall-cmd --zone=public --list-ports</code>
+添加一个开放端口</p>
+
+<p><code>firewall-cmd --zone=public --add-port=8080/tcp</code></p>
+
+<p>add-port 后只是本次生效,并没有保存到配置文件内,执行<code>firewall-cmd --reload</code>未保存到配置文件内的就丢失了.</p>
+
+<p>需要永久生效时,添加需加上<code>--permanent</code>,如 <code>firewall-cmd --permanent --zone=public --add-port=9090/tcp</code></p>
+
+<p>更多可参考 <a href="http://www.ywnds.com/?p=7570&amp;viewuser=30">http://www.ywnds.com/?p=7570&amp;viewuser=30</a>   <a href="https://linux.cn/article-8098-1.html">https://linux.cn/article-8098-1.html</a></p>
+
+			</div>
+		</div>
 		
 		<div class="post">
 			<h1 class="post-title">
@@ -649,12 +870,24 @@ window.addEventListener('error', function (err)
 
 <p><code>UA-xxx-1</code>使用自己的统计ID</p>
 
-<h3 id="并发发送ajax">并发发送ajax</h3>
+<h3 id="jquery并发发送ajax">jQuery并发发送ajax</h3>
 
 <pre><code>$.when($.get('assets/misc/1.json'), $.get('assets/misc/2.json')).then(function(r1, r2)
 {
     console.log(r1[0].message + &quot; &quot; + r2[0].message);
 })
+</code></pre>
+
+<h3 id="微信内js获取地理位置">微信内JS获取地理位置</h3>
+
+<pre><code>&lt;script type=&quot;text/javascript&quot; src=&quot;https://apis.map.qq.com/tools/geolocation/min?key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&amp;referer=mywxapp&quot;&gt;&lt;/script&gt;
+
+获取精确定位信息
+var options = {timeout: 9000};
+geolocation.getLocation(showPosition, showErr, options);
+
+粗糙定位信息
+geolocation.getIpLocation(showPosition, showErr)
 </code></pre>
 
 <h3 id="fetch跨域带cookie">Fetch跨域带cookie</h3>
@@ -779,279 +1012,6 @@ obj.name='world';
     };
   }
 </code></pre>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/use-haproxy/"> HAProxy优化应用程序速度</a>
-			</h1>
-			<p class="post-date">Fri, Jul 29, 2016</p>
-			<div class="post-text">
-				
-
-<h2 id="haproxy">HAProxy</h2>
-
-<p>HAProxy高性能的反向代理软件,更专注于TCP,HTTP处理,它可以基于四层或七层进行反向代理,尤其适合于高负载且需要进行七层处理的 Web 站点.</p>
-
-<p>单进程、事件驱动模型,通常用于超高流量的负载均衡.</p>
-
-<p>我们也可以使用它来作为中转站,使直连连通率不好的请求进过中转提升速度.</p>
-
-<h3 id="编译安装">编译安装</h3>
-
-<pre><code>apt-get update &amp;&amp; apt-get install -y wget gcc g++ make libpcre++0v5 libpcre++-dev
-</code></pre>
-
-<pre><code>yum update &amp;&amp; yum install wget gcc make
-</code></pre>
-
-<pre><code>HAPROXY_VERSION=haproxy-1.7.0
-CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
-wget http://www.haproxy.org/download/1.7/src/${HAPROXY_VERSION}.tar.gz
-tar zxf ${HAPROXY_VERSION}.tar.gz
-cd ${HAPROXY_VERSION}
-export CFLAGS=&quot;-O3&quot;
-make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 -j$CPU_NUM &amp;&amp; make install
-
-</code></pre>
-
-<p>编译32位版本<code>make TARGET=linux26 ARCH=i686 USE_STATIC_PCRE=1 -j$CPU_NUM</code></p>
-
-<p>在64位系统下编译32位需要<code>apt-get install gcc-multilib g++-multilib</code></p>
-
-<p>我编译好的haproxy version 1.7.0</p>
-
-<blockquote>
-<p>64位 <a href="http://share.suconghou.cn/files/bin/haproxy.xz">http://share.suconghou.cn/files/bin/haproxy.xz</a></p>
-
-<p>32位 <a href="http://share.suconghou.cn/files/bin/haproxy.gz">http://share.suconghou.cn/files/bin/haproxy.gz</a></p>
-</blockquote>
-
-<h3 id="alpine里静态编译">alpine里静态编译</h3>
-
-<pre><code>apk update &amp;&amp; apk upgrade
-apk --update add gcc g++ make wget linux-headers pcre-dev
-cd /tmp
-HAPROXY_VERSION=haproxy-1.7.5
-CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
-wget http://www.haproxy.org/download/1.7/src/${HAPROXY_VERSION}.tar.gz
-tar zxf ${HAPROXY_VERSION}.tar.gz
-cd ${HAPROXY_VERSION}
-make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 LDFLAGS=&quot;-static -pthread -lrt -ldl -l:/usr/lib/libc.a&quot; -j$CPU_NUM  &amp;&amp; make install
-</code></pre>
-
-<p>需要将 <code>/usr/lib/libc.a</code> 静态链接到最终文件内,经过strip后大大减小目标文件.
-link 阶段加入<code>/usr/lib/libc.a</code></p>
-
-<h3 id="使用docker版本的haproxy">使用Docker版本的HAProxy</h3>
-
-<p>这里提供一份编译好的最新版HAProxy镜像 <a href="https://hub.docker.com/r/suconghou/haproxy/">https://hub.docker.com/r/suconghou/haproxy/</a></p>
-
-<p><code>useradd -M -s /sbin/nologin haproxy</code></p>
-
-<p>-M：不创建家目录</p>
-
-<p>-s：指定用户登陆时使用的shell，nologin就是登陆不了</p>
-
-<h3 id="优化国外主机速度">优化国外主机速度</h3>
-
-<p>HAProxy有多种连接模型,还有多种负载均衡算法,由于只有一台机器,我们主要侧重于使用它的反向代理.</p>
-
-<p>HAProxy可以一边保持与代理后端的长连接,一边又保持对客户端的连接.
-这样双向保持持久连接,省去了中间反复创建连接可以在一定程度上优化速度.</p>
-
-<p>其只需要一个配置文件,配置主要有以下几部分功能</p>
-
-<ul>
-<li><code>default</code>：用于为所有其它配置段提供默认参数</li>
-<li><code>frontend</code>：用于定义一系列监听的套接字，这些套接字可接受客户端请求并与之建立连接</li>
-<li><code>backend</code>：用于定义一系列后端服务器，代理将会将对应客户端的请求转发至这些服务器</li>
-<li><code>listen</code>： 通过关联前端和后端定义了一个完整的代理</li>
-</ul>
-
-<p>配置写在<code>haproxy.cfg</code>文件中,启动的时候指定使用的配置文件.</p>
-
-<p>如<code>haproxy -c -f /etc/haproxy/haproxy.cfg</code>检查配置文件,<code>haproxy -f /etc/haproxy/haproxy.cfg</code>使用此配置文件启动</p>
-
-<p>一个简单的配置文件如下</p>
-
-<pre><code>global
-    pidfile     /var/run/haproxy.pid
-    user        haproxy
-    group       haproxy
-    daemon
-
-defaults
-    mode                    http
-    log                     global
-    retries                 3
-    timeout http-request    10s
-    timeout queue           1m
-    timeout connect         10s
-    timeout client          1m
-    timeout server          1m
-    timeout http-keep-alive 10s
-    timeout check           10s
-    maxconn                 30000
-
-frontend http-in
-    mode http
-    bind 0.0.0.0:1080
-    option http-keep-alive
-    default_backend  servers
-
-backend servers
-    option http-keep-alive
-    server myserver 192.243.115.210:80 check maxconn 6000
-</code></pre>
-
-<p>八种负载算法</p>
-
-<blockquote>
-<p>&lsquo;roundrobin&rsquo;,  简单的轮询
-&lsquo;static-rr&rsquo;,    根据权重
- &lsquo;leastconn&rsquo;, 最少连接者先处理
-&lsquo;source&rsquo;,  根据请求源IP
-&lsquo;uri&rsquo;,    根据请求的URI
-&lsquo;url_param&rsquo;,  根据请求的URl参数
-&lsquo;hdr(name)&rsquo; 根据HTTP请求头来锁定每一次HTTP请求
- &lsquo;rdp-cookie(name)&rsquo; 很据cookie(name)来锁定并哈希每一次TCP请求</p>
-</blockquote>
-
-<h2 id="长连接">长连接</h2>
-
-<p>KeepAlive 就是通常所称的长连接,KeepAlive带来的好处是可以减少tcp连接的开销,这对于短response body的请求效果更加明显。</p>
-
-<p>HAProxy后端keepalive指的是在HAProxy服务完一次与后端的交互后，不关闭HAProxy和后端的连接，而是维护这个连接以备后续的请求复用。</p>
-
-<p>HAProxy后端Keepalive 配置，启用HAProxy后端长连接需要配置如下</p>
-
-<pre><code>option http-pretend-keepalive
-option srvtcpka
-option forwardfor
-</code></pre>
-
-<p>其中option forwardfor允许在转发请求到后端时加上X-Forwarded-For头部</p>
-
-<p>还有一个在应对高并发时通常都需要改的
-<code>ulimit -n 8192</code></p>
-
-<p><code>ulimit -n</code> 可以查看当前的</p>
-
-<p><code>-st</code> 是立即结束原有进程(SIGTERM,立即重启)</p>
-
-<p><code>-sf</code> 是原有进程执行完后退出(SIGUSR1,平滑重启)</p>
-
-<p>重启HAProxy</p>
-
-<pre><code>haproxy -f /etc/haproxy/haproxy.cfg -st `cat /var/run/haproxy.pid`
-
-# 不能放入.bashrc,``会立即执行的
-# haproxy-reload
-haproxy -f /etc/haproxy/haproxy.cfg -st `cat /var/run/haproxy.pid`
-# haproxy-hot-reload
-haproxy -f /etc/haproxy/haproxy.cfg -sf `cat /var/run/haproxy.pid`
-</code></pre>
-
-<p><code>/etc/rc.local</code>(软连接到<code>/etc/rc.d/rc.local</code>)是开机后自动执行的脚本</p>
-
-<p>可以加入<code>haproxy -f /etc/haproxy/haproxy.cfg</code>到其中实现开机启动.</p>
-
-<p>配置文件参考 <a href="https://github.com/chenzhiwei/linux/tree/master/haproxy">https://github.com/chenzhiwei/linux/tree/master/haproxy</a></p>
-
-<p>一份haproxy加速ss</p>
-
-<pre><code>global
-        pidfile   /var/run/haproxy.pid
-        ulimit-n  15000
-
-defaults
-        log global
-        mode    tcp
-        option  dontlognull
-        timeout connect 1000
-        timeout client  150000
-        timeout server  150000
-
-frontend ss-in
-        bind *:80
-        default_backend ss-out
-
-backend ss-out
-        server server1 208.81.202.208:443 maxconn 20480
-
-</code></pre>
-
-<p><code>haproxy -D -f /etc/haproxy/haproxy.cfg</code>启动,参数<code>-D</code>为goes daemon</p>
-
-<p>参考 <code>http://liaoph.com/haproxy-tutorial/</code></p>
-
-<h2 id="升级-glibc-版本-最新发布-http-www-gnu-org-software-libc">升级<code>glibc</code>版本,最新发布 <a href="http://www.gnu.org/software/libc/">http://www.gnu.org/software/libc/</a></h2>
-
-<p>所有版本见<code>http://mirror.hust.edu.cn/gnu/libc/</code></p>
-
-<p>错误 <code>libc.so.6: version GLIBC_2.14 not found</code> 表明当前系统的glibc版本较低</p>
-
-<p><code>strings libc.so.6 |grep GLIBC_</code>可以查看当前系统支持的版本</p>
-
-<pre><code>wget http://mirror.hust.edu.cn/gnu/libc/glibc-2.19.tar.xz
-tar Jxf glibc-2.19.tar.xz
-cd glibc-2.19
-mkdir build
-cd build
-../configure
-make -j4 &amp;&amp; make install
-</code></pre>
-
-<p>见 <a href="https://cnodejs.org/topic/56dc21f1502596633dc2c3dc">https://cnodejs.org/topic/56dc21f1502596633dc2c3dc</a>
-此编译需要较长时间</p>
-
-<h2 id="dog-tunnel端口映射">dog-tunnel端口映射</h2>
-
-<p>开启服务器端(须有外网IP)</p>
-
-<pre><code>dtunnel_lite -service 0.0.0.0:1234 -v -tcp -xor 121333 &gt; /tmp/dog.log 2&gt;&amp;1 &amp;
-</code></pre>
-
-<p>开启客户端(任意一台可联网的机器)</p>
-
-<p>反向映射客户机22端口到服务器的30222端口,代理ssh建议使用tcp,pipe通道为1</p>
-
-<pre><code>dtunnel_lite -service 服务器端IP:1234 -v -action 127.0.0.1:22 -encrypt -tcp -xor 121333 -local 172.168.1.99:30222 -r &gt; /tmp/dog.log 2&gt;&amp;1 &amp;
-</code></pre>
-
-<p>可以使用客户端连接多个服务器,将22端口映射到多个服务器端.</p>
-
-<p>用<code>crontab</code>守护进程,每5分钟检查一次</p>
-
-<p><code>*/5 * * * * sh /data/bin/connect.sh &gt; /tmp/dog.log 2&gt;&amp;1</code></p>
-
-<pre><code>#!/bin/bash
-echo &quot;`date` start shell process &quot;&gt;&gt; /tmp/connect.log
-if test $( pgrep -f dtunnel_lite | wc -l ) -eq 0
-then
-    while true
-    do
-        echo &quot;`date` dtunnel_lite process is starting...&quot;&gt;&gt; /tmp/connect.log
-        touch /run/connect.lock
-        dtunnel_lite -service 114.242.25.173:1234 -v -action 127.0.0.1:22 -encrypt -tcp -xor 121333 -local 172.168.1.99:30222  -r
-        echo &quot;`date` dtunnel_lite process killed,todo restart &quot;&gt;&gt; /tmp/connect.log
-        sleep 5
-    done
-else
-    touch /run/connect.lock
-    echo &quot;`date` dtunnel_lite process is already running &quot;&gt;&gt; /tmp/connect.log
-fi
-
-</code></pre>
-
-<p>先手动启动一次 <code>sh /data/bin/connect.sh &gt; /tmp/dog.log 2&gt;&amp;1 &amp;</code></p>
-
-<p>TCP 端口转发</p>
-
-<p><code>https://boutell.com/rinetd/http/rinetd.tar.gz</code></p>
 
 			</div>
 		</div>

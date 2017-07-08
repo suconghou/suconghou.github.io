@@ -190,7 +190,7 @@ net.netfilter.nf_conntrack_max = 64000
 
 <p>客户机上</p>
 
-<pre><code>alias kcptun_start='kcptun_client -r 192.243.115.210:4433 -l :4433 -sndwnd 2048 -rcvwnd 2048 -mode fast2 &gt; /var/log/kcptun.log 2&gt;&amp;1 &amp;'
+<pre><code>alias kcptun_start='kcptun_client -r vpsIP:4433 -l :4433 -sndwnd 2048 -rcvwnd 2048 -mode fast2 &gt; /var/log/kcptun.log 2&gt;&amp;1 &amp;'
 
 </code></pre>
 

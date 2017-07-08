@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+	<meta name='renderer' content='webkit'>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
+	<meta name='description' content='记录学习的点点滴滴'>
+	<meta name='keywords' content='前端,PHP,GO,编程博客'>
+	<title>在Android上运行PHP &middot; 苏苏的博客</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.min.css">
+	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+	<link rel="shortcut icon" href="/favicon.png">
+</head>
+<body>
+<header class="header">
+	<div class="header-main">
+		<a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
+		<h1>苏苏的博客</h1>
+		<p class="sub-title">简约至极</p>
+		<ul class="contact">
+			<a href="https://github.com/suconghou" target="_blank"><i class="fa fa-github"></i></a>
+			<a href="javascript:music.show(1)"><i class="fa fa-music"></i></a>
+		</ul>
+	</div>
+</header>
+
+<aside></aside>
+
+<div class="content container">
+	<div class="post">
+		<h1 class="post-title">
+			<a href="javascript:void(0)"> 在Android上运行PHP</a>
+		</h1>
+		<p class="post-date">Wed, May 24, 2017</p>
+		
+		<div class="post-text">
+			
+
+<h2 id="为安卓交叉编译arm版的php">为安卓交叉编译ARM版的PHP</h2>
+
+<p>本教程操作都在<code>centos</code>docker容器内.基本工具都类似.</p>
+
+<p><code>yum install wget make perl -y</code></p>
+
+<ol>
+<li>下载交叉编译工具  <code>https://pan.baidu.com/s/1micZBWc</code></li>
+</ol>
+
+<p>直连下载 <code>wget http://share.suconghou.cn/files/arm/crossx86-arm-linux-musleabi-1.1.12.tar.xz</code></p>
+
+<p>下载后解压,并添加bin到环境变量<code>tar Jxf crossx86-arm-linux-musleabi-1.1.12.tar.xz</code></p>
+
+<p><code>export PATH=/arm-linux-musleabi/bin:$PATH</code></p>
+
+<p>之后,使用<code>arm-linux-musleabi-gcc -v</code> 可以验证</p>
+
+<ol>
+<li>修改musl-libc库,目的是修改查找的DNS配置文件.</li>
+</ol>
+
+<pre><code>cd /tmp &amp;&amp; wget --no-check-certificate https://www.musl-libc.org/releases/musl-1.1.16.tar.gz
+</code></pre>
+
+<p>下载并解压<code>tar zxf musl-1.1.16.tar.gz &amp;&amp; cd musl-1.1.16</code></p>
+
+<p>替换1: 替换<code>/etc/resolv.conf</code></p>
+
+<p><code>grep -rn &quot;/etc/resolv.conf&quot; .</code> 即可查找到有两个文件包含它.</p>
+
+<p>接下来,我们把它替换掉,把路径替换为安卓安装文件夹可写的路径</p>
+
+<pre><code>sed -i &quot;s{/etc/resolv.conf{/data/data/cn.suconghou.hello/files/resolv.conf{&quot; ./src/network/resolvconf.c
+sed -i &quot;s{/etc/resolv.conf{/data/data/cn.suconghou.hello/files/resolv.conf{&quot; ./include/resolv.h
+</code></pre>
+
+<p>可以再次查找,以验证是否替换成功</p>
+
+<p>替换2: 替换<code>/etc/hosts</code></p>
+
+<p><code>grep -rn &quot;/etc/hosts&quot; .</code> 即可查找到有三个文件,其中有一个是注释
+下载执行替换,同样替换为一个我们可以写入的路径</p>
+
+<pre><code>sed -i &quot;s{/etc/hosts{/data/data/cn.suconghou.hello/files/hosts{&quot; ./src/network/getnameinfo.c
+sed -i &quot;s{/etc/hosts{/data/data/cn.suconghou.hello/files/hosts{&quot; ./src/network/lookup_name.c
+</code></pre>
+
+<p>再次查找以验证是否替换成功</p>
+
+<p>替换3: 替换<code>/bin/sh</code>,使我们可以使用android的sh</p>
+
+<p><code>grep -rn &quot;/bin/sh&quot; .</code> 即可查找到较多结果,我们需要修改<code>./include/paths.h</code>,<code>./src/legacy/getusershell.c</code>,<code>./src/misc/wordexp.c</code>,<code>./src/process/system.c</code>,<code>./src/stdio/popen.c</code> 这5个文件</p>
+
+<pre><code>sed -i &quot;s{/bin/sh{/system/bin/sh{&quot; ./include/paths.h
+sed -i &quot;s{/bin/sh{/system/bin/sh{&quot; ./src/legacy/getusershell.c
+sed -i &quot;s{/bin/sh{/system/bin/sh{&quot; ./src/misc/wordexp.c
+sed -i &quot;s{/bin/sh{/system/bin/sh{&quot; ./src/process/system.c
+sed -i &quot;s{/bin/sh{/system/bin/sh{&quot; ./src/stdio/popen.c
+</code></pre>
+
+<p>同样可以再次查找验证是否替换.</p>
+
+<p>然后开始编译我们修改后的musl</p>
+
+<pre><code>./configure --prefix=&quot;/arm-linux-musleabi/arm-linux-musleabi&quot; CC=&quot;arm-linux-musleabi-gcc&quot;
+make -j4 &amp;&amp; make install
+</code></pre>
+
+<p>编译约需要5分钟,<code>ls -lh /arm-linux-musleabi/arm-linux-musleabi/lib/</code> 这些文件就是编译后生成的新文件.</p>
+
+<p>之后开始第三步,编译PHP</p>
+
+<ol>
+<li>编译PHP</li>
+</ol>
+
+<p>下载PHP最新源码,并解压</p>
+
+<pre><code>cd /tmp &amp;&amp; wget http://php.net/distributions/php-7.1.6.tar.xz &amp;&amp; tar xJf php-7.1.6.tar.xz &amp;&amp; cd php-7.1.6
+</code></pre>
+
+<p>替换1: 同样,我们需要替换sh的路径, <code>grep -rn &quot;/bin/sh&quot; .</code> 有较多结果,我们需要替换<code>./ext/standard/proc_open.c</code></p>
+
+<pre><code>sed -i &quot;s{/bin/sh{/system/bin/sh{&quot; ./ext/standard/proc_open.c
+</code></pre>
+
+<p>执行下面命令,把我们的编译命令都替换为交叉编译的命令</p>
+
+<pre><code>export HOST=&quot;arm-linux-musleabi&quot;
+export CC=&quot;arm-linux-musleabi-gcc&quot;
+export CXX=&quot;arm-linux-musleabi-g++&quot;
+export AR=&quot;arm-linux-musleabi-ar&quot;
+export LD=&quot;arm-linux-musleabi-ld&quot;
+export RANLIB=&quot;arm-linux-musleabi-ranlib&quot;
+export STRIP=&quot;arm-linux-musleabi-strip&quot;
+export CPPFLAGS=&quot;-I/deps/include&quot;
+export LDFLAGS=&quot;-L/deps/lib&quot;
+export SYSROOT_MUSL=&quot;/arm-linux-musleabi/arm-linux-musleabi&quot;
+</code></pre>
+
+<p>我们先最小化编译PHP,生成Makefile</p>
+
+<pre><code>LDFLAGS=&quot;-static -L/deps/lib&quot; CFLAGS=&quot;--sysroot=/arm-linux-musleabi/arm-linux-musleabi -Os&quot; CXXFLAGS=&quot;--sysroot=/arm-linux-musleabi/arm-linux-musleabi -Os&quot; ./configure --host=arm-linux-musleabi --enable-inline-optimization --enable-static=yes --enable-shared=no --without-pear --disable-cgi --disable-opcache --disable-fpm --disable-phpdbg --disable-all --enable-cli --enable-tokenizer
+</code></pre>
+
+<p>生成Makefile后,我们要修改Makefile使其静态编译.</p>
+
+<pre><code>sed -i &quot;s{-I/usr/include{ {&quot; Makefile
+sed -i &quot;s{-export-dynamic{-all-static{&quot; Makefile
+</code></pre>
+
+<p>然后 <code>make -j4 &amp;&amp; make install</code> 可以编译成功</p>
+
+<p>添加其他扩展需要我们自己下载编译</p>
+
+<ol>
+<li>zlib</li>
+</ol>
+
+<pre><code>wget http://zlib.net/zlib-1.2.11.tar.gz
+tar zxf zlib-1.2.11.tar.gz &amp;&amp; cd zlib-1.2.11
+CFLAGS=&quot;--sysroot=$SYSROOT_MUSL -Os&quot; \
+./configure \
+--prefix=/deps \
+--static
+make &amp;&amp; make install
+</code></pre>
+
+<ol>
+<li>bz2</li>
+</ol>
+
+<pre><code>wget http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz
+tar zxf bzip2-1.0.6.tar.gz &amp;&amp; cd bzip2-1.0.6
+# 把 Makefile 里 CFLAGS 里的 -O2 改为 -Os , gcc部分等写死的直接删除
+make install PREFIX=/deps
+</code></pre>
+
+<ol>
+<li>openssl</li>
+</ol>
+
+<pre><code>wget https://www.openssl.org/source/openssl-1.0.2k.tar.gz
+tar zxf openssl-1.0.2k.tar.gz &amp;&amp; cd openssl-1.0.2k
+CFLAGS=&quot;--sysroot=$SYSROOT_MUSL -static&quot; \
+./Configure \
+linux-armv4 \
+no-shared \
+--prefix=&quot;/deps&quot; \
+--with-zlib-lib=&quot;/deps/lib&quot; \
+--with-zlib-include=&quot;/deps/include&quot;
+# 把 Makefile 里 CFLAG 里的 -O3 改为 -Os
+make &amp;&amp; make install
+</code></pre>
+
+<ol>
+<li>curl</li>
+</ol>
+
+<pre><code>wget https://curl.haxx.se/download/curl-7.54.0.tar.gz
+tar zxf curl-7.54.0.tar.gz &amp;&amp; cd curl-7.54.0
+
+CC=&quot;arm-linux-musleabi-gcc --sysroot=$SYSROOT_MUSL&quot; \
+CXX=&quot;arm-linux-musleabi-g++ --sysroot=$SYSROOT_MUSL&quot; \
+CPPFLAGS=&quot;-I/deps/include&quot; \
+LDFLAGS=&quot;-static -L/deps/lib&quot; \
+./configure \
+--prefix=&quot;/deps&quot; \
+--enable-zlib \
+--disable-shared \
+--with-ssl=&quot;/deps&quot; \
+--enable-static \
+--host=$HOST
+# 把 Makefile 里 CFLAGS 里的 -O2 改为 -Os
+make &amp;&amp; make install
+</code></pre>
+
+<p>包含我们需要的一些扩展</p>
+
+<pre><code>LDFLAGS=&quot;-static -L/deps/lib&quot; CFLAGS=&quot;--sysroot=/arm-linux-musleabi/arm-linux-musleabi -Os&quot; CXXFLAGS=&quot;--sysroot=/arm-linux-musleabi/arm-linux-musleabi -Os&quot; ./configure --host=arm-linux-musleabi --enable-inline-optimization --enable-static=yes --enable-shared=no --without-pear --disable-cgi --disable-opcache --disable-fpm --disable-phpdbg --disable-all --enable-cli --enable-tokenizer --enable-session --enable-json  --enable-mbstring --enable-mbregex --enable-filter --enable-hash --with-openssl=/deps --with-curl=/deps
+
+</code></pre>
+
+<p><code>--enable-pdo --with-sqlite3 --with-pdo-sqlite --enable-sockets --enable-posix  --enable-zip --enable-ftp --with-zlib=/deps --with-zlib-dir=/deps</code></p>
+
+<p>编译启用越多扩展,PHP进程的内存占用会稍微增加</p>
+
+		</div>
+	</div>
+</div>
+	<div class="music-container">
+	<div class="music-header">
+	    <a class="fa-button home" href="javascript:music.show(0)"><i class="fa fa-home" title="Home"></i></a>
+	    <a class="fa-button next" href="javascript:music.next()"><i class="fa fa-chevron-right" title="Next"></i></a>
+	</div>
+	<div class="backdrop"></div>
+	<div class="music-player">
+		<div class="cover">
+            <img src="http://p4.music.126.net/ckfEE9UUGcnGHylQJ12ENA==/670702092966093.jpg?param=350y350">
+            <div class="foredrag"><i class="fa fa-play"></i></div>
+        </div>
+        <div class="progress">
+            <div class="elapse"></div>
+        </div>
+        <div class="detail">
+            <div class="title">音乐标题</div>
+            <div class="artist">歌手</div>
+        </div>
+	</div>
+</div>
+<div id="loader" style="z-index:99999;" class="pageload-overlay" data-opening="M 40 -21.875 C 11.356078 -21.875 -11.875 1.3560784 -11.875 30 C -11.875 58.643922 11.356078 81.875 40 81.875 C 68.643922 81.875 91.875 58.643922 91.875 30 C 91.875 1.3560784 68.643922 -21.875 40 -21.875 Z">
+    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 80 60" preserveAspectRatio="xMidYMid slice"> <path d="M40,30 c 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 Z"/></svg>
+</div>
+
+	<footer class="footer">
+		<div class="footer-nav">
+			<ul>
+				<li><a href="/post/">归档</a></li>
+				<li><a href="/">专题</a></li>
+				<li><a href="/life/">生活</a></li>
+				<li><a href="/about/">关于</a></li>
+			</ul>
+		</div>
+	</footer>
+	<script type="text/javascript" src="/js/main.min.js" data-no-instant></script>
+</body>
+</html>
+
+

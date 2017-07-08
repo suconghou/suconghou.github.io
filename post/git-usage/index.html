@@ -250,7 +250,7 @@ git commit -m 'Initial commit'
 解决冲突，然后调用<code>git add</code>或<code>git rm</code>将解决后的文件暂存。
 所有冲突解决后，<code>git commit</code>提交更改。</p>
 
-<p><code>git merge  brancha branchb</code>  合并其他分支 到当前所在的分支,当然也可以合并master分支的修改到当前分支</p>
+<p><code>git merge brancha branchb</code>  合并其他分支 到当前所在的分支,当然也可以合并master分支的修改到当前分支</p>
 
 <h2 id="5-删除分支">5.删除分支</h2>
 
@@ -380,6 +380,31 @@ git stash pop
 <p>最后执行<code>git reflog expire --expire=now --all &amp;&amp; git gc --prune=now --aggressive</code></p>
 
 <p>使用<code>du -sh</code>查看最终文件夹大小.</p>
+
+<h3 id="手动清除大文件">手动清除大文件</h3>
+
+<p><code>git count-objects -v</code> 可以查看git的磁盘使用量</p>
+
+<p>仓库中存在一个idx文件是索引文件 <code>.git/objects/pack/pack-*.idx</code></p>
+
+<p>从此文件中可查询一些大对象</p>
+
+<p><code>git verify-pack -v .git/objects/pack/*.idx | sort -k 3 -n | tail -10</code></p>
+
+<p>使用<code>git rev-list --objects --all</code>可以列出所有 commit SHA 值，blob SHA 值及相应的文件路径</p>
+
+<p>我们两者进行对比就找出了哪些大文件的名字及其SHA,使用下面的命令我们可以一下子得出有哪些大文件.</p>
+
+<p><code>git rev-list --objects --all | grep &quot;$(git verify-pack -v .git/objects/pack/*.idx | sort -k 3 -n | tail -5 | awk '{print$1}')&quot;</code></p>
+
+<pre><code>git filter-branch -f --prune-empty --index-filter 'git rm -rf --cached --ignore-unmatch your-file-name' --tag-name-filter cat -- --all
+</code></pre>
+
+<pre><code>rm -rf .git/refs/original .git/logs/
+git gc
+git prune
+git count-objects -v
+</code></pre>
 
 <h1 id="git-查找">git 查找</h1>
 
