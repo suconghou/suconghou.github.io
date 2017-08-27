@@ -485,6 +485,23 @@ MEMORY表写入性能不如InnoDB,读取优于Redis, 更多相关阅读 <a href=
 
 <p><code>show global status like 'slow_queries';</code> &ndash;查看查询时间超过long_query_time秒的查询的个数。</p>
 
+<h3 id="分页优化">分页优化</h3>
+
+<p><a href="http://www.cnblogs.com/nnhy/p/BigData.html#!comments">http://www.cnblogs.com/nnhy/p/BigData.html#!comments</a> 37楼</p>
+
+<p>13456971 行数据 (一千三百万)
+<code>select * from orderpack order by id  limit 13456901,20;</code> 查询约 31.22 秒</p>
+
+<p>修改为2条查询语句</p>
+
+<p>第一条 <code>select id from orderpack order by id limit 13456901,1;</code> 12.80 秒</p>
+
+<p>根据查出来的首条数据的ID,然后查询该页的数据</p>
+
+<p><code>select * from orderpack where id &gt; 1251083 order by id limit 20;</code> 0.01秒</p>
+
+<p>性能能提升3倍</p>
+
 <h3 id="查看最近执行的sql">查看最近执行的sql</h3>
 
 <p>1) If general mysql logging is enabled then we can check the queries in the log file or table based what we have mentioned in the config. Check what is enabled with the following command</p>
@@ -519,6 +536,8 @@ SET GLOBAL general_log = &lsquo;ON&rsquo;;
 </ol>
 
 <p>解决方法可参见 <a href="http://blog.fens.me/mysql-ibdata1/">http://blog.fens.me/mysql-ibdata1/</a></p>
+
+<p><img src="https://ws2.sinaimg.cn/large/005DO33Hly1fhr7flzt6bj30qu0l4ds8.jpg" alt="sql" /></p>
 
 <h2 id="mysql导出数据">mysql导出数据</h2>
 
@@ -570,11 +589,13 @@ mysqldump -uroot -pdbpasswd dbname test&gt;db.sql;</p>
 
 <p><strong>使用xz压缩</strong></p>
 
+<p>使用xz压缩会大幅增加导出时间</p>
+
 <p>导出时: <code>mysqldump -uroot -pdbpasswd dbname | xz &gt; backupfile.sql.xz</code></p>
 
 <p>导入时: <code>unxz -c backupfile.sql.xz | mysql -uroot -pdbpasswd dbname</code></p>
 
-<p>gzip和xz压缩时后面都可以使用参数<code>-9</code>加大压缩率.但也更耗时.</p>
+<p>gzip和xz压缩时后面都可以使用参数<code>-9</code>加大压缩率.但也更耗时.(如果磁盘够用,请不要使用,非常耗时)</p>
 
 <p>同理还可以使用<code>bzip2</code>和<code>bzip2 -dc</code>压缩和解压</p>
 
@@ -585,6 +606,10 @@ mysqldump -uroot -pdbpasswd dbname test&gt;db.sql;</p>
 <p>insert delayed into</p>
 
 <p>insert delayed ignore into</p>
+
+<p>查看数据库或某个表的磁盘占用.</p>
+
+<p><a href="https://www.oschina.net/question/12_3673">https://www.oschina.net/question/12_3673</a></p>
 
 		</div>
 	</div>

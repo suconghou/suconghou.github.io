@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+	<meta name='renderer' content='webkit'>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
+	<meta name='description' content='记录学习的点点滴滴'>
+	<meta name='keywords' content='前端,PHP,GO,编程博客'>
+	<title>git repo &middot; 苏苏的博客</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.min.css">
+	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+	<link rel="shortcut icon" href="/favicon.png">
+</head>
+<body>
+<header class="header">
+	<div class="header-main">
+		<a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
+		<h1>苏苏的博客</h1>
+		<p class="sub-title">简约至极</p>
+		<ul class="contact">
+			<a href="https://github.com/suconghou" target="_blank"><i class="fa fa-github"></i></a>
+			<a href="javascript:music.show(1)"><i class="fa fa-music"></i></a>
+		</ul>
+	</div>
+</header>
+
+<aside></aside>
+
+<div class="content container">
+	<div class="post">
+		<h1 class="post-title">
+			<a href="javascript:void(0)"> git repo</a>
+		</h1>
+		<p class="post-date">Wed, Apr 5, 2017</p>
+		
+		<div class="post-text">
+			
+
+<h2 id="使用gogs搭建git-server">使用gogs搭建git server</h2>
+
+<h3 id="docker-方式安装">docker 方式安装</h3>
+
+<p>安装和运行<code>docker</code>就不说了.</p>
+
+<p>1.首先<code>docker pull gogs/gogs</code> 拉取镜像</p>
+
+<p>2.创建一个数据卷<code>docker volume create --name gogs-data</code></p>
+
+<p>要查看已有的数据卷,使用<code>docker volume ls</code>,数据卷用于保存数据,升级时数据不会丢,切勿删除此数据卷</p>
+
+<p>3.启动服务</p>
+
+<pre><code>docker run -d --name=gogs --restart always -m 200m --log-opt max-size=2m  -p 10022:22 -p 10080:3000 -v gogs-data:/data gogs/gogs
+</code></pre>
+
+<p>使用<code>-v gogs-data:/data</code>挂载刚刚的数据卷,将数据卷内的数据映射到容器的<code>/data</code>路径下.</p>
+
+<p>也可以前面添加一个nginx反向代理
+<code>/etc/nginx/conf.d/git.conf</code></p>
+
+<pre><code>server{
+	listen 80;
+	server_name git.xx.cn code.xx.cn;
+	gzip on;
+	gzip_min_length 1024;
+	gzip_proxied any;
+	gzip_comp_level 3;
+	gzip_types text/plain text/javascript text/css text/json application/xml application/javascript application/x-javascript application/json;
+	location / {
+		client_max_body_size 10m;
+		proxy_pass http://127.0.0.1:10080;
+		proxy_set_header Host $host;
+		proxy_set_header X-Forwarded-Ssl off;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header X-Forwarded-Port 80;
+	}
+}
+
+</code></pre>
+
+<p>4.升级</p>
+
+<p><code>docker stop gogs</code> 和 <code>docker rm gogs</code> 然后执行步骤3就可以了</p>
+
+<p>不放心的话,可以先stop,然后rename,再步骤三启动新版本的,启动成功后再删除旧版本的.</p>
+
+<p>5.数据备份与恢复</p>
+
+<h3 id="备份docker-volume数据卷">备份docker volume数据卷</h3>
+
+<p>文件接收端执行 <code>nc -l  9090 &gt; data.tar.gz</code>  有些<code>nc</code>(busybox里的nc)可能是 <code>nc -l -p 9090 &gt; data.tar.gz</code></p>
+
+<p>以只读模式挂载数据卷,挂载数据卷到<code>/data</code>路径</p>
+
+<pre><code>docker run --rm -it -v gogs-data:/data:ro busybox sh -c &quot;cd /data &amp;&amp; tar czvf - . | nc host 9090&quot;
+</code></pre>
+
+<p>打包文件并发送到目标主机</p>
+
+<h3 id="恢复-docker-volume-数据">恢复<code>docker volume</code>数据</h3>
+
+<p>如果没有这个数据卷,先创建数据卷 <code>docker volume create --name gogs-data</code></p>
+
+<p><code>docker run --rm -it -v gogs-data:/data busybox  sh -c &quot;nc -l -p 9090 | tar -C /data -zxf -&quot;</code></p>
+
+<p>然后通过宿主机发送数据 <code>nc host 9090 &lt; data.tar.gz</code></p>
+
+<p>如果两台电脑可以直接连通</p>
+
+<p>发送方 <code>docker run --rm -it -v gogs-data:/data:ro busybox sh -c &quot;cd /data &amp;&amp; tar czvf - . | nc host 9090&quot;</code></p>
+
+<p>接收方 <code>docker run --rm -p 9090:9090 -it -v gogs-data:/data busybox sh -c &quot;nc -l -p 9090 | tar -C /data -zxf -&quot;</code></p>
+
+<h3 id="相关错误">相关错误</h3>
+
+<pre><code>remote: Counting objects: 860, done.
+remote: aborting due to possible repository corruption on the remote side.
+fatal: protocol error: bad pack header
+</code></pre>
+
+<p>由于服务器端在传送 <code>git pull</code> 或者 <code>git clone</code>时需提前压缩数据,这些数据是存放在内存中.(<code>git pull</code>时服务端内存不断增长,由于我使用的docker,只分配了60M内存);当内存不够使用时造成错误.</p>
+
+<p>解决方案 1. 增加服务端内存. 或者 2. 修改git客户端配置 <a href="https://stackoverflow.com/questions/4170317/git-pull-error-remote-object-is-corrupted">https://stackoverflow.com/questions/4170317/git-pull-error-remote-object-is-corrupted</a></p>
+
+<p>即客户端执行</p>
+
+<pre><code>git config --global pack.windowMemory &quot;100m&quot;
+git config --global pack.SizeLimit &quot;100m&quot;
+git config --global pack.threads &quot;1&quot;
+</code></pre>
+
+<p>顺便说 docker 修改内存配置</p>
+
+<p><code>docker update gogs -m 200m --memory-swap=400m</code></p>
+
+<p><strong>配置网络转发</strong></p>
+
+<p>容器的http端口和ssh分别映射到<code>10080</code>和<code>10022</code>,我们使用域名和80端口对外服务.</p>
+
+<p>添加<code>nginx</code>配置
+<code>git.conf</code></p>
+
+<pre><code>server{
+		listen 80;
+		server_name git.ourwill.cn code.ourwill.cn;
+		gzip on;
+		gzip_min_length 1024;
+		gzip_proxied any;
+		gzip_comp_level 3;
+		gzip_types text/plain text/javascript text/css text/json application/xml application/javascript application/x-javascript application/json image/jpeg image/gif image/png;
+		location / {
+				client_max_body_size 10m;
+				proxy_pass http://127.0.0.1:10080;
+				proxy_set_header Host $host;
+				proxy_set_header X-Forwarded-Ssl off;
+				proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+				proxy_set_header X-Forwarded-Port 80;
+		}
+}
+</code></pre>
+
+<p>少许优化:<code>gogs</code>默认没有<code>gzip</code>,我们通过<code>nginx</code>添加了<code>gzip</code>;设置最大提交文件为10M</p>
+
+<p>然后就可以使用域名直接访问,如果发现通过<code>nginx</code>代理后报 <code>502</code> <code>nginx erro log</code> 为<code>Permission denied</code>, 可能是<code>SELinux</code>的问题</p>
+
+<p>检查<code>SELinux</code>日志 <code>sudo cat /var/log/audit/audit.log | grep nginx | grep denied</code></p>
+
+<p>如果发现被 <code>SELinux</code>拦截, 可以执行<code>setsebool -P httpd_can_network_connect 1</code>开启此条规则</p>
+
+<p>附:</p>
+
+<blockquote>
+<p><code>getsebool -a | grep httpd</code> 可以查看 SELinux 关于 http 的配置</p>
+
+<p><code>setsebool httpd_can_network_connect on</code> 使本次生效</p>
+
+<p><code>setsebool httpd_can_network_connect on -P</code> 是<code>persist</code>模式,永久生效</p>
+</blockquote>
+
+<p>使用后立即生效,无需重启任何服务.</p>
+
+<h3 id="配合git-hook-自动部署php和静态网页">配合git hook 自动部署PHP和静态网页</h3>
+
+<p>写了一个server用于接受通知 <code>https://github.com/suconghou/gitsync.git</code></p>
+
+<p>主要是接收到用户推送代码后,不存在则clone项目,存在则更新项目.</p>
+
+<p>启动服务<code>gitsy &gt; /var/log/gitsy.log 2&gt;&amp;1 &amp;</code>,然后由nginx代理隐藏端口,使用域名访问</p>
+
+<pre><code>server{
+    server_name g.share.ourwill.cn;
+    listen 80;
+    gzip on;
+    location / {
+        proxy_pass http://127.0.0.1:19090;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Ssl off;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Port 80;
+    }
+}
+</code></pre>
+
+<p><code>gitsy</code> 启动后可通过http查看log<code>http://g.share.ourwill.cn/log</code></p>
+
+<p><code>repos</code>目录可由docker挂载只读,防止删除操作,请求都转发到docker内,由内部<code>nginx-fpm</code>运行代码</p>
+
+<p>转发到docker里的nginx</p>
+
+<pre><code>server{
+    server_name *.share.ourwill.cn;
+    listen 80;
+    gzip on;
+    index index.html index.php;
+    location / {
+        proxy_pass http://127.0.0.1:18001;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Ssl off;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Port 80;
+    }
+}
+</code></pre>
+
+<p>docker目录的映射为<code>docker run -v /data/share/runtime/:/www  --name datafs busybox</code></p>
+
+<p><code>docker run -d --name dev --restart always -m 100m --log-opt max-size=2m --volumes-from datafs -p 18001:80 -p 12201:22 suconghou/server</code></p>
+
+<p>可以使用<code>/data/share/runtime/:/www:ro</code>使用只读</p>
+
+<p>docker内部的nginx处理各个vhost的请求</p>
+
+<pre><code>server {
+	listen  80;
+	server_name 0.0.0.0;
+	index index.html index.php;
+	if ($host ~* ^(([\w\-]+)\.share\.ourwill\.cn)$) {
+		set $subdomain $2;
+	}
+	root /www/$subdomain;
+		if ( !-d $document_root ){
+		return 404;
+	}
+	try_files $uri $uri/ /index.php?$args;
+	location ~ \.php$ {
+		try_files $uri =404;
+		fastcgi_pass  127.0.0.1:9000;
+		fastcgi_param debug 2;
+		include        fastcgi.conf;
+	}
+}
+</code></pre>
+
+<p><strong>也可以直接使用本地nginx+fpm请求,不使用docker,代码可本地读写</strong></p>
+
+<pre><code>server{
+	listen 80;
+	server_name *.run.ourwill.cn;
+	index index.php index.html;
+	fastcgi_connect_timeout 2s;
+	fastcgi_send_timeout 10s;
+	fastcgi_read_timeout 5s;
+	ssi on;
+	gzip on;
+	if ($host ~* ^(([\w\-]+)\.run\.ourwill\.cn)$) {
+		set $subdomain $2;
+	}
+	root /data/share/runtime/$subdomain;
+	if ( !-d $document_root){
+		return 404;
+	}
+	add_header X-Root &quot;$subdomain&quot;;
+    try_files $uri $uri/ /index.php?$args;
+	location ~ \.php$ {
+        try_files $uri =404;
+        client_max_body_size 10m;
+        fastcgi_param debug 2;
+		fastcgi_pass 127.0.0.1:9000;
+        include        fastcgi.conf;
+	}
+}
+</code></pre>
+
+<p>此两种环境都传递了变量 debug 到<code>php-fpm</code>,php 代码中可使用 <code>getenv('debug')</code> 判断是何种环境.线上环境没有配置debug,得出false</p>
+
+		</div>
+	</div>
+</div>
+	<div class="music-container">
+	<div class="music-header">
+	    <a class="fa-button home" href="javascript:music.show(0)"><i class="fa fa-home" title="Home"></i></a>
+	    <a class="fa-button next" href="javascript:music.next()"><i class="fa fa-chevron-right" title="Next"></i></a>
+	</div>
+	<div class="backdrop"></div>
+	<div class="music-player">
+		<div class="cover">
+            <img src="http://p4.music.126.net/ckfEE9UUGcnGHylQJ12ENA==/670702092966093.jpg?param=350y350">
+            <div class="foredrag"><i class="fa fa-play"></i></div>
+        </div>
+        <div class="progress">
+            <div class="elapse"></div>
+        </div>
+        <div class="detail">
+            <div class="title">音乐标题</div>
+            <div class="artist">歌手</div>
+        </div>
+	</div>
+</div>
+<div id="loader" style="z-index:99999;" class="pageload-overlay" data-opening="M 40 -21.875 C 11.356078 -21.875 -11.875 1.3560784 -11.875 30 C -11.875 58.643922 11.356078 81.875 40 81.875 C 68.643922 81.875 91.875 58.643922 91.875 30 C 91.875 1.3560784 68.643922 -21.875 40 -21.875 Z">
+    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 80 60" preserveAspectRatio="xMidYMid slice"> <path d="M40,30 c 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 Z"/></svg>
+</div>
+
+	<footer class="footer">
+		<div class="footer-nav">
+			<ul>
+				<li><a href="/post/">归档</a></li>
+				<li><a href="/">专题</a></li>
+				<li><a href="/life/">生活</a></li>
+				<li><a href="/about/">关于</a></li>
+			</ul>
+		</div>
+	</footer>
+	<script type="text/javascript" src="/js/main.min.js" data-no-instant></script>
+</body>
+</html>
+
+

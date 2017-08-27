@@ -45,7 +45,7 @@
 <p>memcached所有版本见<a href="http://www.memcached.org/files/">http://www.memcached.org/files/</a></p>
 
 <pre><code>cd /tmp
-MEMCACHE_VERSION=memcached-1.4.31
+MEMCACHE_VERSION=memcached-1.5.0
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
 wget http://www.memcached.org/files/${MEMCACHE_VERSION}.tar.gz
 tar xzf ${MEMCACHE_VERSION}.tar.gz
@@ -56,6 +56,29 @@ make -j$CPU_NUM &amp;&amp; make install
 </code></pre>
 
 <p>docker版本见:<a href="https://hub.docker.com/r/suconghou/memcached/">https://hub.docker.com/r/suconghou/memcached/</a></p>
+
+<h2 id="静态编译">静态编译</h2>
+
+<pre><code>apk update &amp;&amp; apk upgrade &amp;&amp; apk add gcc g++ make wget
+</code></pre>
+
+<pre><code>wget --no-check-certificate https://github.com/libevent/libevent/releases/download/release-2.1.8-stable/libevent-2.1.8-stable.tar.gz
+tar zxf libevent-2.1.8-stable.tar.gz
+cd libevent-2.1.8-stable
+./configure &amp;&amp; make &amp;&amp; make install
+</code></pre>
+
+<p>libevent编译很快,不到一分钟</p>
+
+<pre><code>cd /tmp
+MEMCACHE_VERSION=memcached-1.5.0
+wget http://www.memcached.org/files/${MEMCACHE_VERSION}.tar.gz
+tar xzf ${MEMCACHE_VERSION}.tar.gz
+cd ${MEMCACHE_VERSION}
+export CFLAGS=&quot;-O3&quot;
+./configure --disable-docs
+make LDFLAGS=-static &amp;&amp; make install
+</code></pre>
 
 <h2 id="启动memcached">启动Memcached</h2>
 

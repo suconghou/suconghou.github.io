@@ -110,7 +110,11 @@ ls -lh
 
 <p><code>sudo dd if=file_1 | pv | dd of=file_2</code></p>
 
-<p><code>gzip -dc OSMC_TGT_rbp2_20170615.img.gz | pv | sudo dd of=/dev/disk2 bs=8k</code></p>
+<p>在Mac OSX 上,可以使用<code>/dev/rdisk2</code> 代替<code>/dev/disk2</code> , 速度能有大幅度提升</p>
+
+<p>见 <a href="https://superuser.com/questions/631592/why-is-dev-rdisk-about-20-times-faster-than-dev-disk-in-mac-os-x">https://superuser.com/questions/631592/why-is-dev-rdisk-about-20-times-faster-than-dev-disk-in-mac-os-x</a></p>
+
+<p><code>gzip -dc OSMC_TGT_rbp2_20170615.img.gz | pv | sudo dd of=/dev/rdisk2 bs=512k</code></p>
 
 <p>确定内存卡的最佳写入块大小,分别执行如下命令,查看速度</p>
 
@@ -142,7 +146,7 @@ dd if=/dev/zero bs=8192 count=8192 of=/tmp/64mb
 
 <p>但是发现 OSMC 无法播放<code>rmvb</code>,只有声音,没有图像</p>
 
-<p>由于rmvb无法硬解,又不是开源格式,树莓派无法解码,只能通过ffmpeg转换格式 (OSMC2017.05版本已可播放<code>Real Video</code>文件,播放超清1080P大文件CPU近乎满载,基本流畅播放)</p>
+<p>由于rmvb无法硬解,又不是开源格式,树莓派无法解码,只能通过ffmpeg转换格式 (OSMC2017.05版本已可播放<code>Real Video</code>文件,树莓派2播放超清1080P 2.3GB大文件CPU近乎满载,基本流畅播放)</p>
 
 <p>转换为MP4格式最为通用,但是发现较慢,也不能边转码,边播放.</p>
 
@@ -218,6 +222,71 @@ deb http://mirrors.tuna.tsinghua.edu.cn/osmc/osmc/apt/  jessie main
 
 <p>ChromeOs已经有支持树莓派的版本了,<a href="www.chromiumosforsbc.org">www.chromiumosforsbc.org</a></p>
 
+<h2 id="播放器">播放器</h2>
+
+<p><code>https://github.com/popcornmix/omxplayer</code></p>
+
+<p>树莓派系统Raspbian源里面有 执行 <code>sudo apt update &amp;&amp; sudo  apt install omxplayer</code> 就可以安装</p>
+
+<p>但是 debain 源里面没有, 由于我使用的OSMC,也需要自己下载安装</p>
+
+<p>有编译好的提供下载 <code>http://omxplayer.sconde.net/</code></p>
+
+<pre><code>apt install libpcre3 fonts-freefont-ttf fbset
+wget http://omxplayer.sconde.net/builds/omxplayer_0.3.7~git20170130~62fb580_armhf.deb
+sudo dpkg -i omxplayer_0.3.7~git20170130~62fb580_armhf.deb
+</code></pre>
+
+<p>安装后<code>omxplayer -v</code> 检查是否成功 <code>omxplayer -h</code> 查看使用帮助</p>
+
+<p>omxplayer 播放器 可由命令行执行,输出视频到hdmi <code>omxplayer -p -o hdmi test.mkv</code></p>
+
+<p><code>alias play='omxplayer -r -o hdmi'</code></p>
+
+<p>经测试omxplayer播放器并没有OSMC自带播放器好,omxplayer有时会有卡顿.</p>
+
+<p>omxplayer 取代了OSMC的GUI界面 可以使用 <code>sudo systemctl restart mediacenter</code> 恢复</p>
+
+<p>通过命令行输出图片到hdmi</p>
+
+<p><code>fbi *.jpg</code></p>
+
+<p>见 <a href="https://raspberrypi.stackexchange.com/questions/8922/how-do-i-display-images-without-starting-x11">https://raspberrypi.stackexchange.com/questions/8922/how-do-i-display-images-without-starting-x11</a></p>
+
+<h2 id="树莓派推流到youtube实现直播">树莓派推流到Youtube实现直播</h2>
+
+<p>首先需要安装 <code>ffmpeg</code>, 未安装可以去下载对于arm7的静态编译版本  <a href="http://johnvansickle.com/ffmpeg/">http://johnvansickle.com/ffmpeg/</a></p>
+
+<p>还需要使用<code>raspivid</code>和<code>raspistill</code>命令, 一个是对于视频的,一个是对于图片的.OSMC已自带这两个命令行工具.</p>
+
+<p><code>raspiyuv</code> 这个也是操作摄像头的</p>
+
+<p>插入摄像头后一般会有 <code>/dev/video0</code> 文件.</p>
+
+<p>执行 <code>vcgencmd get_camera</code> 查看结果.</p>
+
+<p>结果是 <code>supported=1 detected=0</code> , 可能是驱动还没加载,还无法使用.</p>
+
+<p>执行 <code>grep &quot;bcm2835-v4l2&quot; /etc/modules</code> 没有结果</p>
+
+<p>我们需要手动将<code>bcm2835-v4l2</code>写入到此文件中. 然后<code>reboot</code>重启, 此配置只需配置这一次,就是告诉内核每次开机后加载摄像头驱动.</p>
+
+<p><code>raspistill -o foobar.jpg</code> 拍一张照片</p>
+
+<p>由于我使用的是USB摄像头,并非GPIO摄像头,故使用方式不一样</p>
+
+<p>USB摄像头需<code>sudo apt install fswebcam</code></p>
+
+<p><code>fswebcam image.jpg</code> 可以拍摄照片.</p>
+
+<p><code>ffmpeg -f v4l2 -framerate 30 -video_size 640x480 -i /dev/video0 output.flv</code> 可以捕获视频.</p>
+
+<p>实时录制 <code>ffmpeg -f v4l2 -framerate 30 -video_size 640x480 -i /dev/video0 -f flv pipe:1 | nc 192.168.1.102 5001</code></p>
+
+<p>接收端播放 <code>nc -l  5001 | mpv -</code></p>
+
+<p><a href="https://maxogden.com/hd-live-streaming-cats.html">https://maxogden.com/hd-live-streaming-cats.html</a></p>
+
 <h2 id="配置镜像加速">配置镜像加速</h2>
 
 <p>一:树莓派常用软件源列表</p>
@@ -267,6 +336,10 @@ deb-src http://mirrors.ustc.edu.cn/raspbian/raspbian/ wheezy main non-free contr
 <p>不足一顿午饭钱,相当于200W的台式机不间断工作5天</p>
 
 <p><a href="https://www.zhihu.com/question/37202806">https://www.zhihu.com/question/37202806</a></p>
+
+<p>Tinker Board  比树莓派3性能更好,更贵</p>
+
+<p>其他嵌入式单片机有 nodemcu,直接包含wifi/蓝牙 适合物联网开发.</p>
 
 <p>参数一览</p>
 

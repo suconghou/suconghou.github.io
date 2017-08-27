@@ -185,8 +185,15 @@ WantedBy=multi-user.target
 
 <pre><code>[common]
 bind_port = 7000
+kcp_bind_port = 7000
 privilege_allow_ports = 7700,7800-7900
+vhost_http_port = 5050
+dashboard_port = 7500
+dashboard_user = admin
+dashboard_pwd = 123abc881
 </code></pre>
+
+<p>网页控制台为7500端口</p>
 
 <p>编写<code>/etc/systemd/system/frps.service</code>文件使开机启动</p>
 
@@ -373,6 +380,31 @@ ssh-keygen -t ed25519 -f /usr/local/etc/ssh_host_ed25519_key -N ''
 <pre><code>ssh -CfNg -R 0.0.0.0:2233:127.0.0.1:22 root@yourvps.com -p 27558
 
 </code></pre>
+
+<h3 id="编译dropbear">编译dropbear</h3>
+
+<p>dropbear 是一个更加小巧的sshd</p>
+
+<p><a href="https://matt.ucc.asn.au/dropbear/dropbear.html">https://matt.ucc.asn.au/dropbear/dropbear.html</a></p>
+
+<pre><code>cd /tmp
+apk update &amp;&amp; apk upgrade &amp;&amp; apk add wget make gcc g++ linux-headers
+wget --no-check-certificate  https://matt.ucc.asn.au/dropbear/releases/dropbear-2017.75.tar.bz2
+tar jxvf dropbear-2017.75.tar.bz2 &amp;&amp; cd dropbear-2017.75
+CFLAGS=&quot;-Os -ffunction-sections -fdata-sections&quot; LDFLAGS=&quot;-static -Wl,--gc-sections&quot; ./configure --disable-zlib
+make -j2
+</code></pre>
+
+<p>不到一分钟即可编译完成</p>
+
+<p>后台运行 <code>./dropbear  -E -R -m</code>
+不进入后台 <code>./dropbear -F -E -R -m</code></p>
+
+<p><code>-m</code> 意味着用户登陆成功后不显示<code>/etc/motd</code>文件内的提示.</p>
+
+<p><code>dbclient</code> 是一个和ssh类似的客户端</p>
+
+<p>然后linux系统的用户即可通过22端口登陆</p>
 
 <h3 id="centos7修改ssh端口">CentOS7修改ssh端口</h3>
 

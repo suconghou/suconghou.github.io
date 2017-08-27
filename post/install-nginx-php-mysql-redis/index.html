@@ -140,9 +140,10 @@ make -j$CPU_NUM &amp;&amp; make install
 	expires 7d;
 	gzip on;
 	gzip_min_length 1024;
+    gzip_http_version 1.0;
 	gzip_proxied any;
 	gzip_comp_level 3;
-	gzip_types text/plain text/javascript text/css text/json application/xml application/javascript  application/json image/jpeg image/gif image/png;
+	gzip_types text/plain text/javascript text/css text/json application/xml application/javascript application/json image/jpeg image/gif image/png image/bmp font/ttf font/otf image/svg+xml;
 	proxy_hide_header Set-Cookie;
 	proxy_hide_header Alt-Svc;
 	proxy_hide_header Alternate-Protocol;
@@ -154,6 +155,16 @@ make -j$CPU_NUM &amp;&amp; make install
 }
 
 </code></pre>
+
+<blockquote>
+<p>gzip压缩级别，1-10，数字越大压缩的越好，时间也越长,建议3-4
+gzip_min_length 大于这个长度才会压缩,也可以写1k,文本过小压缩反而没有效果
+gzip_http_version 默认是1.1,也就是对于http1.1才会压缩,在proxy_pass时注意,proxy_pass默认就是http1.0的</p>
+</blockquote>
+
+<p><strong>除此之外, 这个模块还会读取 <code>Accept-Encoding</code>的值,客户端接受gzip,才会使用压缩,例如直接curl访问是不使用gzip的.</strong></p>
+
+<p>更多见 <a href="http://www.jb51.net/article/48995.htm">http://www.jb51.net/article/48995.htm</a></p>
 
 <p>反向代理</p>
 
@@ -393,6 +404,14 @@ location @goapp{
 <pre><code>rewrite ^/component(.*)$ $1 break;
 </code></pre>
 
+<p>对于上面这个配置, 直接访问 <code>/component</code> 会导致500错误<code>the rewritten URI has a zero length</code>, 因为正则匹配的是空,不能作为rewrite后的uri</p>
+
+<p>可以写成 <code>rewrite ^/live(/.*)$ $1 break;</code> 保证rewrite后的uri是有数据的.</p>
+
+<p>或者 <code>rewrite ^/live(.+)$ $1 break;</code> 更为通用</p>
+
+<p>在之前添加其他rewrite指令 <code>rewrite ^(/live)$ $1/;</code>可以确保 <code>/live</code>的请求改写为<code>/live/</code> , 从而保证 <code>/live</code>和<code>/live/</code> 都能被重写为<code>/</code></p>
+
 <p><a href="https://serverfault.com/questions/302509/how-to-quick-and-easy-remove-part-of-an-url-in-nginx-with-httprewritemodule">https://serverfault.com/questions/302509/how-to-quick-and-easy-remove-part-of-an-url-in-nginx-with-httprewritemodule</a></p>
 
 <h3 id="代理与后端保持长连接">代理与后端保持长连接</h3>
@@ -442,7 +461,69 @@ upstream backend {
 
 <p>如果还在<code>/</code>后面添加<code>uri</code>,<code>uri</code>也会在之前拼入,如<code>proxy_pass http://proxy/request/</code> 变为 <code>http://proxy/request/add.php</code></p>
 
+<p>对于这个<code>uri</code>后面加不加<code>/</code>, nginx是不关心的, nginx 仅仅是将原先请求的URL根据location的值,截取后面的uri拼接到这个uri后面, 所以 <code>location /api</code> <code>proxy_pass http://proxy/myapi/</code> , 对于请求 <code>http://xx.com/api/userinfo</code> 会拼接出 <code>http://proxy/myapi//userinfo</code> 这种多余的<code>/</code></p>
+
 <p>在使用正则匹配时,<code>proxy_pass</code>后面是禁止添加<code>/</code>或者<code>uri</code>的,否则报错.</p>
+
+<p>proxy_pass 的时候, 被代理的主机发出301/302跳转,跳转的域名是被代理的主机域名. 那么经过<code>nginx</code> <code>proxy_pass</code> 时,nginx 将会将location中匹配 proxy_pass 里的域名改为当前的域名,使得向浏览器发出的是外层nginx配置的域名,而不是一个内部域名.</p>
+
+<p>有些时候我们可以使用</p>
+
+<p><code>proxy_redirect off</code> 禁用掉这个替换.</p>
+
+<p><code>proxy_redirect</code> 还有其他用法,还能自定义我们需要的替换.</p>
+
+<p>注意: <code>proxy_pass</code> 对于代理较大的文件,会使用文件缓存,注意proxy_pass缓存文件夹是否有写入权限.</p>
+
+<p>否则出现的情况是 资源下载一小部分,链接就被断掉,下载到的和content-length不服. 只能下载到即将使用文件缓存时的临界值大小.</p>
+
+<p>curl 出现<code>transfer closed with xxx bytes remaining to read</code> 等问题.</p>
+
+<p>这个缓存文件夹地址可由 <code>proxy_temp_path</code> 配置.</p>
+
+<p>一般<code>nginx</code>默认的零时文件夹是<code>/var/lib/nginx</code></p>
+
+<p><code>chown -R www-data:www-data /var/lib/nginx</code> 该文件夹所有者须与nginx worker进程的用户保持相同.</p>
+
+<p><strong>client_body</strong></p>
+
+<pre><code>large_client_header_buffers 1024 32k;
+client_max_body_size 10240m;
+client_body_buffer_size 128k;
+client_body_timeout 5m;
+client_header_timeout 2m;
+client_body_temp_path /dev/shm/nginx/body_temp/ 1 2 ;
+proxy_ignore_client_abort on;
+
+</code></pre>
+
+<p><strong>proxy module</strong></p>
+
+<pre><code>proxy_connect_timeout 2m;
+proxy_read_timeout 5m;
+proxy_send_timeout 2m;
+proxy_buffer_size 64k;
+proxy_buffers   128 64K;
+proxy_busy_buffers_size 4m;
+proxy_temp_file_write_size 8m;
+proxy_max_temp_file_size 10240m;
+proxy_http_version 1.1 ;
+proxy_buffering off ;
+proxy_temp_path /dev/shm/nginx/proxy_temp 1 2;
+</code></pre>
+
+<p>如果没有大文件上传,可以设置较大的<code>client_body_buffer_size</code>,避免文件IO.</p>
+
+<pre><code>http {
+    # ...
+
+    client_body_temp_path /dev/shm/nginx/body_temp/ 1 2;
+    client_body_buffer_size 256k;
+    client_body_in_file_only off;
+
+    # ...
+}
+</code></pre>
 
 <p><strong>注意</strong></p>
 
@@ -819,17 +900,22 @@ pm.max_requests = 500
 
 <p>所有redis版本的release见<a href="http://download.redis.io/releases/">http://download.redis.io/releases/</a></p>
 
-<p>redis编译时,不能使用<code>CFLAGS O3</code></p>
+<p><code>apk update &amp;&amp; apk upgrade &amp;&amp; apk add make gcc g++ linux-headers</code></p>
 
 <pre><code>cd /tmp
-REDIS_VERSION=redis-3.2.3
-CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
+REDIS_VERSION=redis-4.0.1
 wget http://download.redis.io/releases/${REDIS_VERSION}.tar.gz
 tar xzf ${REDIS_VERSION}.tar.gz
 cd ${REDIS_VERSION}
-make -j$CPU_NUM &amp;&amp; make install
+LDFLAGS=-static make -j2 &amp;&amp; make install
 mv /tmp/${REDIS_VERSION}/redis.conf /etc/redis.conf
 </code></pre>
+
+<p>编译1分钟即可完成</p>
+
+<p>无其他依赖 4.0版本后 直接可静态编译的,执行完成后可执行文件位于src目录</p>
+
+<p><code>redis-check-aof</code> <code>redis-check-rdb</code> <code>redis-sentinel</code> <code>redis-server</code> 这四个都是同一个文件,是<code>redis-server</code>的别名</p>
 
 <h2 id="安装一些其他扩展">安装一些其他扩展</h2>
 

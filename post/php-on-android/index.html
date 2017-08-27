@@ -42,7 +42,7 @@
 
 <p>本教程操作都在<code>centos</code>docker容器内.基本工具都类似.</p>
 
-<p><code>yum install wget make perl -y</code></p>
+<p><code>yum update &amp;&amp; yum upgrade &amp;&amp; yum install wget make perl -y</code> 不用安装gcc</p>
 
 <ol>
 <li>下载交叉编译工具  <code>https://pan.baidu.com/s/1micZBWc</code></li>
@@ -109,6 +109,8 @@ make -j4 &amp;&amp; make install
 
 <p>编译约需要5分钟,<code>ls -lh /arm-linux-musleabi/arm-linux-musleabi/lib/</code> 这些文件就是编译后生成的新文件.</p>
 
+<p>注意这里编译使用的是arm-linux-musleabi-gcc而不是gcc,事实上,从头到尾我们都不需要gcc</p>
+
 <p>之后开始第三步,编译PHP</p>
 
 <ol>
@@ -117,7 +119,7 @@ make -j4 &amp;&amp; make install
 
 <p>下载PHP最新源码,并解压</p>
 
-<pre><code>cd /tmp &amp;&amp; wget http://php.net/distributions/php-7.1.6.tar.xz &amp;&amp; tar xJf php-7.1.6.tar.xz &amp;&amp; cd php-7.1.6
+<pre><code>cd /tmp &amp;&amp; wget http://php.net/distributions/php-7.1.8.tar.xz &amp;&amp; tar xJf php-7.1.8.tar.xz &amp;&amp; cd php-7.1.8
 </code></pre>
 
 <p>替换1: 同样,我们需要替换sh的路径, <code>grep -rn &quot;/bin/sh&quot; .</code> 有较多结果,我们需要替换<code>./ext/standard/proc_open.c</code></p>
@@ -152,13 +154,15 @@ sed -i &quot;s{-export-dynamic{-all-static{&quot; Makefile
 
 <p>然后 <code>make -j4 &amp;&amp; make install</code> 可以编译成功</p>
 
-<p>添加其他扩展需要我们自己下载编译</p>
+<p>原先的<code>strip</code> 命令,可以使用<code>arm-linux-musleabi-strip</code>代替</p>
+
+<p>添加其他扩展需要我们自己下载编译,下面这个几个是编译CURL所必须的.</p>
 
 <ol>
 <li>zlib</li>
 </ol>
 
-<pre><code>wget http://zlib.net/zlib-1.2.11.tar.gz
+<pre><code>cd /tmp &amp;&amp; wget http://zlib.net/zlib-1.2.11.tar.gz
 tar zxf zlib-1.2.11.tar.gz &amp;&amp; cd zlib-1.2.11
 CFLAGS=&quot;--sysroot=$SYSROOT_MUSL -Os&quot; \
 ./configure \
@@ -171,18 +175,27 @@ make &amp;&amp; make install
 <li>bz2</li>
 </ol>
 
-<pre><code>wget http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz
+<pre><code>cd /tmp &amp;&amp; wget http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz
 tar zxf bzip2-1.0.6.tar.gz &amp;&amp; cd bzip2-1.0.6
-# 把 Makefile 里 CFLAGS 里的 -O2 改为 -Os , gcc部分等写死的直接删除
+# 把 Makefile 里 CFLAGS 里的 -O2 改为 -Os 后面的 -g去掉 , 前面几行gcc部分等写死的直接删除
 make install PREFIX=/deps
+</code></pre>
+
+<p>这些删除</p>
+
+<pre><code># To assist in cross-compiling
+CC=gcc
+AR=ar
+RANLIB=ranlib
+LDFLAGS=
 </code></pre>
 
 <ol>
 <li>openssl</li>
 </ol>
 
-<pre><code>wget https://www.openssl.org/source/openssl-1.0.2k.tar.gz
-tar zxf openssl-1.0.2k.tar.gz &amp;&amp; cd openssl-1.0.2k
+<pre><code>cd /tmp &amp;&amp; wget https://www.openssl.org/source/openssl-1.0.2l.tar.gz
+tar zxf openssl-1.0.2l.tar.gz &amp;&amp; cd openssl-1.0.2l
 CFLAGS=&quot;--sysroot=$SYSROOT_MUSL -static&quot; \
 ./Configure \
 linux-armv4 \
@@ -190,7 +203,7 @@ no-shared \
 --prefix=&quot;/deps&quot; \
 --with-zlib-lib=&quot;/deps/lib&quot; \
 --with-zlib-include=&quot;/deps/include&quot;
-# 把 Makefile 里 CFLAG 里的 -O3 改为 -Os
+# 把 Makefile 里 CFLAG 里的 -O3 改为 -Os (vi 查找,第一个就是)
 make &amp;&amp; make install
 </code></pre>
 
@@ -198,7 +211,7 @@ make &amp;&amp; make install
 <li>curl</li>
 </ol>
 
-<pre><code>wget https://curl.haxx.se/download/curl-7.54.0.tar.gz
+<pre><code>cd /tmp &amp;&amp; wget https://curl.haxx.se/download/curl-7.54.0.tar.gz
 tar zxf curl-7.54.0.tar.gz &amp;&amp; cd curl-7.54.0
 
 CC=&quot;arm-linux-musleabi-gcc --sysroot=$SYSROOT_MUSL&quot; \
@@ -213,18 +226,67 @@ LDFLAGS=&quot;-static -L/deps/lib&quot; \
 --enable-static \
 --host=$HOST
 # 把 Makefile 里 CFLAGS 里的 -O2 改为 -Os
-make &amp;&amp; make install
+make -j4 &amp;&amp; make install
 </code></pre>
 
-<p>包含我们需要的一些扩展</p>
+<p>包含我们需要的一些扩展 , 然后编译PHP(上次编译后,需make clean)</p>
 
-<pre><code>LDFLAGS=&quot;-static -L/deps/lib&quot; CFLAGS=&quot;--sysroot=/arm-linux-musleabi/arm-linux-musleabi -Os&quot; CXXFLAGS=&quot;--sysroot=/arm-linux-musleabi/arm-linux-musleabi -Os&quot; ./configure --host=arm-linux-musleabi --enable-inline-optimization --enable-static=yes --enable-shared=no --without-pear --disable-cgi --disable-opcache --disable-fpm --disable-phpdbg --disable-all --enable-cli --enable-tokenizer --enable-session --enable-json  --enable-mbstring --enable-mbregex --enable-filter --enable-hash --with-openssl=/deps --with-curl=/deps
+<p>这次我们指定php.ini的文件位置</p>
 
+<p><code>--with-config-file-scan-dir=/data/data/cn.suconghou.hello/files/conf.d --with-config-file-path=/data/data/cn.suconghou.hello/files</code></p>
+
+<pre><code>LDFLAGS=&quot;-static -L/deps/lib&quot; CFLAGS=&quot;--sysroot=/arm-linux-musleabi/arm-linux-musleabi -Os&quot; CXXFLAGS=&quot;--sysroot=/arm-linux-musleabi/arm-linux-musleabi -Os&quot; ./configure --with-config-file-scan-dir=&quot;/data/data/cn.suconghou.hello/files/conf.d&quot; --with-config-file-path=&quot;/data/data/cn.suconghou.hello/files&quot; --host=arm-linux-musleabi --enable-inline-optimization --enable-static=yes --enable-shared=no --without-pear --disable-cgi --disable-opcache --disable-fpm --disable-phpdbg --disable-all --enable-cli --enable-tokenizer --enable-session --enable-json  --enable-mbstring --enable-mbregex --enable-filter --enable-hash --enable-zip --enable-phar --with-sqlite3 --with-openssl=/deps --with-curl=/deps --with-zlib-dir=/deps
 </code></pre>
 
-<p><code>--enable-pdo --with-sqlite3 --with-pdo-sqlite --enable-sockets --enable-posix  --enable-zip --enable-ftp --with-zlib=/deps --with-zlib-dir=/deps</code></p>
+<p>添加 <code>--enable-zip  --with-zlib-dir=/deps</code> 启用zip和zlib扩展</p>
+
+<p><code>--enable-pdo --with-pdo-sqlite --enable-sockets --enable-posix --enable-ftp</code></p>
 
 <p>编译启用越多扩展,PHP进程的内存占用会稍微增加</p>
+
+<p>同上面一样</p>
+
+<p>生成Makefile后,我们要修改Makefile使其静态编译.</p>
+
+<pre><code>sed -i &quot;s{-I/usr/include{ {&quot; Makefile
+sed -i &quot;s{-export-dynamic{-all-static{&quot; Makefile
+</code></pre>
+
+<p>然后 <code>make -j4</code> 编译,生成的文件在<code>sapi/cli</code>文件夹中,编译已经成功,由于这次启用了phar,<code>make install</code>时需要调用php命令<code>Generating phar.php</code>,但php可执行文件在<code>Linux x86_64</code>下无法执行,是arm环境的.因此不能执行<code>make install</code>,但编译是完好的.</p>
+
+<p>使用<code>arm-linux-musleabi-strip</code>命令,可为我们编译的可执行文件瘦身.</p>
+
+<p>最后编译的文件,能够运行于android2.2,服务于项目 <a href="https://github.com/suconghou/androidphp">https://github.com/suconghou/androidphp</a></p>
+
+<h3 id="问题">问题</h3>
+
+<p>file_get_contents访问https时报错</p>
+
+<pre><code>file_get_contents(): SSL operation failed with code 1. OpenSSL Error messages: error:14090086:SSL routines:ssl3_get_server_certificate:certificate verify failed
+</code></pre>
+
+<p>这是由于证书引起的问题,使用curl访问可以正常访问.</p>
+
+<p>使用下面语句可以查看openssl的默认证书配置</p>
+
+<pre><code>var_dump(openssl_get_cert_locations());
+</code></pre>
+
+<p>或者配置 file_get_contents 不验证https证书.</p>
+
+<pre><code>$stream_opts = [
+    &quot;ssl&quot; =&gt; [
+        &quot;verify_peer&quot;=&gt;false,
+        &quot;verify_peer_name&quot;=&gt;false,
+    ]
+];
+
+$response = file_get_contents(&quot;https://www.example.com&quot;, false, stream_context_create($stream_opts));
+</code></pre>
+
+<p>或者在 php.ini 中添加 <code>openssl.cafile=/path/to/cacert.pem</code></p>
+
+<p>证书下载 <code>https://curl.haxx.se/ca/cacert.pem</code></p>
 
 		</div>
 	</div>

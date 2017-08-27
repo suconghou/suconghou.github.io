@@ -18,7 +18,7 @@
       
       <guid>http://blog.suconghou.cn/post/php-on-android/</guid>
       <description>为安卓交叉编译ARM版的PHP 本教程操作都在centosdocker容器内.基本工具都类似.
-yum install wget make perl -y
+yum update &amp;amp;&amp;amp; yum upgrade &amp;amp;&amp;amp; yum install wget make perl -y 不用安装gcc
  下载交叉编译工具 https://pan.baidu.com/s/1micZBWc  直连下载 wget http://share.suconghou.cn/files/arm/crossx86-arm-linux-musleabi-1.1.12.tar.xz
 下载后解压,并添加bin到环境变量tar Jxf crossx86-arm-linux-musleabi-1.1.12.tar.xz
 export PATH=/arm-linux-musleabi/bin:$PATH
@@ -29,8 +29,23 @@ grep -rn &amp;quot;/etc/resolv.conf&amp;quot; . 即可查找到有两个文件�
 接下来,我们把它替换掉,把路径替换为安卓安装文件夹可写的路径
 sed -i &amp;quot;s{/etc/resolv.conf{/data/data/cn.suconghou.hello/files/resolv.conf{&amp;quot; ./src/network/resolvconf.c sed -i &amp;quot;s{/etc/resolv.conf{/data/data/cn.suconghou.hello/files/resolv.conf{&amp;quot; ./include/resolv.h  可以再次查找,以验证是否替换成功
 替换2: 替换/etc/hosts
-grep -rn &amp;quot;/etc/hosts&amp;quot; . 即可查找到有三个文件,其中有一个是注释 下载执行替换,同样替换为一个我们可以写入的路径
-sed -i &amp;quot;s{/etc/hosts{/data/data/cn.suconghou.hello/files/hosts{&amp;quot; ./src/network/getnameinfo.c sed -i &amp;quot;s{/etc/hosts{/data/data/cn.</description>
+grep -rn &amp;quot;/etc/hosts&amp;quot; .</description>
+    </item>
+    
+    <item>
+      <title>git repo</title>
+      <link>http://blog.suconghou.cn/post/git-repo/</link>
+      <pubDate>Wed, 05 Apr 2017 14:25:05 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/git-repo/</guid>
+      <description>使用gogs搭建git server docker 方式安装 安装和运行docker就不说了.
+1.首先docker pull gogs/gogs 拉取镜像
+2.创建一个数据卷docker volume create --name gogs-data
+要查看已有的数据卷,使用docker volume ls,数据卷用于保存数据,升级时数据不会丢,切勿删除此数据卷
+3.启动服务
+docker run -d --name=gogs --restart always -m 200m --log-opt max-size=2m -p 10022:22 -p 10080:3000 -v gogs-data:/data gogs/gogs  使用-v gogs-data:/data挂载刚刚的数据卷,将数据卷内的数据映射到容器的/data路径下.
+也可以前面添加一个nginx反向代理 /etc/nginx/conf.d/git.conf
+server{ listen 80; server_name git.xx.cn code.xx.cn; gzip on; gzip_min_length 1024; gzip_proxied any; gzip_comp_level 3; gzip_types text/plain text/javascript text/css text/json application/xml application/javascript application/x-javascript application/json; location / { client_max_body_size 10m; proxy_pass http://127.</description>
     </item>
     
     <item>
@@ -160,9 +175,9 @@ CPU天梯图其他版本
       <guid>http://blog.suconghou.cn/post/memcached-usage/</guid>
       <description>安装memcached http://memcached.org/downloads
 memcached所有版本见http://www.memcached.org/files/
-cd /tmp MEMCACHE_VERSION=memcached-1.4.31 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l` wget http://www.memcached.org/files/${MEMCACHE_VERSION}.tar.gz tar xzf ${MEMCACHE_VERSION}.tar.gz cd ${MEMCACHE_VERSION} export CFLAGS=&amp;quot;-O3&amp;quot; ./configure make -j$CPU_NUM &amp;amp;&amp;amp; make install  docker版本见:https://hub.docker.com/r/suconghou/memcached/
-启动Memcached memcached -d -u memcached -p 11211 -m 8 -P /var/run/memcached/memcached.pid  说明
- -d 以daemon方式运行 -u 绑定使用指定用户运行进程(仅在以root运行的时候有效) -p 设置TCP端口号(默认11211) -m 允许最大内存用量，单位M (默认: 64 MB) -M 内存耗尽时返回错误，而不是删除项 -l 是监听的服务器IP地址，默认应该是本机 -P 将PID写入文件，这样可以使得后边进行快速进程终止, 需要与-d 一起使用 -c 最大同时连接数，默认是1024 -t 线程数,默认为4 -v 输出警告和错误信息 -vv 打印客户端的请求和返回信息  默认情况下是不限制访问IP的,相当于是外网和内网都能访问,-l 使只有这个IP能访问</description>
+cd /tmp MEMCACHE_VERSION=memcached-1.5.0 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l` wget http://www.memcached.org/files/${MEMCACHE_VERSION}.tar.gz tar xzf ${MEMCACHE_VERSION}.tar.gz cd ${MEMCACHE_VERSION} export CFLAGS=&amp;quot;-O3&amp;quot; ./configure make -j$CPU_NUM &amp;amp;&amp;amp; make install  docker版本见:https://hub.docker.com/r/suconghou/memcached/
+静态编译 apk update &amp;amp;&amp;amp; apk upgrade &amp;amp;&amp;amp; apk add gcc g++ make wget  wget --no-check-certificate https://github.com/libevent/libevent/releases/download/release-2.1.8-stable/libevent-2.1.8-stable.tar.gz tar zxf libevent-2.1.8-stable.tar.gz cd libevent-2.1.8-stable ./configure &amp;amp;&amp;amp; make &amp;amp;&amp;amp; make install  libevent编译很快,不到一分钟
+cd /tmp MEMCACHE_VERSION=memcached-1.5.0 wget http://www.memcached.org/files/${MEMCACHE_VERSION}.tar.gz tar xzf ${MEMCACHE_VERSION}.tar.gz cd ${MEMCACHE_VERSION} export CFLAGS=&amp;quot;-O3&amp;quot; .</description>
     </item>
     
     <item>
@@ -173,11 +188,11 @@ cd /tmp MEMCACHE_VERSION=memcached-1.4.31 CPU_NUM=`cat /proc/cpuinfo | grep proc
       <guid>http://blog.suconghou.cn/post/javascript-code-snippet/</guid>
       <description>实用的Javascript代码锦集 Date.parse(&amp;quot;2016-04-4&amp;quot;)  Date.parse safari 不能使用单位数字的月份和日期,否则解析为NaN
 火狐较低版本(火狐43)也是如此
++new Date(&#39;2017-06-08 21:00:00&#39;); 在IE11上得出NaN Safari10 上也得出NaN Chrome 和 Firfox下OK 原因在于 IE 和 Safari 都不识别以-分割的日期 需要写成 +new Date(&#39;2017/06/08 21:00:00&#39;); , 这样才能在所有浏览器兼容.
 IE10 has not anchorNode focusNode 属性, 取得选中的文字需要读取 text 属性, IE11 一切正常 , 取得选中文字可以直接 toString
 IE10,IE11 不支持 html5 的 download 属性, 无法点击下载自定义名称的html和图片等文件. 可以使用 下载的 downloadFile,利用ajax下载,顺便说 ajax 下载也不能使用fetch IE系统统不支持fetch,到EDGE14才支持fetch, https://github.com/github/fetch 可支持IE10+
 火狐不支持和chrome的scrollTop表现也不相同
-// 兼容处理 chrome 和 firefox let scrollTop=document.body.scrollTop?document.body.scrollTop:document.documentElement.scrollTop; if(scrollTop&amp;lt;20){ this.headerShowStatus=true; }else if(scrollTop&amp;gt;170){ this.headerShowStatus=false; } if(document.documentElement.scrollHeight-scrollTop- document.documentElement.clientHeight&amp;lt; 400 ){ this.loadMore(); }  火狐不支持 e.srcElement 需要使用 e.target 代替
-IE10,IE11, 不支持location.origin var origin = location.origin?location.origin:location.protocol+&amp;quot;//&amp;quot;+location.host;  firefox 浏览器下载接受的后端header 不支持单引号</description>
+// 兼容处理 chrome 和 firefox let scrollTop=document.body.scrollTop?document.body.scrollTop:document.documentElement.scrollTop; if(scrollTop&amp;lt;20){ this.headerShowStatus=true; }else if(scrollTop&amp;gt;170){ this.headerShowStatus=false; } if(document.</description>
     </item>
     
     <item>
@@ -306,9 +321,9 @@ iconv(&#39;utf-8&#39;, &#39;gbk//ignore&#39;, $str); 加上//ignore使有些字�
       
       <guid>http://blog.suconghou.cn/post/shadowsocks-libev/</guid>
       <description>静态编译shadowsocks libev 在alpine里编译
+apk update &amp;amp;&amp;amp; apk upgrade &amp;amp;&amp;amp; apk add wget make gcc g++ perl
 先安装依赖
-# Installation of Libsodium cd /tmp export LIBSODIUM_VER=1.0.12 wget https://download.libsodium.org/libsodium/releases/libsodium-$LIBSODIUM_VER.tar.gz tar xvf libsodium-$LIBSODIUM_VER.tar.gz cd libsodium-$LIBSODIUM_VER ./configure --prefix=/usr &amp;amp;&amp;amp; make -j2 &amp;amp;&amp;amp; make install cd /tmp ldconfig # Installation of MbedTLS cd /tmp export MBEDTLS_VER=2.4.2 wget https://tls.mbed.org/download/mbedtls-$MBEDTLS_VER-gpl.tgz tar xvf mbedtls-$MBEDTLS_VER-gpl.tgz cd mbedtls-$MBEDTLS_VER make SHARED=1 CFLAGS=-fPIC &amp;amp;&amp;amp; make DESTDIR=/usr install cd /tmp ldconfig  安装完这两个依赖后,下面准备开始静态编译
-apk update &amp;amp;&amp;amp; apk upgrade &amp;amp;&amp;amp; apk add gcc g++ make autoconf curl wget build-base linux-headers libev-dev libtool udns-dev libsodium-dev mbedtls-dev pcre-dev SS_VER=3.</description>
+# Installation of Libsodium cd /tmp export LIBSODIUM_VER=1.0.12 wget --no-check-certificate https://download.libsodium.org/libsodium/releases/libsodium-$LIBSODIUM_VER.tar.gz tar xvf libsodium-$LIBSODIUM_VER.tar.gz cd libsodium-$LIBSODIUM_VER ./configure --prefix=/usr &amp;amp;&amp;amp; make -j2 &amp;amp;&amp;amp; make install cd /tmp ldconfig # Installation of MbedTLS cd /tmp export MBEDTLS_VER=2.5.1 wget --no-check-certificate https://tls.mbed.org/download/mbedtls-$MBEDTLS_VER-gpl.tgz tar xvf mbedtls-$MBEDTLS_VER-gpl.tgz cd mbedtls-$MBEDTLS_VER make SHARED=1 CFLAGS=-fPIC &amp;amp;&amp;amp; make DESTDIR=/usr install cd /tmp ldconfig  安装完这两个依赖后,下面准备开始静态编译</description>
     </item>
     
     <item>
@@ -435,11 +450,19 @@ brew commands 查看所有命令
       <pubDate>Thu, 14 Jan 2016 17:11:34 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/broswer-chrome/</guid>
-      <description>配置Chrome跨域 Chrome 浏览器配置可以跨域
+      <description> 配置Chrome跨域 Chrome 浏览器配置可以跨域
 /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --disable-web-security
 或者
 open -a &amp;quot;Google Chrome&amp;quot; --args --disable-web-security
-必须完全退出Chrome,再使用上述方法.</description>
+必须完全退出Chrome,再使用上述方法.
+有用的 chrome 插件 去广告
+ Adblock Plus (ABP)
+ 前端开发相关
+ FE 助手
+EditThisCookie https://chrome.google.com/webstore/detail/editthiscookie/fngmhnnpilhplaeedifhccceomclgfbg
+开启Chrome Ajax 跨域 https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi
+替换http响应 https://github.com/annnhan/ReRes https://chrome.google.com/webstore/detail/reres/gieocpkbblidnocefjakldecahgeeica?hl=zh-CN&amp;amp;gl=CN
+ </description>
     </item>
     
     <item>
@@ -502,9 +525,10 @@ ffmpeg -i aaa.flv -c:v libx264 -crf 28 output.mp4 带压缩的转换,非常消�
       
       <guid>http://blog.suconghou.cn/post/git-usage/</guid>
       <description>git配置 git config --global user.email &amp;quot;1126045770@qq.com&amp;quot; git config --global user.name &amp;quot;sucongohu&amp;quot; git config --global core.autocrlf false git config --global color.ui true git config --global credential.helper store git config --global alias.lg &amp;quot;log --graph --all --pretty=format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci,%cr) %C(bold blue)&amp;lt;%an&amp;gt;%Creset&#39; --abbrev-commit --date=relative&amp;quot; git config --global alias.laststash =&amp;quot;diff stash@{0}^!&amp;quot;   以上分别是设置用户信息,禁止转换换行符,颜色高亮,记住密码,设置别名列出分支图. 设置别名后,可以使用 git lg 查看各个分支关系
- 使用git还经常碰到文件权限发生变化,也显示文件变动了,需要提交,如果你不想将文件权限的变动纳入版本控制可以
-git config core.filemode false  对于一些本地和服务器不一致的配置文件,git status每次查看都显示出来,git add -u又会一不小心提交,可以使用 忽略已追踪文件的变动
-git update-index --assume-unchanged PATH_TO_FILE  批量操作当前目录下的所有仓库</description>
+ 设置core.autocrlf false 提交检出均不转换 , 否则同时在Mac,Windows,Linux 跨平台协作开发,eslint 检测换行符错误会很头疼.
+见 http://www.cnblogs.com/sdgf/p/6237847.html
+记住密码
+if [ ! -f ~/.</description>
     </item>
     
     <item>
@@ -628,12 +652,12 @@ wget -i url.txt -O - | mpv - 下载url.txt里的链接,输出到标准输出
 wget --user-agent=&amp;quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36&amp;quot; URL-TO-DOWNLOAD
 wget 断点续传 使用 -c 限速使用--limit-rate=300k
 wget -c --limit-rate=30k http://...
+lftp wget 可以断点续传 但是不支持多线程下载, lftp 的一个用法可以实现多线程下载.
+lftp -c &amp;quot;pget -n 10 http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.18.tar.gz&amp;quot;
 curl 常用的命令
 curl http://xx.com 只获取http消息正文
 curl -I http://xx.com 只获取http消息头
-curl -i http://xx.com 获取http消息头和正文
-curl -d &amp;quot;name=abc&amp;amp;pass=123&amp;quot; http://xx.com 发送http post请求,采用的是application/x-www-form-urlencoded形式
-curl -F &amp;quot;name=abc&amp;quot; -F &amp;quot;pass=123&amp;quot; http://xx.</description>
+curl -i http://xx.</description>
     </item>
     
     <item>

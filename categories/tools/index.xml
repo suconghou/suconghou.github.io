@@ -24,12 +24,12 @@ wget -i url.txt -O - | mpv - 下载url.txt里的链接,输出到标准输出
 wget --user-agent=&amp;quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36&amp;quot; URL-TO-DOWNLOAD
 wget 断点续传 使用 -c 限速使用--limit-rate=300k
 wget -c --limit-rate=30k http://...
+lftp wget 可以断点续传 但是不支持多线程下载, lftp 的一个用法可以实现多线程下载.
+lftp -c &amp;quot;pget -n 10 http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.18.tar.gz&amp;quot;
 curl 常用的命令
 curl http://xx.com 只获取http消息正文
 curl -I http://xx.com 只获取http消息头
-curl -i http://xx.com 获取http消息头和正文
-curl -d &amp;quot;name=abc&amp;amp;pass=123&amp;quot; http://xx.com 发送http post请求,采用的是application/x-www-form-urlencoded形式
-curl -F &amp;quot;name=abc&amp;quot; -F &amp;quot;pass=123&amp;quot; http://xx.</description>
+curl -i http://xx.</description>
     </item>
     
   </channel>

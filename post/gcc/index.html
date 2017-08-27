@@ -111,6 +111,22 @@ gcc -static -Os 1.c
 
 <p><code>LDFLAGS=-static ./configure --disable-plugins=auth,cgi,cheetah,dirlisting,fastcgi,liana,logger,mandril,tls --malloc-libc</code></p>
 
+<h2 id="编译更小的文件">编译更小的文件</h2>
+
+<p>gcc 使用参数 <code>-Os -ffunction-sections -fdata-sections</code>
+link 的时候使用 <code>--gc-sections</code></p>
+
+<p>-ffunction-sections, -fdata-sections会使compiler为每个function和data item分配独立的section。 &ndash;gc-sections会使ld删除没有被使用的section。</p>
+
+<p>链接操作以section作为最小的处理单元，只要一个section中有某个符号被引用，该section就会被放入output中。</p>
+
+<p>这些选项一起使用会从最终的输出文件中删除所有未被使用的function和data， 只包含用到的unction和data</p>
+
+<p>export CFLAGS=&ldquo;-Os -ffunction-sections -fdata-sections&rdquo;
+export LDFLAGS=&ldquo;-Wl,&ndash;gc-sections&rdquo;</p>
+
+<p>然后 对可执行文件 <code>strip -s</code></p>
+
 		</div>
 	</div>
 </div>

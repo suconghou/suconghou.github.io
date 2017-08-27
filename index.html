@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.25" />
+	<meta name="generator" content="Hugo 0.26" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -44,7 +44,7 @@
 
 <p>本教程操作都在<code>centos</code>docker容器内.基本工具都类似.</p>
 
-<p><code>yum install wget make perl -y</code></p>
+<p><code>yum update &amp;&amp; yum upgrade &amp;&amp; yum install wget make perl -y</code> 不用安装gcc</p>
 
 <ol>
 <li>下载交叉编译工具  <code>https://pan.baidu.com/s/1micZBWc</code></li>
@@ -111,6 +111,8 @@ make -j4 &amp;&amp; make install
 
 <p>编译约需要5分钟,<code>ls -lh /arm-linux-musleabi/arm-linux-musleabi/lib/</code> 这些文件就是编译后生成的新文件.</p>
 
+<p>注意这里编译使用的是arm-linux-musleabi-gcc而不是gcc,事实上,从头到尾我们都不需要gcc</p>
+
 <p>之后开始第三步,编译PHP</p>
 
 <ol>
@@ -119,7 +121,7 @@ make -j4 &amp;&amp; make install
 
 <p>下载PHP最新源码,并解压</p>
 
-<pre><code>cd /tmp &amp;&amp; wget http://php.net/distributions/php-7.1.6.tar.xz &amp;&amp; tar xJf php-7.1.6.tar.xz &amp;&amp; cd php-7.1.6
+<pre><code>cd /tmp &amp;&amp; wget http://php.net/distributions/php-7.1.8.tar.xz &amp;&amp; tar xJf php-7.1.8.tar.xz &amp;&amp; cd php-7.1.8
 </code></pre>
 
 <p>替换1: 同样,我们需要替换sh的路径, <code>grep -rn &quot;/bin/sh&quot; .</code> 有较多结果,我们需要替换<code>./ext/standard/proc_open.c</code></p>
@@ -154,13 +156,15 @@ sed -i &quot;s{-export-dynamic{-all-static{&quot; Makefile
 
 <p>然后 <code>make -j4 &amp;&amp; make install</code> 可以编译成功</p>
 
-<p>添加其他扩展需要我们自己下载编译</p>
+<p>原先的<code>strip</code> 命令,可以使用<code>arm-linux-musleabi-strip</code>代替</p>
+
+<p>添加其他扩展需要我们自己下载编译,下面这个几个是编译CURL所必须的.</p>
 
 <ol>
 <li>zlib</li>
 </ol>
 
-<pre><code>wget http://zlib.net/zlib-1.2.11.tar.gz
+<pre><code>cd /tmp &amp;&amp; wget http://zlib.net/zlib-1.2.11.tar.gz
 tar zxf zlib-1.2.11.tar.gz &amp;&amp; cd zlib-1.2.11
 CFLAGS=&quot;--sysroot=$SYSROOT_MUSL -Os&quot; \
 ./configure \
@@ -173,18 +177,27 @@ make &amp;&amp; make install
 <li>bz2</li>
 </ol>
 
-<pre><code>wget http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz
+<pre><code>cd /tmp &amp;&amp; wget http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz
 tar zxf bzip2-1.0.6.tar.gz &amp;&amp; cd bzip2-1.0.6
-# 把 Makefile 里 CFLAGS 里的 -O2 改为 -Os , gcc部分等写死的直接删除
+# 把 Makefile 里 CFLAGS 里的 -O2 改为 -Os 后面的 -g去掉 , 前面几行gcc部分等写死的直接删除
 make install PREFIX=/deps
+</code></pre>
+
+<p>这些删除</p>
+
+<pre><code># To assist in cross-compiling
+CC=gcc
+AR=ar
+RANLIB=ranlib
+LDFLAGS=
 </code></pre>
 
 <ol>
 <li>openssl</li>
 </ol>
 
-<pre><code>wget https://www.openssl.org/source/openssl-1.0.2k.tar.gz
-tar zxf openssl-1.0.2k.tar.gz &amp;&amp; cd openssl-1.0.2k
+<pre><code>cd /tmp &amp;&amp; wget https://www.openssl.org/source/openssl-1.0.2l.tar.gz
+tar zxf openssl-1.0.2l.tar.gz &amp;&amp; cd openssl-1.0.2l
 CFLAGS=&quot;--sysroot=$SYSROOT_MUSL -static&quot; \
 ./Configure \
 linux-armv4 \
@@ -192,7 +205,7 @@ no-shared \
 --prefix=&quot;/deps&quot; \
 --with-zlib-lib=&quot;/deps/lib&quot; \
 --with-zlib-include=&quot;/deps/include&quot;
-# 把 Makefile 里 CFLAG 里的 -O3 改为 -Os
+# 把 Makefile 里 CFLAG 里的 -O3 改为 -Os (vi 查找,第一个就是)
 make &amp;&amp; make install
 </code></pre>
 
@@ -200,7 +213,7 @@ make &amp;&amp; make install
 <li>curl</li>
 </ol>
 
-<pre><code>wget https://curl.haxx.se/download/curl-7.54.0.tar.gz
+<pre><code>cd /tmp &amp;&amp; wget https://curl.haxx.se/download/curl-7.54.0.tar.gz
 tar zxf curl-7.54.0.tar.gz &amp;&amp; cd curl-7.54.0
 
 CC=&quot;arm-linux-musleabi-gcc --sysroot=$SYSROOT_MUSL&quot; \
@@ -215,18 +228,325 @@ LDFLAGS=&quot;-static -L/deps/lib&quot; \
 --enable-static \
 --host=$HOST
 # 把 Makefile 里 CFLAGS 里的 -O2 改为 -Os
-make &amp;&amp; make install
+make -j4 &amp;&amp; make install
 </code></pre>
 
-<p>包含我们需要的一些扩展</p>
+<p>包含我们需要的一些扩展 , 然后编译PHP(上次编译后,需make clean)</p>
 
-<pre><code>LDFLAGS=&quot;-static -L/deps/lib&quot; CFLAGS=&quot;--sysroot=/arm-linux-musleabi/arm-linux-musleabi -Os&quot; CXXFLAGS=&quot;--sysroot=/arm-linux-musleabi/arm-linux-musleabi -Os&quot; ./configure --host=arm-linux-musleabi --enable-inline-optimization --enable-static=yes --enable-shared=no --without-pear --disable-cgi --disable-opcache --disable-fpm --disable-phpdbg --disable-all --enable-cli --enable-tokenizer --enable-session --enable-json  --enable-mbstring --enable-mbregex --enable-filter --enable-hash --with-openssl=/deps --with-curl=/deps
+<p>这次我们指定php.ini的文件位置</p>
 
+<p><code>--with-config-file-scan-dir=/data/data/cn.suconghou.hello/files/conf.d --with-config-file-path=/data/data/cn.suconghou.hello/files</code></p>
+
+<pre><code>LDFLAGS=&quot;-static -L/deps/lib&quot; CFLAGS=&quot;--sysroot=/arm-linux-musleabi/arm-linux-musleabi -Os&quot; CXXFLAGS=&quot;--sysroot=/arm-linux-musleabi/arm-linux-musleabi -Os&quot; ./configure --with-config-file-scan-dir=&quot;/data/data/cn.suconghou.hello/files/conf.d&quot; --with-config-file-path=&quot;/data/data/cn.suconghou.hello/files&quot; --host=arm-linux-musleabi --enable-inline-optimization --enable-static=yes --enable-shared=no --without-pear --disable-cgi --disable-opcache --disable-fpm --disable-phpdbg --disable-all --enable-cli --enable-tokenizer --enable-session --enable-json  --enable-mbstring --enable-mbregex --enable-filter --enable-hash --enable-zip --enable-phar --with-sqlite3 --with-openssl=/deps --with-curl=/deps --with-zlib-dir=/deps
 </code></pre>
 
-<p><code>--enable-pdo --with-sqlite3 --with-pdo-sqlite --enable-sockets --enable-posix  --enable-zip --enable-ftp --with-zlib=/deps --with-zlib-dir=/deps</code></p>
+<p>添加 <code>--enable-zip  --with-zlib-dir=/deps</code> 启用zip和zlib扩展</p>
+
+<p><code>--enable-pdo --with-pdo-sqlite --enable-sockets --enable-posix --enable-ftp</code></p>
 
 <p>编译启用越多扩展,PHP进程的内存占用会稍微增加</p>
+
+<p>同上面一样</p>
+
+<p>生成Makefile后,我们要修改Makefile使其静态编译.</p>
+
+<pre><code>sed -i &quot;s{-I/usr/include{ {&quot; Makefile
+sed -i &quot;s{-export-dynamic{-all-static{&quot; Makefile
+</code></pre>
+
+<p>然后 <code>make -j4</code> 编译,生成的文件在<code>sapi/cli</code>文件夹中,编译已经成功,由于这次启用了phar,<code>make install</code>时需要调用php命令<code>Generating phar.php</code>,但php可执行文件在<code>Linux x86_64</code>下无法执行,是arm环境的.因此不能执行<code>make install</code>,但编译是完好的.</p>
+
+<p>使用<code>arm-linux-musleabi-strip</code>命令,可为我们编译的可执行文件瘦身.</p>
+
+<p>最后编译的文件,能够运行于android2.2,服务于项目 <a href="https://github.com/suconghou/androidphp">https://github.com/suconghou/androidphp</a></p>
+
+<h3 id="问题">问题</h3>
+
+<p>file_get_contents访问https时报错</p>
+
+<pre><code>file_get_contents(): SSL operation failed with code 1. OpenSSL Error messages: error:14090086:SSL routines:ssl3_get_server_certificate:certificate verify failed
+</code></pre>
+
+<p>这是由于证书引起的问题,使用curl访问可以正常访问.</p>
+
+<p>使用下面语句可以查看openssl的默认证书配置</p>
+
+<pre><code>var_dump(openssl_get_cert_locations());
+</code></pre>
+
+<p>或者配置 file_get_contents 不验证https证书.</p>
+
+<pre><code>$stream_opts = [
+    &quot;ssl&quot; =&gt; [
+        &quot;verify_peer&quot;=&gt;false,
+        &quot;verify_peer_name&quot;=&gt;false,
+    ]
+];
+
+$response = file_get_contents(&quot;https://www.example.com&quot;, false, stream_context_create($stream_opts));
+</code></pre>
+
+<p>或者在 php.ini 中添加 <code>openssl.cafile=/path/to/cacert.pem</code></p>
+
+<p>证书下载 <code>https://curl.haxx.se/ca/cacert.pem</code></p>
+
+			</div>
+		</div>
+		
+		<div class="post">
+			<h1 class="post-title">
+				<a href="/post/git-repo/"> git repo</a>
+			</h1>
+			<p class="post-date">Wed, Apr 5, 2017</p>
+			<div class="post-text">
+				
+
+<h2 id="使用gogs搭建git-server">使用gogs搭建git server</h2>
+
+<h3 id="docker-方式安装">docker 方式安装</h3>
+
+<p>安装和运行<code>docker</code>就不说了.</p>
+
+<p>1.首先<code>docker pull gogs/gogs</code> 拉取镜像</p>
+
+<p>2.创建一个数据卷<code>docker volume create --name gogs-data</code></p>
+
+<p>要查看已有的数据卷,使用<code>docker volume ls</code>,数据卷用于保存数据,升级时数据不会丢,切勿删除此数据卷</p>
+
+<p>3.启动服务</p>
+
+<pre><code>docker run -d --name=gogs --restart always -m 200m --log-opt max-size=2m  -p 10022:22 -p 10080:3000 -v gogs-data:/data gogs/gogs
+</code></pre>
+
+<p>使用<code>-v gogs-data:/data</code>挂载刚刚的数据卷,将数据卷内的数据映射到容器的<code>/data</code>路径下.</p>
+
+<p>也可以前面添加一个nginx反向代理
+<code>/etc/nginx/conf.d/git.conf</code></p>
+
+<pre><code>server{
+	listen 80;
+	server_name git.xx.cn code.xx.cn;
+	gzip on;
+	gzip_min_length 1024;
+	gzip_proxied any;
+	gzip_comp_level 3;
+	gzip_types text/plain text/javascript text/css text/json application/xml application/javascript application/x-javascript application/json;
+	location / {
+		client_max_body_size 10m;
+		proxy_pass http://127.0.0.1:10080;
+		proxy_set_header Host $host;
+		proxy_set_header X-Forwarded-Ssl off;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header X-Forwarded-Port 80;
+	}
+}
+
+</code></pre>
+
+<p>4.升级</p>
+
+<p><code>docker stop gogs</code> 和 <code>docker rm gogs</code> 然后执行步骤3就可以了</p>
+
+<p>不放心的话,可以先stop,然后rename,再步骤三启动新版本的,启动成功后再删除旧版本的.</p>
+
+<p>5.数据备份与恢复</p>
+
+<h3 id="备份docker-volume数据卷">备份docker volume数据卷</h3>
+
+<p>文件接收端执行 <code>nc -l  9090 &gt; data.tar.gz</code>  有些<code>nc</code>(busybox里的nc)可能是 <code>nc -l -p 9090 &gt; data.tar.gz</code></p>
+
+<p>以只读模式挂载数据卷,挂载数据卷到<code>/data</code>路径</p>
+
+<pre><code>docker run --rm -it -v gogs-data:/data:ro busybox sh -c &quot;cd /data &amp;&amp; tar czvf - . | nc host 9090&quot;
+</code></pre>
+
+<p>打包文件并发送到目标主机</p>
+
+<h3 id="恢复-docker-volume-数据">恢复<code>docker volume</code>数据</h3>
+
+<p>如果没有这个数据卷,先创建数据卷 <code>docker volume create --name gogs-data</code></p>
+
+<p><code>docker run --rm -it -v gogs-data:/data busybox  sh -c &quot;nc -l -p 9090 | tar -C /data -zxf -&quot;</code></p>
+
+<p>然后通过宿主机发送数据 <code>nc host 9090 &lt; data.tar.gz</code></p>
+
+<p>如果两台电脑可以直接连通</p>
+
+<p>发送方 <code>docker run --rm -it -v gogs-data:/data:ro busybox sh -c &quot;cd /data &amp;&amp; tar czvf - . | nc host 9090&quot;</code></p>
+
+<p>接收方 <code>docker run --rm -p 9090:9090 -it -v gogs-data:/data busybox sh -c &quot;nc -l -p 9090 | tar -C /data -zxf -&quot;</code></p>
+
+<h3 id="相关错误">相关错误</h3>
+
+<pre><code>remote: Counting objects: 860, done.
+remote: aborting due to possible repository corruption on the remote side.
+fatal: protocol error: bad pack header
+</code></pre>
+
+<p>由于服务器端在传送 <code>git pull</code> 或者 <code>git clone</code>时需提前压缩数据,这些数据是存放在内存中.(<code>git pull</code>时服务端内存不断增长,由于我使用的docker,只分配了60M内存);当内存不够使用时造成错误.</p>
+
+<p>解决方案 1. 增加服务端内存. 或者 2. 修改git客户端配置 <a href="https://stackoverflow.com/questions/4170317/git-pull-error-remote-object-is-corrupted">https://stackoverflow.com/questions/4170317/git-pull-error-remote-object-is-corrupted</a></p>
+
+<p>即客户端执行</p>
+
+<pre><code>git config --global pack.windowMemory &quot;100m&quot;
+git config --global pack.SizeLimit &quot;100m&quot;
+git config --global pack.threads &quot;1&quot;
+</code></pre>
+
+<p>顺便说 docker 修改内存配置</p>
+
+<p><code>docker update gogs -m 200m --memory-swap=400m</code></p>
+
+<p><strong>配置网络转发</strong></p>
+
+<p>容器的http端口和ssh分别映射到<code>10080</code>和<code>10022</code>,我们使用域名和80端口对外服务.</p>
+
+<p>添加<code>nginx</code>配置
+<code>git.conf</code></p>
+
+<pre><code>server{
+		listen 80;
+		server_name git.ourwill.cn code.ourwill.cn;
+		gzip on;
+		gzip_min_length 1024;
+		gzip_proxied any;
+		gzip_comp_level 3;
+		gzip_types text/plain text/javascript text/css text/json application/xml application/javascript application/x-javascript application/json image/jpeg image/gif image/png;
+		location / {
+				client_max_body_size 10m;
+				proxy_pass http://127.0.0.1:10080;
+				proxy_set_header Host $host;
+				proxy_set_header X-Forwarded-Ssl off;
+				proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+				proxy_set_header X-Forwarded-Port 80;
+		}
+}
+</code></pre>
+
+<p>少许优化:<code>gogs</code>默认没有<code>gzip</code>,我们通过<code>nginx</code>添加了<code>gzip</code>;设置最大提交文件为10M</p>
+
+<p>然后就可以使用域名直接访问,如果发现通过<code>nginx</code>代理后报 <code>502</code> <code>nginx erro log</code> 为<code>Permission denied</code>, 可能是<code>SELinux</code>的问题</p>
+
+<p>检查<code>SELinux</code>日志 <code>sudo cat /var/log/audit/audit.log | grep nginx | grep denied</code></p>
+
+<p>如果发现被 <code>SELinux</code>拦截, 可以执行<code>setsebool -P httpd_can_network_connect 1</code>开启此条规则</p>
+
+<p>附:</p>
+
+<blockquote>
+<p><code>getsebool -a | grep httpd</code> 可以查看 SELinux 关于 http 的配置</p>
+
+<p><code>setsebool httpd_can_network_connect on</code> 使本次生效</p>
+
+<p><code>setsebool httpd_can_network_connect on -P</code> 是<code>persist</code>模式,永久生效</p>
+</blockquote>
+
+<p>使用后立即生效,无需重启任何服务.</p>
+
+<h3 id="配合git-hook-自动部署php和静态网页">配合git hook 自动部署PHP和静态网页</h3>
+
+<p>写了一个server用于接受通知 <code>https://github.com/suconghou/gitsync.git</code></p>
+
+<p>主要是接收到用户推送代码后,不存在则clone项目,存在则更新项目.</p>
+
+<p>启动服务<code>gitsy &gt; /var/log/gitsy.log 2&gt;&amp;1 &amp;</code>,然后由nginx代理隐藏端口,使用域名访问</p>
+
+<pre><code>server{
+    server_name g.share.ourwill.cn;
+    listen 80;
+    gzip on;
+    location / {
+        proxy_pass http://127.0.0.1:19090;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Ssl off;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Port 80;
+    }
+}
+</code></pre>
+
+<p><code>gitsy</code> 启动后可通过http查看log<code>http://g.share.ourwill.cn/log</code></p>
+
+<p><code>repos</code>目录可由docker挂载只读,防止删除操作,请求都转发到docker内,由内部<code>nginx-fpm</code>运行代码</p>
+
+<p>转发到docker里的nginx</p>
+
+<pre><code>server{
+    server_name *.share.ourwill.cn;
+    listen 80;
+    gzip on;
+    index index.html index.php;
+    location / {
+        proxy_pass http://127.0.0.1:18001;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Ssl off;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Port 80;
+    }
+}
+</code></pre>
+
+<p>docker目录的映射为<code>docker run -v /data/share/runtime/:/www  --name datafs busybox</code></p>
+
+<p><code>docker run -d --name dev --restart always -m 100m --log-opt max-size=2m --volumes-from datafs -p 18001:80 -p 12201:22 suconghou/server</code></p>
+
+<p>可以使用<code>/data/share/runtime/:/www:ro</code>使用只读</p>
+
+<p>docker内部的nginx处理各个vhost的请求</p>
+
+<pre><code>server {
+	listen  80;
+	server_name 0.0.0.0;
+	index index.html index.php;
+	if ($host ~* ^(([\w\-]+)\.share\.ourwill\.cn)$) {
+		set $subdomain $2;
+	}
+	root /www/$subdomain;
+		if ( !-d $document_root ){
+		return 404;
+	}
+	try_files $uri $uri/ /index.php?$args;
+	location ~ \.php$ {
+		try_files $uri =404;
+		fastcgi_pass  127.0.0.1:9000;
+		fastcgi_param debug 2;
+		include        fastcgi.conf;
+	}
+}
+</code></pre>
+
+<p><strong>也可以直接使用本地nginx+fpm请求,不使用docker,代码可本地读写</strong></p>
+
+<pre><code>server{
+	listen 80;
+	server_name *.run.ourwill.cn;
+	index index.php index.html;
+	fastcgi_connect_timeout 2s;
+	fastcgi_send_timeout 10s;
+	fastcgi_read_timeout 5s;
+	ssi on;
+	gzip on;
+	if ($host ~* ^(([\w\-]+)\.run\.ourwill\.cn)$) {
+		set $subdomain $2;
+	}
+	root /data/share/runtime/$subdomain;
+	if ( !-d $document_root){
+		return 404;
+	}
+	add_header X-Root &quot;$subdomain&quot;;
+    try_files $uri $uri/ /index.php?$args;
+	location ~ \.php$ {
+        try_files $uri =404;
+        client_max_body_size 10m;
+        fastcgi_param debug 2;
+		fastcgi_pass 127.0.0.1:9000;
+        include        fastcgi.conf;
+	}
+}
+</code></pre>
+
+<p>此两种环境都传递了变量 debug 到<code>php-fpm</code>,php 代码中可使用 <code>getenv('debug')</code> 判断是何种环境.线上环境没有配置debug,得出false</p>
 
 			</div>
 		</div>
@@ -351,6 +671,22 @@ gcc -static -Os 1.c
 <p><a href="https://www.systutorials.com/5217/how-to-statically-link-c-and-c-programs-on-linux-with-gcc/">https://www.systutorials.com/5217/how-to-statically-link-c-and-c-programs-on-linux-with-gcc/</a></p>
 
 <p><code>LDFLAGS=-static ./configure --disable-plugins=auth,cgi,cheetah,dirlisting,fastcgi,liana,logger,mandril,tls --malloc-libc</code></p>
+
+<h2 id="编译更小的文件">编译更小的文件</h2>
+
+<p>gcc 使用参数 <code>-Os -ffunction-sections -fdata-sections</code>
+link 的时候使用 <code>--gc-sections</code></p>
+
+<p>-ffunction-sections, -fdata-sections会使compiler为每个function和data item分配独立的section。 &ndash;gc-sections会使ld删除没有被使用的section。</p>
+
+<p>链接操作以section作为最小的处理单元，只要一个section中有某个符号被引用，该section就会被放入output中。</p>
+
+<p>这些选项一起使用会从最终的输出文件中删除所有未被使用的function和data， 只包含用到的unction和data</p>
+
+<p>export CFLAGS=&ldquo;-Os -ffunction-sections -fdata-sections&rdquo;
+export LDFLAGS=&ldquo;-Wl,&ndash;gc-sections&rdquo;</p>
+
+<p>然后 对可执行文件 <code>strip -s</code></p>
 
 			</div>
 		</div>
@@ -523,288 +859,6 @@ gzip_types text/plain text/javascript text/css text/json application/xml applica
 <p>并且手势密码的验证大部分都是本地验证,意味着黑客根本不需要与服务器端交互,有很多方式攻破程序里的本地认证</p>
 
 <p>因此手势密码只防君子,不妨小人,不要把它作为十分安全的验证,在做敏感操作时务必联网验证用户密码.</p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/use-kvm/"> use kvm</a>
-			</h1>
-			<p class="post-date">Tue, Oct 18, 2016</p>
-			<div class="post-text">
-				
-
-<h1 id="安装和配置kvm">安装和配置KVM</h1>
-
-<h2 id="kvm与xen区别">KVM与XEN区别</h2>
-
-<p>OPENVZ就不说了,是半虚拟化,不能安装Windows操作系统</p>
-
-<p>KVM是内核模块,从2.6.20内核开始,kvm模块就包含在Linux内核中,只需加载此模块即可</p>
-
-<pre><code>#查看宿主机CPU是否在硬件上支持虚拟化扩展特性
-cat /proc/cpuinfo | grep -E &quot;(vmx|svm)&quot;
-
-#加载kvm模块（Intel VT）
-modprobe kvm
-modprobe kvm-intel
-#注意：如果加载失败，说明服务器硬件不支持或BIOS中未开启虚拟化扩展
-</code></pre>
-
-<p>运行命令<code>lsmod | grep kvm</code>检查 KVM 模块是否成功安装</p>
-
-<p>XEN是一套虚拟化方案,可以直接安装,不需要先安装操作系统.</p>
-
-<p>KVM起步较晚,XEN起步早发展成熟,但目前KVM潜力较大.</p>
-
-<h2 id="kvm-与-qemu">KVM 与 qemu</h2>
-
-<p><code>yum install qemu-kvm libvirt virt-install bridge-utils</code></p>
-
-<p>qemu-kvm 该软件包主要包含KVM内核模块和适用于KVM的QEMU模拟器。KVM模块负责CPU和内存的调度，QEMU负责虚拟机I/O设备的模拟。</p>
-
-<p>libvirt 提供Hypervisor和虚拟机的管理功能。</p>
-
-<p>virt-install 创建和克隆虚拟机的命令行工具包。</p>
-
-<p>bridge-utils 网桥管理工具包，负责桥接网络的创建、配置和管理等工作。</p>
-
-<h2 id="激活并启动libvirtd服务">激活并启动libvirtd服务</h2>
-
-<pre><code>systemctl enable libvirtd
-systemctl start libvirtd
-</code></pre>
-
-<h2 id="安装centos7">安装CentOS7</h2>
-
-<p><code>diskutil list</code>查看所有磁盘</p>
-
-<p><code>diskutil unmountdisk /dev/disk1</code> 解除其挂载</p>
-
-<p>用dd将ISO文件写入</p>
-
-<p><code>sudo dd if=/data/files/iso/CentOS-7-x86_64-Minimal-1511.iso of=/dev/disk2 bs=1m</code></p>
-
-<p>安装好系统后,更换网易的源 <a href="http://mirrors.163.com/.help/centos.html">http://mirrors.163.com/.help/centos.html</a></p>
-
-<pre><code>mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
-cd /etc/yum.repos.d
-wget http://mirrors.163.com/.help/CentOS7-Base-163.repo
-yum clean all
-yum makecache
-</code></pre>
-
-<p>搜狐也有,但版本太老 <a href="http://mirrors.sohu.com/help/centos.html">http://mirrors.sohu.com/help/centos.html</a></p>
-
-<p>可以使用清华大学的. <a href="https://lug.ustc.edu.cn/wiki/mirrors/help/centos">https://lug.ustc.edu.cn/wiki/mirrors/help/centos</a> 速度都十分快.</p>
-
-<h2 id="启用kvm后-需要配置网卡">启用KVM后,需要配置网卡</h2>
-
-<p><code>cd /etc/sysconfig/network-scripts/</code></p>
-
-<p>桥接网卡</p>
-
-<p><code>brctl addbr br0</code> 添加一个虚拟网卡</p>
-
-<p><code>brctl addif br0 em2</code> 将网卡<code>br0</code>桥接到<code>em2</code> ,这一步将会导致em2断网,远程ssh将会断开</p>
-
-<p><code>brctl stp br0 on</code> 将br0设置为启用STP协议</p>
-
-<p><code>ifconfig em2 0</code> #将em2的IP设置为0</p>
-
-<p><code>dhclient br0</code> #将br0网络配置好</p>
-
-<p><code>brctl show</code></p>
-
-<p>然后<code>systemctl restart network</code></p>
-
-<p><code>route</code> 查看默认网关</p>
-
-<p><a href="https://wiki.centos.org/zh/HowTos/KVM">https://wiki.centos.org/zh/HowTos/KVM</a></p>
-
-<h2 id="创建虚拟机磁盘镜像文件">创建虚拟机磁盘镜像文件</h2>
-
-<p>不能创建太小,建议5G-50G</p>
-
-<p>qcow2格式是kvm支持的标准格式，raw格式为虚拟磁盘文件通用格式。有测试数据表明raw格式的I/O性能略高于qcow2格式，但是在加密，容量，快照方面qcow2格式有优势</p>
-
-<pre><code>qemu-img create -f qcow2 test.qcow2 20G  //建立qcow2格式磁盘文件
-qemu-img create -f raw test.raw 20G      //建立raw格式磁盘文件
-qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文件
-
-</code></pre>
-
-<h2 id="创建虚拟机">创建虚拟机</h2>
-
-<p>使用<code>osinfo-query os</code>可以查看<code>os-variant</code>都有哪些代号</p>
-
-<p><a href="https://raymii.org/s/articles/virt-install_introduction_and_copy_paste_distro_install_commands.html">https://raymii.org/s/articles/virt-install_introduction_and_copy_paste_distro_install_commands.html</a></p>
-
-<p>创建 Ubuntu</p>
-
-<pre><code>virt-install \
---name ubuntu \
---ram 512 --vcpus 1 \
---boot network,cdrom,menu=on \
---disk path=/disk/kvm/disk1,size=10,format=qcow2,bus=virtio \
---os-type linux \
---os-variant generic \
---nographics --accelerate \
---bridge=br0,model=virtio --keymap=en-us \
---console pty,target_type=serial \
---cdrom=/data/iso/ubuntu-16.04.1-server-amd64.iso \
---extra-args='console=tty0 console=ttyS0,115200n8 serial' \
---hvm --dry-run
-</code></pre>
-
-<p>创建CentOS</p>
-
-<pre><code>virt-install \
---name centos \
---ram 512 --vcpus 1 \
---disk path=/disk/kvm/disk1,size=10,format=qcow2,bus=virtio \
---os-type linux \
---os-variant generic \
---accelerate \
---bridge=br0,model=virtio --keymap=en-us \
---console pty,target_type=serial \
---location=/data/iso/CentOS-7-x86_64-Minimal-1511.iso \
---extra-args='console=tty0 console=ttyS0,115200n8 serial' \
---hvm --dry-run
-</code></pre>
-
-<p>virsh &ndash;connect qemu:///system</p>
-
-<p>创建Debain</p>
-
-<p>先挂载 <code>sudo mount -o loop,unhide -t iso9660 -r /data/iso/debian-8.6.0-amd64-CD-1.iso /mnt/cdrom</code></p>
-
-<p>需要nfs启动 <code>service nfs start</code></p>
-
-<p>添加<code>/mnt/cdrom    *(ro,insecure,all_squash)</code>到文件<code>/etc/exports</code></p>
-
-<p>并刷新<code>exportfs -r</code></p>
-
-<pre><code>virt-install \
---name debain \
---ram 512 --vcpus 1 \
---boot network,cdrom,menu=on \
---disk path=/disk/kvm/disk4,size=10,format=qcow2,bus=virtio \
---os-type linux \
---os-variant generic \
---bridge=br0,model=virtio --keymap=en-us \
---console pty,target_type=serial \
---accelerate \
---location=/mnt/cdrom \
---extra-args='console=tty0 console=ttyS0,115200n8 serial' \
---vnc --vncport=5911 --vnclisten=0.0.0.0 \
---hvm --dry-run
-</code></pre>
-
-<p>创建Windows Server</p>
-
-<p><code>qemu-img create -f qcow2 /disk/kvm/windisk1 50G</code></p>
-
-<p>针对Windows需要安装一些驱动</p>
-
-<p><code>sudo wget https://fedorapeople.org/groups/virt/virtio-win/virtio-win.repo -O /etc/yum.repos.d/virtio-win.repo</code></p>
-
-<p><code>sudo yum install virtio-win</code></p>
-
-<p><a href="https://fedoraproject.org/wiki/Windows_Virtio_Drivers">https://fedoraproject.org/wiki/Windows_Virtio_Drivers</a></p>
-
-<pre><code>virt-install \
---name windows2012 \
---ram 4096 --vcpus 2 \
---disk path=/data/iso/cn_windows_server_2012_r2_with_update_x64_dvd_4048415.iso,device=cdrom \
---disk path=/disk/kvm/windisk1,size=50,format=qcow2,bus=virtio,cache=writeback \
---cdrom=/usr/share/virtio-win/virtio-win-0.1.126.iso \
---os-type windows \
---os-variant win2k12r2 \
---bridge=br0,model=virtio \
---accelerate \
---graphics vnc,port=5999,listen=0.0.0.0 \
---console pty,target_type=serial \
---hvm --dry-run
-</code></pre>
-
-<pre><code>virt-install \
---name xp1 \
---ram 1024 --vcpus 1 \
---disk path=/data/iso/Deepin_Windows_LiteXP_v6.2_SP3.iso,device=cdrom \
---disk path=/disk/kvm/winxp1,size=10,format=qcow2,bus=virtio,cache=writeback \
---cdrom=/usr/share/virtio-win/virtio-win-0.1.126.iso \
---os-type windows \
---os-variant winxp \
---bridge=br0,model=virtio \
---accelerate \
---graphics vnc,port=5999,listen=0.0.0.0 \
---console pty,target_type=serial \
---hvm --dry-run
-</code></pre>
-
-<p>出现<code>ERROR    不能混用 --graphics 和旧式的图形选项</code>可能是需要去掉<code>--keymap</code></p>
-
-<p>关于 加载 virtio 驱动可以参考  <a href="http://www.ilanni.com/?p=5877">http://www.ilanni.com/?p=5877</a></p>
-
-<p><strong>选择加载<code>viostor</code>磁盘驱动</strong></p>
-
-<blockquote>
-<p>disk属性就是指虚拟机使用哪一个磁盘镜像文件作为存储地方，指定刚才创建的镜像文件位置即可，size=10,format=qcow2,bus=virtio分别是指大小，格式（跟镜像格式一致），磁盘总线类型（指Value can be ’ide’, ’scsi’, ’usb’, ’virtio’ or ’xen’，virtio是专门为kvm制定的bus，比较常用），大小需要比镜像文件大小要小，相当于镜像是容器，这个disk是里面的水，水太多就溢出了。</p>
-
-<p>bridge=br0,model=virtio –keymap=en-us分别指网卡使用，网卡模式即驱动模式，和键盘制式，桥接模式都使用br0，而虚拟机需要使用virtio这个驱动才能使用虚拟网卡，这个虚拟网卡驱动在linux下支持很好，在windows下支持一般，键盘制式如果不指定的话会出现键位错乱的情况，一般我们使用英式。</p>
-</blockquote>
-
-<p>使用<code>virsh</code>可以管理已创建的虚拟机</p>
-
-<p>virsh shutdown demo 正常关闭虚拟机</p>
-
-<p>virsh destroy demo 直接销毁虚拟机</p>
-
-<p>可见 <a href="http://www.cnblogs.com/lin1/p/5776280.html">http://www.cnblogs.com/lin1/p/5776280.html</a></p>
-
-<p>启动并进入虚拟机</p>
-
-<pre><code>virsh start 域名 --console
-</code></pre>
-
-<p>10，彻底删除虚拟机</p>
-
-<p>1,删除虚拟机   virsh destroy +域名</p>
-
-<p>2，解除标记     virsh undefine +域名</p>
-
-<p>3，删除虚拟机文件</p>
-
-<p><code>virsh destroy windows2012 &amp;&amp;  virsh undefine windows2012</code></p>
-
-<p>通过virt-clone命令克隆虚拟机</p>
-
-<p><code>virt-clone -o centos -n centos2 -f /disk/kvm/disk2</code></p>
-
-<p><code>virsh -c qemu:///system list</code> 可以查看正在运行的机器</p>
-
-<p><code>virsh vncdisplay windows2012</code>查看vnc端口</p>
-
-<p>可以使用其他机器上的vnc  viewer 连接</p>
-
-<p>本机 <code>virt-viewer --connect qemu:///system windows2012</code></p>
-
-<p>windows系统可使用 vncviewer (<a href="http://share.suconghou.cn/files/bin/vncviewer.zip">http://share.suconghou.cn/files/bin/vncviewer.zip</a>) 连接</p>
-
-<p>全屏下用F8键可唤出菜单.</p>
-
-<h3 id="修改相关">修改相关</h3>
-
-<p><code>hostnamectl</code> 可以查看主机相关信息,主机名,内核版本,64位等</p>
-
-<p>只查看静态、瞬态或灵活主机名，分别使用<code>--static</code>,<code>--transient</code>或<code>--pretty</code>选项</p>
-
-<p>要同时修改所有三个主机名：静态、瞬态和灵活主机名：
-<code>hostnamectl set-hostname Linuxidc</code></p>
-
-<p><code>hostname -I</code> 可以获取所有网卡上配置的IP</p>
 
 			</div>
 		</div>

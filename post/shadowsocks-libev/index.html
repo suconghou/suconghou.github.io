@@ -42,12 +42,14 @@
 
 <p>在alpine里编译</p>
 
+<p><code>apk update &amp;&amp; apk upgrade &amp;&amp; apk add wget make gcc g++ perl</code></p>
+
 <p>先安装依赖</p>
 
 <pre><code># Installation of Libsodium
 cd /tmp
 export LIBSODIUM_VER=1.0.12
-wget https://download.libsodium.org/libsodium/releases/libsodium-$LIBSODIUM_VER.tar.gz
+wget --no-check-certificate https://download.libsodium.org/libsodium/releases/libsodium-$LIBSODIUM_VER.tar.gz
 tar xvf libsodium-$LIBSODIUM_VER.tar.gz
 cd libsodium-$LIBSODIUM_VER
 ./configure --prefix=/usr &amp;&amp; make -j2 &amp;&amp; make install
@@ -56,8 +58,8 @@ ldconfig
 
 # Installation of MbedTLS
 cd /tmp
-export MBEDTLS_VER=2.4.2
-wget https://tls.mbed.org/download/mbedtls-$MBEDTLS_VER-gpl.tgz
+export MBEDTLS_VER=2.5.1
+wget --no-check-certificate https://tls.mbed.org/download/mbedtls-$MBEDTLS_VER-gpl.tgz
 tar xvf mbedtls-$MBEDTLS_VER-gpl.tgz
 cd mbedtls-$MBEDTLS_VER
 make SHARED=1 CFLAGS=-fPIC &amp;&amp; make DESTDIR=/usr install
@@ -68,7 +70,7 @@ ldconfig
 <p>安装完这两个依赖后,下面准备开始静态编译</p>
 
 <pre><code>apk update &amp;&amp; apk upgrade &amp;&amp; apk add gcc g++ make autoconf curl wget build-base linux-headers libev-dev libtool udns-dev libsodium-dev mbedtls-dev pcre-dev
-SS_VER=3.0.6
+SS_VER=3.0.8
 cd /tmp
 curl -sSL https://github.com/shadowsocks/shadowsocks-libev/releases/download/v${SS_VER}/shadowsocks-libev-${SS_VER}.tar.gz |  tar xz --strip 1
 CFLAGS=-Os ./configure --prefix=/usr --enable-static --disable-documentation
@@ -81,7 +83,7 @@ sed -i &quot;s/LDFLAGS = /LDFLAGS = -all-static/g&quot; ./Makefile
 <pre><code>curl -sSL http://www.corpit.ru/mjt/udns/udns-0.4.tar.gz | tar xz &amp;&amp; cd udns-0.4 &amp;&amp; ./configure  &amp;&amp; make -j2
 </code></pre>
 
-<p>复制编译好的<code>libudns.a</code>到<code>/usr/lib/libudns.a</code></p>
+<p>复制编译好的<code>libudns.a</code>到<code>/usr/lib/libudns.a</code>  <code>mv libudns.a /usr/lib/</code></p>
 
 <p>make 之前需要存在以下文件<code>/usr/lib/libev.a /usr/lib/libsodium.a /usr/lib/libmbedcrypto.a  /usr/lib/libpcre.a  /usr/lib/libudns.a</code></p>
 

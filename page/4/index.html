@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.25" />
+	<meta name="generator" content="Hugo 0.26" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -31,6 +31,35 @@
 
 <div class="content container">
 	<div class="posts">
+		
+		<div class="post">
+			<h1 class="post-title">
+				<a href="/software/git-for-windows/"> git for windows</a>
+			</h1>
+			<p class="post-date">Sun, Jul 17, 2016</p>
+			<div class="post-text">
+				
+
+<h2 id="git-for-windows-国内下载">git for windows 国内下载</h2>
+
+<p>所有资源均来源于官网<code>http://git-scm.com/download/win</code></p>
+
+<p><strong>版本2.12.0</strong></p>
+
+<h3 id="32位资源">32位资源</h3>
+
+<p><a href="http://share.suconghou.cn/files/git/Git-2.12.0-32-bit.exe">32位安装版</a></p>
+
+<p><a href="http://share.suconghou.cn/files/git/PortableGit-2.12.0-64-bit.7z.exe">32位绿色版</a></p>
+
+<h3 id="64位资源">64位资源</h3>
+
+<p><a href="http://share.suconghou.cn/files/git/Git-2.12.0-64-bit.exe">64位安装版</a></p>
+
+<p><a href="http://share.suconghou.cn/files/git/PortableGit-2.12.0-64-bit.7z.exe">64位绿色版</a></p>
+
+			</div>
+		</div>
 		
 		<div class="post">
 			<h1 class="post-title">
@@ -487,6 +516,10 @@ ZLIB_ENCODING_DEFLATE 对应于ZLIB格式（注意不是纯DEFLATE格式）</p>
 
 <p>大文件操作</p>
 
+<h2 id="发送-http请求的时候使用指定的host域名解析">发送 http请求的时候使用指定的host域名解析</h2>
+
+<p><a href="http://blog.studygolang.com/2014/02/golang_host/">http://blog.studygolang.com/2014/02/golang_host/</a></p>
+
 			</div>
 		</div>
 		
@@ -502,12 +535,14 @@ ZLIB_ENCODING_DEFLATE 对应于ZLIB格式（注意不是纯DEFLATE格式）</p>
 
 <p>在alpine里编译</p>
 
+<p><code>apk update &amp;&amp; apk upgrade &amp;&amp; apk add wget make gcc g++ perl</code></p>
+
 <p>先安装依赖</p>
 
 <pre><code># Installation of Libsodium
 cd /tmp
 export LIBSODIUM_VER=1.0.12
-wget https://download.libsodium.org/libsodium/releases/libsodium-$LIBSODIUM_VER.tar.gz
+wget --no-check-certificate https://download.libsodium.org/libsodium/releases/libsodium-$LIBSODIUM_VER.tar.gz
 tar xvf libsodium-$LIBSODIUM_VER.tar.gz
 cd libsodium-$LIBSODIUM_VER
 ./configure --prefix=/usr &amp;&amp; make -j2 &amp;&amp; make install
@@ -516,8 +551,8 @@ ldconfig
 
 # Installation of MbedTLS
 cd /tmp
-export MBEDTLS_VER=2.4.2
-wget https://tls.mbed.org/download/mbedtls-$MBEDTLS_VER-gpl.tgz
+export MBEDTLS_VER=2.5.1
+wget --no-check-certificate https://tls.mbed.org/download/mbedtls-$MBEDTLS_VER-gpl.tgz
 tar xvf mbedtls-$MBEDTLS_VER-gpl.tgz
 cd mbedtls-$MBEDTLS_VER
 make SHARED=1 CFLAGS=-fPIC &amp;&amp; make DESTDIR=/usr install
@@ -528,7 +563,7 @@ ldconfig
 <p>安装完这两个依赖后,下面准备开始静态编译</p>
 
 <pre><code>apk update &amp;&amp; apk upgrade &amp;&amp; apk add gcc g++ make autoconf curl wget build-base linux-headers libev-dev libtool udns-dev libsodium-dev mbedtls-dev pcre-dev
-SS_VER=3.0.6
+SS_VER=3.0.8
 cd /tmp
 curl -sSL https://github.com/shadowsocks/shadowsocks-libev/releases/download/v${SS_VER}/shadowsocks-libev-${SS_VER}.tar.gz |  tar xz --strip 1
 CFLAGS=-Os ./configure --prefix=/usr --enable-static --disable-documentation
@@ -541,7 +576,7 @@ sed -i &quot;s/LDFLAGS = /LDFLAGS = -all-static/g&quot; ./Makefile
 <pre><code>curl -sSL http://www.corpit.ru/mjt/udns/udns-0.4.tar.gz | tar xz &amp;&amp; cd udns-0.4 &amp;&amp; ./configure  &amp;&amp; make -j2
 </code></pre>
 
-<p>复制编译好的<code>libudns.a</code>到<code>/usr/lib/libudns.a</code></p>
+<p>复制编译好的<code>libudns.a</code>到<code>/usr/lib/libudns.a</code>  <code>mv libudns.a /usr/lib/</code></p>
 
 <p>make 之前需要存在以下文件<code>/usr/lib/libev.a /usr/lib/libsodium.a /usr/lib/libmbedcrypto.a  /usr/lib/libpcre.a  /usr/lib/libudns.a</code></p>
 
@@ -718,151 +753,6 @@ WantedBy=multi-user.target
 <p>统计当前连接ss的客户端,并统计连接数</p>
 
 <p><code>netstat -nat | grep &quot;192.168.1.3:443&quot; |awk '{print $5}'|awk -F: '{print $1}'|sort|uniq -c|sort -nr|head -20</code></p>
-
-			</div>
-		</div>
-		
-		<div class="post">
-			<h1 class="post-title">
-				<a href="/post/tcpdump/"> 使用tcpdump与ngrep</a>
-			</h1>
-			<p class="post-date">Mon, May 16, 2016</p>
-			<div class="post-text">
-				
-
-<p>各版本 <code>http://www.tcpdump.org/release/</code></p>
-
-<p>安装依赖 <code>yum install -y flex gcc make byacc</code> or <code>apt-get install flex gcc make byacc wget bzip2</code></p>
-
-<pre><code>cd /tmp
-wget http://www.tcpdump.org/release/libpcap-1.7.4.tar.gz
-tar zxf libpcap-1.7.4.tar.gz
-cd libpcap-1.7.4
-./configure --prefix=/tmp/lib
-make -j4 &amp;&amp; make install
-cd ../
-wget http://www.tcpdump.org/release/tcpdump-4.7.4.tar.gz
-tar zxf tcpdump-4.7.4.tar.gz
-cd tcpdump-4.7.4
-./configure --prefix=/tmp  --disable-ipv6 CFLAGS='-O3 -I/tmp/lib/include' LDFLAGS='-L/tmp/lib/lib/libpcap.a'
-make -j4
-make install
-</code></pre>
-
-<p>安装成功后,位于<code>ls -lh /tmp/sbin/tcpdump</code> <code>ldd</code>查看此文件依赖较少,可直接复制到其他Linux上使用.</p>
-
-<p>采用<code>CFLAGS=&quot;-O3&quot;</code>编译后为1.2MB</p>
-
-<p><code>tcpdump -h</code> 查看版本号以及用法</p>
-
-<p>我编译好的tcpdump version 4.7.4</p>
-
-<blockquote>
-<p>64位 <a href="http://share.suconghou.cn/files/bin/tcpdump.xz">http://share.suconghou.cn/files/bin/tcpdump.xz</a></p>
-</blockquote>
-
-<p>也可以直接<code>yum install tcpdump</code></p>
-
-<h2 id="使用tcpdump">使用tcpdump</h2>
-
-<blockquote>
-<p>-a 　　　将网络地址和广播地址转变成名字；</p>
-
-<p>-d 　　　将匹配信息包的代码以人们能够理解的汇编格式给出；</p>
-
-<p>-dd 　　 将匹配信息包的代码以c语言程序段的格式给出；</p>
-
-<p>-ddd 　　将匹配信息包的代码以十进制的形式给出；</p>
-
-<p>-e 　　　在输出行打印出数据链路层的头部信息；</p>
-
-<p>-f 　　　将外部的Internet地址以数字的形式打印出来；</p>
-
-<p>-l 　　　使标准输出变为缓冲行形式；</p>
-
-<p>-n 　　　不把网络地址转换成名字；</p>
-
-<p>-t 　　　在输出的每一行不打印时间戳；</p>
-
-<p>-v 　　　输出一个稍微详细的信息，例如在ip包中可以包括ttl和服务类型的信息；</p>
-
-<p>-vv 　　 输出详细的报文信息；</p>
-
-<p>-c 　　　在收到指定的包的数目后，tcpdump就会停止；</p>
-
-<p>-F 　　　从指定的文件中读取表达式,忽略其它的表达式；</p>
-
-<p>-i 　　　指定监听的网络接口；</p>
-
-<p>-r 　　　从指定的文件中读取包(这些包一般通过-w选项产生)；</p>
-
-<p>-w 　　　直接将包写入文件中，并不分析和打印出来；</p>
-
-<p>-T 　　　将监听到的包直接解释为指定的类型的报文，常见的类型有rpc （远程过程调用）和snmp（简单网络管理协议；</p>
-</blockquote>
-
-<p><code>tcpdump host 210.27.48.1</code></p>
-
-<p><code>sudo tcpdump  host media.suconghou.cn  -v -X</code>  -X 能查看每个TCP报文的十六进制对照</p>
-
-<p><code>sudo tcpdump  host media.suconghou.cn  -v -A</code>  -A 能查看每个TCP报文的数据</p>
-
-<p><code>-A</code>和<code>-X</code>有助于你查看详细的报文数据</p>
-
-<p>tcpdump 对截获的数据并没有进行彻底解码，数据包内的大部分内容是使用十六进制的形式直接打印输出的。</p>
-
-<p>ngrep 对于http数据解析更加清晰.</p>
-
-<h2 id="ngrep">ngrep</h2>
-
-<p>ngrep 编译总是出问题,建议直接安装:<code>apt-get install ngrep</code> <code>yum install ngrep</code></p>
-
-<p>如果更关注于TCP流量内容,可以使用<code>ngrep</code>,他是grep命令的网络版,同样需要libpcap库,能识别TCP、UDP和ICMP包，理解bpf的过滤机制</p>
-
-<p><code>ngrep -W byline -d eno1 port 80</code></p>
-
-<p>用-d指定网卡,使用<code>ifconfig</code>可以查看网卡信息</p>
-
-<pre><code>-e ：显示空数据包
--i ：忽略大小写
--v ：反转匹配
--R ：don't do privilege revocation logic
--x ：以16进制格式显示
--X ：以16进制格式匹配
--w ：整字匹配
--p ：不使用混杂模式
--l ：make stdout line buffered
--D ：replay pcap_dumps with their recorded time intervals
--t ：在每个匹配的包之前显示时间戳
--T ：显示上一个匹配的数据包之间的时间间隔
--M ：仅进行单行匹配
--I ：从文件中读取数据进行匹配
--O ：将匹配的数据保存到文件
--n ：仅捕获指定数目的数据包进行查看
--A ：匹配到数据包后dump随后的指定数目的数据包
--s ：set the bpf caplen
--S ：set the limitlen on matched packets
--W ：设置显示格式byline将解析包中的换行符
--c ：强制显示列的宽度
--q ：is be quiet (don’t print packet reception hash marks)静默模式，如果没有此开关，未匹配的数据包都以&quot;#&quot;显示
--P ：set the non-printable display char to what is specified
--F ：使用文件中定义的bpf(Berkeley Packet Filter)
--N ：显示由IANA定义的子协议号
--d ：使用哪个网卡，可以用-L选项查询
--L ：查询网卡接口
-
-</code></pre>
-
-<p>如果需要匹配关键字可以在-d参数之后, port 参数之前添加字符串匹配</p>
-
-<p>同时可以使用-i忽略大小写,-w整字匹配等</p>
-
-<p><code>sudo ngrep  -W byline -d en0 -iw &quot;easy&quot;  port 80</code></p>
-
-<p>还可以使用这种过滤 <code>host www.google.com and port 80</code></p>
-
-<p>具体使用见
-<a href="http://man.linuxde.net/ngrep">http://man.linuxde.net/ngrep</a></p>
 
 			</div>
 		</div>

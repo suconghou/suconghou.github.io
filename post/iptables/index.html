@@ -190,6 +190,19 @@ iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 <code>yum info ipset -y</code> 安装<code>ipset</code></p>
 </blockquote>
 
+<h3 id="路由黑洞">路由黑洞</h3>
+
+<p>linux 黑洞路由命令
+net-tool 用法
+<code>route add -host 10.10.0.1 127.0.0.1 -blackhole</code>
+iprouter2 用法
+<code>ip route add blackhole 192.168.32.128/32</code></p>
+
+<p>中国 ip 段获取</p>
+
+<pre><code>wget -O- 'http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest' | awk -F\| '/CN\|ipv4/ { printf(&quot;%s/%d\n&quot;, $4, 32-log($5)/log(2)) }' &gt; ./ignore.list
+</code></pre>
+
 <h3 id="端口转发">端口转发</h3>
 
 <p>允许服务器的IP转发功能： <code>echo 1 &gt; /proc/sys/net/ipv4/ip_forward</code></p>
@@ -231,6 +244,8 @@ iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 <p>参考 <a href="http://liaoph.com/iptables/">http://liaoph.com/iptables/</a></p>
 
 <h1 id="firewalld">firewalld</h1>
+
+<p><code>systemctl status firewalld</code> 查看服务状态</p>
 
 <p><code>firewall-cmd --state</code> 常看当前的状态</p>
 

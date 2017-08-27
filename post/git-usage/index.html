@@ -55,6 +55,26 @@ git config --global alias.laststash =&quot;diff stash@{0}^!&quot;
 <p>以上分别是设置用户信息,禁止转换换行符,颜色高亮,记住密码,设置别名列出分支图. 设置别名后,可以使用 <code>git lg</code> 查看各个分支关系</p>
 </blockquote>
 
+<p>设置<code>core.autocrlf false</code> 提交检出均不转换 , 否则同时在Mac,Windows,Linux 跨平台协作开发,eslint 检测换行符错误会很头疼.</p>
+
+<p>见 <a href="http://www.cnblogs.com/sdgf/p/6237847.html">http://www.cnblogs.com/sdgf/p/6237847.html</a></p>
+
+<p>记住密码</p>
+
+<p><code>if [ ! -f ~/.git-credentials ]; then touch ~/.git-credentials; fi</code></p>
+
+<p><code>cat ~/.git-credentials</code></p>
+
+<p>如果不行,可以手动使用<code>http://user:pass@git.xx.cn</code> 格式写入此文件.</p>
+
+<p>还可以记在内存中,指定有效期 <code>git config --global credential.helper &quot;cache --timeout=3600&quot;</code></p>
+
+<p><code>git config credential.helper store</code> 不添加<code>--global</code> 存储在当前项目中</p>
+
+<p>git-for-windows</p>
+
+<p><code>git config --global credential.helper manager</code></p>
+
 <p>使用git还经常碰到文件权限发生变化,也显示文件变动了,需要提交,如果你不想将文件权限的变动纳入版本控制可以</p>
 
 <pre><code>git config core.filemode false
@@ -155,6 +175,10 @@ git config --global https.proxy 'socks5://127.0.0.1:1080'
 </code></pre>
 
 <p><a href="https://segmentfault.com/a/1190000007834504">https://segmentfault.com/a/1190000007834504</a></p>
+
+<h1 id="git-clone">git clone</h1>
+
+<p><code>git clone -b branch url</code> 使用<code>-b</code>参数,可以clone 指定的分支.</p>
 
 <h1 id="git回退">git回退</h1>
 
@@ -264,6 +288,8 @@ git commit -m 'Initial commit'
 
 <p>如果本地分支为空格,则将删除远程分支 <code>git push origin :deletebranch</code></p>
 
+<p>等同于 <code>git push origin --delete deletebranch</code></p>
+
 <h2 id="6-显示所有分支">6.显示所有分支</h2>
 
 <blockquote>
@@ -280,6 +306,10 @@ git commit -m 'Initial commit'
 
 <p><code>git pull origin remotebranch:localbranch</code>
 将远程某分支拉倒本地某分支,当本地分支和远程分支名称相同时，只写一个就可以</p>
+
+<p>提交本地指定的分支 到 远程的一个分支</p>
+
+<p><code>git push origin localbranch:remotebranch</code> (注意,如果本地分支不写,就是删除远程分支的命令)</p>
 
 <h1 id="git-tag-管理">git tag 管理</h1>
 
@@ -355,6 +385,12 @@ git stash pop
 <p>比较两个历史版本之间的差异 <code>git diff SHA1 SHA2</code></p>
 
 <p><code>git diff HEAD application/config/config.php</code></p>
+
+<p>diff 还有两种简要形式</p>
+
+<p><code>git diff HEAD  --stat src</code></p>
+
+<p><code>git diff HEAD  --name-status src</code></p>
 
 <h1 id="给git仓库瘦身">给Git仓库瘦身</h1>
 

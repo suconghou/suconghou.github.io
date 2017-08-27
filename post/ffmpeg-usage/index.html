@@ -113,6 +113,16 @@ file 4.mp4
 <p>直接 <code>mpv url1 url2 url3 url4</code>
 就可以连起来播放</p>
 
+<p><code>mpv</code>播放URL时,先发送一个Head请求,探测文件大小,</p>
+
+<p>HEAD请求使用的user-agent <code>Mozilla/5.0 (X11; Linux x86_64; rv:10.0) Gecko/20150101 Firefox/47.0 (Chrome)</code></p>
+
+<p>随后发送GET请求获取数据,使用的<code>User-Agent: mpv 0.26.0.</code></p>
+
+<p>mpv会读取文件的moov,mdat等信息,可自动处理不是<code>qt-faststart</code>的文件但没有Chrome智能,Chrome浏览器播放视频文件时,也有这个能力.</p>
+
+<p>mpv获取数据是单线程的.</p>
+
 		</div>
 	</div>
 </div>

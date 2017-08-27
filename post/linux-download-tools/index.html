@@ -62,6 +62,12 @@
 
 <p><code>wget -c --limit-rate=30k http://...</code></p>
 
+<h2 id="lftp">lftp</h2>
+
+<p>wget 可以断点续传 但是不支持多线程下载, lftp 的一个用法可以实现多线程下载.</p>
+
+<p><code>lftp -c &quot;pget -n 10 http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.18.tar.gz&quot;</code></p>
+
 <h2 id="curl">curl</h2>
 
 <p>常用的命令</p>
@@ -149,7 +155,9 @@ axel <a href="ftp://ftp.{us,uk,br,fr}.kernel.org/pub/linux/kernel/v2.6/patch-2.6
 
 <p>aria2c支持多种协议,<code>URI</code> <code>MAGNET</code> <code>TORRENT_FILE</code> <code>METALINK_FILE</code>,也支持axel类似的分段下载</p>
 
-<p><a href="https://github.com/aria2/aria2/releases">https://github.com/aria2/aria2/releases</a> 发布 window 和 android 及 osx 系统编译好的, android里为一个可执行文件 .</p>
+<p><a href="https://github.com/aria2/aria2/releases">https://github.com/aria2/aria2/releases</a> 发布 Windows 和 android 及 osx 系统编译好的, android里为一个可执行文件,</p>
+
+<p>但没有Linux版编译好的. 有第三方提供的静态编译好的 <a href="https://github.com/q3aql/aria2-static-builds">https://github.com/q3aql/aria2-static-builds</a> 包含 Linux,Windows</p>
 
 <p><code>aria2c -s 30 -c -o localfilename http://xx.com/downloadfile</code> 30个线程分段下载,存储为localfilename,并断点续传</p>
 
@@ -176,8 +184,6 @@ yum -y install aria2
 </code></pre>
 
 <p>就可以安装成功,只不过CentOS6源里的aria2版本较旧且不再更新了.</p>
-
-<p>也有第三方提供的静态编译好的 <a href="https://github.com/q3aql/aria2-static-builds">https://github.com/q3aql/aria2-static-builds</a></p>
 
 <p>aria2 作为服务运行.</p>
 

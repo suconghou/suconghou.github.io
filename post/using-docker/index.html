@@ -102,6 +102,10 @@ sudo systemctl start docker
 
 <p>阿里云的软件源可以使用内网源不占用外网流量</p>
 
+<p>使用docker 需要开机宿主机IPV4转发功能,否则<code>docker info</code> 会有警告,容器内无法上网</p>
+
+<p><code>sysctl -w net.ipv4.ip_forward=1</code></p>
+
 <h2 id="基本使用">基本使用</h2>
 
 <p>运行<code>docker -v</code>即可查看当前docker版本
@@ -157,6 +161,8 @@ mkdir -pv ~/.docker &amp;&amp; cp -vf ca.pem ~/.docker &amp;&amp; mv server-cert
     &quot;tlskey&quot;: &quot;/root/.docker/key.pem&quot;
 }
 </code></pre>
+
+<p><code>cat /etc/docker/daemon.json | python -m json.tool</code> 格式化</p>
 
 <p><code>sudo systemctl restart docker</code></p>
 
@@ -631,7 +637,7 @@ newgrp docker
 <p>其实可以使用<code>$(docker inspect --format='{{.LogPath}}' &lt;container_name_or_id&gt;)</code>得出此容器的日志存储文件.</p>
 
 <pre><code>sudo ls -lh $(docker inspect --format='{{.LogPath}}' &lt;container_name_or_id&gt;) //查看日志文件
-echo &quot;&quot; &gt; $(docker inspect --format='{{.LogPath}}' &lt;container_name_or_id&gt;) //可以清空日志文件
+echo -n &quot;&quot; &gt; $(docker inspect --format='{{.LogPath}}' &lt;container_name_or_id&gt;) //可以清空日志文件
 </code></pre>
 
 <p>还可以使用<code>truncate -s 0 /var/lib/docker/containers/*/*-json.log</code>清空所有的日志文件.</p>

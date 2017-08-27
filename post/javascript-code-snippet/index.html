@@ -47,6 +47,9 @@
 
 <p>火狐较低版本(火狐43)也是如此</p>
 
+<p><code>+new Date('2017-06-08 21:00:00');</code> 在<code>IE11</code>上得出NaN <code>Safari10</code> 上也得出NaN Chrome 和 Firfox下OK
+原因在于 IE 和 Safari 都不识别以<code>-</code>分割的日期  需要写成 <code>+new Date('2017/06/08 21:00:00');</code> , 这样才能在所有浏览器兼容.</p>
+
 <p>IE10 has not  anchorNode focusNode 属性, 取得选中的文字需要读取 text 属性, IE11 一切正常 , 取得选中文字可以直接 toString</p>
 
 <p>IE10,IE11 不支持 html5 的 download 属性, 无法点击下载自定义名称的html和图片等文件.
@@ -143,7 +146,15 @@ return false;
 
 <p>发现异次元的下载链接</p>
 
-<p>使用 form.submit 向后端提交下载地址,后端302即可实现异步调用文件下载</p>
+<p>使用 form.submit 向后端提交下载地址 (不要使用target _blank) ,后端302即可实现异步调用文件下载</p>
+
+<p>还可以使用定时器设定打开任务,然后ajax回调后设定变量</p>
+
+<h3 id="window-opener">window.opener</h3>
+
+<p><code>window.open</code> 打开同源网站,目标站点可访问 window.opener, 且可操作其opener各种属性和方法</p>
+
+<p>对应打开的非同源网站, 目标站点不能读取 opener的信息,如 location.href. 出现跨域问题,但是可以调用 window.opener.location.replace/assign 等 , 让原网站跳转指定url.</p>
 
 <h3 id="获取查询查询字符串get参数值">获取查询查询字符串get参数值</h3>
 
@@ -216,6 +227,17 @@ return false;
 }
 </code></pre>
 
+<h3 id="cookie操作">Cookie操作</h3>
+
+<pre><code>function setCookie(cookiename, cookievalue, hours)
+{
+	var date = new Date();
+	date.setTime(date.getTime() + Number(hours) * 3600 * 1000);
+	document.cookie = cookiename + &quot;=&quot; + cookievalue + &quot;; path=/;expires = &quot; + date.toGMTString();
+}
+
+</code></pre>
+
 <h3 id="取得cookie中某个键的值">取得Cookie中某个键的值</h3>
 
 <pre><code>$.getCookie = function(name)
@@ -246,6 +268,20 @@ return false;
 	}
 	return(cookieval);
 }
+</code></pre>
+
+<p>类似于 php 中 http_build_query</p>
+
+<p>jQuery 中的 <code>$.param</code></p>
+
+<pre><code>var params = {
+    parameter1: 'value_1',
+    parameter2: 'value 2',
+    parameter3: 'value&amp;3'
+};
+
+var esc = encodeURIComponent;
+var query = Object.keys(params).map(k =&gt; esc(k) + '=' + esc(params[k])).join('&amp;');
 </code></pre>
 
 <h3 id="进入全屏">进入全屏</h3>
@@ -488,17 +524,6 @@ downFile(blob, fileName);
 	link.rel=&quot;prefetch&quot;;
 	document.head.appendChild(link);
 }
-</code></pre>
-
-<h3 id="cookie操作">Cookie操作</h3>
-
-<pre><code>function setCookie(cookiename, cookievalue, hours)
-{
-	var date = new Date();
-	date.setTime(date.getTime() + Number(hours) * 3600 * 1000);
-	document.cookie = cookiename + &quot;=&quot; + cookievalue + &quot;; path=/;expires = &quot; + date.toGMTString();
-}
-
 </code></pre>
 
 <h3 id="用-google-analytics-统计js错误">用<code>Google Analytics</code>统计JS错误</h3>
