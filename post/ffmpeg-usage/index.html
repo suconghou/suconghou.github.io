@@ -65,6 +65,8 @@
 
 <p>可以使用<code>pip install qtfaststart</code>,仅需10KB+</p>
 
+<p><a href="http://blog.chinaunix.net/uid-342902-id-2416123.html">http://blog.chinaunix.net/uid-342902-id-2416123.html</a></p>
+
 <h3 id="flv-to-mp4">flv to mp4</h3>
 
 <p><code>ffmpeg -i input.flv -codec copy output.mp4</code> 快速转化flv到mp4,高质量转化( only changes container without reencoding )</p>
@@ -75,11 +77,17 @@
 
 <p>更多用法可以参考 <a href="http://www.jianshu.com/p/053665062f22">http://www.jianshu.com/p/053665062f22</a></p>
 
-<p>处理m3u8地址视频</p>
+<h4 id="处理m3u8地址视频">处理m3u8地址视频</h4>
 
-<p>下载转码 <code>ffmpeg -i &quot;http://m3u8的地址&quot;&quot; -c copy -bsf:a aac_adtstoasc output.mp4</code></p>
+<p>下载转码 <code>ffmpeg -i &quot;http://m3u8的地址&quot; -c copy -bsf:a aac_adtstoasc output.mp4</code></p>
 
 <p><code>ffmepg -i http://xxx.m3u8 &quot;文件名.mp4&quot;</code></p>
+
+<p>转化为mp4,需要直到结束,一个文件才能完整.可以使其转化为flv文件</p>
+
+<p>ffmpeg -i &ldquo;<a href="http://xxx.m3u8&quot;">http://xxx.m3u8&quot;</a> -b 8M -r 12 -g 12  output1.flv</p>
+
+<p><code>ffmepg - i &quot;http://xxx.m3u8&quot;  -b 2M out.flv</code></p>
 
 <p><code>ffmpeg -i xx.rmvb   -c:a copy -movflags faststart output.mp4</code></p>
 
@@ -88,6 +96,8 @@
 <p>转换为flv,需要设置码率高一些,不然视频画面,严重模糊,设置比特率高些不很影响转码速度</p>
 
 <p>使用<code>-b</code>设置比特率,默认为200Kbit/s,这里改为2048</p>
+
+<p><code>-r</code> 设定视屏帧率 即 fps</p>
 
 <p><code>ffmepg -i xx.rmvb -b 2M a.flv</code></p>
 

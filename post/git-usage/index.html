@@ -149,6 +149,15 @@ git config --global alias.laststash =&quot;diff stash@{0}^!&quot;
 
 <p>以后可以使用<code>git push all master</code>一次推送到多个后端</p>
 
+<h1 id="git-clone">git clone</h1>
+
+<pre><code>git clone https://xxx --branch $BRANCH --single-branch --depth=1
+</code></pre>
+
+<p>clone 某个分支的最新代码，不要历史记录</p>
+
+<p><code>git clone -b branch url</code> 使用<code>-b</code>参数,可以clone 指定的分支.</p>
+
 <h1 id="git使用代理">git使用代理</h1>
 
 <p>使用代理</p>
@@ -175,10 +184,6 @@ git config --global https.proxy 'socks5://127.0.0.1:1080'
 </code></pre>
 
 <p><a href="https://segmentfault.com/a/1190000007834504">https://segmentfault.com/a/1190000007834504</a></p>
-
-<h1 id="git-clone">git clone</h1>
-
-<p><code>git clone -b branch url</code> 使用<code>-b</code>参数,可以clone 指定的分支.</p>
 
 <h1 id="git回退">git回退</h1>
 

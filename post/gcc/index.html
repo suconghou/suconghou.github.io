@@ -120,7 +120,7 @@ link 的时候使用 <code>--gc-sections</code></p>
 
 <p>链接操作以section作为最小的处理单元，只要一个section中有某个符号被引用，该section就会被放入output中。</p>
 
-<p>这些选项一起使用会从最终的输出文件中删除所有未被使用的function和data， 只包含用到的unction和data</p>
+<p>这些选项一起使用会从最终的输出文件中删除所有未被使用的function和data， 只包含用到的function和data</p>
 
 <p>export CFLAGS=&ldquo;-Os -ffunction-sections -fdata-sections&rdquo;
 export LDFLAGS=&ldquo;-Wl,&ndash;gc-sections&rdquo;</p>

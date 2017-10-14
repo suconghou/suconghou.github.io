@@ -175,9 +175,9 @@ CPU天梯图其他版本
       <guid>http://blog.suconghou.cn/post/memcached-usage/</guid>
       <description>安装memcached http://memcached.org/downloads
 memcached所有版本见http://www.memcached.org/files/
-cd /tmp MEMCACHE_VERSION=memcached-1.5.0 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l` wget http://www.memcached.org/files/${MEMCACHE_VERSION}.tar.gz tar xzf ${MEMCACHE_VERSION}.tar.gz cd ${MEMCACHE_VERSION} export CFLAGS=&amp;quot;-O3&amp;quot; ./configure make -j$CPU_NUM &amp;amp;&amp;amp; make install  docker版本见:https://hub.docker.com/r/suconghou/memcached/
+cd /tmp MEMCACHE_VERSION=memcached-1.5.1 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l` wget http://www.memcached.org/files/${MEMCACHE_VERSION}.tar.gz tar xzf ${MEMCACHE_VERSION}.tar.gz cd ${MEMCACHE_VERSION} export CFLAGS=&amp;quot;-O3&amp;quot; ./configure make -j$CPU_NUM &amp;amp;&amp;amp; make install  docker版本见:https://hub.docker.com/r/suconghou/memcached/
 静态编译 apk update &amp;amp;&amp;amp; apk upgrade &amp;amp;&amp;amp; apk add gcc g++ make wget  wget --no-check-certificate https://github.com/libevent/libevent/releases/download/release-2.1.8-stable/libevent-2.1.8-stable.tar.gz tar zxf libevent-2.1.8-stable.tar.gz cd libevent-2.1.8-stable ./configure &amp;amp;&amp;amp; make &amp;amp;&amp;amp; make install  libevent编译很快,不到一分钟
-cd /tmp MEMCACHE_VERSION=memcached-1.5.0 wget http://www.memcached.org/files/${MEMCACHE_VERSION}.tar.gz tar xzf ${MEMCACHE_VERSION}.tar.gz cd ${MEMCACHE_VERSION} export CFLAGS=&amp;quot;-O3&amp;quot; .</description>
+cd /tmp MEMCACHE_VERSION=memcached-1.5.1 wget http://www.memcached.org/files/${MEMCACHE_VERSION}.tar.gz tar xzf ${MEMCACHE_VERSION}.tar.gz cd ${MEMCACHE_VERSION} export CFLAGS=&amp;quot;-O3&amp;quot; .</description>
     </item>
     
     <item>
@@ -604,12 +604,12 @@ http://evermeet.cx/ffmpeg/
 -movflags faststart 可修改MP4的moov
 关于faststart还有一个python项目,类似于ffmpeg软件包中的qt-faststart https://github.com/danielgtaylor/qtfaststart
 可以使用pip install qtfaststart,仅需10KB+
+http://blog.chinaunix.net/uid-342902-id-2416123.html
 flv to mp4 ffmpeg -i input.flv -codec copy output.mp4 快速转化flv到mp4,高质量转化( only changes container without reencoding )
 ffmpeg -i input.flv -c copy -copyts output.mp4 也比较快,高质量转化
 ffmpeg -i aaa.flv -c:v libx264 -crf 28 output.mp4 带压缩的转换,非常消耗CPU和时间
 更多用法可以参考 http://www.jianshu.com/p/053665062f22
-处理m3u8地址视频
-下载转码 ffmpeg -i &amp;quot;http://m3u8的地址&amp;quot;&amp;quot; -c copy -bsf:a aac_adtstoasc output.</description>
+处理m3u8地址视频 下载转码 ffmpeg -i &amp;quot;http://m3u8的地址&amp;quot; -c copy -bsf:a aac_adtstoasc output.</description>
     </item>
     
     <item>
@@ -633,8 +633,8 @@ if [ ! -f ~/.</description>
       <guid>http://blog.suconghou.cn/post/sublime-usage/</guid>
       <description>配置文件 最喜欢的字体Monaco,此处下载
 配置文件 Preferences.sublime-settings
-{ &amp;quot;close_windows_when_empty&amp;quot;: true, &amp;quot;default_encoding&amp;quot;: &amp;quot;UTF-8&amp;quot;, &amp;quot;default_line_ending&amp;quot;: &amp;quot;unix&amp;quot;, &amp;quot;ensure_newline_at_eof_on_save&amp;quot;: true, &amp;quot;font_face&amp;quot;: &amp;quot;Monaco&amp;quot;, &amp;quot;font_size&amp;quot;: 13, &amp;quot;highlight_line&amp;quot;: true, &amp;quot;highlight_modified_tabs&amp;quot;: true, &amp;quot;ignored_packages&amp;quot;: [ &amp;quot;Vintage&amp;quot; ], &amp;quot;show_encoding&amp;quot;: true, &amp;quot;show_line_endings&amp;quot;: true, &amp;quot;tab_size&amp;quot;: 4, &amp;quot;translate_tabs_to_spaces&amp;quot;: false, &amp;quot;trim_trailing_white_space_on_save&amp;quot;: true, &amp;quot;update_check&amp;quot;: false, &amp;quot;word_wrap&amp;quot;: false }  插件 open_browser.py 插件
-import sublime, sublime_plugin import webbrowser import os url_map = { &#39;D:\\git\\bbs\\&#39; : &#39;http://127.0.0.3/&#39;, &#39;D:\\php\\su\\&#39; : &#39;http://127.0.0.2/&#39;, &#39;D:\\php\\htdocs\\&#39; : &#39;http://127.0.0.1/&#39; } class OpenBrowserCommand(sublime_plugin.TextCommand): def run(self,edit): window = sublime.</description>
+{ &amp;quot;close_windows_when_empty&amp;quot;: true, &amp;quot;default_encoding&amp;quot;: &amp;quot;UTF-8&amp;quot;, &amp;quot;default_line_ending&amp;quot;: &amp;quot;unix&amp;quot;, &amp;quot;folder_exclude_patterns&amp;quot;: [ &amp;quot;.svn&amp;quot;, &amp;quot;.git&amp;quot;, &amp;quot;.hg&amp;quot;, &amp;quot;CVS&amp;quot;, &amp;quot;node_modules&amp;quot; ], &amp;quot;font_face&amp;quot;: &amp;quot;Monaco&amp;quot;, &amp;quot;font_size&amp;quot;: 14, &amp;quot;highlight_line&amp;quot;: true, &amp;quot;highlight_modified_tabs&amp;quot;: true, &amp;quot;ignored_packages&amp;quot;: [ &amp;quot;Vintage&amp;quot; ], &amp;quot;show_encoding&amp;quot;: true, &amp;quot;show_line_endings&amp;quot;: true, &amp;quot;tab_size&amp;quot;: 4, &amp;quot;translate_tabs_to_spaces&amp;quot;: false, &amp;quot;update_check&amp;quot;: false, &amp;quot;word_wrap&amp;quot;: false }  插件 open_browser.py 插件
+import sublime, sublime_plugin import webbrowser import os url_map = { &#39;D:\\git\\bbs\\&#39; : &#39;http://127.0.0.3/&#39;, &#39;D:\\php\\su\\&#39; : &#39;http://127.0.0.2/&#39;, &#39;D:\\php\\htdocs\\&#39; : &#39;http://127.0.0.1/&#39; } class OpenBrowserCommand(sublime_plugin.</description>
     </item>
     
     <item>
@@ -687,8 +687,7 @@ yum install make gcc zlib-devel glibc-static gcc-c++ -y make -j4  一些必备pa
       <description>基于网页的P2P文件分享 https://www.sharedrop.io/
 云计算,存储,分发等 阿里百川 淘宝开放平台
 淘宝云盘,也外链图片做图床 淘宝CDN,速度很快,https,仅仅图片限制3M以内
- 包含容器引擎（TAE）, 多媒体存储处理分发, 可免费使用一年
- 网易的Docker服务
+网易的Docker服务
  价格略贵最低29/月
  bmob移动后端云,网友示例项目BandwaghonhostAPP,结合mui移动开发框架开发手机APP
 短信,推动消息等  阿里大鱼   阿里巴巴旗下的短信验证码通知服务,价格实惠,短信通知≤0.045元／条,还有文本转语音通知≤0.055元／条
@@ -706,7 +705,9 @@ mobiscroll 移动开发UI,丰富的时间选择器控件还有一些WEBAPP展示
 网页动画 百度zrender 基于Canvas的图形仓库交互工具,可以方便的画出很多图形
 游戏引擎 阿里Hilo 游戏渲染引擎,实现2048,切水果等.
 http://www.egret.com/ 白鹭也是做这个的
-https://github.com/iioinc/iio.js 也是canvas的游戏</description>
+https://github.com/iioinc/iio.js 也是canvas的游戏
+网页富文本编辑器 wangeditor 轻量简介的富文本编辑器,使用容易,相比百度umeditor更简洁
+medium-editor 一个非常简洁的输入框,支持很多插件扩充</description>
     </item>
     
     <item>

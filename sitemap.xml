@@ -218,13 +218,13 @@
   </url>
   
   <url>
-    <loc>http://blog.suconghou.cn/tags/blog/</loc>
+    <loc>http://blog.suconghou.cn/categories/blog/</loc>
     <lastmod>2016-01-01T19:00:18+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://blog.suconghou.cn/categories/blog/</loc>
+    <loc>http://blog.suconghou.cn/tags/blog/</loc>
     <lastmod>2016-01-01T19:00:18+08:00</lastmod>
     <priority>0</priority>
   </url>
@@ -248,13 +248,13 @@
   </url>
   
   <url>
-    <loc>http://blog.suconghou.cn/tags/linux/</loc>
+    <loc>http://blog.suconghou.cn/categories/linux/</loc>
     <lastmod>2016-01-21T13:40:53+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://blog.suconghou.cn/categories/linux/</loc>
+    <loc>http://blog.suconghou.cn/tags/linux/</loc>
     <lastmod>2016-01-21T13:40:53+08:00</lastmod>
     <priority>0</priority>
   </url>

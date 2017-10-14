@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.26" />
+	<meta name="generator" content="Hugo 0.29" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -651,6 +651,8 @@ mysqldump -uroot -pdbpasswd dbname test&gt;db.sql;</p>
 
 <p>可以使用<code>pip install qtfaststart</code>,仅需10KB+</p>
 
+<p><a href="http://blog.chinaunix.net/uid-342902-id-2416123.html">http://blog.chinaunix.net/uid-342902-id-2416123.html</a></p>
+
 <h3 id="flv-to-mp4">flv to mp4</h3>
 
 <p><code>ffmpeg -i input.flv -codec copy output.mp4</code> 快速转化flv到mp4,高质量转化( only changes container without reencoding )</p>
@@ -661,11 +663,17 @@ mysqldump -uroot -pdbpasswd dbname test&gt;db.sql;</p>
 
 <p>更多用法可以参考 <a href="http://www.jianshu.com/p/053665062f22">http://www.jianshu.com/p/053665062f22</a></p>
 
-<p>处理m3u8地址视频</p>
+<h4 id="处理m3u8地址视频">处理m3u8地址视频</h4>
 
-<p>下载转码 <code>ffmpeg -i &quot;http://m3u8的地址&quot;&quot; -c copy -bsf:a aac_adtstoasc output.mp4</code></p>
+<p>下载转码 <code>ffmpeg -i &quot;http://m3u8的地址&quot; -c copy -bsf:a aac_adtstoasc output.mp4</code></p>
 
 <p><code>ffmepg -i http://xxx.m3u8 &quot;文件名.mp4&quot;</code></p>
+
+<p>转化为mp4,需要直到结束,一个文件才能完整.可以使其转化为flv文件</p>
+
+<p>ffmpeg -i &ldquo;<a href="http://xxx.m3u8&quot;">http://xxx.m3u8&quot;</a> -b 8M -r 12 -g 12  output1.flv</p>
+
+<p><code>ffmepg - i &quot;http://xxx.m3u8&quot;  -b 2M out.flv</code></p>
 
 <p><code>ffmpeg -i xx.rmvb   -c:a copy -movflags faststart output.mp4</code></p>
 
@@ -674,6 +682,8 @@ mysqldump -uroot -pdbpasswd dbname test&gt;db.sql;</p>
 <p>转换为flv,需要设置码率高一些,不然视频画面,严重模糊,设置比特率高些不很影响转码速度</p>
 
 <p>使用<code>-b</code>设置比特率,默认为200Kbit/s,这里改为2048</p>
+
+<p><code>-r</code> 设定视屏帧率 即 fps</p>
 
 <p><code>ffmepg -i xx.rmvb -b 2M a.flv</code></p>
 
@@ -831,6 +841,15 @@ git config --global alias.laststash =&quot;diff stash@{0}^!&quot;
 
 <p>以后可以使用<code>git push all master</code>一次推送到多个后端</p>
 
+<h1 id="git-clone">git clone</h1>
+
+<pre><code>git clone https://xxx --branch $BRANCH --single-branch --depth=1
+</code></pre>
+
+<p>clone 某个分支的最新代码，不要历史记录</p>
+
+<p><code>git clone -b branch url</code> 使用<code>-b</code>参数,可以clone 指定的分支.</p>
+
 <h1 id="git使用代理">git使用代理</h1>
 
 <p>使用代理</p>
@@ -857,10 +876,6 @@ git config --global https.proxy 'socks5://127.0.0.1:1080'
 </code></pre>
 
 <p><a href="https://segmentfault.com/a/1190000007834504">https://segmentfault.com/a/1190000007834504</a></p>
-
-<h1 id="git-clone">git clone</h1>
-
-<p><code>git clone -b branch url</code> 使用<code>-b</code>参数,可以clone 指定的分支.</p>
 
 <h1 id="git回退">git回退</h1>
 
@@ -1197,9 +1212,16 @@ make install
 	&quot;close_windows_when_empty&quot;: true,
 	&quot;default_encoding&quot;: &quot;UTF-8&quot;,
 	&quot;default_line_ending&quot;: &quot;unix&quot;,
-	&quot;ensure_newline_at_eof_on_save&quot;: true,
+	&quot;folder_exclude_patterns&quot;:
+	[
+		&quot;.svn&quot;,
+		&quot;.git&quot;,
+		&quot;.hg&quot;,
+		&quot;CVS&quot;,
+		&quot;node_modules&quot;
+	],
 	&quot;font_face&quot;: &quot;Monaco&quot;,
-	&quot;font_size&quot;: 13,
+	&quot;font_size&quot;: 14,
 	&quot;highlight_line&quot;: true,
 	&quot;highlight_modified_tabs&quot;: true,
 	&quot;ignored_packages&quot;:
@@ -1210,10 +1232,10 @@ make install
 	&quot;show_line_endings&quot;: true,
 	&quot;tab_size&quot;: 4,
 	&quot;translate_tabs_to_spaces&quot;: false,
-	&quot;trim_trailing_white_space_on_save&quot;: true,
 	&quot;update_check&quot;: false,
 	&quot;word_wrap&quot;: false
 }
+
 </code></pre>
 
 <h2 id="插件">插件</h2>
@@ -1279,7 +1301,24 @@ class OpenBrowserCommand(sublime_plugin.TextCommand):
 
 <h2 id="激活码">激活码</h2>
 
-<p>3103可用激活码</p>
+<p>Sublime Text 3 build 3143 LICENSE</p>
+
+<pre><code>—– BEGIN LICENSE —–
+TwitterInc
+200 User License
+EA7E-890007
+1D77F72E 390CDD93 4DCBA022 FAF60790
+61AA12C0 A37081C5 D0316412 4584D136
+94D7F7D4 95BC8C1C 527DA828 560BB037
+D1EDDD8C AE7B379F 50C9D69D B35179EF
+2FE898C4 8E4277A8 555CE714 E1FB0E43
+D5D52613 C3D12E98 BC49967F 7652EED2
+9D2D2E61 67610860 6D338B72 5CF95C69
+E36B85CC 84991F19 7575D828 470A92AB
+—— END LICENSE ——
+</code></pre>
+
+<p>3103,3126可用激活码</p>
 
 <pre><code>—– BEGIN LICENSE —–
 Ryan Clark
@@ -1757,7 +1796,7 @@ Ctrl + n：历史中的下一条命令</p>
     
     
     
-     
+    
         
         
     
@@ -1769,7 +1808,7 @@ Ctrl + n：历史中的下一条命令</p>
     
     
     
-     
+    
         
         
     
@@ -1781,7 +1820,7 @@ Ctrl + n：历史中的下一条命令</p>
     
     
     
-     
+    
         
         
     
@@ -1813,7 +1852,7 @@ Ctrl + n：历史中的下一条命令</p>
     
     
     
-     
+    
         
         
     
@@ -1825,7 +1864,7 @@ Ctrl + n：历史中的下一条命令</p>
     
     
     
-     
+    
         
         
     
@@ -1837,7 +1876,7 @@ Ctrl + n：历史中的下一条命令</p>
     
     
     
-     
+    
         
         
     
@@ -1849,7 +1888,7 @@ Ctrl + n：历史中的下一条命令</p>
     
     
     
-     
+    
         
         
     

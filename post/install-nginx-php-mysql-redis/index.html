@@ -623,6 +623,15 @@ make -j$CPU_NUM &amp;&amp; make install
 
 <p>包含<code>php-fpm</code>和<code>opcache</code>,添加其他常用扩展<code>--enable-exif --enable-calendar --with-xsl --with-bz2</code></p>
 
+<p>注意编译GD库的时候需要<code>--with-freetype-dir=/usr/include/freetype2</code>否则会出现<code>Call to undefined function imagettftext()</code></p>
+
+<pre><code>字库 配置开关
+FreeType 1.x 要激活 FreeType 1.x 的支持，加上 --with-ttf[=DIR]。
+FreeType 2 要激活 FreeType 2 的支持，加上 --with-freetype-dir=DIR。
+T1lib 要激活 T1lib（Type 1 字体），加上 --with-t1lib[=DIR]。
+本地 TrueType 字符串函数 要激活本地 TrueType 字符串函数的支持，加上 --enable-gd-native-ttf。
+</code></pre>
+
 <pre><code>./configure --enable-inline-optimization --enable-static=yes --prefix=/usr/local --with-config-file-path=/etc --disable-cgi --enable-opcache --enable-fpm  --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath --enable-zip --enable-mbstring --enable-gd-native-ttf --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd --with-freetype-dir=/usr/include/freetype2 --with-png-dir=/usr/include --with-jpeg-dir=/usr/include --with-openssl --with-mcrypt --enable-exif --enable-calendar  --with-xsl --with-bz2
 make -j$CPU_NUM &amp;&amp; make install
 </code></pre>
@@ -903,7 +912,7 @@ pm.max_requests = 500
 <p><code>apk update &amp;&amp; apk upgrade &amp;&amp; apk add make gcc g++ linux-headers</code></p>
 
 <pre><code>cd /tmp
-REDIS_VERSION=redis-4.0.1
+REDIS_VERSION=redis-4.0.2
 wget http://download.redis.io/releases/${REDIS_VERSION}.tar.gz
 tar xzf ${REDIS_VERSION}.tar.gz
 cd ${REDIS_VERSION}

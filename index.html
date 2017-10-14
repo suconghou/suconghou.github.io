@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.26" />
+	<meta name="generator" content="Hugo 0.29" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -92,7 +92,19 @@ sed -i &quot;s{/etc/hosts{/data/data/cn.suconghou.hello/files/hosts{&quot; ./src
 
 <p>替换3: 替换<code>/bin/sh</code>,使我们可以使用android的sh</p>
 
-<p><code>grep -rn &quot;/bin/sh&quot; .</code> 即可查找到较多结果,我们需要修改<code>./include/paths.h</code>,<code>./src/legacy/getusershell.c</code>,<code>./src/misc/wordexp.c</code>,<code>./src/process/system.c</code>,<code>./src/stdio/popen.c</code> 这5个文件</p>
+<p><code>grep -rn &quot;/bin/sh&quot; .</code> 即可查找到较多结果,我们需要修改</p>
+
+<p><code>./include/paths.h</code></p>
+
+<p><code>./src/legacy/getusershell.c</code></p>
+
+<p><code>./src/misc/wordexp.c</code></p>
+
+<p><code>./src/process/system.c</code></p>
+
+<p><code>./src/stdio/popen.c</code></p>
+
+<p>这5个文件</p>
 
 <pre><code>sed -i &quot;s{/bin/sh{/system/bin/sh{&quot; ./include/paths.h
 sed -i &quot;s{/bin/sh{/system/bin/sh{&quot; ./src/legacy/getusershell.c
@@ -235,7 +247,8 @@ make -j4 &amp;&amp; make install
 
 <p>这次我们指定php.ini的文件位置</p>
 
-<p><code>--with-config-file-scan-dir=/data/data/cn.suconghou.hello/files/conf.d --with-config-file-path=/data/data/cn.suconghou.hello/files</code></p>
+<pre><code>--with-config-file-scan-dir=/data/data/cn.suconghou.hello/files/conf.d --with-config-file-path=/data/data/cn.suconghou.hello/files
+</code></pre>
 
 <pre><code>LDFLAGS=&quot;-static -L/deps/lib&quot; CFLAGS=&quot;--sysroot=/arm-linux-musleabi/arm-linux-musleabi -Os&quot; CXXFLAGS=&quot;--sysroot=/arm-linux-musleabi/arm-linux-musleabi -Os&quot; ./configure --with-config-file-scan-dir=&quot;/data/data/cn.suconghou.hello/files/conf.d&quot; --with-config-file-path=&quot;/data/data/cn.suconghou.hello/files&quot; --host=arm-linux-musleabi --enable-inline-optimization --enable-static=yes --enable-shared=no --without-pear --disable-cgi --disable-opcache --disable-fpm --disable-phpdbg --disable-all --enable-cli --enable-tokenizer --enable-session --enable-json  --enable-mbstring --enable-mbregex --enable-filter --enable-hash --enable-zip --enable-phar --with-sqlite3 --with-openssl=/deps --with-curl=/deps --with-zlib-dir=/deps
 </code></pre>
@@ -681,7 +694,7 @@ link 的时候使用 <code>--gc-sections</code></p>
 
 <p>链接操作以section作为最小的处理单元，只要一个section中有某个符号被引用，该section就会被放入output中。</p>
 
-<p>这些选项一起使用会从最终的输出文件中删除所有未被使用的function和data， 只包含用到的unction和data</p>
+<p>这些选项一起使用会从最终的输出文件中删除所有未被使用的function和data， 只包含用到的function和data</p>
 
 <p>export CFLAGS=&ldquo;-Os -ffunction-sections -fdata-sections&rdquo;
 export LDFLAGS=&ldquo;-Wl,&ndash;gc-sections&rdquo;</p>
@@ -882,7 +895,7 @@ gzip_types text/plain text/javascript text/css text/json application/xml applica
     
     
     
-     
+    
         
         
     
@@ -894,7 +907,7 @@ gzip_types text/plain text/javascript text/css text/json application/xml applica
     
     
     
-     
+    
         
         
     
@@ -906,7 +919,7 @@ gzip_types text/plain text/javascript text/css text/json application/xml applica
     
     
     
-     
+    
         
         
     
@@ -965,7 +978,7 @@ gzip_types text/plain text/javascript text/css text/json application/xml applica
     
     
     
-     
+    
         
         
     

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.26" />
+	<meta name="generator" content="Hugo 0.29" />
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='renderer' content='webkit'>
@@ -360,18 +360,46 @@ haproxy -f /etc/haproxy/haproxy.cfg -sf $(cat /var/run/haproxy.pid)
 defaults
         log global
         mode    tcp
+        retries 3
         option  dontlognull
         timeout connect 1000
         timeout client  150000
         timeout server  150000
+        option srvtcpka
+        option clitcpka
 
 frontend ss-in
         bind *:80
         default_backend ss-out
 
 backend ss-out
-        server server1 208.81.202.208:443 maxconn 20480
+        server server1 208.81.202.x:443 maxconn 20480
 
+</code></pre>
+
+<p>可以直接使用listen,更加简洁的创建一个关联server</p>
+
+<pre><code>global
+        pidfile   /var/run/haproxy.pid
+        ulimit-n  15000
+        user        nobody
+        group       nobody
+        daemon
+
+defaults
+        log global
+        mode    tcp
+        retries 3
+        option  dontlognull
+        timeout connect 1000
+        timeout client  150000
+        timeout server  150000
+        option srvtcpka
+        option clitcpka
+
+listen sss
+        bind 0.0.0.0:9878
+        server v 192.243.x.x:1443 maxconn 2048
 </code></pre>
 
 <p><code>haproxy -D -f /etc/haproxy/haproxy.cfg</code>启动,参数<code>-D</code>为goes daemon</p>
@@ -579,7 +607,7 @@ fi
     
     
     
-     
+    
         
         
     
@@ -591,7 +619,7 @@ fi
     
     
     
-     
+    
         
         
     
@@ -603,7 +631,7 @@ fi
     
     
     
-     
+    
         
         
     
@@ -615,7 +643,7 @@ fi
     
     
     
-     
+    
         
         
     
@@ -665,7 +693,7 @@ fi
     
     
     
-     
+    
         
         
     
