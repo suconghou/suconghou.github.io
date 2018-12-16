@@ -6,10 +6,260 @@
     <description>Recent content in Posts on 苏苏的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 24 May 2017 13:25:49 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 20 Sep 2018 13:57:44 +0800</lastBuildDate>
     
 	<atom:link href="http://blog.suconghou.cn/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Dnscrypt Proxy配置</title>
+      <link>http://blog.suconghou.cn/post/dnscrypt-proxy/</link>
+      <pubDate>Thu, 20 Sep 2018 13:57:44 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/dnscrypt-proxy/</guid>
+      <description>默认的配置文件是当前目录下的 dnscrypt-proxy.toml, 可以使用-config指定配置文件
+ listen_addresses = [&#39;0.0.0.0:53&#39;] max_clients = 250 ipv4_servers = true ipv6_servers = false dnscrypt_servers = true doh_servers = true require_dnssec = false require_nolog = true require_nofilter = true force_tcp = false timeout = 2500 keepalive = 30 lb_strategy = &#39;fastest&#39; use_syslog = false cert_refresh_delay = 240 fallback_resolver = &#39;114.114.114.114:53&#39; ignore_system_dns = false netprobe_timeout = 30 log_files_max_size = 10 log_files_max_age = 7 log_files_max_backups = 1 block_ipv6 = true cache = true cache_size = 512 cache_min_ttl = 600 cache_max_ttl = 86400 cache_neg_min_ttl = 60 cache_neg_max_ttl = 600 [query_log] file = &#39;query.</description>
+    </item>
+    
+    <item>
+      <title>Linux系统优化的其他配置</title>
+      <link>http://blog.suconghou.cn/post/linux-improve/</link>
+      <pubDate>Wed, 19 Sep 2018 12:07:45 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/linux-improve/</guid>
+      <description>Linux 性能优化 ulimit 查看 ulimit -a 查看配置
+可根据pid查看某一进程目前的限制
+cat /proc/16223/limits
+查看每个进程所允许的最大opend files ulimit -n
+查看目前系统已打开的open files lsof | wc -l 或者 ls -l /proc/*/fd | wc -l
+lsof会列出重复的, 使用 lsof|awk &#39;{print $9}&#39;|sort|uniq|wc -l 可以去除重复
+cat /proc/sys/fs/file-nr 会在系统内核层面统计,比较正确
+查看系统所允许的最大open files cat /proc/sys/fs/file-max
+查看一个进程目前已打开的 lsof -p 28290 或者 lsof -a -p 28290
+或者
+ls -l /proc/28290/fd | wc -l
+查看 hard limit ulimit -Hn
+查看 soft limit ulimit -Sn
+修改 ulimit -n 81920 修改每个进程所允许的最大</description>
+    </item>
+    
+    <item>
+      <title>收集的图片压缩工具</title>
+      <link>http://blog.suconghou.cn/post/image-compress-tools/</link>
+      <pubDate>Wed, 29 Aug 2018 14:10:29 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/image-compress-tools/</guid>
+      <description>png 图片压缩工具 https://css-ig.net/png-tools-overview.php#overview
+https://github.com/chrissimpkins/Crunch
+https://nukesaq88.github.io/Pngyu/
+图像压缩软件 ImageOptim无损压缩
+mozjpeg Mozilla的jpg压缩技术,支持无损,有损压缩在线压缩,最大2M.
+tinypng 众多压缩软件中压缩效果较好的,支持png,jpg在线批量压缩
+kraken 类似于tinypng,也提供在线压缩
+pngquant 开源的压缩png,据说tinypng基于此项目
+nodejs imagemin NodeJs模块,压缩jpg,png,压缩效果一般
+国内在线压缩 https://imgless.com/
+https://zhitu.isux.us/
+https://www.picdiet.com/zh-cn</description>
+    </item>
+    
+    <item>
+      <title>一些好用的WEB文件管理器</title>
+      <link>http://blog.suconghou.cn/post/file-manage/</link>
+      <pubDate>Sat, 25 Aug 2018 17:57:58 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/file-manage/</guid>
+      <description>filebrowser https://github.com/filebrowser/filebrowser
+Caddy 有插件集成
+filerun php 开发
+https://www.filerun.com/download
+filerun 的模式和 nextcloud 类似,比较复杂
+h5ai h5ai 是一个比较简单的php网盘
+https://larsjung.de/h5ai/</description>
+    </item>
+    
+    <item>
+      <title>调试微信内置浏览器和QQ浏览器</title>
+      <link>http://blog.suconghou.cn/post/debug-x5-webview/</link>
+      <pubDate>Sat, 18 Aug 2018 14:01:26 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/debug-x5-webview/</guid>
+      <description>调试QQ浏览器X5内核 用QQ浏览器或者微信打开 http://debugx5.qq.com/
+注意不要使用https访问
+微信内还可以对内核调试 微信打开 http://debugtbs.qq.com/
+Chrome 打开 chrome://inspect/#devices
+使用其他 工具 https://github.com/liriliri/eruda</description>
+    </item>
+    
+    <item>
+      <title>FRP内网穿透</title>
+      <link>http://blog.suconghou.cn/post/frp-net-tunnel/</link>
+      <pubDate>Sun, 27 May 2018 14:39:41 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/frp-net-tunnel/</guid>
+      <description>配置frp服务器端 查看 https://github.com/fatedier/frp
+服务器端配置文件/etc/frps.ini
+[common] bind_port = 7000 kcp_bind_port = 7000 privilege_allow_ports = 7700,7800-7900 vhost_http_port = 5050 dashboard_port = 7500 dashboard_user = admin dashboard_pwd = 123abc881  网页控制台为7500端口
+编写/etc/systemd/system/frps.service文件使开机启动
+[Unit] Description=frps service After=network.target network-online.target [Service] Restart=on-failure TimeoutStartSec=0 ExecStart=/usr/local/bin/frps -c /etc/frps.ini [Install] WantedBy=multi-user.target  sudo systemctl daemon-reload sudo systemctl enable frps sudo systemctl start frps
+配置frp客户端 要穿透的代理配置 /etc/frpc.ini
+[common] server_addr = x.x.x.x server_port = 7000 [ssh] type = tcp local_ip = 127.</description>
+    </item>
+    
+    <item>
+      <title>CSS技巧</title>
+      <link>http://blog.suconghou.cn/post/css-tricks/</link>
+      <pubDate>Fri, 18 May 2018 17:16:31 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/css-tricks/</guid>
+      <description> https://css-tricks.com/
+1. 使用CSS画出三角 box shadow with angle
+content: &amp;quot; &amp;quot;; border: 6px solid #fff; border-left-color: transparent; border-bottom-color: transparent; display: block; position: absolute; bottom: -6px; left: 50%; -webkit-transform: translateX(-50%) rotate(135deg); transform: translateX(-50%) rotate(135deg); box-shadow: 2px -2px 2px rgba(1,1,1,.12);  </description>
+    </item>
+    
+    <item>
+      <title>TCP端口转发和复制</title>
+      <link>http://blog.suconghou.cn/post/tcp-data-copy-and-forward/</link>
+      <pubDate>Sat, 05 May 2018 18:43:27 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/tcp-data-copy-and-forward/</guid>
+      <description>proxy https://github.com/kklis/proxy
+macOs 可直接编译
+make darwin
+./proxy 查看用法
+监听本地8080端口,并将流量同时复制到192.168.1.2:80 , 必须确保 192.168.1.2:80 可写.
+proxy -l 8080 -h 192.168.1.2 -p 80  默认后台运行,使用参数-f不进入后台
+proxy -l 8080 -h 192.168.1.2 -p 80 -f
+查看转发的数据
+proxy -l 80 -h 93.184.216.119 -p 80 -i &amp;quot;tee input.log&amp;quot; -o &amp;quot;tee output.log&amp;quot;  直接输出到控制台
+proxy -l 80 -h 93.184.216.119 -p 80 -i &amp;quot;tee /dev/stderr&amp;quot; -o &amp;quot;tee /dev/stderr&amp;quot;  转发到多个后端
+查看 https://github.com/kklis/proxy</description>
+    </item>
+    
+    <item>
+      <title>一些数据库</title>
+      <link>http://blog.suconghou.cn/post/databases/</link>
+      <pubDate>Mon, 09 Apr 2018 21:33:50 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/databases/</guid>
+      <description>CockroachDB 使用 pgsql 协议，golang开发,提供编译好的单文件可执行程序
+单文件可直接执行,但是非静态编译
+https://www.cockroachlabs.com/docs/releases/
+开源地址
+https://github.com/cockroachdb/cockroach
+其存储引擎使用了 RocksDB
+https://www.cockroachlabs.com/docs/stable/architecture/storage-layer.html
+有关内存的使用说明
+https://www.cockroachlabs.com/blog/memory-usage-cockroachdb/
+cockroach start --insecure --cache=64MB --max-sql-memory=8MB
+cockroach start --insecure --cache=.15 --max-sql-memory=.05
+tidb 开原地址 https://github.com/pingcap/tidb
+tidb 使用的存储引擎是rust开发的 tikv tikv 同样使用了RocksDB
+pgsql 10.5 https://get.enterprisedb.com/postgresql/postgresql-10.5-1-linux.run https://get.enterprisedb.com/postgresql/postgresql-10.5-1-linux-x64.run https://get.enterprisedb.com/postgresql/postgresql-10.5-1-windows.exe https://get.enterprisedb.com/postgresql/postgresql-10.5-1-windows-x64.exe https://get.enterprisedb.com/postgresql/postgresql-10.5-1-osx.dmg
+9.5.15 https://get.enterprisedb.com/postgresql/postgresql-9.5.14-1-linux.run https://get.enterprisedb.com/postgresql/postgresql-9.5.14-1-linux-x64.run https://get.enterprisedb.com/postgresql/postgresql-9.5.14-1-windows.exe https://get.enterprisedb.com/postgresql/postgresql-9.5.14-1-windows-x64.exe https://get.enterprisedb.com/postgresql/postgresql-9.5.14-1-osx.dmg
+9.4.19 https://get.enterprisedb.com/postgresql/postgresql-9.4.19-1-linux.run https://get.enterprisedb.com/postgresql/postgresql-9.4.19-1-linux-x64.run https://get.enterprisedb.com/postgresql/postgresql-9.4.19-1-windows.exe https://get.enterprisedb.com/postgresql/postgresql-9.4.19-1-windows-x64.exe https://get.enterprisedb.com/postgresql/postgresql-9.4.19-1-osx.dmg
+命令行安装
+mysql 见另一边文章
+mongodb 见另一边文章
+数据库管理工具 https://tableplus.io/
+支持多种数据库，有免费版</description>
+    </item>
+    
+    <item>
+      <title>Caddy Server基本用法</title>
+      <link>http://blog.suconghou.cn/post/caddy-server/</link>
+      <pubDate>Fri, 23 Feb 2018 15:56:50 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/caddy-server/</guid>
+      <description>命令行参数 在当前目录下开启静态服务器
+caddy -host t.xxx.cn
+首次运行后会提示输入邮箱,用于获取https证书,获取完证书即开启成功
+默认启用http2,默认http端口80,https端口443,默认启用http跳转到https,默认首页自动加载index.html
+使用-root参数可以设置根目录,默认为当前目录
+相关文件会存储于~/.caddy文件夹中.
+sudo setcap cap_net_bind_service=+ep ./caddy
+使用QUIC caddy -host t.xxx.cn -quic 使用quic协议
+使用quic参数后,通过netstat -anltup 可以查看到tcp和udp的80和443端口都被监听.
+Chrome浏览器支持quic,可以通过chrome://net-internals/#quic 查看是使用的是quic还是http2
+使用配置文件 Caddyfile
+:80 { log stdout errors stderr redir https://{host}{uri} } :443 { log stdout errors stderr gzip tls /caddy/ssl/default.crt /caddy/ssl/default.key root /caddy/sites.d/0-default markdown / } site1.local { log stdout errors stderr gzip proxy / dockerhost.local:32000 { policy least_conn transparent insecure_skip_verify fail_timeout 10s max_fails 1 try_duration 1s } } site2.</description>
+    </item>
+    
+    <item>
+      <title>Oh My Zsh</title>
+      <link>http://blog.suconghou.cn/post/oh-my-zsh/</link>
+      <pubDate>Fri, 09 Feb 2018 12:49:11 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/oh-my-zsh/</guid>
+      <description>https://ohmyz.sh/
+1. 目录跳转 可以不用cd,直接写相对、绝对地址等。
+d 命令显示最近的路径
+d: aliased to dirs -v | head -10
+可以直接对应的数字，直接进入此路径
+2. cd - + TAB 也可以显示最近的访问实现快速跳转 1: aliased to cd - 3: aliased to cd -3
+3. kill 进程名称 + TAB 如果有多个进程名字匹配，则会弹出显示，你可以上下键选择
+如果只有一个匹配 则会直接给出pid
+4. 命令参数补充 比如输入 git + 空格 + TAB 会列出所有git 的二级命令
+5. 目录自动扩展 ls /d/t/ac+TAB 会自动扩展为 ls /data/tmp/activity 一个真实存在的目录
+6. CTRL+R 搜索以前执行过的命令 7. 环境变量扩展 $JAVA_HOME + TAB 会自动扩展为其对应的值 /Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home
+8. 按键 &amp;lt;CTRL&amp;gt;+K 删除字符到尾部</description>
+    </item>
+    
+    <item>
+      <title>Html5页面适配</title>
+      <link>http://blog.suconghou.cn/post/html5-wap-page/</link>
+      <pubDate>Thu, 26 Oct 2017 10:27:56 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/html5-wap-page/</guid>
+      <description>html5 页面等比例自适应 使用rem单位，默认情况下rem是默认字体的大小，即1rem=16px
+我们修改html的font-size 来动态调节rem的大小。
+一般的设计稿宽度大小为750px,或者640px;
+而实际手机的逻辑分辨率一般为320px;（不是指他的物理分辨率）
+注意：使用rem适配必须首先设定meta标签,设定viewport的大小就是设备宽度
+&amp;lt;meta name=&amp;quot;viewport&amp;quot; content=&amp;quot;width=device-width, initial-scale=1.0&amp;quot;&amp;gt;  可使用如下代码获得屏幕的信息；
+var msg= [ &amp;quot;逻辑分辨率&amp;quot;+window.screen.width, &amp;quot;设备像素比&amp;quot;+window.devicePixelRatio, &amp;quot;物理分辨率&amp;quot;+window.screen.width*window.devicePixelRatio ]; alert(msg.join(&amp;quot;\n&amp;quot;))  可参考 http://www.zhangxinxu.com/wordpress/2012/08/window-devicepixelratio/
+理想状态 假设我们的设计稿是750px; 用户手机的逻辑分辨率也是750px
+那么只需要按照设计稿的像素大小，写死就可以完美呈现在750px的手机上。
+但是用户的手机像素是多样的，所以我们应该将px单位转化为rem单位，同时根据用户手机分辨率来调节rem的实际值大小
+需要保证在750px的用户手机下 rem 的值正好等于设计稿上的像素值，这需要我们根据用户屏幕的分辨率来动态调节html font-size的大小。
+举个例子
+在750px的设计稿里，一个按钮的宽是 280px, 其html的font-size未做修改，是16px
+640 320px 80px 40px (目标手机尺寸*元素设计大小/设计稿宽) 5rem 5rem 16px x (x = ) (目标手机尺寸*元素设计大小/设计稿宽)/5 需要 rem 的值不变，保持实际的元素大小 x 的值应为 (目标手机尺寸*元素设计大小/设计稿宽)/5  x 为 8
+我们修改在640下 font-size 为100， 这样UI的像素/100 可轻易转化为rem 640 320 80px 40px 0.</description>
+    </item>
+    
+    <item>
+      <title>关于HTTP协议的基本知识</title>
+      <link>http://blog.suconghou.cn/post/about-http/</link>
+      <pubDate>Fri, 30 Jun 2017 10:45:17 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/about-http/</guid>
+      <description>http 状态码 101
+204 206
+304 301 302 307
+404 413 416
+502 503
+nginx 444
+http://baike.baidu.com/item/HTTP%E7%8A%B6%E6%80%81%E7%A0%81
+使用CURL调试网络请求 curl 用法 curl -I url 发送一个HEAD请求,常用于查看HTTP消息头
+有时候HEAD请求和GET请求后端的处理逻辑不一样,我们可以使用下面的命令
+查看GET请求的响应头而忽略其响应体.在调试的时候非常有用.
+普通get请求,
+curl -o /dev/null url -v
+curl -i url 完整输出响应头和响应正文.
+curl -i https://www.baidu.com
+http 协议 第一部分：请求行，第一行明了是post请求，以及http1.1版本。
+第二部分：请求头部，第二行至第六行。
+第三部分：换行
+第四部分：请求数据
+返回
+第一部分：状态行，由HTTP协议版本号， 状态码， 状态消息 三部分组成 第二部分：消息报头，用来说明客户端要使用的一些附加信息 第三部分：空行，消息报头后面的空行是必须的 第四部分：响应正文，服务器返回给客户端的文本信息。 手动拼接一个http协议
+telnet test.share.ourwill.cn 80
+打开一个tcp链接
+最简单的GET请求
+GET / HTTP/1.1 Host: test.share.ourwill.cn  Host 用于表明要请求的是哪个主机
+Http1.1 默认是keep-alived 的, 一个TCP链接传送完一个完整的http请求后不会主动断开链接.</description>
+    </item>
     
     <item>
       <title>在Android上运行PHP</title>
@@ -17,74 +267,155 @@
       <pubDate>Wed, 24 May 2017 13:25:49 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/php-on-android/</guid>
-      <description>为安卓交叉编译ARM版的PHP 本教程操作都在centosdocker容器内.基本工具都类似.
-yum update &amp;amp;&amp;amp; yum upgrade &amp;amp;&amp;amp; yum install wget make perl -y 不用安装gcc
- 下载交叉编译工具 https://pan.baidu.com/s/1micZBWc  直连下载 wget http://share.suconghou.cn/files/arm/crossx86-arm-linux-musleabi-1.1.12.tar.xz
-下载后解压,并添加bin到环境变量tar Jxf crossx86-arm-linux-musleabi-1.1.12.tar.xz
-export PATH=/arm-linux-musleabi/bin:$PATH
-之后,使用arm-linux-musleabi-gcc -v 可以验证
- 修改musl-libc库,目的是修改查找的DNS配置文件.  cd /tmp &amp;amp;&amp;amp; wget --no-check-certificate https://www.musl-libc.org/releases/musl-1.1.16.tar.gz  下载并解压tar zxf musl-1.1.16.tar.gz &amp;amp;&amp;amp; cd musl-1.1.16
-替换1: 替换/etc/resolv.conf
-grep -rn &amp;quot;/etc/resolv.conf&amp;quot; . 即可查找到有两个文件包含它.
-接下来,我们把它替换掉,把路径替换为安卓安装文件夹可写的路径
-sed -i &amp;quot;s{/etc/resolv.conf{/data/data/cn.suconghou.hello/files/resolv.conf{&amp;quot; ./src/network/resolvconf.c sed -i &amp;quot;s{/etc/resolv.conf{/data/data/cn.suconghou.hello/files/resolv.conf{&amp;quot; ./include/resolv.h  可以再次查找,以验证是否替换成功
-替换2: 替换/etc/hosts
-grep -rn &amp;quot;/etc/hosts&amp;quot; .</description>
+      <description>&lt;h2 id=&#34;为安卓交叉编译arm版的php&#34;&gt;为安卓交叉编译ARM版的PHP&lt;/h2&gt;
+
+&lt;p&gt;目前手头上有一个古老的Android平板,系统为Android2.2,CPU 是armv5的架构,可以说是很古老了&lt;/p&gt;
+
+&lt;p&gt;想作为一个简易的服务器使用,便开始自己折腾.&lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>git repo</title>
+      <title>编译一些ftp server</title>
+      <link>http://blog.suconghou.cn/post/ftp/</link>
+      <pubDate>Thu, 18 May 2017 14:18:13 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/ftp/</guid>
+      <description>静态编辑bftp bftp是一个小巧的ftp server
+apk update &amp;amp;&amp;amp; apk upgrade &amp;amp;&amp;amp; apk add wget make gcc g++ zlib-dev wget https://downloads.sourceforge.net/project/bftpd/bftpd/bftpd-4.4/bftpd-4.4.tar.gz?r=&amp;amp;ts=1493551857&amp;amp;use_mirror=iweb  解压进入目录
+./configure --enable-libz CFLAGS=-Os
+修改makefile link阶段加入 -static
+make -j4 编译后当前目录即可得到静态编译的bftpd
+ncftp http://www.ncftpd.com/
+既包含服务端，也有客户端
+vsftpd  chroot_local_user #是否将所有用户限制在主目录,YES为启用 NO禁用.(该项默认值是NO,即在安装vsftpd后不做配置的话，ftp用户是可以向上切换到要目录之外的)
+ https://blog.csdn.net/bluishglc/article/details/42398811
+500 OOPS: vsftpd: cannot locate user specified in &amp;lsquo;ftp_username&amp;rsquo;:ftp 原因： 配置文件在调用默认匿名用户anonymous时会去找ftp这个系统用户，但是ftp这个系统用户又不存在（可能被删除了）
+解决一： 取消匿名模式。
+在vsftpd.conf中将anonymous_enable设置为NO,
+anonymous_enable=NO
+重新启动vsftpd,问题解决。
+local user adduser -h /home/ftpuser -s /sbin/nologin ftpuser
+nopriv_user=xxxx
+anonymous_enable=NO local_enable=YES  vsftpd 默认会查找配置文件/etc/vsftpd.conf .</description>
+    </item>
+    
+    <item>
+      <title>编译dnsmasq</title>
+      <link>http://blog.suconghou.cn/post/dnsmasq/</link>
+      <pubDate>Fri, 05 May 2017 13:54:25 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/dnsmasq/</guid>
+      <description>静态编译 dnsmasq静态编译十分简单,无任何其他依赖库
+apk update &amp;amp;&amp;amp; apk upgrade &amp;amp;&amp;amp; apk add wget make gcc g++ linux-headers cd /tmp &amp;amp;&amp;amp; wget http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.76.tar.xz tar Jxf dnsmasq-2.76.tar.xz &amp;amp;&amp;amp; cd dnsmasq-2.76 &amp;amp;&amp;amp; make CFLAGS=-Os LDFLAGS=-static  配置文件 dnsmasq能够缓存外部DNS记录，同时提供本地DNS解析或者作为外部DNS的代理，即dnsmasq会首先查找/etc/hosts等本地解析文件，然后再查找/etc/resolv.conf等外部nameserver配置文件中定义的外部DNS。所以说dnsmasq是一个很不错的DNS中继。DNS配置同样写入dnsmasq.conf配置文件里。
+/etc/dnsmasq.conf
+cache-size=500 resolv-file=/etc/resolv.conf strict-order listen-address=192.168.1.24 address=/ilanni.com/192.168.1.24 server=223.5.5.5 bogus-nxdomain=223.5.5.5  resolve-file定义dnsmasq从哪里获取上游DNS服务器的地址， 默认是从/etc/resolv.conf获取
+strict-order表示严格按照resolv-file文件中的顺序从上到下进行DNS解析，直到第一个解析成功为止。
+listen-address定义dnsmasq监听的地址，默认是监控本机的所有网卡上。
+address自定义域名解析的IP地址，在此已ilanni.com这个域名为例。注意dnsmasq是支持泛域名解析的，以上配置就是一个典型的泛域名解析实例。
+address也可以过滤某些网站，比如如果不想让客户端解析youk.com这个域名的话，我们这个把该域名解析到一台不存在的服务器上或者解析到127.0.0.1这个地址。如下：
+address=/ilanni.com/127.0.0.1
+参考: https://www.freehao123.com/dnsmasq/</description>
+    </item>
+    
+    <item>
+      <title>使用Docker快速搭建一个Git Server</title>
       <link>http://blog.suconghou.cn/post/git-repo/</link>
       <pubDate>Wed, 05 Apr 2017 14:25:05 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/git-repo/</guid>
-      <description>使用gogs搭建git server docker 方式安装 安装和运行docker就不说了.
-1.首先docker pull gogs/gogs 拉取镜像
-2.创建一个数据卷docker volume create --name gogs-data
-要查看已有的数据卷,使用docker volume ls,数据卷用于保存数据,升级时数据不会丢,切勿删除此数据卷
-3.启动服务
-docker run -d --name=gogs --restart always -m 200m --log-opt max-size=2m -p 10022:22 -p 10080:3000 -v gogs-data:/data gogs/gogs  使用-v gogs-data:/data挂载刚刚的数据卷,将数据卷内的数据映射到容器的/data路径下.
-也可以前面添加一个nginx反向代理 /etc/nginx/conf.d/git.conf
-server{ listen 80; server_name git.xx.cn code.xx.cn; gzip on; gzip_min_length 1024; gzip_proxied any; gzip_comp_level 3; gzip_types text/plain text/javascript text/css text/json application/xml application/javascript application/x-javascript application/json; location / { client_max_body_size 10m; proxy_pass http://127.</description>
+      <description>&lt;h2 id=&#34;使用gogs搭建git-server&#34;&gt;使用gogs搭建git server&lt;/h2&gt;
+
+&lt;p&gt;使用docker&lt;/p&gt;
+
+&lt;p&gt;如何搭建一个git server&lt;/p&gt;
+
+&lt;p&gt;以及升级,备份等&lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>lego and acme to enable https</title>
+      <title>快速签发免费的https证书</title>
       <link>http://blog.suconghou.cn/post/lego-and-acme-to-enable-https/</link>
       <pubDate>Mon, 27 Mar 2017 12:11:21 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/lego-and-acme-to-enable-https/</guid>
-      <description>acme https://github.com/Neilpang/acme.sh
-https://github.com/xenolf/lego
-lego使用golang编写,acme.sh使用bash编写;使用都非常方便
-使用lego签发证书 签发证书之前,确保要签发的域名的解析是指向当前要运行lego服务器的IP
-签发过程中,lego需要监听80和443端口,请确保有权限且未被占用.
-证书的签发使用的当前服务器的IP和后续证书的使用没有关系
-一次生成包含多个域名的证书.
-./lego --email=&amp;quot;suconghou@126.com&amp;quot; --domains=&amp;quot;g.suconghou.cn&amp;quot; --domains=&amp;quot;share.suconghou.cn&amp;quot; --domains=&amp;quot;play.suconghou.cn&amp;quot; --domains=&amp;quot;go.suconghou.cn&amp;quot; run  运行成功无报错的话,将会在目录下生成.lego目录,里面存放证书
-生成的 域名.crt 文件 和 域名.key 文件
-key文件即为nginx中ssl_certificate_key需配置的文件. 被称为 证书密钥
-.crt 文件即为nginx中ssl_certificate需配置的文件. 有的也称 fullchain.cer 被称为 授权证书</description>
+      <description>&lt;p&gt;介绍几种快速签发&lt;code&gt;LetsEncrypt&lt;/code&gt;https证书的方法,证书免费3个月,可无限期续签.&lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>gcc</title>
+      <title>etcd和consul</title>
+      <link>http://blog.suconghou.cn/post/etcd-and-consul/</link>
+      <pubDate>Mon, 27 Mar 2017 10:54:32 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/etcd-and-consul/</guid>
+      <description>https://github.com/coreos/etcd
+https://github.com/hashicorp/consul
+etcd 和 consul 都是由golang编写的服务发现和配置共享的软件
+传统的类似软件有zookeeper等,zookeeper采用java编写
+其说明比较可参见
+https://blog.coding.net/blog/intro-consul?type=hot
+etcd 与 consul zookeeper 对比一览
+https://coreos.com/etcd/docs/latest/learning/why.html
+consul 启动一个server
+docker run &amp;ndash;rm -it -p 8500:8500 &amp;ndash;name=node1 consul agent -server -bootstrap-expect=1 -node=node1 -ui -client 0.0.0.0
+docker run &amp;ndash;rm -it &amp;ndash;name=node2 consul agent -server -join=172.17.0.3 -node=node2
+docker run &amp;ndash;rm -it &amp;ndash;name=node4 consul agent -bind=172.17.0.5 -retry-join=172.17.0.3 -node=node4
+查看下集群的状态
+docker exec -t node1 consul members
+测试
+docker run --rm -it \ --name=consul \ -m 100m \ -p 8500:8500 \ consul agent -server -ui -node=master -datacenter=dc1 -client=0.</description>
+    </item>
+    
+    <item>
+      <title>gcc编译</title>
       <link>http://blog.suconghou.cn/post/gcc/</link>
       <pubDate>Fri, 13 Jan 2017 14:01:02 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/gcc/</guid>
-      <description>gcc 静态编译 1.c
-#include &amp;lt;stdio.h&amp;gt; void main() { printf(&amp;quot;hello&amp;quot;); }  gcc -static --verbose -fno-builtin 1.c
- --verbose是为了输入编译的详细信息
--fno-builtin是阻止编译器把printf变成puts
- 如果出现错误
-/usr/bin/ld: cannot find -lc collect2: 错误：ld 返回 1  可能你还需要安装glibc的静态库
-yum update &amp;amp;&amp;amp; yum install glibc-static -y
-优化选项
-https://www.zhihu.com/question/27090458
-gcc -static -O 1.c gcc -static -O2 1.c gcc -static -O3 1.c gcc -static -Os 1.c  错误提示 -pedantic编译选项并不能保证被编译程序与ANSI/ISO C标准的完全兼容，它仅仅只能用来帮助Linux程序员离这个目标越来越近。或者换句话说，-pedantic选项能够帮助程序员发现一些不符合 ANSI/ISO C标准的代码，但不是全部，事实上只有ANSI/ISO C语言标准中要求进行编译器诊断的那些情况，才有可能被GCC发现并提出警告。
-除了-pedantic之外，GCC还有一些其它编译选项也能够产生有用的警告信息。这些选项大多以-W开头，其中最有价值的当数-Wall了，使用它能够使GCC产生尽可能多的警告信息。
-gcc -Wall test.c -o test  GCC给出的警告信息虽然从严格意义上说不能算作错误，但却很可能成为错误的栖身之所。一个优秀的Linux程序员应该尽量避免产生警告信息，使自己的代码始终保持标准、健壮的特性。所以将警告信息当成编码错误来对待，是一种值得赞扬的行为！所以，在编译程序时带上-Werror选项，那么GCC会在所有产生警告的地方停止编译，迫使程序员对自己的代码进行修改，如下：</description>
+      <description>&lt;p&gt;使用gcc编译器的一些笔记&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>redis 入侵实战</title>
+      <link>http://blog.suconghou.cn/post/redis-safe/</link>
+      <pubDate>Thu, 29 Dec 2016 21:20:11 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/redis-safe/</guid>
+      <description>无密码具有高权限的redis易被入侵
+ 入侵的主要思路就是修改Linux配置文件.
+通过修改sshdauthorized_keys文件免密码登陆 首先生成一对公钥和私钥 ssh-keygen -t rsa -C &amp;quot;redis&amp;quot;
+-t指定类型,-C为添加注释.回车,输入要存放的地址和两次密码(可为空)后就生成了.
+我们需要把公钥上传到目标主机的authorized_keys文件中,然后使用对应的私钥和公钥登陆.
+redis客户端能够直接修改数据库的位置和名称,达到修改文件的目的
+清空数据库 redis-cli -h 192.168.15.10 flushall
+写入authorized_keys最好前行后后行都是空行.
+(echo -e &amp;quot;\n\n&amp;quot;; cat ~/.ssh/id_rsa.pub; echo -e &amp;quot;\n\n&amp;quot;) &amp;gt; /tmp/id_rsa.txt
+向redis写自己的公钥 cat /tmp/id_rsa.txt |redis-cli -h 192.168.15.10 -x set redis
+登入redis,修改数据库文件地址
+config set dir /root/.ssh/ config set dbfilename &amp;quot;authorized_keys&amp;quot; save exit  /etc/crontab
+/etc/cron.d/
+/var/spool/cron/crontabs/ 用户配置文件存储目录。
+/var/spool/cron/root
+使用密码
+redis-server --protected-mode no --daemonize yes --requirepass QAZwsx123edcvfr654JKL
+或者修改CONFIG命令
+redis-server --rename-command CONFIG &amp;quot;MYCONF&amp;quot;</description>
+    </item>
+    
+    <item>
+      <title>redis安装与使用</title>
+      <link>http://blog.suconghou.cn/post/redis-usage/</link>
+      <pubDate>Thu, 29 Dec 2016 21:20:11 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/redis-usage/</guid>
+      <description>安装redis 所有redis版本的release见http://download.redis.io/releases/
+apk update &amp;amp;&amp;amp; apk upgrade &amp;amp;&amp;amp; apk add make gcc g++ linux-headers
+cd /tmp REDIS_VERSION=redis-4.0.2 wget http://download.redis.io/releases/${REDIS_VERSION}.tar.gz tar xzf ${REDIS_VERSION}.tar.gz cd ${REDIS_VERSION} LDFLAGS=-static make -j2 &amp;amp;&amp;amp; make install mv /tmp/${REDIS_VERSION}/redis.conf /etc/redis.conf  编译1分钟即可完成
+无其他依赖 4.0版本后 直接可静态编译的,执行完成后可执行文件位于src目录
+redis-check-aof redis-check-rdb redis-sentinel redis-server 这四个都是同一个文件,是redis-server的别名
+配置 一个简单的redis配置文件 /etc/redis.conf
+daemonize yes pidfile /var/run/redis-server.pid port 6379 bind 127.0.0.1 timeout 300 save 60 10000  使用Unix Socket 的方式运行性能会更好
+UNIX Domain Socket是在socket架构上发展起来的用于同一台主机的进程间通讯（IPC），它不需要经过网络协议栈，不需要打包拆包、计算校验和、维护序号和应答等，只是将应用层数据从一个进程拷贝到另一个进程，当用户连接到Redis通过TCP/IP连接或Unix域连接，千兆网络的典型延迟大概200us，而Unix Domain Socket可能低到30us。
+https://pics.mf8.biz/mf8/e0ajg.png</description>
     </item>
     
     <item>
@@ -93,40 +424,20 @@ gcc -Wall test.c -o test  GCC给出的警告信息虽然从严格意义上说不
       <pubDate>Sun, 20 Nov 2016 22:12:25 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/server-safe/</guid>
-      <description>Nginx安全配置 如果你是用git或者svn来部署代码,默认情况下,你的网站很可能已经泄露了.git目录,或者.svn目录
-使用nginx配置过滤一切以.开头的文件和文件夹,防止被用户下载.
-location ~ /\. { deny all; }  每个网站都需要这么配置可能有些麻烦,你可以在统一的文件中定义好/etc/nginx/default.d/php.conf
-listen 80; index index.html index.php; try_files $uri $uri/ /index.php?$args; location ~ /\. { deny all; } location ~ ^.+\.php$ { try_files $uri =404; fastcgi_pass 127.0.0.1:9000; include fastcgi.conf; }  使用时,类似与下面,还不用每次写这么多配置了.
-server{ server_name fed-wx.xxx.cn; root /data/www/fed-wx; include /etc/nginx/default.d/php.conf; }  给http段添加,开启一些gzip特性,关闭显示服务器版本
-default_type application/octet-stream; sendfile on; tcp_nopush on; tcp_nodelay on; keepalive_timeout 65; types_hash_max_size 2048; server_tokens off; ssi on; gzip on; gzip_min_length 1024; gzip_proxied any; gzip_comp_level 3; gzip_types text/plain text/javascript text/css text/json application/xml application/javascript application/json image/jpeg image/gif image/png;  修改你的SSH默认端口,并且使用强密码 每天都有大量的端口扫描来扫描你服务器IP的22端口,如果你的22端口密码又不强,很可能已被黑客侵入.</description>
+      <description>&lt;p&gt;Linux 系统安装方面的一些建议&lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>use kvm</title>
+      <title>使用kvm创建和管理虚拟机</title>
       <link>http://blog.suconghou.cn/post/use-kvm/</link>
       <pubDate>Tue, 18 Oct 2016 19:18:24 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/use-kvm/</guid>
-      <description>安装和配置KVM KVM与XEN区别 OPENVZ就不说了,是半虚拟化,不能安装Windows操作系统
-KVM是内核模块,从2.6.20内核开始,kvm模块就包含在Linux内核中,只需加载此模块即可
-#查看宿主机CPU是否在硬件上支持虚拟化扩展特性 cat /proc/cpuinfo | grep -E &amp;quot;(vmx|svm)&amp;quot; #加载kvm模块（Intel VT） modprobe kvm modprobe kvm-intel #注意：如果加载失败，说明服务器硬件不支持或BIOS中未开启虚拟化扩展  运行命令lsmod | grep kvm检查 KVM 模块是否成功安装
-XEN是一套虚拟化方案,可以直接安装,不需要先安装操作系统.
-KVM起步较晚,XEN起步早发展成熟,但目前KVM潜力较大.
-KVM 与 qemu yum install qemu-kvm libvirt virt-install bridge-utils
-qemu-kvm 该软件包主要包含KVM内核模块和适用于KVM的QEMU模拟器。KVM模块负责CPU和内存的调度，QEMU负责虚拟机I/O设备的模拟。
-libvirt 提供Hypervisor和虚拟机的管理功能。
-virt-install 创建和克隆虚拟机的命令行工具包。
-bridge-utils 网桥管理工具包，负责桥接网络的创建、配置和管理等工作。
-激活并启动libvirtd服务 systemctl enable libvirtd systemctl start libvirtd  安装CentOS7 diskutil list查看所有磁盘
-diskutil unmountdisk /dev/disk1 解除其挂载
-用dd将ISO文件写入
-sudo dd if=/data/files/iso/CentOS-7-x86_64-Minimal-1511.iso of=/dev/disk2 bs=1m
-安装好系统后,更换网易的源 http://mirrors.163.com/.help/centos.html
-mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.</description>
+      <description>&lt;p&gt;使用Linux&lt;code&gt;kvm&lt;/code&gt;模块的相关笔记&lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>iptables与firewalld</title>
+      <title>Linux的防火墙iptables与firewalld</title>
       <link>http://blog.suconghou.cn/post/iptables/</link>
       <pubDate>Wed, 14 Sep 2016 12:24:02 +0800</pubDate>
       
@@ -146,12 +457,12 @@ iptables -A OUTPUT -p tcp --sport 22 -j ACCEPT  保证出口22端口畅通 下�
     </item>
     
     <item>
-      <title>pc hardware</title>
+      <title>修电脑相关知识</title>
       <link>http://blog.suconghou.cn/post/pc-hardware/</link>
       <pubDate>Sun, 04 Sep 2016 14:37:51 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/pc-hardware/</guid>
-      <description>修电脑相关知识 较好的PE 微PE
+      <description>较好的PE 微PE
 http://www.wepe.com.cn/ 自带刻录,可以一键安装到U盘,硬盘等,支持UEFI,CMS等多种启动方式.
  一般的BIOS里找不到UEFI/CMS的切换设置,可能是security boot的配置,禁用security boot试试
 如果在BIOS里找不到U盘,可能是fastboot的问题,可以禁用fastboot,安装好系统后在开启.
@@ -168,7 +479,7 @@ CPU天梯图其他版本
     </item>
     
     <item>
-      <title>memcached usage</title>
+      <title>memcached安装与使用</title>
       <link>http://blog.suconghou.cn/post/memcached-usage/</link>
       <pubDate>Wed, 24 Aug 2016 14:44:23 +0800</pubDate>
       
@@ -176,12 +487,23 @@ CPU天梯图其他版本
       <description>安装memcached http://memcached.org/downloads
 memcached所有版本见http://www.memcached.org/files/
 cd /tmp MEMCACHE_VERSION=memcached-1.5.1 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l` wget http://www.memcached.org/files/${MEMCACHE_VERSION}.tar.gz tar xzf ${MEMCACHE_VERSION}.tar.gz cd ${MEMCACHE_VERSION} export CFLAGS=&amp;quot;-O3&amp;quot; ./configure make -j$CPU_NUM &amp;amp;&amp;amp; make install  docker版本见:https://hub.docker.com/r/suconghou/memcached/
-静态编译 apk update &amp;amp;&amp;amp; apk upgrade &amp;amp;&amp;amp; apk add gcc g++ make wget  wget --no-check-certificate https://github.com/libevent/libevent/releases/download/release-2.1.8-stable/libevent-2.1.8-stable.tar.gz tar zxf libevent-2.1.8-stable.tar.gz cd libevent-2.1.8-stable ./configure &amp;amp;&amp;amp; make &amp;amp;&amp;amp; make install  libevent编译很快,不到一分钟
-cd /tmp MEMCACHE_VERSION=memcached-1.5.1 wget http://www.memcached.org/files/${MEMCACHE_VERSION}.tar.gz tar xzf ${MEMCACHE_VERSION}.tar.gz cd ${MEMCACHE_VERSION} export CFLAGS=&amp;quot;-O3&amp;quot; .</description>
+静态编译 apk update &amp;amp;&amp;amp; apk upgrade &amp;amp;&amp;amp; apk add gcc g++ make wget   wget --no-check-certificate https://github.com/libevent/libevent/releases/download/release-2.1.8-stable/libevent-2.1.8-stable.tar.gz tar zxf libevent-2.1.8-stable.tar.gz cd libevent-2.1.8-stable ./configure &amp;amp;&amp;amp; make &amp;amp;&amp;amp; make install  libevent编译很快,不到一分钟
+cd /tmp MEMCACHE_VERSION=memcached-1.5.1 wget http://www.memcached.org/files/${MEMCACHE_VERSION}.tar.gz tar xzf ${MEMCACHE_VERSION}.</description>
     </item>
     
     <item>
-      <title>javascript code snippet</title>
+      <title>nginx安装与使用</title>
+      <link>http://blog.suconghou.cn/post/nginx-usage/</link>
+      <pubDate>Wed, 24 Aug 2016 14:44:23 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/nginx-usage/</guid>
+      <description>使用systemd管理nginx /usr/lib/systemd/system/nginx.service
+[Unit] Description=The nginx HTTP and reverse proxy server After=network.target remote-fs.target nss-lookup.target [Service] Type=forking PIDFile=/run/nginx.pid # Nginx will fail to start if /run/nginx.pid already exists but has the wrong # SELinux context. This might happen when running `nginx -t` from the cmdline. # https://bugzilla.redhat.com/show_bug.cgi?id=1268621 ExecStartPre=/usr/bin/rm -f /run/nginx.pid ExecStartPre=/usr/sbin/nginx -t ExecStart=/usr/sbin/nginx ExecReload=/bin/kill -s HUP $MAINPID KillSignal=SIGQUIT TimeoutStopSec=5 KillMode=process PrivateTmp=true [Install] WantedBy=multi-user.target  nginx proxy_request_buffering 上传大文件时需注意
+https://stackoverflow.com/questions/12282342/nginx-files-upload-streaming-with-proxy-pass</description>
+    </item>
+    
+    <item>
+      <title>实用的Javascript代码锦集</title>
       <link>http://blog.suconghou.cn/post/javascript-code-snippet/</link>
       <pubDate>Thu, 11 Aug 2016 10:27:18 +0800</pubDate>
       
@@ -196,7 +518,7 @@ IE10,IE11 不支持 html5 的 download 属性, 无法点击下载自定义名称
     </item>
     
     <item>
-      <title>javascript senior</title>
+      <title>Javascript传值与传引用</title>
       <link>http://blog.suconghou.cn/post/javascript-senior/</link>
       <pubDate>Tue, 09 Aug 2016 21:27:39 +0800</pubDate>
       
@@ -234,6 +556,25 @@ var obj; obj.name=&#39;hello&#39;; obj=new Object(); obj.name=&#39;world&#39;;  
     </item>
     
     <item>
+      <title>yum的一些配置</title>
+      <link>http://blog.suconghou.cn/post/install-yum/</link>
+      <pubDate>Tue, 02 Aug 2016 11:33:52 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/install-yum/</guid>
+      <description>安装配置Yum 删除原有yum,如果存在的话
+rpm -aq|grep yum|xargs rpm -e --nodeps
+查看最新的yum
+http://mirrors.163.com/centos/6/os/x86_64/Packages/
+找到最新版yum rpm 包,使用rpm -ivh安装
+wget http://mirrors.163.com/centos/6/os/x86_64/Packages/yum-3.2.29-73.el6.centos.noarch.rpm rpm -ivh yum-3.2.29-73.el6.centos.noarch.rpm  但是会有依赖问题,需要先安装依赖,yum的依赖
+error: Failed dependencies: python-urlgrabber &amp;gt;= 3.9.1-10 is needed by yum-3.2.29-73.el6.centos.noarch yum-metadata-parser &amp;gt;= 1.1.0 is needed by yum-3.2.29-73.el6.centos.noarch yum-plugin-fastestmirror is needed by yum-3.2.29-73.el6.centos.noarch  于是,同时注意,这些依赖的旧版本也要清理
+清理
+rpm -aq|grep python-urlgrabber # 查看旧的版本 rpm -e --nodeps python-urlgrabber #把旧版本卸载掉,然后安装新版本  安装新版本
+yum-plugin-fastestmirror还会依赖yum,yum又依赖yum-plugin-fastestmirror,要一个命令一块安装
+wget http://mirrors.163.com/centos/6/os/x86_64/Packages/python-urlgrabber-3.9.1-11.el6.noarch.rpm wget http://mirrors.163.com/centos/6/os/x86_64/Packages/yum-metadata-parser-1.1.2-16.el6.x86_64.rpm wget http://mirrors.163.com/centos/6/os/x86_64/Packages/yum-plugin-fastestmirror-1.1.30-37.el6.noarch.rpm rpm -ivh python-urlgrabber-3.9.1-11.el6.noarch.rpm rpm -ivh yum-metadata-parser-1.</description>
+    </item>
+    
+    <item>
       <title>HAProxy优化应用程序速度</title>
       <link>http://blog.suconghou.cn/post/use-haproxy/</link>
       <pubDate>Fri, 29 Jul 2016 14:27:54 +0800</pubDate>
@@ -242,9 +583,9 @@ var obj; obj.name=&#39;hello&#39;; obj=new Object(); obj.name=&#39;world&#39;;  
       <description>HAProxy HAProxy高性能的反向代理软件,更专注于TCP,HTTP处理,它可以基于四层或七层进行反向代理,尤其适合于高负载且需要进行七层处理的 Web 站点.
 单进程、事件驱动模型,通常用于超高流量的负载均衡.
 我们也可以使用它来作为中转站,使直连连通率不好的请求进过中转提升速度.
-编译安装 apt-get update &amp;amp;&amp;amp; apt-get install -y wget gcc g++ make libpcre++0v5 libpcre++-dev  yum update &amp;amp;&amp;amp; yum install wget gcc make  HAPROXY_VERSION=haproxy-1.7.8 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l` wget http://www.haproxy.org/download/1.7/src/${HAPROXY_VERSION}.tar.gz tar zxf ${HAPROXY_VERSION}.tar.gz cd ${HAPROXY_VERSION} export CFLAGS=&amp;quot;-O3&amp;quot; make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 -j$CPU_NUM &amp;amp;&amp;amp; make install  编译32位版本make TARGET=linux26 ARCH=i686 USE_STATIC_PCRE=1 -j$CPU_NUM
+编译安装 apt-get update &amp;amp;&amp;amp; apt-get install -y wget gcc g++ make libpcre++0v5 libpcre++-dev  yum update &amp;amp;&amp;amp; yum install wget gcc make  HAPROXY_VERSION=haproxy-1.7.9 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l` wget http://www.haproxy.org/download/1.7/src/${HAPROXY_VERSION}.tar.gz tar zxf ${HAPROXY_VERSION}.tar.gz cd ${HAPROXY_VERSION} export CFLAGS=&amp;quot;-O3&amp;quot; make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 -j$CPU_NUM &amp;amp;&amp;amp; make install  编译32位版本make TARGET=linux26 ARCH=i686 USE_STATIC_PCRE=1 -j$CPU_NUM
 在64位系统下编译32位需要apt-get install gcc-multilib g++-multilib
-我编译好的haproxy version 1.7.8
+我编译好的haproxy version 1.7.9
  64位 http://share.</description>
     </item>
     
@@ -267,19 +608,29 @@ This will walk you through creating a new React Native project in /data/tmp/Hell
     </item>
     
     <item>
-      <title>都有哪些坑</title>
+      <title>微信浏览器的一些问题</title>
       <link>http://blog.suconghou.cn/post/some-hole/</link>
       <pubDate>Thu, 07 Jul 2016 15:46:03 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/some-hole/</guid>
-      <description>总结一下遇到的坑 微信 关于横竖屏的坑
+      <description>微信 关于横竖屏的坑
 css3可以使用媒体查询判断设备是横屏还是竖屏
 //横屏时显示 @media all and (orientation : landscape) { #screenMask{display:block} } //竖屏时隐藏 @media all and (orientation : portrait) { #screenMask{display:none} }  在手机浏览器中表现良好,微信中看样子也可以,但是微信网页中如果聚焦输入框,弹起键盘就有问题了.
 软键盘弹起后,网页可用面积减小,安卓就自动识别为横屏了,原有的页面消失了,影响非常大.IOS则没有这个问题,媒体查询判断横竖屏在IOS上工作良好.
 并且由此发现,css3媒体查询就是根据宽度是否比高度小来判断横竖屏的.
 解决方案1
 使用javascript的orientation和orientationchange判断
- window.orientation 属于window对象上一个属性；共有三个值 ：0为竖屏模式（portrait）,90为向左反转变为横屏模式（landscape），-90为向右反转变为横屏模式（landscape），最后180就是设备上下互换还是竖屏模式。 orientationchange 是一个event，在设备旋转时，会触发此事件，如同PC上使用的resize事件。  (function(){ var init = function(){ var updateOrientation = function(){ var orientation = window.orientation; switch(orientation){ case 90: case -90: orientation = &#39;landscape&#39;; break; default: orientation = &#39;portrait&#39;; break; } //do something //比如在html标签加一个状态 //然后根据不同状态，显示不同大小 document.</description>
+ window.orientation 属于window对象上一个属性；共有三个值 ：0为竖屏模式（portrait）,90为向左反转变为横屏模式（landscape），-90为向右反转变为横屏模式（landscape），最后180就是设备上下互换还是竖屏模式。 orientationchange 是一个event，在设备旋转时，会触发此事件，如同PC上使用的resize事件。  (function(){ var init = function(){ var updateOrientation = function(){ var orientation = window.orientation; switch(orientation){ case 90: case -90: orientation = &#39;landscape&#39;; break; default: orientation = &#39;portrait&#39;; break; } //do something //比如在html标签加一个状态 //然后根据不同状态，显示不同大小 document.body.parentNode.setAttribute(&#39;class&#39;,orientation); }; window.</description>
+    </item>
+    
+    <item>
+      <title>开始HTTP2</title>
+      <link>http://blog.suconghou.cn/post/enable-http2-in-chrome/</link>
+      <pubDate>Mon, 04 Jul 2016 14:08:50 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/enable-http2-in-chrome/</guid>
+      <description>启用http2 我的http2的配置
+server{ listen 80 fastopen=3 reuseport; server_name example.com; valid_referers none *.google.com *.bing.com *.baidu.com *.example.com; if ($invalid_referer) { return 444; } rewrite ^(.*) https://example.com$1 permanent; } server{ listen 443 ssl http2 fastopen=3 reuseport; server_name example.com; server_tokens off; gzip on; gzip_proxied any; gzip_min_length 1024; gzip_comp_level 3; gzip_types text/plain text/javascript text/css text/json application/javascript application/json image/jpeg image/gif image/png; ssl_protocols TLSv1 TLSv1.1 TLSv1.2; ssl_ciphers EECDH+CHACHA20:EECDH+CHACHA20-draft:EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5; ssl_prefer_server_ciphers on; ssl_session_cache shared:SSL:50m; ssl_session_timeout 1d; ssl_session_tickets off; ssl_stapling on; #OCPS开启 ssl_stapling_verify on; #OCPS验证开启 resolver 8.</description>
     </item>
     
     <item>
@@ -296,7 +647,7 @@ css3可以使用媒体查询判断设备是横屏还是竖屏
 如果条件允许使用array_flip交换键值,在用isset来判断要比in_array好得多
 同时,使用isset来判断数组的键,也比使用array_key_exists要好
 而对于本题,还可以使用array_unique最后去重,用空间换时间,效率仅次于用isset
-Bugs php pdo MySQL server has gone away 在使用PDO长连接时,执行过一次PDO初始化后,php-fpm进程会与mysql server开启一条TCP长连接,下次连接数据库就能加快速度.
+php pdo MySQL server has gone away 在使用PDO长连接时,执行过一次PDO初始化后,php-fpm进程会与mysql server开启一条TCP长连接,下次连接数据库就能加快速度.
 但是却存在一定问题,PDO维持了长连接并没有较好的检测其可用性,如果mysql server kill 掉这个连接,或者mysql重启,都会造成
 重新实例化PDO时得到旧的链接,导致出现MySQL server has gone away,更让人郁闷的是这个错误并不是一个Exception,无法被catch捕获,即使设置PDO::ATTR_ERRMODE=&amp;gt;PDO::ERRMODE_EXCEPTION,也不行,还是直接在页面上提示.
 如果你使用了set_error_handler,那么这个Warning将会被捕捉,不会直接显示在页面上,但也改变了程序的原有执行逻辑.
@@ -305,13 +656,30 @@ Bugs php pdo MySQL server has gone away 在使用PDO长连接时,执行过一次
 较好的解决方法是设置set_error_handler若捕获了这个MySQL server has gone away,则返回null,程序继续按原有逻辑执行.
 或者不使用PDO长连接.
 注意,set_error_handler返回false的话,这个错误还是会被交到上一级错误程序处理的.
+PDO int str 使用 mysqlnd 扩展而不是 mysql扩展
 编码转换中的若干问题 我们经常会遇到将utf8编码字符转化为gbk编码的字符,例如生成csv表格,在windows上的cmd窗口输出文字,以及操作windows上的有关文件路径的操作都需要使用gbk编码.
 常使用iconv(&#39;utf-8&#39;, &#39;gbk&#39;, $str);将utf8字符转为gbk
 这里 utf gbk 不区分大小写,也可以混写,不区分是utf8还是utf-8,都能都正常使用
 iconv(&#39;utf-8&#39;, &#39;gbk//ignore&#39;, $str); 加上//ignore使有些字符无法装换时略过.
 但是//ignore在php5.4及以下,和个别php5.6版本上无效,任然是报NOTICE错误.
-&amp;lt;?php echo iconv(&#39;UTF8&#39;, &#39;GBK//IGNORE&#39;, &#39;l l l&#39;); ?&amp;gt;  见 https://3v4l.org/7vCFW 和 http://www.php.net/manual/en/function.iconv.php第一条评论
-可以考虑使用$content = mb_convert_encoding($content, &amp;quot;GBK&amp;quot;,&amp;quot;UTF-8&amp;quot;); 从UTF8转为GBK</description>
+&amp;lt;?php echo iconv(&#39;UTF8&#39;, &#39;GBK//IGNORE&#39;, &#39;l l l&#39;); ?&amp;gt;  见 https://3v4l.</description>
+    </item>
+    
+    <item>
+      <title>动态域名解析</title>
+      <link>http://blog.suconghou.cn/post/ddns/</link>
+      <pubDate>Mon, 23 May 2016 10:56:56 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/ddns/</guid>
+      <description>收集的一些DDNS的工具
+利用shell获得本机局域网IP ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|awk &#39;{print $2}&#39;|tr -d &amp;quot;addr:&amp;quot;  GO语言版 package main import ( &amp;quot;fmt&amp;quot; &amp;quot;net&amp;quot; &amp;quot;strings&amp;quot; ) func main() { conn, err := net.Dial(&amp;quot;udp&amp;quot;, &amp;quot;google.com:80&amp;quot;) if err != nil { fmt.Println(err.Error()) return } defer conn.Close() fmt.Println(strings.Split(conn.LocalAddr().String(), &amp;quot;:&amp;quot;)[0]) }  获取外网IP 新浪IP地址库
+可以直接script标签引入
+直接script引入 http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js
+也支持 json 和文本格式
+json 格式 http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json
+文本格式 http://int.dpool.sina.com.cn/iplookup/iplookup.php
+curl ip.cn 直接给出IP和运营商,浏览器访问不一样 类似于 curl myip.ipip.net
+后面还可以跟一个IP地址,查询IP的位置. curl ip.cn/8.8.8.8 , 其网站还提供大陆IP列表,较快的DNS等等</description>
     </item>
     
     <item>
@@ -323,7 +691,7 @@ iconv(&#39;utf-8&#39;, &#39;gbk//ignore&#39;, $str); 加上//ignore使有些字�
       <description>静态编译shadowsocks libev 在alpine里编译
 apk update &amp;amp;&amp;amp; apk upgrade &amp;amp;&amp;amp; apk add wget make gcc g++ perl
 先安装依赖
-# Installation of Libsodium cd /tmp export LIBSODIUM_VER=1.0.12 wget --no-check-certificate https://download.libsodium.org/libsodium/releases/libsodium-$LIBSODIUM_VER.tar.gz tar xvf libsodium-$LIBSODIUM_VER.tar.gz cd libsodium-$LIBSODIUM_VER ./configure --prefix=/usr &amp;amp;&amp;amp; make -j2 &amp;amp;&amp;amp; make install cd /tmp ldconfig # Installation of MbedTLS cd /tmp export MBEDTLS_VER=2.5.1 wget --no-check-certificate https://tls.mbed.org/download/mbedtls-$MBEDTLS_VER-gpl.tgz tar xvf mbedtls-$MBEDTLS_VER-gpl.tgz cd mbedtls-$MBEDTLS_VER make SHARED=1 CFLAGS=-fPIC &amp;amp;&amp;amp; make DESTDIR=/usr install cd /tmp ldconfig  安装完这两个依赖后,下面准备开始静态编译</description>
+# Installation of Libsodium cd /tmp export LIBSODIUM_VER=1.0.12 wget --no-check-certificate https://download.libsodium.org/libsodium/releases/libsodium-$LIBSODIUM_VER.tar.gz tar xvf libsodium-$LIBSODIUM_VER.tar.gz cd libsodium-$LIBSODIUM_VER ./configure --prefix=/usr &amp;amp;&amp;amp; make -j2 &amp;amp;&amp;amp; make install cd /tmp ldconfig # Installation of MbedTLS cd /tmp export MBEDTLS_VER=2.6.0 wget --no-check-certificate https://tls.mbed.org/download/mbedtls-$MBEDTLS_VER-gpl.tgz tar xvf mbedtls-$MBEDTLS_VER-gpl.tgz cd mbedtls-$MBEDTLS_VER make SHARED=1 CFLAGS=-fPIC &amp;amp;&amp;amp; make DESTDIR=/usr install cd /tmp ldconfig  安装完这两个依赖后,下面准备开始静态编译</description>
     </item>
     
     <item>
@@ -371,6 +739,40 @@ sudo dd if=hypriotos-rpi-v0.8.0.img of=/dev/disk2 bs=8k  安装完成重启就�
     </item>
     
     <item>
+      <title>使用golang</title>
+      <link>http://blog.suconghou.cn/post/use-golang/</link>
+      <pubDate>Sat, 07 May 2016 14:38:47 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/use-golang/</guid>
+      <description>Go https://www.oschina.net/news/93422/go-1-10-released
+https://storage.googleapis.com/golang/go1.11.linux-amd64.tar.gz https://storage.googleapis.com/golang/go1.11.windows-amd64.msi  所有发布的版本
+https://storage.googleapis.com/golang/
+国内可访问地址
+https://dl.google.com/go/go1.11.windows-amd64.msi https://dl.google.com/go/go1.11.darwin-amd64.pkg https://dl.google.com/go/go1.11.linux-amd64.tar.gz https://dl.google.com/go/go1.11.src.tar.gz https://dl.google.com/go/go1.11.darwin-amd64.tar.gz https://dl.google.com/go/go1.11.linux-386.tar.gz https://dl.google.com/go/go1.11.linux-armv6l.tar.gz https://dl.google.com/go/go1.11.windows-386.zip https://dl.google.com/go/go1.11.windows-386.msi https://dl.google.com/go/go1.11.windows-amd64.zip https://dl.google.com/go/go1.11.freebsd-386.tar.gz https://dl.google.com/go/go1.11.freebsd-amd64.tar.gz https://dl.google.com/go/go1.11.linux-arm64.tar.gz https://dl.google.com/go/go1.11.linux-ppc64le.tar.gz https://dl.google.com/go/go1.11.linux-s390x.tar.gz  Creating Statically Linked Executables In Go https://joeshaw.org/smaller-docker-containers-for-go-apps/
+https://github.com/gliderlabs/docker-alpine
+CGO_ENABLED=0 go build -a -ldflags &amp;quot;-s&amp;quot; tiny.go  The CGO_ENABLED environment variable tells Go to use the go compiler rather than the cgo compiler. The -a flag tells Go to rebuild all dependencies. Otherwise you still end up with dynamically linked dependencies.</description>
+    </item>
+    
+    <item>
+      <title>vim基本使用</title>
+      <link>http://blog.suconghou.cn/post/vim-usage/</link>
+      <pubDate>Wed, 13 Apr 2016 13:47:08 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/vim-usage/</guid>
+      <description>vim基本使用 安装apt-get install vim
+daw (delete a word) 删除一个单词,包括左右两侧空白
+diw (delete inner word) 删除一个单词,不包含左右两侧空白
+dw 删除从当前光标到下一个单词的起始位置
+caw 同daw,但是完成后进入编辑模式
+关于选择 aw (a word) 一个单词
+as (a sentence) 一段语句
+i} (inner {...} block, e.g. code within a block in C code)
+it (inner tag, useful for XML-like languages)
+=aB will reindent an entire code block
+cas will delete a sentence and drop you into insert mode to type a new one</description>
+    </item>
+    
+    <item>
       <title>linux相关操作</title>
       <link>http://blog.suconghou.cn/post/linux/</link>
       <pubDate>Thu, 21 Jan 2016 13:40:53 +0800</pubDate>
@@ -388,8 +790,7 @@ dd if=file bs=1 skip=1073741824 count=819200 | md5sum
 拆分文件 split -b 1kb /tmp/file sfile
 拆分文件大小为1k，也可以是1b，或者1m之类的单位
 xxd hexdump od https://www.zhihu.com/question/40441308/answer/86637730
-使用 sed 修改二进制文件 先找到查找的目标
-例如/opt/local则对应echo /opt/local | xxd</description>
+时间戳转时间日期 Mac: date -r 1514131200 GNU/Linux: date -d @1514131200</description>
     </item>
     
     <item>
@@ -403,9 +804,7 @@ xxd hexdump od https://www.zhihu.com/question/40441308/answer/86637730
 精简版293MB 下载 wget https://downloads.raspberrypi.org/raspbian_lite_latest
 安装其他操作系统 CentOS CentOS7官方支持了AMRV7发布了树莓派2、香蕉派、以及CubitTruck单片机的版本
 CentOS7官方下载 root 密码 centos 大约275MB
-CentOS7.3也已发布
-http://mirror.centos.org/altarch/7.3.1611/isos/armhfp/
-树莓派2版254M
+http://mirror.centos.org/altarch/7.4.1708/isos/armhfp/
 ArchLinux https://archlinuxarm.org/
 树莓派1 https://archlinuxarm.org/platforms/armv6/raspberry-pi
 树莓派2 https://archlinuxarm.org/platforms/armv7/broadcom/raspberry-pi-2
@@ -432,7 +831,7 @@ dd的用法: dd if=/dev/zero of=hello.</description>
 cd /usr/local/Homebrew git remote set-url origin git://mirrors.ustc.edu.cn/brew.git git remote -v brew update  修改源：https://lug.ustc.edu.cn/wiki/mirrors/help/brew.git 和 https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-core.git 修改二进制源见https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-bottles
 即export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
 使用brew config 查看ORIGIN和HOMEBREW_BOTTLE_DOMAIN已经是新的mirrors.ustc.edu.cn即为配置成功
-brew list 列出所有安装的模块
+brew list 列出所有安装的模块, 这里面包含以下依赖安装的，brew leaves 可以查看一些顶级的
 brew search mysql 查找
 brew commands 查看所有命令
 安装（需要 Ruby）： ruby -e &amp;quot;$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)&amp;quot;
@@ -440,8 +839,7 @@ brew commands 查看所有命令
 查询：brew info mysql 主要看具体的信息，比如目前的版本，依赖，安装后注意事项等
 更新：brew update 这会更新 Homebrew 自己，并且使得接下来的两个操作有意义——
 检查过时（是否有新版本）：brew outdated 这回列出所有安装的软件里可以升级的那些
-升级：brew upgrade 升级所有可以升级的软件们
-清理：brew cleanup 清理不需要的版本极其安装包缓存</description>
+升级：brew upgrade 升级所有可以升级的软件们</description>
     </item>
     
     <item>
@@ -450,11 +848,13 @@ brew commands 查看所有命令
       <pubDate>Thu, 14 Jan 2016 17:11:34 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/broswer-chrome/</guid>
-      <description> 配置Chrome跨域 Chrome 浏览器配置可以跨域
+      <description>配置Chrome跨域 Chrome 浏览器配置可以跨域
 /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --disable-web-security
 或者
 open -a &amp;quot;Google Chrome&amp;quot; --args --disable-web-security
 必须完全退出Chrome,再使用上述方法.
+清除Chrome dns 缓存 chrome://net-internals/#sockets
+chrome://net-internals/#dns
 有用的 chrome 插件 去广告
  Adblock Plus (ABP)
  前端开发相关
@@ -462,7 +862,8 @@ open -a &amp;quot;Google Chrome&amp;quot; --args --disable-web-security
 EditThisCookie https://chrome.google.com/webstore/detail/editthiscookie/fngmhnnpilhplaeedifhccceomclgfbg
 开启Chrome Ajax 跨域 https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi
 替换http响应 https://github.com/annnhan/ReRes https://chrome.google.com/webstore/detail/reres/gieocpkbblidnocefjakldecahgeeica?hl=zh-CN&amp;amp;gl=CN
- </description>
+ 自带截图 首先当然是打开你想截图的网页了，然后按下 F12（macOS 是 option + command + i）调出开发者工具，接着按「Ctrl + Shift + P」（macOS 是 command + Shift + P）。紧接着输入指令 capture，它会提示有三个选项，分别是截取全屏、node 模式以及当前范围，用鼠标点击或者用键盘选择对应的就可以了。
+而如果你想截取手机版的网页，可以先按「Ctrl + Shift + M」（macOS 是 command + Shift + M）切换到手机模式，再重复上面的截图操作即可。</description>
     </item>
     
     <item>
@@ -475,8 +876,9 @@ EditThisCookie https://chrome.google.com/webstore/detail/editthiscookie/fngmhnnp
 基本格式 : *　*　*　*　*　command 分　时 日 月　周　命令 * 第1列表示分钟1～59 每分钟用*或者*/1表示 * 第2列表示小时1～23（0表示0点） * 第3列表示日期1～31 * 第4列表示月份1～12 * 第5列标识号星期0～6（0表示星期天） * 第6列要运行的命令  禁止Crontab产生邮件: 在crontab末尾加上&amp;gt; /dev/null 2&amp;gt;&amp;amp;1 或者 &amp;gt; &amp;amp;&amp;gt; /dev/null
 例如
 0 1 5 10 * /path/to/script.sh &amp;gt; /dev/null 2&amp;gt;&amp;amp;1 0 1 5 10 * /path/to/script.sh &amp;gt; &amp;amp;&amp;gt; /dev/null  你也可以将/dev/null换成你想要存储日志的文件地址
-定时备份数据库 先写好shell脚本存入/home/cron1.sh
-user=&amp;quot;root&amp;quot; pass=&amp;quot;root&amp;quot; host=&amp;quot;127.0.0.1&amp;quot; port=&amp;quot;3306&amp;quot; dbs=&amp;quot;db1 db2 db3&amp;quot; dir=&amp;quot;/data/backup/&amp;quot; nowDate=`date &#39;+%Y%m%d&#39;` nowTime=`date &#39;+%H%M&#39;` backupdir=$dir$nowDate timeold=`date -d &amp;quot;-1 week&amp;quot; +%Y%m%d` delold=$dir$timeold if [ !</description>
+配置文件 对于CentOS
+/etc/ 目录下包含
+cron.d/ cron.daily/ cron.</description>
     </item>
     
     <item>
@@ -501,21 +903,21 @@ show 命令还有很多用途
       <guid>http://blog.suconghou.cn/post/ffmpeg-usage/</guid>
       <description>下载官方的静态编译的Linux通用二进制包,同时也包含ARM版本的 ffmpeg
 armhf比armel硬件要求,树莓派2可用armhf,树莓派1使用armel
-Windows版本也提供编译好的下载
+Windows版本也提供编译好的下载(也提供MacOs版)
 https://ffmpeg.zeranoe.com/builds/
 Mac编译好的下载(FFmpeg,FFserver,FFprobe,FFplay)
 http://evermeet.cx/ffmpeg/
 使用brew安装 brew install ffmpeg --with-ffplay
+ffmpeg -protocols 查看ffmpeg支持的协议列表
 让ffmpeg转为MP4边下边播 ffmpeg -i input.xx -c copy -movflags faststart output.mp4
 -movflags faststart 可修改MP4的moov
 关于faststart还有一个python项目,类似于ffmpeg软件包中的qt-faststart https://github.com/danielgtaylor/qtfaststart
 可以使用pip install qtfaststart,仅需10KB+
+pip3 install qtfaststart 也可以
 http://blog.chinaunix.net/uid-342902-id-2416123.html
 flv to mp4 ffmpeg -i input.flv -codec copy output.mp4 快速转化flv到mp4,高质量转化( only changes container without reencoding )
 ffmpeg -i input.flv -c copy -copyts output.mp4 也比较快,高质量转化
-ffmpeg -i aaa.flv -c:v libx264 -crf 28 output.mp4 带压缩的转换,非常消耗CPU和时间
-更多用法可以参考 http://www.jianshu.com/p/053665062f22
-处理m3u8地址视频 下载转码 ffmpeg -i &amp;quot;http://m3u8的地址&amp;quot; -c copy -bsf:a aac_adtstoasc output.</description>
+ffmpeg -i aaa.flv -c:v libx264 -crf 28 output.mp4 带压缩的转换,非常消耗CPU和时间</description>
     </item>
     
     <item>
@@ -524,7 +926,7 @@ ffmpeg -i aaa.flv -c:v libx264 -crf 28 output.mp4 带压缩的转换,非常消�
       <pubDate>Fri, 08 Jan 2016 23:43:00 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/git-usage/</guid>
-      <description>git配置 git config --global user.email &amp;quot;1126045770@qq.com&amp;quot; git config --global user.name &amp;quot;sucongohu&amp;quot; git config --global core.autocrlf false git config --global color.ui true git config --global credential.helper store git config --global alias.lg &amp;quot;log --graph --all --pretty=format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci,%cr) %C(bold blue)&amp;lt;%an&amp;gt;%Creset&#39; --abbrev-commit --date=relative&amp;quot; git config --global alias.laststash =&amp;quot;diff stash@{0}^!&amp;quot;   以上分别是设置用户信息,禁止转换换行符,颜色高亮,记住密码,设置别名列出分支图. 设置别名后,可以使用 git lg 查看各个分支关系
+      <description>git配置 git config --global user.email &amp;quot;1126045770@qq.com&amp;quot; git config --global user.name &amp;quot;sucongohu&amp;quot; git config --global core.autocrlf false git config --global color.ui true git config --global credential.helper store git config --global alias.lg &amp;quot;log --graph --all --pretty=format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci,%cr) %C(bold blue)&amp;lt;%an&amp;gt;%Creset&#39; --abbrev-commit --date=relative&amp;quot; git config --global alias.laststash &amp;quot;diff stash@{0}^!&amp;quot;   以上分别是设置用户信息,禁止转换换行符,颜色高亮,记住密码,设置别名列出分支图. 设置别名后,可以使用 git lg 查看各个分支关系
  设置core.autocrlf false 提交检出均不转换 , 否则同时在Mac,Windows,Linux 跨平台协作开发,eslint 检测换行符错误会很头疼.
 见 http://www.cnblogs.com/sdgf/p/6237847.html
 记住密码
@@ -559,11 +961,10 @@ sudo vim /etc/ssh/sshd_config
 开启ClientAliveInterval 60 开启 TCPKeepAlive yes
 如果您只想让当前的 ssh 保持连接，可以使用以下的命令：
 ssh -o ServerAliveInterval=60 user@sshserver
-ssh隧道 CfNg参数  C表示压缩数据传输 f表示后台用户验证,这个选项很有用,没有shell的不可登陆账号也能使用. N表示不执行脚本或命令 g表示允许远程主机连接转发端口,往往会没有效果,需要修改/etc/ssh/sshd_config添加gatewayports yes  -L本地转发 -L [本地监听IP:]本地监听端口号:目标主机IP:目标端口号 (其中,“本地监听IP”可以省略，省略的话就认为是“0.0.0.0”，但为了安全性考虑，请务必使用“127.0.0.1”做为本地监听端口， 而不要使用默认的“0.0.0.0”。）
-ssh -D 8080 user@host SSH会建立一个socket，去监听本地的8080端口。一旦有数据传向那个端口，就自动把它转移到SSH连接上面，发往远程主机。可以想象，如果8080端口原来是一个不加密端口，现在将变成一个加密端口。
-ssh -L 2121:host2:21 host3 命令中的L参数一共接受三个值，分别是&amp;rdquo;本地端口:目标主机:目标主机端口&amp;rdquo;，它们之间用冒号分隔。这条命令的意思，就是指定SSH绑定本地端口2121，然后指定host3将所有的数据，转发到目标主机host2的21端口（假定host2运行FTP，默认端口为21）。 这样一来，我们只要连接host1的2121端口，就等于连上了host2的21端口。
-ssh -CTfNg -L 6300:127.0.0.1:1521 oracle@172.16.1.164  本机的6300端口就是远程主机172.16.1.164的1521端口
--R远程转发  ssh -CTfNg -R 1521:127.0.0.1:6300 oracle@172.16.1.164  在远程主机172.</description>
+ssh 链接复用
+Host * ForwardAgent yes ServerAliveInterval 30 ServerAliveCountMax 20 TCPKeepAlive no ControlMaster auto ControlPath ~/.ssh/connection-%r@%h:%p ControlPersist 20m Compression yes  http://einverne.github.io/post/2017/05/ssh-keep-alive.html
+https://www.cyberciti.biz/faq/linux-unix-reuse-openssh-connection/
+ssh隧道 CfNg参数  C表示压缩数据传输 f表示后台用户验证,这个选项很有用,没有shell的不可登陆账号也能使用. N表示不执行脚本或命令 g表示允许远程主机连接转发端口,往往会没有效果,需要修改/etc/ssh/sshd_config添加gatewayports yes T禁止分配伪终端，如果ssh使用此选项登录系统时，由于禁用，将无法获得终端；但仍能够获得shell，只不过看起来像在本地，也没有很多应有的环境变量，例如命令提示符，PS1等 n Redirects stdin from /dev/null (actually, prevents reading from stdin).</description>
     </item>
     
     <item>
@@ -573,7 +974,7 @@ ssh -CTfNg -L 6300:127.0.0.1:1521 oracle@172.16.1.164  本机的6300端口就是
       
       <guid>http://blog.suconghou.cn/post/install-nodejs/</guid>
       <description>安装NodeJs nodejs官方提供了编译好的二进制的包,全平台都有,十分方便 最新版本NodeJs官方库
-其他信息http://www.oschina.net/news/73974/node-v6-2-1-current
+其他信息http://www.oschina.net/news/92070/node-js-6-12-3-lts
 例如安装Linux版本
 wget https://nodejs.org/dist/v6.0.0/node-v6.0.0-linux-x64.tar.xz tar -xJf node-v6.0.0-linux-x64.tar.xz sudo mv node-v6.0.0-linux-x64 /usr/local/nodejs sudo ln -s /usr/local/nodejs/bin/node /usr/local/bin/node sudo ln -s /usr/local/nodejs/bin/npm /usr/local/bin/npm node -v npm -v  单文件版node.exe单独安装npm 1.clone npm 源码 git clone --recursive git://github.com/isaacs/npm.git
 2.进入npm目录,安装npm node cli.js install npm -gf
@@ -581,7 +982,7 @@ wget https://nodejs.org/dist/v6.0.0/node-v6.0.0-linux-x64.tar.xz tar -xJf node-v
 也不会搞乱你的node_modules文件夹,node的可执行文件位置也始终不会变化.
 node-compiler 编译nodejs为可执行文件. https://github.com/pmq20/node-compiler 需要 node npm ,编译过程会安装依赖npm install
 https://sourceforge.net/projects/squashfs/files/
-yum install make gcc zlib-devel glibc-static gcc-c++ -y make -j4  一些必备package sudo npm install -g less autoprefixer express jshint uglify-js webpack react-native-cli airs  ** npm加速 **</description>
+yum install make gcc zlib-devel glibc-static gcc-c++ -y make -j4  一些必备package sudo npm install -g less autoprefixer express jshint uglify-js webpack react-native-cli airs  一些用node写的工具</description>
     </item>
     
     <item>
@@ -598,13 +999,7 @@ yum install make gcc zlib-devel glibc-static gcc-c++ -y make -j4  一些必备pa
  bmob移动后端云,网友示例项目BandwaghonhostAPP,结合mui移动开发框架开发手机APP
 短信,推动消息等  阿里大鱼   阿里巴巴旗下的短信验证码通知服务,价格实惠,短信通知≤0.045元／条,还有文本转语音通知≤0.055元／条
   SendCloud   短信和邮件发送服务,邮件有每日免费200封,短信5.5分每条
- 图像压缩软件 ImageOptim无损压缩
-mozjpeg Mozilla的jpg压缩技术,支持无损,有损压缩在线压缩,最大2M.
-tinypng 众多压缩软件中压缩效果较好的,支持png,jpg在线批量压缩
-kraken 类似于tinypng,也提供在线压缩
-pngquant 开源的压缩png,据说tinypng基于此项目
-nodejs imagemin NodeJs模块,压缩jpg,png,压缩效果一般
-移动混合应用/HHTML5开发 国产mui 最接近原生APP体验的高性能前端框架,不依赖任何第三方JS库,压缩后的JS和CSS文件仅有100+K和60+K
+ 移动混合应用/HHTML5开发 国产mui 最接近原生APP体验的高性能前端框架,不依赖任何第三方JS库,压缩后的JS和CSS文件仅有100+K和60+K
 SUI Mobile 淘宝移动UI框架,轻量，小巧且精美的UI库 方便迅速搭建手机H5应用,兼容iOS 6.0+ 和 Android 4.0+，非常适合开发跨平台Web App。
 mobiscroll 移动开发UI,丰富的时间选择器控件还有一些WEBAPP展示,https://github.com/acidb/mobiscroll
 桌面开发 nwjs Mac版钉钉使用的就是这个技术,界面还算漂亮
@@ -613,7 +1008,10 @@ mobiscroll 移动开发UI,丰富的时间选择器控件还有一些WEBAPP展示
 http://www.egret.com/ 白鹭也是做这个的
 https://github.com/iioinc/iio.js 也是canvas的游戏
 网页富文本编辑器 wangeditor 轻量简介的富文本编辑器,使用容易,相比百度umeditor更简洁
-medium-editor 一个非常简洁的输入框,支持很多插件扩充</description>
+medium-editor 一个非常简洁的输入框,支持很多插件扩充
+quill 功能丰富,样式简介
+网页Markdown编辑器 Editor.md 一款开源的、可嵌入的 Markdown 在线编辑器（组件），基于 CodeMirror、jQuery 和 Marked 构建。
+markdown-plus Markdown Plus,界面不是很漂亮,也有收费的桌面APP</description>
     </item>
     
     <item>
@@ -637,7 +1035,7 @@ OpenVZ的VPS内核版本较低,且不能升级,并不能作为docker server,但�
 以下二种方法适用于RedHat,CentOS
  cat /etc/redhat-release 或者 cat /etc/centos-release rpm -q centos-release 或者 rpm -q redhat-release  查看是否是64位系统uname -i
 下载安装 http://www.oschina.net/news/83328/docker-17-03-1-ce-released
-deb/rpm install: curl -fsSL https://get.docker.com/ | sh Linux 64bits tgz: https://get.docker.com/builds/Linux/x86_64/docker-17.03.1-ce.tgz Darwin/OSX 64bits client tgz: https://get.docker.com/builds/Darwin/x86_64/docker-17.03.1-ce.tgz Linux 32bits arm tgz: https://get.docker.com/builds/Linux/armel/docker-17.03.1-ce.tgz Windows 64bits zip: https://get.docker.com/builds/Windows/x86_64/docker-17.03.1-ce.zip Windows 32bits client zip: https://get.docker.com/builds/Windows/i386/docker-17.03.1-ce.zip  快速安装docker并启动 官方安装教程</description>
+deb/rpm install: curl -fsSL https://get.docker.com/ | sh Linux 64bits tgz: https://get.docker.com/builds/Linux/x86_64/docker-17.03.1-ce.tgz Darwin/OSX 64bits client tgz: https://get.docker.com/builds/Darwin/x86_64/docker-17.03.1-ce.tgz Linux 32bits arm tgz: https://get.docker.com/builds/Linux/armel/docker-17.03.1-ce.tgz Windows 64bits zip: https://get.docker.com/builds/Windows/x86_64/docker-17.03.1-ce.zip Windows 32bits client zip: https://get.docker.com/builds/Windows/i386/docker-17.03.1-ce.zip  下载地址一览 https://download.</description>
     </item>
     
     <item>
@@ -689,6 +1087,22 @@ groupadd www-data adduser -M -s /sbin/nologin www-data -g www-data  编译nginx 
 如果想让草稿也被渲染,使用hugo server -D
 编写主题 在平级的themes目录下,建立一个文件夹为你主题的名字,里面有static,layouts,archetypes文件夹.
 static为你的静态目录,layouts为模板目录,archetypes为</description>
+    </item>
+    
+    <item>
+      <title>Linux下同步文件的多种方法</title>
+      <link>http://blog.suconghou.cn/post/sync-files-on-linux/</link>
+      <pubDate>Sat, 21 Nov 2015 23:55:54 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/sync-files-on-linux/</guid>
+      <description>采用scp同步 采用rsync同步 rsync -arvuzpt --progress /data/project/21text/static/ root@172.168.1.3:/data/web/21text/static/;  mac上结合fswatch自动同步
+sync1() { dir=/data/project/21textv3/ while true do rsync -arvuzpt --progress --exclude=&amp;quot;.git&amp;quot; /data/project/21textv3/ root@172.168.1.3:/data/web/21textv3/ echo &amp;quot;start morniting folder $dir&amp;quot; fswatch -1 $dir sleep 2 done }  LFTP 同步 brew install lftp
+登陆ftp lftp user:pass@ftphost:21
+解决办法很简单。只要你能充分相信你的host，就在 lftp 里加上这样一句
+set ssl:verify-certificate no
+或者，可以在敲 lftp 命令的时候这样输入：
+lftp -e &amp;ldquo;set ssl:verify-certificate no&amp;rdquo;
+使用btsync https://www.getsync.com/platforms/desktop/</description>
     </item>
     
   </channel>

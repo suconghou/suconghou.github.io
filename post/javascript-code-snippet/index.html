@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="post hidetop">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -7,34 +7,52 @@
 	<meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
 	<meta name='description' content='记录学习的点点滴滴'>
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
-	<title>javascript code snippet &middot; 苏苏的博客</title>
-	<link rel="stylesheet" type="text/css" href="/css/style.min.css">
+	<title>实用的Javascript代码锦集 &middot; 苏苏的博客</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
 	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
-	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
 <body>
-<header class="header">
-	<div class="header-main">
-		<a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
-		<h1>苏苏的博客</h1>
-		<p class="sub-title">简约至极</p>
-		<ul class="contact">
-			<a href="https://github.com/suconghou" target="_blank"><i class="fa fa-github"></i></a>
-			<a href="javascript:music.show(1)"><i class="fa fa-music"></i></a>
-		</ul>
-	</div>
+<header class="header post-header">
+    <div class="header-main" >
+        <a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
+        <h1>苏苏的博客</h1>
+        <p class="sub-title">简约至极</p>
+        <ul class="menus">
+            <a href="/">首页</a>
+            <a href="/post">技术</a>
+            <a href="/life">生活</a>
+            <a href="/photo">相册</a>
+            <a href="/about">关于</a>
+        </ul>
+    </div>
+    <div class="pull-button">
+        <div class="rbutton">
+            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
+        </div>
+    </div>
 </header>
-
-<aside></aside>
-
-<div class="content container">
+<div class="content container center">
 	<div class="post">
 		<h1 class="post-title">
-			<a href="javascript:void(0)"> javascript code snippet</a>
-		</h1>
-		<p class="post-date">Thu, Aug 11, 2016</p>
-		
+			实用的Javascript代码锦集
+        </h1>
+        <div class="post-meta">
+            <div>
+                <p class="post-date">
+                    <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                    2016/08/11 10:27 Thu
+                </p>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+        
 		<div class="post-text">
 			
 
@@ -140,6 +158,60 @@ return false;
 }
 </code></pre>
 
+<h2 id="ie-ajax-get-缓存">IE ajax get 缓存</h2>
+
+<p>IE 发送 GET 请求的缓存策略比较激进</p>
+
+<p>当服务端没有设定相关缓存策略时，IE是默认缓存GET请求的。下次同地址的GET请求将会直接 <code>200 from cache</code></p>
+
+<p>在使用 axios 发送请求时，我们需要申明禁用缓存，表明请求该地址不使用本地缓存。</p>
+
+<p>IE11 禁用ajx get 缓存</p>
+
+<pre><code>
+const headers = {
+    'X-Requested-With': 'XMLHttpRequest',
+    'Pragma': 'no-cache',
+    'Expires': 0
+};
+
+export const httpSys = axios.create({
+    baseURL:baseURLSys,
+    timeout: 60000,
+    withCredentials: true,
+    headers,
+});
+
+</code></pre>
+
+<h2 id="polyfill-service">polyfill service</h2>
+
+<p>为兼容IE9,IE10,IE11等等众多浏览器，</p>
+
+<p>我们需要在自己的代码工程里引入非常多的 polyfill,</p>
+
+<p>但大部分 polyfill 对于新版的Chrome,Firefox 都是不必要的，但是也被打包到bundle里，造成bundle包很大</p>
+
+<p>使用 polyfill service 我们可以免除对于polyfill的考虑，并且每个浏览器各自下载的内容不同，不需要的不会被下载。</p>
+
+<p>并且基于CDN和缓存，各浏览器基本只需要下载一次。</p>
+
+<p>并且会自动解决各种polyfill依赖问题，例如 <code>https://cdn.polyfill.io/v2/polyfill.js?features=Element.prototype.closest|always</code></p>
+
+<p>实测 <code>EDGE16</code> 不支持 <code>Promise.prototype.finally</code></p>
+
+<p><a href="https://hospodarets.com/promise.prototype.finally#support">https://hospodarets.com/promise.prototype.finally#support</a></p>
+
+<p>node &gt;= 8.1.4  &lt;10.0.0 可以通过 <code>node -harmony-promise-finally</code> 开启 <code>Promise.prototype.finally</code></p>
+
+<p>node &gt;=10.0.0 默认支持 <code>Promise.prototype.finally</code></p>
+
+<p><code>https://cdn.polyfill.io/v2/polyfill.min.js?features=default,Promise.prototype.finally</code></p>
+
+<p><a href="https://polyfill.io/v2/docs/">https://polyfill.io/v2/docs/</a></p>
+
+<p><code>https://babeljs.io/docs/usage/polyfill/</code> <code>babel-polyfill</code>包含的<code>core-js</code> 也是一种方式</p>
+
 <h3 id="异步之中的下载文件">异步之中的下载文件</h3>
 
 <p>在异步中使用window.open是无法生效的</p>
@@ -155,6 +227,73 @@ return false;
 <p><code>window.open</code> 打开同源网站,目标站点可访问 window.opener, 且可操作其opener各种属性和方法</p>
 
 <p>对应打开的非同源网站, 目标站点不能读取 opener的信息,如 location.href. 出现跨域问题,但是可以调用 window.opener.location.replace/assign 等 , 让原网站跳转指定url.</p>
+
+<h3 id="判断是否在某个div内">判断是否在某个div内</h3>
+
+<p>在jQuery中，我们可以直接使用<code>closest</code>从此元素向上查找父元素,判断包含关系，</p>
+
+<p>在原生JS中可以使用如下代码</p>
+
+<pre><code>function isParent(node, parent) {
+  while (node) {
+    if (node === parent) {
+      return true;
+    }
+    node = node.parentNode;
+  }
+  return false;
+}
+</code></pre>
+
+<p>下面一个函数更加灵活，使用自定义函数判断是否查找到。</p>
+
+<pre><code>var closest = function(el, fn) {
+    return el &amp;&amp; (fn(el) ? el : closest(el.parentNode, fn));
+}
+</code></pre>
+
+<p>参考： <a href="http://clubmate.fi/jquerys-closest-function-and-pure-javascript-alternatives/">http://clubmate.fi/jquerys-closest-function-and-pure-javascript-alternatives/</a></p>
+
+<p>document.querySelector(&ldquo;#outer-3&rdquo;).closest(&ldquo;#outer-1&rdquo;)</p>
+
+<pre><code>if (window.Element &amp;&amp; !Element.prototype.closest) {
+    Element.prototype.closest =
+    function(s) {
+        var matches = (this.document || this.ownerDocument).querySelectorAll(s),
+            i,
+            el = this;
+        do {
+            i = matches.length;
+            while (--i &gt;= 0 &amp;&amp; matches.item(i) !== el) {};
+        } while ((i &lt; 0) &amp;&amp; (el = el.parentElement));
+        return el;
+    };
+}
+
+</code></pre>
+
+<p>参考： <a href="http://usefulangle.com/post/44/jquery-closest-function-in-pure-vanilla-javascript">http://usefulangle.com/post/44/jquery-closest-function-in-pure-vanilla-javascript</a></p>
+
+<p>MDN上也有Polyfill</p>
+
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/closest">https://developer.mozilla.org/en-US/docs/Web/API/Element/closest</a></p>
+
+<h2 id="query-builder">query builder</h2>
+
+<pre><code>
+function buildQuery(params){
+    var esc = encodeURIComponent;
+    return Object.keys(params).map(k =&gt; esc(k) + '=' + esc(params[k])).join('&amp;');
+}
+function buildQuery(params){
+    var esc = encodeURIComponent;
+    return Object.keys(params).map(function(k) {return esc(k) + '=' + esc(params[k]);}).join('&amp;');
+}
+
+function query(o){
+	return Object.entries(o).reduce((arr, [k, v]) =&gt; arr.concat(encodeURIComponent(k) + '=' + encodeURIComponent(v)), []).join('&amp;')
+}
+</code></pre>
 
 <h3 id="获取查询查询字符串get参数值">获取查询查询字符串get参数值</h3>
 
@@ -317,6 +456,9 @@ String.prototype.rtrim=function(){return this.replace(/(\s*$)/g,&quot;&quot;); }
 }
 </code></pre>
 
+<pre><code>
+</code></pre>
+
 <h3 id="判断页面滚动到底部和顶部">判断页面滚动到底部和顶部</h3>
 
 <pre><code>$(document).scroll(function()
@@ -331,6 +473,73 @@ String.prototype.rtrim=function(){return this.replace(/(\s*$)/g,&quot;&quot;); }
 	}
 });
 </code></pre>
+
+<p><strong>滚动到顶部</strong></p>
+
+<pre><code>$('html,body').animate({
+    scrollTop: '0px'
+}, 800);
+</code></pre>
+
+<p>纯js滚动到顶部</p>
+
+<pre><code>window.scrollTo(0, 0);
+</code></pre>
+
+<p>或者</p>
+
+<pre><code>document.body.scrollTop = 0
+document.documentElement.scrollTop = 0
+</code></pre>
+
+<p>平滑滚动</p>
+
+<p>chrome 原生支持</p>
+
+<pre><code>window.scroll({top: 0, left: 0, behavior: 'smooth' });
+</code></pre>
+
+<p><a href="https://stackoverflow.com/questions/8917921/cross-browser-javascript-not-jquery-scroll-to-top-animation">https://stackoverflow.com/questions/8917921/cross-browser-javascript-not-jquery-scroll-to-top-animation</a></p>
+
+<p>用JS实现</p>
+
+<p><strong>linear</strong></p>
+
+<pre><code>function scrollToTop(scrollDuration) {
+    var scrollStep = -window.scrollY / (scrollDuration / 15),
+        scrollInterval = setInterval(function(){
+        if ( window.scrollY != 0 ) {
+            window.scrollBy( 0, scrollStep );
+        }
+        else clearInterval(scrollInterval); 
+    },15);
+}
+</code></pre>
+
+<p><strong>ease in and out</strong></p>
+
+<pre><code>function scrollToTop(scrollDuration) {
+const   scrollHeight = window.scrollY,
+        scrollStep = Math.PI / ( scrollDuration / 15 ),
+        cosParameter = scrollHeight / 2;
+var     scrollCount = 0,
+        scrollMargin,
+        scrollInterval = setInterval( function() {
+            if ( window.scrollY != 0 ) {
+                scrollCount = scrollCount + 1;  
+                scrollMargin = cosParameter - cosParameter * Math.cos( scrollCount * scrollStep );
+                window.scrollTo( 0, ( scrollHeight - scrollMargin ) );
+            } 
+            else clearInterval(scrollInterval); 
+        }, 15 );
+}
+</code></pre>
+
+<p><a href="https://stackoverflow.com/questions/21474678/scrolltop-animation-without-jquery">https://stackoverflow.com/questions/21474678/scrolltop-animation-without-jquery</a></p>
+
+<p><code>scroll-behavior: smooth;</code> 也支持锚点跳转</p>
+
+<p><a href="https://stackoverflow.com/questions/17631417/css-pure-css-scroll-animation">https://stackoverflow.com/questions/17631417/css-pure-css-scroll-animation</a></p>
 
 <h3 id="运行js代码">运行JS代码</h3>
 
@@ -387,6 +596,12 @@ function injectStyle(css) {
 <pre><code>&lt;img src=&quot;data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7&quot;&gt;
 </code></pre>
 
+<h3 id="哪个个深拷贝最快">哪个个深拷贝最快</h3>
+
+<p><a href="http://jsben.ch/bWfk9">http://jsben.ch/bWfk9</a></p>
+
+<p><code>Object.assign</code> 并不是深拷贝</p>
+
 <h3 id="一个range函数">一个range函数</h3>
 
 <pre><code>function range(start, count)
@@ -403,6 +618,11 @@ function injectStyle(css) {
 <pre><code>var log = console.log.bind(console);
 </code></pre>
 
+<h3 id="简化-queryselector">简化<code>querySelector</code></h3>
+
+<pre><code>srcQuery=srcQ.querySelector.bind(srcQ);
+</code></pre>
+
 <h3 id="生成较短的唯一id">生成较短的唯一ID</h3>
 
 <p>一定年限内单线程非连续调用唯一</p>
@@ -417,7 +637,7 @@ function injectStyle(css) {
 
 <p>生成随机短ID,仅具备较低的不重复性</p>
 
-<pre><code>var t=(((1+Math.random())*0x10000000)|0).toString(16);
+<pre><code>var t=Math.floor((1+Math.random())*0x1000000000).toString(16);
 </code></pre>
 
 <p>生成指定长度随机字符串
@@ -456,6 +676,18 @@ function injectStyle(css) {
 <pre><code>jQuery(&quot;form&quot;).serialize(); //&quot;username=&amp;password=&quot;
 jQuery(&quot;form&quot;).serializeArray(); //[{name:&quot;username&quot;,value:&quot;&quot;},{name:&quot;password&quot;,value:&quot;&quot;}]
 jQuery(&quot;form&quot;).serializeObject(); //{username:&quot;&quot;,password:&quot;&quot;}
+</code></pre>
+
+<h3 id="jquery-返回顶部">jQuery 返回顶部</h3>
+
+<pre><code>$('html').animate({scrollTop: '0px'}, 800);
+</code></pre>
+
+<p>在 <code>safari</code> 中需要使用 $(&lsquo;body&rsquo;)</p>
+
+<p>因此使用下面代码更加兼容</p>
+
+<pre><code>$('html,body').animate({scrollTop: '0px'}, 800);
 </code></pre>
 
 <h3 id="直接下载blob数据">直接下载blob数据</h3>
@@ -570,45 +802,54 @@ geolocation.getIpLocation(showPosition, showErr)
 <pre><code>$.ajaxSetup({xhrFields: {withCredentials: true }});
 </code></pre>
 
-		</div>
-	</div>
-</div>
-	<div class="music-container">
-	<div class="music-header">
-	    <a class="fa-button home" href="javascript:music.show(0)"><i class="fa fa-home" title="Home"></i></a>
-	    <a class="fa-button next" href="javascript:music.next()"><i class="fa fa-chevron-right" title="Next"></i></a>
-	</div>
-	<div class="backdrop"></div>
-	<div class="music-player">
-		<div class="cover">
-            <img src="http://p4.music.126.net/ckfEE9UUGcnGHylQJ12ENA==/670702092966093.jpg?param=350y350">
-            <div class="foredrag"><i class="fa fa-play"></i></div>
-        </div>
-        <div class="progress">
-            <div class="elapse"></div>
-        </div>
-        <div class="detail">
-            <div class="title">音乐标题</div>
-            <div class="artist">歌手</div>
-        </div>
-	</div>
-</div>
-<div id="loader" style="z-index:99999;" class="pageload-overlay" data-opening="M 40 -21.875 C 11.356078 -21.875 -11.875 1.3560784 -11.875 30 C -11.875 58.643922 11.356078 81.875 40 81.875 C 68.643922 81.875 91.875 58.643922 91.875 30 C 91.875 1.3560784 68.643922 -21.875 40 -21.875 Z">
-    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 80 60" preserveAspectRatio="xMidYMid slice"> <path d="M40,30 c 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 Z"/></svg>
-</div>
+<h2 id="google-closure-compiler">google closure-compiler</h2>
 
-	<footer class="footer">
-		<div class="footer-nav">
-			<ul>
-				<li><a href="/post/">归档</a></li>
-				<li><a href="/">专题</a></li>
-				<li><a href="/life/">生活</a></li>
-				<li><a href="/about/">关于</a></li>
-			</ul>
+<p>编译好的jar下载</p>
+
+<pre><code>http://dl.google.com/closure-compiler/compiler-latest.zip
+http://dl.google.com/closure-compiler/compiler-latest.tar.gz
+</code></pre>
+
+<p>解压后包含一个jar文件</p>
+
+<p>或者 <code>https://github.com/google/closure-compiler</code> 下载源码与查看说明</p>
+
+<p><a href="https://developers.google.com/closure/compiler/docs/api-ref">https://developers.google.com/closure/compiler/docs/api-ref</a></p>
+
+<p>使用</p>
+
+<pre><code>java -jar compiler.jar --js_output_file=out.js in1.js in2.js in3.js ...
+# Recursively include all js files in subdirs
+java -jar compiler.jar --js_output_file=out.js 'src/**.js'
+
+java -jar closure-compiler-v20180402.jar --js_output_file 1.js --language_out NO_TRANSPILE -O WHITESPACE_ONLY --strict_mode_input false yarn-1.6.0.js
+
+</code></pre>
+
 		</div>
-	</footer>
-	<script type="text/javascript" src="/js/main.min.js" data-no-instant></script>
+    </div>
+    <div class="post-comment comment-render">
+        <air-messager ns="hi" kid="/post/javascript-code-snippet/"></air-messager>
+    </div>
+    <div class="post-end">
+        
+            <a class="previous" href="http://blog.suconghou.cn/post/javascript-senior/" title="Javascript传值与传引用" >
+                <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
+            </a>
+        
+        
+            <a class="next" href="http://blog.suconghou.cn/post/nginx-usage/" title="nginx安装与使用">
+                <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
+            </a>
+        
+    </div>
+</div>
+<footer class="footer">
+    <div class="footer-nav">
+    </div>
+</footer>
+<script type="text/javascript" src="/js/main.js"></script>
+<script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
+<script src="http://feds.club/static/air-messager.min.js"></script>
 </body>
 </html>
-
-

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" class="post hidetop">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+	<meta name='renderer' content='webkit'>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
+	<meta name='description' content='记录学习的点点滴滴'>
+	<meta name='keywords' content='前端,PHP,GO,编程博客'>
+	<title>开始HTTP2 &middot; 苏苏的博客</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
+	<link rel="shortcut icon" href="/favicon.png">
+</head>
+<body>
+<header class="header post-header">
+    <div class="header-main" >
+        <a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
+        <h1>苏苏的博客</h1>
+        <p class="sub-title">简约至极</p>
+        <ul class="menus">
+            <a href="/">首页</a>
+            <a href="/post">技术</a>
+            <a href="/life">生活</a>
+            <a href="/photo">相册</a>
+            <a href="/about">关于</a>
+        </ul>
+    </div>
+    <div class="pull-button">
+        <div class="rbutton">
+            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
+        </div>
+    </div>
+</header>
+<div class="content container center">
+	<div class="post">
+		<h1 class="post-title">
+			开始HTTP2
+        </h1>
+        <div class="post-meta">
+            <div>
+                <p class="post-date">
+                    <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                    2016/07/04 14:08 Mon
+                </p>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+        
+		<div class="post-text">
+			
+
+<h2 id="启用http2">启用http2</h2>
+
+<p>我的http2的配置</p>
+
+<pre><code>server{
+        listen 80 fastopen=3 reuseport;
+        server_name example.com;
+        valid_referers none *.google.com *.bing.com *.baidu.com *.example.com;
+        if ($invalid_referer)
+        {
+                return 444;
+        }
+        rewrite ^(.*) https://example.com$1 permanent;
+}
+server{
+        listen 443 ssl http2 fastopen=3 reuseport;
+        server_name example.com;
+        server_tokens off;
+        gzip on;
+        gzip_proxied any;
+        gzip_min_length 1024;
+        gzip_comp_level 3;
+        gzip_types text/plain text/javascript text/css text/json application/javascript  application/json image/jpeg image/gif image/png;
+        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+        ssl_ciphers EECDH+CHACHA20:EECDH+CHACHA20-draft:EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;
+        ssl_prefer_server_ciphers on;
+        ssl_session_cache          shared:SSL:50m;
+        ssl_session_timeout        1d;
+        ssl_session_tickets off;
+        ssl_stapling on;    #OCPS开启
+        ssl_stapling_verify on;    #OCPS验证开启
+        resolver 8.8.8.8 8.8.4.4 valid=300s;    #用于查询OCPS服务器的DNS
+        resolver_timeout 5s;
+        ssl_certificate /home/ec2-user/.acme.sh/example.com/fullchain.cer;
+        ssl_certificate_key /home/ec2-user/.acme.sh/example.com/example.com.key;
+        add_header Strict-Transport-Security &quot;max-age=31536000; includeSubdomains; preload&quot;;
+        add_header X-Content-Type-Options nosniff;
+        valid_referers none *.google.com *.bing.com *.baidu.com *.example.com;
+        if ($invalid_referer)
+        {
+                return 444;
+        }
+        if ($server_protocol ~* &quot;HTTP/1&quot;) {
+                return 444;
+        }
+        location / {
+                proxy_pass http://127.0.0.1:8084;
+                proxy_set_header Host $host;
+                proxy_set_header X-Forwarded-Ssl off;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Port 80;
+        }
+}
+
+</code></pre>
+
+<p>大体上是这样;</p>
+
+<p>由于站点不想被大量其他流量使用,就加上了若干限制.</p>
+
+<p>其中valid_referers添加了允许的referers,其他referers全部屏蔽</p>
+
+<p>用server_protocol过滤掉了http1.0,http1.1的请求,即只允许http2</p>
+
+<pre><code>ssl_protocols               TLSv1 TLSv1.1 TLSv1.2;
+ssl_ciphers                 EECDH+CHACHA20:EECDH+CHACHA20-draft:EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;
+ssl_prefer_server_ciphers   on;
+</code></pre>
+
+<h2 id="关于chrome不使用http2的问题">关于Chrome不使用http2的问题</h2>
+
+<p>当使用仅允许http2连接时,会发现Firefox和Safari使用的是http2协议,而Chrome任然使用http1.1协议导致被屏蔽.</p>
+
+<p>这是由于Chrome从51开始,停止了对<code>NPN</code>的支持,由于目前系统自带的OpenSSL大部分为1.0.1,而这些版本只支持NPN</p>
+
+<p>OpenSSL从1.0.2开始同时支持ALPN和NPN</p>
+
+<p><code>nginx -V</code> 查看,如果你编译的nginx里显示<code>built with OpenSSL 1.0.1k-fips 8 Jan 2015</code>
+代表着不支持<code>ALPN</code>,需要重新编译才能让Chrome51以上版本使用http2协议.</p>
+
+<p>查看当前系统的OpenSSL版本:<code>openssl version</code></p>
+
+<p>可以在<a href="https://www.openssl.org/source/">https://www.openssl.org/source/</a> 下载新版的OpenSSL再重新编译.</p>
+
+<p>重新编译,可参考 /post/install-nginx-php-mysql-redis</p>
+
+<p>需要注意的是,如果你原先编译的nginx已经在运行,即使nginx二进制文件已经被替换,<code>nginx -s reload</code>任然不能切换到新版本</p>
+
+<p>需要<code>nginx -s quit</code>再重新启用nginx</p>
+
+		</div>
+    </div>
+    <div class="post-comment comment-render">
+        <air-messager ns="hi" kid="/post/enable-http2-in-chrome/"></air-messager>
+    </div>
+    <div class="post-end">
+        
+            <a class="previous" href="http://blog.suconghou.cn/post/php-best-way/" title="PHP最佳实践" >
+                <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
+            </a>
+        
+        
+            <a class="next" href="http://blog.suconghou.cn/post/some-hole/" title="微信浏览器的一些问题">
+                <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
+            </a>
+        
+    </div>
+</div>
+<footer class="footer">
+    <div class="footer-nav">
+    </div>
+</footer>
+<script type="text/javascript" src="/js/main.js"></script>
+<script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
+<script src="http://feds.club/static/air-messager.min.js"></script>
+</body>
+</html>

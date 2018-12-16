@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+	<meta name='renderer' content='webkit'>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
+	<meta name='description' content='记录学习的点点滴滴'>
+	<meta name='keywords' content='前端,PHP,GO,编程博客'>
+	<title>Posts &middot; 苏苏的博客</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link href="http://blog.suconghou.cn/post/index.xml" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
+	<link rel="shortcut icon" href="/favicon.png">
+</head>
+<body>
+<header class="header post-header">
+    <div class="header-main">
+        <a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
+        <h1>苏苏的博客</h1>
+        <p class="sub-title">简约至极</p>
+        <ul class="menus">
+            <a href="/">首页</a>
+            <a href="/post">技术</a>
+            <a href="/life">生活</a>
+            <a href="/photo">相册</a>
+            <a href="/about">关于</a>
+        </ul>
+    </div>
+</header>
+
+<div class="content container center">
+	<ul class="posts-list">
+    
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/install-yum/" class="post-link">yum的一些配置</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2016/08/02 11:33 Tue
+                    </p>
+                </header>
+                
+                <p class="post-summary">安装配置Yum 删除原有yum,如果存在的话
+rpm -aq|grep yum|xargs rpm -e --nodeps
+查看最新的yum
+http://mirrors.163.com/centos/6/os/x86_64/Packages/
+找到最新版yum rpm 包,使用rpm -ivh安装
+wget http://mirrors.163.com/centos/6/os/x86_64/Packages/yum-3.2.29-73.el6.centos.noarch.rpm rpm -ivh yum-3.2.29-73.el6.centos.noarch.rpm  但是会有依赖问题,需要先安装依赖,yum的依赖
+error: Failed dependencies: python-urlgrabber &gt;= 3.9.1-10 is needed by yum-3.2.29-73.el6.centos.noarch yum-metadata-parser &gt;= 1.1.0 is needed by yum-3.2.29-73.el6.centos.noarch yum-plugin-fastestmirror is needed by yum-3.2.29-73.el6.centos.noarch  于是,同时注意,这些依赖的旧版本也要清理
+清理
+rpm -aq|grep python-urlgrabber # 查看旧的版本 rpm -e --nodeps python-urlgrabber #把旧版本卸载掉,然后安装新版本  安装新版本
+yum-plugin-fastestmirror还会依赖yum,yum又依赖yum-plugin-fastestmirror,要一个命令一块安装
+wget http://mirrors.163.com/centos/6/os/x86_64/Packages/python-urlgrabber-3.9.1-11.el6.noarch.rpm wget http://mirrors.163.com/centos/6/os/x86_64/Packages/yum-metadata-parser-1.1.2-16.el6.x86_64.rpm wget http://mirrors.163.com/centos/6/os/x86_64/Packages/yum-plugin-fastestmirror-1.1.30-37.el6.noarch.rpm rpm -ivh python-urlgrabber-3.9.1-11.el6.noarch.rpm rpm -ivh yum-metadata-parser-1.</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="http://blog.suconghou.cn/post/install-yum/">阅读全文</a>
+                </footer>
+            </article>
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/use-haproxy/" class="post-link">HAProxy优化应用程序速度</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2016/07/29 14:27 Fri
+                    </p>
+                </header>
+                
+                <p class="post-summary">HAProxy HAProxy高性能的反向代理软件,更专注于TCP,HTTP处理,它可以基于四层或七层进行反向代理,尤其适合于高负载且需要进行七层处理的 Web 站点.
+单进程、事件驱动模型,通常用于超高流量的负载均衡.
+我们也可以使用它来作为中转站,使直连连通率不好的请求进过中转提升速度.
+编译安装 apt-get update &amp;&amp; apt-get install -y wget gcc g&#43;&#43; make libpcre&#43;&#43;0v5 libpcre&#43;&#43;-dev  yum update &amp;&amp; yum install wget gcc make  HAPROXY_VERSION=haproxy-1.7.9 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l` wget http://www.haproxy.org/download/1.7/src/${HAPROXY_VERSION}.tar.gz tar zxf ${HAPROXY_VERSION}.tar.gz cd ${HAPROXY_VERSION} export CFLAGS=&#34;-O3&#34; make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 -j$CPU_NUM &amp;&amp; make install  编译32位版本make TARGET=linux26 ARCH=i686 USE_STATIC_PCRE=1 -j$CPU_NUM
+在64位系统下编译32位需要apt-get install gcc-multilib g&#43;&#43;-multilib
+我编译好的haproxy version 1.7.9
+ 64位 http://share.</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="http://blog.suconghou.cn/post/use-haproxy/">阅读全文</a>
+                </footer>
+            </article>
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/react-native/" class="post-link">react native</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2016/07/11 11:39 Mon
+                    </p>
+                </header>
+                
+                <p class="post-summary">react native 环境准备 前提是需要node和npm,这里不在赘述.介绍一个npm加速的.
+使用淘宝的npm镜像.控制台运行,或者加入你的bashrc中永久生效
+alias cnpm=&#34;npm --registry=https://registry.npm.taobao.org --cache=$HOME/.npm/.cache/cnpm --disturl=https://npm.taobao.org/dist --userconfig=$HOME/.cnpmrc&#34;;  安装开发必备的一些package
+cnpm install -g react-native-cli webpack  react-native也调用了npm命令,所以我们可以再来个alias加速react-native init
+alias npm=&#39;cnpm&#39;
+或者直接将仓库改为淘宝的NPM镜像
+npm config set registry https://registry.npm.taobao.org npm config set disturl https://npm.taobao.org/dist  在mac上还需要一些东西
+brew install flow watchman  安装完以后可以开始helloworld了.
+开始第一个例子 cd /data/tmp react-native init HelloWorld  然后正在初始化大致如下
+This will walk you through creating a new React Native project in /data/tmp/HelloWorld Installing react-native package from npm... Setting up new React Native app in /data/tmp/HelloWorld HelloWorld@0.</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="http://blog.suconghou.cn/post/react-native/">阅读全文</a>
+                </footer>
+            </article>
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/some-hole/" class="post-link">微信浏览器的一些问题</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2016/07/07 15:46 Thu
+                    </p>
+                </header>
+                
+                <p class="post-summary">微信 关于横竖屏的坑
+css3可以使用媒体查询判断设备是横屏还是竖屏
+//横屏时显示 @media all and (orientation : landscape) { #screenMask{display:block} } //竖屏时隐藏 @media all and (orientation : portrait) { #screenMask{display:none} }  在手机浏览器中表现良好,微信中看样子也可以,但是微信网页中如果聚焦输入框,弹起键盘就有问题了.
+软键盘弹起后,网页可用面积减小,安卓就自动识别为横屏了,原有的页面消失了,影响非常大.IOS则没有这个问题,媒体查询判断横竖屏在IOS上工作良好.
+并且由此发现,css3媒体查询就是根据宽度是否比高度小来判断横竖屏的.
+解决方案1
+使用javascript的orientation和orientationchange判断
+ window.orientation 属于window对象上一个属性；共有三个值 ：0为竖屏模式（portrait）,90为向左反转变为横屏模式（landscape），-90为向右反转变为横屏模式（landscape），最后180就是设备上下互换还是竖屏模式。 orientationchange 是一个event，在设备旋转时，会触发此事件，如同PC上使用的resize事件。  (function(){ var init = function(){ var updateOrientation = function(){ var orientation = window.orientation; switch(orientation){ case 90: case -90: orientation = &#39;landscape&#39;; break; default: orientation = &#39;portrait&#39;; break; } //do something //比如在html标签加一个状态 //然后根据不同状态，显示不同大小 document.body.parentNode.setAttribute(&#39;class&#39;,orientation); }; window.</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="http://blog.suconghou.cn/post/some-hole/">阅读全文</a>
+                </footer>
+            </article>
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/enable-http2-in-chrome/" class="post-link">开始HTTP2</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2016/07/04 14:08 Mon
+                    </p>
+                </header>
+                
+                <p class="post-summary">启用http2 我的http2的配置
+server{ listen 80 fastopen=3 reuseport; server_name example.com; valid_referers none *.google.com *.bing.com *.baidu.com *.example.com; if ($invalid_referer) { return 444; } rewrite ^(.*) https://example.com$1 permanent; } server{ listen 443 ssl http2 fastopen=3 reuseport; server_name example.com; server_tokens off; gzip on; gzip_proxied any; gzip_min_length 1024; gzip_comp_level 3; gzip_types text/plain text/javascript text/css text/json application/javascript application/json image/jpeg image/gif image/png; ssl_protocols TLSv1 TLSv1.1 TLSv1.2; ssl_ciphers EECDH&#43;CHACHA20:EECDH&#43;CHACHA20-draft:EECDH&#43;AES128:RSA&#43;AES128:EECDH&#43;AES256:RSA&#43;AES256:EECDH&#43;3DES:RSA&#43;3DES:!MD5; ssl_prefer_server_ciphers on; ssl_session_cache shared:SSL:50m; ssl_session_timeout 1d; ssl_session_tickets off; ssl_stapling on; #OCPS开启 ssl_stapling_verify on; #OCPS验证开启 resolver 8.</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="http://blog.suconghou.cn/post/enable-http2-in-chrome/">阅读全文</a>
+                </footer>
+            </article>
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/php-best-way/" class="post-link">PHP最佳实践</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2016/06/30 16:40 Thu
+                    </p>
+                </header>
+                
+                <p class="post-summary">性能优化 数组相关 in_array在大数据量(数万以上元素)下效率低下
+在分析nginx log得出所有不重复IP时,采用in_array判断,50多万的数据耗时需要五六分钟,而采用存键的方法,用isset判断仅需要十几秒,效率差别非常大. [php7环境下]
+判断一个数组是否存在某个元素,远比查找一个键消耗的要多.前者时间复杂度O(n),而后者O(1)
+即时使用in_array,也需要加上第三个参数,设置为严格模式,省略数据类型转化的开销,设置为true比设置为false性能要提升好几倍.
+这种情况下使用array_search情况比in_array更加糟糕
+如果条件允许使用array_flip交换键值,在用isset来判断要比in_array好得多
+同时,使用isset来判断数组的键,也比使用array_key_exists要好
+而对于本题,还可以使用array_unique最后去重,用空间换时间,效率仅次于用isset
+php pdo MySQL server has gone away 在使用PDO长连接时,执行过一次PDO初始化后,php-fpm进程会与mysql server开启一条TCP长连接,下次连接数据库就能加快速度.
+但是却存在一定问题,PDO维持了长连接并没有较好的检测其可用性,如果mysql server kill 掉这个连接,或者mysql重启,都会造成
+重新实例化PDO时得到旧的链接,导致出现MySQL server has gone away,更让人郁闷的是这个错误并不是一个Exception,无法被catch捕获,即使设置PDO::ATTR_ERRMODE=&gt;PDO::ERRMODE_EXCEPTION,也不行,还是直接在页面上提示.
+如果你使用了set_error_handler,那么这个Warning将会被捕捉,不会直接显示在页面上,但也改变了程序的原有执行逻辑.
+如果你不使用set_error_handler,页面上报出Warning,但其实PDO已经返回一个可用的链接了.
+猜测可能是PDO首先得到了不可用的然后报警告,然后又创建了一个新的.
+较好的解决方法是设置set_error_handler若捕获了这个MySQL server has gone away,则返回null,程序继续按原有逻辑执行.
+或者不使用PDO长连接.
+注意,set_error_handler返回false的话,这个错误还是会被交到上一级错误程序处理的.
+PDO int str 使用 mysqlnd 扩展而不是 mysql扩展
+编码转换中的若干问题 我们经常会遇到将utf8编码字符转化为gbk编码的字符,例如生成csv表格,在windows上的cmd窗口输出文字,以及操作windows上的有关文件路径的操作都需要使用gbk编码.
+常使用iconv(&#39;utf-8&#39;, &#39;gbk&#39;, $str);将utf8字符转为gbk
+这里 utf gbk 不区分大小写,也可以混写,不区分是utf8还是utf-8,都能都正常使用
+iconv(&#39;utf-8&#39;, &#39;gbk//ignore&#39;, $str); 加上//ignore使有些字符无法装换时略过.
+但是//ignore在php5.4及以下,和个别php5.6版本上无效,任然是报NOTICE错误.
+&lt;?php echo iconv(&#39;UTF8&#39;, &#39;GBK//IGNORE&#39;, &#39;l l l&#39;); ?&gt;  见 https://3v4l.</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="http://blog.suconghou.cn/post/php-best-way/">阅读全文</a>
+                </footer>
+            </article>
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/ddns/" class="post-link">动态域名解析</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2016/05/23 10:56 Mon
+                    </p>
+                </header>
+                
+                <p class="post-summary">收集的一些DDNS的工具
+利用shell获得本机局域网IP ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|awk &#39;{print $2}&#39;|tr -d &#34;addr:&#34;  GO语言版 package main import ( &#34;fmt&#34; &#34;net&#34; &#34;strings&#34; ) func main() { conn, err := net.Dial(&#34;udp&#34;, &#34;google.com:80&#34;) if err != nil { fmt.Println(err.Error()) return } defer conn.Close() fmt.Println(strings.Split(conn.LocalAddr().String(), &#34;:&#34;)[0]) }  获取外网IP 新浪IP地址库
+可以直接script标签引入
+直接script引入 http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js
+也支持 json 和文本格式
+json 格式 http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json
+文本格式 http://int.dpool.sina.com.cn/iplookup/iplookup.php
+curl ip.cn 直接给出IP和运营商,浏览器访问不一样 类似于 curl myip.ipip.net
+后面还可以跟一个IP地址,查询IP的位置. curl ip.cn/8.8.8.8 , 其网站还提供大陆IP列表,较快的DNS等等</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="http://blog.suconghou.cn/post/ddns/">阅读全文</a>
+                </footer>
+            </article>
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/shadowsocks-libev/" class="post-link">shadowsocks libev</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2016/05/18 17:37 Wed
+                    </p>
+                </header>
+                
+                <p class="post-summary">静态编译shadowsocks libev 在alpine里编译
+apk update &amp;&amp; apk upgrade &amp;&amp; apk add wget make gcc g&#43;&#43; perl
+先安装依赖
+# Installation of Libsodium cd /tmp export LIBSODIUM_VER=1.0.12 wget --no-check-certificate https://download.libsodium.org/libsodium/releases/libsodium-$LIBSODIUM_VER.tar.gz tar xvf libsodium-$LIBSODIUM_VER.tar.gz cd libsodium-$LIBSODIUM_VER ./configure --prefix=/usr &amp;&amp; make -j2 &amp;&amp; make install cd /tmp ldconfig # Installation of MbedTLS cd /tmp export MBEDTLS_VER=2.6.0 wget --no-check-certificate https://tls.mbed.org/download/mbedtls-$MBEDTLS_VER-gpl.tgz tar xvf mbedtls-$MBEDTLS_VER-gpl.tgz cd mbedtls-$MBEDTLS_VER make SHARED=1 CFLAGS=-fPIC &amp;&amp; make DESTDIR=/usr install cd /tmp ldconfig  安装完这两个依赖后,下面准备开始静态编译</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="http://blog.suconghou.cn/post/shadowsocks-libev/">阅读全文</a>
+                </footer>
+            </article>
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/tcpdump/" class="post-link">使用tcpdump与ngrep</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2016/05/16 18:21 Mon
+                    </p>
+                </header>
+                
+                <p class="post-summary">各版本 http://www.tcpdump.org/release/
+安装依赖 yum install -y flex gcc make byacc or apt-get install flex gcc make byacc wget bzip2
+cd /tmp wget http://www.tcpdump.org/release/libpcap-1.7.4.tar.gz tar zxf libpcap-1.7.4.tar.gz cd libpcap-1.7.4 ./configure --prefix=/tmp/lib make -j4 &amp;&amp; make install cd ../ wget http://www.tcpdump.org/release/tcpdump-4.7.4.tar.gz tar zxf tcpdump-4.7.4.tar.gz cd tcpdump-4.7.4 ./configure --prefix=/tmp --disable-ipv6 CFLAGS=&#39;-O3 -I/tmp/lib/include&#39; LDFLAGS=&#39;-L/tmp/lib/lib/libpcap.a&#39; make -j4 make install  安装成功后,位于ls -lh /tmp/sbin/tcpdump ldd查看此文件依赖较少,可直接复制到其他Linux上使用.
+采用CFLAGS=&#34;-O3&#34;编译后为1.2MB
+tcpdump -h 查看版本号以及用法
+我编译好的tcpdump version 4.7.4
+ 64位 http://share.suconghou.cn/files/bin/tcpdump.xz</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="http://blog.suconghou.cn/post/tcpdump/">阅读全文</a>
+                </footer>
+            </article>
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/use-apache-traffic-server/" class="post-link">编译安装Apache Traffic Server</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2016/05/09 22:24 Mon
+                    </p>
+                </header>
+                
+                <p class="post-summary">编译安装 Centos下编译安装
+yum update -y &amp;&amp; yum install wget gcc g&#43;&#43; gcc-c&#43;&#43; glibc-headers perl openssl openssl-devel tcl-devel libxml2-devel pcre-devel wget http://apache.fayea.com/trafficserver/trafficserver-6.1.1.tar.bz2 tar xvjf trafficserver-6.1.1.tar.bz2 cd trafficserver-6.1.1 ./configure make &amp;&amp; make install useradd -s /sbin/nologin trafficserver  Apache镜像http://archive.apache.org/dist/
+国内Apache镜像http://apache.fayea.com/
+编译完成后,就可以使用了,默认是安装在/usr/local/bin,编译后是比较大
+total 98M -rwxr-xr-x 1 root root 692K May 9 14:30 header_rewrite_test -rwxr-xr-x 1 root root 520K May 9 14:30 traffic_cop -rwxr-xr-x 1 root root 1.9M May 9 14:30 traffic_crashlog -rwxr-xr-x 1 root root 259K May 9 14:30 traffic_ctl -rwxr-xr-x 1 root root 1.</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="http://blog.suconghou.cn/post/use-apache-traffic-server/">阅读全文</a>
+                </footer>
+            </article>
+        
+    
+    </ul>
+    
+    <footer class="list-footer">
+      <nav class="pagination">
+        
+        <a class="pagination-previous" href="/post/page/3/">
+            上一页
+        </a>
+         
+        <a class="pagination-next" href="/post/page/5/">
+            下一页
+        </a>
+        
+      </nav>
+    </footer>
+    
+</div>
+
+
+<footer class="footer">
+    <div class="footer-nav">
+    </div>
+</footer>
+<script type="text/javascript" src="/js/main.js"></script>
+</body>
+</html>
+    
+

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+	<meta name='renderer' content='webkit'>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
+	<meta name='description' content='记录学习的点点滴滴'>
+	<meta name='keywords' content='前端,PHP,GO,编程博客'>
+	<title>Posts &middot; 苏苏的博客</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link href="http://blog.suconghou.cn/post/index.xml" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
+	<link rel="shortcut icon" href="/favicon.png">
+</head>
+<body>
+<header class="header post-header">
+    <div class="header-main">
+        <a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
+        <h1>苏苏的博客</h1>
+        <p class="sub-title">简约至极</p>
+        <ul class="menus">
+            <a href="/">首页</a>
+            <a href="/post">技术</a>
+            <a href="/life">生活</a>
+            <a href="/photo">相册</a>
+            <a href="/about">关于</a>
+        </ul>
+    </div>
+</header>
+
+<div class="content container center">
+	<ul class="posts-list">
+    
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/use-docker-on-raspberry/" class="post-link">在树莓派上使用Docker</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2016/05/08 20:01 Sun
+                    </p>
+                </header>
+                
+                <p class="post-summary">安装支持Docker的系统 树莓派官方系统并不支持Docker,需要安装.
+查看 集成Dcoker的树莓派系统
+aria2c -s 50 -c https://downloads.hypriot.com/hypriotos-rpi-v0.8.0.img.zip diskutil list diskutil unmountdisk /dev/disk2  用以下命令前必须卸载u盘diskutil unmountdisk /dev/disk2
+sudo dd if=hypriotos-rpi-v0.8.0.img of=/dev/disk2 bs=8k  安装完成重启就可以啦,启动后登陆的用户是pirate,密码hypriot
+修改密码:执行passwd,输入当前密码,输入新密码,再输入新密码,更新完成
+执行exit退出,或者sudo reboot重启
+创建用户:useradd -g test -d /home/test1 -s /etc/bash -m test1 注解：-g 所属组 -d 家目录 -s 所用的SHELL passwd abc
+获得sudo权限:编辑/etc/sudoers 加入新添加的用户名</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="http://blog.suconghou.cn/post/use-docker-on-raspberry/">阅读全文</a>
+                </footer>
+            </article>
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/use-golang/" class="post-link">使用golang</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2016/05/07 14:38 Sat
+                    </p>
+                </header>
+                
+                <p class="post-summary">Go https://www.oschina.net/news/93422/go-1-10-released
+https://storage.googleapis.com/golang/go1.11.linux-amd64.tar.gz https://storage.googleapis.com/golang/go1.11.windows-amd64.msi  所有发布的版本
+https://storage.googleapis.com/golang/
+国内可访问地址
+https://dl.google.com/go/go1.11.windows-amd64.msi https://dl.google.com/go/go1.11.darwin-amd64.pkg https://dl.google.com/go/go1.11.linux-amd64.tar.gz https://dl.google.com/go/go1.11.src.tar.gz https://dl.google.com/go/go1.11.darwin-amd64.tar.gz https://dl.google.com/go/go1.11.linux-386.tar.gz https://dl.google.com/go/go1.11.linux-armv6l.tar.gz https://dl.google.com/go/go1.11.windows-386.zip https://dl.google.com/go/go1.11.windows-386.msi https://dl.google.com/go/go1.11.windows-amd64.zip https://dl.google.com/go/go1.11.freebsd-386.tar.gz https://dl.google.com/go/go1.11.freebsd-amd64.tar.gz https://dl.google.com/go/go1.11.linux-arm64.tar.gz https://dl.google.com/go/go1.11.linux-ppc64le.tar.gz https://dl.google.com/go/go1.11.linux-s390x.tar.gz  Creating Statically Linked Executables In Go https://joeshaw.org/smaller-docker-containers-for-go-apps/
+https://github.com/gliderlabs/docker-alpine
+CGO_ENABLED=0 go build -a -ldflags &#34;-s&#34; tiny.go  The CGO_ENABLED environment variable tells Go to use the go compiler rather than the cgo compiler. The -a flag tells Go to rebuild all dependencies. Otherwise you still end up with dynamically linked dependencies.</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="http://blog.suconghou.cn/post/use-golang/">阅读全文</a>
+                </footer>
+            </article>
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/vim-usage/" class="post-link">vim基本使用</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2016/04/13 13:47 Wed
+                    </p>
+                </header>
+                
+                <p class="post-summary">vim基本使用 安装apt-get install vim
+daw (delete a word) 删除一个单词,包括左右两侧空白
+diw (delete inner word) 删除一个单词,不包含左右两侧空白
+dw 删除从当前光标到下一个单词的起始位置
+caw 同daw,但是完成后进入编辑模式
+关于选择 aw (a word) 一个单词
+as (a sentence) 一段语句
+i} (inner {...} block, e.g. code within a block in C code)
+it (inner tag, useful for XML-like languages)
+=aB will reindent an entire code block
+cas will delete a sentence and drop you into insert mode to type a new one</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="http://blog.suconghou.cn/post/vim-usage/">阅读全文</a>
+                </footer>
+            </article>
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/linux/" class="post-link">linux相关操作</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2016/01/21 13:40 Thu
+                    </p>
+                </header>
+                
+                <p class="post-summary">读取文件的前几字节 head 或 tail 以字节而不是以行为单位，那该怎么办呢？您可以用 -c 选项代替 -n 选项
+前100字节,并以hex格式显示 head -c 100 file | hexdump
+后100字节tail -c 100 file | hexdump
+还可以使用管道交给 md5sum,可比较前100字节或后100字节是否相同
+head -c 100 file | hexdump | md5sum
+取文件1G(1073741824)至&#43;819200处的md5值
+head -c 1074561024 file | tail -c 819200 |md5sum
+使用dd会更加方便,也更高效
+dd if=file bs=1 skip=1073741824 count=819200 | md5sum
+拆分文件 split -b 1kb /tmp/file sfile
+拆分文件大小为1k，也可以是1b，或者1m之类的单位
+xxd hexdump od https://www.zhihu.com/question/40441308/answer/86637730
+时间戳转时间日期 Mac: date -r 1514131200 GNU/Linux: date -d @1514131200</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="http://blog.suconghou.cn/post/linux/">阅读全文</a>
+                </footer>
+            </article>
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/play-with-raspberrypi/" class="post-link">玩转树莓派</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2016/01/17 22:21 Sun
+                    </p>
+                </header>
+                
+                <p class="post-summary">官方操作系统 https://www.raspberrypi.org/downloads/raspbian/
+带桌面版1.4G
+精简版293MB 下载 wget https://downloads.raspberrypi.org/raspbian_lite_latest
+安装其他操作系统 CentOS CentOS7官方支持了AMRV7发布了树莓派2、香蕉派、以及CubitTruck单片机的版本
+CentOS7官方下载 root 密码 centos 大约275MB
+http://mirror.centos.org/altarch/7.4.1708/isos/armhfp/
+ArchLinux https://archlinuxarm.org/
+树莓派1 https://archlinuxarm.org/platforms/armv6/raspberry-pi
+树莓派2 https://archlinuxarm.org/platforms/armv7/broadcom/raspberry-pi-2
+树莓派3 https://archlinuxarm.org/platforms/armv8/broadcom/raspberry-pi-3
+有国内的下载镜像 https://mirrors.tuna.tsinghua.edu.cn/archlinuxarm/os/
+大约293MB
+安装OSMC 下载一览,选择Disk images,此系统较省资源,默认开机进入OSMC,img.gz 大小约160M
+OSMC_FILE=OSMC_TGT_rbp2_20160621.img.gz cd /data/tmp axel -n 20 http://download.osmc.tv/installers/diskimages/$OSMC_FILE md5sum $OSMC_FILE ls -lh  查看所有版本 http://download.osmc.tv/installers/diskimages/
+ 使用清华大学镜像站国内下载速度更快: https://mirrors.tuna.tsinghua.edu.cn/osmc/osmc/download/installers/
+ 插入内存卡,开始烧写到内存卡中.烧写之前需要取消挂载
+diskutil list 查看你的内存卡的挂载位置,取消挂载
+执行diskutil unmountdisk /dev/disk2 取消挂载,需要稍等一小会.
+烧写,烧写过程中读卡器不断闪烁. gzip -dc /data/tmp/$OSMC_FILE | sudo dd of=/dev/disk2 bs=8k
+dd的用法: dd if=/dev/zero of=hello.</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="http://blog.suconghou.cn/post/play-with-raspberrypi/">阅读全文</a>
+                </footer>
+            </article>
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/homebrew-speedup/" class="post-link">使用镜像加速homebrew</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2016/01/15 12:56 Fri
+                    </p>
+                </header>
+                
+                <p class="post-summary">中国科大镜像站 提供 Debian, Ubuntu, Fedora, Archlinux, CentOS 等多个发行版的官方源. 还有brew 的二进制源,brew使用此配置能大大提升速度.
+cd /usr/local/Homebrew git remote set-url origin git://mirrors.ustc.edu.cn/brew.git git remote -v brew update  修改源：https://lug.ustc.edu.cn/wiki/mirrors/help/brew.git 和 https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-core.git 修改二进制源见https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-bottles
+即export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
+使用brew config 查看ORIGIN和HOMEBREW_BOTTLE_DOMAIN已经是新的mirrors.ustc.edu.cn即为配置成功
+brew list 列出所有安装的模块, 这里面包含以下依赖安装的，brew leaves 可以查看一些顶级的
+brew search mysql 查找
+brew commands 查看所有命令
+安装（需要 Ruby）： ruby -e &#34;$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)&#34;
+搜索：brew search mysql
+查询：brew info mysql 主要看具体的信息，比如目前的版本，依赖，安装后注意事项等
+更新：brew update 这会更新 Homebrew 自己，并且使得接下来的两个操作有意义——
+检查过时（是否有新版本）：brew outdated 这回列出所有安装的软件里可以升级的那些
+升级：brew upgrade 升级所有可以升级的软件们</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="http://blog.suconghou.cn/post/homebrew-speedup/">阅读全文</a>
+                </footer>
+            </article>
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/broswer-chrome/" class="post-link">Chrome浏览器安装</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2016/01/14 17:11 Thu
+                    </p>
+                </header>
+                
+                <p class="post-summary">配置Chrome跨域 Chrome 浏览器配置可以跨域
+/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --disable-web-security
+或者
+open -a &#34;Google Chrome&#34; --args --disable-web-security
+必须完全退出Chrome,再使用上述方法.
+清除Chrome dns 缓存 chrome://net-internals/#sockets
+chrome://net-internals/#dns
+有用的 chrome 插件 去广告
+ Adblock Plus (ABP)
+ 前端开发相关
+ FE 助手
+EditThisCookie https://chrome.google.com/webstore/detail/editthiscookie/fngmhnnpilhplaeedifhccceomclgfbg
+开启Chrome Ajax 跨域 https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi
+替换http响应 https://github.com/annnhan/ReRes https://chrome.google.com/webstore/detail/reres/gieocpkbblidnocefjakldecahgeeica?hl=zh-CN&amp;gl=CN
+ 自带截图 首先当然是打开你想截图的网页了，然后按下 F12（macOS 是 option &#43; command &#43; i）调出开发者工具，接着按「Ctrl &#43; Shift &#43; P」（macOS 是 command &#43; Shift &#43; P）。紧接着输入指令 capture，它会提示有三个选项，分别是截取全屏、node 模式以及当前范围，用鼠标点击或者用键盘选择对应的就可以了。
+而如果你想截取手机版的网页，可以先按「Ctrl &#43; Shift &#43; M」（macOS 是 command &#43; Shift &#43; M）切换到手机模式，再重复上面的截图操作即可。</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="http://blog.suconghou.cn/post/broswer-chrome/">阅读全文</a>
+                </footer>
+            </article>
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/use-crontab-in-your-server/" class="post-link">Crontab与自动备份</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2016/01/12 13:10 Tue
+                    </p>
+                </header>
+                
+                <p class="post-summary">Crontab使用 crontab -l 查看当前用户的crontab列表 使用crontab -e开始编辑规则
+基本格式 : *　*　*　*　*　command 分　时 日 月　周　命令 * 第1列表示分钟1～59 每分钟用*或者*/1表示 * 第2列表示小时1～23（0表示0点） * 第3列表示日期1～31 * 第4列表示月份1～12 * 第5列标识号星期0～6（0表示星期天） * 第6列要运行的命令  禁止Crontab产生邮件: 在crontab末尾加上&gt; /dev/null 2&gt;&amp;1 或者 &gt; &amp;&gt; /dev/null
+例如
+0 1 5 10 * /path/to/script.sh &gt; /dev/null 2&gt;&amp;1 0 1 5 10 * /path/to/script.sh &gt; &amp;&gt; /dev/null  你也可以将/dev/null换成你想要存储日志的文件地址
+配置文件 对于CentOS
+/etc/ 目录下包含
+cron.d/ cron.daily/ cron.</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="http://blog.suconghou.cn/post/use-crontab-in-your-server/">阅读全文</a>
+                </footer>
+            </article>
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/improve-mysqldb/" class="post-link">MySQL性能优化</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2016/01/11 12:02 Mon
+                    </p>
+                </header>
+                
+                <p class="post-summary">配置文件 配置文件一般放在/etc/my.cnf 或者 /etc/mysql/my.cnf
+默认的配置文件示例存放于/usr/share/mysql
+各个文件适配不同内存的配置
+   文件 内存大小     my-small.cnf &lt;= 64M 不经常开启mysql   my-medium.cnf 32M–64M 经常其他程序搭配mysql   my-large.cnf 512M   my-huge.cnf 1G-2G   my-innodb-heavy-4G.cnf 4GB 使用InnoDB    使用SHOW VARIABLES来查看系统参数,通过SHOW STATUS来判断系统状态
+show 命令还有很多用途
+   命令 描述     show databases 或show tables from database_name 显示mysql中所有数据库的名称   show tables 显示当前数据库中所有表的名称   show columns from table_name from database_name 显示表中列名称   show grants for user_name 显示一个用户的权限，显示结果类似于grant命令   show table status 显示当前使用或者指定的database中的每个表的信息。</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="http://blog.suconghou.cn/post/improve-mysqldb/">阅读全文</a>
+                </footer>
+            </article>
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/ffmpeg-usage/" class="post-link">ffmpeg安装使用</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2016/01/11 10:19 Mon
+                    </p>
+                </header>
+                
+                <p class="post-summary">下载官方的静态编译的Linux通用二进制包,同时也包含ARM版本的 ffmpeg
+armhf比armel硬件要求,树莓派2可用armhf,树莓派1使用armel
+Windows版本也提供编译好的下载(也提供MacOs版)
+https://ffmpeg.zeranoe.com/builds/
+Mac编译好的下载(FFmpeg,FFserver,FFprobe,FFplay)
+http://evermeet.cx/ffmpeg/
+使用brew安装 brew install ffmpeg --with-ffplay
+ffmpeg -protocols 查看ffmpeg支持的协议列表
+让ffmpeg转为MP4边下边播 ffmpeg -i input.xx -c copy -movflags faststart output.mp4
+-movflags faststart 可修改MP4的moov
+关于faststart还有一个python项目,类似于ffmpeg软件包中的qt-faststart https://github.com/danielgtaylor/qtfaststart
+可以使用pip install qtfaststart,仅需10KB&#43;
+pip3 install qtfaststart 也可以
+http://blog.chinaunix.net/uid-342902-id-2416123.html
+flv to mp4 ffmpeg -i input.flv -codec copy output.mp4 快速转化flv到mp4,高质量转化( only changes container without reencoding )
+ffmpeg -i input.flv -c copy -copyts output.mp4 也比较快,高质量转化
+ffmpeg -i aaa.flv -c:v libx264 -crf 28 output.mp4 带压缩的转换,非常消耗CPU和时间</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="http://blog.suconghou.cn/post/ffmpeg-usage/">阅读全文</a>
+                </footer>
+            </article>
+        
+    
+    </ul>
+    
+    <footer class="list-footer">
+      <nav class="pagination">
+        
+        <a class="pagination-previous" href="/post/page/4/">
+            上一页
+        </a>
+         
+        <a class="pagination-next" href="/post/page/6/">
+            下一页
+        </a>
+        
+      </nav>
+    </footer>
+    
+</div>
+
+
+<footer class="footer">
+    <div class="footer-nav">
+    </div>
+</footer>
+<script type="text/javascript" src="/js/main.js"></script>
+</body>
+</html>
+    
+

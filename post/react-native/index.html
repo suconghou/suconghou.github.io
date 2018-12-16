@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="post hidetop">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -8,33 +8,51 @@
 	<meta name='description' content='记录学习的点点滴滴'>
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>react native &middot; 苏苏的博客</title>
-	<link rel="stylesheet" type="text/css" href="/css/style.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
 	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
-	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
 <body>
-<header class="header">
-	<div class="header-main">
-		<a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
-		<h1>苏苏的博客</h1>
-		<p class="sub-title">简约至极</p>
-		<ul class="contact">
-			<a href="https://github.com/suconghou" target="_blank"><i class="fa fa-github"></i></a>
-			<a href="javascript:music.show(1)"><i class="fa fa-music"></i></a>
-		</ul>
-	</div>
+<header class="header post-header">
+    <div class="header-main" >
+        <a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
+        <h1>苏苏的博客</h1>
+        <p class="sub-title">简约至极</p>
+        <ul class="menus">
+            <a href="/">首页</a>
+            <a href="/post">技术</a>
+            <a href="/life">生活</a>
+            <a href="/photo">相册</a>
+            <a href="/about">关于</a>
+        </ul>
+    </div>
+    <div class="pull-button">
+        <div class="rbutton">
+            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
+        </div>
+    </div>
 </header>
-
-<aside></aside>
-
-<div class="content container">
+<div class="content container center">
 	<div class="post">
 		<h1 class="post-title">
-			<a href="javascript:void(0)"> react native</a>
-		</h1>
-		<p class="post-date">Mon, Jul 11, 2016</p>
-		
+			react native
+        </h1>
+        <div class="post-meta">
+            <div>
+                <p class="post-date">
+                    <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                    2016/07/11 11:39 Mon
+                </p>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+        
 		<div class="post-text">
 			
 
@@ -165,44 +183,29 @@ adb install -r app-release.apk
 <p>参考 <a href="https://facebook.github.io/react-native/docs/signed-apk-android.html">https://facebook.github.io/react-native/docs/signed-apk-android.html</a></p>
 
 		</div>
-	</div>
+    </div>
+    <div class="post-comment comment-render">
+        <air-messager ns="hi" kid="/post/react-native/"></air-messager>
+    </div>
+    <div class="post-end">
+        
+            <a class="previous" href="http://blog.suconghou.cn/post/some-hole/" title="微信浏览器的一些问题" >
+                <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
+            </a>
+        
+        
+            <a class="next" href="http://blog.suconghou.cn/post/use-haproxy/" title="HAProxy优化应用程序速度">
+                <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
+            </a>
+        
+    </div>
 </div>
-	<div class="music-container">
-	<div class="music-header">
-	    <a class="fa-button home" href="javascript:music.show(0)"><i class="fa fa-home" title="Home"></i></a>
-	    <a class="fa-button next" href="javascript:music.next()"><i class="fa fa-chevron-right" title="Next"></i></a>
-	</div>
-	<div class="backdrop"></div>
-	<div class="music-player">
-		<div class="cover">
-            <img src="http://p4.music.126.net/ckfEE9UUGcnGHylQJ12ENA==/670702092966093.jpg?param=350y350">
-            <div class="foredrag"><i class="fa fa-play"></i></div>
-        </div>
-        <div class="progress">
-            <div class="elapse"></div>
-        </div>
-        <div class="detail">
-            <div class="title">音乐标题</div>
-            <div class="artist">歌手</div>
-        </div>
-	</div>
-</div>
-<div id="loader" style="z-index:99999;" class="pageload-overlay" data-opening="M 40 -21.875 C 11.356078 -21.875 -11.875 1.3560784 -11.875 30 C -11.875 58.643922 11.356078 81.875 40 81.875 C 68.643922 81.875 91.875 58.643922 91.875 30 C 91.875 1.3560784 68.643922 -21.875 40 -21.875 Z">
-    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 80 60" preserveAspectRatio="xMidYMid slice"> <path d="M40,30 c 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 Z"/></svg>
-</div>
-
-	<footer class="footer">
-		<div class="footer-nav">
-			<ul>
-				<li><a href="/post/">归档</a></li>
-				<li><a href="/">专题</a></li>
-				<li><a href="/life/">生活</a></li>
-				<li><a href="/about/">关于</a></li>
-			</ul>
-		</div>
-	</footer>
-	<script type="text/javascript" src="/js/main.min.js" data-no-instant></script>
+<footer class="footer">
+    <div class="footer-nav">
+    </div>
+</footer>
+<script type="text/javascript" src="/js/main.js"></script>
+<script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
+<script src="http://feds.club/static/air-messager.min.js"></script>
 </body>
 </html>
-
-

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="post hidetop">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -8,39 +8,69 @@
 	<meta name='description' content='记录学习的点点滴滴'>
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>linux相关操作 &middot; 苏苏的博客</title>
-	<link rel="stylesheet" type="text/css" href="/css/style.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
 	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
-	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
 <body>
-<header class="header">
-	<div class="header-main">
-		<a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
-		<h1>苏苏的博客</h1>
-		<p class="sub-title">简约至极</p>
-		<ul class="contact">
-			<a href="https://github.com/suconghou" target="_blank"><i class="fa fa-github"></i></a>
-			<a href="javascript:music.show(1)"><i class="fa fa-music"></i></a>
-		</ul>
-	</div>
+<header class="header post-header">
+    <div class="header-main" >
+        <a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
+        <h1>苏苏的博客</h1>
+        <p class="sub-title">简约至极</p>
+        <ul class="menus">
+            <a href="/">首页</a>
+            <a href="/post">技术</a>
+            <a href="/life">生活</a>
+            <a href="/photo">相册</a>
+            <a href="/about">关于</a>
+        </ul>
+    </div>
+    <div class="pull-button">
+        <div class="rbutton">
+            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
+        </div>
+    </div>
 </header>
-
-<aside></aside>
-
-<div class="content container">
+<div class="content container center">
 	<div class="post">
 		<h1 class="post-title">
-			<a href="javascript:void(0)"> linux相关操作</a>
-		</h1>
-		<p class="post-date">Thu, Jan 21, 2016</p>
-		
-			<p class="post-tags">
-			
-				<a href="/tags/linux">#linux</a>
-			
-			</p>
-		
+			linux相关操作
+        </h1>
+        <div class="post-meta">
+            <div>
+                <p class="post-date">
+                    <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                    2016/01/21 13:40 Thu
+                </p>
+            </div>
+
+            
+            <div class="post-topics">
+                <svg style="width: 20px; height: 13px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5131"><path d="M833.2 1008L538.8 679.8c-14.3-16-39.3-16-53.6 0L190.8 1008c-22 24.6-62.8 9-62.8-24V36c0-19.9 16.1-36 36-36h696c19.9 0 36 16.1 36 36v948c0 33-40.8 48.6-62.8 24zM538.8 572L824 890V72H200v817.9l285.2-318c14.3-15.9 39.3-15.9 53.6 0.1z" p-id="5132"></path></svg>
+                <ul class="topics">
+                
+                    <li><a href="http://blog.suconghou.cn/topics/linux">linux</a> </li>
+                
+                </ul>
+            </div>
+            
+            
+            <div class="post-tags">
+                <svg style="width: 20px; height: 13px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5131"><path d="M833.2 1008L538.8 679.8c-14.3-16-39.3-16-53.6 0L190.8 1008c-22 24.6-62.8 9-62.8-24V36c0-19.9 16.1-36 36-36h696c19.9 0 36 16.1 36 36v948c0 33-40.8 48.6-62.8 24zM538.8 572L824 890V72H200v817.9l285.2-318c14.3-15.9 39.3-15.9 53.6 0.1z" p-id="5132"></path></svg>
+                <ul class="tags">
+                
+                    <li> <a href="http://blog.suconghou.cn/tags/linux">linux</a> </li>
+                
+                </ul>
+            </div>
+            
+
+            
+            
+        </div>
+        
 		<div class="post-text">
 			
 
@@ -70,6 +100,11 @@
 
 <p><code>xxd</code> <code>hexdump</code> <code>od</code>
 <a href="https://www.zhihu.com/question/40441308/answer/86637730">https://www.zhihu.com/question/40441308/answer/86637730</a></p>
+
+<h2 id="时间戳转时间日期">时间戳转时间日期</h2>
+
+<p>Mac: date -r 1514131200
+GNU/Linux: date -d @1514131200</p>
 
 <h2 id="使用-sed-修改二进制文件">使用 sed 修改二进制文件</h2>
 
@@ -107,6 +142,18 @@
 <pre><code>sed 's/\x2f\x6c\x69\x62\x2f\x6c\x64\x2d\x6c\x69\x6e\x75\x78\x2e\x73\x6f\x2e\x33\x0a/\x6c\x64\x2e\x73\x6f\x0a/g' file &gt; newfile
 
 </code></pre>
+
+<p>另提供一个脚本可以快速处理 <a href="https://gist.github.com/suconghou/665dbf665437402f65ecee329ea2f517">https://gist.github.com/suconghou/665dbf665437402f65ecee329ea2f517</a></p>
+
+<p>使用 <strong>bbe</strong> <a href="https://sourceforge.net/projects/bbe-/">https://sourceforge.net/projects/bbe-/</a> 同样可以很方便的替换二进制文件</p>
+
+<p><a href="https://stackoverflow.com/questions/2604964/binary-sed-replacement">https://stackoverflow.com/questions/2604964/binary-sed-replacement</a></p>
+
+<p>其他架构CPU指令模拟器 <a href="https://github.com/multiarch/qemu-user-static">https://github.com/multiarch/qemu-user-static</a> 提供各平台二进制文件 可以用于模拟执行arm的二进制文件等</p>
+
+<p><a href="https://packages.debian.org/sid/qemu-user-static">https://packages.debian.org/sid/qemu-user-static</a></p>
+
+<p><a href="https://www.qemu.org/download/#source">https://www.qemu.org/download/#source</a></p>
 
 <pre><code>LD_LIBRARY_PATH=`pwd` ~/tmp/qemu-arm-static ~/aa/aa -v
 </code></pre>
@@ -176,6 +223,38 @@ groupmod -n $new_user alarm
 
 <p><a href="http://www.cnblogs.com/xd502djj/archive/2011/11/23/2260094.html">http://www.cnblogs.com/xd502djj/archive/2011/11/23/2260094.html</a></p>
 
+<p>修改用户的uid和gid
+<a href="https://muffinresearch.co.uk/linux-changing-uids-and-gids-for-user/">https://muffinresearch.co.uk/linux-changing-uids-and-gids-for-user/</a></p>
+
+<p>将原文件夹宿主改为指定</p>
+
+<pre><code>/bin/chown --changes --silent --no-dereference --recursive --from=${src_uid}:${src_gid} ${dest_uid}:${dest_gid} /
+</code></pre>
+
+<h2 id="给用户sudo-权限">给用户sudo 权限</h2>
+
+<p><code>sudo visudo</code></p>
+
+<p>为想要的用户添加一行</p>
+
+<pre><code>builder     ALL = (ALL) ALL
+</code></pre>
+
+<p><code>chsh</code> 命令设置当前用户使用的shell</p>
+
+<p><code>sudo -u user -g group &quot;command&quot;</code> 使用其他用户身份执行命令</p>
+
+<pre><code>su -
+su - root
+su - root -c &quot;ls -l /root&quot;
+su - oracle -c &quot;ulimit -aHS&quot;
+su -s /bin/sh -c &quot;/usr/local/nginx/sbin/nginx&quot;
+</code></pre>
+
+<p>以www-data身份执行一个php文件</p>
+
+<p><code>su - www-data -s /bin/bash -c &quot;php -f /var/www/html/cron.php&quot;</code></p>
+
 <h2 id="linux实用命令">Linux实用命令</h2>
 
 <h2 id="w">w</h2>
@@ -220,6 +299,20 @@ us, sy, id, wa, st：这些都是平均了所有 CPU 的 CPU 分解时间。它�
 
 <p><code>cat /proc/net/arp</code> 查看连接到本机的远端ip的mac地址</p>
 
+<h2 id="mv">mv</h2>
+
+<p>有时候需要移动一个文件夹中的内容到另一个文件夹内，</p>
+
+<p>但是当目标文件夹中存在内容时，mv会拒绝执行。也就是说mv不会为你合并这些内容。</p>
+
+<p>只能使用 <code>cp -r</code> 然后再删除原文件夹。</p>
+
+<p>类似的，还可以使用下面两个命令</p>
+
+<p><code>rsync -a backup/ backupArchives/</code></p>
+
+<p><code>(cd backup &amp;&amp; tar c .) | (cd backupArchives &amp;&amp; tar xf -)</code></p>
+
 <h2 id="free">free</h2>
 
 <p><code>free -m</code> <code>free -h</code></p>
@@ -237,6 +330,14 @@ ps -eo rss,vsz,pid,ppid,time,etime,command |sort -n
 # alpine 里这样用,不支持--sort, 同样也可以 `top -b -n1`
 ps -o rss,vsz,pid,ppid,time,etime,args
 </code></pre>
+
+<h2 id="how-linux-store-metadata">how linux store metadata</h2>
+
+<p><a href="https://superuser.com/questions/1160927/where-does-metadata-go-when-you-save-a-file">https://superuser.com/questions/1160927/where-does-metadata-go-when-you-save-a-file</a></p>
+
+<p><code>yum install strace -y</code></p>
+
+<p><code>strace -v cp foo bar</code> vs <code>strace -v cp -a foo bar</code></p>
 
 <h2 id="ssh">ssh</h2>
 
@@ -292,6 +393,8 @@ AuthorizedKeysFile  %h/.ssh/authorized_keys
 
 <p>如:<code>pgrep nginx -fl</code></p>
 
+<p>对比 <code>ps aux | grep</code>,有时我们需要grep两次来排除grep进程自己，pgrep就没有这个问题。</p>
+
 <h2 id="pkill">pkill</h2>
 
 <p>和<code>pgrep</code>类似,不同的是向进程发送信号,默认发送<code>SIGTERM</code>信号,查看都有哪些信号可用,可以使用<code>kill -l</code>查看</p>
@@ -342,6 +445,15 @@ count = blocks 只拷贝输入的blocks块</p>
 
 <p>ps auxw 查看进程的CPU,内存占用</p>
 
+<p><code>ps faux</code> 以树状查看</p>
+
+<p>有些进程命令行太长无法查看全，可以使用 <code>ps auxww</code> 或者 <code>ps -fwwp 2755</code> 或者
+<code>xargs -0 printf '%s\n' &lt; /proc/2755/cmdline</code></p>
+
+<pre><code>/usr/java/jdk1.8.0_144/bin/java -Xms256m -Xmx512m -XX:PermSize=128m -XX:MaxPermSize=256m -classpath /home/apache-maven-3.3.9/boot/plexus-classworlds-2.5.2.jar -Dclassworlds.conf=/home/apache-maven-3.3.9/bin/m2.conf -Dmaven.home=/home/apache-maven-3.3.9 -Dmaven.multiModuleProjectDirectory=/home/spoc-contract org.codehaus.plexus.classworlds.launcher.Launcher -U -Dmaven.test.skip jetty:run
+/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java -Djava.util.logging.config.file=/usr/local/tomcat/conf/logging.properties -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djdk.tls.ephemeralDHKeySize=2048 -Djava.protocol.handler.pkgs=org.apache.catalina.webresources -classpath /usr/local/tomcat/bin/bootstrap.jar:/usr/local/tomcat/bin/tomcat-juli.jar -Dcatalina.base=/usr/local/tomcat -Dcatalina.home=/usr/local/tomcat -Djava.io.tmpdir=/usr/local/tomcat/temp org.apache.catalina.startup.Bootstrap start
+</code></pre>
+
 <p>ps 默认是按照PID排序的,若要按内存使用排序<code>ps auxw --sort=rss</code>,同理按虚拟内存排序<code>ps auxw --sort=vsz</code></p>
 
 <p>mac上无法使用<code>--sort</code>,可以采用<code>sort</code>排序,如rss在第六列,则<code>ps auxw | sort -k6,6n</code></p>
@@ -370,6 +482,21 @@ For BSD formats and when the stat keyword is used, additional characters may be 
  s    is a session leader
  l    is multi-threaded (using CLONE_THREAD, like NPTL pthreads do)
  +    is in the foreground process group
+</code></pre>
+
+<pre><code>D    不可中断     Uninterruptible sleep (usually IO)
+R    正在运行，或在队列中的进程
+S    处于休眠状态
+T    停止或被追踪
+Z    僵尸进程
+W    进入内存交换（从内核2.6开始无效）
+X    死掉的进程
+&lt;    高优先级
+N    低优先级
+L    有些页被锁进内存
+s    包含子进程
++    位于后台的进程组；
+l    多线程，克隆线程  multi-threaded (using CLONE_THREAD, like NPTL pthreads do)
 </code></pre>
 
 <p><code>lscpu</code></p>
@@ -425,6 +552,8 @@ dig www.baidu.com ns
 
 <p>nc 命令默认没有安装,需要自己安装,<code>yum install nc</code></p>
 
+<p>window 版 nc <a href="https://github.com/diegocr/netcat/">https://github.com/diegocr/netcat/</a></p>
+
 <p><strong>传送字符与文件</strong></p>
 
 <p>一端<code>nc -l 9090</code>监听端口9090</p>
@@ -450,6 +579,9 @@ dig www.baidu.com ns
 
 <p>使用端口如 <code>tar czf - public_html | ssh root@ip -p 5678 tar xzf - -C /www/web/myweb/public_html</code></p>
 
+<p>将当前目录的内容拷贝到远程指定的目录
+<code>tar cJvf - . | ssh root@ip &quot;cd /tmp/ &amp;&amp; mkdir -p a &amp;&amp; cd a &amp;&amp; tar xJvf -&quot;</code></p>
+
 <p>边打包边传输边解压,一条命令解决</p>
 
 <p>传送大量大文件 使用 <code>lftp</code>也是一个好方案</p>
@@ -463,6 +595,12 @@ If one connection breaks it will reconnect and continue. If you break the transf
 <p><strong>端口扫描</strong></p>
 
 <p><code>nc -vz -w 1 someIp 1-1000</code></p>
+
+<p>显示所有日志</p>
+
+<p><code>nc -w 2 -n -z 127.0.0.1 6870-8990</code></p>
+
+<p>只显示能接通的端口</p>
 
 <p><strong>模拟调试http请求</strong></p>
 
@@ -503,6 +641,21 @@ stderr	2
 
 <p>监听 18081 , 转发到 9097</p>
 
+<p>nc的转发只能是单进程的，不支持并发。</p>
+
+<p>使用socat，可以更方便的做端口转发, Linux 端口转发C语言实现代码 <a href="https://github.com/rssnsj/portfwd">https://github.com/rssnsj/portfwd</a> Mac上可直接编译使用，十分方便</p>
+
+<p>C++ 实现的 适用于 Linux 等系统的 <a href="https://github.com/wangyu-/tinyPortMapper">https://github.com/wangyu-/tinyPortMapper</a> 并提供编译好的release</p>
+
+<pre><code>socat TCP-LISTEN:1935,fork TCP:10.18.18.102:1935
+
+socat udp4-listen:1935,reuseaddr,fork UDP:10.18.18.102:1935
+</code></pre>
+
+<p>socat 还可以转发 unix socket</p>
+
+<p><a href="https://gist.github.com/ljjjustin/585e817d1d7ce4eb75b87076e5b7aa7e">https://gist.github.com/ljjjustin/585e817d1d7ce4eb75b87076e5b7aa7e</a></p>
+
 <p>使用<code>nc</code>建立一个简易webserver</p>
 
 <p><code>while true;do sudo nc -l 8080 &lt; index.html;done</code></p>
@@ -522,6 +675,10 @@ stderr	2
 <p><code>yum install reptyr</code> (relp源)</p>
 
 <p><code>reptyr -s $PID</code></p>
+
+<h2 id="端口转发">端口转发</h2>
+
+<p>brook relay -l :5 -r 1.2.3.4:5</p>
 
 <h2 id="history">history</h2>
 
@@ -555,7 +712,7 @@ alias meminfo='free -m -l -t'
 # 按照文件在磁盘存储的大小排序，显示当前目录的文件列表。
 sbs() { du -b --max-depth 1 | sort -nr | perl -pe 's{([0-9]+)}{sprintf &quot;%.1f%s&quot;, $1&gt;=2**30? ($1/2**30, &quot;G&quot;): $1&gt;=2**20? ($1/2**20, &quot;M&quot;): $1&gt;=2**10? ($1/2**10, &quot;K&quot;): ($1, &quot;&quot;)}e';}
 # 找出指定目录中最大的10个文件
-largefile() { find . -type f -exec du -k {} \; | sort  -nrk 1 | head; }
+largefile() { size=${1:-100}; find . -type f -size +&quot;$size&quot;k  -exec du -k {} \; | sort  -nrk 1 | head; }
 # 查看当前目录大于[多少]kb的文件,速度更快
 bigthan() { size=${1:-100}; find . -type f -size +&quot;$size&quot;k |xargs  ls  -lhS ; }
 # 返回你的当前IP地址的地理位置。
@@ -580,6 +737,13 @@ topmem()
 }
 </code></pre>
 
+<p><a href="http://learning-kernel.readthedocs.io/en/latest/mem-management.html">http://learning-kernel.readthedocs.io/en/latest/mem-management.html</a></p>
+
+<p>oomps()
+{
+  ps -eo pid,comm,pmem,rss &ndash;sort -rss | head -n 10 | awk &lsquo;{&ldquo;cat /proc/&rdquo;$1&rdquo;/oom_score&rdquo; | getline oom; print $0&rdquo;\t&rdquo;oom}&rsquo; 2&gt;/dev/null
+}</p>
+
 <p>Linux 还可以使用 <code>bind</code> 定义快捷键执行的命令</p>
 
 <p>如让 <code>Ctrl+a</code> 执行 ls  <code>bind -x '&quot;\C-a&quot;: ls -lh'</code></p>
@@ -597,6 +761,8 @@ topmem()
 <p>可写为alias <code>alias mem=&quot;ps aux --sort -rss  | head -n20 &amp;&amp; ps auxw --sort=-%cpu,-time | head -n5&quot;</code></p>
 
 <p><code>netstat -anltup</code> 与 <code>ss -ln</code> 都能查看网络链接信息</p>
+
+<p><code>watch -n 1 -d netstat -ant</code> 持续监控变化</p>
 
 <p>部分快捷键</p>
 
@@ -627,7 +793,38 @@ Shift + Insert -向终端内粘贴文本
 
 <p>xz &gt; zstd &gt; gzip</p>
 
-<p>默认配置 zstd 比 gzip 快4倍, 并且比gzip更小.</p>
+<p>默认配置 zstd 比 gzip 快4倍, 并且比gzip更小, 并且解压也比gzip快一倍，默认配置完全碾压gzip</p>
+
+<p>使用 tar czvf 是指定压缩比</p>
+
+<p><code>env GZIP=-9 tar cvzf file.tar.gz /path/to/directory</code></p>
+
+<p><code>XZ_OPT=-9 tar -Jcvf file.tar.xz /path/to/directory</code></p>
+
+<p><code>BZIP2=-9 tar cvjf file.tar.bz2 /path/to/directory</code></p>
+
+<p>或者使用管道</p>
+
+<p><code>tar cvf - /path/to/directory | gzip -9 - &gt; file.tar.gz</code></p>
+
+<h3 id="https-github-com-facebook-zstd-编译"><a href="https://github.com/facebook/zstd">https://github.com/facebook/zstd</a> 编译</h3>
+
+<pre><code>apk add --update curl make gcc g++
+cd /tmp
+curl -sSL https://github.com/facebook/zstd/archive/v1.3.5.tar.gz | tar xz
+cd zstd-1.3.4
+make
+</code></pre>
+
+<p>无依赖,可直接静态编译,也可以不静态编译.</p>
+
+<p>还可以添加 gz / xz / lzma 支持</p>
+
+<p><code>make CFLAGS=&quot;-O3 -ffunction-sections -fdata-sections&quot; LDFLAGS=&quot;-static -Wl,--gc-sections&quot; -j4</code></p>
+
+<p>编译约需2分钟,当前目录下会生成<code>zstd</code>可执行文件</p>
+
+<p>zstd 对于文本文件的压缩率非常高，大幅优于 gzip；但是对于二进制类的文件压缩率不如 lzma。用 zstd 来压缩日志是个比较好的做法,zstd 压缩二进制文件也比gzip优秀</p>
 
 <p>gzexe 创建自解压文件</p>
 
@@ -694,6 +891,10 @@ echo &quot;*****************************&quot;
 
 <p>-name 文件路径需要匹配的</p>
 
+<p>使用 find 的时候加上maxdepth限制搜索深度，可以加快进度</p>
+
+<p><code>find jenkins/ -maxdepth 5 -type f -name &quot;upload.py&quot;</code></p>
+
 <p><strong>使用全文查找</strong></p>
 
 <p>grep -lr &lsquo;string&rsquo; /etc/</p>
@@ -723,6 +924,14 @@ echo &quot;*****************************&quot;
 
 <pre><code>filename=html`date +&quot;%Y%m%d%H%M%S&quot;`.tar.gz
 </code></pre>
+
+<h2 id="sleep-forever">sleep forever</h2>
+
+<ol>
+<li><code>while true; do sleep 86400; done</code></li>
+<li><code>sleep infinity</code></li>
+<li><code>cat</code></li>
+</ol>
 
 <h2 id="vim乱码解决">Vim乱码解决</h2>
 
@@ -783,6 +992,8 @@ init.d脚本 包含完整的start,stop,status,reload等参数，是标准做法�
 <p>见 <a href="https://www.fdzh.org/slides/2015/06/20/linux-distr/">https://www.fdzh.org/slides/2015/06/20/linux-distr/</a></p>
 
 <p><img src="http://static.suconghou.cn/document/linux.jpg" alt="家族示意图" /></p>
+
+<p><a href="https://upload.wikimedia.org/wikipedia/commons/1/1b/Linux_Distribution_Timeline.svg">https://upload.wikimedia.org/wikipedia/commons/1/1b/Linux_Distribution_Timeline.svg</a></p>
 
 <h2 id="判断一个命令是否存在">判断一个命令是否存在</h2>
 
@@ -874,6 +1085,16 @@ echo &quot;Asia/Shanghai&quot; &gt; /etc/timezone
 
 <h2 id="shell基本语法">Shell基本语法</h2>
 
+<p><a href="http://blog.sina.com.cn/s/blog_64e166580100vwk2.html">http://blog.sina.com.cn/s/blog_64e166580100vwk2.html</a></p>
+
+<p>判断一个变量是否为空</p>
+
+<pre><code>pid=$(ps aux | grep &quot;process name&quot; | grep &quot;jetty:run&quot; | awk '{print $2}')
+[ -n &quot;$pid&quot; ] &amp;&amp; echo $pid &amp;&amp; kill $pid
+</code></pre>
+
+<p>不为空则输出，并杀死进程</p>
+
 <p>声明数组</p>
 
 <p><code>arr=(item1 item2 item3)</code> 使用空格分开</p>
@@ -956,18 +1177,6 @@ nameserver 223.6.6.6
 
 <p><code>wget http://cachefly.cachefly.net/10mb.test</code></p>
 
-<p>directspace机房/10M.100M测试包</p>
-
-<p>Portland, Oregon Data Center</p>
-
-<p><code>wget http://bandwidth.directspace.net/100MBtest.zip</code></p>
-
-<p><code>wget http://bandwidth.directspace.net/10MBtest.zip</code></p>
-
-<p>Los Angeles, California Data Center</p>
-
-<p><code>wget http://45.34.158.82/speedtest/100MBtest.zip</code></p>
-
 <p>访问 cachefly.cachefly.net 可以测试你电脑当前的网络速度</p>
 
 <p>枫叶主机 <a href="http://www.fyzhuji.com/speed.html">http://www.fyzhuji.com/speed.html</a> 提供的测速文件.</p>
@@ -1015,6 +1224,54 @@ sr0              11:0    1  1024M  0 rom
 
 </code></pre>
 
+<h2 id="磁盘挂载">磁盘挂载</h2>
+
+<ol>
+<li><p><code>fdisk -l</code>或者 <code>lsblk</code> 查看磁盘</p></li>
+
+<li><p><code>fdisk /dev/vdb</code> 对指定磁盘分区, <code>n</code> 新建 <code>w</code>保存写入, <code>q</code>放弃操作</p></li>
+</ol>
+
+<p>分区完毕后 使用第一步的命令可以查看到变化</p>
+
+<p><code>blkid</code> 可以查看分区的uuid,类型, 后面也可更一个分区名,查看指定的</p>
+
+<ol>
+<li>格式化分区 <code>df -lhT</code> 可以看到原有的磁盘格式</li>
+</ol>
+
+<p>使用 <code>mke2fs</code> 格式化分区</p>
+
+<p><code>e2fsck</code> 检查文件、扇区是否有错误</p>
+
+<p><code>mke2fs -t ext4 /dev/vdb1</code>  #ext4创建文件系统</p>
+
+<ol>
+<li>挂载</li>
+</ol>
+
+<p><code>mount</code> 可以查看目前已挂载的信息</p>
+
+<p><code>vim /etc/fstab</code> 永久性挂载配置</p>
+
+<p><code>/dev/vdb1  /data ext4 defaults 1 1</code></p>
+
+<p>第一个是分区, 第二个是路径 第三个是分区格式,</p>
+
+<p>mount -a 自动挂载/etc/fstab文件没有挂载的设备，不管已挂载过的设备</p>
+
+<p>　　如果想刷新修改过已挂载的设备，mount -o remount /dev/sdX（或挂载点）</p>
+
+<p>swpon -a 自动激活/etc/fstab文件没有激活的交换（扩展）空间 ，不管已激活的扩展空间</p>
+
+<p>　　如果想刷新修改过已激活的扩展设备，mount -o remount /dev/sdX（或挂载点）</p>
+
+<p>挂载点必须是已经存在的目录。</p>
+
+<p>参考 <a href="https://www.cnblogs.com/qiyebao/p/4484047.html">https://www.cnblogs.com/qiyebao/p/4484047.html</a></p>
+
+<p><a href="https://www.cnblogs.com/along21/p/7410619.html">https://www.cnblogs.com/along21/p/7410619.html</a></p>
+
 <h2 id="编译lua">编译lua</h2>
 
 <p><a href="http://home.tiscali.cz/~cz210552/webbench.html">http://home.tiscali.cz/~cz210552/webbench.html</a></p>
@@ -1043,16 +1300,32 @@ make linux
 
 <p><a href="http://www.dest-unreach.org/socat/download/">http://www.dest-unreach.org/socat/download/</a></p>
 
-<p>iotop htop
-mtr</p>
+<blockquote>
+<p>iotop 查看谁在疯狂读写磁盘</p>
+
+<p>dstat 用来替换 vmstat, iostat, netstat, nfsstat 和 ifstat 这些命令的工具，是一个全能系统信息统计工具。</p>
+
+<p>htop 比top更好用</p>
+
+<p>mtr</p>
 
 <p>netpipes 和socat一样，主要是用来在命令行来进行socket操作的命令，这样你就可以在Shell脚本下行进socket网络通讯了。</p>
+</blockquote>
 
 <h3 id="查看网络流量">查看网络流量</h3>
 
 <p>统计连接某服务端口最多的的IP地址</p>
 
 <p><code>netstat -nat | grep &quot;192.168.1.3:443&quot; |awk '{print $5}'|awk -F: '{print $1}'|sort|uniq -c|sort -nr|head -20</code></p>
+
+<p>统计在一台前端机上高峰时间TCP连接的情况，统计命令：
+<code>netstat -tn | awk '/^tcp/ {++S[$NF]} END {for(a in S) print a, S[a]}'</code></p>
+
+<pre><code>sysctl net.ipv4.tcp_syncookies=1
+sysctl net.ipv4.tcp_tw_reuse=1
+sysctl net.ipv4.tcp_tw_recycle=1
+sysctl net.ipv4.tcp_fin_timeout=30
+</code></pre>
 
 <p>iftop和iptraf可以用来查看当前网络链接的一些流量情况。</p>
 
@@ -1154,6 +1427,8 @@ ack是一个perl脚本，是grep的一个可选替换品</p>
 
 <p><code>/var/run/utmp</code> 记录着现在登陆的用户.utmp文件被各种 命令使用，包括who、w、users和finger。</p>
 
+<p>清空这些文件，最好使用 <code>echo -n '' &gt; /path/to/file</code> 或者 <code>cat /dev/null &gt; /path/to/file</code></p>
+
 <p><code>ac</code>命令根据当前的/var/log/wtmp文件中的登录进入和退出来报告用户连接的时间（小时），如果不使用标志，则报告总的时间</p>
 
 <p><code>ac -d</code> 将显示每天的总的连接时间</p>
@@ -1166,8 +1441,8 @@ ack是一个perl脚本，是grep的一个可选替换品</p>
 
 <p><code>grep -E -o &quot;([0-9]{1,3}\.){3}[0-9]{1,3}&quot; /var/log/secure|sort|uniq -c|sort -nr | head -30</code></p>
 
-<p>查看登录失败的统计,根据<code>lastb</code>命令
-<code>lastb | awk '{print $3}' | sort | uniq -c | sort -nr | head -30</code></p>
+<p>查看登录失败的统计,根据<code>lastb</code>命令 <code>-i</code> 参数表示始终显示IP地址
+<code>lastb -i | awk '{print $3}' | sort | uniq -c | sort -nr | head -30</code></p>
 
 <p>可以将这些IP通过iptables禁用掉。</p>
 
@@ -1177,7 +1452,11 @@ ack是一个perl脚本，是grep的一个可选替换品</p>
 
 <p><code>journalctl --vacuum-size=100M</code> 手动执行修改也可以,仅仅保存最近100M的日志</p>
 
+<p><code>journalctl --vacuum-time=2d</code> 按时间，仅保留最近2天 ， 单位也可以换成s</p>
+
 <p>使用<code>journalctl</code>命令可查看systemd服务的日志， -u指定unit,如查看sshd服务的日志：<code>journalctl -u sshd</code></p>
+
+<p>若要像 <code>tail -f</code> 追踪使用 <code>journalctl -f -u service</code> -n 指定数量</p>
 
 <p>在rhel7系统中有两个日志服务，分别是传统的rsyslog和systemd-journal
 systemd-journald是一个改进型日志管理服务，可以收集来自内核、系统早期启动阶段的日志、系统守护进程在启动和运行中的标准输出和错误信息，还有syslog的日志。</p>
@@ -1225,6 +1504,8 @@ curl -sSL https://github.com/esnet/iperf/archive/3.1.7.tar.gz | tar xz --strip 1
 
 <h2 id="性能测试">性能测试</h2>
 
+<p><code>virt-what</code> 可查看本机使用的虚拟化技术</p>
+
 <p><code>yum install -y sysbench bc htop</code></p>
 
 <p><strong>单核心CPU测试</strong></p>
@@ -1233,6 +1514,14 @@ curl -sSL https://github.com/esnet/iperf/archive/3.1.7.tar.gz | tar xz --strip 1
 <code>time echo &quot;scale=5000; 4*a(1)&quot; | bc -l -q</code></p>
 
 <blockquote>
+<p>某单核I7OPENVZ云服务器     Intel&reg; Core&trade; i7-6700K CPU @ 4.00GHz  15.040s</p>
+
+<p>某单核OVH法国VPS         Intel&reg; Xeon&reg; CPU E5-1630 v4 @ 3.70GHz   16.556s</p>
+
+<p>MacBookPro 15年中15寸     Intel&reg; Core&trade; i7-4770HQ CPU @ 2.20GHz 20.647s</p>
+
+<p>Window上virtual虚拟机里的docker Intel&reg; Xeon&reg; CPU E3-1230 v5 @ 3.40GHz 22.84s</p>
+
 <p>MacBookPro 13年末13寸  Intel&reg; Core&trade; i5-4258U CPU @ 2.40GHz  : 23.977s</p>
 
 <p>腾讯云 kvm             Intel&reg; Xeon&reg; CPU E5-26xx v2 @2.60GHz   :  24.017s</p>
@@ -1243,6 +1532,8 @@ curl -sSL https://github.com/esnet/iperf/archive/3.1.7.tar.gz | tar xz --strip 1
 
 <p>搬瓦工OPENVZ单核VPS     Intel&reg; Xeon&reg; CPU X5650  @ 2.67GHz     : 31.821s</p>
 
+<p>某xen 双核vps           Intel&reg; Xeon&reg; CPU E5-2450L 0 @ 1.80GHz  : 32.334s</p>
+
 <p>独享物理机              Intel&reg; Xeon&reg; CPU E5506  @ 2.13GHz      : 37.454s</p>
 
 <p>4核独享物理机            Intel&reg; Xeon&reg; CPU E7- 4820  @ 2.00GHz   : 39.464s</p>
@@ -1250,6 +1541,8 @@ curl -sSL https://github.com/esnet/iperf/archive/3.1.7.tar.gz | tar xz --strip 1
 <p>某VMWARE虚拟化VPS       Intel&reg; Xeon&reg; CPU X7560  @ 2.27GHz      : 45.866s</p>
 
 <p>独享物理机              Intel&reg; Xeon&reg; CPU E3-1230 v3 @ 3.30GHz  : 1m12.240s</p>
+
+<p>某廉价单核VPS            Intel&reg; Xeon&reg; CPU E5-2620 0 @ 2.00GHz   :   1m13.171s</p>
 
 <p>树莓派2                ARMv7 Processor rev 5 (v7l)                 :  2m12.017s</p>
 </blockquote>
@@ -1375,9 +1668,17 @@ min/avg/max/mdev = 785 ns / 39.7 us / 2.87 ms / 60.4 us
 
 <pre><code>alias mem=&quot;ps aux --sort -rss  | head -n20 &amp;&amp; ps auxw --sort=-%cpu,-time | head -n5&quot;
 alias topip='grep -E -o &quot;([0-9]{1,3}\.){3}[0-9]{1,3}&quot; /var/log/secure|sort|uniq -c|sort -nr | head -30'
+alias httpd=&quot;busybox httpd -p 7788 -h /data/www/share&quot;
+addblock(){
+lastb -i | awk '{print $3}' | sort | uniq -c | sort -nr | head -50 | awk '{print &quot;ip route add blackhole &quot;, $2}' | sort -n | uniq | sh
+}
 </code></pre>
 
 <h3 id="其他linux-命令">其他Linux 命令</h3>
+
+<p>输出到stderr</p>
+
+<p>echo &gt;&amp;2 &ldquo;Unexpected value &ldquo;</p>
 
 <h4 id="ncdu">ncdu</h4>
 
@@ -1397,45 +1698,104 @@ alias topip='grep -E -o &quot;([0-9]{1,3}\.){3}[0-9]{1,3}&quot; /var/log/secure|
 
 <p><code>find /path/to/check -inum 1023564 -exec cp {} recoveredfile \;</code></p>
 
-		</div>
-	</div>
-</div>
-	<div class="music-container">
-	<div class="music-header">
-	    <a class="fa-button home" href="javascript:music.show(0)"><i class="fa fa-home" title="Home"></i></a>
-	    <a class="fa-button next" href="javascript:music.next()"><i class="fa fa-chevron-right" title="Next"></i></a>
-	</div>
-	<div class="backdrop"></div>
-	<div class="music-player">
-		<div class="cover">
-            <img src="http://p4.music.126.net/ckfEE9UUGcnGHylQJ12ENA==/670702092966093.jpg?param=350y350">
-            <div class="foredrag"><i class="fa fa-play"></i></div>
-        </div>
-        <div class="progress">
-            <div class="elapse"></div>
-        </div>
-        <div class="detail">
-            <div class="title">音乐标题</div>
-            <div class="artist">歌手</div>
-        </div>
-	</div>
-</div>
-<div id="loader" style="z-index:99999;" class="pageload-overlay" data-opening="M 40 -21.875 C 11.356078 -21.875 -11.875 1.3560784 -11.875 30 C -11.875 58.643922 11.356078 81.875 40 81.875 C 68.643922 81.875 91.875 58.643922 91.875 30 C 91.875 1.3560784 68.643922 -21.875 40 -21.875 Z">
-    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 80 60" preserveAspectRatio="xMidYMid slice"> <path d="M40,30 c 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 Z"/></svg>
-</div>
+<h2 id="文件监控">文件监控</h2>
 
-	<footer class="footer">
-		<div class="footer-nav">
-			<ul>
-				<li><a href="/post/">归档</a></li>
-				<li><a href="/">专题</a></li>
-				<li><a href="/life/">生活</a></li>
-				<li><a href="/about/">关于</a></li>
-			</ul>
+<p><a href="http://entrproject.org/">http://entrproject.org/</a></p>
+
+<p>无依赖,源码包仅20KB+,多平台支持,编译仅需几秒钟,可执行文件20KB+</p>
+
+<pre><code>./configure &amp;&amp; make
+</code></pre>
+
+<p>使用 <code>ag -l | entr -s 'make &amp;&amp; make test'</code></p>
+
+<p><a href="https://bitbucket.org/eradman/entr/">https://bitbucket.org/eradman/entr/</a></p>
+
+<h2 id="比较有用的命令行工具">比较有用的命令行工具</h2>
+
+<p>ag
+tig
+mycli <a href="https://www.mycli.net/install">https://www.mycli.net/install</a>
+jq
+yapf
+fzf
+<a href="https://github.com/AlDanial/cloc">https://github.com/AlDanial/cloc</a>
+<a href="https://github.com/axel-download-accelerator/axel">https://github.com/axel-download-accelerator/axel</a>
+<a href="https://ccache.samba.org/">https://ccache.samba.org/</a>
+<a href="https://dev.yorhel.nl/ncdu">https://dev.yorhel.nl/ncdu</a>
+<a href="https://nicolargo.github.io/glances/">https://nicolargo.github.io/glances/</a>
+<a href="https://github.com/jarun/nnn#performance">https://github.com/jarun/nnn#performance</a>
+<a href="https://github.com/yudai/gotty">https://github.com/yudai/gotty</a>
+<a href="https://serveo.net/">https://serveo.net/</a></p>
+
+<p>cat -&gt; ccat -&gt; bat</p>
+
+<p>ping -&gt; prettyping</p>
+
+<p>ctrl+r  -&gt;  fzf</p>
+
+<p>top -&gt; htop</p>
+
+<p>grep -&gt; ack -&gt; ag -&gt; ripgrep</p>
+
+<p><a href="https://github.com/BurntSushi/ripgrep">https://github.com/BurntSushi/ripgrep</a>
+<a href="https://blog.burntsushi.net/ripgrep/">https://blog.burntsushi.net/ripgrep/</a></p>
+
+<p>curl -&gt; httpie</p>
+
+<p>autojump -&gt; fasd
+<a href="https://github.com/rupa/z">https://github.com/rupa/z</a>
+<a href="https://github.com/euank/pazi">https://github.com/euank/pazi</a></p>
+
+<p><a href="https://github.com/acarl005/ls-go">https://github.com/acarl005/ls-go</a>
+<a href="https://github.com/ogham/exa">https://github.com/ogham/exa</a></p>
+
+<p><a href="https://github.com/variadico/noti">https://github.com/variadico/noti</a></p>
+
+<p>ncdu -&gt; <a href="https://github.com/jarun/nnn">https://github.com/jarun/nnn</a></p>
+
+<p><a href="https://github.com/so-fancy/diff-so-fancy">https://github.com/so-fancy/diff-so-fancy</a></p>
+
+<p><a href="https://github.com/Miserlou/Loop#osx">https://github.com/Miserlou/Loop#osx</a>
+<a href="https://github.com/BurntSushi/xsv">https://github.com/BurntSushi/xsv</a></p>
+
+<p>代码行数统计
+<a href="https://boyter.org/posts/sloc-cloc-code/">https://boyter.org/posts/sloc-cloc-code/</a>
+<a href="https://github.com/boyter/scc/">https://github.com/boyter/scc/</a>
+<a href="https://github.com/Aaronepower/tokei">https://github.com/Aaronepower/tokei</a>
+<a href="https://github.com/cgag/loc">https://github.com/cgag/loc</a>
+<a href="https://github.com/hhatto/gocloc">https://github.com/hhatto/gocloc</a></p>
+
+<p><a href="https://tldr.sh/">https://tldr.sh/</a>
+<a href="https://github.com/tldr-pages/tldr-cpp-client">https://github.com/tldr-pages/tldr-cpp-client</a>
+cargo install tealdeer</p>
+
+<p><a href="https://github.com/zyedidia/micro/releases">https://github.com/zyedidia/micro/releases</a>  golang 写的编辑器</p>
+
 		</div>
-	</footer>
-	<script type="text/javascript" src="/js/main.min.js" data-no-instant></script>
+    </div>
+    <div class="post-comment comment-render">
+        <air-messager ns="hi" kid="/post/linux/"></air-messager>
+    </div>
+    <div class="post-end">
+        
+            <a class="previous" href="http://blog.suconghou.cn/post/play-with-raspberrypi/" title="玩转树莓派" >
+                <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
+            </a>
+        
+        
+            <a class="next" href="http://blog.suconghou.cn/post/vim-usage/" title="vim基本使用">
+                <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
+            </a>
+        
+    </div>
+</div>
+<footer class="footer">
+    <div class="footer-nav">
+    </div>
+</footer>
+<script type="text/javascript" src="/js/main.js"></script>
+<script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
+<script src="http://feds.club/static/air-messager.min.js"></script>
 </body>
 </html>
-
-

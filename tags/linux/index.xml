@@ -29,8 +29,7 @@ dd if=file bs=1 skip=1073741824 count=819200 | md5sum
 拆分文件 split -b 1kb /tmp/file sfile
 拆分文件大小为1k，也可以是1b，或者1m之类的单位
 xxd hexdump od https://www.zhihu.com/question/40441308/answer/86637730
-使用 sed 修改二进制文件 先找到查找的目标
-例如/opt/local则对应echo /opt/local | xxd</description>
+时间戳转时间日期 Mac: date -r 1514131200 GNU/Linux: date -d @1514131200</description>
     </item>
     
     <item>
@@ -49,11 +48,10 @@ sudo vim /etc/ssh/sshd_config
 开启ClientAliveInterval 60 开启 TCPKeepAlive yes
 如果您只想让当前的 ssh 保持连接，可以使用以下的命令：
 ssh -o ServerAliveInterval=60 user@sshserver
-ssh隧道 CfNg参数  C表示压缩数据传输 f表示后台用户验证,这个选项很有用,没有shell的不可登陆账号也能使用. N表示不执行脚本或命令 g表示允许远程主机连接转发端口,往往会没有效果,需要修改/etc/ssh/sshd_config添加gatewayports yes  -L本地转发 -L [本地监听IP:]本地监听端口号:目标主机IP:目标端口号 (其中,“本地监听IP”可以省略，省略的话就认为是“0.0.0.0”，但为了安全性考虑，请务必使用“127.0.0.1”做为本地监听端口， 而不要使用默认的“0.0.0.0”。）
-ssh -D 8080 user@host SSH会建立一个socket，去监听本地的8080端口。一旦有数据传向那个端口，就自动把它转移到SSH连接上面，发往远程主机。可以想象，如果8080端口原来是一个不加密端口，现在将变成一个加密端口。
-ssh -L 2121:host2:21 host3 命令中的L参数一共接受三个值，分别是&amp;rdquo;本地端口:目标主机:目标主机端口&amp;rdquo;，它们之间用冒号分隔。这条命令的意思，就是指定SSH绑定本地端口2121，然后指定host3将所有的数据，转发到目标主机host2的21端口（假定host2运行FTP，默认端口为21）。 这样一来，我们只要连接host1的2121端口，就等于连上了host2的21端口。
-ssh -CTfNg -L 6300:127.0.0.1:1521 oracle@172.16.1.164  本机的6300端口就是远程主机172.16.1.164的1521端口
--R远程转发  ssh -CTfNg -R 1521:127.0.0.1:6300 oracle@172.16.1.164  在远程主机172.</description>
+ssh 链接复用
+Host * ForwardAgent yes ServerAliveInterval 30 ServerAliveCountMax 20 TCPKeepAlive no ControlMaster auto ControlPath ~/.ssh/connection-%r@%h:%p ControlPersist 20m Compression yes  http://einverne.github.io/post/2017/05/ssh-keep-alive.html
+https://www.cyberciti.biz/faq/linux-unix-reuse-openssh-connection/
+ssh隧道 CfNg参数  C表示压缩数据传输 f表示后台用户验证,这个选项很有用,没有shell的不可登陆账号也能使用. N表示不执行脚本或命令 g表示允许远程主机连接转发端口,往往会没有效果,需要修改/etc/ssh/sshd_config添加gatewayports yes T禁止分配伪终端，如果ssh使用此选项登录系统时，由于禁用，将无法获得终端；但仍能够获得shell，只不过看起来像在本地，也没有很多应有的环境变量，例如命令提示符，PS1等 n Redirects stdin from /dev/null (actually, prevents reading from stdin).</description>
     </item>
     
     <item>
@@ -75,6 +73,22 @@ curl 常用的命令
 curl http://xx.com 只获取http消息正文
 curl -I http://xx.com 只获取http消息头
 curl -i http://xx.</description>
+    </item>
+    
+    <item>
+      <title>Linux下同步文件的多种方法</title>
+      <link>http://blog.suconghou.cn/post/sync-files-on-linux/</link>
+      <pubDate>Sat, 21 Nov 2015 23:55:54 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/sync-files-on-linux/</guid>
+      <description>采用scp同步 采用rsync同步 rsync -arvuzpt --progress /data/project/21text/static/ root@172.168.1.3:/data/web/21text/static/;  mac上结合fswatch自动同步
+sync1() { dir=/data/project/21textv3/ while true do rsync -arvuzpt --progress --exclude=&amp;quot;.git&amp;quot; /data/project/21textv3/ root@172.168.1.3:/data/web/21textv3/ echo &amp;quot;start morniting folder $dir&amp;quot; fswatch -1 $dir sleep 2 done }  LFTP 同步 brew install lftp
+登陆ftp lftp user:pass@ftphost:21
+解决办法很简单。只要你能充分相信你的host，就在 lftp 里加上这样一句
+set ssl:verify-certificate no
+或者，可以在敲 lftp 命令的时候这样输入：
+lftp -e &amp;ldquo;set ssl:verify-certificate no&amp;rdquo;
+使用btsync https://www.getsync.com/platforms/desktop/</description>
     </item>
     
   </channel>

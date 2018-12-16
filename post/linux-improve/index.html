@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" class="post hidetop">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+	<meta name='renderer' content='webkit'>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
+	<meta name='description' content='记录学习的点点滴滴'>
+	<meta name='keywords' content='前端,PHP,GO,编程博客'>
+	<title>Linux系统优化的其他配置 &middot; 苏苏的博客</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
+	<link rel="shortcut icon" href="/favicon.png">
+</head>
+<body>
+<header class="header post-header">
+    <div class="header-main" >
+        <a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
+        <h1>苏苏的博客</h1>
+        <p class="sub-title">简约至极</p>
+        <ul class="menus">
+            <a href="/">首页</a>
+            <a href="/post">技术</a>
+            <a href="/life">生活</a>
+            <a href="/photo">相册</a>
+            <a href="/about">关于</a>
+        </ul>
+    </div>
+    <div class="pull-button">
+        <div class="rbutton">
+            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
+        </div>
+    </div>
+</header>
+<div class="content container center">
+	<div class="post">
+		<h1 class="post-title">
+			Linux系统优化的其他配置
+        </h1>
+        <div class="post-meta">
+            <div>
+                <p class="post-date">
+                    <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                    2018/09/19 12:07 Wed
+                </p>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+        
+		<div class="post-text">
+			
+
+<h2 id="linux-性能优化">Linux 性能优化</h2>
+
+<h3 id="ulimit">ulimit</h3>
+
+<h4 id="查看">查看</h4>
+
+<p><code>ulimit -a</code> 查看配置</p>
+
+<p>可根据pid查看某一进程目前的限制</p>
+
+<p><code>cat /proc/16223/limits</code></p>
+
+<p>查看每个进程所允许的最大opend files  <code>ulimit -n</code></p>
+
+<p>查看目前系统已打开的open files <code>lsof | wc -l</code> 或者 <code>ls -l /proc/*/fd | wc -l</code></p>
+
+<p><code>lsof</code>会列出重复的, 使用 <code>lsof|awk '{print $9}'|sort|uniq|wc -l</code> 可以去除重复</p>
+
+<p><code>cat /proc/sys/fs/file-nr</code> 会在系统内核层面统计,比较正确</p>
+
+<p>查看系统所允许的最大open files <code>cat /proc/sys/fs/file-max</code></p>
+
+<p>查看一个进程目前已打开的 <code>lsof -p 28290</code> 或者 <code>lsof -a -p 28290</code></p>
+
+<p>或者</p>
+
+<p><code>ls -l /proc/28290/fd | wc -l</code></p>
+
+<p>查看 hard limit <code>ulimit -Hn</code></p>
+
+<p>查看 soft limit <code>ulimit -Sn</code></p>
+
+<h4 id="修改">修改</h4>
+
+<p><code>ulimit -n 81920</code> 修改每个进程所允许的最大</p>
+
+<p>修改系统的 <code>echo 819200 &gt; /proc/sys/fs/file-max</code></p>
+
+<ul>
+<li>所有进程打开的文件描述符数不能超过/proc/sys/fs/file-max</li>
+<li>单个进程打开的文件描述符数不能超过user limit中nofile的soft limit</li>
+<li>nofile的soft limit不能超过其hard limit</li>
+<li>nofile的hard limit不能超过/proc/sys/fs/nr_open</li>
+</ul>
+
+<p><strong>动态配置一个进程的</strong></p>
+
+<p><code>prlimit -n81920 -p pid_of_process</code></p>
+
+<h3 id="永久修改">###永久修改</h3>
+
+<p>修改</p>
+
+<p><code>/etc/security/limits.conf</code></p>
+
+<pre><code>nginx       soft    nofile  10000
+nginx       hard    nofile  30000
+</code></pre>
+
+<p>或者</p>
+
+<pre><code>* soft nofile 10000
+* hard nofile 30000
+</code></pre>
+
+<p><code>sysctl -p</code> 使其生效</p>
+
+<p>修改系统的</p>
+
+<p><code>vi /etc/sysctl.conf</code></p>
+
+<p>设置</p>
+
+<pre><code>fs.file-max = 70000
+
+</code></pre>
+
+<p><strong>在nginx</strong>层面配置</p>
+
+<p><code>worker_rlimit_nofile 30000;</code></p>
+
+<pre><code>user root;
+worker_processes  2;
+worker_rlimit_nofile 30000;
+
+events {
+    worker_connections  8192;
+}
+
+
+</code></pre>
+
+<h3 id="swap">swap</h3>
+
+<h2 id="随机数">随机数</h2>
+
+<p>随机数</p>
+
+<p><code>/dev/random</code></p>
+
+<p>/dev/random会根据<strong>噪音</strong>产生随机数，如果<strong>噪音</strong>不够它就会阻塞</p>
+
+<p><em>提高生成速度</em></p>
+
+<p><code>cat /proc/sys/kernel/random/entropy_avail</code> 查看熵池大小</p>
+
+<p>如果你的CPU带有DRNG特性，可以充分利用硬件来提高熵池产生的速度 。</p>
+
+<p>如果你的硬件不支持，也没有关系，我们可以让<code>/dev/unrandom</code>来做“熵源”</p>
+
+<p><code>cat /proc/cpuinfo | grep rdrand</code> 查看是否支持</p>
+
+<p>安装rngd服务（熵服务）</p>
+
+<p><code>yum install rngd-tools</code>
+或者<code>yum install rng-tools</code></p>
+
+<p>如果你的CPU不支持DRNG特性或者像我一样使用虚拟机，可以使用/dev/unrandom来模拟。</p>
+
+<p>编辑/etc/systemd/system/rngd.service
+service小结，ExecStart=/sbin/rngd -f -r /dev/urandom</p>
+
+<p><code>/dev/urandom</code></p>
+
+<p>伪随机数, 伪随机数的生成速度要快很多</p>
+
+		</div>
+    </div>
+    <div class="post-comment comment-render">
+        <air-messager ns="hi" kid="/post/linux-improve/"></air-messager>
+    </div>
+    <div class="post-end">
+        
+            <a class="previous" href="http://blog.suconghou.cn/post/image-compress-tools/" title="收集的图片压缩工具" >
+                <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
+            </a>
+        
+        
+            <a class="next" href="http://blog.suconghou.cn/post/dnscrypt-proxy/" title="Dnscrypt Proxy配置">
+                <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
+            </a>
+        
+    </div>
+</div>
+<footer class="footer">
+    <div class="footer-nav">
+    </div>
+</footer>
+<script type="text/javascript" src="/js/main.js"></script>
+<script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
+<script src="http://feds.club/static/air-messager.min.js"></script>
+</body>
+</html>

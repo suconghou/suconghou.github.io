@@ -32,7 +32,16 @@ win-bash下载shell.w32-ix86.zip
 我的github也收集了一些windows上常用的小工具axel,putty,ab,hugo,rsync等
 http://github.com/suconghou/tools
 Curl 官网 https://curl.haxx.se/download.html
-Curl 这里可以下载windows版的 http://www.paehl.com/open_source/?CURL_7.49.1</description>
+Curl 这里可以下载windows版的 http://www.paehl.com/open_source/?CURL_7.49.1
+navcat https://www.52pojie.cn/forum.php?mod=viewthread&amp;amp;tid=620949
+链接: https://pan.baidu.com/s/1mhLIjQ4 密码: avru
+更新 12.0.9 12.0.10 感谢破解作者
+链接: https://pan.baidu.com/s/1c2eWtcW 密码: dtaf
+rufus https://rufus.akeo.ie/
+U盘启动制作工具
+golang filebrowser https://filebrowser.github.io/
+https://github.com/filebrowser/filebrowser
+filebrowser --port 7080 --database /tmp/img.db --scope /data/www/newwillsite/upload</description>
     </item>
     
     <item>
@@ -70,7 +79,13 @@ PicasaPhotoViewerv3.9.136.9</description>
 32位资源 32位安装版
 32位绿色版
 64位资源 64位安装版
-64位绿色版</description>
+64位绿色版
+https://nmap.org/book/install.html#inst-download
+windows 下查看端口占用的进程 netstat -ano
+netstat -ano | findstr &amp;ldquo;8086&amp;rdquo; 找到PID
+tasklist | findstr &amp;ldquo;PID&amp;rdquo; 查看进程信息
+tasklist -fi &amp;ldquo;pid qe 1234&amp;rdquo; -v 可以列出进程的详细信息
+taskkill /pid 1688 /F 杀死指定进程</description>
     </item>
     
     <item>
@@ -79,8 +94,19 @@ PicasaPhotoViewerv3.9.136.9</description>
       <pubDate>Fri, 08 Apr 2016 10:08:24 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/software/android-studio/</guid>
-      <description>下载 Android Studio 安装android-sdk brew install android-sdk 或者使用Android Studio SDK Manager
-android studio 下载的sdk 位于 /Users/admin/Library/Android/sdk</description>
+      <description> ADB ADB 调试工具，下载地址：https://dl.google.com/android/repository/platform-tools-latest-windows.zip
+下载 Android Studio Android Studio 3.0.1 正式版
+http://www.oschina.net/news/90786/android-studio-3-0-1-released
+Windows 64 位：https://dl.google.com/dl/android/studio/ide-zips/3.0.1.0/android-studio-ide-171.4443003-windows.zip Windows 32 位：https://dl.google.com/dl/android/studio/ide-zips/3.0.1.0/android-studio-ide-171.4443003-windows32.zip Mac：https://dl.google.com/dl/android/studio/install/3.0.1.0/android-studio-ide-171.4443003-mac.dmg Linux：https://dl.google.com/dl/android/studio/ide-zips/3.0.1.0/android-studio-ide-171.4443003-linux.zip  安装android-sdk brew install android-sdk 或者使用Android Studio SDK Manager
+android studio 下载的sdk 位于 /Users/admin/Library/Android/sdk
+android sdk 镜像 1、东软信息学院开源镜像站
+HTTP地址：mirrors.neusoft.edu.cn
+端口：80
+2、郑州大学开源镜像站
+HTTP地址：mirrors.zzu.edu.cn
+端口：80
+maven镜像
+maven{ url &amp;quot;http://maven.aliyun.com/nexus/content/groups/public/&amp;quot; } maven { url &amp;quot;http://mvn.leancloud.cn/nexus/content/repositories/public&amp;quot; }  </description>
     </item>
     
   </channel>

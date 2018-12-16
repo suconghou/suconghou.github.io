@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="post hidetop">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -8,33 +8,51 @@
 	<meta name='description' content='记录学习的点点滴滴'>
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>玩转树莓派 &middot; 苏苏的博客</title>
-	<link rel="stylesheet" type="text/css" href="/css/style.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
 	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
-	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
 <body>
-<header class="header">
-	<div class="header-main">
-		<a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
-		<h1>苏苏的博客</h1>
-		<p class="sub-title">简约至极</p>
-		<ul class="contact">
-			<a href="https://github.com/suconghou" target="_blank"><i class="fa fa-github"></i></a>
-			<a href="javascript:music.show(1)"><i class="fa fa-music"></i></a>
-		</ul>
-	</div>
+<header class="header post-header">
+    <div class="header-main" >
+        <a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
+        <h1>苏苏的博客</h1>
+        <p class="sub-title">简约至极</p>
+        <ul class="menus">
+            <a href="/">首页</a>
+            <a href="/post">技术</a>
+            <a href="/life">生活</a>
+            <a href="/photo">相册</a>
+            <a href="/about">关于</a>
+        </ul>
+    </div>
+    <div class="pull-button">
+        <div class="rbutton">
+            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
+        </div>
+    </div>
 </header>
-
-<aside></aside>
-
-<div class="content container">
+<div class="content container center">
 	<div class="post">
 		<h1 class="post-title">
-			<a href="javascript:void(0)"> 玩转树莓派</a>
-		</h1>
-		<p class="post-date">Sun, Jan 17, 2016</p>
-		
+			玩转树莓派
+        </h1>
+        <div class="post-meta">
+            <div>
+                <p class="post-date">
+                    <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                    2016/01/17 22:21 Sun
+                </p>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+        
 		<div class="post-text">
 			
 
@@ -56,11 +74,7 @@
 root 密码 centos
 大约275MB</p>
 
-<p>CentOS7.3也已发布</p>
-
-<p><a href="http://mirror.centos.org/altarch/7.3.1611/isos/armhfp/">http://mirror.centos.org/altarch/7.3.1611/isos/armhfp/</a></p>
-
-<p>树莓派2版254M</p>
+<p><a href="http://mirror.centos.org/altarch/7.4.1708/isos/armhfp/">http://mirror.centos.org/altarch/7.4.1708/isos/armhfp/</a></p>
 
 <h3 id="archlinux">ArchLinux</h3>
 
@@ -114,7 +128,7 @@ ls -lh
 
 <p>见 <a href="https://superuser.com/questions/631592/why-is-dev-rdisk-about-20-times-faster-than-dev-disk-in-mac-os-x">https://superuser.com/questions/631592/why-is-dev-rdisk-about-20-times-faster-than-dev-disk-in-mac-os-x</a></p>
 
-<p><code>gzip -dc OSMC_TGT_rbp2_20170615.img.gz | pv | sudo dd of=/dev/rdisk2 bs=512k</code></p>
+<p><code>gzip -dc OSMC_TGT_rbp2_201*.img.gz | pv | sudo dd of=/dev/rdisk2 bs=512k</code></p>
 
 <p>确定内存卡的最佳写入块大小,分别执行如下命令,查看速度</p>
 
@@ -169,31 +183,35 @@ dd if=/dev/zero bs=8192 count=8192 of=/tmp/64mb
 <p>定时关机 <code>sudo shutdown -t 60</code>(一个小时后关机) -t参数后面是分钟.</p>
 
 <p>修改为国内镜像源
-<code>/etc/apt/sources.list</code>原先内容</p>
+<code>/etc/apt/sources.list</code>原先内容 (debian9)</p>
 
 <pre><code>
-deb http://ftp.debian.org/debian jessie main contrib non-free
+deb http://ftp.debian.org/debian stretch main contrib non-free
 
-deb http://ftp.debian.org/debian/ jessie-updates main contrib non-free
+deb http://ftp.debian.org/debian/ stretch-updates main contrib non-free
 
-deb http://security.debian.org/ jessie/updates main contrib non-free
+deb http://security.debian.org/ stretch/updates main contrib non-free
 
-deb http://apt.osmc.tv jessie main
+deb http://apt.osmc.tv stretch main
 
 </code></pre>
 
 <p>修改为</p>
 
 <pre><code>
-deb http://mirrors.tuna.tsinghua.edu.cn/debian jessie main contrib non-free
+deb http://mirrors.tuna.tsinghua.edu.cn/debian stretch main contrib non-free
 
-deb http://mirrors.tuna.tsinghua.edu.cn/debian/ jessie-updates contrib main non-free
+deb http://mirrors.tuna.tsinghua.edu.cn/debian/ stretch-updates main contrib non-free
 
-deb http://mirrors.tuna.tsinghua.edu.cn/debian-security/ jessie/updates main contrib non-free
+deb http://mirrors.tuna.tsinghua.edu.cn/debian-security/ stretch/updates main contrib non-free
 
-deb http://mirrors.tuna.tsinghua.edu.cn/osmc/osmc/apt/  jessie main
+deb http://ftp.fau.de/osmc/osmc/apt/ stretch main
 
 </code></pre>
+
+<p><code>http://ftp.fau.de/osmc/osmc/apt/</code> 也可以是</p>
+
+<p><code>http://mirrors.tuna.tsinghua.edu.cn/osmc/osmc/apt/</code></p>
 
 <p>arm php7.1  <code>http://repozytorium.mati75.eu/raspbian/pool/main/p/php7.1/</code></p>
 
@@ -201,7 +219,7 @@ deb http://mirrors.tuna.tsinghua.edu.cn/osmc/osmc/apt/  jessie main
 
 <p>执行更新<code>sudo apt update -y &amp;&amp; sudo apt upgrade -y</code></p>
 
-<p>安装常用工具<code>sudo apt install htop tree file telnet screen curlftpfs</code></p>
+<p>安装常用工具<code>sudo apt install htop tree file telnet screen curlftpfs aria2</code></p>
 
 <p>安装<code>zsh</code>,可通过CURL或者WGET安装 <a href="https://github.com/robbyrussell/oh-my-zsh">https://github.com/robbyrussell/oh-my-zsh</a></p>
 
@@ -220,7 +238,19 @@ deb http://mirrors.tuna.tsinghua.edu.cn/osmc/osmc/apt/  jessie main
 
 <h2 id="安装chromeos">安装ChromeOs</h2>
 
-<p>ChromeOs已经有支持树莓派的版本了,<a href="www.chromiumosforsbc.org">www.chromiumosforsbc.org</a></p>
+<p>ChromeOs已经有支持树莓派的版本了</p>
+
+<h2 id="安装-flintos">安装 flintos</h2>
+
+<p>官网 <a href="https://flintos.com/">https://flintos.com/</a></p>
+
+<p>flintos 相当于中国版的ChromeOS,对各种硬件适配更好.</p>
+
+<p>下载<code>img.xz</code> 后,刻录操作同osmc,镜像大小比osmc要大不少.</p>
+
+<p><code>diskutil unmountdisk /dev/disk2</code></p>
+
+<p><code>xz -dc flintos_rpi_v0.3.img.xz | pv | sudo dd of=/dev/rdisk2 bs=512k</code></p>
 
 <h2 id="播放器">播放器</h2>
 
@@ -373,6 +403,26 @@ deb-src http://mirrors.ustc.edu.cn/raspbian/raspbian/ wheezy main non-free contr
 
 <p>以由高到低的方式来看，ARM处理器大体上可以排序为：Cortex-A57处理器、Cortex-A53处理器、Cortex-A15处理器、Cortex-A12处理器、Cortex-A9处理器、Cortex-A8处理器、Cortex-A7处理器、Cortex-A5处理器。其中A53、A9、A7和A5是网络机顶盒芯片厂商使用最多的。</p>
 
+<p>Cortex-A53、Cortex-A57两款处理器属于Cortex-A50系列，采用64位ARMv8架构。</p>
+
+<p>ARM Cortex-A15处理器隶属于Cortex-A系列，基于ARMv7-A架构。</p>
+
+<p>ARM Cortex-A9处理器隶属于Cortex-A系列，基于ARMv7-A架构。</p>
+
+<p>ARM Cortex-A8处理器隶属于Cortex-A系列，基于ARMv7-A架构,是我们目前使用的单核手机中最为常见的产品。</p>
+
+<p>ARM Cortex-A7处理器隶属于Cortex-A系列，基于ARMv7-A架构，它的特点是在保证性能的基础上提供了出色的低功耗表现。</p>
+
+<p>ARM Cortex-A5处理器隶属于Cortex-A系列，基于ARMv7-A架构，是能效最高、成本低的处理器。</p>
+
+<p>以由高到低的方式来看，ARM处理器大体上可以排序为：</p>
+
+<p>Cortex-A72处理器、Cortex-A57处理器、Cortex-A53处理器、Cortex-A15处理器、Cortex-A12处理器、Cortex-A9处理器、Cortex-A8处理器、Cortex-A7处理器、Cortex-A5处理器、ARM11处理器、ARM9处理器、ARM7处理器</p>
+
+<p>ARM发布了自己的下一代核心Cortex-A72，A72将会直接取代A57，定位高端市场。</p>
+
+<p>arm8的A53对应arm7的A7 A57对应A15</p>
+
 <p>官方介绍 <a href="https://www.arm.com/products/processors/cortex-a">https://www.arm.com/products/processors/cortex-a</a></p>
 
 <p><a href="http://dkmc.tv/2016/11/24/how-to-detect-performance-of-smart-tv-and-tv-box/?lang=pt">http://dkmc.tv/2016/11/24/how-to-detect-performance-of-smart-tv-and-tv-box/?lang=pt</a></p>
@@ -385,6 +435,10 @@ deb-src http://mirrors.ustc.edu.cn/raspbian/raspbian/ wheezy main non-free contr
 
 <p><a href="http://www.21ic.com/eva/MCU/201604/669727.htm">http://www.21ic.com/eva/MCU/201604/669727.htm</a></p>
 
+<p>树莓派3的CPU性能</p>
+
+<p><a href="https://www.znds.com/forum.php?mod=viewthread&amp;tid=1118965&amp;orderby=dateline">https://www.znds.com/forum.php?mod=viewthread&amp;tid=1118965&amp;orderby=dateline</a></p>
+
 <h2 id="bash-乱码设置">bash 乱码设置</h2>
 
 <p><code>env</code> 查看当前编码</p>
@@ -393,9 +447,21 @@ deb-src http://mirrors.ustc.edu.cn/raspbian/raspbian/ wheezy main non-free contr
 
 <p>需要清除 <code>unset LANG</code></p>
 
+<p><code>locale -a | grep zh</code> 查看支持的中文编码</p>
+
 <p><code>export LANG=zh_CN.UTF-8</code></p>
 
 <p>有时候可能还需要设置<code>LC_ALL=zh_CN.utf8</code> , 可直接<code>export LC_ALL=zh_CN.utf8</code>加入<code>~/.bashrc</code>中</p>
+
+<pre><code>setlocale: LC_ALL: cannot change locale (zh_CN.utf8)
+</code></pre>
+
+<p>直接执行<code>locale</code>, 如果出现</p>
+
+<pre><code>locale: Cannot set LC_CTYPE to default locale: No such file or directory
+locale: Cannot set LC_MESSAGES to default locale: No such file or directory
+locale: Cannot set LC_ALL to default locale: No such file or directory
+</code></pre>
 
 <p>sudo apt-get install zhcon</p>
 
@@ -420,44 +486,29 @@ deb-src http://mirrors.ustc.edu.cn/raspbian/raspbian/ wheezy main non-free contr
 </ol>
 
 		</div>
-	</div>
+    </div>
+    <div class="post-comment comment-render">
+        <air-messager ns="hi" kid="/post/play-with-raspberrypi/"></air-messager>
+    </div>
+    <div class="post-end">
+        
+            <a class="previous" href="http://blog.suconghou.cn/post/homebrew-speedup/" title="使用镜像加速homebrew" >
+                <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
+            </a>
+        
+        
+            <a class="next" href="http://blog.suconghou.cn/post/linux/" title="linux相关操作">
+                <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
+            </a>
+        
+    </div>
 </div>
-	<div class="music-container">
-	<div class="music-header">
-	    <a class="fa-button home" href="javascript:music.show(0)"><i class="fa fa-home" title="Home"></i></a>
-	    <a class="fa-button next" href="javascript:music.next()"><i class="fa fa-chevron-right" title="Next"></i></a>
-	</div>
-	<div class="backdrop"></div>
-	<div class="music-player">
-		<div class="cover">
-            <img src="http://p4.music.126.net/ckfEE9UUGcnGHylQJ12ENA==/670702092966093.jpg?param=350y350">
-            <div class="foredrag"><i class="fa fa-play"></i></div>
-        </div>
-        <div class="progress">
-            <div class="elapse"></div>
-        </div>
-        <div class="detail">
-            <div class="title">音乐标题</div>
-            <div class="artist">歌手</div>
-        </div>
-	</div>
-</div>
-<div id="loader" style="z-index:99999;" class="pageload-overlay" data-opening="M 40 -21.875 C 11.356078 -21.875 -11.875 1.3560784 -11.875 30 C -11.875 58.643922 11.356078 81.875 40 81.875 C 68.643922 81.875 91.875 58.643922 91.875 30 C 91.875 1.3560784 68.643922 -21.875 40 -21.875 Z">
-    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 80 60" preserveAspectRatio="xMidYMid slice"> <path d="M40,30 c 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 Z"/></svg>
-</div>
-
-	<footer class="footer">
-		<div class="footer-nav">
-			<ul>
-				<li><a href="/post/">归档</a></li>
-				<li><a href="/">专题</a></li>
-				<li><a href="/life/">生活</a></li>
-				<li><a href="/about/">关于</a></li>
-			</ul>
-		</div>
-	</footer>
-	<script type="text/javascript" src="/js/main.min.js" data-no-instant></script>
+<footer class="footer">
+    <div class="footer-nav">
+    </div>
+</footer>
+<script type="text/javascript" src="/js/main.js"></script>
+<script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
+<script src="http://feds.club/static/air-messager.min.js"></script>
 </body>
 </html>
-
-

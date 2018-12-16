@@ -50,6 +50,20 @@
 
 <p><a href="http://share.suconghou.cn/files/git/PortableGit-2.12.0-64-bit.7z.exe">64位绿色版</a></p>
 
+<p><a href="https://nmap.org/book/install.html#inst-download">https://nmap.org/book/install.html#inst-download</a></p>
+
+<h2 id="windows-下查看端口占用的进程">windows 下查看端口占用的进程</h2>
+
+<p>netstat -ano</p>
+
+<p>netstat -ano | findstr &ldquo;8086&rdquo; 找到PID</p>
+
+<p>tasklist | findstr &ldquo;PID&rdquo; 查看进程信息</p>
+
+<p>tasklist -fi &ldquo;pid qe 1234&rdquo; -v 可以列出进程的详细信息</p>
+
+<p>taskkill /pid 1688 /F 杀死指定进程</p>
+
 		</div>
 	</div>
 </div>

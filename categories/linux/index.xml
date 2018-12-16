@@ -29,8 +29,7 @@ dd if=file bs=1 skip=1073741824 count=819200 | md5sum
 拆分文件 split -b 1kb /tmp/file sfile
 拆分文件大小为1k，也可以是1b，或者1m之类的单位
 xxd hexdump od https://www.zhihu.com/question/40441308/answer/86637730
-使用 sed 修改二进制文件 先找到查找的目标
-例如/opt/local则对应echo /opt/local | xxd</description>
+时间戳转时间日期 Mac: date -r 1514131200 GNU/Linux: date -d @1514131200</description>
     </item>
     
   </channel>

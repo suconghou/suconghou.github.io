@@ -8,71 +8,46 @@
 	<meta name='description' content='记录学习的点点滴滴'>
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>Blog &middot; 苏苏的博客</title>
-	<link rel="stylesheet" type="text/css" href="/css/style.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
 	<link href="http://blog.suconghou.cn/tags/blog/index.xml" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
-	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
 <body>
-<header class="header">
-	<div class="header-main">
-		<a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
-		<h1>苏苏的博客</h1>
-		<p class="sub-title">简约至极</p>
-		<ul class="contact">
-			<a href="https://github.com/suconghou" target="_blank"><i class="fa fa-github"></i></a>
-			<a href="javascript:music.show(1)"><i class="fa fa-music"></i></a>
-		</ul>
-	</div>
-</header>
+<header class="header post-header">
+    <div class="header-main">
+        <a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
+        <h1>苏苏的博客</h1>
+        <p class="sub-title">简约至极</p>
+        <ul class="menus">
+            <a href="/">首页</a>
+            <a href="/post">技术</a>
+            <a href="/life">生活</a>
+            <a href="/photo">相册</a>
+            <a href="/about">关于</a>
+        </ul>
+    </div>
+</header> <aside></aside>
 
-<aside></aside>
-
- <div class="content container">
+<div class="content container">
 	<ul class="posts-list">
 		
 		<li>
 			<a href="/post/start-your-blog-with-hugo/">使用hugo搭建静态博客</a>
-			<time class="post-time">Friday, January 1, 2016</time>
+			<time
+				class="post-time"
+				>Friday, January 1, 2016</time
+			>
 		</li>
 		
 	</ul>
 </div>
-	<div class="music-container">
-	<div class="music-header">
-	    <a class="fa-button home" href="javascript:music.show(0)"><i class="fa fa-home" title="Home"></i></a>
-	    <a class="fa-button next" href="javascript:music.next()"><i class="fa fa-chevron-right" title="Next"></i></a>
-	</div>
-	<div class="backdrop"></div>
-	<div class="music-player">
-		<div class="cover">
-            <img src="http://p4.music.126.net/ckfEE9UUGcnGHylQJ12ENA==/670702092966093.jpg?param=350y350">
-            <div class="foredrag"><i class="fa fa-play"></i></div>
-        </div>
-        <div class="progress">
-            <div class="elapse"></div>
-        </div>
-        <div class="detail">
-            <div class="title">音乐标题</div>
-            <div class="artist">歌手</div>
-        </div>
-	</div>
-</div>
-<div id="loader" style="z-index:99999;" class="pageload-overlay" data-opening="M 40 -21.875 C 11.356078 -21.875 -11.875 1.3560784 -11.875 30 C -11.875 58.643922 11.356078 81.875 40 81.875 C 68.643922 81.875 91.875 58.643922 91.875 30 C 91.875 1.3560784 68.643922 -21.875 40 -21.875 Z">
-    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 80 60" preserveAspectRatio="xMidYMid slice"> <path d="M40,30 c 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 Z"/></svg>
-</div>
 
-	<footer class="footer">
-		<div class="footer-nav">
-			<ul>
-				<li><a href="/post/">归档</a></li>
-				<li><a href="/">专题</a></li>
-				<li><a href="/life/">生活</a></li>
-				<li><a href="/about/">关于</a></li>
-			</ul>
-		</div>
-	</footer>
-	<script type="text/javascript" src="/js/main.min.js" data-no-instant></script>
+<footer class="footer">
+    <div class="footer-nav">
+    </div>
+</footer>
+<script type="text/javascript" src="/js/main.js"></script>
 </body>
 </html>
-
+    

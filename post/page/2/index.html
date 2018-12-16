@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+	<meta name='renderer' content='webkit'>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
+	<meta name='description' content='记录学习的点点滴滴'>
+	<meta name='keywords' content='前端,PHP,GO,编程博客'>
+	<title>Posts &middot; 苏苏的博客</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link href="http://blog.suconghou.cn/post/index.xml" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
+	<link rel="shortcut icon" href="/favicon.png">
+</head>
+<body>
+<header class="header post-header">
+    <div class="header-main">
+        <a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
+        <h1>苏苏的博客</h1>
+        <p class="sub-title">简约至极</p>
+        <ul class="menus">
+            <a href="/">首页</a>
+            <a href="/post">技术</a>
+            <a href="/life">生活</a>
+            <a href="/photo">相册</a>
+            <a href="/about">关于</a>
+        </ul>
+    </div>
+</header>
+
+<div class="content container center">
+	<ul class="posts-list">
+    
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/oh-my-zsh/" class="post-link">Oh My Zsh</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2018/02/09 12:49 Fri
+                    </p>
+                </header>
+                
+                <p class="post-summary">https://ohmyz.sh/
+1. 目录跳转 可以不用cd,直接写相对、绝对地址等。
+d 命令显示最近的路径
+d: aliased to dirs -v | head -10
+可以直接对应的数字，直接进入此路径
+2. cd - &#43; TAB 也可以显示最近的访问实现快速跳转 1: aliased to cd - 3: aliased to cd -3
+3. kill 进程名称 &#43; TAB 如果有多个进程名字匹配，则会弹出显示，你可以上下键选择
+如果只有一个匹配 则会直接给出pid
+4. 命令参数补充 比如输入 git &#43; 空格 &#43; TAB 会列出所有git 的二级命令
+5. 目录自动扩展 ls /d/t/ac&#43;TAB 会自动扩展为 ls /data/tmp/activity 一个真实存在的目录
+6. CTRL&#43;R 搜索以前执行过的命令 7. 环境变量扩展 $JAVA_HOME &#43; TAB 会自动扩展为其对应的值 /Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home
+8. 按键 &lt;CTRL&gt;&#43;K 删除字符到尾部</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="http://blog.suconghou.cn/post/oh-my-zsh/">阅读全文</a>
+                </footer>
+            </article>
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/html5-wap-page/" class="post-link">Html5页面适配</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2017/10/26 10:27 Thu
+                    </p>
+                </header>
+                
+                <p class="post-summary">html5 页面等比例自适应 使用rem单位，默认情况下rem是默认字体的大小，即1rem=16px
+我们修改html的font-size 来动态调节rem的大小。
+一般的设计稿宽度大小为750px,或者640px;
+而实际手机的逻辑分辨率一般为320px;（不是指他的物理分辨率）
+注意：使用rem适配必须首先设定meta标签,设定viewport的大小就是设备宽度
+&lt;meta name=&#34;viewport&#34; content=&#34;width=device-width, initial-scale=1.0&#34;&gt;  可使用如下代码获得屏幕的信息；
+var msg= [ &#34;逻辑分辨率&#34;&#43;window.screen.width, &#34;设备像素比&#34;&#43;window.devicePixelRatio, &#34;物理分辨率&#34;&#43;window.screen.width*window.devicePixelRatio ]; alert(msg.join(&#34;\n&#34;))  可参考 http://www.zhangxinxu.com/wordpress/2012/08/window-devicepixelratio/
+理想状态 假设我们的设计稿是750px; 用户手机的逻辑分辨率也是750px
+那么只需要按照设计稿的像素大小，写死就可以完美呈现在750px的手机上。
+但是用户的手机像素是多样的，所以我们应该将px单位转化为rem单位，同时根据用户手机分辨率来调节rem的实际值大小
+需要保证在750px的用户手机下 rem 的值正好等于设计稿上的像素值，这需要我们根据用户屏幕的分辨率来动态调节html font-size的大小。
+举个例子
+在750px的设计稿里，一个按钮的宽是 280px, 其html的font-size未做修改，是16px
+640 320px 80px 40px (目标手机尺寸*元素设计大小/设计稿宽) 5rem 5rem 16px x (x = ) (目标手机尺寸*元素设计大小/设计稿宽)/5 需要 rem 的值不变，保持实际的元素大小 x 的值应为 (目标手机尺寸*元素设计大小/设计稿宽)/5  x 为 8
+我们修改在640下 font-size 为100， 这样UI的像素/100 可轻易转化为rem 640 320 80px 40px 0.</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="http://blog.suconghou.cn/post/html5-wap-page/">阅读全文</a>
+                </footer>
+            </article>
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/about-http/" class="post-link">关于HTTP协议的基本知识</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2017/06/30 10:45 Fri
+                    </p>
+                </header>
+                
+                <p class="post-summary">http 状态码 101
+204 206
+304 301 302 307
+404 413 416
+502 503
+nginx 444
+http://baike.baidu.com/item/HTTP%E7%8A%B6%E6%80%81%E7%A0%81
+使用CURL调试网络请求 curl 用法 curl -I url 发送一个HEAD请求,常用于查看HTTP消息头
+有时候HEAD请求和GET请求后端的处理逻辑不一样,我们可以使用下面的命令
+查看GET请求的响应头而忽略其响应体.在调试的时候非常有用.
+普通get请求,
+curl -o /dev/null url -v
+curl -i url 完整输出响应头和响应正文.
+curl -i https://www.baidu.com
+http 协议 第一部分：请求行，第一行明了是post请求，以及http1.1版本。
+第二部分：请求头部，第二行至第六行。
+第三部分：换行
+第四部分：请求数据
+返回
+第一部分：状态行，由HTTP协议版本号， 状态码， 状态消息 三部分组成 第二部分：消息报头，用来说明客户端要使用的一些附加信息 第三部分：空行，消息报头后面的空行是必须的 第四部分：响应正文，服务器返回给客户端的文本信息。 手动拼接一个http协议
+telnet test.share.ourwill.cn 80
+打开一个tcp链接
+最简单的GET请求
+GET / HTTP/1.1 Host: test.share.ourwill.cn  Host 用于表明要请求的是哪个主机
+Http1.1 默认是keep-alived 的, 一个TCP链接传送完一个完整的http请求后不会主动断开链接.</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="http://blog.suconghou.cn/post/about-http/">阅读全文</a>
+                </footer>
+            </article>
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/php-on-android/" class="post-link">在Android上运行PHP</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2017/05/24 13:25 Wed
+                    </p>
+                </header>
+                
+                    <img class="post-cover" src="https://www.moerats.com/usr/themes/handsome/usr/img/sj/6.jpg" alt="在Android上运行PHP">
+                
+                <p class="post-summary">为安卓交叉编译ARM版的PHP 目前手头上有一个古老的Android平板,系统为Android2.2,CPU 是armv5的架构,可以说是很古老了
+想作为一个简易的服务器使用,便开始自己折腾.
+</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="http://blog.suconghou.cn/post/php-on-android/">阅读全文</a>
+                </footer>
+            </article>
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/ftp/" class="post-link">编译一些ftp server</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2017/05/18 14:18 Thu
+                    </p>
+                </header>
+                
+                <p class="post-summary">静态编辑bftp bftp是一个小巧的ftp server
+apk update &amp;&amp; apk upgrade &amp;&amp; apk add wget make gcc g&#43;&#43; zlib-dev wget https://downloads.sourceforge.net/project/bftpd/bftpd/bftpd-4.4/bftpd-4.4.tar.gz?r=&amp;ts=1493551857&amp;use_mirror=iweb  解压进入目录
+./configure --enable-libz CFLAGS=-Os
+修改makefile link阶段加入 -static
+make -j4 编译后当前目录即可得到静态编译的bftpd
+ncftp http://www.ncftpd.com/
+既包含服务端，也有客户端
+vsftpd  chroot_local_user #是否将所有用户限制在主目录,YES为启用 NO禁用.(该项默认值是NO,即在安装vsftpd后不做配置的话，ftp用户是可以向上切换到要目录之外的)
+ https://blog.csdn.net/bluishglc/article/details/42398811
+500 OOPS: vsftpd: cannot locate user specified in ‘ftp_username’:ftp 原因： 配置文件在调用默认匿名用户anonymous时会去找ftp这个系统用户，但是ftp这个系统用户又不存在（可能被删除了）
+解决一： 取消匿名模式。
+在vsftpd.conf中将anonymous_enable设置为NO,
+anonymous_enable=NO
+重新启动vsftpd,问题解决。
+local user adduser -h /home/ftpuser -s /sbin/nologin ftpuser
+nopriv_user=xxxx
+anonymous_enable=NO local_enable=YES  vsftpd 默认会查找配置文件/etc/vsftpd.conf .</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="http://blog.suconghou.cn/post/ftp/">阅读全文</a>
+                </footer>
+            </article>
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/dnsmasq/" class="post-link">编译dnsmasq</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2017/05/05 13:54 Fri
+                    </p>
+                </header>
+                
+                <p class="post-summary">静态编译 dnsmasq静态编译十分简单,无任何其他依赖库
+apk update &amp;&amp; apk upgrade &amp;&amp; apk add wget make gcc g&#43;&#43; linux-headers cd /tmp &amp;&amp; wget http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.76.tar.xz tar Jxf dnsmasq-2.76.tar.xz &amp;&amp; cd dnsmasq-2.76 &amp;&amp; make CFLAGS=-Os LDFLAGS=-static  配置文件 dnsmasq能够缓存外部DNS记录，同时提供本地DNS解析或者作为外部DNS的代理，即dnsmasq会首先查找/etc/hosts等本地解析文件，然后再查找/etc/resolv.conf等外部nameserver配置文件中定义的外部DNS。所以说dnsmasq是一个很不错的DNS中继。DNS配置同样写入dnsmasq.conf配置文件里。
+/etc/dnsmasq.conf
+cache-size=500 resolv-file=/etc/resolv.conf strict-order listen-address=192.168.1.24 address=/ilanni.com/192.168.1.24 server=223.5.5.5 bogus-nxdomain=223.5.5.5  resolve-file定义dnsmasq从哪里获取上游DNS服务器的地址， 默认是从/etc/resolv.conf获取
+strict-order表示严格按照resolv-file文件中的顺序从上到下进行DNS解析，直到第一个解析成功为止。
+listen-address定义dnsmasq监听的地址，默认是监控本机的所有网卡上。
+address自定义域名解析的IP地址，在此已ilanni.com这个域名为例。注意dnsmasq是支持泛域名解析的，以上配置就是一个典型的泛域名解析实例。
+address也可以过滤某些网站，比如如果不想让客户端解析youk.com这个域名的话，我们这个把该域名解析到一台不存在的服务器上或者解析到127.0.0.1这个地址。如下：
+address=/ilanni.com/127.0.0.1
+参考: https://www.freehao123.com/dnsmasq/</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="http://blog.suconghou.cn/post/dnsmasq/">阅读全文</a>
+                </footer>
+            </article>
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/git-repo/" class="post-link">使用Docker快速搭建一个Git Server</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2017/04/05 14:25 Wed
+                    </p>
+                </header>
+                
+                <p class="post-summary">使用gogs搭建git server 使用docker
+如何搭建一个git server
+以及升级,备份等
+</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="http://blog.suconghou.cn/post/git-repo/">阅读全文</a>
+                </footer>
+            </article>
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/lego-and-acme-to-enable-https/" class="post-link">快速签发免费的https证书</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2017/03/27 12:11 Mon
+                    </p>
+                </header>
+                
+                <p class="post-summary">介绍几种快速签发LetsEncrypthttps证书的方法,证书免费3个月,可无限期续签.
+</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="http://blog.suconghou.cn/post/lego-and-acme-to-enable-https/">阅读全文</a>
+                </footer>
+            </article>
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/etcd-and-consul/" class="post-link">etcd和consul</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2017/03/27 10:54 Mon
+                    </p>
+                </header>
+                
+                <p class="post-summary">https://github.com/coreos/etcd
+https://github.com/hashicorp/consul
+etcd 和 consul 都是由golang编写的服务发现和配置共享的软件
+传统的类似软件有zookeeper等,zookeeper采用java编写
+其说明比较可参见
+https://blog.coding.net/blog/intro-consul?type=hot
+etcd 与 consul zookeeper 对比一览
+https://coreos.com/etcd/docs/latest/learning/why.html
+consul 启动一个server
+docker run –rm -it -p 8500:8500 –name=node1 consul agent -server -bootstrap-expect=1 -node=node1 -ui -client 0.0.0.0
+docker run –rm -it –name=node2 consul agent -server -join=172.17.0.3 -node=node2
+docker run –rm -it –name=node4 consul agent -bind=172.17.0.5 -retry-join=172.17.0.3 -node=node4
+查看下集群的状态
+docker exec -t node1 consul members
+测试
+docker run --rm -it \ --name=consul \ -m 100m \ -p 8500:8500 \ consul agent -server -ui -node=master -datacenter=dc1 -client=0.</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="http://blog.suconghou.cn/post/etcd-and-consul/">阅读全文</a>
+                </footer>
+            </article>
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/gcc/" class="post-link">gcc编译</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2017/01/13 14:01 Fri
+                    </p>
+                </header>
+                
+                <p class="post-summary">使用gcc编译器的一些笔记
+</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="http://blog.suconghou.cn/post/gcc/">阅读全文</a>
+                </footer>
+            </article>
+        
+    
+    </ul>
+    
+    <footer class="list-footer">
+      <nav class="pagination">
+        
+        <a class="pagination-previous" href="/post/">
+            上一页
+        </a>
+         
+        <a class="pagination-next" href="/post/page/3/">
+            下一页
+        </a>
+        
+      </nav>
+    </footer>
+    
+</div>
+
+
+<footer class="footer">
+    <div class="footer-nav">
+    </div>
+</footer>
+<script type="text/javascript" src="/js/main.js"></script>
+</body>
+</html>
+    
+

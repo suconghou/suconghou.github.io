@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="post hidetop">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -7,34 +7,52 @@
 	<meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
 	<meta name='description' content='记录学习的点点滴滴'>
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
-	<title>iptables与firewalld &middot; 苏苏的博客</title>
-	<link rel="stylesheet" type="text/css" href="/css/style.min.css">
+	<title>Linux的防火墙iptables与firewalld &middot; 苏苏的博客</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
 	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
-	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
 <body>
-<header class="header">
-	<div class="header-main">
-		<a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
-		<h1>苏苏的博客</h1>
-		<p class="sub-title">简约至极</p>
-		<ul class="contact">
-			<a href="https://github.com/suconghou" target="_blank"><i class="fa fa-github"></i></a>
-			<a href="javascript:music.show(1)"><i class="fa fa-music"></i></a>
-		</ul>
-	</div>
+<header class="header post-header">
+    <div class="header-main" >
+        <a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
+        <h1>苏苏的博客</h1>
+        <p class="sub-title">简约至极</p>
+        <ul class="menus">
+            <a href="/">首页</a>
+            <a href="/post">技术</a>
+            <a href="/life">生活</a>
+            <a href="/photo">相册</a>
+            <a href="/about">关于</a>
+        </ul>
+    </div>
+    <div class="pull-button">
+        <div class="rbutton">
+            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
+        </div>
+    </div>
 </header>
-
-<aside></aside>
-
-<div class="content container">
+<div class="content container center">
 	<div class="post">
 		<h1 class="post-title">
-			<a href="javascript:void(0)"> iptables与firewalld</a>
-		</h1>
-		<p class="post-date">Wed, Sep 14, 2016</p>
-		
+			Linux的防火墙iptables与firewalld
+        </h1>
+        <div class="post-meta">
+            <div>
+                <p class="post-date">
+                    <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                    2016/09/14 12:24 Wed
+                </p>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+        
 		<div class="post-text">
 			
 
@@ -122,6 +140,12 @@ iptables -Z
 <pre><code>iptables -P FORWARD DROP
 </code></pre>
 
+<h3 id="查看流量统计">查看流量统计</h3>
+
+<p><code>iptables -L -vn</code></p>
+
+<p><code>iptables -L -vxn</code></p>
+
 <h3 id="常用端口开启">常用端口开启</h3>
 
 <p>开启80,443端口,http,https服务</p>
@@ -190,6 +214,16 @@ iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 <code>yum info ipset -y</code> 安装<code>ipset</code></p>
 </blockquote>
 
+<pre><code>iptables -A INPUT -p tcp --dport 8000 -s 1.2.3.4 -j ACCEPT
+iptables -A INPUT -p tcp --dport 8000 -j DROP
+</code></pre>
+
+<p><code>iptables -D INPUT 2</code></p>
+
+<p><a href="https://stackoverflow.com/questions/7423309/iptables-block-access-to-port-8000-except-from-ip-address">https://stackoverflow.com/questions/7423309/iptables-block-access-to-port-8000-except-from-ip-address</a></p>
+
+<p><a href="https://stackoverflow.com/questions/10197405/how-can-i-remove-specific-rules-from-iptables">https://stackoverflow.com/questions/10197405/how-can-i-remove-specific-rules-from-iptables</a></p>
+
 <h3 id="路由黑洞">路由黑洞</h3>
 
 <p>linux 黑洞路由命令
@@ -203,6 +237,60 @@ iprouter2 用法
 <pre><code>wget -O- 'http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest' | awk -F\| '/CN\|ipv4/ { printf(&quot;%s/%d\n&quot;, $4, 32-log($5)/log(2)) }' &gt; ./ignore.list
 </code></pre>
 
+<p>示例：拦截ssh登录失败次数过多的IP</p>
+
+<pre><code>lastb -i | awk '{print $3}' | sort | uniq -c | sort -nr | head -50 | awk '{print &quot;ip route add blackhole &quot;, $2}' | sort -n | uniq | sh
+</code></pre>
+
+<p>前面是找出登录失败过多的IP,后面使用awk拼接 ip route 命令并执行</p>
+
+<p>使用 <code>netstat -nr</code> 或者 <code>route -n</code> 可以验证,这两个命令都可以查看 <code>Kernel IP routing table</code></p>
+
+<p><code>ip route add</code> 的好处是会自动判断是否重复给出<code>RTNETLINK answers: File exists</code>,但不影响未重复的添加。比起iptables也更简单</p>
+
+<p>可以存储为文件,定时执行
+<code>/home/block.sh</code></p>
+
+<pre><code>lastb -i | awk '{print $3}' | sort | uniq -c | sort -nr | head -50 | awk '{print &quot;/usr/sbin/ip route add blackhole &quot;, $2}' | sort -n | uniq | sh
+</code></pre>
+
+<p><code>crontab -e</code> 每小时执行</p>
+
+<pre><code>0 * * * * sh /home/block.sh &amp;&gt;/dev/null
+</code></pre>
+
+<p><code>netstat -anltp | awk '{print $5}' | grep -E -o &quot;([0-9]{1,3}\.){3}[0-9]{1,3}&quot; | grep -v 0.0 | sort | uniq -c | sort -nr | head -10</code></p>
+
+<p><code>netstat -anltp | awk '{print $5}' | grep -E -o &quot;([0-9]{1,3}\.){3}[0-9]{1,3}&quot; | grep -v 0.0 | sort | uniq -c | sort -nr | head -10 | awk '{print &quot;ip route add blackhole &quot;, $2 }'</code></p>
+
+<p>查看路由黑洞信息
+<code>ip route show</code></p>
+
+<p>删除黑洞</p>
+
+<pre><code>ip route del 192.168.0.195
+ip route show
+</code></pre>
+
+<p>批量删除符合规则的IP  <code>ip route show | grep &quot;0.0.0 &quot; | awk {'print &quot;ip route del &quot;,$2'}  | sh</code></p>
+
+<p>清除所有blackhole的规则  <code>ip route show | grep blackhole | grep -E -o &quot;([0-9]{1,3}\.){3}[0-9]{1,3}&quot; | awk {'print &quot;ip route del &quot;,$1'} | sh</code></p>
+
+<p>添加的IP也可以是一个网段 <code>192.168.0.195/32</code></p>
+
+<p>路由黑洞的工作原理就是将攻击者的IP引导到一个不存在的地址，从而直接丢弃。
+当开启路由黑洞以后，攻击者到你服务器的TCP握手将不能成功，因为你的服务器根本不会响应SYN+ACK包，但是攻击者的SYN还是发过来了，这个阻止不了。所有UDP的包也不能阻止接受，但是服务器不会发送任何响应给攻击者。简单说就是攻击你没法阻止，但可以不回应。</p>
+
+<p>iptable 与 route 区别</p>
+
+<p><a href="http://www.linuxforums.org/forum/newbie/186273-iptables-forwarding-vs-ip-route-post877996.html#post877996">http://www.linuxforums.org/forum/newbie/186273-iptables-forwarding-vs-ip-route-post877996.html#post877996</a></p>
+
+<p><a href="https://superuser.com/questions/419659/iptables-vs-route">https://superuser.com/questions/419659/iptables-vs-route</a></p>
+
+<p><a href="http://www.adminsehow.com/2011/09/iptables-packet-traverse-map/">http://www.adminsehow.com/2011/09/iptables-packet-traverse-map/</a></p>
+
+<p>参考 <a href="http://ximunix.blogspot.com/2015/02/howto-drop-or-block-attackers-ip.html">http://ximunix.blogspot.com/2015/02/howto-drop-or-block-attackers-ip.html</a></p>
+
 <h3 id="端口转发">端口转发</h3>
 
 <p>允许服务器的IP转发功能： <code>echo 1 &gt; /proc/sys/net/ipv4/ip_forward</code></p>
@@ -212,6 +300,60 @@ iprouter2 用法
 <p><code>iptables -t nat -A PREROUTING -p tcp -i eth0 --dport 31521 -j DNAT --to 192.168.0.211:1521</code></p>
 
 <p>相同端口后面可省略不写 <code>iptables -t nat -I PREROUTING -p tcp --dport 1521 -j DNAT --to 192.168.0.211</code></p>
+
+<p><code>iptables -t nat -A POSTROUTING -d 192.168.203.235 -p tcp --dport 80 -j MASQUERADE</code></p>
+
+<p><a href="http://www.dkys.org/archives/1075.html">http://www.dkys.org/archives/1075.html</a></p>
+
+<ul>
+<li>特别注明：本地服务器 IP 未必是公网 IP ，像阿里云就是内网 IP ，请用 ipconfig 确认下走流量的网卡 IP 是外网还是内网。</li>
+</ul>
+
+<p><strong>单端口转发(tcp、udp)</strong></p>
+
+<pre><code>iptables -t nat -A PREROUTING -p tcp --dport [要转发的端口号] -j DNAT --to-destination [要转发的服务器IP]
+iptables -t nat -A PREROUTING -p udp --dport [要转发的端口号] -j DNAT --to-destination [要转发的服务器IP]
+iptables -t nat -A POSTROUTING -p tcp -d [要转发的服务器IP] --dport [要转发的端口号] -j SNAT --to-source [本机IP]
+iptables -t nat -A POSTROUTING -p udp -d [要转发的服务器IP] --dport [要转发的端口号] -j SNAT --to-source [本机IP]
+</code></pre>
+
+<p><strong>端口段转发(tcp、udp)</strong></p>
+
+<p>转发10000到20000这个端口段，则填10000:20000</p>
+
+<pre><code>iptables -t nat -A PREROUTING -p tcp --dport [要转发的端口段] -j DNAT --to-destination [要转发的服务器IP]
+iptables -t nat -A PREROUTING -p udp --dport [要转发的端口段] -j DNAT --to-destination [要转发的服务器IP]
+iptables -t nat -A POSTROUTING -p tcp -d [要转发的服务器IP] --dport [要转发的端口段] -j SNAT --to-source [本机IP]
+iptables -t nat -A POSTROUTING -p udp -d [要转发的服务器IP] --dport [要转发的端口段] -j SNAT --to-source [本机IP]
+</code></pre>
+
+<p>我们可能需要将访问主机的7979端口映射到8080端口。也可以iptables重定向完成</p>
+
+<p><code>iptables -t nat -A PREROUTING -p tcp --dport 7979 -j REDIRECT --to-ports 8080</code>
+更改iptables，使之实现nat映射功能</p>
+
+<pre><code>iptables -t nat -A PREROUTING  -p tcp --dport 21358 -j DNAT --to-destination 67.215.245.160:1358
+iptables -t nat -A POSTROUTING -p tcp -d 67.215.245.160 --dport 1358 -j SNAT --to-source 101.200.151.143:21358
+</code></pre>
+
+<p>需求很简单，把本地81端口映射到8080端口上</p>
+
+<ol>
+<li>所有的81请求转发到了8080上.</li>
+</ol>
+
+<h1 id="iptables-t-nat-a-prerouting-p-tcp-dport-81-j-redirect-to-ports-8080">iptables -t nat -A PREROUTING -p tcp &ndash;dport 81 -j REDIRECT &ndash;to-ports 8080</h1>
+
+<p>1</p>
+
+<h1 id="iptables-t-nat-a-prerouting-p-tcp-dport-81-j-redirect-to-ports-8080-1">iptables -t nat -A PREROUTING -p tcp &ndash;dport 81 -j REDIRECT &ndash;to-ports 8080</h1>
+
+<p>如果需要本机也可以访问，则需要配置OUTPUT链：</p>
+
+<p>iptables -t nat -A OUTPUT -p tcp &ndash;dport 81 -j REDIRECT &ndash;to-ports 8080
+1
+iptables -t nat -A OUTPUT -p tcp &ndash;dport 81 -j REDIRECT &ndash;to-ports 8080
+原因：外网访问需要经过PREROUTING链，但是localhost不经过该链，因此需要用OUTPUT，或者POSTROUTING。POSTROUTING不行，需要看看。</p>
 
 <pre><code>
 #清除配置
@@ -261,47 +403,58 @@ iprouter2 用法
 
 <p>需要永久生效时,添加需加上<code>--permanent</code>,如 <code>firewall-cmd --permanent --zone=public --add-port=9090/tcp</code></p>
 
+<p><code>firewall-cmd --reload</code> 生效</p>
+
 <p>更多可参考 <a href="http://www.ywnds.com/?p=7570&amp;viewuser=30">http://www.ywnds.com/?p=7570&amp;viewuser=30</a>   <a href="https://linux.cn/article-8098-1.html">https://linux.cn/article-8098-1.html</a></p>
 
-		</div>
-	</div>
-</div>
-	<div class="music-container">
-	<div class="music-header">
-	    <a class="fa-button home" href="javascript:music.show(0)"><i class="fa fa-home" title="Home"></i></a>
-	    <a class="fa-button next" href="javascript:music.next()"><i class="fa fa-chevron-right" title="Next"></i></a>
-	</div>
-	<div class="backdrop"></div>
-	<div class="music-player">
-		<div class="cover">
-            <img src="http://p4.music.126.net/ckfEE9UUGcnGHylQJ12ENA==/670702092966093.jpg?param=350y350">
-            <div class="foredrag"><i class="fa fa-play"></i></div>
-        </div>
-        <div class="progress">
-            <div class="elapse"></div>
-        </div>
-        <div class="detail">
-            <div class="title">音乐标题</div>
-            <div class="artist">歌手</div>
-        </div>
-	</div>
-</div>
-<div id="loader" style="z-index:99999;" class="pageload-overlay" data-opening="M 40 -21.875 C 11.356078 -21.875 -11.875 1.3560784 -11.875 30 C -11.875 58.643922 11.356078 81.875 40 81.875 C 68.643922 81.875 91.875 58.643922 91.875 30 C 91.875 1.3560784 68.643922 -21.875 40 -21.875 Z">
-    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 80 60" preserveAspectRatio="xMidYMid slice"> <path d="M40,30 c 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 Z"/></svg>
-</div>
+<p>firewalld 新添加的规则,对于已经建立好的链接是无效的,iptables的规则则是立即对所有链接生效.</p>
 
-	<footer class="footer">
-		<div class="footer-nav">
-			<ul>
-				<li><a href="/post/">归档</a></li>
-				<li><a href="/">专题</a></li>
-				<li><a href="/life/">生活</a></li>
-				<li><a href="/about/">关于</a></li>
-			</ul>
+<p>如果要使用iptables而不用firewalld:</p>
+
+<pre><code>yum install -y iptables-services
+systemctl stop firewalld
+systemctl disable firewalld
+systemctl enable iptables
+</code></pre>
+
+<h3 id="流量转发">流量转发</h3>
+
+<pre><code>echo 1 &gt; /proc/sys/net/ipv4/ip_forward
+# 开启防火墙转发
+firewall-cmd --permanent --add-port=2333/tcp
+firewall-cmd --permanent --add-port=2333/udp
+firewall-cmd --permanent --add-masquerade
+firewall-cmd --permanent --add-forward-port=port=2333:proto=tcp:toport=6666:toaddr=1.1.1.1
+firewall-cmd --permanent --add-forward-port=port=2333:proto=udp:toport=6666:toaddr=1.1.1.1
+firewall-cmd --reload
+</code></pre>
+
+<p>其中 2333 代表本地监听端口， 6666 表示欲中转服务器的端口， 1.1.1.1 代表欲中转服务器的ip地址。</p>
+
 		</div>
-	</footer>
-	<script type="text/javascript" src="/js/main.min.js" data-no-instant></script>
+    </div>
+    <div class="post-comment comment-render">
+        <air-messager ns="hi" kid="/post/iptables/"></air-messager>
+    </div>
+    <div class="post-end">
+        
+            <a class="previous" href="http://blog.suconghou.cn/post/pc-hardware/" title="修电脑相关知识" >
+                <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
+            </a>
+        
+        
+            <a class="next" href="http://blog.suconghou.cn/post/use-kvm/" title="使用kvm创建和管理虚拟机">
+                <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
+            </a>
+        
+    </div>
+</div>
+<footer class="footer">
+    <div class="footer-nav">
+    </div>
+</footer>
+<script type="text/javascript" src="/js/main.js"></script>
+<script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
+<script src="http://feds.club/static/air-messager.min.js"></script>
 </body>
 </html>
-
-

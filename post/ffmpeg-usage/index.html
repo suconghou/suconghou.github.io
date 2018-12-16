@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="post hidetop">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -8,33 +8,51 @@
 	<meta name='description' content='记录学习的点点滴滴'>
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>ffmpeg安装使用 &middot; 苏苏的博客</title>
-	<link rel="stylesheet" type="text/css" href="/css/style.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
 	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
-	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
 <body>
-<header class="header">
-	<div class="header-main">
-		<a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
-		<h1>苏苏的博客</h1>
-		<p class="sub-title">简约至极</p>
-		<ul class="contact">
-			<a href="https://github.com/suconghou" target="_blank"><i class="fa fa-github"></i></a>
-			<a href="javascript:music.show(1)"><i class="fa fa-music"></i></a>
-		</ul>
-	</div>
+<header class="header post-header">
+    <div class="header-main" >
+        <a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
+        <h1>苏苏的博客</h1>
+        <p class="sub-title">简约至极</p>
+        <ul class="menus">
+            <a href="/">首页</a>
+            <a href="/post">技术</a>
+            <a href="/life">生活</a>
+            <a href="/photo">相册</a>
+            <a href="/about">关于</a>
+        </ul>
+    </div>
+    <div class="pull-button">
+        <div class="rbutton">
+            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
+        </div>
+    </div>
 </header>
-
-<aside></aside>
-
-<div class="content container">
+<div class="content container center">
 	<div class="post">
 		<h1 class="post-title">
-			<a href="javascript:void(0)"> ffmpeg安装使用</a>
-		</h1>
-		<p class="post-date">Mon, Jan 11, 2016</p>
-		
+			ffmpeg安装使用
+        </h1>
+        <div class="post-meta">
+            <div>
+                <p class="post-date">
+                    <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                    2016/01/11 10:19 Mon
+                </p>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+        
 		<div class="post-text">
 			
 
@@ -44,7 +62,7 @@
 
 <p>armhf比armel硬件要求,树莓派2可用armhf,树莓派1使用armel</p>
 
-<p>Windows版本也提供编译好的下载</p>
+<p>Windows版本也提供编译好的下载(也提供MacOs版)</p>
 
 <p><a href="https://ffmpeg.zeranoe.com/builds/">https://ffmpeg.zeranoe.com/builds/</a></p>
 
@@ -55,6 +73,8 @@
 <p>使用brew安装
 <code>brew install ffmpeg --with-ffplay</code></p>
 
+<p><code>ffmpeg -protocols</code> 查看ffmpeg支持的协议列表</p>
+
 <h3 id="让ffmpeg转为mp4边下边播">让ffmpeg转为MP4边下边播</h3>
 
 <p><code>ffmpeg -i input.xx -c copy -movflags faststart output.mp4</code></p>
@@ -64,6 +84,8 @@
 <p>关于<code>faststart</code>还有一个python项目,类似于ffmpeg软件包中的<code>qt-faststart</code>  <a href="https://github.com/danielgtaylor/qtfaststart">https://github.com/danielgtaylor/qtfaststart</a></p>
 
 <p>可以使用<code>pip install qtfaststart</code>,仅需10KB+</p>
+
+<p><code>pip3 install qtfaststart</code> 也可以</p>
 
 <p><a href="http://blog.chinaunix.net/uid-342902-id-2416123.html">http://blog.chinaunix.net/uid-342902-id-2416123.html</a></p>
 
@@ -77,13 +99,53 @@
 
 <p>更多用法可以参考 <a href="http://www.jianshu.com/p/053665062f22">http://www.jianshu.com/p/053665062f22</a></p>
 
+<h3 id="mp4-to-gif">mp4 to gif</h3>
+
+<p><a href="http://blog.pkh.me/p/21-high-quality-gif-with-ffmpeg.html#usage">http://blog.pkh.me/p/21-high-quality-gif-with-ffmpeg.html#usage</a></p>
+
+<p><code>/tmp/1.sh</code></p>
+
+<pre><code>#!/bin/sh
+
+palette=&quot;/tmp/palette.png&quot;
+
+filters=&quot;fps=15,scale=360:-1:flags=lanczos&quot;
+
+ffmpeg -v warning -i $1 -vf &quot;$filters,palettegen&quot; -y $palette
+ffmpeg -v warning -i $1 -i $palette -lavfi &quot;$filters [x]; [x][1:v] paletteuse&quot; -y $2
+
+</code></pre>
+
+<p>使用: <code>/tmp/1.sh file.mp4 file.gif</code></p>
+
+<h3 id="视频裁剪">视频裁剪</h3>
+
+<p>ffmpeg  -i ./plutopr.mp4 -vcodec copy -acodec copy -ss 00:00:10 -to 00:00:15 ./cutout1.mp4 -y</p>
+
+<p>-ss time_off        set the start time offset 设置从视频的哪个时间点开始截取，上文从视频的第10s开始截取
+-to 截到视频的哪个时间点结束。上文到视频的第15s结束。截出的视频共5s.
+如果用-t 表示截取多长的时间如 上文-to 换位-t则是截取从视频的第10s开始，截取15s时长的视频。即截出来的视频共15s.</p>
+
+<p>注意的地方是：
+ 如果将-ss放在-i ./plutopr.mp4后面则-to的作用就没了，跟-t一样的效果了，变成了截取多长视频。一定要注意-ss的位置。</p>
+
+<p>参数解析
+-vcodec copy表示使用跟原视频一样的视频编解码器。
+-acodec copy表示使用跟原视频一样的音频编解码器。</p>
+
+<p>-i 表示源视频文件</p>
+
+<h2 id="y-表示如果输出文件已存在则覆盖">-y 表示如果输出文件已存在则覆盖。</h2>
+
 <h4 id="处理m3u8地址视频">处理m3u8地址视频</h4>
 
 <p>下载转码 <code>ffmpeg -i &quot;http://m3u8的地址&quot; -c copy -bsf:a aac_adtstoasc output.mp4</code></p>
 
 <p><code>ffmepg -i http://xxx.m3u8 &quot;文件名.mp4&quot;</code></p>
 
-<p>转化为mp4,需要直到结束,一个文件才能完整.可以使其转化为flv文件</p>
+<p>转化为mp4,需要直到结束,一个文件才能完整,才能写入其<code>moov</code>,其<code>moov</code>数据始终是在<code>mdat</code>之后,我们需要使用<code>qtfaststart</code>才能使其适合边下边播</p>
+
+<p>我们可以使其转化为flv文件,这样视频不用完整就能播放,可以边转码边播放。</p>
 
 <p>ffmpeg -i &ldquo;<a href="http://xxx.m3u8&quot;">http://xxx.m3u8&quot;</a> -b 8M -r 12 -g 12  output1.flv</p>
 
@@ -95,7 +157,7 @@
 
 <p>转换为flv,需要设置码率高一些,不然视频画面,严重模糊,设置比特率高些不很影响转码速度</p>
 
-<p>使用<code>-b</code>设置比特率,默认为200Kbit/s,这里改为2048</p>
+<p>使用<code>-b</code>设置比特率(码率),默认为200Kbit/s,这里改为2048</p>
 
 <p><code>-r</code> 设定视屏帧率 即 fps</p>
 
@@ -114,9 +176,40 @@ file 4.mp4
 
 <p><code>ffmpeg -f concat -i ffmpeg-sound.txt -c copy final_output.mp4</code></p>
 
+<p>批量合并ts文件</p>
+
+<p>使用方式同合并mp4文件,这次我们可以使用命令行参数指定文件,而不需要文件列表.</p>
+
+<p><code>ffmpeg -i &quot;concat:file001.ts|file002.ts|file003.ts|file004.ts&quot; -acodec copy -vcodec copy -absf aac_adtstoasc out.mp4</code></p>
+
+<p>假如有很多文件,我们一个个拼接文件列表也很麻烦,可以使用shell快速生成 <code>for i in {1..100};do echo -e &quot;file$i.ts|\c&quot;;done;</code></p>
+
+<p>对于一个文件夹内存在很多要合并的文件,可以使用下面脚本</p>
+
+<p><code>ls * | perl -nale 'chomp;push @a, $_;END{printf &quot;ffmpeg -i \&quot;concat:%s\&quot; -acodec copy -vcodec copy -absf aac_adtstoasc out.mp4\n&quot;, join(&quot;|&quot;,@a)}'</code></p>
+
 <p><a href="http://askubuntu.com/questions/352920/fastest-way-to-convert-videos-batch-or-single">http://askubuntu.com/questions/352920/fastest-way-to-convert-videos-batch-or-single</a></p>
 
 <p><a href="https://www.zhouchun.net/blog/show/293">https://www.zhouchun.net/blog/show/293</a></p>
+
+<p><a href="https://www.cnblogs.com/frost-yen/p/5848781.html">https://www.cnblogs.com/frost-yen/p/5848781.html</a></p>
+
+<blockquote>
+<p>-vf  视频过滤器
+-af  音频过滤器
+用 -r 参数设置帧率
+设置码率 –b 参数</p>
+</blockquote>
+
+<p>音频参数： -ar 设定采样率 -ac 设定声音的Channel数 -acodec 设定声音编解码器，未设定时则使用与输入流相同的编解码器 -an 不处理音频</p>
+
+<p>视频参数： -b 设定视频流量，默认为200Kbit/s -r 设定帧速率，默认为25 -s 设定画面的宽与高 -aspect 设定画面的比例 -vn 不处理视频 -vcodec 设定视频编解码器，未设定时则使用与输入流相同的编解码器</p>
+
+<p><a href="http://blog.csdn.net/danielpei1222/article/details/61916435">http://blog.csdn.net/danielpei1222/article/details/61916435</a></p>
+
+<h2 id="ffmpeg-截图">ffmpeg 截图</h2>
+
+<p><a href="http://blog.csdn.net/yourijing/article/details/50786758">http://blog.csdn.net/yourijing/article/details/50786758</a></p>
 
 <h2 id="mpv-播放多个url">mpv 播放多个url</h2>
 
@@ -133,45 +226,104 @@ file 4.mp4
 
 <p>mpv获取数据是单线程的.</p>
 
-		</div>
-	</div>
-</div>
-	<div class="music-container">
-	<div class="music-header">
-	    <a class="fa-button home" href="javascript:music.show(0)"><i class="fa fa-home" title="Home"></i></a>
-	    <a class="fa-button next" href="javascript:music.next()"><i class="fa fa-chevron-right" title="Next"></i></a>
-	</div>
-	<div class="backdrop"></div>
-	<div class="music-player">
-		<div class="cover">
-            <img src="http://p4.music.126.net/ckfEE9UUGcnGHylQJ12ENA==/670702092966093.jpg?param=350y350">
-            <div class="foredrag"><i class="fa fa-play"></i></div>
-        </div>
-        <div class="progress">
-            <div class="elapse"></div>
-        </div>
-        <div class="detail">
-            <div class="title">音乐标题</div>
-            <div class="artist">歌手</div>
-        </div>
-	</div>
-</div>
-<div id="loader" style="z-index:99999;" class="pageload-overlay" data-opening="M 40 -21.875 C 11.356078 -21.875 -11.875 1.3560784 -11.875 30 C -11.875 58.643922 11.356078 81.875 40 81.875 C 68.643922 81.875 91.875 58.643922 91.875 30 C 91.875 1.3560784 68.643922 -21.875 40 -21.875 Z">
-    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 80 60" preserveAspectRatio="xMidYMid slice"> <path d="M40,30 c 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 Z"/></svg>
-</div>
+<p>mpv 快捷键</p>
 
-	<footer class="footer">
-		<div class="footer-nav">
-			<ul>
-				<li><a href="/post/">归档</a></li>
-				<li><a href="/">专题</a></li>
-				<li><a href="/life/">生活</a></li>
-				<li><a href="/about/">关于</a></li>
-			</ul>
+<pre><code>shift+T最前端显示
+PageUP下一章节
+PageDown上一章节
+Right前进5秒
+Left后退5秒
+Up前进10秒
+Down后退10秒
+RightClick/Space/P暂停播放
+f/LeftDoubleClick全屏
+ESC退出全屏
+q/command+q退出播放器
+O显示进度
+[]播放速度
+w/e好像是剪裁
+r/t字幕位置
+u字幕样式override
+s/ctrl+s截图
+d反交错开关Deinterlace
+h/k电视频道(没什么用)
+J切换字幕
+L某一段重复播放（鬼畜）
+Z/X字幕延迟
+v隐藏显示字幕
+M静音
+&lt;逐帧播放
+&gt;按下播放，回弹暂停
+1对比度-
+2对比度+
+3亮度-
+4亮度+
+5伽马-
+6伽马+
+7饱和度-
+8饱和度+
+9、/减小音量
+0、*增大音量
+</code></pre>
+
+<p>mpv播放显示</p>
+
+<pre><code> (+) Video --vid=1 (*) (mpeg4 25.000fps)
+ (+) Audio --aid=1 --alang=eng (*) (aac 2ch 44100Hz)
+AO: [coreaudio] 44100Hz stereo 2ch floatp
+VO: [opengl] 1920x1080 yuv420p
+</code></pre>
+
+<p>Chrome 浏览器播放只有声音没有图像</p>
+
+<p>使用ffmpeg处理视屏编码，使用h264编码格式 <code>ffmpeg -i xxx.mp4 -c:v libx264 -movflags faststart out.mp4</code> 耗时2:05</p>
+
+<p><code>ffmpeg -i input.rmvb -c:v libx264 -preset veryfast -crf 18 -c:a copy -movflags faststart output.mp4</code> 编码速度更快，但体积大一下</p>
+
+<p>压缩以缩小体积</p>
+
+<p><code>18~28</code>是一个合理的范围。18被认为是视觉无损的从技术角度上看当然还是有损的</p>
+
+<p>它的输出视频质量和输入视频相当</p>
+
+<p><code>ffmpeg -i bigfile.mp4 -c:v libx264 -s 800x450 -b:v 800k -ar 44100 -ab 48k -preset slower -crf 19 -movflags faststart output.mp4</code></p>
+
+<p><a href="http://blog.csdn.net/happydeer/article/details/52610060">http://blog.csdn.net/happydeer/article/details/52610060</a></p>
+
+<p>编码后可以播放，并且比mpeg4编码的体积更小</p>
+
+<pre><code> (+) Video --vid=1 (*) (h264 1920x1080 25.000fps)
+ (+) Audio --aid=1 --alang=eng (*) (aac 2ch 44100Hz)
+AO: [coreaudio] 44100Hz stereo 2ch floatp
+VO: [opengl] 1920x1080 yuv420p
+</code></pre>
+
+<p>ffmpeg -i 1-2.mp4 -c:v libx264 -preset veryslow -crf 18 -c:a copy -movflags faststart ../1-2.mp4</p>
+
 		</div>
-	</footer>
-	<script type="text/javascript" src="/js/main.min.js" data-no-instant></script>
+    </div>
+    <div class="post-comment comment-render">
+        <air-messager ns="hi" kid="/post/ffmpeg-usage/"></air-messager>
+    </div>
+    <div class="post-end">
+        
+            <a class="previous" href="http://blog.suconghou.cn/post/git-usage/" title="git基本使用" >
+                <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
+            </a>
+        
+        
+            <a class="next" href="http://blog.suconghou.cn/post/improve-mysqldb/" title="MySQL性能优化">
+                <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
+            </a>
+        
+    </div>
+</div>
+<footer class="footer">
+    <div class="footer-nav">
+    </div>
+</footer>
+<script type="text/javascript" src="/js/main.js"></script>
+<script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
+<script src="http://feds.club/static/air-messager.min.js"></script>
 </body>
 </html>
-
-

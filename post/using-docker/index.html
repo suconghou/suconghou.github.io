@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="post hidetop">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -8,33 +8,51 @@
 	<meta name='description' content='记录学习的点点滴滴'>
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>开启docker之旅 &middot; 苏苏的博客</title>
-	<link rel="stylesheet" type="text/css" href="/css/style.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
 	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
-	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
 <body>
-<header class="header">
-	<div class="header-main">
-		<a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
-		<h1>苏苏的博客</h1>
-		<p class="sub-title">简约至极</p>
-		<ul class="contact">
-			<a href="https://github.com/suconghou" target="_blank"><i class="fa fa-github"></i></a>
-			<a href="javascript:music.show(1)"><i class="fa fa-music"></i></a>
-		</ul>
-	</div>
+<header class="header post-header">
+    <div class="header-main" >
+        <a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
+        <h1>苏苏的博客</h1>
+        <p class="sub-title">简约至极</p>
+        <ul class="menus">
+            <a href="/">首页</a>
+            <a href="/post">技术</a>
+            <a href="/life">生活</a>
+            <a href="/photo">相册</a>
+            <a href="/about">关于</a>
+        </ul>
+    </div>
+    <div class="pull-button">
+        <div class="rbutton">
+            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
+        </div>
+    </div>
 </header>
-
-<aside></aside>
-
-<div class="content container">
+<div class="content container center">
 	<div class="post">
 		<h1 class="post-title">
-			<a href="javascript:void(0)"> 开启docker之旅</a>
-		</h1>
-		<p class="post-date">Tue, Jan 5, 2016</p>
-		
+			开启docker之旅
+        </h1>
+        <div class="post-meta">
+            <div>
+                <p class="post-date">
+                    <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                    2016/01/05 10:28 Tue
+                </p>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+        
 		<div class="post-text">
 			
 
@@ -78,9 +96,46 @@ Windows 64bits zip: https://get.docker.com/builds/Windows/x86_64/docker-17.03.1-
 Windows 32bits client zip: https://get.docker.com/builds/Windows/i386/docker-17.03.1-ce.zip
 </code></pre>
 
+<p>下载地址一览 <a href="https://download.docker.com/linux/static/stable/">https://download.docker.com/linux/static/stable/</a></p>
+
+<p>armhf比armel硬件要求,树莓派2可用armhf,树莓派1使用armel</p>
+
+<p>64位的arm默认就是hf的，因此不需要hf的后缀。</p>
+
+<p><code>/lib/arm-linux-gnueabihf</code></p>
+
+<p><code>/lib/arm-linux-gnueabi</code></p>
+
+<p><code>dpkg -l</code></p>
+
+<p><code>dpkg --print-architecture</code></p>
+
+<p><code>readelf -A $(which dpkg)</code></p>
+
+<h2 id="windows-安装">Windows 安装</h2>
+
+<p><a href="http://mirrors.aliyun.com/docker-toolbox/">http://mirrors.aliyun.com/docker-toolbox/</a></p>
+
+<p>包含 Window 的
+docker-for-windows
+docker-toolbox
+等</p>
+
+<p>docker-for-windows 要求 window10 pro 或者 window server 2016 以上</p>
+
+<p>低版本windows 可以使用 旧方案 docker-toolbox 解决</p>
+
+<p>首先需要知道是当前docker的虚拟IP地址，一般都是192.168.99.100</p>
+
+<p>查看C:\Users\Administrator.docker\machine\machines\default</p>
+
+<p>ssh的用户名默认是：docker  密码默认：tcuser  端口：22</p>
+
+<p><code>/etc/init.d/docker restart</code></p>
+
 <h3 id="快速安装docker并启动">快速安装docker并启动</h3>
 
-<p><a href="https://docs.docker.com/engine/installation/linux/docker-ce/centos/">官方安装教程</a></p>
+<p><a href="https://docs.docker.com/install/linux/docker-ce/centos/">官方安装教程</a></p>
 
 <p>新版的docker包名改为<code>docker-ce</code></p>
 
@@ -101,6 +156,10 @@ sudo systemctl start docker
 <p>阿里云也提供安装脚本 见<code>http://mirrors.aliyun.com/help/docker-engine</code>,</p>
 
 <p>阿里云的软件源可以使用内网源不占用外网流量</p>
+
+<p>七牛云也提供镜像</p>
+
+<p><a href="https://reg-mirror.qiniu.com/">https://reg-mirror.qiniu.com/</a></p>
 
 <p>使用docker 需要开机宿主机IPV4转发功能,否则<code>docker info</code> 会有警告,容器内无法上网</p>
 
@@ -125,7 +184,7 @@ docker 分为两部分,一分部是docker daemon , 一部分是docker client</p>
 
 <p>其他参考 <code>https://github.com/chenzhiwei/linux/tree/master/ssl-cert</code></p>
 
-<p>这里一份脚本可以快速生成证书,只需修改DOMAIN变量即可. <a href="https://gist.github.com/suconghou/707d9c61367c4bb91e8ed2585b094853">https://gist.github.com/suconghou/707d9c61367c4bb91e8ed2585b094853</a></p>
+<p>这里一份脚本可以快速生成证书,只需修改DOMAIN变量即可(只修改域名不需要加端口). <a href="https://gist.github.com/suconghou/707d9c61367c4bb91e8ed2585b094853">https://gist.github.com/suconghou/707d9c61367c4bb91e8ed2585b094853</a></p>
 
 <p>将证书放在<code>~/.docker</code>目录下可以免去设置<code>DOCKER_CERT_PATH</code></p>
 
@@ -144,7 +203,8 @@ mkdir -pv ~/.docker &amp;&amp; cp -vf ca.pem ~/.docker &amp;&amp; mv server-cert
 
 <pre><code>{
     &quot;registry-mirrors&quot;: [
-        &quot;https://docker.mirrors.ustc.edu.cn&quot;
+        &quot;https://docker.mirrors.ustc.edu.cn&quot;,
+        &quot;https://registry.docker-cn.com&quot;
     ],
     &quot;hosts&quot;: [
         &quot;unix:///var/run/docker.sock&quot;,
@@ -161,6 +221,8 @@ mkdir -pv ~/.docker &amp;&amp; cp -vf ca.pem ~/.docker &amp;&amp; mv server-cert
     &quot;tlskey&quot;: &quot;/root/.docker/key.pem&quot;
 }
 </code></pre>
+
+<p>service里的配置项和json文件里的不能相同 <code>ExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:2736</code></p>
 
 <p><code>cat /etc/docker/daemon.json | python -m json.tool</code> 格式化</p>
 
@@ -362,6 +424,20 @@ attach是可以带上<code>--sig-proxy=false</code>来确保<code>CTRL-D</code>�
 
 <p>建议使用Data Volume Container不要使用过去的方法了</p>
 
+<h2 id="docker-容器中的host">Docker 容器中的host</h2>
+
+<p>/etc/hosts, /etc/resolv.conf和/etc/hostname，容器中的这三个文件不存在于镜像，而是存在于/var/lib/docker/containers/<container_id>，在启动容器的时候，通过mount的形式将这些文件挂载到容器内部。因此，如果在容器中修改这些文件的话，修改部分不会存在于容器的top layer，而是直接写入这三个物理文件中。</p>
+
+<p>可以通过<code>docker inspect 容器ID</code> 查看到挂载的物理路径</p>
+
+<p>但对这几个文件的修改,容器重启后就会还原,因为容器重启,IP可能发生变化,docker就会重新生成这些文件。</p>
+
+<p>可以使用 <code>--add-host</code> 启动容器,这样,重启就不会丢失。</p>
+
+<p><code>docker run -ti --add-host db-static:86.75.30.9 busybox cat /etc/hosts</code></p>
+
+<p><code>docker build</code> 的时候也可以使用 <code>--add-host</code></p>
+
 <h2 id="网络系统">网络系统</h2>
 
 <p>使用<code>-p</code>进行映射端口,第一个是外部端口,第二个是内部端口</p>
@@ -468,6 +544,23 @@ docker run -it -p 8080:8000 --name vps vpsimage bash
 
 <p>提供 shell 用于分析两个 image的差异 <code>https://github.com/moul/docker-diff</code></p>
 
+<p><code>docker images --digests</code> 可以查看镜像的 <code>digests</code></p>
+
+<p>多种命令都可以使用<code>digests</code></p>
+
+<pre><code>docker push localhost:5000/andy/busybox@sha256:2aac5e7514fbc77125bd315abe9e7b0257db05fe498af01a58e239ebaccf82a8
+docker pull localhost:5000/andy/busybox@sha256:2aac5e7514fbc77125bd315abe9e7b0257db05fe498af01a58e239ebaccf82a8
+docker run localhost:5000/andy/busybox@sha256:2aac5e7514fbc77125bd315abe9e7b0257db05fe498af01a58e239ebaccf82a8
+docker create localhost:5000/andy/busybox@sha256:2aac5e7514fbc77125bd315abe9e7b0257db05fe498af01a58e239ebaccf82a8
+docker rmi localhost:5000/andy/busybox@sha256:2aac5e7514fbc77125bd315abe9e7b0257db05fe498af01a58e239ebaccf82a8
+</code></pre>
+
+<p>Dockerfile 内</p>
+
+<pre><code>FROM localhost:5000/andy/busybox@sha256:2aac5e7514fbc77125bd315abe9e7b0257db05fe498af01a58e239ebaccf82a8
+
+</code></pre>
+
 <h3 id="docker-stats-显示容器名字">docker stats 显示容器名字</h3>
 
 <pre><code>docker stats $(docker ps --format='{{.Names}}')
@@ -477,6 +570,10 @@ docker run -it -p 8080:8000 --name vps vpsimage bash
 
 <pre><code>docker stats --format 'table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}\t{{.BlockIO}}\t{{.PIDs}}'
 </code></pre>
+
+<p>17.10 以后 Name 已经是默认显示的了。</p>
+
+<p><a href="https://github.com/moby/moby/issues/20973">https://github.com/moby/moby/issues/20973</a></p>
 
 <h2 id="国内加速">国内加速</h2>
 
@@ -505,23 +602,27 @@ docker run -it -p 8080:8000 --name vps vpsimage bash
 
 <p>配置文件介绍见 <a href="https://docs.docker.com/engine/reference/commandline/dockerd/">https://docs.docker.com/engine/reference/commandline/dockerd/</a></p>
 
+<p>docker 官网已提供中国加速镜像了，镜像地址 <code>https://registry.docker-cn.com</code></p>
+
+<p>详情见 <a href="https://docs.docker.com/registry/recipes/mirror/#use-case-the-china-registry-mirror">https://docs.docker.com/registry/recipes/mirror/#use-case-the-china-registry-mirror</a></p>
+
 <h2 id="修改alpine-linux-的镜像源地址">修改alpine linux 的镜像源地址</h2>
 
 <p><code>vi /etc/apk/repositories</code></p>
 
-<pre><code>http://dl-cdn.alpinelinux.org/alpine/v3.6/main
-http://dl-cdn.alpinelinux.org/alpine/v3.6/community
+<pre><code>http://dl-cdn.alpinelinux.org/alpine/v3.8/main
+http://dl-cdn.alpinelinux.org/alpine/v3.8/community
 </code></pre>
 
 <p>可替换为</p>
 
-<pre><code>https://mirror.tuna.tsinghua.edu.cn/alpine/v3.6/main
-https://mirror.tuna.tsinghua.edu.cn/alpine/v3.6/community
+<pre><code>https://mirror.tuna.tsinghua.edu.cn/alpine/v3.8/main
+https://mirror.tuna.tsinghua.edu.cn/alpine/v3.8/community
 </code></pre>
 
 <p>简化为</p>
 
-<pre><code>echo -e 'https://mirror.tuna.tsinghua.edu.cn/alpine/v3.6/main\nhttps://mirror.tuna.tsinghua.edu.cn/alpine/v3.6/community' &gt; /etc/apk/repositories
+<pre><code>echo -e 'https://mirror.tuna.tsinghua.edu.cn/alpine/v3.8/main\nhttps://mirror.tuna.tsinghua.edu.cn/alpine/v3.8/community' &gt; /etc/apk/repositories
 </code></pre>
 
 <h2 id="使用流程">使用流程</h2>
@@ -658,6 +759,12 @@ echo -n &quot;&quot; &gt; $(docker inspect --format='{{.LogPath}}' &lt;container
 
 <h2 id="coreos使用docker">CoreOs使用docker</h2>
 
+<p>下载 <a href="https://coreos.com/releases/">https://coreos.com/releases/</a></p>
+
+<p><a href="https://wongxingjun.github.io/2015/12/01/CoreOS-Quick-Start/">https://wongxingjun.github.io/2015/12/01/CoreOS-Quick-Start/</a></p>
+
+<p>查看 <code>cat /run/systemd/system/docker.service</code> 可以看到使用的环境变量文件</p>
+
 <p>docker 配置远程访问.</p>
 
 <pre><code>sudo touch /run/flannel_docker_opts.env &amp;&amp; sudo chmod 777 /run/flannel_docker_opts.env
@@ -702,45 +809,75 @@ sudo systemctl restart docker
 <code>docker stack ls</code>
 <code>docker swarm</code></p>
 
-		</div>
-	</div>
-</div>
-	<div class="music-container">
-	<div class="music-header">
-	    <a class="fa-button home" href="javascript:music.show(0)"><i class="fa fa-home" title="Home"></i></a>
-	    <a class="fa-button next" href="javascript:music.next()"><i class="fa fa-chevron-right" title="Next"></i></a>
-	</div>
-	<div class="backdrop"></div>
-	<div class="music-player">
-		<div class="cover">
-            <img src="http://p4.music.126.net/ckfEE9UUGcnGHylQJ12ENA==/670702092966093.jpg?param=350y350">
-            <div class="foredrag"><i class="fa fa-play"></i></div>
-        </div>
-        <div class="progress">
-            <div class="elapse"></div>
-        </div>
-        <div class="detail">
-            <div class="title">音乐标题</div>
-            <div class="artist">歌手</div>
-        </div>
-	</div>
-</div>
-<div id="loader" style="z-index:99999;" class="pageload-overlay" data-opening="M 40 -21.875 C 11.356078 -21.875 -11.875 1.3560784 -11.875 30 C -11.875 58.643922 11.356078 81.875 40 81.875 C 68.643922 81.875 91.875 58.643922 91.875 30 C 91.875 1.3560784 68.643922 -21.875 40 -21.875 Z">
-    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 80 60" preserveAspectRatio="xMidYMid slice"> <path d="M40,30 c 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 Z"/></svg>
-</div>
+<p>To rebuild this image you must use <code>docker-compose build</code> or <code>docker-compose up --build</code></p>
 
-	<footer class="footer">
-		<div class="footer-nav">
-			<ul>
-				<li><a href="/post/">归档</a></li>
-				<li><a href="/">专题</a></li>
-				<li><a href="/life/">生活</a></li>
-				<li><a href="/about/">关于</a></li>
-			</ul>
+<h2 id="docker-内的date">docker 内的date</h2>
+
+<p>docker 容器内的时间与宿主机是一致的,不可更改,因为共享一个内核</p>
+
+<p><code>docker run -i -t --rm --privileged my_image /bin/bash</code> 通过特权模式运行的容器可以修改,但操作的是宿主机的时间,需注意.</p>
+
+<h2 id="sudo-vs-gosu">sudo vs gosu</h2>
+
+<p><a href="https://segmentfault.com/a/1190000004527476">https://segmentfault.com/a/1190000004527476</a></p>
+
+<p><a href="https://github.com/ncopa/su-exec">https://github.com/ncopa/su-exec</a></p>
+
+<h2 id="ctop">ctop</h2>
+
+<p><a href="https://github.com/bcicen/ctop">https://github.com/bcicen/ctop</a></p>
+
+<p><a href="https://github.com/aptible/supercronic">https://github.com/aptible/supercronic</a></p>
+
+<h2 id="docker-compose">docker-compose</h2>
+
+<p><a href="https://dl.bintray.com/docker-compose/master/">https://dl.bintray.com/docker-compose/master/</a></p>
+
+<p><a href="http://legendtkl.com/2015/11/06/pyinstaller/">http://legendtkl.com/2015/11/06/pyinstaller/</a></p>
+
+<h2 id="docker-的web管理程序">docker 的WEB管理程序</h2>
+
+<ol>
+<li><a href="https://portainer.io/">https://portainer.io/</a></li>
+</ol>
+
+<p>演示网址：<a href="http://demo.portainer.io">http://demo.portainer.io</a> 账号admin 密码 tryportainer</p>
+
+<ol>
+<li><p><a href="https://github.com/shipyard/shipyard">https://github.com/shipyard/shipyard</a>  (已弃坑)</p></li>
+
+<li><p><a href="https://github.com/kevana/ui-for-docker">https://github.com/kevana/ui-for-docker</a>  (已弃坑)</p></li>
+</ol>
+
+<p>目前只有portainer比较活跃</p>
+
+<pre><code class="language-bash">docker run -d -p 9000:9000 --name portainer -m 200m --restart always -v /var/run/docker.sock:/var/run/docker.sock -v /data/disk/portainer/data:/data portainer/portainer
+</code></pre>
+
 		</div>
-	</footer>
-	<script type="text/javascript" src="/js/main.min.js" data-no-instant></script>
+    </div>
+    <div class="post-comment comment-render">
+        <air-messager ns="hi" kid="/post/using-docker/"></air-messager>
+    </div>
+    <div class="post-end">
+        
+            <a class="previous" href="http://blog.suconghou.cn/post/linux-download-tools/" title="Linux下常用的下载利器" >
+                <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
+            </a>
+        
+        
+            <a class="next" href="http://blog.suconghou.cn/post/mac-chrome-input-submit/" title="MacOs上Chrome中的submit按钮默认样式问题">
+                <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
+            </a>
+        
+    </div>
+</div>
+<footer class="footer">
+    <div class="footer-nav">
+    </div>
+</footer>
+<script type="text/javascript" src="/js/main.js"></script>
+<script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
+<script src="http://feds.club/static/air-messager.min.js"></script>
 </body>
 </html>
-
-
