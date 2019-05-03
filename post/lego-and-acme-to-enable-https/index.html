@@ -62,6 +62,13 @@
 
 <p><a href="https://github.com/xenolf/lego">https://github.com/xenolf/lego</a></p>
 
+<p>dns 手动配置模式,申请泛域名</p>
+
+<pre><code>acme.sh  --issue  --dns -d domain.cn -d *.domain.cn --yes-I-know-dns-manual-mode-enough-go-ahead-please
+# 按照提示配置dns txt 记录,然后生效后执行下面一句
+acme.sh  --issue  --dns -d domain.cn -d *.domain.cn --yes-I-know-dns-manual-mode-enough-go-ahead-please --renew
+</code></pre>
+
 <p><code>lego</code>使用<code>golang</code>编写,<code>acme.sh</code>使用<code>bash</code>编写;使用都非常方便</p>
 
 <h2 id="使用lego签发证书">使用lego签发证书</h2>
@@ -89,9 +96,34 @@
 openssl req -x509 -nodes -newkey rsa:2048 -sha256 -keyout server.key -out server.crt
 </code></pre>
 
+<p><code>crt 2 pem</code></p>
+
+<p><code>openssl x509 -in mycert.crt -out mycert.pem -outform PEM</code></p>
+
 <h2 id="使用-caddy-签发证书">使用<code>Caddy</code>签发证书</h2>
 
 <p>caddy 是一个<code>golang</code>的http server,可以很方面开启http2,会生成证书</p>
+
+<p>##</p>
+
+<p><code>wget https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem.txt</code></p>
+
+<p>In REDHAT 7/ CentOS 7/ Oracle Linux 7:</p>
+
+<p>Install the certificate in your enviroment.</p>
+
+<p>Download Active PEM certificate from: <a href="https://letsencrypt.org/certificates/">https://letsencrypt.org/certificates/</a> in /etc/pki/ca-trust/source/anchors
+Execute: sudo update-ca-trust
+That&rsquo;s all!</p>
+
+<p>alpine 中添加lets-encrypt根证书</p>
+
+<pre><code>apk add --update --no-cache ca-certificates wget
+wget -o /etc/ssl/certs/lets-encrypt-x3-cross-signed.pem https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem.txt
+update-ca-certificates
+</code></pre>
+
+<p><a href="https://vimsky.com/article/3608.html">https://vimsky.com/article/3608.html</a></p>
 		</div>
     </div>
     <div class="post-comment comment-render">

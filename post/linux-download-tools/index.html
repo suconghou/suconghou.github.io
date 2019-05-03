@@ -190,14 +190,6 @@ axel <a href="ftp://ftp.{us,uk,br,fr}.kernel.org/pub/linux/kernel/v2.6/patch-2.6
 
 <p>但没有Linux版编译好的. 有第三方提供的静态编译好的 <a href="https://github.com/q3aql/aria2-static-builds">https://github.com/q3aql/aria2-static-builds</a> 包含 Linux,Windows,arm树莓派版</p>
 
-<p><code>--http-accept-gzip=true</code> 设定可以接受gzip</p>
-
-<p>提升速度的关键:<code>-s10 -x10</code></p>
-
-<p><code>aria2c -x2 -k1M &quot;http://host/file.zip&quot;</code> -x2 指定两个链接下载,-k指定每个分块的大小.</p>
-
-<p><code>aria2c -x10 -s10 -k1M --file-allocation=none --stream-piece-selector=inorder --enable-http-pipelining  http://xx</code> 对视频文件多线程按序下载(边下边播)</p>
-
 <p><code>aria2c -s 30 -c -o localfilename http://xx.com/downloadfile</code> 30个线程分段下载,存储为localfilename,并断点续传</p>
 
 <p>同时下载多文件 <code>aria2c file1.torrent file2.torrent</code></p>

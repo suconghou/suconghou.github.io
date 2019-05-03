@@ -206,21 +206,14 @@ mkdir -pv ~/.docker &amp;&amp; cp -vf ca.pem ~/.docker &amp;&amp; mv server-cert
         &quot;https://docker.mirrors.ustc.edu.cn&quot;,
         &quot;https://registry.docker-cn.com&quot;
     ],
-    &quot;hosts&quot;: [
-        &quot;unix:///var/run/docker.sock&quot;,
-        &quot;tcp://0.0.0.0:2376&quot;
-    ],
-    &quot;storage-driver&quot;: &quot;devicemapper&quot;,
-    &quot;storage-opts&quot;: [
-        &quot;dm.datadev=/dev/centos/docker-data&quot;,
-        &quot;dm.metadatadev=/dev/centos/docker-metadata&quot;
-    ],
     &quot;tlsverify&quot;: true,
     &quot;tlscacert&quot;: &quot;/root/.docker/ca.pem&quot;,
     &quot;tlscert&quot;: &quot;/root/.docker/cert.pem&quot;,
     &quot;tlskey&quot;: &quot;/root/.docker/key.pem&quot;
 }
 </code></pre>
+
+<p><a href="https://success.docker.com/article/how-do-i-enable-the-remote-api-for-dockerd">https://success.docker.com/article/how-do-i-enable-the-remote-api-for-dockerd</a></p>
 
 <p>service里的配置项和json文件里的不能相同 <code>ExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:2736</code></p>
 
@@ -625,6 +618,8 @@ https://mirror.tuna.tsinghua.edu.cn/alpine/v3.8/community
 <pre><code>echo -e 'https://mirror.tuna.tsinghua.edu.cn/alpine/v3.8/main\nhttps://mirror.tuna.tsinghua.edu.cn/alpine/v3.8/community' &gt; /etc/apk/repositories
 </code></pre>
 
+<p><code>https://mirrors.aliyun.com/alpine/</code></p>
+
 <h2 id="使用流程">使用流程</h2>
 
 <pre><code>sudo groupadd docker
@@ -834,6 +829,32 @@ sudo systemctl restart docker
 <p><a href="https://dl.bintray.com/docker-compose/master/">https://dl.bintray.com/docker-compose/master/</a></p>
 
 <p><a href="http://legendtkl.com/2015/11/06/pyinstaller/">http://legendtkl.com/2015/11/06/pyinstaller/</a></p>
+
+<h2 id="docker-swarm">docker swarm</h2>
+
+<p>TCP端口2377集群管理端口</p>
+
+<p>TCP与UDP端口7946节点之间通讯端口</p>
+
+<p>TCP与UDP端口4789 overlay网络通讯端口</p>
+
+<pre><code>firewall-cmd --zone=public --add-port=2377/tcp --permanent
+firewall-cmd --zone=public --add-port=7946/tcp --permanent
+firewall-cmd --zone=public --add-port=7946/udp --permanent
+firewall-cmd --zone=public --add-port=4789/tcp --permanent
+firewall-cmd --zone=public --add-port=4789/udp --permanent
+firewall-cmd --reload
+</code></pre>
+
+<p>重启一个service</p>
+
+<p><code>docker service update --force serverless_swoole</code></p>
+
+<p>或者,去除所有实例,在新建</p>
+
+<p><code>docker service scale serverless_swoole=0</code></p>
+
+<p><code>docker service scale serverless_swoole=1</code></p>
 
 <h2 id="docker-的web管理程序">docker 的WEB管理程序</h2>
 

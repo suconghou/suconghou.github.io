@@ -327,8 +327,9 @@ func main() {
 
 <p>谁的ipc最小</p>
 
-<p><a href="https://blog.litespeedtech.com/2015/07/16/php7-vs-hhvm-benchmark-series-1-hello-world/">https://blog.litespeedtech.com/2015/07/16/php7-vs-hhvm-benchmark-series-1-hello-world/</a>
-<a href="https://stackoverflow.com/questions/4191385/php-buffer-ob-flush-vs-flush">https://stackoverflow.com/questions/4191385/php-buffer-ob-flush-vs-flush</a></p>
+<p><a href="https://blog.litespeedtech.com/2015/07/16/php7-vs-hhvm-benchmark-series-1-hello-world/">https://blog.litespeedtech.com/2015/07/16/php7-vs-hhvm-benchmark-series-1-hello-world/</a></p>
+
+<p><a href="https://stackoverflow.com/questions/4191385/php-buffer-ob-flush-vs-flush">https://stackoverflow.com/questions/4191385/php-buffer-ob-flush-vs-flush</a></p>
 
 <h2 id="string-to-hex-and-hex-to-string">string to hex  and hex to string</h2>
 
@@ -521,6 +522,58 @@ Imagick::roundCornersImage
 
 <p>更多关于<code>systemd</code>自定义<code>status</code> 可参考
 <a href="https://zerokspot.com/weblog/2016/11/06/systemd-service-startup/">https://zerokspot.com/weblog/2016/11/06/systemd-service-startup/</a></p>
+
+<h2 id="三目运算">三目运算</h2>
+
+<p>$a = getData() ? getData() : 1;</p>
+
+<p><code>getData</code> 如果函数求职为真,会执行两次</p>
+
+<p><code>php5.3</code>可以使用<code>?:</code></p>
+
+<p>$a = getData() ?: 1</p>
+
+<p><code>php7</code> 可以使用 <code>??</code></p>
+
+<pre><code>$a = $_COOKIE['id'] ?? 0;
+</code></pre>
+
+<p>与<code>?:</code>等价,但是 Cookie中没有找到键时不会抛出错误.</p>
+
+<h2 id="type-hinting">Type Hinting</h2>
+
+<p>Class/interface name (&gt;=PHP 5.0.0);
+self (&gt;=PHP 5.0.0);
+array (&gt;=PHP 5.1.0);
+callable (&gt;=PHP 5.4.0);
+bool, float, int, string (&gt;=PHP 7.0.0);
+iterable - either an array or an instanceof Traversable (&gt;=PHP 7.1.0).</p>
+
+<h2 id="php-中如何实现锁">PHP 中如何实现锁</h2>
+
+<ol>
+<li><p>不要判断文件是否存在作为锁,因为会存在<code>TOCTOU</code>问题</p></li>
+
+<li><p>fclock</p></li>
+
+<li><p>ftok</p></li>
+</ol>
+
+<h2 id="静态分析">静态分析</h2>
+
+<p><a href="https://phpmd.org/">https://phpmd.org/</a></p>
+
+<p><a href="https://github.com/ovr/phpsa">https://github.com/ovr/phpsa</a></p>
+
+<p><a href="https://github.com/squizlabs/PHP_CodeSniffer/wiki">https://github.com/squizlabs/PHP_CodeSniffer/wiki</a></p>
+
+<p><a href="https://github.com/vimeo/psalm">https://github.com/vimeo/psalm</a></p>
+
+<p><a href="https://github.com/phpmetrics/PhpMetrics">https://github.com/phpmetrics/PhpMetrics</a></p>
+
+<p><a href="https://github.com/mmoreram/php-formatter">https://github.com/mmoreram/php-formatter</a></p>
+
+<p><a href="https://github.com/friendsofphp/PHP-CS-Fixer">https://github.com/friendsofphp/PHP-CS-Fixer</a></p>
 
 		</div>
     </div>

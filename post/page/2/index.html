@@ -253,6 +253,7 @@ https://blog.coding.net/blog/intro-consul?type=hot
 etcd 与 consul zookeeper 对比一览
 https://coreos.com/etcd/docs/latest/learning/why.html
 consul 启动一个server
+consul agent -data-dir=/tmp/consul
 docker run –rm -it -p 8500:8500 –name=node1 consul agent -server -bootstrap-expect=1 -node=node1 -ui -client 0.0.0.0
 docker run –rm -it –name=node2 consul agent -server -join=172.17.0.3 -node=node2
 docker run –rm -it –name=node4 consul agent -bind=172.17.0.5 -retry-join=172.17.0.3 -node=node4

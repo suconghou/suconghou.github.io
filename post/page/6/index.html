@@ -44,9 +44,8 @@
                 
                 <p class="post-summary">git配置 git config --global user.email &#34;1126045770@qq.com&#34; git config --global user.name &#34;sucongohu&#34; git config --global core.autocrlf false git config --global color.ui true git config --global credential.helper store git config --global alias.lg &#34;log --graph --all --pretty=format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci,%cr) %C(bold blue)&lt;%an&gt;%Creset&#39; --abbrev-commit --date=relative&#34; git config --global alias.laststash &#34;diff stash@{0}^!&#34;   以上分别是设置用户信息,禁止转换换行符,颜色高亮,记住密码,设置别名列出分支图. 设置别名后,可以使用 git lg 查看各个分支关系
  设置core.autocrlf false 提交检出均不转换 , 否则同时在Mac,Windows,Linux 跨平台协作开发,eslint 检测换行符错误会很头疼.
-见 http://www.cnblogs.com/sdgf/p/6237847.html
-记住密码
-if [ ! -f ~/.</p>
+默认的core.pager 是less
+git config --global core.pager &#34;less -FRSX&#34;</p>
                 <footer class="post-footer">
                     <a class="read-more" href="http://blog.suconghou.cn/post/git-usage/">阅读全文</a>
                 </footer>
@@ -108,7 +107,7 @@ ssh隧道 CfNg参数  C表示压缩数据传输 f表示后台用户验证,这个
                 </header>
                 
                 <p class="post-summary">安装NodeJs nodejs官方提供了编译好的二进制的包,全平台都有,十分方便 最新版本NodeJs官方库
-其他信息http://www.oschina.net/news/92070/node-js-6-12-3-lts
+https://nodejs.org/en/blog/release/
 例如安装Linux版本
 wget https://nodejs.org/dist/v6.0.0/node-v6.0.0-linux-x64.tar.xz tar -xJf node-v6.0.0-linux-x64.tar.xz sudo mv node-v6.0.0-linux-x64 /usr/local/nodejs sudo ln -s /usr/local/nodejs/bin/node /usr/local/bin/node sudo ln -s /usr/local/nodejs/bin/npm /usr/local/bin/npm node -v npm -v  单文件版node.exe单独安装npm 1.clone npm 源码 git clone --recursive git://github.com/isaacs/npm.git
 2.进入npm目录,安装npm node cli.js install npm -gf

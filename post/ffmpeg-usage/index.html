@@ -149,7 +149,7 @@ ffmpeg -v warning -i $1 -i $palette -lavfi &quot;$filters [x]; [x][1:v] paletteu
 
 <p>ffmpeg -i &ldquo;<a href="http://xxx.m3u8&quot;">http://xxx.m3u8&quot;</a> -b 8M -r 12 -g 12  output1.flv</p>
 
-<p><code>ffmepg - i &quot;http://xxx.m3u8&quot;  -b 2M out.flv</code></p>
+<p><code>ffmepg -i &quot;http://xxx.m3u8&quot;  -b 2M out.flv</code></p>
 
 <p><code>ffmpeg -i xx.rmvb   -c:a copy -movflags faststart output.mp4</code></p>
 
@@ -210,6 +210,11 @@ file 4.mp4
 <h2 id="ffmpeg-截图">ffmpeg 截图</h2>
 
 <p><a href="http://blog.csdn.net/yourijing/article/details/50786758">http://blog.csdn.net/yourijing/article/details/50786758</a></p>
+
+<h2 id="旋转视频">旋转视频</h2>
+
+<pre><code>ffmpeg -i intro_app_upload.mp4 -c copy -metadata:s:v:0 rotate=90 last.mp4
+</code></pre>
 
 <h2 id="mpv-播放多个url">mpv 播放多个url</h2>
 
@@ -274,7 +279,7 @@ AO: [coreaudio] 44100Hz stereo 2ch floatp
 VO: [opengl] 1920x1080 yuv420p
 </code></pre>
 
-<p>Chrome 浏览器播放只有声音没有图像</p>
+<p>Chrome,Firefox 浏览器播放只有声音没有图像,只有safari可以播放mpeg4</p>
 
 <p>使用ffmpeg处理视屏编码，使用h264编码格式 <code>ffmpeg -i xxx.mp4 -c:v libx264 -movflags faststart out.mp4</code> 耗时2:05</p>
 
@@ -299,6 +304,22 @@ VO: [opengl] 1920x1080 yuv420p
 </code></pre>
 
 <p>ffmpeg -i 1-2.mp4 -c:v libx264 -preset veryslow -crf 18 -c:a copy -movflags faststart ../1-2.mp4</p>
+
+<p>ffmpeg -i 12.mp4 -c:v libx264 -s 1280x720 -b:v 8M -ar 48000 -ab 128k -preset faster -crf 19 -movflags faststart out.mp4</p>
+
+<p>为取得更小的视频,可以使用两步压缩</p>
+
+<pre><code>ffmpeg -y -i jgdq.mp4 -c:v libx264 -b:v 2000k -pass 1 -an -f mp4 /dev/null &amp;&amp; ffmpeg -i jgdq.mp4 -c:v libx264 -b:v 2000k -pass 2 -c:a aac -b:a 128k output.mp4
+</code></pre>
+
+<p><a href="https://trac.ffmpeg.org/wiki/Encode/H.264">https://trac.ffmpeg.org/wiki/Encode/H.264</a></p>
+
+<h2 id="视频合并">视频合并</h2>
+
+<p><a href="https://stackoverflow.com/questions/7333232/how-to-concatenate-two-mp4-files-using-ffmpeg">https://stackoverflow.com/questions/7333232/how-to-concatenate-two-mp4-files-using-ffmpeg</a></p>
+
+<p>ffmpeg -i &ldquo;concat:00000.MTS|00001.MTS|00002.MTS|00003.MTS|00004.MTS|00005.MTS|00006.MTS|00007.MTS|00008.MTS|00009.MTS|00010.MTS|00011.MTS|00012.MTS|00013.MTS|00014.MTS|00015.MTS&rdquo; -c:v libx264 -crf 20 -preset medium -c:a aac -b:a 128k <br />
+-movflags +faststart -vf scale=-2:720,format=yuv420p output.mp4</p>
 
 		</div>
     </div>

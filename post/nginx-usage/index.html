@@ -90,6 +90,53 @@ WantedBy=multi-user.target
 
 <p><a href="https://stackoverflow.com/questions/12282342/nginx-files-upload-streaming-with-proxy-pass">https://stackoverflow.com/questions/12282342/nginx-files-upload-streaming-with-proxy-pass</a></p>
 
+<h2 id="accept-mutex-and-reuseport">accept_mutex and reuseport</h2>
+
+<p><a href="https://www.nginx.com/blog/socket-sharding-nginx-release-1-9-1/">https://www.nginx.com/blog/socket-sharding-nginx-release-1-9-1/</a></p>
+
+<p>fast-open &ndash;reuse-port &ndash;no-delay no-push</p>
+
+<h2 id="nginx-mirror-module">nginx mirror module</h2>
+
+<p><a href="https://alex.dzyoba.com/blog/nginx-mirror/">https://alex.dzyoba.com/blog/nginx-mirror/</a></p>
+
+<pre><code>upstream test {
+    server 127.0.0.1:9091;
+    server 127.0.0.1:9092;
+    server 127.0.0.1:9093;
+}
+
+server{
+    listen 8070;
+    server_name hello.git.suconghou.cn;
+    location / {
+        location /v1/srv/wxtp/authnotify {
+            mirror /mirror;
+            mirror_request_body on;
+        }
+        proxy_pass http://test;
+    }
+
+    location /mirror {
+        internal;
+        set $dist '';
+        if ($request_uri ~* /v1/(.*) ){
+            set $dist /dev/$1;
+        }
+        proxy_pass http://127.0.0.1:8899$dist;
+    }
+}
+
+</code></pre>
+
+<h2 id="nginx-tls1-3">nginx tls1.3</h2>
+
+<p>nginx 性能提升</p>
+
+<p>http2 + tls1.3 + nginx upstream keepalive</p>
+
+<p>openssl-cli s_client -connect beta.tupianzhibo.cn:443 -tls1_3</p>
+
 		</div>
     </div>
     <div class="post-comment comment-render">

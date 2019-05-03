@@ -249,7 +249,8 @@ cron.d/ cron.daily/ cron.</p>
                     </p>
                 </header>
                 
-                <p class="post-summary">配置文件 配置文件一般放在/etc/my.cnf 或者 /etc/mysql/my.cnf
+                <p class="post-summary">docker run mysqld docker run mysql –character-set-server=utf8mb4 –collation-server=utf8mb4_general_ci
+配置文件 配置文件一般放在/etc/my.cnf 或者 /etc/mysql/my.cnf
 默认的配置文件示例存放于/usr/share/mysql
 各个文件适配不同内存的配置
    文件 内存大小     my-small.cnf &lt;= 64M 不经常开启mysql   my-medium.cnf 32M–64M 经常其他程序搭配mysql   my-large.cnf 512M   my-huge.cnf 1G-2G   my-innodb-heavy-4G.cnf 4GB 使用InnoDB    使用SHOW VARIABLES来查看系统参数,通过SHOW STATUS来判断系统状态

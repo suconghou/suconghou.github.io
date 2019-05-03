@@ -76,6 +76,8 @@
 
 <p>启动一个server</p>
 
+<p><code>consul agent -data-dir=/tmp/consul</code></p>
+
 <p>docker run &ndash;rm -it -p 8500:8500 &ndash;name=node1 consul agent -server -bootstrap-expect=1 -node=node1 -ui -client 0.0.0.0</p>
 
 <p>docker run &ndash;rm -it &ndash;name=node2 consul agent -server -join=172.17.0.3  -node=node2</p>

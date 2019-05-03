@@ -140,6 +140,9 @@ dd if=/dev/zero bs=8192 count=8192 of=/tmp/64mb
 
 <p>我的内存卡 4096 比较快,能有90MB/s</p>
 
+<p>busybox dd 测试 <code>/dev/shm</code>
+<code>time dd bs=64k count=1k if=/dev/zero of=test conv=fsync</code></p>
+
 <p>如果是iso文件,需要装换为img文件,</p>
 
 <pre><code>hdiutil convert -format UDRW -o /path/to/generate/img/file /path/to/your/iso/file

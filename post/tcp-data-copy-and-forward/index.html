@@ -77,12 +77,12 @@
 
 <p><strong>查看转发的数据</strong></p>
 
-<pre><code>proxy -l 80 -h 93.184.216.119 -p 80 -i &quot;tee input.log&quot; -o &quot;tee output.log&quot;
+<pre><code>proxy -l 80 -h 67.215.245.160 -p 80 -i &quot;tee input.log&quot; -o &quot;tee output.log&quot;
 </code></pre>
 
 <p>直接输出到控制台</p>
 
-<pre><code>proxy -l 80 -h 93.184.216.119 -p 80 -i &quot;tee /dev/stderr&quot; -o &quot;tee /dev/stderr&quot;
+<pre><code>proxy -l 80 -h 67.215.245.160 -p 80 -f -i &quot;tee /dev/stderr&quot; -o &quot;tee /dev/stderr&quot;
 </code></pre>
 
 <p><strong>转发到多个后端</strong></p>

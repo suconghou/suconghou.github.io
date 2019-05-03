@@ -6,22 +6,13 @@
     <description>Recent content in Categories on 苏苏的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 01 Jan 2016 19:00:18 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 21 Jan 2016 13:40:53 +0800</lastBuildDate>
     
 	<atom:link href="http://blog.suconghou.cn/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Blog</title>
-      <link>http://blog.suconghou.cn/categories/blog/</link>
-      <pubDate>Fri, 01 Jan 2016 19:00:18 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/categories/blog/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Linux</title>
+      <title>linux</title>
       <link>http://blog.suconghou.cn/categories/linux/</link>
       <pubDate>Thu, 21 Jan 2016 13:40:53 +0800</pubDate>
       
@@ -30,7 +21,16 @@
     </item>
     
     <item>
-      <title>Lnmp</title>
+      <title>tools</title>
+      <link>http://blog.suconghou.cn/categories/tools/</link>
+      <pubDate>Fri, 01 Jan 2016 23:54:20 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/categories/tools/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>lnmp</title>
       <link>http://blog.suconghou.cn/categories/lnmp/</link>
       <pubDate>Fri, 01 Jan 2016 23:51:02 +0800</pubDate>
       
@@ -39,11 +39,11 @@
     </item>
     
     <item>
-      <title>Tools</title>
-      <link>http://blog.suconghou.cn/categories/tools/</link>
-      <pubDate>Fri, 01 Jan 2016 23:54:20 +0800</pubDate>
+      <title>blog</title>
+      <link>http://blog.suconghou.cn/categories/blog/</link>
+      <pubDate>Fri, 01 Jan 2016 19:00:18 +0800</pubDate>
       
-      <guid>http://blog.suconghou.cn/categories/tools/</guid>
+      <guid>http://blog.suconghou.cn/categories/blog/</guid>
       <description></description>
     </item>
     

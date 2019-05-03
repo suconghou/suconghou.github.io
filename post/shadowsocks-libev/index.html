@@ -314,6 +314,11 @@ ExecStart=/usr/local/bin/server_linux_amd64 -c /etc/server_config.json
 WantedBy=multi-user.target
 </code></pre>
 
+<p>server</p>
+
+<pre><code>./udp2raw -s -l0.0.0.0:8855 -r 127.0.0.1:4000 -k &quot;passwd&quot; --raw-mode faketcp -a
+</code></pre>
+
 <h3 id="统计ss当前的链接">统计ss当前的链接</h3>
 
 <p>统计当前连接ss的客户端,并统计连接数</p>

@@ -895,6 +895,8 @@ echo &quot;*****************************&quot;
 
 <p><code>find jenkins/ -maxdepth 5 -type f -name &quot;upload.py&quot;</code></p>
 
+<p>find . -type f -mmin +1 -exec rm -i {} \;</p>
+
 <p><strong>使用全文查找</strong></p>
 
 <p>grep -lr &lsquo;string&rsquo; /etc/</p>
@@ -1055,6 +1057,14 @@ echo &quot;Asia/Shanghai&quot; &gt; /etc/timezone
 </code></pre>
 
 <p>会立即生效.</p>
+
+<p>CentOS</p>
+
+<p><code>ntpdate time.pool.aliyun.com</code> 使用<code>ntpdate</code>时,不能运行ntpd服务</p>
+
+<p><code>/etc/ntp.conf</code></p>
+
+<p><code>ntpd</code></p>
 
 <h2 id="linux-磁盘与mysql性能测试">Linux 磁盘与MySQL性能测试</h2>
 
@@ -1633,6 +1643,8 @@ min/avg/max/mdev = 785 ns / 39.7 us / 2.87 ms / 60.4 us
 <p>ArchLinux  <code>http://mirror.bit.edu.cn/archlinux/iso/latest/</code></p>
 
 <p>CentOS  <code>http://mirror.bit.edu.cn/centos/7.3.1611/isos/x86_64/</code></p>
+
+<p><code>https://mirrors.aliyun.com/centos/7.6.1810/isos/x86_64/</code></p>
 
 <p>Debian   <code>http://mirror.bit.edu.cn/debian-cd/8.7.1/amd64/iso-cd/</code></p>
 

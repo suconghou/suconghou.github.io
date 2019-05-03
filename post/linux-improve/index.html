@@ -60,7 +60,9 @@
 
 <h3 id="ulimit">ulimit</h3>
 
-<h4 id="查看">查看</h4>
+<p>确保</p>
+
+<p><code>/proc/sys/fs/nr_open</code> &gt; <code>/proc/sys/fs/file-max</code> &gt; <code>ulimit -Hn</code> &gt; <code>ulimit -Sn</code> &gt; 10000</p>
 
 <p><code>ulimit -a</code> 查看配置</p>
 
@@ -88,7 +90,17 @@
 
 <p>查看 soft limit <code>ulimit -Sn</code></p>
 
-<h4 id="修改">修改</h4>
+<p><strong>临时修改</strong></p>
+
+<p>通过ulimit -Sn设置最soft limit</p>
+
+<p><code>ulimit -Sn 60000</code></p>
+
+<p>通过ulimit -Hn设置最Hard limit</p>
+
+<p><code>ulimit -Hn 60000</code></p>
+
+<p>同时设置soft limit和hard limit。对于非root用户只能设置比原来小的hard limit。</p>
 
 <p><code>ulimit -n 81920</code> 修改每个进程所允许的最大</p>
 
@@ -105,11 +117,13 @@
 
 <p><code>prlimit -n81920 -p pid_of_process</code></p>
 
-<h3 id="永久修改">###永久修改</h3>
+<p><strong>永久修改</strong></p>
+
+<p>只有root用户才有权限修改<code>/etc/security/limits.conf</code></p>
+
+<p>如果limits.conf没有做设定，则默认值是 soft limit 1024 , hard limit 4096</p>
 
 <p>修改</p>
-
-<p><code>/etc/security/limits.conf</code></p>
 
 <pre><code>nginx       soft    nofile  10000
 nginx       hard    nofile  30000
@@ -147,6 +161,18 @@ events {
 
 
 </code></pre>
+
+<p>测试工具</p>
+
+<p><a href="https://github.com/ideawu/c1000k">https://github.com/ideawu/c1000k</a></p>
+
+<h3 id="overcommit-memory内存分配">overcommit_memory内存分配</h3>
+
+<p>sysctl vm.overcommit_memory=1</p>
+
+<h3 id="somaxconn">somaxconn</h3>
+
+<p>sysctl net.core.somaxconn=1024</p>
 
 <h3 id="swap">swap</h3>
 

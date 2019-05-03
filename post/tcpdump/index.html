@@ -228,6 +228,48 @@ sudo ngrep -W byline  '' udp dst port 137
 
 <p>注意：要捕获127.0.0.1的流量，需要设定 <code>-d any</code> 检查所有网卡</p>
 
+<h2 id="tcpflow">tcpflow</h2>
+
+<p>tcpflow -ci eth0</p>
+
+<p>其中 -c 表示将报文直接打印在 terminal 中。不指定 -c 参数会将抓取的 TCP 报文保存在文件中。 -i 表示你要监听的网络端口。 假如你不指定 -c 参数， tcpflow 会将每个 TCP 流的数据存储在他自己的文件中</p>
+
+<p>读取已有的 pcap 文件</p>
+
+<p><code>tcpflow -cr test.pcap</code></p>
+
+<p>可以将 pcap 包打印到 terminal 中。当然你也可以将 TCP 流保存在文件中</p>
+
+<p><code>tcpflow -r test.pcap</code></p>
+
+<pre><code>
+# 过滤经过 192.168.1.202 的流量：
+tcpflow -i any host 192.168.1.202
+
+# 过滤从主机 192.168.1.202 发出的流量：
+tcpflow -i any src host 192.168.1.202
+
+# 过滤从主机 192.168.1.202 发出的流量并且端口号为 80：
+tcpflow -i any src host 192.168.1.202 and port 80
+
+# 过滤固定端口的流量：
+tcpflow -i en0 any port 443 or port 80
+
+# 过滤主机 192.168.1.202 端口为 80 或 443 的流量：
+tcpflow -i en0 'host 192.168.1.202 and (port 80 or port 443)'
+
+</code></pre>
+
+<p><code>sudo tcpflow -i docker0 port not 443</code></p>
+
+<p>tcpflow -i eth0 &lsquo;( host live.ourwill.cn or host v1.tuwenzhibo.com )&rsquo;</p>
+
+<p>tcpflow -i eth0 &lsquo;( host v1.tuwenzhibo.com )&rsquo;</p>
+
+<p>find . -type f -size +1k | xargs rm -f</p>
+
+<p>find . -type f -size 157b</p>
+
 		</div>
     </div>
     <div class="post-comment comment-render">

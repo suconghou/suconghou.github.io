@@ -58,7 +58,9 @@
                     </p>
                 </header>
                 
-                <p class="post-summary">Linux 性能优化 ulimit 查看 ulimit -a 查看配置
+                <p class="post-summary">Linux 性能优化 ulimit 确保
+/proc/sys/fs/nr_open &gt; /proc/sys/fs/file-max &gt; ulimit -Hn &gt; ulimit -Sn &gt; 10000
+ulimit -a 查看配置
 可根据pid查看某一进程目前的限制
 cat /proc/16223/limits
 查看每个进程所允许的最大opend files ulimit -n
@@ -69,9 +71,7 @@ cat /proc/sys/fs/file-nr 会在系统内核层面统计,比较正确
 查看一个进程目前已打开的 lsof -p 28290 或者 lsof -a -p 28290
 或者
 ls -l /proc/28290/fd | wc -l
-查看 hard limit ulimit -Hn
-查看 soft limit ulimit -Sn
-修改 ulimit -n 81920 修改每个进程所允许的最大</p>
+查看 hard limit ulimit -Hn</p>
                 <footer class="post-footer">
                     <a class="read-more" href="http://blog.suconghou.cn/post/linux-improve/">阅读全文</a>
                 </footer>
@@ -198,8 +198,8 @@ make darwin
 proxy -l 8080 -h 192.168.1.2 -p 80  默认后台运行,使用参数-f不进入后台
 proxy -l 8080 -h 192.168.1.2 -p 80 -f
 查看转发的数据
-proxy -l 80 -h 93.184.216.119 -p 80 -i &#34;tee input.log&#34; -o &#34;tee output.log&#34;  直接输出到控制台
-proxy -l 80 -h 93.184.216.119 -p 80 -i &#34;tee /dev/stderr&#34; -o &#34;tee /dev/stderr&#34;  转发到多个后端
+proxy -l 80 -h 67.215.245.160 -p 80 -i &#34;tee input.log&#34; -o &#34;tee output.log&#34;  直接输出到控制台
+proxy -l 80 -h 67.215.245.160 -p 80 -f -i &#34;tee /dev/stderr&#34; -o &#34;tee /dev/stderr&#34;  转发到多个后端
 查看 https://github.com/kklis/proxy</p>
                 <footer class="post-footer">
                     <a class="read-more" href="http://blog.suconghou.cn/post/tcp-data-copy-and-forward/">阅读全文</a>

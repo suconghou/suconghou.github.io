@@ -75,6 +75,14 @@ git config --global alias.laststash &quot;diff stash@{0}^!&quot;
 
 <p>设置<code>core.autocrlf false</code> 提交检出均不转换 , 否则同时在Mac,Windows,Linux 跨平台协作开发,eslint 检测换行符错误会很头疼.</p>
 
+<p>默认的<code>core.pager</code> 是less</p>
+
+<p><code>git config --global core.pager &quot;less -FRSX&quot;</code></p>
+
+<p>可以修改为<code>diff-so-fancy</code></p>
+
+<p><code>git config --global core.pager &quot;diff-so-fancy | less --tabs=4 -RFX&quot;</code></p>
+
 <p>见 <a href="http://www.cnblogs.com/sdgf/p/6237847.html">http://www.cnblogs.com/sdgf/p/6237847.html</a></p>
 
 <p>记住密码</p>
@@ -166,6 +174,14 @@ git config --global alias.laststash &quot;diff stash@{0}^!&quot;
 </code></pre>
 
 <p>以后可以使用<code>git push all master</code>一次推送到多个后端</p>
+
+<p>使用远程的某一分支,覆盖本地代码</p>
+
+<p><code>git fetch --all &amp;&amp; git reset --hard origin/master &amp;&amp; git pull</code></p>
+
+<p>远程分支可能有删除的,同步到本地</p>
+
+<p><code>git fetch -p origin</code></p>
 
 <h3 id="git-相关统计">git 相关统计</h3>
 
@@ -364,6 +380,14 @@ git commit -m 'Initial commit'
 <p>提交本地指定的分支 到 远程的一个分支</p>
 
 <p><code>git push origin localbranch:remotebranch</code> (注意,如果本地分支不写,就是删除远程分支的命令)</p>
+
+<h1 id="将所有commit压缩为一个">将所有commit压缩为一个</h1>
+
+<p><a href="https://stackoverflow.com/questions/1657017/how-to-squash-all-git-commits-into-one/9254257#9254257">https://stackoverflow.com/questions/1657017/how-to-squash-all-git-commits-into-one/9254257#9254257</a></p>
+
+<p><code>:%s/pick/squash/g</code>  in VIM to replace all</p>
+
+<p>操作完以后需要<code>git push -f</code></p>
 
 <h1 id="git-tag-管理">git tag 管理</h1>
 
@@ -587,15 +611,6 @@ cd git-2.10.2
 make -j4
 make install
 
-</code></pre>
-
-<h2 id="错误解决">错误解决</h2>
-
-<p><em>RPC failed; result=22, HTTP code = 411</em></p>
-
-<p>the following command increases git buffer to 500mb:</p>
-
-<pre><code>git config http.postBuffer 524288000
 </code></pre>
 
 <h1 id="svn">svn</h1>
