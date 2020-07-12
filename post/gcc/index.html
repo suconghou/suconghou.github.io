@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>gcc编译 &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -55,11 +51,8 @@
         
 		<div class="post-text">
 			<p>使用gcc编译器的一些笔记</p>
-
 <h2 id="gcc-静态编译">gcc 静态编译</h2>
-
 <p><code>1.c</code></p>
-
 <pre><code>#include &lt;stdio.h&gt;
 
 void main()
@@ -67,100 +60,71 @@ void main()
 	printf(&quot;hello&quot;);
 }
 
-</code></pre>
-
-<p><code>gcc -static --verbose -fno-builtin 1.c</code></p>
-
+</code></pre><p><code>gcc -static --verbose -fno-builtin 1.c</code></p>
 <blockquote>
 <p><code>--verbose</code>是为了输入编译的详细信息</p>
-
+</blockquote>
+<blockquote>
 <p><code>-fno-builtin</code>是阻止编译器把printf变成puts</p>
 </blockquote>
-
 <p><a href="http://northstar-www.dartmouth.edu/doc/ibmcxx/en_US/doc/complink/ref/ruoptbst.htm">http://northstar-www.dartmouth.edu/doc/ibmcxx/en_US/doc/complink/ref/ruoptbst.htm</a></p>
-
 <p>如果出现错误</p>
-
 <pre><code>/usr/bin/ld: cannot find -lc
 collect2: 错误：ld 返回 1
-</code></pre>
-
-<p>可能你还需要安装glibc的静态库</p>
-
+</code></pre><p>可能你还需要安装glibc的静态库</p>
 <p><code>yum update &amp;&amp; yum install glibc-static -y</code></p>
-
 <p>macOS gcc不支持静态编译，因为苹果的系统调用不稳定，只有 libSystem 的 API 保持兼容，所以静态编译的程序升级系统可能会遇到问题</p>
-
 <p>优化选项</p>
-
 <p><a href="https://www.zhihu.com/question/27090458">https://www.zhihu.com/question/27090458</a></p>
-
 <pre><code>gcc -static -O  1.c
 gcc -static -O2 1.c
 gcc -static -O3 1.c
 gcc -static -Os 1.c
-</code></pre>
-
-<h2 id="错误提示">错误提示</h2>
-
+</code></pre><h2 id="错误提示">错误提示</h2>
 <p><code>-pedantic</code>编译选项并不能保证被编译程序与ANSI/ISO C标准的完全兼容，它仅仅只能用来帮助Linux程序员离这个目标越来越近。或者换句话说，<code>-pedantic</code>选项能够帮助程序员发现一些不符合 ANSI/ISO C标准的代码，但不是全部，事实上只有ANSI/ISO C语言标准中要求进行编译器诊断的那些情况，才有可能被GCC发现并提出警告。</p>
-
 <p>除了<code>-pedantic</code>之外，GCC还有一些其它编译选项也能够产生有用的警告信息。这些选项大多以-W开头，其中最有价值的当数<code>-Wall</code>了，使用它能够使GCC产生尽可能多的警告信息。</p>
-
 <pre><code>gcc -Wall test.c -o test
-</code></pre>
-
-<p>GCC给出的警告信息虽然从严格意义上说不能算作错误，但却很可能成为错误的栖身之所。一个优秀的Linux程序员应该尽量避免产生警告信息，使自己的代码始终保持标准、健壮的特性。所以将警告信息当成编码错误来对待，是一种值得赞扬的行为！所以，在编译程序时带上-Werror选项，那么GCC会在所有产生警告的地方停止编译，迫使程序员对自己的代码进行修改，如下：</p>
-
+</code></pre><p>GCC给出的警告信息虽然从严格意义上说不能算作错误，但却很可能成为错误的栖身之所。一个优秀的Linux程序员应该尽量避免产生警告信息，使自己的代码始终保持标准、健壮的特性。所以将警告信息当成编码错误来对待，是一种值得赞扬的行为！所以，在编译程序时带上-Werror选项，那么GCC会在所有产生警告的地方停止编译，迫使程序员对自己的代码进行修改，如下：</p>
 <pre><code>gcc -Werror test.c -o test
-</code></pre>
-
-<h2 id="调试选项">调试选项</h2>
-
-<p>1) -g选项，产生供gdb调试用的可执行文件：<code>gcc -g helloworld.c</code></p>
-
+</code></pre><h2 id="调试选项">调试选项</h2>
+<ol>
+<li>-g选项，产生供gdb调试用的可执行文件：<code>gcc -g helloworld.c</code></li>
+</ol>
 <blockquote>
 <p>产生一个叫作a.out的可执行文件，大小明显比只用-o选项编译汇编连接后的文件大。</p>
 </blockquote>
-
-<p>2) -pg选项，产生供gprof剖析用的可执行文件：<code>gcc -pg helloworld.c</code></p>
-
+<ol start="2">
+<li>-pg选项，产生供gprof剖析用的可执行文件：<code>gcc -pg helloworld.c</code></li>
+</ol>
 <blockquote>
 <p>产生一个叫作a.out的执行文件，大小明显比用-g选项后产生的文件还大。</p>
 </blockquote>
-
 <p><a href="https://www.systutorials.com/5217/how-to-statically-link-c-and-c-programs-on-linux-with-gcc/">https://www.systutorials.com/5217/how-to-statically-link-c-and-c-programs-on-linux-with-gcc/</a></p>
-
 <p><code>LDFLAGS=-static ./configure --disable-plugins=auth,cgi,cheetah,dirlisting,fastcgi,liana,logger,mandril,tls --malloc-libc</code></p>
-
 <h2 id="编译更小的文件">编译更小的文件</h2>
-
 <p>gcc 使用参数 <code>-Os -ffunction-sections -fdata-sections</code>
 link 的时候使用 <code>--gc-sections</code></p>
-
 <p>-ffunction-sections, -fdata-sections会使compiler为每个function和data item分配独立的section。 &ndash;gc-sections会使ld删除没有被使用的section。</p>
-
 <p>链接操作以section作为最小的处理单元，只要一个section中有某个符号被引用，该section就会被放入output中。</p>
-
 <p>这些选项一起使用会从最终的输出文件中删除所有未被使用的function和data， 只包含用到的function和data</p>
-
-<p>export CFLAGS=&ldquo;-Os -ffunction-sections -fdata-sections&rdquo;
-export LDFLAGS=&ldquo;-Wl,&ndash;gc-sections&rdquo;</p>
-
+<p>export CFLAGS=&rdquo;-Os -ffunction-sections -fdata-sections&rdquo;
+export LDFLAGS=&rdquo;-Wl,&ndash;gc-sections&rdquo;</p>
 <p>然后 对可执行文件 <code>strip -s</code></p>
+<h2 id="mac-交叉编译">mac 交叉编译</h2>
+<p><a href="https://blog.filippo.io/easy-windows-and-linux-cross-compilers-for-macos/">https://blog.filippo.io/easy-windows-and-linux-cross-compilers-for-macos/</a></p>
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/gcc/"></air-messager>
+        <air-messager ns="hi" thread="/post/gcc/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/redis-safe/" title="redis 入侵实战" >
+            <a class="previous" href="/post/redis-safe/" title="redis 入侵实战" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/etcd-and-consul/" title="etcd和consul">
+            <a class="next" href="/post/etcd-and-consul/" title="etcd和consul">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -172,6 +136,14 @@ export LDFLAGS=&ldquo;-Wl,&ndash;gc-sections&rdquo;</p>
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

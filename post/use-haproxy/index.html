@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>HAProxy优化应用程序速度 &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -54,25 +50,14 @@
         </div>
         
 		<div class="post-text">
-			
-
-<h2 id="haproxy">HAProxy</h2>
-
+			<h2 id="haproxy">HAProxy</h2>
 <p>HAProxy高性能的反向代理软件,更专注于TCP,HTTP处理,它可以基于四层或七层进行反向代理,尤其适合于高负载且需要进行七层处理的 Web 站点.</p>
-
 <p>单进程、事件驱动模型,通常用于超高流量的负载均衡.</p>
-
 <p>我们也可以使用它来作为中转站,使直连连通率不好的请求进过中转提升速度.</p>
-
 <h3 id="编译安装">编译安装</h3>
-
 <pre><code>apt-get update &amp;&amp; apt-get install -y wget gcc g++ make libpcre++0v5 libpcre++-dev
-</code></pre>
-
-<pre><code>yum update &amp;&amp; yum install wget gcc make
-</code></pre>
-
-<pre><code>HAPROXY_VERSION=haproxy-1.7.9
+</code></pre><pre><code>yum update &amp;&amp; yum install wget gcc make
+</code></pre><pre><code>HAPROXY_VERSION=haproxy-1.7.9
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
 wget http://www.haproxy.org/download/1.7/src/${HAPROXY_VERSION}.tar.gz
 tar zxf ${HAPROXY_VERSION}.tar.gz
@@ -80,22 +65,16 @@ cd ${HAPROXY_VERSION}
 export CFLAGS=&quot;-O3&quot;
 make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 -j$CPU_NUM &amp;&amp; make install
 
-</code></pre>
-
-<p>编译32位版本<code>make TARGET=linux26 ARCH=i686 USE_STATIC_PCRE=1 -j$CPU_NUM</code></p>
-
+</code></pre><p>编译32位版本<code>make TARGET=linux26 ARCH=i686 USE_STATIC_PCRE=1 -j$CPU_NUM</code></p>
 <p>在64位系统下编译32位需要<code>apt-get install gcc-multilib g++-multilib</code></p>
-
 <p>我编译好的haproxy version 1.7.9</p>
-
 <blockquote>
 <p>64位 <a href="http://share.suconghou.cn/files/bin/haproxy.xz">http://share.suconghou.cn/files/bin/haproxy.xz</a></p>
-
+</blockquote>
+<blockquote>
 <p>32位 <a href="http://share.suconghou.cn/files/bin/haproxy.gz">http://share.suconghou.cn/files/bin/haproxy.gz</a></p>
 </blockquote>
-
 <p><code>/etc/systemd/system/haproxy.service</code></p>
-
 <pre><code>[Unit]
 Description=haproxy service
 
@@ -107,10 +86,7 @@ RestartSec=5s
 
 [Install]
 WantedBy=multi-user.target
-</code></pre>
-
-<h3 id="alpine里静态编译">alpine里静态编译</h3>
-
+</code></pre><h3 id="alpine里静态编译">alpine里静态编译</h3>
 <pre><code>apk update &amp;&amp; apk upgrade
 apk add gcc g++ make wget linux-headers pcre-dev
 cd /tmp
@@ -119,51 +95,32 @@ wget http://www.haproxy.org/download/1.7/src/${HAPROXY_VERSION}.tar.gz
 tar zxf ${HAPROXY_VERSION}.tar.gz
 cd ${HAPROXY_VERSION}
 make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 LDFLAGS=&quot;-static&quot; ADDLIB=&quot;/usr/lib/libc.a&quot; -j2  &amp;&amp; make install
-</code></pre>
-
-<p>编译很快,一分钟即可编译完成.</p>
-
+</code></pre><p>编译很快,一分钟即可编译完成.</p>
 <p>不能直接使用<code>LDFLAGS=&quot;-static&quot;</code>静态编译. 需要将 <code>/usr/lib/libc.a</code> 静态链接到最终文件内,因此需要添加<code>ADDLIB=&quot;/usr/lib/libc.a&quot;</code></p>
-
 <p>他使得在link 阶段静态链接<code>/usr/lib/libc.a</code></p>
-
 <p>上述脚本执行后,即可得到可执行文件. strip后大大减小目标文件.</p>
-
 <h3 id="使用docker版本的haproxy">使用Docker版本的HAProxy</h3>
-
 <p>这里提供一份编译好的最新版HAProxy镜像 <a href="https://hub.docker.com/r/suconghou/haproxy/">https://hub.docker.com/r/suconghou/haproxy/</a></p>
-
 <p><code>useradd -M -s /sbin/nologin haproxy</code></p>
-
 <p>-M：不创建家目录</p>
-
 <p>-s：指定用户登陆时使用的shell，nologin就是登陆不了</p>
-
 <h3 id="优化国外主机速度">优化国外主机速度</h3>
-
 <p>HAProxy有多种连接模型,还有多种负载均衡算法,由于只有一台机器,我们主要侧重于使用它的反向代理.</p>
-
 <p>HAProxy可以一边保持与代理后端的长连接,一边又保持对客户端的连接.
 这样双向保持持久连接,省去了中间反复创建连接可以在一定程度上优化速度.</p>
-
 <p>其只需要一个配置文件,配置主要有以下几部分功能</p>
-
 <ul>
 <li><code>default</code>：用于为所有其它配置段提供默认参数</li>
 <li><code>frontend</code>：用于定义一系列监听的套接字，这些套接字可接受客户端请求并与之建立连接</li>
 <li><code>backend</code>：用于定义一系列后端服务器，代理将会将对应客户端的请求转发至这些服务器</li>
 <li><code>listen</code>： 通过关联前端和后端定义了一个完整的代理</li>
 </ul>
-
 <p>配置写在<code>haproxy.cfg</code>文件中,启动的时候指定使用的配置文件.</p>
-
 <p>如<code>haproxy -c -f /etc/haproxy/haproxy.cfg</code>检查配置文件,<code>haproxy -f /etc/haproxy/haproxy.cfg</code>使用此配置文件启动</p>
-
 <p>使用listen 直接定义前端/后端</p>
-
 <pre><code>global
         pidfile   /var/run/haproxy.pid
-        ulimit-n  15000
+        ulimit-n  65535
         user        nobody
         group       nobody
         daemon
@@ -173,29 +130,23 @@ defaults
         mode    tcp
         retries 3
         option  dontlognull
-        timeout connect 1000
-        timeout client  150000
-        timeout server  150000
+        timeout connect 10s
+        timeout client  15m
+        timeout server  15m
         option srvtcpka
         option clitcpka
 
 listen sss
         bind 0.0.0.0:9878
         server v 1.2.3.4:443
-</code></pre>
-
-<p><code>timeout</code> 对于时间的单位默认是 <code>ms</code> 可用的单位如下</p>
-
+</code></pre><p><code>timeout</code> 对于时间的单位默认是 <code>ms</code> 可用的单位如下</p>
 <pre><code>  - us : microseconds. 1 microsecond = 1/1000000 second
   - ms : milliseconds. 1 millisecond = 1/1000 second. This is the default.
   - s  : seconds. 1s = 1000ms
   - m  : minutes. 1m = 60s = 60000ms
   - h  : hours.   1h = 60m = 3600s = 3600000ms
   - d  : days.    1d = 24h = 1440m = 86400s = 86400000ms
-</code></pre>
-
-<p>一个简单的配置文件如下</p>
-
+</code></pre><p>一个简单的配置文件如下</p>
 <pre><code>global
     pidfile     /var/run/haproxy.pid
     user        haproxy
@@ -225,12 +176,8 @@ frontend http-in
 backend servers
     option http-keep-alive
     server myserver 1.2.3.4:80 check maxconn 6000
-</code></pre>
-
-<p>转发 ssh 服务时，注意，需要将 <code>timeout client</code> <code>timeout server</code> 设置一个较大的时间，如<code>120m</code> 防止静置的时候ssh被断开</p>
-
+</code></pre><p>转发 ssh 服务时，注意，需要将 <code>timeout client</code> <code>timeout server</code> 设置一个较大的时间，如<code>120m</code> 防止静置的时候ssh被断开</p>
 <p>示例</p>
-
 <pre><code>global
     pidfile     /var/run/haproxy.pid
     user    nobody
@@ -263,82 +210,57 @@ listen vpn8080
 listen vpn19090
     bind 0.0.0.0:19090-19099
     server v 192.243.115.210 maxconn 2048
-</code></pre>
-
-<p>timeout http request ：在客户端建立连接但不请求数据时，关闭客户端连接
+</code></pre><p>timeout http request ：在客户端建立连接但不请求数据时，关闭客户端连接
 timeout queue ：等待最大时长
 timeout connect： 定义haproxy将客户端请求转发至后端服务器所等待的超时时长
 timeout client：客户端非活动状态的超时时长
 timeout server：客户端与服务器端建立连接后，等待服务器端的超时时长，
 timeout http-keep-alive ：定义保持连接的超时时长
 timeout check：健康状态监测时的超时时间，过短会误判，过长资源消耗</p>
-
 <p>八种负载算法</p>
-
 <blockquote>
 <p>&lsquo;roundrobin&rsquo;,  简单的轮询
 &lsquo;static-rr&rsquo;,    根据权重
- &lsquo;leastconn&rsquo;, 最少连接者先处理
+&lsquo;leastconn&rsquo;, 最少连接者先处理
 &lsquo;source&rsquo;,  根据请求源IP
 &lsquo;uri&rsquo;,    根据请求的URI
 &lsquo;url_param&rsquo;,  根据请求的URl参数
 &lsquo;hdr(name)&rsquo; 根据HTTP请求头来锁定每一次HTTP请求
- &lsquo;rdp-cookie(name)&rsquo; 很据cookie(name)来锁定并哈希每一次TCP请求</p>
+&lsquo;rdp-cookie(name)&rsquo; 很据cookie(name)来锁定并哈希每一次TCP请求</p>
 </blockquote>
-
 <h2 id="长连接">长连接</h2>
-
 <p>KeepAlive 就是通常所称的长连接,KeepAlive带来的好处是可以减少tcp连接的开销,这对于短response body的请求效果更加明显。</p>
-
 <p>HAProxy后端keepalive指的是在HAProxy服务完一次与后端的交互后，不关闭HAProxy和后端的连接，而是维护这个连接以备后续的请求复用。</p>
-
 <p>HAProxy后端Keepalive 配置，启用HAProxy后端长连接需要配置如下</p>
-
 <pre><code>option http-pretend-keepalive
 option srvtcpka
 option clitcpka
 option forwardfor
-</code></pre>
-
-<p>其中option forwardfor允许在转发请求到后端时加上X-Forwarded-For头部,可以不使用.</p>
-
+</code></pre><p>其中option forwardfor允许在转发请求到后端时加上X-Forwarded-For头部,可以不使用.</p>
 <p>tcp 层的默认链接保持时间，一般默认为2个小时</p>
-
 <p><code>cat /proc/sys/net/ipv4/tcp_keepalive_time</code></p>
-
 <p><code>timeout client</code> 与 <code>timeout server</code> 设置的就是当没有数据传送时，最大空闲多少时间就关闭链接</p>
-
 <p><a href="https://serverfault.com/questions/589804/haproxy-configuration-for-rabbitmq/652326#652326">https://serverfault.com/questions/589804/haproxy-configuration-for-rabbitmq/652326#652326</a></p>
-
 <p>还有一个在应对高并发时通常都需要改的
 <code>ulimit -n 8192</code></p>
-
 <p><code>ulimit -n</code> 可以查看当前的</p>
-
 <p><code>-st</code> 是立即结束原有进程(SIGTERM,立即重启)</p>
-
 <p><code>-sf</code> 是原有进程执行完后退出(SIGUSR1,平滑重启)</p>
-
 <p>重启HAProxy</p>
-
 <pre><code># haproxy-reload
 haproxy -f /etc/haproxy/haproxy.cfg -st $(cat /var/run/haproxy.pid)
 # haproxy-hot-reload
 haproxy -f /etc/haproxy/haproxy.cfg -sf $(cat /var/run/haproxy.pid)
-</code></pre>
-
-<p><code>/etc/rc.local</code>(软连接到<code>/etc/rc.d/rc.local</code>)是开机后自动执行的脚本</p>
-
+</code></pre><p><code>/etc/rc.local</code>(软连接到<code>/etc/rc.d/rc.local</code>)是开机后自动执行的脚本</p>
 <p>可以加入<code>haproxy -f /etc/haproxy/haproxy.cfg</code>到其中实现开机启动.</p>
-
 <p>配置文件参考 <a href="https://github.com/chenzhiwei/linux/tree/master/haproxy">https://github.com/chenzhiwei/linux/tree/master/haproxy</a></p>
-
 <p>一份haproxy加速ss</p>
-
 <pre><code>global
         pidfile   /var/run/haproxy.pid
-        ulimit-n  15000
-
+        ulimit-n  65535
+        user    nobody
+        group   nobody
+        daemon
 defaults
         log global
         mode    tcp
@@ -357,13 +279,10 @@ frontend ss-in
 backend ss-out
         server server1 208.81.202.x:443 maxconn 20480
 
-</code></pre>
-
-<p>可以直接使用listen,更加简洁的创建一个关联server</p>
-
+</code></pre><p>可以直接使用listen,更加简洁的创建一个关联server</p>
 <pre><code>global
         pidfile   /var/run/haproxy.pid
-        ulimit-n  15000
+        ulimit-n  65535
         user        nobody
         group       nobody
         daemon
@@ -382,22 +301,13 @@ defaults
 listen sss
         bind 0.0.0.0:9878
         server v 192.243.x.x:1443 maxconn 2048
-</code></pre>
-
-<p><code>haproxy -D -f /etc/haproxy/haproxy.cfg</code>启动,参数<code>-D</code>为goes daemon</p>
-
+</code></pre><p><code>haproxy -D -f /etc/haproxy/haproxy.cfg</code>启动,参数<code>-D</code>为goes daemon</p>
 <p>参考 <code>http://liaoph.com/haproxy-tutorial/</code></p>
-
 <p><a href="https://gist.github.com/SilverBut/32be4a41cbdc50dd3a02627738b2b9cb">https://gist.github.com/SilverBut/32be4a41cbdc50dd3a02627738b2b9cb</a></p>
-
-<h2 id="升级-glibc-版本-最新发布-http-www-gnu-org-software-libc">升级<code>glibc</code>版本,最新发布 <a href="http://www.gnu.org/software/libc/">http://www.gnu.org/software/libc/</a></h2>
-
+<h2 id="升级glibc版本最新发布-httpwwwgnuorgsoftwarelibc">升级<code>glibc</code>版本,最新发布 <a href="http://www.gnu.org/software/libc/">http://www.gnu.org/software/libc/</a></h2>
 <p>所有版本见<code>http://mirror.hust.edu.cn/gnu/libc/</code></p>
-
 <p>错误 <code>libc.so.6: version GLIBC_2.14 not found</code> 表明当前系统的glibc版本较低</p>
-
 <p><code>strings libc.so.6 |grep GLIBC_</code>可以查看当前系统支持的版本</p>
-
 <pre><code>wget http://mirror.hust.edu.cn/gnu/libc/glibc-2.19.tar.xz
 tar Jxf glibc-2.19.tar.xz
 cd glibc-2.19
@@ -405,31 +315,17 @@ mkdir build
 cd build
 ../configure
 make -j4 &amp;&amp; make install
-</code></pre>
-
-<p>见 <a href="https://cnodejs.org/topic/56dc21f1502596633dc2c3dc">https://cnodejs.org/topic/56dc21f1502596633dc2c3dc</a>
+</code></pre><p>见 <a href="https://cnodejs.org/topic/56dc21f1502596633dc2c3dc">https://cnodejs.org/topic/56dc21f1502596633dc2c3dc</a>
 此编译需要较长时间</p>
-
 <h2 id="dog-tunnel端口映射">dog-tunnel端口映射</h2>
-
 <p>开启服务器端(须有外网IP)</p>
-
 <pre><code>dtunnel_lite -service 0.0.0.0:1234 -v -tcp -xor 121333 &gt; /tmp/dog.log 2&gt;&amp;1 &amp;
-</code></pre>
-
-<p>开启客户端(任意一台可联网的机器)</p>
-
+</code></pre><p>开启客户端(任意一台可联网的机器)</p>
 <p>反向映射客户机22端口到服务器的30222端口,代理ssh建议使用tcp,pipe通道为1</p>
-
 <pre><code>dtunnel_lite -service 服务器端IP:1234 -v -action 127.0.0.1:22 -encrypt -tcp -xor 121333 -local 172.168.1.99:30222 -r &gt; /tmp/dog.log 2&gt;&amp;1 &amp;
-</code></pre>
-
-<p>可以使用客户端连接多个服务器,将22端口映射到多个服务器端.</p>
-
+</code></pre><p>可以使用客户端连接多个服务器,将22端口映射到多个服务器端.</p>
 <p>用<code>crontab</code>守护进程,每5分钟检查一次</p>
-
-<p><code>*/5 * * * * sh /data/bin/connect.sh &gt; /tmp/dog.log 2&gt;&amp;1</code></p>
-
+<p><code>*/5 * * * * sh /data/bin/connect.sh &gt; /tmp/dog.log 2&gt;&amp;1 </code></p>
 <pre><code>#!/bin/bash
 echo &quot;`date` start shell process &quot;&gt;&gt; /tmp/connect.log
 if test $( pgrep -f dtunnel_lite | wc -l ) -eq 0
@@ -447,49 +343,32 @@ else
     echo &quot;`date` dtunnel_lite process is already running &quot;&gt;&gt; /tmp/connect.log
 fi
 
-</code></pre>
-
-<p>先手动启动一次 <code>sh /data/bin/connect.sh &gt; /tmp/dog.log 2&gt;&amp;1 &amp;</code></p>
-
+</code></pre><p>先手动启动一次 <code>sh /data/bin/connect.sh &gt; /tmp/dog.log 2&gt;&amp;1 &amp;</code></p>
 <p>TCP 端口转发</p>
-
-<p><a href="https://boutell.com/rinetd/">https://boutell.com/rinetd/</a></p>
-
-<p><code>https://boutell.com/rinetd/http/rinetd.tar.gz</code></p>
-
 <p>Socat：</p>
-
 <p>优点：支持 TCP/UDP 转发。缺点：不支持端口段（多个端口需要开启多个转发）</p>
-
 <p>HaProxy：</p>
-
 <p>优点：支持 TCP 转发，支持 端口段 转发。缺点：不支持 UDP 转发。</p>
-
 <p>iptables：</p>
-
 <p>优点：支持 TCP/UDP 转发，支持 端口段 转发。缺点：配置麻烦，容易出错。</p>
-
 <p>socat 支持unixsocket转发</p>
-
 <p><code>socat TCP4-LISTEN:15432,fork UNIX-CONNECT:/srv/mongodb-27017.sock</code></p>
-
 <p>haproxy 用作缓存</p>
-
 <p><a href="https://github.com/jiangwenyuan/nuster/wiki/Performance-benchmark:-nuster-vs-nginx-vs-varnish">https://github.com/jiangwenyuan/nuster/wiki/Performance-benchmark:-nuster-vs-nginx-vs-varnish</a></p>
 
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/use-haproxy/"></air-messager>
+        <air-messager ns="hi" thread="/post/use-haproxy/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/react-native/" title="react native" >
+            <a class="previous" href="/post/react-native/" title="react native" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/install-yum/" title="yum的一些配置">
+            <a class="next" href="/post/install-yum/" title="yum的一些配置">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -501,6 +380,14 @@ fi
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

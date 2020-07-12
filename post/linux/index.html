@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>linux相关操作 &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -51,7 +47,7 @@
                 <svg style="width: 20px; height: 13px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5131"><path d="M833.2 1008L538.8 679.8c-14.3-16-39.3-16-53.6 0L190.8 1008c-22 24.6-62.8 9-62.8-24V36c0-19.9 16.1-36 36-36h696c19.9 0 36 16.1 36 36v948c0 33-40.8 48.6-62.8 24zM538.8 572L824 890V72H200v817.9l285.2-318c14.3-15.9 39.3-15.9 53.6 0.1z" p-id="5132"></path></svg>
                 <ul class="topics">
                 
-                    <li><a href="http://blog.suconghou.cn/topics/linux">linux</a> </li>
+                    <li><a href="/topics/linux">linux</a> </li>
                 
                 </ul>
             </div>
@@ -61,7 +57,7 @@
                 <svg style="width: 20px; height: 13px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5131"><path d="M833.2 1008L538.8 679.8c-14.3-16-39.3-16-53.6 0L190.8 1008c-22 24.6-62.8 9-62.8-24V36c0-19.9 16.1-36 36-36h696c19.9 0 36 16.1 36 36v948c0 33-40.8 48.6-62.8 24zM538.8 572L824 890V72H200v817.9l285.2-318c14.3-15.9 39.3-15.9 53.6 0.1z" p-id="5132"></path></svg>
                 <ul class="tags">
                 
-                    <li> <a href="http://blog.suconghou.cn/tags/linux">linux</a> </li>
+                    <li> <a href="/tags/linux">linux</a> </li>
                 
                 </ul>
             </div>
@@ -72,110 +68,57 @@
         </div>
         
 		<div class="post-text">
-			
-
-<h2 id="读取文件的前几字节">读取文件的前几字节</h2>
-
+			<h2 id="读取文件的前几字节">读取文件的前几字节</h2>
 <p>head 或 tail 以字节而不是以行为单位，那该怎么办呢？您可以用 -c 选项代替 -n 选项</p>
-
-<p>前100字节,并以hex格式显示 <code>head -c 100 file | hexdump</code></p>
-
+<p>前100字节,并以hex格式显示 <code>head -c 100 file | hexdump </code></p>
 <p>后100字节<code>tail -c 100 file | hexdump</code></p>
-
 <p>还可以使用管道交给 <code>md5sum</code>,可比较前100字节或后100字节是否相同</p>
-
 <p><code>head -c 100 file | hexdump | md5sum</code></p>
-
 <p>取文件1G(1073741824)至+819200处的md5值</p>
-
 <p><code>head -c 1074561024 file | tail -c 819200 |md5sum</code></p>
-
 <p>使用dd会更加方便,也更高效</p>
-
 <p><code>dd if=file bs=1 skip=1073741824 count=819200 | md5sum</code></p>
-
 <p>拆分文件 <code>split -b 1kb /tmp/file sfile</code></p>
-
 <p>拆分文件大小为1k，也可以是1b，或者1m之类的单位</p>
-
 <p><code>xxd</code> <code>hexdump</code> <code>od</code>
 <a href="https://www.zhihu.com/question/40441308/answer/86637730">https://www.zhihu.com/question/40441308/answer/86637730</a></p>
-
 <h2 id="时间戳转时间日期">时间戳转时间日期</h2>
-
 <p>Mac: date -r 1514131200
 GNU/Linux: date -d @1514131200</p>
-
 <h2 id="使用-sed-修改二进制文件">使用 sed 修改二进制文件</h2>
-
 <p>先找到查找的目标</p>
-
-<p>例如<code>/opt/local</code>则对应<code>echo /opt/local | xxd</code></p>
-
+<p>例如<code>/opt/local</code>则对应<code>echo /opt/local | xxd </code></p>
 <pre><code>0000000: 2f6f 7074 2f6c 6f63 616c 0a              /opt/local.
-</code></pre>
-
-<p>要替换为<code>/usr/local</code>,则目标为<code>echo /usr/local | xxd</code></p>
-
+</code></pre><p>要替换为<code>/usr/local</code>,则目标为<code>echo /usr/local | xxd </code></p>
 <pre><code>0000000: 2f75 7372 2f6c 6f63 616c 0a              /usr/local.
-</code></pre>
-
-<p>使用sed替换</p>
-
+</code></pre><p>使用sed替换</p>
 <pre><code>xxd file | sed 's/2f6f 7074/2f75 7372/g' | xxd -r &gt; newfile
-</code></pre>
-
-<p><code>echo /lib/ld-linux.so.3 | xdd</code></p>
-
+</code></pre><p><code>echo /lib/ld-linux.so.3 | xdd</code></p>
 <pre><code>0000000: 2f6c 6962 2f6c 642d 6c69 6e75 782e 736f  /lib/ld-linux.so
 0000010: 2e33 0a                                  .3.
-</code></pre>
-
-<p><code>echo ld.so | xxd</code></p>
-
+</code></pre><p><code>echo ld.so | xxd</code></p>
 <pre><code>0000000: 6c64 2e73 6f0a                           ld.so.
-</code></pre>
+</code></pre><pre><code>xxd file | sed 's/\x2f\x6c\x69\x62\x2f\x6c\x64\x2d\x6c\x69\x6e\x75\x78\x2e\x73\x6f\x2e\x33\x0a/\x6c\x64\x2e\x73\x6f\x0a/g' | xxd -r &gt; bb
+</code></pre><pre><code>sed 's/\x2f\x6c\x69\x62\x2f\x6c\x64\x2d\x6c\x69\x6e\x75\x78\x2e\x73\x6f\x2e\x33\x0a/\x6c\x64\x2e\x73\x6f\x0a/g' file &gt; newfile
 
-<pre><code>xxd file | sed 's/\x2f\x6c\x69\x62\x2f\x6c\x64\x2d\x6c\x69\x6e\x75\x78\x2e\x73\x6f\x2e\x33\x0a/\x6c\x64\x2e\x73\x6f\x0a/g' | xxd -r &gt; bb
-</code></pre>
-
-<pre><code>sed 's/\x2f\x6c\x69\x62\x2f\x6c\x64\x2d\x6c\x69\x6e\x75\x78\x2e\x73\x6f\x2e\x33\x0a/\x6c\x64\x2e\x73\x6f\x0a/g' file &gt; newfile
-
-</code></pre>
-
-<p>另提供一个脚本可以快速处理 <a href="https://gist.github.com/suconghou/665dbf665437402f65ecee329ea2f517">https://gist.github.com/suconghou/665dbf665437402f65ecee329ea2f517</a></p>
-
+</code></pre><p>另提供一个脚本可以快速处理 <a href="https://gist.github.com/suconghou/665dbf665437402f65ecee329ea2f517">https://gist.github.com/suconghou/665dbf665437402f65ecee329ea2f517</a></p>
 <p>使用 <strong>bbe</strong> <a href="https://sourceforge.net/projects/bbe-/">https://sourceforge.net/projects/bbe-/</a> 同样可以很方便的替换二进制文件</p>
-
 <p><a href="https://stackoverflow.com/questions/2604964/binary-sed-replacement">https://stackoverflow.com/questions/2604964/binary-sed-replacement</a></p>
-
 <p>其他架构CPU指令模拟器 <a href="https://github.com/multiarch/qemu-user-static">https://github.com/multiarch/qemu-user-static</a> 提供各平台二进制文件 可以用于模拟执行arm的二进制文件等</p>
-
+<p><a href="https://github.com/multiarch/qemu-user-static/releases">https://github.com/multiarch/qemu-user-static/releases</a></p>
 <p><a href="https://packages.debian.org/sid/qemu-user-static">https://packages.debian.org/sid/qemu-user-static</a></p>
-
 <p><a href="https://www.qemu.org/download/#source">https://www.qemu.org/download/#source</a></p>
-
 <pre><code>LD_LIBRARY_PATH=`pwd` ~/tmp/qemu-arm-static ~/aa/aa -v
-</code></pre>
-
-<h2 id="linux用户管理">Linux用户管理</h2>
-
+</code></pre><h2 id="linux用户管理">Linux用户管理</h2>
 <h3 id="添加用户adduser">添加用户adduser</h3>
-
 <p>假如用户名为<code>work</code></p>
-
 <p><code>adduser work -M</code></p>
-
 <pre><code># add rslsync user without home dir and cannot login
 sudo adduser --shell /bin/nologin --no-create-home --group rslsync
-</code></pre>
-
-<p>-M, &ndash;no-create-home        不创建用户的主目录
--s, &ndash;shell SHELL       新账户的登录 shell,nologin就是登陆不了
--G, &ndash;groups GROUPS 新账户的附加组列表</p>
-
+</code></pre><p>-M, &ndash;no-create-home		不创建用户的主目录
+-s, &ndash;shell SHELL		新账户的登录 shell,nologin就是登陆不了
+-G, &ndash;groups GROUPS	新账户的附加组列表</p>
 <p><code>adduser -h</code>查看完整帮助</p>
-
 <pre><code>用法：adduser [选项] 登录
       adduser -D
       adduser -D [选项]
@@ -204,121 +147,69 @@ sudo adduser --shell /bin/nologin --no-create-home --group rslsync
   -u, --uid UID			新账户的用户 ID
   -U, --user-group		创建与用户同名的组
   -Z, --selinux-user SEUSER		为 SELinux 用户映射使用指定 SEUSER
-</code></pre>
-
-<h3 id="修改密码">修改密码</h3>
-
+</code></pre><h3 id="修改密码">修改密码</h3>
 <p><code>passwd work</code></p>
-
 <h3 id="修改用户名">修改用户名</h3>
-
 <p>alarm为旧用户名</p>
-
 <pre><code>new_user=lao
 # change user name
 usermod -l $new_user -d /home/$new_user -m alarm
 # chenge user group
 groupmod -n $new_user alarm
-</code></pre>
-
-<p><a href="http://www.cnblogs.com/xd502djj/archive/2011/11/23/2260094.html">http://www.cnblogs.com/xd502djj/archive/2011/11/23/2260094.html</a></p>
-
+</code></pre><p><a href="http://www.cnblogs.com/xd502djj/archive/2011/11/23/2260094.html">http://www.cnblogs.com/xd502djj/archive/2011/11/23/2260094.html</a></p>
 <p>修改用户的uid和gid
 <a href="https://muffinresearch.co.uk/linux-changing-uids-and-gids-for-user/">https://muffinresearch.co.uk/linux-changing-uids-and-gids-for-user/</a></p>
-
 <p>将原文件夹宿主改为指定</p>
-
 <pre><code>/bin/chown --changes --silent --no-dereference --recursive --from=${src_uid}:${src_gid} ${dest_uid}:${dest_gid} /
-</code></pre>
-
-<h2 id="给用户sudo-权限">给用户sudo 权限</h2>
-
+</code></pre><h2 id="给用户sudo-权限">给用户sudo 权限</h2>
 <p><code>sudo visudo</code></p>
-
 <p>为想要的用户添加一行</p>
-
 <pre><code>builder     ALL = (ALL) ALL
-</code></pre>
-
-<p><code>chsh</code> 命令设置当前用户使用的shell</p>
-
+</code></pre><p><code>chsh</code> 命令设置当前用户使用的shell</p>
 <p><code>sudo -u user -g group &quot;command&quot;</code> 使用其他用户身份执行命令</p>
-
 <pre><code>su -
 su - root
 su - root -c &quot;ls -l /root&quot;
 su - oracle -c &quot;ulimit -aHS&quot;
 su -s /bin/sh -c &quot;/usr/local/nginx/sbin/nginx&quot;
-</code></pre>
-
-<p>以www-data身份执行一个php文件</p>
-
+</code></pre><p>以www-data身份执行一个php文件</p>
 <p><code>su - www-data -s /bin/bash -c &quot;php -f /var/www/html/cron.php&quot;</code></p>
-
 <h2 id="linux实用命令">Linux实用命令</h2>
-
 <h2 id="w">w</h2>
-
 <p><code>w</code>命令能容清晰的显示,服务器在线时间,负载以及当前登陆的用户</p>
-
 <h2 id="vmstat">vmstat</h2>
-
 <p><code>vmstat</code> 显示开机以来的平均值，而不是前一秒的值
 <code>vmstat 1</code>命令指定一个参数 1 运行，来打印每一秒的统计摘要.
 这些列代表的信息:</p>
-
 <blockquote>
-<p>r：CPU 中正在运行和等待运行的进程的数量。其提供了一个比平均负载更好的信号来确定 CPU 是否饱和，因为其不包含 I/O。解释：&rdquo;r&rdquo;的值大于了 CPU 的数量就表示已经饱和了。
-free：以 kb 为单位显式的空闲内存。如果数字位数很多，说明你有足够的空闲内存。&rdquo;free -m&rdquo; 命令，是下面的第七个命令，其可以更好的说明空闲内存的状态。
+<p>r：CPU 中正在运行和等待运行的进程的数量。其提供了一个比平均负载更好的信号来确定 CPU 是否饱和，因为其不包含 I/O。解释：&ldquo;r&quot;的值大于了 CPU 的数量就表示已经饱和了。
+free：以 kb 为单位显式的空闲内存。如果数字位数很多，说明你有足够的空闲内存。&ldquo;free -m&rdquo; 命令，是下面的第七个命令，其可以更好的说明空闲内存的状态。
 si, so：Swap-ins 和 swap-outs。如果它们不是零，则代表你的内存不足了。
 us, sy, id, wa, st：这些都是平均了所有 CPU 的 CPU 分解时间。它们分别是用户时间（user）、系统时间（内核）（system）、空闲（idle）、等待 I/O（wait）、以及占用时间（stolen）（被其他访客，或使用 Xen，访客自己独立的驱动域）。</p>
 </blockquote>
-
 <p>CPU 分解时间将会通过用户时间加系统时间确认 CPU 是否为忙碌状态。等待 I/O 的时间一直不变则表明了一个磁盘瓶颈；这就是 CPU 的闲置，因为任务都阻塞在等待挂起磁盘 I/O 上了。你可以把等待 I/O 当成是 CPU 闲置的另一种形式，其给出了为什么 CPU 闲置的一个线索。
 对于 I/O 处理来说，系统时间是很重要的。一个高于 20% 的平均系统时间，可以值得进一步的探讨：也许内核在处理 I/O 时效率太低了。</p>
-
 <p>SIZE(VIRT): 进程使用的地址空间, 如果进程映射了100M的内存, 进程的地址空间将报告为100M内存. 事实上, 这个大小不是一个程序实际使用的内存数.</p>
-
-<p>RSS(RES): &ldquo;Resident Set Size&rdquo;, 实际驻留&rdquo;在内存中&rdquo;的内存数. 不包括已经交换出去的代码. 举一个例子: 如果你有一个程序使用了100K内存, 操作系统交换出40K内存, 那么RSS为60K. RSS还包括了与其它进程共享的内存区域. 这些区域通常用于libc库等.</p>
-
+<p>RSS(RES): &ldquo;Resident Set Size&rdquo;, 实际驻留&quot;在内存中&quot;的内存数. 不包括已经交换出去的代码. 举一个例子: 如果你有一个程序使用了100K内存, 操作系统交换出40K内存, 那么RSS为60K. RSS还包括了与其它进程共享的内存区域. 这些区域通常用于libc库等.</p>
 <p>SHARE(SHR): RSS中与其它进程共享的内存部分大小.</p>
-
 <p>VMSIZE: 一个进程占用的总的地址空间大小. 它包括了没有映射到内存中的页面。</p>
-
 <p>SZ（DATA）: 映射到内存中的页面, 这些页面仅由进程单独使用. 这也是我们最关心地方: 进程实际占用的内存数。</p>
-
 <h2 id="top">top</h2>
-
 <p><code>top -b -n1</code> 可以只执行一次,用于将结果重定向到文件.</p>
-
 <p>可参考 <a href="http://liaoph.com/inux-process-management/">http://liaoph.com/inux-process-management/</a></p>
-
 <h2 id="tload">tload</h2>
-
 <p><code>tload</code></p>
-
 <p><code>cat /proc/net/arp</code> 查看连接到本机的远端ip的mac地址</p>
-
 <h2 id="mv">mv</h2>
-
 <p>有时候需要移动一个文件夹中的内容到另一个文件夹内，</p>
-
 <p>但是当目标文件夹中存在内容时，mv会拒绝执行。也就是说mv不会为你合并这些内容。</p>
-
 <p>只能使用 <code>cp -r</code> 然后再删除原文件夹。</p>
-
 <p>类似的，还可以使用下面两个命令</p>
-
 <p><code>rsync -a backup/ backupArchives/</code></p>
-
 <p><code>(cd backup &amp;&amp; tar c .) | (cd backupArchives &amp;&amp; tar xf -)</code></p>
-
 <h2 id="free">free</h2>
-
 <p><code>free -m</code> <code>free -h</code></p>
-
 <p>按内存占用排序</p>
-
 <pre><code>
 ps -eo rss,vsz,pid,ppid,time,etime,command --sort=rss   # 按内存
 ps -eo rss,vsz,pid,ppid,time,etime,command --sort=time  # 按CPU时间,etime启动时间,comm等都可以.
@@ -329,142 +220,83 @@ ps -eo rss,vsz,pid,ppid,time,etime,command |sort -n
 
 # alpine 里这样用,不支持--sort, 同样也可以 `top -b -n1`
 ps -o rss,vsz,pid,ppid,time,etime,args
-</code></pre>
-
-<h2 id="how-linux-store-metadata">how linux store metadata</h2>
-
+</code></pre><h2 id="how-linux-store-metadata">how linux store metadata</h2>
 <p><a href="https://superuser.com/questions/1160927/where-does-metadata-go-when-you-save-a-file">https://superuser.com/questions/1160927/where-does-metadata-go-when-you-save-a-file</a></p>
-
 <p><code>yum install strace -y</code></p>
-
 <p><code>strace -v cp foo bar</code> vs <code>strace -v cp -a foo bar</code></p>
-
 <h2 id="ssh">ssh</h2>
-
 <p>配置无密码登陆
 <code>ssh-copy-id -i ~/.ssh/id_rsa.pub root@host</code></p>
-
 <p>如果是其他端口可以-p指定端口
 <code>ssh-copy-id -i ~/.ssh/id_rsa.pub -p 26671 root@host</code></p>
-
 <p>此过程相当于</p>
-
 <p><code>ssh user@host 'mkdir -p .ssh &amp;&amp; cat &gt;&gt; .ssh/authorized_keys' &lt; ~/.ssh/id_rsa.pub</code></p>
-
 <p>默认会使用<code>~/.ssh/id_rsa</code> 私钥文件,也可以指定
 使用指定私钥登陆
 <code>ssh –i  id_rsa root@host</code></p>
-
 <p>针对无效问题,可以检查服务端</p>
-
 <pre><code>chmod 700 ~/.ssh ; chmod 600 ~/.ssh/authorized_keys ; chmod g-w,o-w ~
-</code></pre>
-
-<p><code>/etc/ssh/sshd_config</code>文件配置</p>
-
+</code></pre><p><code>/etc/ssh/sshd_config</code>文件配置</p>
 <pre><code>RSAAuthentication yes
 PubkeyAuthentication yes
 AuthorizedKeysFile  %h/.ssh/authorized_keys
-</code></pre>
-
-<p>必要时可禁止密码登陆</p>
-
+</code></pre><p>必要时可禁止密码登陆</p>
 <pre><code>passwordAuthentication no
-</code></pre>
-
-<p>在<code>/var/log/secure</code>文件中,查找IP地址</p>
-
+</code></pre><p>在<code>/var/log/secure</code>文件中,查找IP地址</p>
 <p><code>grep -E -o &quot;([0-9]{1,3}\.){3}[0-9]{1,3}&quot; /var/log/secure</code></p>
-
 <blockquote>
 <p>-E选项表示使用grep扩展的正则表达式
 -o选项是只显示匹配到的字符串</p>
 </blockquote>
-
 <p>统计这些IP的数量,并排序,查看哪些IP登陆错误次数较多</p>
-
 <p><code>grep -E -o &quot;([0-9]{1,3}\.){3}[0-9]{1,3}&quot; /var/log/secure|sort|uniq -c|sort -nr | head -30</code></p>
-
 <h2 id="pgrep">pgrep</h2>
-
 <p>根据名字或其他属性查询出进程的PID</p>
-
 <p><code>pidof</code> 命令也有类似用法</p>
-
 <p>如:<code>pgrep nginx -fl</code></p>
-
-<p>对比 <code>ps aux | grep</code>,有时我们需要grep两次来排除grep进程自己，pgrep就没有这个问题。</p>
-
+<p>对比 <code>ps aux | grep </code>,有时我们需要grep两次来排除grep进程自己，pgrep就没有这个问题。</p>
 <h2 id="pkill">pkill</h2>
-
 <p>和<code>pgrep</code>类似,不同的是向进程发送信号,默认发送<code>SIGTERM</code>信号,查看都有哪些信号可用,可以使用<code>kill -l</code>查看</p>
-
 <p>pkill -f &ldquo;php index.php em&rdquo;</p>
-
 <p>类似<code>pkill</code>的命令是<code>killall</code>,后面都是可以直接加进程名字批量杀死进程</p>
-
 <h2 id="pstree">pstree</h2>
-
 <p>用树的形式显示正在运行的进程,树的节点为指定的PID(忽略则为init进程)</p>
-
 <h2 id="ss">ss</h2>
-
 <p>用于显示socket的统计信息,<code>-s</code>用于显示汇总</p>
-
 <p><code>-l</code>用于列出正在监听的<code>socket</code></p>
-
 <p><code>-p</code>显示进程信息,<code>ss -pl</code> 可以查看使用网络端口的进程名字</p>
-
 <h2 id="磁盘相关">磁盘相关</h2>
-
 <h3 id="dd">dd</h3>
-
 <p><code>dd</code>把指定的输入文件拷贝到指定的输出文件中,并且在拷贝的过程中可以进行格式转换。</p>
-
 <p>if =输入文件(或设备名称)
 of =输出文件(或设备名称)
 bs = bytes 同时设置读/写缓冲区的字节数(等于设置obs和obs)
 count = blocks 只拷贝输入的blocks块</p>
-
 <p>创建一个100M的空文件
 <code>dd if=/dev/zero of=hello.txt bs=100m count=1</code></p>
-
 <h2 id="查看当前目录下所有一级子目录文件夹大小">查看当前目录下所有一级子目录文件夹大小</h2>
-
 <p><code>du -h --max-depth=1</code></p>
-
 <h2 id="查看当前目录下所有一级子目录文件夹大小-并排序">查看当前目录下所有一级子目录文件夹大小 并排序</h2>
-
 <p><code>du -h --max-depth=1 |sort</code></p>
-
 <p>以上两条命令不适用于MacOs,可以使用<code>du -sh *</code></p>
-
 <h2 id="ps">ps</h2>
-
 <p>ps ef  查看进程的状态</p>
-
 <p>ps auxw 查看进程的CPU,内存占用</p>
-
 <p><code>ps faux</code> 以树状查看</p>
-
 <p>有些进程命令行太长无法查看全，可以使用 <code>ps auxww</code> 或者 <code>ps -fwwp 2755</code> 或者
 <code>xargs -0 printf '%s\n' &lt; /proc/2755/cmdline</code></p>
-
 <pre><code>/usr/java/jdk1.8.0_144/bin/java -Xms256m -Xmx512m -XX:PermSize=128m -XX:MaxPermSize=256m -classpath /home/apache-maven-3.3.9/boot/plexus-classworlds-2.5.2.jar -Dclassworlds.conf=/home/apache-maven-3.3.9/bin/m2.conf -Dmaven.home=/home/apache-maven-3.3.9 -Dmaven.multiModuleProjectDirectory=/home/spoc-contract org.codehaus.plexus.classworlds.launcher.Launcher -U -Dmaven.test.skip jetty:run
 /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java -Djava.util.logging.config.file=/usr/local/tomcat/conf/logging.properties -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djdk.tls.ephemeralDHKeySize=2048 -Djava.protocol.handler.pkgs=org.apache.catalina.webresources -classpath /usr/local/tomcat/bin/bootstrap.jar:/usr/local/tomcat/bin/tomcat-juli.jar -Dcatalina.base=/usr/local/tomcat -Dcatalina.home=/usr/local/tomcat -Djava.io.tmpdir=/usr/local/tomcat/temp org.apache.catalina.startup.Bootstrap start
-</code></pre>
-
-<p>ps 默认是按照PID排序的,若要按内存使用排序<code>ps auxw --sort=rss</code>,同理按虚拟内存排序<code>ps auxw --sort=vsz</code></p>
-
+</code></pre><p>ps 默认是按照PID排序的,若要按内存使用排序<code>ps auxw --sort=rss</code>,同理按虚拟内存排序<code>ps auxw --sort=vsz</code></p>
 <p>mac上无法使用<code>--sort</code>,可以采用<code>sort</code>排序,如rss在第六列,则<code>ps auxw | sort -k6,6n</code></p>
-
-<p>linux上进程有5种状态:
-1. 运行(正在运行或在运行队列中等待)
-2. 中断(休眠中, 受阻, 在等待某个条件的形成或接受到信号)
-3. 不可中断(收到信号不唤醒和不可运行, 进程必须等待直到有中断发生)
-4. 僵死(进程已终止, 但进程描述符存在, 直到父进程调用wait4()系统调用后释放)
-5. 停止(进程收到SIGSTOP, SIGSTP, SIGTIN, SIGTOU信号后停止运行运行)</p>
-
+<p>linux上进程有5种状态:</p>
+<ol>
+<li>运行(正在运行或在运行队列中等待)</li>
+<li>中断(休眠中, 受阻, 在等待某个条件的形成或接受到信号)</li>
+<li>不可中断(收到信号不唤醒和不可运行, 进程必须等待直到有中断发生)</li>
+<li>僵死(进程已终止, 但进程描述符存在, 直到父进程调用wait4()系统调用后释放)</li>
+<li>停止(进程收到SIGSTOP, SIGSTP, SIGTIN, SIGTOU信号后停止运行运行)</li>
+</ol>
 <pre><code> D    uninterruptible sleep (usually IO)
  R    running or runnable (on run queue)
  S    interruptible sleep (waiting for an event to complete)
@@ -482,9 +314,7 @@ For BSD formats and when the stat keyword is used, additional characters may be 
  s    is a session leader
  l    is multi-threaded (using CLONE_THREAD, like NPTL pthreads do)
  +    is in the foreground process group
-</code></pre>
-
-<pre><code>D    不可中断     Uninterruptible sleep (usually IO)
+</code></pre><pre><code>D    不可中断     Uninterruptible sleep (usually IO)
 R    正在运行，或在队列中的进程
 S    处于休眠状态
 T    停止或被追踪
@@ -498,199 +328,106 @@ s    包含子进程
 +    位于后台的进程组；
 l    多线程，克隆线程  multi-threaded (using CLONE_THREAD, like NPTL pthreads do)
 </code></pre>
-
 <p><code>lscpu</code></p>
-
 <h2 id="mpstat">mpstat</h2>
-
 <p>监视每隔CPU的负载</p>
-
 <p><code>mpstat  -P ALL 2</code></p>
-
 <h2 id="dig">dig</h2>
-
 <p><code>sudo apt-get install dnsutils</code> 或者 <code>yum install bind-utils -y</code></p>
-
 <p>DNS域名查询</p>
-
 <p><code>dig www.baidu.com</code></p>
-
 <p>查询的dns服务器将采用系统配置的服务器，即/etc/resovle.conf 中的</p>
-
 <p>如果要查询其他类型的记录，比如MX，CNAME，NS，PTR等，只需将类型加在命令后面即可</p>
-
 <pre><code>dig www.baidu.com mx
 dig www.baidu.com ns
-</code></pre>
-
-<p>nslookup 采用<code>-q</code>参数</p>
-
+</code></pre><p>nslookup 采用<code>-q</code>参数</p>
 <p><code>nslookup -q=CNAME  blog.suconghou.cn</code></p>
-
 <p><code>nslookup -q=A  blog.suconghou.cn</code></p>
-
 <p>可以查看使用的DNS服务器及端口,域名对应的IP,查询耗时等.</p>
-
 <p>默认情况下dig将采用udp协议进行查询，如果要采用tcp方式，可以加上 +tcp参数
 <code>dig www.baidu.com +tcp</code></p>
-
 <p>如果你是一个系统管理员，部署好了一台dns服务器之后想对它进行解析测试，就必须要显式指定待测试的dns服务器地址了，例如
 <code>dig @202.106.0.20 www.baidu.com a</code></p>
-
 <p>另外一个重要的功能是+trace参数，使用这个参数之后将显示从根域逐级查询的过程
 <code>dig www.baidu.com a +trace</code></p>
-
 <p><code>dig @223.6.6.6 blog.suconghou.cn +short</code> 简介模式列出IP</p>
-
 <p><strong>nslookup</strong> 也可以获取域名对应的IP</p>
-
 <p><code>nslookup www.baidu.com</code></p>
-
 <p>还可以指定DNS SERVER查询 <code>nslookup www.baidu.com 8.8.8.8</code></p>
-
 <h2 id="nc">nc</h2>
-
 <p>nc 命令默认没有安装,需要自己安装,<code>yum install nc</code></p>
-
 <p>window 版 nc <a href="https://github.com/diegocr/netcat/">https://github.com/diegocr/netcat/</a></p>
-
 <p><strong>传送字符与文件</strong></p>
-
 <p>一端<code>nc -l 9090</code>监听端口9090</p>
-
 <p>一端<code>nc host 9090</code>连接host的9090端口,通信建立后,可以双向通信,实现文字聊天等,也可以传送文件</p>
-
 <p>一端<code>nc -l 9090 &gt; file</code> ,另一端发送文件<code>nc host 9090 &lt; file</code></p>
-
 <p>传送文件夹(压缩文件) <code>nc -l 9090 |tar xzvf -</code> , 另一端发送文件<code>tar czvf - dir | nc host 9090</code></p>
-
 <p>同样可以拷贝硬盘 <code>nc -l 9090 | dd of=/dev/sda</code>,另一端发送<code>dd if=/dev/sda | nc host 9090</code></p>
-
 <p>有个高性能的方法：
 1.先在接收方执行:
 <code>nc -l 6677 | tar -C 接收文件的目录 -zxvf -</code>  #接收目录最好是个空目录，防止覆盖的风险</p>
-
 <p>2.再在发送方执行:
 <code>tar -czvf - 要发送的目录 | nc 接收方ip 6677</code></p>
-
 <p><code>pv &lt; big.sql.xz | nc x.x.x.x 9090</code> 在发送数据段显示进度条.</p>
-
 <p>ssh 也可以使用 pipe 传送 <code>tar zcf - attaches | ssh root@ip &quot;tar zxf - -C /path/to/&quot;</code></p>
-
 <p>使用端口如 <code>tar czf - public_html | ssh root@ip -p 5678 tar xzf - -C /www/web/myweb/public_html</code></p>
-
 <p>将当前目录的内容拷贝到远程指定的目录
 <code>tar cJvf - . | ssh root@ip &quot;cd /tmp/ &amp;&amp; mkdir -p a &amp;&amp; cd a &amp;&amp; tar xJvf -&quot;</code></p>
-
 <p>边打包边传输边解压,一条命令解决</p>
-
 <p>传送大量大文件 使用 <code>lftp</code>也是一个好方案</p>
-
 <pre><code>Use lftp, its much faster than rsync and its best for mirroring websites (many small files). It can also transfer in parallel using multiple connections:
 
 lftp -u username,password sftp://ip-address -e 'mirror --only-newer --no-dereference --parallel=5 /remote/path/ /destination/;quit'
 If one connection breaks it will reconnect and continue. If you break the transfer it will skip existing files and continue.
-</code></pre>
-
-<p><strong>端口扫描</strong></p>
-
+</code></pre><p><strong>端口扫描</strong></p>
 <p><code>nc -vz -w 1 someIp 1-1000</code></p>
-
 <p>显示所有日志</p>
-
 <p><code>nc -w 2 -n -z 127.0.0.1 6870-8990</code></p>
-
 <p>只显示能接通的端口</p>
-
 <p><strong>模拟调试http请求</strong></p>
-
 <p><code>GET / HTTP/1.0</code></p>
-
 <p><strong>端口转发</strong></p>
-
 <pre><code>mknod tunnel p #创建一个临时的管道文件tunnel 或者下面的
 mkfifo tunnel
-</code></pre>
-
-<pre><code>nc -l -p 8081  &lt; tunnel | nc 127.0.0.1 9090 | tee tunnel
-</code></pre>
-
-<p>或者</p>
-
+</code></pre><pre><code>nc -l -p 8081  &lt; tunnel | nc 127.0.0.1 9090 | tee tunnel
+</code></pre><p>或者</p>
 <pre><code>cat tunnel | nc 127.0.0.1 9090 | nc -l -p 8081 &gt; tunnel
-</code></pre>
-
-<p>使用之前需要了解其他的命令</p>
-
+</code></pre><p>使用之前需要了解其他的命令</p>
 <p><code>tee</code>命令将标准输入的数据写入标准输出和tee命令指定的文件参数</p>
-
 <p><code>mkfifo</code>命令用于创建一个FIFO（先进先出）方式的命名管道</p>
-
 <p>标准流:</p>
-
 <pre><code>stdin	0
 stdout	1
 stderr	2
-</code></pre>
-
-<p>这样的转发只能接受单次请求
+</code></pre><p>这样的转发只能接受单次请求
 可以改写,这里使用 busybox 里的nc</p>
-
 <pre><code>busybox  nc -ll -p 18081 -e busybox nc 127.0.0.1 9097
-</code></pre>
-
-<p>监听 18081 , 转发到 9097</p>
-
+</code></pre><p>监听 18081 , 转发到 9097</p>
 <p>nc的转发只能是单进程的，不支持并发。</p>
-
 <p>使用socat，可以更方便的做端口转发, Linux 端口转发C语言实现代码 <a href="https://github.com/rssnsj/portfwd">https://github.com/rssnsj/portfwd</a> Mac上可直接编译使用，十分方便</p>
-
 <p>C++ 实现的 适用于 Linux 等系统的 <a href="https://github.com/wangyu-/tinyPortMapper">https://github.com/wangyu-/tinyPortMapper</a> 并提供编译好的release</p>
-
 <pre><code>socat TCP-LISTEN:1935,fork TCP:10.18.18.102:1935
 
 socat udp4-listen:1935,reuseaddr,fork UDP:10.18.18.102:1935
-</code></pre>
-
-<p>socat 还可以转发 unix socket</p>
-
+</code></pre><p>socat 还可以转发 unix socket</p>
 <p><a href="https://gist.github.com/ljjjustin/585e817d1d7ce4eb75b87076e5b7aa7e">https://gist.github.com/ljjjustin/585e817d1d7ce4eb75b87076e5b7aa7e</a></p>
-
 <p>使用<code>nc</code>建立一个简易webserver</p>
-
 <p><code>while true;do sudo nc -l 8080 &lt; index.html;done</code></p>
-
 <p>用curl/wget可以访问,浏览器访问可能存在问题.</p>
-
 <p>nc 建立的server,比用 busybox 建立的server内存占用稍大,约<code>2MB</code> <code>busybox httpd -p 9797 -h /home/</code></p>
-
 <p>根据pid查看进程的<code>stdout</code></p>
-
 <p><code>yum install -y strace</code></p>
-
 <p><code>strace -ewrite -p $PID</code></p>
-
 <p>reptyr 更加容易做到</p>
-
 <p><code>yum install reptyr</code> (relp源)</p>
-
 <p><code>reptyr -s $PID</code></p>
-
 <h2 id="端口转发">端口转发</h2>
-
 <p>brook relay -l :5 -r 1.2.3.4:5</p>
-
 <h2 id="history">history</h2>
-
 <p>不记录本次会话的history</p>
-
 <pre><code>HISTFILE=/dev/null; HISTSIZE=0; HISTFILESIZE=0;
-</code></pre>
-
-<p>执行的任何命令都不会写入 <code>~/.bash_history</code> , 按上键也不可复用执行过的命令. 这条设置会被记录到对应的<code>.history</code>文件里,但你可以修改这个文件.</p>
-
+</code></pre><p>执行的任何命令都不会写入 <code>~/.bash_history</code> , 按上键也不可复用执行过的命令. 这条设置会被记录到对应的<code>.history</code>文件里,但你可以修改这个文件.</p>
 <h2 id="一份linux别名和函数库">一份Linux别名和函数库</h2>
-
 <pre><code>alias tree=&quot;find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g' &quot;;
 alias cls=&quot;cd $1;ls -lh;&quot;;
 # 获得你的公网IP地址和主机名。
@@ -726,46 +463,28 @@ topmem()
 	ps aux | sort -k6nr | head -n5;
 }
 
-</code></pre>
-
-<p>当内存不足,最先被杀死的进程
+</code></pre><p>当内存不足,最先被杀死的进程
 <a href="http://www.vpsee.com/2013/10/how-to-configure-the-linux-oom-killer/">http://www.vpsee.com/2013/10/how-to-configure-the-linux-oom-killer/</a></p>
-
 <pre><code>oomscore()
 {
   for proc in $(find /proc -maxdepth 1 -regex '/proc/[0-9]+'); do printf &quot;%2d %5d %s\n&quot; &quot;$(cat $proc/oom_score)&quot; &quot;$(basename $proc)&quot; &quot;$(cat $proc/cmdline | tr '\0' ' ' | head -c 50)&quot; ;done 2&gt;/dev/null | sort -nr | head -n 10
 }
-</code></pre>
-
-<p><a href="http://learning-kernel.readthedocs.io/en/latest/mem-management.html">http://learning-kernel.readthedocs.io/en/latest/mem-management.html</a></p>
-
+</code></pre><p><a href="http://learning-kernel.readthedocs.io/en/latest/mem-management.html">http://learning-kernel.readthedocs.io/en/latest/mem-management.html</a></p>
 <p>oomps()
 {
-  ps -eo pid,comm,pmem,rss &ndash;sort -rss | head -n 10 | awk &lsquo;{&ldquo;cat /proc/&rdquo;$1&rdquo;/oom_score&rdquo; | getline oom; print $0&rdquo;\t&rdquo;oom}&rsquo; 2&gt;/dev/null
+ps -eo pid,comm,pmem,rss &ndash;sort -rss | head -n 10 | awk &lsquo;{&ldquo;cat /proc/&ldquo;$1&rdquo;/oom_score&rdquo; | getline oom; print $0&rdquo;\t&quot;oom}&rsquo; 2&gt;/dev/null
 }</p>
-
 <p>Linux 还可以使用 <code>bind</code> 定义快捷键执行的命令</p>
-
 <p>如让 <code>Ctrl+a</code> 执行 ls  <code>bind -x '&quot;\C-a&quot;: ls -lh'</code></p>
-
 <p>使用<code>unalias</code>取消alias</p>
-
 <p>内存增序 <code>ps aux --sort rss</code></p>
-
 <p>内存减序 <code>ps aux --sort -rss</code></p>
-
 <p>cpu增序 <code>ps auxw --sort=%cpu</code></p>
-
 <p>cpu减序 <code>ps auxw --sort=-%cpu</code></p>
-
-<p>可写为alias <code>alias mem=&quot;ps aux --sort -rss  | head -n20 &amp;&amp; ps auxw --sort=-%cpu,-time | head -n5&quot;</code></p>
-
+<p>可写为alias <code>alias mem=&quot;ps aux --sort -rss  | head -n20 &amp;&amp; ps auxw --sort=-%cpu,-time | head -n5&quot; </code></p>
 <p><code>netstat -anltup</code> 与 <code>ss -ln</code> 都能查看网络链接信息</p>
-
 <p><code>watch -n 1 -d netstat -ant</code> 持续监控变化</p>
-
 <p>部分快捷键</p>
-
 <pre><code>
 CTRL + U -剪切光标前的内容
 
@@ -787,53 +506,30 @@ CTRL + W -剪切光标后一个单词
 
 Shift + Insert -向终端内粘贴文本
 
-</code></pre>
-
-<p>压缩率 xz &gt; 7z &gt; bzip2 &gt; gzip &gt; zip</p>
-
+</code></pre><p>压缩率 xz &gt; 7z &gt; bzip2 &gt; gzip &gt; zip</p>
 <p>xz &gt; zstd &gt; gzip</p>
-
 <p>默认配置 zstd 比 gzip 快4倍, 并且比gzip更小, 并且解压也比gzip快一倍，默认配置完全碾压gzip</p>
-
 <p>使用 tar czvf 是指定压缩比</p>
-
 <p><code>env GZIP=-9 tar cvzf file.tar.gz /path/to/directory</code></p>
-
 <p><code>XZ_OPT=-9 tar -Jcvf file.tar.xz /path/to/directory</code></p>
-
 <p><code>BZIP2=-9 tar cvjf file.tar.bz2 /path/to/directory</code></p>
-
 <p>或者使用管道</p>
-
 <p><code>tar cvf - /path/to/directory | gzip -9 - &gt; file.tar.gz</code></p>
-
-<h3 id="https-github-com-facebook-zstd-编译"><a href="https://github.com/facebook/zstd">https://github.com/facebook/zstd</a> 编译</h3>
-
+<h3 id="httpsgithubcomfacebookzstd-编译"><a href="https://github.com/facebook/zstd">https://github.com/facebook/zstd</a> 编译</h3>
 <pre><code>apk add --update curl make gcc g++
 cd /tmp
 curl -sSL https://github.com/facebook/zstd/archive/v1.3.5.tar.gz | tar xz
 cd zstd-1.3.4
 make
-</code></pre>
-
-<p>无依赖,可直接静态编译,也可以不静态编译.</p>
-
+</code></pre><p>无依赖,可直接静态编译,也可以不静态编译.</p>
 <p>还可以添加 gz / xz / lzma 支持</p>
-
 <p><code>make CFLAGS=&quot;-O3 -ffunction-sections -fdata-sections&quot; LDFLAGS=&quot;-static -Wl,--gc-sections&quot; -j4</code></p>
-
 <p>编译约需2分钟,当前目录下会生成<code>zstd</code>可执行文件</p>
-
 <p>zstd 对于文本文件的压缩率非常高，大幅优于 gzip；但是对于二进制类的文件压缩率不如 lzma。用 zstd 来压缩日志是个比较好的做法,zstd 压缩二进制文件也比gzip优秀</p>
-
 <p>gzexe 创建自解压文件</p>
-
 <p>xz5.2以上版本支持多线程压缩,xz -T0 就可以自动按机器核心数多线程执行了,xz 支持 env 环境变量，XZ_OPT=-T0 xz xxx.file 就行啦</p>
-
 <p>xz -T8 big.sql 使用8线程压缩.</p>
-
 <p>多线程的压缩速度几乎与gzip相当</p>
-
 <pre><code># 查看你机器的CPU个数,超线程信息
 sysinfo() {
 physicalNumber=0
@@ -852,226 +548,124 @@ echo &quot;HT Number           : ${HTNumber}&quot;
 echo &quot;*****************************&quot;
 }
 
-</code></pre>
-
-<p><code>lscpu</code> 命令也能简单查看CPU信息</p>
-
+</code></pre><p><code>lscpu</code> 命令也能简单查看CPU信息</p>
 <h2 id="使用脚本清理一些文件">使用脚本清理一些文件</h2>
-
 <p>查看XX多少天未变动过且大于XX的文件</p>
-
 <pre><code>oldfiles() { day=${1:-30}; size=${2:-100}; find . -mtime +&quot;$day&quot; -type f -size +&quot;$size&quot;k |xargs  ls  -lhS ; }
-</code></pre>
-
-<p>删除当前目录超过30天未变动过的log文件</p>
-
+</code></pre><p>删除当前目录超过30天未变动过的log文件</p>
 <pre><code>find . -mtime +30 -type f -name '*.log*' | xargs rm
-</code></pre>
-
-<p>或者</p>
-
+</code></pre><p>或者</p>
 <pre><code>find . -mtime +30 -type f -name '*.log*' -exec rm -i {} \;
-</code></pre>
-
-<p>所有的操作都包含子目录</p>
-
+</code></pre><p>所有的操作都包含子目录</p>
 <p>-exec  参数后面跟的是command命令，它的终止是以;为结束标志的，所以这句命令后面的分号是不可缺少的，考虑到各个系统中分号会有不同的意义，所以前面加反斜杠。</p>
-
 <p>{}   花括号代表前面find查找出来的文件名。</p>
-
-<p>如<code>find . -type f -exec ls -l {} \;</code></p>
-
+<p>如<code>find . -type f -exec ls -l {} \; </code></p>
 <p>使用-exec选项的安全模式。它将在对每个匹配到的文件进行操作之前提示你。</p>
-
 <p>如<code>find . -name &quot;*.log&quot; -mtime +60 -ok rm {} \;</code></p>
-
 <p>-mtime +30 设定时间为30天前</p>
-
 <p>-type f 查找的类型为文件</p>
-
 <p>-name 文件路径需要匹配的</p>
-
 <p>使用 find 的时候加上maxdepth限制搜索深度，可以加快进度</p>
-
 <p><code>find jenkins/ -maxdepth 5 -type f -name &quot;upload.py&quot;</code></p>
-
-<p>find . -type f -mmin +1 -exec rm -i {} \;</p>
-
+<p>find . -type f -mmin +1 -exec rm -i {} ;</p>
 <p><strong>使用全文查找</strong></p>
-
 <p>grep -lr &lsquo;string&rsquo; /etc/</p>
-
 <p>这个命令就可以搞定。搜索etc下面的文件，包含所有目录下的文件。这样就搞定了。</p>
-
 <p>-i，乎略大小写
 -l，找出含有这个字符串的文件
 -r，不放过子目录</p>
-
-<h2 id="解决can-t-set-the-locale-make-sure-lc-and-lang-are-correct">解决can&rsquo;t set the locale; make sure $LC_* and $LANG are correct</h2>
-
+<h2 id="解决cant-set-the-locale-make-sure-lc_-and-lang-are-correct">解决can&rsquo;t set the locale; make sure $LC_* and $LANG are correct</h2>
 <p><a href="https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian">https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian</a>
 <code>照着全部做下来</code></p>
-
 <h2 id="sed使用">sed使用</h2>
-
 <p>更新版本号</p>
-
 <pre><code>sed -i &quot;s/?ver=\w\+/?ver=`date +%s`/g&quot; *.html
-</code></pre>
-
-<pre><code>o=http://cdn.ourwill.cn/fed-static r=http://cdn.ourwill.cn/fed-static/fedv2 sed -i &quot;s#$o#$r#g&quot; *.html
-</code></pre>
-
-<p>以当前时间命名</p>
-
+</code></pre><pre><code>o=http://cdn.xx.cn/fed-static r=http://cdn.xx.cn/fed-static/fedv2 sed -i &quot;s#$o#$r#g&quot; *.html
+</code></pre><p>以当前时间命名</p>
 <pre><code>filename=html`date +&quot;%Y%m%d%H%M%S&quot;`.tar.gz
-</code></pre>
-
-<h2 id="sleep-forever">sleep forever</h2>
-
+</code></pre><h2 id="sleep-forever">sleep forever</h2>
 <ol>
 <li><code>while true; do sleep 86400; done</code></li>
 <li><code>sleep infinity</code></li>
 <li><code>cat</code></li>
 </ol>
-
 <h2 id="vim乱码解决">Vim乱码解决</h2>
-
 <p><code>vim ~/.vimrc</code></p>
-
 <pre><code>set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
 set termencoding=utf-8
 set encoding=utf-8
-</code></pre>
-
-<h2 id="开机启动的">开机启动的</h2>
-
+</code></pre><h2 id="开机启动的">开机启动的</h2>
 <p>检视和控制systemd的主要命令是systemctl</p>
-
-<p>详细使用见<a href="https://wiki.archlinux.org/index.php/systemd_(简体中文)">https://wiki.archlinux.org/index.php/systemd_(简体中文)</a></p>
-
+<p>详细使用见<a href="https://wiki.archlinux.org/index.php/systemd_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">https://wiki.archlinux.org/index.php/systemd_(简体中文)</a></p>
 <p>CentOS7 用<code>systemctl</code>取代了<code>service</code>
 旧版本的 <code>service docker start</code> 改为<code>systemctl start docker</code>
 设置开机启动
 旧版本的 <code>chkconfig docker on</code> 改为 <code>systemctl enable docker</code></p>
-
 <p><code>/usr/lib/systemd/system/</code>
 <code>/etc/systemd/system/</code>
 后者有较高优先级会覆盖前者</p>
-
 <p>/etc/profile 和 ~/.bash_profile 是在启动 一个交互登陆shell的时候 被调用。
 /etc/bashrc 和 ~/.bashrc 是在一个交互的非登陆shell启动 的时候 被调用。
 ~/.bash_logout 在用户注销登陆的时候 被读取</p>
-
 <p>系统脚本 可以放置在/etc/rc.d/init.d中并建立/etc/rc.d/rc?.d链接，也可以直接放置在/etc/rc.d/rc.local中。
 init.d脚本 包含完整的start,stop,status,reload等参数，是标准做法，推荐使用。</p>
-
 <h2 id="linux-家族">Linux 家族</h2>
-
 <p>一般来说著名的linux系统基本上分两大类：</p>
-
 <p>1.RedHat系列：Redhat、Centos、Fedora等</p>
-
 <p>2.Debian系列：Debian、Ubuntu等</p>
-
 <p>RedHat 系列</p>
-
 <p>1 常见的安装包格式 rpm包,安装rpm包的命令是“rpm -参数”</p>
-
 <p>2 包管理工具 yum</p>
-
 <p>3 支持tar包</p>
-
 <p>Debian系列
 1 常见的安装包格式 deb包,安装deb包的命令是“dpkg -参数”</p>
-
 <p>2 包管理工具 apt-get</p>
-
 <p>3 支持tar包</p>
-
 <p><code>soft rlimits too low. Number of files is 256, should be at least 1000</code></p>
-
 <p>见 <a href="https://www.fdzh.org/slides/2015/06/20/linux-distr/">https://www.fdzh.org/slides/2015/06/20/linux-distr/</a></p>
-
-<p><img src="http://static.suconghou.cn/document/linux.jpg" alt="家族示意图" /></p>
-
+<p><img src="http://static.suconghou.cn/document/linux.jpg" alt="家族示意图"></p>
 <p><a href="https://upload.wikimedia.org/wikipedia/commons/1/1b/Linux_Distribution_Timeline.svg">https://upload.wikimedia.org/wikipedia/commons/1/1b/Linux_Distribution_Timeline.svg</a></p>
-
 <h2 id="判断一个命令是否存在">判断一个命令是否存在</h2>
-
 <p>如判断<code>nc</code>是否存在</p>
-
 <pre><code>command -v nc &gt;/dev/null 2&gt;&amp;1 || { echo &gt;&amp;2 &quot;I require nc but it's not installed.  Aborting.&quot;; exit 1; }
 
-</code></pre>
-
-<pre><code>if ! command -v pip &gt; /dev/null 2&gt;&amp;1;then
+</code></pre><pre><code>if ! command -v pip &gt; /dev/null 2&gt;&amp;1;then
     echo &quot;YES&quot;
 fi
-</code></pre>
-
-<pre><code>PIP=$(which pip)
+</code></pre><pre><code>PIP=$(which pip)
 if [ ! -x &quot;${PIP}&quot; ];then
 	echo &quot;NO&quot;
 else
 	echo &quot;YES&quot;
 fi
-</code></pre>
+</code></pre><pre><code>[[ ! -x $(which pip) ]] &amp;&amp; echo &quot;No&quot; || echo &quot;Yes&quot;
 
-<pre><code>[[ ! -x $(which pip) ]] &amp;&amp; echo &quot;No&quot; || echo &quot;Yes&quot;
-
-</code></pre>
-
-<pre><code>if (( ${+commands[pip]} )); then
+</code></pre><pre><code>if (( ${+commands[pip]} )); then
 	echo &quot;YES&quot;
 fi
-</code></pre>
-
-<h2 id="判断一个进程pid是否还存在">判断一个进程PID是否还存在</h2>
-
+</code></pre><h2 id="判断一个进程pid是否还存在">判断一个进程PID是否还存在</h2>
 <p>例如检查pid为143的进程 <code>ps ax | awk '{ print $1 }' | grep -e &quot;^143$&quot;</code></p>
-
 <h2 id="时间同步">时间同步</h2>
-
 <p><a href="http://www.pool.ntp.org/zh/">http://www.pool.ntp.org/zh/</a></p>
-
 <p>cn.pool.ntp.org</p>
-
 <p><a href="http://www.ntp.org.cn/">http://www.ntp.org.cn/</a> 提供 ntp server</p>
-
 <p>使用 <code>sudo ntpdate us.ntp.org.cn</code> 来同步时间.</p>
-
 <p><code>time.pool.aliyun.com</code>  <code>time.asia.apple.com</code>  <code>time.apple.com</code></p>
-
 <p>/usr/bin/tzselect 来设置时区</p>
-
 <p>Alpine Linux 3.4  <code>ntpd -d -n -q -p us.ntp.org.cn</code></p>
-
 <p>还可以<code>sudo date -s &quot;2017-02-08 21:28:00&quot;</code>手动设置时间</p>
-
 <p>alpine中设置时区执行</p>
-
 <pre><code>apk update &amp;&amp; apk upgrade &amp;&amp; apk add --no-cache tzdata
 ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 echo &quot;Asia/Shanghai&quot; &gt; /etc/timezone
-</code></pre>
-
-<p>会立即生效.</p>
-
+</code></pre><p>会立即生效.</p>
 <p>CentOS</p>
-
 <p><code>ntpdate time.pool.aliyun.com</code> 使用<code>ntpdate</code>时,不能运行ntpd服务</p>
-
 <p><code>/etc/ntp.conf</code></p>
-
 <p><code>ntpd</code></p>
-
 <h2 id="linux-磁盘与mysql性能测试">Linux 磁盘与MySQL性能测试</h2>
-
 <p>源码地址 : <a href="https://github.com/akopytov/sysbench">https://github.com/akopytov/sysbench</a></p>
-
 <p>它主要包括以下几种方式的测试：</p>
-
 <ol>
 <li>cpu性能</li>
 <li>磁盘io性能</li>
@@ -1080,147 +674,81 @@ echo &quot;Asia/Shanghai&quot; &gt; /etc/timezone
 <li>POSIX线程性能</li>
 <li>数据库性能(OLTP基准测试)</li>
 </ol>
-
 <p>目前sysbench主要支持 MySQL,pgsql,oracle 这3种数据库。</p>
-
 <h2 id="mtr网络线路测试">Mtr网络线路测试</h2>
-
 <p>如果未安装可以<code>yum info mtr</code>安装</p>
-
 <p>-n  不用主机解释
 -c   发送多少个数据包
 &ndash;report  结果显示，并不动态显示。</p>
-
 <p><code>mtr --report www.baidu.com</code></p>
-
 <h2 id="shell基本语法">Shell基本语法</h2>
-
 <p><a href="http://blog.sina.com.cn/s/blog_64e166580100vwk2.html">http://blog.sina.com.cn/s/blog_64e166580100vwk2.html</a></p>
-
 <p>判断一个变量是否为空</p>
-
 <pre><code>pid=$(ps aux | grep &quot;process name&quot; | grep &quot;jetty:run&quot; | awk '{print $2}')
 [ -n &quot;$pid&quot; ] &amp;&amp; echo $pid &amp;&amp; kill $pid
-</code></pre>
-
-<p>不为空则输出，并杀死进程</p>
-
+</code></pre><p>不为空则输出，并杀死进程</p>
 <p>声明数组</p>
-
 <p><code>arr=(item1 item2 item3)</code> 使用空格分开</p>
-
 <p>使用<code>echo ${arr[*]}</code> 或者 <code>echo ${arr[@]}</code> 可以查看数组内的元素,<code>echo $arr</code>只能取得第一个元素</p>
-
 <p>要取得数组长度,只需在名字前面加一个#,如<code>echo ${#arr[*]}</code> 或者 <code>echo ${#arr[@]}</code></p>
-
 <p>数组下标以0开始,取得第二个元素为<code>echo ${arr[1]}</code></p>
-
 <p>赋值使用<code>arr[5]=5555</code></p>
-
 <p><strong>for in</strong></p>
-
 <p>for in 遍历文件 <code>for i in *.less ; do echo $i;done;</code></p>
-
 <pre><code>
 while true;do for i in *.less ; do echo $i;done; sleep 6 ;done;
 
 # 压缩所有LESS
 while true;do for i in *.less ; do air compress $i -r;done; sleep 6 ;done;
 
-</code></pre>
-
-<p>shell 命令查询 <a href="https://explainshell.com/">https://explainshell.com/</a></p>
-
+</code></pre><p>shell 命令查询 <a href="https://explainshell.com/">https://explainshell.com/</a></p>
 <p>常用 Linux命令 一览 <a href="https://github.com/Idnan/bash-guide">https://github.com/Idnan/bash-guide</a></p>
-
 <h3 id="shell多行转化为一行">shell多行转化为一行</h3>
-
 <p>例如当前目录下所有less,但排除指定文件,按字母排序成一行</p>
-
 <pre><code>ls *.less | grep -v &quot;base.less\|config.less\|mixins.less&quot; |  xargs echo
-</code></pre>
-
-<p>直接执行</p>
-
+</code></pre><p>直接执行</p>
 <pre><code>air compress ` ls *.less | grep -v &quot;base.less\|config.less\|mixins.less&quot; | xargs echo`
-</code></pre>
-
-<p>来合并这些文件.</p>
-
+</code></pre><p>来合并这些文件.</p>
 <p><a href="http://blog.csdn.net/hjxhjh/article/details/17264739">http://blog.csdn.net/hjxhjh/article/details/17264739</a></p>
-
 <p><a href="http://blog.sina.com.cn/s/blog_4a3c301c0100lqbm.html">http://blog.sina.com.cn/s/blog_4a3c301c0100lqbm.html</a></p>
-
 <h2 id="dns配置">DNS配置</h2>
-
 <p><code>/etc/resolv.conf</code>内配置</p>
-
 <p>国外可以配置</p>
-
 <pre><code>nameserver 8.8.8.8
 nameserver 4.2.2.1
 nameserver 8.8.4.4
 nameserver 4.2.2.2
-</code></pre>
-
-<p>国内</p>
-
+</code></pre><p>国内</p>
 <pre><code>nameserver 1.2.4.8
 nameserver 119.29.29.29
 nameserver 119.28.28.28
 nameserver 114.114.114.114
 nameserver 223.5.5.5
 nameserver 223.6.6.6
-</code></pre>
-
-<h2 id="测试vps宽带">测试VPS宽带</h2>
-
+</code></pre><h2 id="测试vps宽带">测试VPS宽带</h2>
 <p><a href="https://github.com/sivel/speedtest-cli">https://github.com/sivel/speedtest-cli</a></p>
-
 <p><a href="http://man.linuxde.net/speedtest-cli">http://man.linuxde.net/speedtest-cli</a></p>
-
 <p>还可以使用wget下载各大型机房的测试文件</p>
-
 <p>芝加哥机房/100M测试包</p>
-
 <p><code>wget http://cachefly.cachefly.net/100mb.test</code></p>
-
 <p><code>wget http://cachefly.cachefly.net/10mb.test</code></p>
-
 <p>访问 cachefly.cachefly.net 可以测试你电脑当前的网络速度</p>
-
 <p>枫叶主机 <a href="http://www.fyzhuji.com/speed.html">http://www.fyzhuji.com/speed.html</a> 提供的测速文件.</p>
-
 <p>香港SV新力讯机房,测试20M光纤能跑满2.6MB/s</p>
-
 <p>星光互联 <a href="https://www.starrydns.com/tc/speedtest">https://www.starrydns.com/tc/speedtest</a> 提供的测速文件</p>
-
 <p>Mega-I, Hong Kong,测试能跑到3MB/s</p>
-
 <h2 id="lvm">LVM</h2>
-
 <p>使用<code>pvcreate</code>创建PV</p>
-
 <p>pvcreate 物理分区名字</p>
-
 <p>使用<code>vgcreate</code>创建VG</p>
-
 <p>vgcreate vgname pv1 pv2 pv3</p>
-
 <p>pvdisplay 查看当前的PV</p>
-
 <p>vgdisplay 查看VG</p>
-
 <p>lvdisplay 查看LV</p>
-
 <p><code>pvscan</code> <code>vgscan</code>  <code>lvscan</code> <code>fdisk -l</code></p>
-
 <p>-L：指定LV的大小 -n：指定LV的名。Vo1Group00：表示从这个VG中划分LV；</p>
-
 <p>LV创建好后格式化为想要的格式,然后挂载指定目录,就能使用了.(可以使用<code>df -lhT</code>查看了)</p>
-
 <p><code>lsblk</code></p>
-
 <pre><code>[root@will ~]# lsblk
 NAME            MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
 sda               8:0    0 931.5G  0 disk
@@ -1232,64 +760,41 @@ sda               8:0    0 931.5G  0 disk
   └─centos-home 253:2    0 874.9G  0 lvm  /home
 sr0              11:0    1  1024M  0 rom
 
-</code></pre>
-
-<h2 id="磁盘挂载">磁盘挂载</h2>
-
+</code></pre><h2 id="磁盘挂载">磁盘挂载</h2>
 <ol>
-<li><p><code>fdisk -l</code>或者 <code>lsblk</code> 查看磁盘</p></li>
-
-<li><p><code>fdisk /dev/vdb</code> 对指定磁盘分区, <code>n</code> 新建 <code>w</code>保存写入, <code>q</code>放弃操作</p></li>
+<li>
+<p><code>fdisk -l </code>或者 <code>lsblk</code> 查看磁盘</p>
+</li>
+<li>
+<p><code>fdisk /dev/vdb</code> 对指定磁盘分区, <code>n</code> 新建 <code>w</code>保存写入, <code>q</code>放弃操作</p>
+</li>
 </ol>
-
 <p>分区完毕后 使用第一步的命令可以查看到变化</p>
-
 <p><code>blkid</code> 可以查看分区的uuid,类型, 后面也可更一个分区名,查看指定的</p>
-
-<ol>
+<ol start="3">
 <li>格式化分区 <code>df -lhT</code> 可以看到原有的磁盘格式</li>
 </ol>
-
 <p>使用 <code>mke2fs</code> 格式化分区</p>
-
 <p><code>e2fsck</code> 检查文件、扇区是否有错误</p>
-
 <p><code>mke2fs -t ext4 /dev/vdb1</code>  #ext4创建文件系统</p>
-
-<ol>
+<ol start="4">
 <li>挂载</li>
 </ol>
-
 <p><code>mount</code> 可以查看目前已挂载的信息</p>
-
 <p><code>vim /etc/fstab</code> 永久性挂载配置</p>
-
 <p><code>/dev/vdb1  /data ext4 defaults 1 1</code></p>
-
 <p>第一个是分区, 第二个是路径 第三个是分区格式,</p>
-
 <p>mount -a 自动挂载/etc/fstab文件没有挂载的设备，不管已挂载过的设备</p>
-
 <p>　　如果想刷新修改过已挂载的设备，mount -o remount /dev/sdX（或挂载点）</p>
-
 <p>swpon -a 自动激活/etc/fstab文件没有激活的交换（扩展）空间 ，不管已激活的扩展空间</p>
-
 <p>　　如果想刷新修改过已激活的扩展设备，mount -o remount /dev/sdX（或挂载点）</p>
-
 <p>挂载点必须是已经存在的目录。</p>
-
 <p>参考 <a href="https://www.cnblogs.com/qiyebao/p/4484047.html">https://www.cnblogs.com/qiyebao/p/4484047.html</a></p>
-
 <p><a href="https://www.cnblogs.com/along21/p/7410619.html">https://www.cnblogs.com/along21/p/7410619.html</a></p>
-
 <h2 id="编译lua">编译lua</h2>
-
 <p><a href="http://home.tiscali.cz/~cz210552/webbench.html">http://home.tiscali.cz/~cz210552/webbench.html</a></p>
-
 <p><a href="http://www.cppblog.com/merlinfang/archive/2014/12/26/209311.html">http://www.cppblog.com/merlinfang/archive/2014/12/26/209311.html</a></p>
-
 <p><a href="http://cloudwu.github.io/lua53doc/">http://cloudwu.github.io/lua53doc/</a></p>
-
 <pre><code>cd /tmp
 LUA_VERSION=lua-5.3.3
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
@@ -1297,65 +802,81 @@ wget http://www.lua.org/ftp/${LUA_VERSION}.tar.gz
 tar zxf ${LUA_VERSION}.tar.gz
 cd ${LUA_VERSION}
 make linux
-</code></pre>
-
-<p><a href="http://webserver2.tecgraf.puc-rio.br/~lhf/ftp/lua/#srlua">http://webserver2.tecgraf.puc-rio.br/~lhf/ftp/lua/#srlua</a></p>
-
+</code></pre><p><a href="http://webserver2.tecgraf.puc-rio.br/~lhf/ftp/lua/#srlua">http://webserver2.tecgraf.puc-rio.br/~lhf/ftp/lua/#srlua</a></p>
 <p><a href="http://luabinaries.sourceforge.net/download.html">http://luabinaries.sourceforge.net/download.html</a></p>
-
 <p><a href="http://cloudwu.github.io/lua53doc/manual.html">http://cloudwu.github.io/lua53doc/manual.html</a></p>
-
 <p>socat是一個netcat(nc)的替代產品，可以稱得上nc++。
 <a href="http://www.dest-unreach.org/socat/">http://www.dest-unreach.org/socat/</a></p>
-
 <p><a href="http://www.dest-unreach.org/socat/download/">http://www.dest-unreach.org/socat/download/</a></p>
-
 <blockquote>
 <p>iotop 查看谁在疯狂读写磁盘</p>
-
+</blockquote>
+<blockquote>
 <p>dstat 用来替换 vmstat, iostat, netstat, nfsstat 和 ifstat 这些命令的工具，是一个全能系统信息统计工具。</p>
-
+</blockquote>
+<blockquote>
 <p>htop 比top更好用</p>
-
+</blockquote>
+<blockquote>
 <p>mtr</p>
-
+</blockquote>
+<blockquote>
 <p>netpipes 和socat一样，主要是用来在命令行来进行socket操作的命令，这样你就可以在Shell脚本下行进socket网络通讯了。</p>
 </blockquote>
-
+<h3 id="htop-进度条的颜色">htop 进度条的颜色</h3>
+<p>对于CPU显示条：</p>
+<blockquote>
+<p>蓝色为：低优先级的线程</p>
+</blockquote>
+<blockquote>
+<p>绿色为：正常优先级线程</p>
+</blockquote>
+<blockquote>
+<p>红色为：内核线程</p>
+</blockquote>
+<p>对于内存显示条：</p>
+<blockquote>
+<p>蓝色为：缓冲区（buffers）</p>
+</blockquote>
+<blockquote>
+<p>绿色为：已使用的内存</p>
+</blockquote>
+<blockquote>
+<p>（橘）黄色为：高速缓存（cache）</p>
+</blockquote>
+<p>怎么清除黄色部分的内存，即高速缓存呢？</p>
+<p>只需在终端输入：</p>
+<p><code>sync; sudo sh -c &quot;echo 3 &gt; /proc/sys/vm/drop_caches&quot;</code></p>
+<p>MemAvailable：可用内存数</p>
+<p>应用程序可用内存数。系统中有些内存虽然已被使用但是可以回收的，比如cache/buffer、slab都有一部分可以回收，所以MemFree不能代表全部可用的内存，这部分可回收的内存加上MemFree才是系统可用的内存，即：MemAvailable≈MemFree+Buffers+Cached，它是内核使用特定的算法计算出来的，是一个估计值。它与MemFree的关键区别点在于，MemFree是说的系统层面，MemAvailable是说的应用程序层面。</p>
+<ol>
+<li>Buffer不是缓存，国内常用的翻译是缓冲区。</li>
+<li>其次，大部分场景中，Buffer是特指内存中临时存放的IO设备数据——包括读取和写入；而Cache的用处很多——很多IO设备（例如硬盘、RAID卡）上都有Cache，CPU内部也有Cache，浏览器也有Cache。</li>
+<li>Buffer并非用于提高性能，而Cache的目的则是提高性能。</li>
+<li>涉及到IO设备读写的场景中，Cache的一部分本身就是Buffer的一种。如果说某些场合Buffer可以提升IO设备的读写性能，只不过是因为Buffer本身是Cache系统的一部分，性能提升来自于Cache机制。</li>
+<li>Buffer占用的内存不能回收，如果被强行回收会出现IO错误。Cache占用的内存，除实现Buffer的部分外都可以回收，代价则是下一次读取需要从数据的原始位置（通常是性能更低的设备）读取。</li>
+<li>在IO读写过程中，任何数据的读写都必然会产生Buffer，但根据Cache算法，可能会有相当部分数据不会被Cache。</li>
+</ol>
 <h3 id="查看网络流量">查看网络流量</h3>
-
 <p>统计连接某服务端口最多的的IP地址</p>
-
 <p><code>netstat -nat | grep &quot;192.168.1.3:443&quot; |awk '{print $5}'|awk -F: '{print $1}'|sort|uniq -c|sort -nr|head -20</code></p>
-
 <p>统计在一台前端机上高峰时间TCP连接的情况，统计命令：
 <code>netstat -tn | awk '/^tcp/ {++S[$NF]} END {for(a in S) print a, S[a]}'</code></p>
-
 <pre><code>sysctl net.ipv4.tcp_syncookies=1
 sysctl net.ipv4.tcp_tw_reuse=1
 sysctl net.ipv4.tcp_tw_recycle=1
 sysctl net.ipv4.tcp_fin_timeout=30
-</code></pre>
-
-<p>iftop和iptraf可以用来查看当前网络链接的一些流量情况。</p>
-
+</code></pre><p>iftop和iptraf可以用来查看当前网络链接的一些流量情况。</p>
 <p><code>ifstat</code> 能查看系统大致的网络流量,直接执行<code>ifstat</code>即可</p>
-
 <p><code>ifstat -v</code>打印版本并退出</p>
-
 <p><code>ifstat -a</code>显示所有的网卡统计,<code>-b</code>以<code>Kbps</code>为单位.<code>-S</code>持续更新而不滚动更新,直接加上数字可控制计算的间隔<code>ifstat -tT 5</code></p>
-
 <p><code>iftop</code> 在<code>epel</code>源中,系统不自带,功能更加全面, 同样功能全面的还有 <a href="https://github.com/tgraf/bmon">https://github.com/tgraf/bmon</a></p>
-
 <p><code>yum install iftop -y</code>   或  <code>sudo apt-get install iftop</code></p>
-
 <p><code>iftop -N -n -i eth1</code></p>
-
 <blockquote>
 <p><code>-n</code>直接显示IP, 不进行DNS反解析
 <code>-N</code>直接显示连接埠编号, 不显示服务名称</p>
 </blockquote>
-
 <pre><code>进入iftop画面后的一些操作命令(注意大小写)
 
 按h切换是否显示帮助;
@@ -1403,221 +924,163 @@ sysctl net.ipv4.tcp_fin_timeout=30
 按!可以使用shell命令，这个没用过！没搞明白啥命令在这好用呢！
 
 按q退出监控。
-</code></pre>
-
-<p>iostat, vmstat, ifstat 三合一的工具，用来查看系统性能。</p>
-
+</code></pre><p>iostat, vmstat, ifstat 三合一的工具，用来查看系统性能。</p>
 <p>rtorrent aria2c
 lftp
 ack是一个perl脚本，是grep的一个可选替换品</p>
-
 <h2 id="linux-上的log文件">Linux 上的log文件</h2>
-
 <p>系统log</p>
-
 <p><code>/var/log/boot.log</code> 系统启动的log</p>
-
 <p><code>/var/log/yum.log</code> yum执行的log</p>
-
 <p><code>/var/log/messages</code> 系统报错日志</p>
-
 <p><code>/var/log/cron</code> crontab 的log</p>
-
 <p><code>/var/log/dmesg</code> 内核日志</p>
-
 <h3 id="关于ssh登陆的">关于ssh登陆的.</h3>
-
 <p><code>/var/log/secure</code> sshd 的log,记录所有成功登陆,失败登陆的日志.</p>
-
 <p><code>/var/log/wtmp</code> 二进制文件(DBase 3 index file), 记录每个用户的登录次数,IP和持续时间等信息.用<code>last</code>命令获取这些信息.</p>
-
 <p><code>/var/log/btmp</code> 二进制文件(DBase 3 index file), 记录登陆失败的用户,IP,日期等.用<code>lastb</code>命令来获取这些信息.</p>
-
 <p><code>/var/log/lastlog</code> 记录每个用户最后的登录信息,用命令<code>lastlog</code>获取这些信息.</p>
-
 <p><code>/var/run/utmp</code> 记录着现在登陆的用户.utmp文件被各种 命令使用，包括who、w、users和finger。</p>
-
 <p>清空这些文件，最好使用 <code>echo -n '' &gt; /path/to/file</code> 或者 <code>cat /dev/null &gt; /path/to/file</code></p>
-
 <p><code>ac</code>命令根据当前的/var/log/wtmp文件中的登录进入和退出来报告用户连接的时间（小时），如果不使用标志，则报告总的时间</p>
-
 <p><code>ac -d</code> 将显示每天的总的连接时间</p>
-
 <p><code>ac -p</code> 将显示每个用户的总的连接时间</p>
-
 <p>这些log的配置主要由<code>/etc/rsyslog.conf</code>配置</p>
-
 <p><code>grep &quot;Failed password for&quot; /var/log/secure</code> 查看最近登录失败的请求</p>
-
 <p><code>grep -E -o &quot;([0-9]{1,3}\.){3}[0-9]{1,3}&quot; /var/log/secure|sort|uniq -c|sort -nr | head -30</code></p>
-
 <p>查看登录失败的统计,根据<code>lastb</code>命令 <code>-i</code> 参数表示始终显示IP地址
 <code>lastb -i | awk '{print $3}' | sort | uniq -c | sort -nr | head -30</code></p>
-
 <p>可以将这些IP通过iptables禁用掉。</p>
-
 <p><code>/var/log/journal/</code> 为系统systemd的日志,长期不清理可能会持续占用磁盘空间</p>
-
 <p><code>vim /etc/systemd/journald.conf</code> 可修改占用的最大磁盘空间等配置,例如需修改<code>SystemMaxUse=100M</code></p>
-
 <p><code>journalctl --vacuum-size=100M</code> 手动执行修改也可以,仅仅保存最近100M的日志</p>
-
 <p><code>journalctl --vacuum-time=2d</code> 按时间，仅保留最近2天 ， 单位也可以换成s</p>
-
 <p>使用<code>journalctl</code>命令可查看systemd服务的日志， -u指定unit,如查看sshd服务的日志：<code>journalctl -u sshd</code></p>
-
 <p>若要像 <code>tail -f</code> 追踪使用 <code>journalctl -f -u service</code> -n 指定数量</p>
-
 <p>在rhel7系统中有两个日志服务，分别是传统的rsyslog和systemd-journal
 systemd-journald是一个改进型日志管理服务，可以收集来自内核、系统早期启动阶段的日志、系统守护进程在启动和运行中的标准输出和错误信息，还有syslog的日志。</p>
-
 <p>该日志服务仅仅把日志集中保存在单一结构的日志文件/run/log中，由于日志是经历过压缩和格式化的二进制数据，所以在查看和定位的时候很迅速。默认情况下并不会持久化保存日志，只会保留一个月的日志。另外，一些rsyslog无法收集的日志也会被journal记录到。</p>
-
 <p>rsyslog作为传统的系统日志服务，把所有收集到的日志都记录到/var/log/目录下的各个日志文件中。常见的日志文件如下： /var/log/messages 绝大多数的系统日志都记录到该文件 /var/log/secure 所有跟安全和认证授权等日志都会记录到此文件 /var/log/maillog 邮件服务的日志 /var/log/cron crond计划任务的日志 /var/log/boot.log 系统启动的相关日志。</p>
-
 <h2 id="测试网络丢包">测试网络丢包</h2>
-
 <pre><code>apk update &amp;&amp; apk upgrade
 apk add curl make gcc g++
 cd /tmp
 curl -sSL https://github.com/esnet/iperf/archive/3.1.7.tar.gz | tar xz --strip 1
 ./configure &amp;&amp; make LDFLAGS=-static &amp;&amp; make install
-</code></pre>
-
-<p><code>alpine</code>中编译失败</p>
-
+</code></pre><p><code>alpine</code>中编译失败</p>
 <pre><code>curl -sSL https://github.com/esnet/iperf/archive/3.1.7.tar.gz | tar xz --strip 1
 ./configure &amp;&amp; make LDFLAGS=&quot;-L/lib64/libc.a -L/lib64/libm.a  -static-libstdc++ -static-libgcc -static&quot; &amp;&amp; make install
-</code></pre>
-
-<p>在centos上编译成功</p>
-
+</code></pre><p>在centos上编译成功</p>
 <p><a href="http://share.suconghou.cn/files/bin/iperf3.xz">下载iperf3.xz</a></p>
-
-<p>服务器端: <code>iperf3 -s -f M -V -p 3340</code></p>
-
+<p>服务器端: <code>iperf3 -s -f M -V -p 3340 </code></p>
 <p>客户端: <code>iperf3 -c 服务器IP -f M -V -R -k 1000 -b 3M -l 1400 -w 8192 -p 3340</code></p>
-
 <h3 id="查看进程的线程">查看进程的线程</h3>
-
 <p>在ps命令中，“-T”选项可以开启线程查看。 <code>ps -T aux</code></p>
-
-<p>ps -T -p <pid></p>
-
+<p>ps -T -p <!-- raw HTML omitted --></p>
 <p><code>top -H</code></p>
-
 <p>在top运行时，你也可以通过按“H”键将线程查看模式切换为开或关。</p>
-
 <p><code>top -H -p &lt;pid&gt;</code></p>
-
 <p><code>top -H -b -n1</code></p>
-
 <h2 id="性能测试">性能测试</h2>
-
 <p><code>virt-what</code> 可查看本机使用的虚拟化技术</p>
-
 <p><code>yum install -y sysbench bc htop</code></p>
-
 <p><strong>单核心CPU测试</strong></p>
-
 <p>计算5000位PI值,能使单核心跑满,只能测试单核心性能
 <code>time echo &quot;scale=5000; 4*a(1)&quot; | bc -l -q</code></p>
-
 <blockquote>
-<p>某单核I7OPENVZ云服务器     Intel&reg; Core&trade; i7-6700K CPU @ 4.00GHz  15.040s</p>
-
-<p>某单核OVH法国VPS         Intel&reg; Xeon&reg; CPU E5-1630 v4 @ 3.70GHz   16.556s</p>
-
-<p>MacBookPro 15年中15寸     Intel&reg; Core&trade; i7-4770HQ CPU @ 2.20GHz 20.647s</p>
-
-<p>Window上virtual虚拟机里的docker Intel&reg; Xeon&reg; CPU E3-1230 v5 @ 3.40GHz 22.84s</p>
-
-<p>MacBookPro 13年末13寸  Intel&reg; Core&trade; i5-4258U CPU @ 2.40GHz  : 23.977s</p>
-
-<p>腾讯云 kvm             Intel&reg; Xeon&reg; CPU E5-26xx v2 @2.60GHz   :  24.017s</p>
-
-<p>某OPENVZ单核VPS测试     Intel&reg; Xeon&reg; CPU X5675  @ 3.07GHz     : 26.611s</p>
-
-<p>阿里云 xen-hvm         Intel&reg; Xeon&reg; CPU E5-2650 v2 @ 2.60GHz  :  26.659s</p>
-
-<p>搬瓦工OPENVZ单核VPS     Intel&reg; Xeon&reg; CPU X5650  @ 2.67GHz     : 31.821s</p>
-
-<p>某xen 双核vps           Intel&reg; Xeon&reg; CPU E5-2450L 0 @ 1.80GHz  : 32.334s</p>
-
-<p>独享物理机              Intel&reg; Xeon&reg; CPU E5506  @ 2.13GHz      : 37.454s</p>
-
-<p>4核独享物理机            Intel&reg; Xeon&reg; CPU E7- 4820  @ 2.00GHz   : 39.464s</p>
-
-<p>某VMWARE虚拟化VPS       Intel&reg; Xeon&reg; CPU X7560  @ 2.27GHz      : 45.866s</p>
-
-<p>独享物理机              Intel&reg; Xeon&reg; CPU E3-1230 v3 @ 3.30GHz  : 1m12.240s</p>
-
-<p>某廉价单核VPS            Intel&reg; Xeon&reg; CPU E5-2620 0 @ 2.00GHz   :   1m13.171s</p>
-
+<p>某单核I7OPENVZ云服务器     Intel(R) Core(TM) i7-6700K CPU @ 4.00GHz  15.040s</p>
+</blockquote>
+<blockquote>
+<p>某单核OVH法国VPS         Intel(R) Xeon(R) CPU E5-1630 v4 @ 3.70GHz   16.556s</p>
+</blockquote>
+<blockquote>
+<p>MacBookPro 15年中15寸     Intel(R) Core(TM) i7-4770HQ CPU @ 2.20GHz 20.647s</p>
+</blockquote>
+<blockquote>
+<p>Window上virtual虚拟机里的docker Intel(R) Xeon(R) CPU E3-1230 v5 @ 3.40GHz 22.84s</p>
+</blockquote>
+<blockquote>
+<p>MacBookPro 13年末13寸  Intel(R) Core(TM) i5-4258U CPU @ 2.40GHz  : 23.977s</p>
+</blockquote>
+<blockquote>
+<p>腾讯云 kvm             Intel(R) Xeon(R) CPU E5-26xx v2 @2.60GHz   :  24.017s</p>
+</blockquote>
+<blockquote>
+<p>某OPENVZ单核VPS测试     Intel(R) Xeon(R) CPU X5675  @ 3.07GHz     : 26.611s</p>
+</blockquote>
+<blockquote>
+<p>阿里云 xen-hvm         Intel(R) Xeon(R) CPU E5-2650 v2 @ 2.60GHz  :  26.659s</p>
+</blockquote>
+<blockquote>
+<p>搬瓦工OPENVZ单核VPS     Intel(R) Xeon(R) CPU X5650  @ 2.67GHz     : 31.821s</p>
+</blockquote>
+<blockquote>
+<p>某xen 双核vps           Intel(R) Xeon(R) CPU E5-2450L 0 @ 1.80GHz  : 32.334s</p>
+</blockquote>
+<blockquote>
+<p>独享物理机              Intel(R) Xeon(R) CPU E5506  @ 2.13GHz      : 37.454s</p>
+</blockquote>
+<blockquote>
+<p>4核独享物理机            Intel(R) Xeon(R) CPU E7- 4820  @ 2.00GHz   : 39.464s</p>
+</blockquote>
+<blockquote>
+<p>某VMWARE虚拟化VPS       Intel(R) Xeon(R) CPU X7560  @ 2.27GHz      : 45.866s</p>
+</blockquote>
+<blockquote>
+<p>独享物理机              Intel(R) Xeon(R) CPU E3-1230 v3 @ 3.30GHz  : 1m12.240s</p>
+</blockquote>
+<blockquote>
+<p>某廉价单核VPS            Intel(R) Xeon(R) CPU E5-2620 0 @ 2.00GHz   :   1m13.171s</p>
+</blockquote>
+<blockquote>
 <p>树莓派2                ARMv7 Processor rev 5 (v7l)                 :  2m12.017s</p>
 </blockquote>
-
 <p>树莓派2的2000位计算时间是<code>12.864s</code> E3-1230 的是<code>6.993s</code></p>
-
 <p><strong>sysbench测试</strong></p>
-
 <p>测试<code>cpu</code>性能</p>
-
-<p><code>sysbench --test=cpu --cpu-max-prime=10000 --num-threads=4 run</code></p>
-
+<p><code>sysbench --test=cpu --cpu-max-prime=10000 --num-threads=4 run </code></p>
 <p>测试计算素数直到某个最大值所需的时间</p>
-
 <p>可跑满指定核心数,所有核心参与测试,测试出CPU整体性能</p>
-
 <p>下面全部核心参与计算</p>
-
 <blockquote>
-<p>独享物理机4核心4线程   Intel&reg; Xeon&reg; CPU E5506  @ 2.13GHz      :  3.1261s</p>
-
-<p>独享物理机4核心8线程   Intel&reg; Xeon&reg; CPU E3-1230 v3 @ 3.30GHz  :  5.4672s</p>
-
-<p>搬瓦工OPENVZ单核VPS  Intel&reg; Xeon&reg; CPU X5650  @ 2.67GHz       :  5.5206s</p>
-
-<p>某OPENVZ单核VPS测试   Intel&reg; Xeon&reg; CPU X5675  @ 3.07GHz      :  9.5783s</p>
-
-<p>腾讯云 kvm  单核      Intel&reg; Xeon&reg; CPU E5-26xx v2 @2.60GHz   :  12.5962s</p>
-
-<p>阿里云 xen-hvm 单核   Intel&reg; Xeon&reg; CPU E5-2650 v2 @ 2.60GHz  :  12.8241s</p>
-
-<p>某VMWARE虚拟化VPS单核  Intel&reg; Xeon&reg; CPU X7560  @ 2.27GHz      :  13.7159s</p>
-
+<p>独享物理机4核心4线程   Intel(R) Xeon(R) CPU E5506  @ 2.13GHz      :  3.1261s</p>
+</blockquote>
+<blockquote>
+<p>独享物理机4核心8线程   Intel(R) Xeon(R) CPU E3-1230 v3 @ 3.30GHz  :  5.4672s</p>
+</blockquote>
+<blockquote>
+<p>搬瓦工OPENVZ单核VPS  Intel(R) Xeon(R) CPU X5650  @ 2.67GHz       :  5.5206s</p>
+</blockquote>
+<blockquote>
+<p>某OPENVZ单核VPS测试   Intel(R) Xeon(R) CPU X5675  @ 3.07GHz      :  9.5783s</p>
+</blockquote>
+<blockquote>
+<p>腾讯云 kvm  单核      Intel(R) Xeon(R) CPU E5-26xx v2 @2.60GHz   :  12.5962s</p>
+</blockquote>
+<blockquote>
+<p>阿里云 xen-hvm 单核   Intel(R) Xeon(R) CPU E5-2650 v2 @ 2.60GHz  :  12.8241s</p>
+</blockquote>
+<blockquote>
+<p>某VMWARE虚拟化VPS单核  Intel(R) Xeon(R) CPU X7560  @ 2.27GHz      :  13.7159s</p>
+</blockquote>
+<blockquote>
 <p>树莓派2全部核心运算  ARMv7 Processor rev 5 (v7l)  : 81.7271s</p>
 </blockquote>
-
 <p>树莓派2 系统是OSMC sysbench 0.4.12</p>
-
 <p>E3单核性能不行;搬瓦工CPU性能不错,单核媲美E3四核;I5单核性能竟然比E3强那么多</p>
-
 <p>不同日期测试,发现搬瓦工CPU性能波动5.5~11秒之间,但是上一步的单核性能测试基本一致,可能是母鸡CPU资源使用较多.</p>
-
 <p>线程测试</p>
-
 <p><code>sysbench --test=threads --num-threads=64 --thread-yields=100 --thread-locks=2 run</code></p>
-
 <p>测试<code>fileio</code>性能</p>
-
-<p><code>sysbench --test=fileio --file-total-size=1G --file-test-mode=rnd rw --init-rng=on --max-time=30 --max-requests=0 run</code></p>
-
+<p><code>sysbench --test=fileio --file-total-size=1G --file-test-mode=rnd rw --init-rng=on --max-time=30 --max-requests=0 run </code></p>
 <p>参数指定了最大创建16个线程，创建的文件总大小为3G，文件读写模式为随机读。</p>
-
 <pre><code>sysbench --test=fileio --num-threads=16 --file-total-size=3G --file-test-mode=rndrw prepare
 sysbench --test=fileio --num-threads=16 --file-total-size=3G --file-test-mode=rndrw run
 sysbench --test=fileio --num-threads=16 --file-total-size=3G --file-test-mode=rndrw cleanup
-</code></pre>
-
-<p>内存测试</p>
-
+</code></pre><p>内存测试</p>
 <p><code>sysbench --test=memory --memory-block-size=8k --memory-total-size=4G run</code></p>
-
 <p>磁盘性能测试还可以使用 <code>ioping</code>   使用 <code>yum install ioping</code> 安装</p>
-
 <p>对搬瓦工1G的测试如下</p>
-
 <pre><code>[root@suconghou ~]# ioping -RL .
 
 --- . (simfs /dev/simfs) ioping statistics ---
@@ -1630,101 +1093,56 @@ min/avg/max/mdev = 52.4 us / 300.1 us / 3.08 ms / 127.9 us
 51.6 k requests completed in 2.05 s, 201.6 MiB read, 25.2 k iops, 98.3 MiB/s
 generated 51.6 k requests in 3.00 s, 201.6 MiB, 17.2 k iops, 67.2 MiB/s
 min/avg/max/mdev = 785 ns / 39.7 us / 2.87 ms / 60.4 us
-</code></pre>
-
-<h2 id="vps性能综合测试脚本">VPS性能综合测试脚本</h2>
-
+</code></pre><h2 id="vps性能综合测试脚本">VPS性能综合测试脚本</h2>
 <p><a href="https://bench.sh/">https://bench.sh/</a> 提供bash脚本测试</p>
-
 <p><code>wget -qO- bench.sh | bash</code> 或者 <code>curl -Lso- bench.sh | bash</code> 即可测试</p>
-
 <h2 id="资源下载">资源下载</h2>
-
 <p>ArchLinux  <code>http://mirror.bit.edu.cn/archlinux/iso/latest/</code></p>
-
 <p>CentOS  <code>http://mirror.bit.edu.cn/centos/7.3.1611/isos/x86_64/</code></p>
-
 <p><code>https://mirrors.aliyun.com/centos/7.6.1810/isos/x86_64/</code></p>
-
 <p>Debian   <code>http://mirror.bit.edu.cn/debian-cd/8.7.1/amd64/iso-cd/</code></p>
-
 <p>Ubuntu  <code>http://mirror.bit.edu.cn/ubuntu-releases/</code></p>
-
 <p><code>https://mirrors.tuna.tsinghua.edu.cn/#</code> 右侧也有直接选择下载地址</p>
-
 <h2 id="busybox">busybox</h2>
-
 <p><code>https://www.busybox.net/downloads/binaries/</code> 静态编译好的二进制可执行文件,包含各个平台,可作为急救用.</p>
-
 <p>可在下载<code>busybox_ASH</code>存储为<code>/usr/bin/ash</code>,这样即使系统的bash无法运行,也能ssh进来使用指定的ash</p>
-
 <p>不能Ctrl+C 或者运行 top htop 等交互式命令 <code>ssh root@vpsip ash</code></p>
-
 <p>不能Ctrl+C 或者运行 top htop 等交互式命令,可设置环境变量<code>TERM=xterm-256color</code>勉强运行htop <code>ssh root@vpsip ash -i</code></p>
-
 <p>分配tty,这样得到一个功能完备的终端,可以运行 Ctrl+C 和 top,htop等交互式命令 <code>ssh -t root@vpsip ash</code></p>
-
 <p>得出脚本存放的路径</p>
-
 <p>linux: <code>DIR=&quot;$( cd &quot;$( dirname &quot;${BASH_SOURCE[0]}&quot; )&quot; &amp;&amp; pwd )&quot;</code></p>
-
-<p>mac: <code>$(cd</code>dirname $0<code>; pwd)</code></p>
-
+<p>mac: <code>$(cd </code>dirname $0<code>; pwd)</code></p>
 <h2 id="shell-统计-nginx-日志">shell 统计 nginx 日志</h2>
-
 <p>统计共多少IP访问 <code>awk '{print $1}'  access.log</code>  按IP计数 <code>awk '{print $1}' access.log|sort | uniq -c |sort -n -k 1 -r|more</code></p>
-
 <p>URL访问统计 <code>awk '{print $7}' access.log | sort | uniq -c | sort</code> 访问最频繁的URL <code>awk '{print $7}' access.log|sort | uniq -c |sort -n -k 1 -r|more</code></p>
-
 <p><code>~/.shell.sh</code></p>
-
 <pre><code>alias mem=&quot;ps aux --sort -rss  | head -n20 &amp;&amp; ps auxw --sort=-%cpu,-time | head -n5&quot;
 alias topip='grep -E -o &quot;([0-9]{1,3}\.){3}[0-9]{1,3}&quot; /var/log/secure|sort|uniq -c|sort -nr | head -30'
 alias httpd=&quot;busybox httpd -p 7788 -h /data/www/share&quot;
 addblock(){
 lastb -i | awk '{print $3}' | sort | uniq -c | sort -nr | head -50 | awk '{print &quot;ip route add blackhole &quot;, $2}' | sort -n | uniq | sh
 }
-</code></pre>
-
-<h3 id="其他linux-命令">其他Linux 命令</h3>
-
+</code></pre><h3 id="其他linux-命令">其他Linux 命令</h3>
 <p>输出到stderr</p>
-
-<p>echo &gt;&amp;2 &ldquo;Unexpected value &ldquo;</p>
-
+<p>echo &gt;&amp;2 &ldquo;Unexpected value &quot;</p>
 <h4 id="ncdu">ncdu</h4>
-
 <p>在<code>epel</code>源中</p>
-
 <p><code>yum install -y ncdu</code> 安装.</p>
-
 <p><code>ncdu -h</code> 查看帮助 <code>ncdu /usr</code> 查看指定目录占用分布</p>
-
-<h3 id="linux恢复已删除-但是仍被进程持有的文件">Linux恢复已删除，但是仍被进程持有的文件</h3>
-
+<h3 id="linux恢复已删除但是仍被进程持有的文件">Linux恢复已删除，但是仍被进程持有的文件</h3>
 <p><code>cp /proc/&lt;pid&gt;/fd/&lt;fdno&gt; /new/path/to/file</code></p>
-
 <p><code>tail -c +0 -f /proc/PIDofProgram&gt;/fd/# &gt; /new/path/to/file</code></p>
-
 <p>通过inode</p>
-
 <p><code>find /path/to/check -inum 1023564 -exec cp {} recoveredfile \;</code></p>
-
 <h2 id="文件监控">文件监控</h2>
-
 <p><a href="http://entrproject.org/">http://entrproject.org/</a></p>
-
 <p>无依赖,源码包仅20KB+,多平台支持,编译仅需几秒钟,可执行文件20KB+</p>
-
 <pre><code>./configure &amp;&amp; make
-</code></pre>
-
-<p>使用 <code>ag -l | entr -s 'make &amp;&amp; make test'</code></p>
-
+</code></pre><p>使用 <code>ag -l | entr -s 'make &amp;&amp; make test'</code></p>
+<p>代码修改后重启node</p>
+<p><code>ag -l | entr -sr 'make ts &amp;&amp; node bundle.js'</code></p>
 <p><a href="https://bitbucket.org/eradman/entr/">https://bitbucket.org/eradman/entr/</a></p>
-
 <h2 id="比较有用的命令行工具">比较有用的命令行工具</h2>
-
 <p>ag
 tig
 mycli <a href="https://www.mycli.net/install">https://www.mycli.net/install</a>
@@ -1739,64 +1157,48 @@ fzf
 <a href="https://github.com/jarun/nnn#performance">https://github.com/jarun/nnn#performance</a>
 <a href="https://github.com/yudai/gotty">https://github.com/yudai/gotty</a>
 <a href="https://serveo.net/">https://serveo.net/</a></p>
-
 <p>cat -&gt; ccat -&gt; bat</p>
-
 <p>ping -&gt; prettyping</p>
-
 <p>ctrl+r  -&gt;  fzf</p>
-
 <p>top -&gt; htop</p>
-
 <p>grep -&gt; ack -&gt; ag -&gt; ripgrep</p>
-
 <p><a href="https://github.com/BurntSushi/ripgrep">https://github.com/BurntSushi/ripgrep</a>
 <a href="https://blog.burntsushi.net/ripgrep/">https://blog.burntsushi.net/ripgrep/</a></p>
-
 <p>curl -&gt; httpie</p>
-
 <p>autojump -&gt; fasd
 <a href="https://github.com/rupa/z">https://github.com/rupa/z</a>
 <a href="https://github.com/euank/pazi">https://github.com/euank/pazi</a></p>
-
 <p><a href="https://github.com/acarl005/ls-go">https://github.com/acarl005/ls-go</a>
 <a href="https://github.com/ogham/exa">https://github.com/ogham/exa</a></p>
-
 <p><a href="https://github.com/variadico/noti">https://github.com/variadico/noti</a></p>
-
 <p>ncdu -&gt; <a href="https://github.com/jarun/nnn">https://github.com/jarun/nnn</a></p>
-
 <p><a href="https://github.com/so-fancy/diff-so-fancy">https://github.com/so-fancy/diff-so-fancy</a></p>
-
 <p><a href="https://github.com/Miserlou/Loop#osx">https://github.com/Miserlou/Loop#osx</a>
 <a href="https://github.com/BurntSushi/xsv">https://github.com/BurntSushi/xsv</a></p>
-
 <p>代码行数统计
 <a href="https://boyter.org/posts/sloc-cloc-code/">https://boyter.org/posts/sloc-cloc-code/</a>
 <a href="https://github.com/boyter/scc/">https://github.com/boyter/scc/</a>
 <a href="https://github.com/Aaronepower/tokei">https://github.com/Aaronepower/tokei</a>
 <a href="https://github.com/cgag/loc">https://github.com/cgag/loc</a>
 <a href="https://github.com/hhatto/gocloc">https://github.com/hhatto/gocloc</a></p>
-
 <p><a href="https://tldr.sh/">https://tldr.sh/</a>
 <a href="https://github.com/tldr-pages/tldr-cpp-client">https://github.com/tldr-pages/tldr-cpp-client</a>
 cargo install tealdeer</p>
-
 <p><a href="https://github.com/zyedidia/micro/releases">https://github.com/zyedidia/micro/releases</a>  golang 写的编辑器</p>
 
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/linux/"></air-messager>
+        <air-messager ns="hi" thread="/post/linux/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/play-with-raspberrypi/" title="玩转树莓派" >
+            <a class="previous" href="/post/play-with-raspberrypi/" title="玩转树莓派" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/vim-usage/" title="vim基本使用">
+            <a class="next" href="/post/vim-usage/" title="vim基本使用">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -1808,6 +1210,14 @@ cargo install tealdeer</p>
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

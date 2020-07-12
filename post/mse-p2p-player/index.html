@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" class="post">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+	<meta name='renderer' content='webkit'>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
+	<meta name='description' content='记录学习的点点滴滴'>
+	<meta name='keywords' content='前端,PHP,GO,编程博客'>
+	<title>MSE播放器与P2P &middot; 苏苏的博客</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
+	<link rel="shortcut icon" href="/favicon.png">
+</head>
+<body>
+<header class="header post-header">
+    <div class="header-main" >
+        <a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
+        <h1>苏苏的博客</h1>
+        <p class="sub-title">简约至极</p>
+        <ul class="menus">
+            <a href="/">首页</a>
+            <a href="/post">技术</a>
+            <a href="/life">生活</a>
+            <a href="/photo">相册</a>
+            <a href="/about">关于</a>
+        </ul>
+    </div>
+    
+</header>
+<div class="content container center">
+	<div class="post">
+		<h1 class="post-title">
+			MSE播放器与P2P
+        </h1>
+        <div class="post-meta">
+            <div>
+                <p class="post-date">
+                    <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                    2020/06/27 15:46 Sat
+                </p>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+        
+		<div class="post-text">
+			<p>由于疫情原因,这个寒假格外长,闲赋在家,看了看之前的TODO LIST ,一个<code>YouTube</code>的播放器问题吸引了我,趁时间,捡起来研究研究,于是便有了这片文章</p>
+<p>要想做一个YouTube播放器,首先是API部分,这个有官方的API,不用我们自己爬数据,但是有请求量限制,不过这个也好说,加一层缓存,既提高了性能也降低了源请求量,等流量真的大了,还可以做多密钥负载均衡.</p>
+<p><a href="https://developers.google.cn/youtube/v3/docs/">https://developers.google.cn/youtube/v3/docs/</a></p>
+<p>提供的API很多,但是我们只需要实现自己需要的就OK了.</p>
+<p>总体来说就是加密钥,处理缓存,中转代理,我们选用GO语言来编写,这个处理起来十分容易.不得不说GO语言的网络库封装的非常好用.</p>
+<p>有了API下面就是前端界面,我们直接VUE全家桶搞起来,UI界面懒得慢慢打磨直接用个muse-ui框架,看起来还是很简洁的.</p>
+<h3 id="播放地址解析">播放地址解析</h3>
+<p>播放器部分是我们的重点.</p>
+<p><code>Data API</code> 是不提供资源的播放地址的,播放地址也是敏感信息,我们需要自己实现.</p>
+<p>根据页面分析和抓包,再参考广大互联网群众的智慧,我们完成了 <a href="https://github.com/suconghou/youtubevideoparser">https://github.com/suconghou/youtubevideoparser</a> 这个库</p>
+<p>根据视频ID解析出播放地址,但是播放地址由于某种原因我们是无法直接播放的,所以这需要一个合适的中转.</p>
+<p>如果中转整个视频,CDN很不友好,文件太大,CDN节点也不会为我们缓存.并且分析播放器我们也知道官方的播放器也不是一整个加载的,而是分片加载.</p>
+<p>如何分片是个问题,因为一旦采取了分片,意味着我们要使用MSE去处理视频.</p>
+<p>尝试了一下随便range分片结合mse,实践证明是行不通的.</p>
+<p>那官方的播放器是怎么做的呢,很明显关键点在这个分片的算法,不是随意分片的.</p>
+<p>但是找遍了源码也没找到这个分片的规则定义在哪?</p>
+<p>最后突然想到突破点可能是在视频文件本身,顺着这个思路问题解决.</p>
+<p>中间浪费了大量时间.这里不得不吐槽一下广大科普<code>MSE</code>的文章.</p>
+<p>大部分文章都提到了<code>fragment mp4</code>,都知道<code>range</code>请求,一片一片去<code>addSourceBuffer</code></p>
+<p>但是对于range的划分原则,<code>.mpd</code>索引的原理和<code>sidx segment</code>丝毫未提.</p>
+<p>换句话说就是不是你想<code>addSourceBuffer</code>就能<code>addSourceBuffer</code>的,你必须取到一块完整的<code>fragment</code>才能<code>addSourceBuffer</code>,如何从视频中知道哪一字节至哪一字节是一个完整的<code>fragment</code></p>
+<p>我们需要从视频的<code>sidx segment</code>中提取,<code>.mpd</code>索引就是预先根据<code>sidx segment</code>分析出来的结果.</p>
+<p>持有<code>mpd</code>索引,我们播放时就不需要再去下载视频中的<code>sidx segment</code>现场分析了.</p>
+<h3 id="如何解析sidx-segment">如何解析<code>sidx segment</code></h3>
+<p>关于<code>MSE</code>的基本使用,这里不再赘述,网上入门的文章太多了,这里主要展开讨论一下mp4文件与<code>sidx segment</code>,无论是<code>mp4</code>还是<code>fragment mp4</code>,我们都可以将mp4文件拆解为基本的box</p>
+<p>常见的box类型有</p>
+<ul>
+<li>ftyp  确定文件的类型</li>
+<li>moov 保存了媒体的时间信息、trak信息和媒体索引等。</li>
+<li>mdat 所有媒体数据统一存放在mdat中</li>
+<li>free</li>
+<li>sidx</li>
+<li>moof</li>
+</ul>
+<p>一个moov box中,可能还会嵌入其他的box,这个我们现在用不到,可以不用考虑.</p>
+<p>我们只看顶层的box,使用<code>qtfaststart -l file.mp4</code> 可以查看他的顶层box</p>
+<p>对于普通的<code>mp4</code></p>
+<pre><code>ftyp (32 bytes)
+moov (135554 bytes)
+free (8 bytes)
+mdat (35973570 bytes)
+</code></pre><p>对于<code>fragment mp4</code></p>
+<pre><code>ftyp (24 bytes)
+moov (644 bytes)
+sidx (236 bytes)
+moof (1816 bytes)
+mdat (160194 bytes)
+moof (1816 bytes)
+mdat (159649 bytes)
+moof (1816 bytes)
+mdat (159874 bytes)
+moof (1816 bytes)
+mdat (159595 bytes)
+moof (1816 bytes)
+mdat (159878 bytes)
+moof (1816 bytes)
+mdat (159986 bytes)
+moof (1816 bytes)
+mdat (159591 bytes)
+moof (1816 bytes)
+mdat (159778 bytes)
+moof (1816 bytes)
+mdat (159701 bytes)
+moof (1816 bytes)
+mdat (159727 bytes)
+moof (1816 bytes)
+mdat (159990 bytes)
+moof (1816 bytes)
+mdat (159586 bytes)
+moof (1816 bytes)
+mdat (159737 bytes)
+moof (1816 bytes)
+mdat (159811 bytes)
+moof (1816 bytes)
+mdat (159974 bytes)
+moof (1816 bytes)
+mdat (159582 bytes)
+moof (2828 bytes)
+mdat (126902 bytes)
+</code></pre><p>只有一个<code>moof+mdat</code>的组合才能被<code>addSourceBuffer</code></p>
+<p><code>sidx box</code> 中记录了各个<code>moof+mdat</code>组成的segment的精确byte position</p>
+<p>我们只需要考虑解析<code>sidx box</code>里的数据,其他各个box的解析,不属于本文范畴.</p>
+<p>这里有一个工具可以查看 <a href="https://archive.codeplex.com/?p=mp4explorer">https://archive.codeplex.com/?p=mp4explorer</a></p>
+<p>我们的主要任务是解析<code>sidx box</code>然后就能得出各个range分片了.</p>
+<p>根据规范定义</p>
+<p><a href="https://dashif-documents.azurewebsites.net/Guidelines-TimingModel/master/Guidelines-TimingModel.html#addressing-indexed-indexstructure">https://dashif-documents.azurewebsites.net/Guidelines-TimingModel/master/Guidelines-TimingModel.html#addressing-indexed-indexstructure</a></p>
+<p>其格式描述如下</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">aligned(<span style="color:#ae81ff">8</span>) class SegmentIndexBox extends FullBox(<span style="color:#960050;background-color:#1e0010">&#39;</span>sidx<span style="color:#960050;background-color:#1e0010">&#39;</span>, version, <span style="color:#ae81ff">0</span>) {
+  <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span>(<span style="color:#ae81ff">32</span>) reference_ID;
+  <span style="color:#66d9ef">unsigned</span> <span style="color:#a6e22e">int</span>(<span style="color:#ae81ff">32</span>) timescale;
+
+  <span style="color:#66d9ef">if</span> (version<span style="color:#f92672">==</span><span style="color:#ae81ff">0</span>) {
+    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span>(<span style="color:#ae81ff">32</span>) earliest_presentation_time;
+    <span style="color:#66d9ef">unsigned</span> <span style="color:#a6e22e">int</span>(<span style="color:#ae81ff">32</span>) first_offset;
+  }
+  <span style="color:#66d9ef">else</span> {
+    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span>(<span style="color:#ae81ff">64</span>) earliest_presentation_time;
+    <span style="color:#66d9ef">unsigned</span> <span style="color:#a6e22e">int</span>(<span style="color:#ae81ff">64</span>) first_offset;
+  }
+
+  <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span>(<span style="color:#ae81ff">16</span>) reserved <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+  <span style="color:#66d9ef">unsigned</span> <span style="color:#a6e22e">int</span>(<span style="color:#ae81ff">16</span>) reference_count;
+
+  <span style="color:#66d9ef">for</span> (i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; i <span style="color:#f92672">&lt;=</span> reference_count; i<span style="color:#f92672">++</span>)
+  {
+    bit (<span style="color:#ae81ff">1</span>) reference_type;
+    <span style="color:#66d9ef">unsigned</span> <span style="color:#a6e22e">int</span>(<span style="color:#ae81ff">31</span>) referenced_size;
+    <span style="color:#66d9ef">unsigned</span> <span style="color:#a6e22e">int</span>(<span style="color:#ae81ff">32</span>) subsegment_duration;
+    bit(<span style="color:#ae81ff">1</span>) starts_with_SAP;
+    <span style="color:#66d9ef">unsigned</span> <span style="color:#a6e22e">int</span>(<span style="color:#ae81ff">3</span>) SAP_type;
+    <span style="color:#66d9ef">unsigned</span> <span style="color:#a6e22e">int</span>(<span style="color:#ae81ff">28</span>) SAP_delta_time;
+  }
+}
+</code></pre></div><p>实现我们的解析之前,我们需要对dataview的getUint8,getUint16,getUint32等有一个了解,以及位运算如何实现getUint24等,这是对于mp4文件格式所需要做的解析,对于webm格式,是完全不一样的,在webm中,类似于<code>sidx</code>的被称作<code>Cues</code>,解析起来稍微复杂一些.</p>
+<h3 id="ebml解析器">EBML解析器</h3>
+<p>整个webm文件,是按照一个叫作<code>EBML(Extensible Binary Meta Language)</code>文件格式的规范存储的,其是一个<code>Matroska</code>的子集</p>
+<p>参考</p>
+<p><a href="https://www.webmproject.org/docs/container/">https://www.webmproject.org/docs/container/</a></p>
+<p><a href="https://www.matroska.org/technical/diagram.html">https://www.matroska.org/technical/diagram.html</a></p>
+<p><code>EBML</code>格式不像<code>JSON</code>格式那样易于理解,其是一个二进制格式,并且引入了一个概念<code>vint(Unsigned Integer Values of Variable Length)</code></p>
+<p><code>vint</code>是可变长度无符号整型，比传统32/64位整型更加节省空间。vint有三个部分构成： VINT_WIDTH，VINT_MARKER，VINT_DATA。VINT_MAKRER指的是二进制数据中第一个1的位置；VINT_WIDTH指的是在VINT_MARKER之前的0的个数（可以是0），VINT_WIDTH+1表示对应的vint占用的字节数目</p>
+<p>具体可参考其规范 <a href="https://github.com/cellar-wg/ebml-specification/blob/master/specification.markdown#variable-size-integer">https://github.com/cellar-wg/ebml-specification/blob/master/specification.markdown#variable-size-integer</a></p>
+<p>按照这些规范,我们终于写成了我们的解析库 <a href="https://github.com/suconghou/mediaparse">https://github.com/suconghou/mediaparse</a> ,能够从视频文件中提取出所有的分片和其对应的起始播放时间,最终实现了mse播放</p>
+<h3 id="处理mse播放的问题">处理MSE播放的问题</h3>
+<h4 id="解决意外中断的缓存问题">解决意外中断的缓存问题</h4>
+<p>我们下载使用的是之前写的一个多线程下载器 <a href="https://github.com/suconghou/fastloadjs">https://github.com/suconghou/fastloadjs</a> , 为了cdn缓存友好,我们不使用 http的<code>range header</code> , 而是将<code>range</code>信息放在了path里,后端由于是中转的数据,并且是流中转,不是下载完然后再响应,本地测试时,速度较慢,不能保证每次都能顺利中转完数据,尽管这一分片的数据可能不到<code>1MB</code>;但是我们为了前端缓存和CDN缓存,每次响应的都是强缓存.如果中转过程中由于<code>break pipe</code>或<code>timeout</code>等原因,后端中转流中断,但是响应头已是缓存,前端的重试机制可能都是拿到的缓存.所以我们加了一个响应大小和请求期望大小的检测,如果对不上,将会抛出<code>short read error</code>,然后重试的时候利用<code>fetch</code>的缓存策略,<code>force-cache/relaod</code>来控制是否跳过缓存.这个时候<code>fetch</code>的缓存策略显的太棒了.</p>
+<h4 id="sourcebuffer的限制">SourceBuffer的限制</h4>
+<p><code>addSourceBuffer</code>并不是无限制的;当我们不断调用<code>addSourceBuffer</code>后将会得到<code>QuotaExceededError</code>,这就需要我们对缓存区有个控制策略,不能无限缓冲,也不能只<code>addSourceBuffer</code>而不<code>sourceBuffer.remove</code>,如果被remove了,这一段的视频就无法播放了.所以我们的策略是如果缓存区满了则停止缓冲,如果缓冲区不够用,则将当前播放点之前的数据释放.如果用户<code>seek</code>到之前的播放时间点时,再从内存中<code>cachefill</code>回来.中间不会有网络下载.我们所有的buffer全是存在内存中的,这个我们后面还会用到.所以播放1080P长视频时需要确保你的内存别太小.</p>
+<h3 id="部署到gae">部署到GAE</h3>
+<p>本来打算将此代码部署在GAE配合cloudflare的.但是发现GAE不让新增部署了,只有一个原先的python项目还能更新代码.一气之下,写了个python版的提供API, <a href="https://github.com/suconghou/u2proxyapi">https://github.com/suconghou/u2proxyapi</a></p>
+<p>视频解析也复刻了一版 python的 <a href="https://github.com/suconghou/u2parse">https://github.com/suconghou/u2parse</a></p>
+<p>配合cf workers 中转流量 <a href="https://github.com/suconghou/u2worker">https://github.com/suconghou/u2worker</a></p>
+<p>后来发现这个方案不太好,cf workers 不解析只中转有部分视频中转失败,可能是解析时的IP和去下载资源时的IP不一致导致的.于是干脆为cf workers也写了一个视频解析 <a href="https://github.com/suconghou/ujparse">https://github.com/suconghou/ujparse</a>  ,这样cf workers就能完全自主解析和中转了.</p>
+<h3 id="部署到vercel">部署到vercel</h3>
+<p>再后来GAE更新了策略,没有信用卡都不让更新代码了,遂弃坑;发现了<code>vercel</code>,整合了之前的go代码和前端代码来个自动部署,十分方便  <a href="https://github.com/suconghou/ustream">https://github.com/suconghou/ustream</a></p>
+<h3 id="添加p2p支持">添加P2P支持</h3>
+<p>基本功能完成,但是我还想玩点新花样,为视频加速;于是便开始设计P2P传播方案.</p>
+<p>我们的P2P不同于普遍意义上的点对点链接.而是一个多对多连接.每一个用户都保持对N个用户的链接,可以向他们发送广播,由于P2P的建立必然是有一方主动发起链接.另一方被动等待.所以我们需要制定哪些用户主动发起链接,哪些用户是等待着.我们引入了<code>ws</code>用于节点发现和信令交换</p>
+<p>每当客户端链接后,向其他已在线用户广播此用户上线. 然后又将所有已在线用户发送给此用户.</p>
+<p>此用户将新建N个<code>RTCPeerConnection</code>实例,等待被连接.我们的原则是新上线的用户始终是等待者.其他已在线用户发现新用户上线后都会主动发起链接.如果已上线的用户发生刷新则他又会变成新上线,原先他主动链接的那些用户又会主动联系他.</p>
+<p>按照此模式,我们写成了 <a href="https://github.com/suconghou/libwebrtc">https://github.com/suconghou/libwebrtc</a>  和一个信令服务器 <a href="https://github.com/suconghou/signalserver">https://github.com/suconghou/signalserver</a> 为提高P2P的成功率,我们还编译部署了 coturn 用作<code>stunserver</code></p>
+<p>对 <a href="https://github.com/suconghou/fastloadjs">https://github.com/suconghou/fastloadjs</a> 融入了此P2P引擎,制定了一些发现和传输协议在P2P节点间共享视频分片数据.</p>
+<p>需要注意的是,只有播放资源是同一个资源时,两端的数据才会共享.由于Chrome播放的是webm资源,Firefox播放的是mp4资源,他们之间是不会共享的. 播放的是不同清晰度的视频的两个客户端也不会共享.</p>
+<p>完.</p>
+
+		</div>
+    </div>
+    <div class="post-comment comment-render">
+        <air-messager ns="hi" thread="/post/mse-p2p-player/"></air-messager>
+    </div>
+    <div class="post-end">
+        
+            <a class="previous" href="/post/dnscrypt-proxy/" title="Dnscrypt Proxy配置" >
+                <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
+            </a>
+        
+        
+    </div>
+</div>
+<footer class="footer">
+    <div class="footer-nav">
+    </div>
+</footer>
+<script type="text/javascript" src="/js/main.js"></script>
+<script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+</body>
+</html>

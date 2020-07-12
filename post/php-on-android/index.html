@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>在Android上运行PHP &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -55,106 +51,56 @@
         
 		<div class="post-text">
 			<h2 id="为安卓交叉编译arm版的php">为安卓交叉编译ARM版的PHP</h2>
-
 <p>目前手头上有一个古老的Android平板,系统为Android2.2,CPU 是armv5的架构,可以说是很古老了</p>
-
 <p>想作为一个简易的服务器使用,便开始自己折腾.</p>
-
 <p>本教程操作都在<code>centos</code>docker容器内.基本工具都类似.</p>
-
 <p><code>yum update &amp;&amp; yum upgrade &amp;&amp; yum install wget make perl -y</code> 不用安装gcc</p>
-
-<h3 id="1-下载交叉编译工具-https-pan-baidu-com-s-1miczbwc">1.下载交叉编译工具  <code>https://pan.baidu.com/s/1micZBWc</code></h3>
-
-<p>直连下载 <code>wget http://share.suconghou.cn/files/arm/crossx86-arm-linux-musleabi-1.1.12.tar.xz</code></p>
-
-<p>下载后解压,并添加bin到环境变量<code>tar Jxf crossx86-arm-linux-musleabi-1.1.12.tar.xz</code></p>
-
+<h3 id="1下载交叉编译工具--httpspanbaiducoms1miczbwc">1.下载交叉编译工具  <code>https://pan.baidu.com/s/1micZBWc</code></h3>
+<p>直连下载 <code>wget http://share.suconghou.cn/files/arm/crossx86-arm-linux-musleabi-1.1.12.tar.xz </code></p>
+<p>下载后解压,并添加bin到环境变量<code>tar Jxf crossx86-arm-linux-musleabi-1.1.12.tar.xz </code></p>
 <p><code>export PATH=/arm-linux-musleabi/bin:$PATH</code></p>
-
 <p>之后,使用<code>arm-linux-musleabi-gcc -v</code> 可以验证</p>
-
-<h3 id="2-修改musl-libc库-目的是修改查找的dns配置文件">2.修改musl-libc库,目的是修改查找的DNS配置文件.</h3>
-
+<h3 id="2修改musl-libc库目的是修改查找的dns配置文件">2.修改musl-libc库,目的是修改查找的DNS配置文件.</h3>
 <pre><code>cd /tmp &amp;&amp; wget --no-check-certificate https://www.musl-libc.org/releases/musl-1.1.16.tar.gz
-</code></pre>
-
-<p>下载并解压<code>tar zxf musl-1.1.16.tar.gz &amp;&amp; cd musl-1.1.16</code></p>
-
+</code></pre><p>下载并解压<code>tar zxf musl-1.1.16.tar.gz &amp;&amp; cd musl-1.1.16</code></p>
 <p>替换1: 替换<code>/etc/resolv.conf</code></p>
-
 <p><code>grep -rn &quot;/etc/resolv.conf&quot; .</code> 即可查找到有两个文件包含它.</p>
-
 <p>接下来,我们把它替换掉,把路径替换为安卓安装文件夹可写的路径</p>
-
 <pre><code>sed -i &quot;s{/etc/resolv.conf{/data/data/cn.suconghou.hello/files/resolv.conf{&quot; ./src/network/resolvconf.c
 sed -i &quot;s{/etc/resolv.conf{/data/data/cn.suconghou.hello/files/resolv.conf{&quot; ./include/resolv.h
-</code></pre>
-
-<p>可以再次查找,以验证是否替换成功</p>
-
+</code></pre><p>可以再次查找,以验证是否替换成功</p>
 <p>替换2: 替换<code>/etc/hosts</code></p>
-
 <p><code>grep -rn &quot;/etc/hosts&quot; .</code> 即可查找到有三个文件,其中有一个是注释
 下载执行替换,同样替换为一个我们可以写入的路径</p>
-
 <pre><code>sed -i &quot;s{/etc/hosts{/data/data/cn.suconghou.hello/files/hosts{&quot; ./src/network/getnameinfo.c
 sed -i &quot;s{/etc/hosts{/data/data/cn.suconghou.hello/files/hosts{&quot; ./src/network/lookup_name.c
-</code></pre>
-
-<p>再次查找以验证是否替换成功</p>
-
+</code></pre><p>再次查找以验证是否替换成功</p>
 <p>替换3: 替换<code>/bin/sh</code>,使我们可以使用android的sh</p>
-
 <p><code>grep -rn &quot;/bin/sh&quot; .</code> 即可查找到较多结果,我们需要修改</p>
-
 <p><code>./include/paths.h</code></p>
-
 <p><code>./src/legacy/getusershell.c</code></p>
-
 <p><code>./src/misc/wordexp.c</code></p>
-
 <p><code>./src/process/system.c</code></p>
-
 <p><code>./src/stdio/popen.c</code></p>
-
 <p>这5个文件</p>
-
 <pre><code>sed -i &quot;s{/bin/sh{/system/bin/sh{&quot; ./include/paths.h
 sed -i &quot;s{/bin/sh{/system/bin/sh{&quot; ./src/legacy/getusershell.c
 sed -i &quot;s{/bin/sh{/system/bin/sh{&quot; ./src/misc/wordexp.c
 sed -i &quot;s{/bin/sh{/system/bin/sh{&quot; ./src/process/system.c
 sed -i &quot;s{/bin/sh{/system/bin/sh{&quot; ./src/stdio/popen.c
-</code></pre>
-
-<p>同样可以再次查找验证是否替换.</p>
-
+</code></pre><p>同样可以再次查找验证是否替换.</p>
 <p>然后开始编译我们修改后的musl</p>
-
 <pre><code>./configure --prefix=&quot;/arm-linux-musleabi/arm-linux-musleabi&quot; CC=&quot;arm-linux-musleabi-gcc&quot;
 make -j4 &amp;&amp; make install
-</code></pre>
-
-<p>编译约需要5分钟,<code>ls -lh /arm-linux-musleabi/arm-linux-musleabi/lib/</code> 这些文件就是编译后生成的新文件.</p>
-
+</code></pre><p>编译约需要5分钟,<code>ls -lh /arm-linux-musleabi/arm-linux-musleabi/lib/</code> 这些文件就是编译后生成的新文件.</p>
 <p>注意这里编译使用的是arm-linux-musleabi-gcc而不是gcc,事实上,从头到尾我们都不需要gcc</p>
-
 <p>之后开始第三步,编译PHP</p>
-
 <h3 id="3-编译php">3. 编译PHP</h3>
-
 <p>下载PHP最新源码,并解压</p>
-
 <pre><code>cd /tmp &amp;&amp; wget http://php.net/distributions/php-7.1.8.tar.xz &amp;&amp; tar xJf php-7.1.8.tar.xz &amp;&amp; cd php-7.1.8
-</code></pre>
-
-<p>替换1: 同样,我们需要替换sh的路径, <code>grep -rn &quot;/bin/sh&quot; .</code> 有较多结果,我们需要替换<code>./ext/standard/proc_open.c</code></p>
-
+</code></pre><p>替换1: 同样,我们需要替换sh的路径, <code>grep -rn &quot;/bin/sh&quot; .</code> 有较多结果,我们需要替换<code>./ext/standard/proc_open.c</code></p>
 <pre><code>sed -i &quot;s{/bin/sh{/system/bin/sh{&quot; ./ext/standard/proc_open.c
-</code></pre>
-
-<p>执行下面命令,把我们的编译命令都替换为交叉编译的命令</p>
-
+</code></pre><p>执行下面命令,把我们的编译命令都替换为交叉编译的命令</p>
 <pre><code>export HOST=&quot;arm-linux-musleabi&quot;
 export CC=&quot;arm-linux-musleabi-gcc&quot;
 export CXX=&quot;arm-linux-musleabi-g++&quot;
@@ -165,27 +111,15 @@ export STRIP=&quot;arm-linux-musleabi-strip&quot;
 export CPPFLAGS=&quot;-I/deps/include&quot;
 export LDFLAGS=&quot;-L/deps/lib&quot;
 export SYSROOT_MUSL=&quot;/arm-linux-musleabi/arm-linux-musleabi&quot;
-</code></pre>
-
-<p>我们先最小化编译PHP,生成Makefile</p>
-
+</code></pre><p>我们先最小化编译PHP,生成Makefile</p>
 <pre><code>LDFLAGS=&quot;-static -L/deps/lib&quot; CFLAGS=&quot;--sysroot=/arm-linux-musleabi/arm-linux-musleabi -Os&quot; CXXFLAGS=&quot;--sysroot=/arm-linux-musleabi/arm-linux-musleabi -Os&quot; ./configure --host=arm-linux-musleabi --enable-inline-optimization --enable-static=yes --enable-shared=no --without-pear --disable-cgi --disable-opcache --disable-fpm --disable-phpdbg --disable-all --enable-cli --enable-tokenizer
-</code></pre>
-
-<p>生成Makefile后,我们要修改Makefile使其静态编译.</p>
-
+</code></pre><p>生成Makefile后,我们要修改Makefile使其静态编译.</p>
 <pre><code>sed -i &quot;s{-I/usr/include{ {&quot; Makefile
 sed -i &quot;s{-export-dynamic{-all-static{&quot; Makefile
-</code></pre>
-
-<p>然后 <code>make -j4 &amp;&amp; make install</code> 可以编译成功</p>
-
+</code></pre><p>然后 <code>make -j4 &amp;&amp; make install</code> 可以编译成功</p>
 <p>原先的<code>strip</code> 命令,可以使用<code>arm-linux-musleabi-strip</code>代替</p>
-
 <p>添加其他扩展需要我们自己下载编译,下面这个几个是编译CURL所必须的.</p>
-
 <p><strong>1. zlib</strong></p>
-
 <pre><code>cd /tmp &amp;&amp; wget http://zlib.net/zlib-1.2.11.tar.gz
 tar zxf zlib-1.2.11.tar.gz &amp;&amp; cd zlib-1.2.11
 CFLAGS=&quot;--sysroot=$SYSROOT_MUSL -Os&quot; \
@@ -193,27 +127,18 @@ CFLAGS=&quot;--sysroot=$SYSROOT_MUSL -Os&quot; \
 --prefix=/deps \
 --static
 make &amp;&amp; make install
-</code></pre>
-
-<p><strong>2. bz2</strong></p>
-
+</code></pre><p><strong>2. bz2</strong></p>
 <pre><code>cd /tmp &amp;&amp; wget http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz
 tar zxf bzip2-1.0.6.tar.gz &amp;&amp; cd bzip2-1.0.6
 # 把 Makefile 里 CFLAGS 里的 -O2 改为 -Os 后面的 -g去掉 , 前面几行gcc部分等写死的直接删除
 make install PREFIX=/deps
-</code></pre>
-
-<p>这些删除</p>
-
+</code></pre><p>这些删除</p>
 <pre><code># To assist in cross-compiling
 CC=gcc
 AR=ar
 RANLIB=ranlib
 LDFLAGS=
-</code></pre>
-
-<p><strong>3. openssl</strong></p>
-
+</code></pre><p><strong>3. openssl</strong></p>
 <pre><code>cd /tmp &amp;&amp; wget https://www.openssl.org/source/openssl-1.0.2l.tar.gz
 tar zxf openssl-1.0.2l.tar.gz &amp;&amp; cd openssl-1.0.2l
 CFLAGS=&quot;--sysroot=$SYSROOT_MUSL -static&quot; \
@@ -225,10 +150,7 @@ no-shared \
 --with-zlib-include=&quot;/deps/include&quot;
 # 把 Makefile 里 CFLAG 里的 -O3 改为 -Os (vi 查找,第一个就是)
 make &amp;&amp; make install
-</code></pre>
-
-<p><strong>4. curl</strong></p>
-
+</code></pre><p><strong>4. curl</strong></p>
 <pre><code>cd /tmp &amp;&amp; wget https://curl.haxx.se/download/curl-7.54.0.tar.gz
 tar zxf curl-7.54.0.tar.gz &amp;&amp; cd curl-7.54.0
 
@@ -245,54 +167,27 @@ LDFLAGS=&quot;-static -L/deps/lib&quot; \
 --host=$HOST
 # 把 Makefile 里 CFLAGS 里的 -O2 改为 -Os
 make -j4 &amp;&amp; make install
-</code></pre>
-
-<p>包含我们需要的一些扩展 , 然后编译PHP(上次编译后,需make clean)</p>
-
+</code></pre><p>包含我们需要的一些扩展 , 然后编译PHP(上次编译后,需make clean)</p>
 <p>这次我们指定php.ini的文件位置</p>
-
 <pre><code>--with-config-file-scan-dir=/data/data/cn.suconghou.hello/files/conf.d --with-config-file-path=/data/data/cn.suconghou.hello/files
-</code></pre>
-
-<pre><code>LDFLAGS=&quot;-static -L/deps/lib&quot; CFLAGS=&quot;--sysroot=/arm-linux-musleabi/arm-linux-musleabi -Os&quot; CXXFLAGS=&quot;--sysroot=/arm-linux-musleabi/arm-linux-musleabi -Os&quot; ./configure --with-config-file-scan-dir=&quot;/data/data/cn.suconghou.hello/files/conf.d&quot; --with-config-file-path=&quot;/data/data/cn.suconghou.hello/files&quot; --host=arm-linux-musleabi --enable-inline-optimization --enable-static=yes --enable-shared=no --without-pear --disable-cgi --disable-opcache --disable-fpm --disable-phpdbg --disable-all --enable-cli --enable-tokenizer --enable-session --enable-json  --enable-mbstring --enable-mbregex --enable-filter --enable-hash --enable-zip --enable-phar --with-sqlite3 --with-openssl=/deps --with-curl=/deps --with-zlib-dir=/deps
-</code></pre>
-
-<p>添加 <code>--enable-zip  --with-zlib-dir=/deps</code> 启用zip和zlib扩展</p>
-
-<p><code>--enable-pdo --with-pdo-sqlite --enable-sockets --enable-posix --enable-ftp</code></p>
-
+</code></pre><pre><code>LDFLAGS=&quot;-static -L/deps/lib&quot; CFLAGS=&quot;--sysroot=/arm-linux-musleabi/arm-linux-musleabi -Os&quot; CXXFLAGS=&quot;--sysroot=/arm-linux-musleabi/arm-linux-musleabi -Os&quot; ./configure --with-config-file-scan-dir=&quot;/data/data/cn.suconghou.hello/files/conf.d&quot; --with-config-file-path=&quot;/data/data/cn.suconghou.hello/files&quot; --host=arm-linux-musleabi --enable-inline-optimization --enable-static=yes --enable-shared=no --without-pear --disable-cgi --disable-opcache --disable-fpm --disable-phpdbg --disable-all --enable-cli --enable-tokenizer --enable-session --enable-json  --enable-mbstring --enable-mbregex --enable-filter --enable-hash --enable-zip --enable-phar --with-sqlite3 --with-openssl=/deps --with-curl=/deps --with-zlib-dir=/deps
+</code></pre><p>添加 <code>--enable-zip  --with-zlib-dir=/deps</code> 启用zip和zlib扩展</p>
+<p><code>--enable-pdo --with-pdo-sqlite --enable-sockets --enable-posix --enable-ftp </code></p>
 <p>编译启用越多扩展,PHP进程的内存占用会稍微增加</p>
-
 <p>同上面一样</p>
-
 <p>生成Makefile后,我们要修改Makefile使其静态编译.</p>
-
 <pre><code>sed -i &quot;s{-I/usr/include{ {&quot; Makefile
 sed -i &quot;s{-export-dynamic{-all-static{&quot; Makefile
-</code></pre>
-
-<p>然后 <code>make -j4</code> 编译,生成的文件在<code>sapi/cli</code>文件夹中,编译已经成功,由于这次启用了phar,<code>make install</code>时需要调用php命令<code>Generating phar.php</code>,但php可执行文件在<code>Linux x86_64</code>下无法执行,是arm环境的.因此不能执行<code>make install</code>,但编译是完好的.</p>
-
+</code></pre><p>然后 <code>make -j4 </code> 编译,生成的文件在<code>sapi/cli</code>文件夹中,编译已经成功,由于这次启用了phar,<code>make install</code>时需要调用php命令<code>Generating phar.php</code>,但php可执行文件在<code>Linux x86_64</code>下无法执行,是arm环境的.因此不能执行<code>make install</code>,但编译是完好的.</p>
 <p>使用<code>arm-linux-musleabi-strip</code>命令,可为我们编译的可执行文件瘦身.</p>
-
 <p>最后编译的文件,能够运行于android2.2,服务于项目 <a href="https://github.com/suconghou/androidphp">https://github.com/suconghou/androidphp</a></p>
-
 <h3 id="问题">问题</h3>
-
 <p>file_get_contents访问https时报错</p>
-
 <pre><code>file_get_contents(): SSL operation failed with code 1. OpenSSL Error messages: error:14090086:SSL routines:ssl3_get_server_certificate:certificate verify failed
-</code></pre>
-
-<p>这是由于证书引起的问题,使用curl访问可以正常访问.</p>
-
+</code></pre><p>这是由于证书引起的问题,使用curl访问可以正常访问.</p>
 <p>使用下面语句可以查看openssl的默认证书配置</p>
-
 <pre><code>var_dump(openssl_get_cert_locations());
-</code></pre>
-
-<p>或者配置 file_get_contents 不验证https证书.</p>
-
+</code></pre><p>或者配置 file_get_contents 不验证https证书.</p>
 <pre><code>$stream_opts = [
     &quot;ssl&quot; =&gt; [
         &quot;verify_peer&quot;=&gt;false,
@@ -301,24 +196,21 @@ sed -i &quot;s{-export-dynamic{-all-static{&quot; Makefile
 ];
 
 $response = file_get_contents(&quot;https://www.example.com&quot;, false, stream_context_create($stream_opts));
-</code></pre>
-
-<p>或者在 php.ini 中添加 <code>openssl.cafile=/path/to/cacert.pem</code></p>
-
+</code></pre><p>或者在 php.ini 中添加 <code>openssl.cafile=/path/to/cacert.pem</code></p>
 <p>证书下载 <code>https://curl.haxx.se/ca/cacert.pem</code></p>
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/php-on-android/"></air-messager>
+        <air-messager ns="hi" thread="/post/php-on-android/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/ftp/" title="编译一些ftp server" >
+            <a class="previous" href="/post/ftp/" title="编译一些ftp server" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/about-http/" title="关于HTTP协议的基本知识">
+            <a class="next" href="/post/about-http/" title="关于HTTP协议的基本知识">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -330,6 +222,14 @@ $response = file_get_contents(&quot;https://www.example.com&quot;, false, stream
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

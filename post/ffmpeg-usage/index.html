@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>ffmpeg安装使用 &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -54,57 +50,36 @@
         </div>
         
 		<div class="post-text">
-			
-
-<h2 id="下载官方的静态编译的linux通用二进制包-同时也包含arm版本的">下载官方的静态编译的Linux通用二进制包,同时也包含ARM版本的</h2>
-
-<p><a href="http://johnvansickle.com/ffmpeg/">ffmpeg</a></p>
-
+			<h2 id="下载官方的静态编译的linux通用二进制包同时也包含arm版本的">下载官方的静态编译的Linux通用二进制包,同时也包含ARM版本的</h2>
+<p>下载编译好的git最新版</p>
+<pre><code>wget https://johnvansickle.com/ffmpeg/builds/ffmpeg-git-amd64-static.tar.xz
+</code></pre><p><a href="http://johnvansickle.com/ffmpeg/">ffmpeg</a></p>
 <p>armhf比armel硬件要求,树莓派2可用armhf,树莓派1使用armel</p>
-
 <p>Windows版本也提供编译好的下载(也提供MacOs版)</p>
-
 <p><a href="https://ffmpeg.zeranoe.com/builds/">https://ffmpeg.zeranoe.com/builds/</a></p>
-
 <p>Mac编译好的下载(FFmpeg,FFserver,FFprobe,FFplay)</p>
-
 <p><a href="http://evermeet.cx/ffmpeg/">http://evermeet.cx/ffmpeg/</a></p>
-
+<p><a href="https://www.npmjs.com/package/ffmpeg-static#sources-of-the-binaries">https://www.npmjs.com/package/ffmpeg-static#sources-of-the-binaries</a></p>
 <p>使用brew安装
 <code>brew install ffmpeg --with-ffplay</code></p>
-
 <p><code>ffmpeg -protocols</code> 查看ffmpeg支持的协议列表</p>
-
 <h3 id="让ffmpeg转为mp4边下边播">让ffmpeg转为MP4边下边播</h3>
-
 <p><code>ffmpeg -i input.xx -c copy -movflags faststart output.mp4</code></p>
-
 <p><code>-movflags faststart</code> 可修改MP4的moov</p>
-
 <p>关于<code>faststart</code>还有一个python项目,类似于ffmpeg软件包中的<code>qt-faststart</code>  <a href="https://github.com/danielgtaylor/qtfaststart">https://github.com/danielgtaylor/qtfaststart</a></p>
-
 <p>可以使用<code>pip install qtfaststart</code>,仅需10KB+</p>
-
 <p><code>pip3 install qtfaststart</code> 也可以</p>
-
 <p><a href="http://blog.chinaunix.net/uid-342902-id-2416123.html">http://blog.chinaunix.net/uid-342902-id-2416123.html</a></p>
-
-<h3 id="flv-to-mp4">flv to mp4</h3>
-
+<p>转成 dash 特殊的mp4</p>
+<pre><code>ffmpeg –i input.flv –c copy –f mp4 –movflags dash output.mp4
+</code></pre><h3 id="flv-to-mp4">flv to mp4</h3>
 <p><code>ffmpeg -i input.flv -codec copy output.mp4</code> 快速转化flv到mp4,高质量转化( only changes container without reencoding )</p>
-
 <p><code>ffmpeg -i input.flv -c copy -copyts output.mp4</code> 也比较快,高质量转化</p>
-
 <p><code>ffmpeg -i aaa.flv -c:v libx264 -crf 28 output.mp4</code> 带压缩的转换,非常消耗CPU和时间</p>
-
 <p>更多用法可以参考 <a href="http://www.jianshu.com/p/053665062f22">http://www.jianshu.com/p/053665062f22</a></p>
-
 <h3 id="mp4-to-gif">mp4 to gif</h3>
-
 <p><a href="http://blog.pkh.me/p/21-high-quality-gif-with-ffmpeg.html#usage">http://blog.pkh.me/p/21-high-quality-gif-with-ffmpeg.html#usage</a></p>
-
 <p><code>/tmp/1.sh</code></p>
-
 <pre><code>#!/bin/sh
 
 palette=&quot;/tmp/palette.png&quot;
@@ -114,125 +89,96 @@ filters=&quot;fps=15,scale=360:-1:flags=lanczos&quot;
 ffmpeg -v warning -i $1 -vf &quot;$filters,palettegen&quot; -y $palette
 ffmpeg -v warning -i $1 -i $palette -lavfi &quot;$filters [x]; [x][1:v] paletteuse&quot; -y $2
 
-</code></pre>
-
-<p>使用: <code>/tmp/1.sh file.mp4 file.gif</code></p>
-
+</code></pre><p>使用: <code>/tmp/1.sh file.mp4 file.gif</code></p>
 <h3 id="视频裁剪">视频裁剪</h3>
-
 <p>ffmpeg  -i ./plutopr.mp4 -vcodec copy -acodec copy -ss 00:00:10 -to 00:00:15 ./cutout1.mp4 -y</p>
-
 <p>-ss time_off        set the start time offset 设置从视频的哪个时间点开始截取，上文从视频的第10s开始截取
 -to 截到视频的哪个时间点结束。上文到视频的第15s结束。截出的视频共5s.
 如果用-t 表示截取多长的时间如 上文-to 换位-t则是截取从视频的第10s开始，截取15s时长的视频。即截出来的视频共15s.</p>
-
 <p>注意的地方是：
- 如果将-ss放在-i ./plutopr.mp4后面则-to的作用就没了，跟-t一样的效果了，变成了截取多长视频。一定要注意-ss的位置。</p>
-
+如果将-ss放在-i ./plutopr.mp4后面则-to的作用就没了，跟-t一样的效果了，变成了截取多长视频。一定要注意-ss的位置。</p>
 <p>参数解析
 -vcodec copy表示使用跟原视频一样的视频编解码器。
 -acodec copy表示使用跟原视频一样的音频编解码器。</p>
-
-<p>-i 表示源视频文件</p>
-
-<h2 id="y-表示如果输出文件已存在则覆盖">-y 表示如果输出文件已存在则覆盖。</h2>
-
+<h2 id="-y-表示如果输出文件已存在则覆盖">-i 表示源视频文件
+-y 表示如果输出文件已存在则覆盖。</h2>
 <h4 id="处理m3u8地址视频">处理m3u8地址视频</h4>
-
+<pre><code>ffmpeg -threads 2 -i &quot;m3u8地址&quot; -c copy -movflags +faststart 文件名.MP4
+</code></pre><p>-threads 2表示使用的线程数，这里设置为2线程，可以根据自己服务器的性能进行设定，也可以不设定默认为单线程。
+-i &ldquo;m3u8地址&quot;表示输入地址，其中m3u8既可以是网络地址也可以是本地视频路径。
+-c copy表示不进行转码，直接复制m3u8地址中的音视频流。
+-movflags +faststart表示将moov box移动到文件的头部，以便于快速播放。
+文件名.MP4表示输出的文件格式，其中MP4可以替换成mkv、ts等支持的视频封装格式。</p>
+<pre><code>ffmpeg -threads 2 -i &quot;m3u8地址&quot; -c copy -map 0 -f segment -segment_list 生成新m3u8地址索引名.m3u8 -segment_time 900 新文件名%03d.ts
+</code></pre><p>-map 0 -f segment -segment_list 生成新m3u8地址索引名.m3u8 -segment_time 900表示切片分割参数，缺一不可。
+-segment_time 900表示每900秒进行一次分割切片，时间可根据需要自行设置。
+新文件名%03d.ts表示生成新的切片文件，其中%03d.ts必不可少。</p>
 <p>下载转码 <code>ffmpeg -i &quot;http://m3u8的地址&quot; -c copy -bsf:a aac_adtstoasc output.mp4</code></p>
-
-<p><code>ffmepg -i http://xxx.m3u8 &quot;文件名.mp4&quot;</code></p>
-
+<p><code>ffmpeg -i http://xxx.m3u8 &quot;文件名.mp4&quot;</code></p>
 <p>转化为mp4,需要直到结束,一个文件才能完整,才能写入其<code>moov</code>,其<code>moov</code>数据始终是在<code>mdat</code>之后,我们需要使用<code>qtfaststart</code>才能使其适合边下边播</p>
-
 <p>我们可以使其转化为flv文件,这样视频不用完整就能播放,可以边转码边播放。</p>
-
-<p>ffmpeg -i &ldquo;<a href="http://xxx.m3u8&quot;">http://xxx.m3u8&quot;</a> -b 8M -r 12 -g 12  output1.flv</p>
-
-<p><code>ffmepg -i &quot;http://xxx.m3u8&quot;  -b 2M out.flv</code></p>
-
-<p><code>ffmpeg -i xx.rmvb   -c:a copy -movflags faststart output.mp4</code></p>
-
+<p>ffmpeg -i &ldquo;<a href="http://xxx.m">http://xxx.m</a>3u8&rdquo; -b 8M -r 12 -g 12  output1.flv</p>
+<p><code>ffmpeg -i &quot;http://xxx.m3u8&quot;  -b 2M out.flv </code></p>
+<p><code>ffmpeg -i xx.rmvb   -c:a copy -movflags faststart output.mp4 </code></p>
 <p>ffmpeg 大文件转换为mp4速度很慢通常低配机器是0.5X倍速, 可以转换为flv文件,转换为flv相比转换为mp4速度快很多,一般能3X倍速,还能边转换,边播放</p>
-
 <p>转换为flv,需要设置码率高一些,不然视频画面,严重模糊,设置比特率高些不很影响转码速度</p>
-
 <p>使用<code>-b</code>设置比特率(码率),默认为200Kbit/s,这里改为2048</p>
-
 <p><code>-r</code> 设定视屏帧率 即 fps</p>
-
-<p><code>ffmepg -i xx.rmvb -b 2M a.flv</code></p>
-
+<p><code>ffmpeg -i xx.rmvb -b 2M a.flv</code></p>
 <p>2M 适用于1280X720 普通清晰度. 如果分辨率更大需调整4M 或 6M</p>
-
 <p>ffmpeg 合并 MP4文件
 <code>ffmpeg-sound.txt</code></p>
-
 <pre><code>file 1.mp4
 file 2.mp4
 file 3.mp4
 file 4.mp4
-</code></pre>
-
-<p><code>ffmpeg -f concat -i ffmpeg-sound.txt -c copy final_output.mp4</code></p>
-
+</code></pre><p><code>ffmpeg -f concat -i ffmpeg-sound.txt -c copy final_output.mp4</code></p>
 <p>批量合并ts文件</p>
-
 <p>使用方式同合并mp4文件,这次我们可以使用命令行参数指定文件,而不需要文件列表.</p>
-
 <p><code>ffmpeg -i &quot;concat:file001.ts|file002.ts|file003.ts|file004.ts&quot; -acodec copy -vcodec copy -absf aac_adtstoasc out.mp4</code></p>
-
-<p>假如有很多文件,我们一个个拼接文件列表也很麻烦,可以使用shell快速生成 <code>for i in {1..100};do echo -e &quot;file$i.ts|\c&quot;;done;</code></p>
-
+<p>假如有很多文件,我们一个个拼接文件列表也很麻烦,可以使用shell快速生成 <code>for i in {1..100};do echo -e &quot;file$i.ts|\c&quot;;done; </code></p>
 <p>对于一个文件夹内存在很多要合并的文件,可以使用下面脚本</p>
-
-<p><code>ls * | perl -nale 'chomp;push @a, $_;END{printf &quot;ffmpeg -i \&quot;concat:%s\&quot; -acodec copy -vcodec copy -absf aac_adtstoasc out.mp4\n&quot;, join(&quot;|&quot;,@a)}'</code></p>
-
+<p><code>ls * | perl -nale 'chomp;push @a, $_;END{printf &quot;ffmpeg -i \&quot;concat:%s\&quot; -acodec copy -vcodec copy -absf aac_adtstoasc out.mp4\n&quot;, join(&quot;|&quot;,@a)}' </code></p>
 <p><a href="http://askubuntu.com/questions/352920/fastest-way-to-convert-videos-batch-or-single">http://askubuntu.com/questions/352920/fastest-way-to-convert-videos-batch-or-single</a></p>
-
 <p><a href="https://www.zhouchun.net/blog/show/293">https://www.zhouchun.net/blog/show/293</a></p>
-
 <p><a href="https://www.cnblogs.com/frost-yen/p/5848781.html">https://www.cnblogs.com/frost-yen/p/5848781.html</a></p>
-
 <blockquote>
 <p>-vf  视频过滤器
 -af  音频过滤器
 用 -r 参数设置帧率
 设置码率 –b 参数</p>
 </blockquote>
-
 <p>音频参数： -ar 设定采样率 -ac 设定声音的Channel数 -acodec 设定声音编解码器，未设定时则使用与输入流相同的编解码器 -an 不处理音频</p>
-
 <p>视频参数： -b 设定视频流量，默认为200Kbit/s -r 设定帧速率，默认为25 -s 设定画面的宽与高 -aspect 设定画面的比例 -vn 不处理视频 -vcodec 设定视频编解码器，未设定时则使用与输入流相同的编解码器</p>
-
 <p><a href="http://blog.csdn.net/danielpei1222/article/details/61916435">http://blog.csdn.net/danielpei1222/article/details/61916435</a></p>
-
 <h2 id="ffmpeg-截图">ffmpeg 截图</h2>
-
-<p><a href="http://blog.csdn.net/yourijing/article/details/50786758">http://blog.csdn.net/yourijing/article/details/50786758</a></p>
-
+<pre><code>ffmpeg -ss 10 -i input.flv -y -f image2  -vframes 100 -s 352x240 b-%03d.jpg
+</code></pre><p>参数解释:</p>
+<p>-i  输入文件</p>
+<p>-y  覆盖</p>
+<p>-f  生成图片格式</p>
+<p>-ss 开始截图时间 seconds or in hh:mm:ss[.xxx] 如果截图开始时间越接近篇尾，所花费的时间就会越长</p>
+<p>-vframes  截图帧数 或者 使用 -t : 截图时长 seconds, or hh:mm:ss[.xxx]</p>
+<p>-s  图片宽高比</p>
+<p>b-%3d.jpg 格式化文件命名,会生成 b-001.jpg，b-002.jpg 等。</p>
+<p>注意设定长宽高的话，像素比较低</p>
 <h2 id="旋转视频">旋转视频</h2>
-
 <pre><code>ffmpeg -i intro_app_upload.mp4 -c copy -metadata:s:v:0 rotate=90 last.mp4
-</code></pre>
-
+</code></pre><h2 id="裁剪视频">裁剪视频</h2>
+<p>ffmpeg -i example.avi -vf crop=a:b:c:d  outputfilename</p>
+<p>其中a、b、c、d分别代表的参数是a为输出的宽度，b为输出的高度，c为需要左移的距离，d为序要上移的距离（单位默认为pixel）</p>
+<p>c的值如果大于a与原始视频的宽度差，则只移动a与原始视频的宽度差的距离，</p>
+<p>d的值如果大于b与原始视频的高度差，则只移动b与原始视频的高度差的距离，</p>
+<p>去黑边切去的是画面区域的右侧和下侧。</p>
 <h2 id="mpv-播放多个url">mpv 播放多个url</h2>
-
 <p>直接 <code>mpv url1 url2 url3 url4</code>
 就可以连起来播放</p>
-
 <p><code>mpv</code>播放URL时,先发送一个Head请求,探测文件大小,</p>
-
 <p>HEAD请求使用的user-agent <code>Mozilla/5.0 (X11; Linux x86_64; rv:10.0) Gecko/20150101 Firefox/47.0 (Chrome)</code></p>
-
 <p>随后发送GET请求获取数据,使用的<code>User-Agent: mpv 0.26.0.</code></p>
-
 <p>mpv会读取文件的moov,mdat等信息,可自动处理不是<code>qt-faststart</code>的文件但没有Chrome智能,Chrome浏览器播放视频文件时,也有这个能力.</p>
-
 <p>mpv获取数据是单线程的.</p>
-
 <p>mpv 快捷键</p>
-
 <pre><code>shift+T最前端显示
 PageUP下一章节
 PageDown上一章节
@@ -269,71 +215,72 @@ M静音
 8饱和度+
 9、/减小音量
 0、*增大音量
-</code></pre>
-
-<p>mpv播放显示</p>
-
+</code></pre><p>mpv播放显示</p>
 <pre><code> (+) Video --vid=1 (*) (mpeg4 25.000fps)
  (+) Audio --aid=1 --alang=eng (*) (aac 2ch 44100Hz)
 AO: [coreaudio] 44100Hz stereo 2ch floatp
 VO: [opengl] 1920x1080 yuv420p
-</code></pre>
-
-<p>Chrome,Firefox 浏览器播放只有声音没有图像,只有safari可以播放mpeg4</p>
-
+</code></pre><p>Chrome,Firefox 浏览器播放只有声音没有图像,只有safari可以播放mpeg4</p>
 <p>使用ffmpeg处理视屏编码，使用h264编码格式 <code>ffmpeg -i xxx.mp4 -c:v libx264 -movflags faststart out.mp4</code> 耗时2:05</p>
-
 <p><code>ffmpeg -i input.rmvb -c:v libx264 -preset veryfast -crf 18 -c:a copy -movflags faststart output.mp4</code> 编码速度更快，但体积大一下</p>
-
 <p>压缩以缩小体积</p>
-
 <p><code>18~28</code>是一个合理的范围。18被认为是视觉无损的从技术角度上看当然还是有损的</p>
-
 <p>它的输出视频质量和输入视频相当</p>
-
-<p><code>ffmpeg -i bigfile.mp4 -c:v libx264 -s 800x450 -b:v 800k -ar 44100 -ab 48k -preset slower -crf 19 -movflags faststart output.mp4</code></p>
-
+<p><code>ffmpeg -i bigfile.mp4 -c:v libx264 -s 800x450 -b:v 800k -ar 44100 -ab 48k -preset slower -crf 19 -movflags faststart output.mp4 </code></p>
 <p><a href="http://blog.csdn.net/happydeer/article/details/52610060">http://blog.csdn.net/happydeer/article/details/52610060</a></p>
-
 <p>编码后可以播放，并且比mpeg4编码的体积更小</p>
-
 <pre><code> (+) Video --vid=1 (*) (h264 1920x1080 25.000fps)
  (+) Audio --aid=1 --alang=eng (*) (aac 2ch 44100Hz)
 AO: [coreaudio] 44100Hz stereo 2ch floatp
 VO: [opengl] 1920x1080 yuv420p
-</code></pre>
-
-<p>ffmpeg -i 1-2.mp4 -c:v libx264 -preset veryslow -crf 18 -c:a copy -movflags faststart ../1-2.mp4</p>
-
+</code></pre><p>ffmpeg -i 1-2.mp4 -c:v libx264 -preset veryslow -crf 18 -c:a copy -movflags faststart ../1-2.mp4</p>
 <p>ffmpeg -i 12.mp4 -c:v libx264 -s 1280x720 -b:v 8M -ar 48000 -ab 128k -preset faster -crf 19 -movflags faststart out.mp4</p>
-
 <p>为取得更小的视频,可以使用两步压缩</p>
-
 <pre><code>ffmpeg -y -i jgdq.mp4 -c:v libx264 -b:v 2000k -pass 1 -an -f mp4 /dev/null &amp;&amp; ffmpeg -i jgdq.mp4 -c:v libx264 -b:v 2000k -pass 2 -c:a aac -b:a 128k output.mp4
-</code></pre>
-
-<p><a href="https://trac.ffmpeg.org/wiki/Encode/H.264">https://trac.ffmpeg.org/wiki/Encode/H.264</a></p>
-
+</code></pre><p><a href="https://trac.ffmpeg.org/wiki/Encode/H.264">https://trac.ffmpeg.org/wiki/Encode/H.264</a></p>
+<p>将一个高清流，复制为几个不同视频清晰度的流重新发布，其中音频不变
+ffmpeg -re -i rtmp://server/live/high_FMLE_stream -acodec copy -vcodec x264lib -s 640×360 -b 500k -vpre medium -vpre baseline rtmp://server/live/baseline_500k -acodec copy -vcodec x264lib -s 480×272 -b 300k -vpre medium -vpre baseline rtmp://server/live/baseline_300k -acodec copy -vcodec x264lib -s 320×200 -b 150k -vpre medium -vpre baseline rtmp://server/live/baseline_150k -acodec libfaac -vn -ab 48k rtmp://server/live/audio_only_AAC_48k</p>
 <h2 id="视频合并">视频合并</h2>
-
 <p><a href="https://stackoverflow.com/questions/7333232/how-to-concatenate-two-mp4-files-using-ffmpeg">https://stackoverflow.com/questions/7333232/how-to-concatenate-two-mp4-files-using-ffmpeg</a></p>
-
-<p>ffmpeg -i &ldquo;concat:00000.MTS|00001.MTS|00002.MTS|00003.MTS|00004.MTS|00005.MTS|00006.MTS|00007.MTS|00008.MTS|00009.MTS|00010.MTS|00011.MTS|00012.MTS|00013.MTS|00014.MTS|00015.MTS&rdquo; -c:v libx264 -crf 20 -preset medium -c:a aac -b:a 128k <br />
+<p>ffmpeg -i &ldquo;concat:00000.MTS|00001.MTS|00002.MTS|00003.MTS|00004.MTS|00005.MTS|00006.MTS|00007.MTS|00008.MTS|00009.MTS|00010.MTS|00011.MTS|00012.MTS|00013.MTS|00014.MTS|00015.MTS&rdquo; -c:v libx264 -crf 20 -preset medium -c:a aac -b:a 128k<br>
 -movflags +faststart -vf scale=-2:720,format=yuv420p output.mp4</p>
+<h2 id="ffmpeg--macos-摄像头">ffmpeg  macOs 摄像头</h2>
+<p>列出可用设备</p>
+<pre><code>ffmpeg -f avfoundation -list_devices true -i &quot;&quot;
+</code></pre><pre><code>ffmpeg -f avfoundation -framerate 30 -i &quot;0&quot; -target pal-vcd test.mpg
+</code></pre><pre><code>ffmpeg -f avfoundation -framerate 30 -i &quot;0&quot; test.mp4
+</code></pre><p>屏幕录制</p>
+<pre><code>ffmpeg -f avfoundation -i &quot;1&quot; -pix_fmt yuv420p -r 25 -t 5 out.mov
+</code></pre><p>如果希望将桌面录制或者分享，可以使用命令行如下：</p>
+<pre><code>ffmpeg -f avfoundation -i &quot;1&quot; -vcodec libx264 -preset ultrafast -acodec libfaac -f flv rtmp://192.168.1.105:1935/live1/room1
+
+</code></pre><p>如果需要桌面+麦克风，比如一般做远程教育分享ppt或者桌面，有音频讲解 命令行如下：</p>
+<pre><code>ffmpeg -f avfoundation -i &quot;1:0&quot; -vcodec libx264 -preset ultrafast -acodec libmp3lame -ar 44100 -ac 1 -f flv rtmp://192.168.1.105:1935/live1/room1
+</code></pre><p>如果需要桌面+麦克风，并且还要摄像头拍摄到自己，比如一般用于互动主播，游戏主播，命令行如下</p>
+<pre><code>ffmpeg -f avfoundation -framerate 30 -i &quot;1:0&quot; \
+-f avfoundation -framerate 30 -video_size 640x480 -i &quot;0&quot; \
+-c:v libx264 -preset ultrafast \
+-filter_complex 'overlay=main_w-overlay_w-10:main_h-overlay_h-10' -acodec libmp3lame -ar 44100 -ac 1  -f flv rtmp://192.168.1.105:1935/live1/room1
+
+</code></pre><pre><code>ffmpeg -re -i ~/Downloads/526.mp4 \
+-f flv -c:v libx264 -preset veryfast -tune zerolatency -crf 20 -c:a copy  &quot;rtmp://video.xx.cn/tuwenzb/twv1_331001?auth_key=1590748713-8cdb1a4b800d46b58c3fb820448a0687-0-d4c1fc048a225b5c2daf6f66076eb9c3&quot;
+</code></pre><p>ffmpeg -re -i 1.mp4 -vcodec copy -acodec copy -f flv &ldquo;rtmp://&rdquo;</p>
+<p><a href="https://phoboslab.org/log/2013/09/html5-live-video-streaming-via-websockets">https://phoboslab.org/log/2013/09/html5-live-video-streaming-via-websockets</a></p>
+<p><a href="https://jsmpeg.com/perf.html">https://jsmpeg.com/perf.html</a></p>
 
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/ffmpeg-usage/"></air-messager>
+        <air-messager ns="hi" thread="/post/ffmpeg-usage/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/git-usage/" title="git基本使用" >
+            <a class="previous" href="/post/git-usage/" title="git基本使用" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/improve-mysqldb/" title="MySQL性能优化">
+            <a class="next" href="/post/improve-mysqldb/" title="MySQL性能优化">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -345,6 +292,14 @@ VO: [opengl] 1920x1080 yuv420p
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

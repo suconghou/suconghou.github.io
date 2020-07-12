@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>苏苏的博客</title>
@@ -6,10 +6,46 @@
     <description>Recent content on 苏苏的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 02 May 2019 20:10:25 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 27 Jun 2020 15:46:27 +0800</lastBuildDate>
     
 	<atom:link href="http://blog.suconghou.cn/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>MSE播放器与P2P</title>
+      <link>http://blog.suconghou.cn/post/mse-p2p-player/</link>
+      <pubDate>Sat, 27 Jun 2020 15:46:27 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/mse-p2p-player/</guid>
+      <description>由于疫情原因,这个寒假格外长,闲赋在家,看了看之前的TODO LIST ,一个YouTube的播放器问题吸引了我,趁时间,捡起来研究研究,于是便有了这片文章
+要想做一个YouTube播放器,首先是API部分,这个有官方的API,不用我们自己爬数据,但是有请求量限制,不过这个也好说,加一层缓存,既提高了性能也降低了源请求量,等流量真的大了,还可以做多密钥负载均衡.
+https://developers.google.cn/youtube/v3/docs/
+提供的API很多,但是我们只需要实现自己需要的就OK了.
+总体来说就是加密钥,处理缓存,中转代理,我们选用GO语言来编写,这个处理起来十分容易.不得不说GO语言的网络库封装的非常好用.
+有了API下面就是前端界面,我们直接VUE全家桶搞起来,UI界面懒得慢慢打磨直接用个muse-ui框架,看起来还是很简洁的.
+播放地址解析 播放器部分是我们的重点.
+Data API 是不提供资源的播放地址的,播放地址也是敏感信息,我们需要自己实现.
+根据页面分析和抓包,再参考广大互联网群众的智慧,我们完成了 https://github.com/suconghou/youtubevideoparser 这个库
+根据视频ID解析出播放地址,但是播放地址由于某种原因我们是无法直接播放的,所以这需要一个合适的中转.
+如果中转整个视频,CDN很不友好,文件太大,CDN节点也不会为我们缓存.并且分析播放器我们也知道官方的播放器也不是一整个加载的,而是分片加载.
+如何分片是个问题,因为一旦采取了分片,意味着我们要使用MSE去处理视频.
+尝试了一下随便range分片结合mse,实践证明是行不通的.
+那官方的播放器是怎么做的呢,很明显关键点在这个分片的算法,不是随意分片的.
+但是找遍了源码也没找到这个分片的规则定义在哪?
+最后突然想到突破点可能是在视频文件本身,顺着这个思路问题解决.
+中间浪费了大量时间.这里不得不吐槽一下广大科普MSE的文章.
+大部分文章都提到了fragment mp4,都知道range请求,一片一片去addSourceBuffer
+但是对于range的划分原则,.mpd索引的原理和sidx segment丝毫未提.
+换句话说就是不是你想addSourceBuffer就能addSourceBuffer的,你必须取到一块完整的fragment才能addSourceBuffer,如何从视频中知道哪一字节至哪一字节是一个完整的fragment
+我们需要从视频的sidx segment中提取,.mpd索引就是预先根据sidx segment分析出来的结果.
+持有mpd索引,我们播放时就不需要再去下载视频中的sidx segment现场分析了.
+如何解析sidx segment 关于MSE的基本使用,这里不再赘述,网上入门的文章太多了,这里主要展开讨论一下mp4文件与sidx segment,无论是mp4还是fragment mp4,我们都可以将mp4文件拆解为基本的box
+常见的box类型有
+ ftyp 确定文件的类型 moov 保存了媒体的时间信息、trak信息和媒体索引等。 mdat 所有媒体数据统一存放在mdat中 free sidx moof  一个moov box中,可能还会嵌入其他的box,这个我们现在用不到,可以不用考虑.
+我们只看顶层的box,使用qtfaststart -l file.mp4 可以查看他的顶层box
+对于普通的mp4
+ftyp (32 bytes) moov (135554 bytes) free (8 bytes) mdat (35973570 bytes) 对于fragment mp4</description>
+    </item>
     
     <item>
       <title>北京世界园艺博览会2019</title>
@@ -181,7 +217,10 @@ ls -l /proc/28290/fd | wc -l
       <pubDate>Wed, 29 Aug 2018 14:10:29 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/image-compress-tools/</guid>
-      <description>png 图片压缩工具 https://css-ig.net/png-tools-overview.php#overview
+      <description>imagemagick https://www.imagemagick.org/script/download.php
+https://www.imagemagick.org/download/
+并提供各平台二进制可执行文件下载
+png 图片压缩工具 https://css-ig.net/png-tools-overview.php#overview
 https://github.com/chrissimpkins/Crunch
 https://nukesaq88.github.io/Pngyu/
 图像压缩软件 ImageOptim无损压缩
@@ -231,9 +270,9 @@ Chrome 打开 chrome://inspect/#devices
       <guid>http://blog.suconghou.cn/post/frp-net-tunnel/</guid>
       <description>配置frp服务器端 查看 https://github.com/fatedier/frp
 服务器端配置文件/etc/frps.ini
-[common] bind_port = 7000 kcp_bind_port = 7000 privilege_allow_ports = 7700,7800-7900 vhost_http_port = 5050 dashboard_port = 7500 dashboard_user = admin dashboard_pwd = 123abc881  网页控制台为7500端口
+[common] bind_port = 7000 kcp_bind_port = 7000 privilege_allow_ports = 7700,7800-7900 vhost_http_port = 5050 dashboard_port = 7500 dashboard_user = admin dashboard_pwd = 123abc881 网页控制台为7500端口
 编写/etc/systemd/system/frps.service文件使开机启动
-[Unit] Description=frps service After=network.target network-online.target [Service] Restart=on-failure TimeoutStartSec=0 ExecStart=/usr/local/bin/frps -c /etc/frps.ini [Install] WantedBy=multi-user.target  sudo systemctl daemon-reload sudo systemctl enable frps sudo systemctl start frps
+[Unit] Description=frps service After=network.target network-online.target [Service] Type=simple User=nobody Restart=on-failure RestartSec=5s ExecStart=/usr/local/bin/frps -c /etc/frps.ini [Install] WantedBy=multi-user.target sudo systemctl daemon-reload sudo systemctl enable frps sudo systemctl start frps
 配置frp客户端 要穿透的代理配置 /etc/frpc.ini
 [common] server_addr = x.x.x.x server_port = 7000 [ssh] type = tcp local_ip = 127.</description>
     </item>
@@ -244,9 +283,9 @@ Chrome 打开 chrome://inspect/#devices
       <pubDate>Fri, 18 May 2018 17:16:31 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/css-tricks/</guid>
-      <description> https://css-tricks.com/
+      <description>https://css-tricks.com/
 1. 使用CSS画出三角 box shadow with angle
-content: &amp;quot; &amp;quot;; border: 6px solid #fff; border-left-color: transparent; border-bottom-color: transparent; display: block; position: absolute; bottom: -6px; left: 50%; -webkit-transform: translateX(-50%) rotate(135deg); transform: translateX(-50%) rotate(135deg); box-shadow: 2px -2px 2px rgba(1,1,1,.12);  </description>
+content: &amp;quot; &amp;quot;; border: 6px solid #fff; border-left-color: transparent; border-bottom-color: transparent; display: block; position: absolute; bottom: -6px; left: 50%; -webkit-transform: translateX(-50%) rotate(135deg); transform: translateX(-50%) rotate(135deg); box-shadow: 2px -2px 2px rgba(1,1,1,.12); </description>
     </item>
     
     <item>
@@ -260,41 +299,12 @@ macOs 可直接编译
 make darwin
 ./proxy 查看用法
 监听本地8080端口,并将流量同时复制到192.168.1.2:80 , 必须确保 192.168.1.2:80 可写.
-proxy -l 8080 -h 192.168.1.2 -p 80  默认后台运行,使用参数-f不进入后台
+proxy -l 8080 -h 192.168.1.2 -p 80 默认后台运行,使用参数-f不进入后台
 proxy -l 8080 -h 192.168.1.2 -p 80 -f
 查看转发的数据
-proxy -l 80 -h 67.215.245.160 -p 80 -i &amp;quot;tee input.log&amp;quot; -o &amp;quot;tee output.log&amp;quot;  直接输出到控制台
-proxy -l 80 -h 67.215.245.160 -p 80 -f -i &amp;quot;tee /dev/stderr&amp;quot; -o &amp;quot;tee /dev/stderr&amp;quot;  转发到多个后端
+proxy -l 80 -h 67.215.245.160 -p 80 -i &amp;quot;tee input.log&amp;quot; -o &amp;quot;tee output.log&amp;quot; 直接输出到控制台
+proxy -l 80 -h 67.215.245.160 -p 80 -f -i &amp;quot;tee /dev/stderr&amp;quot; -o &amp;quot;tee /dev/stderr&amp;quot; 转发到多个后端
 查看 https://github.com/kklis/proxy</description>
-    </item>
-    
-    <item>
-      <title>一些数据库</title>
-      <link>http://blog.suconghou.cn/post/databases/</link>
-      <pubDate>Mon, 09 Apr 2018 21:33:50 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/post/databases/</guid>
-      <description>CockroachDB 使用 pgsql 协议，golang开发,提供编译好的单文件可执行程序
-单文件可直接执行,但是非静态编译
-https://www.cockroachlabs.com/docs/releases/
-开源地址
-https://github.com/cockroachdb/cockroach
-其存储引擎使用了 RocksDB
-https://www.cockroachlabs.com/docs/stable/architecture/storage-layer.html
-有关内存的使用说明
-https://www.cockroachlabs.com/blog/memory-usage-cockroachdb/
-cockroach start --insecure --cache=64MB --max-sql-memory=8MB
-cockroach start --insecure --cache=.15 --max-sql-memory=.05
-tidb 开原地址 https://github.com/pingcap/tidb
-tidb 使用的存储引擎是rust开发的 tikv tikv 同样使用了RocksDB
-pgsql 10.5 https://get.enterprisedb.com/postgresql/postgresql-10.5-1-linux.run https://get.enterprisedb.com/postgresql/postgresql-10.5-1-linux-x64.run https://get.enterprisedb.com/postgresql/postgresql-10.5-1-windows.exe https://get.enterprisedb.com/postgresql/postgresql-10.5-1-windows-x64.exe https://get.enterprisedb.com/postgresql/postgresql-10.5-1-osx.dmg
-9.5.15 https://get.enterprisedb.com/postgresql/postgresql-9.5.14-1-linux.run https://get.enterprisedb.com/postgresql/postgresql-9.5.14-1-linux-x64.run https://get.enterprisedb.com/postgresql/postgresql-9.5.14-1-windows.exe https://get.enterprisedb.com/postgresql/postgresql-9.5.14-1-windows-x64.exe https://get.enterprisedb.com/postgresql/postgresql-9.5.14-1-osx.dmg
-9.4.19 https://get.enterprisedb.com/postgresql/postgresql-9.4.19-1-linux.run https://get.enterprisedb.com/postgresql/postgresql-9.4.19-1-linux-x64.run https://get.enterprisedb.com/postgresql/postgresql-9.4.19-1-windows.exe https://get.enterprisedb.com/postgresql/postgresql-9.4.19-1-windows-x64.exe https://get.enterprisedb.com/postgresql/postgresql-9.4.19-1-osx.dmg
-命令行安装
-mysql 见另一边文章
-mongodb 见另一边文章
-数据库管理工具 https://tableplus.io/
-支持多种数据库，有免费版</description>
     </item>
     
     <item>
@@ -347,6 +357,27 @@ d: aliased to dirs -v | head -10
     </item>
     
     <item>
+      <title>Supervisord</title>
+      <link>http://blog.suconghou.cn/post/supervisord/</link>
+      <pubDate>Thu, 02 Nov 2017 16:18:47 +0800</pubDate>
+      
+      <guid>http://blog.suconghou.cn/post/supervisord/</guid>
+      <description>Supervisord可以通过sudo easy_install supervisor安装，当然也可以通过Supervisord官网下载后解压并转到源码所在的文件夹下执行setup.py install来安装。
+ 使用easy_install必须安装setuptools打开https://pypi.org/project/setuptools/#files
+ 或者
+ 安装easy_install  sudo yum install python-setuptools-devel 2. 安装Supervisor
+easy_install supervisor 3. 生成配置文件
+echo_supervisord_conf &amp;gt; /etc/supervisord.conf
+安装完有两个可执行文件 supervisorctl supervisord
+配置文件
+/etc/supervisord.conf
+启动
+/usr/bin/supervisord -c /etc/supervisord.conf
+配置文件示例
+[unix_http_server] file=/dev/shm/supervisor.sock ; (the path to the socket file) [supervisord] logfile=/tmp/supervisord.log ; (main log file;default $CWD/supervisord.log) logfile_maxbytes=50MB ; (max main logfile bytes b4 rotation;default 50MB) logfile_backups=10 ; (num of main logfile rotation backups;default 10) loglevel=info ; (log level;default info; others: debug,warn,trace) pidfile=/tmp/supervisord.</description>
+    </item>
+    
+    <item>
       <title>Html5页面适配</title>
       <link>http://blog.suconghou.cn/post/html5-wap-page/</link>
       <pubDate>Thu, 26 Oct 2017 10:27:56 +0800</pubDate>
@@ -357,16 +388,16 @@ d: aliased to dirs -v | head -10
 一般的设计稿宽度大小为750px,或者640px;
 而实际手机的逻辑分辨率一般为320px;（不是指他的物理分辨率）
 注意：使用rem适配必须首先设定meta标签,设定viewport的大小就是设备宽度
-&amp;lt;meta name=&amp;quot;viewport&amp;quot; content=&amp;quot;width=device-width, initial-scale=1.0&amp;quot;&amp;gt;  可使用如下代码获得屏幕的信息；
-var msg= [ &amp;quot;逻辑分辨率&amp;quot;+window.screen.width, &amp;quot;设备像素比&amp;quot;+window.devicePixelRatio, &amp;quot;物理分辨率&amp;quot;+window.screen.width*window.devicePixelRatio ]; alert(msg.join(&amp;quot;\n&amp;quot;))  可参考 http://www.zhangxinxu.com/wordpress/2012/08/window-devicepixelratio/
+&amp;lt;meta name=&amp;quot;viewport&amp;quot; content=&amp;quot;width=device-width, initial-scale=1.0&amp;quot;&amp;gt; 可使用如下代码获得屏幕的信息；
+var msg= [ &amp;quot;逻辑分辨率&amp;quot;+window.screen.width, &amp;quot;设备像素比&amp;quot;+window.devicePixelRatio, &amp;quot;物理分辨率&amp;quot;+window.screen.width*window.devicePixelRatio ]; alert(msg.join(&amp;quot;\n&amp;quot;)) 可参考 http://www.zhangxinxu.com/wordpress/2012/08/window-devicepixelratio/
 理想状态 假设我们的设计稿是750px; 用户手机的逻辑分辨率也是750px
 那么只需要按照设计稿的像素大小，写死就可以完美呈现在750px的手机上。
 但是用户的手机像素是多样的，所以我们应该将px单位转化为rem单位，同时根据用户手机分辨率来调节rem的实际值大小
 需要保证在750px的用户手机下 rem 的值正好等于设计稿上的像素值，这需要我们根据用户屏幕的分辨率来动态调节html font-size的大小。
 举个例子
 在750px的设计稿里，一个按钮的宽是 280px, 其html的font-size未做修改，是16px
-640 320px 80px 40px (目标手机尺寸*元素设计大小/设计稿宽) 5rem 5rem 16px x (x = ) (目标手机尺寸*元素设计大小/设计稿宽)/5 需要 rem 的值不变，保持实际的元素大小 x 的值应为 (目标手机尺寸*元素设计大小/设计稿宽)/5  x 为 8
-我们修改在640下 font-size 为100， 这样UI的像素/100 可轻易转化为rem 640 320 80px 40px 0.</description>
+640 320px 80px 40px (目标手机尺寸*元素设计大小/设计稿宽) 5rem 5rem 16px x (x = ) (目标手机尺寸*元素设计大小/设计稿宽)/5 需要 rem 的值不变，保持实际的元素大小 x 的值应为 (目标手机尺寸*元素设计大小/设计稿宽)/5 x 为 8
+我们修改在640下 font-size 为100， 这样UI的像素/100 可轻易转化为rem 640 320 80px 40px 0.8rem 0.8rem 100px 50px ( 与分辨率关联就是 320*(100/640) ) 我们希望元素的设计大小（px）能轻易的转换为rem单位，故我们设计系数100</description>
     </item>
     
     <item>
@@ -386,19 +417,19 @@ http://baike.baidu.com/item/HTTP%E7%8A%B6%E6%80%81%E7%A0%81
 有时候HEAD请求和GET请求后端的处理逻辑不一样,我们可以使用下面的命令
 查看GET请求的响应头而忽略其响应体.在调试的时候非常有用.
 普通get请求,
-curl -o /dev/null url -v
+curl -o /dev/null url -v 
 curl -i url 完整输出响应头和响应正文.
-curl -i https://www.baidu.com
+curl -i https://www.baidu.com 
 http 协议 第一部分：请求行，第一行明了是post请求，以及http1.1版本。
 第二部分：请求头部，第二行至第六行。
 第三部分：换行
 第四部分：请求数据
 返回
 第一部分：状态行，由HTTP协议版本号， 状态码， 状态消息 三部分组成 第二部分：消息报头，用来说明客户端要使用的一些附加信息 第三部分：空行，消息报头后面的空行是必须的 第四部分：响应正文，服务器返回给客户端的文本信息。 手动拼接一个http协议
-telnet test.share.ourwill.cn 80
+telnet test.share.xx.cn 80
 打开一个tcp链接
 最简单的GET请求
-GET / HTTP/1.1 Host: test.share.ourwill.cn  Host 用于表明要请求的是哪个主机
+GET / HTTP/1.1 Host: test.share.xx.cn Host 用于表明要请求的是哪个主机
 Http1.1 默认是keep-alived 的, 一个TCP链接传送完一个完整的http请求后不会主动断开链接.</description>
     </item>
     
@@ -409,9 +440,7 @@ Http1.1 默认是keep-alived 的, 一个TCP链接传送完一个完整的http请
       
       <guid>http://blog.suconghou.cn/post/php-on-android/</guid>
       <description>&lt;h2 id=&#34;为安卓交叉编译arm版的php&#34;&gt;为安卓交叉编译ARM版的PHP&lt;/h2&gt;
-
 &lt;p&gt;目前手头上有一个古老的Android平板,系统为Android2.2,CPU 是armv5的架构,可以说是很古老了&lt;/p&gt;
-
 &lt;p&gt;想作为一个简易的服务器使用,便开始自己折腾.&lt;/p&gt;</description>
     </item>
     
@@ -422,7 +451,7 @@ Http1.1 默认是keep-alived 的, 一个TCP链接传送完一个完整的http请
       
       <guid>http://blog.suconghou.cn/post/ftp/</guid>
       <description>静态编辑bftp bftp是一个小巧的ftp server
-apk update &amp;amp;&amp;amp; apk upgrade &amp;amp;&amp;amp; apk add wget make gcc g++ zlib-dev wget https://downloads.sourceforge.net/project/bftpd/bftpd/bftpd-4.4/bftpd-4.4.tar.gz?r=&amp;amp;ts=1493551857&amp;amp;use_mirror=iweb  解压进入目录
+apk update &amp;amp;&amp;amp; apk upgrade &amp;amp;&amp;amp; apk add wget make gcc g++ zlib-dev wget https://downloads.sourceforge.net/project/bftpd/bftpd/bftpd-4.4/bftpd-4.4.tar.gz?r=&amp;amp;ts=1493551857&amp;amp;use_mirror=iweb 解压进入目录
 ./configure --enable-libz CFLAGS=-Os
 修改makefile link阶段加入 -static
 make -j4 编译后当前目录即可得到静态编译的bftpd
@@ -437,7 +466,7 @@ anonymous_enable=NO
 重新启动vsftpd,问题解决。
 local user adduser -h /home/ftpuser -s /sbin/nologin ftpuser
 nopriv_user=xxxx
-anonymous_enable=NO local_enable=YES  vsftpd 默认会查找配置文件/etc/vsftpd.conf .</description>
+anonymous_enable=NO local_enable=YES vsftpd 默认会查找配置文件/etc/vsftpd.conf .可以启动时指定使用地址 vsftpd /etc/vsftpd/vsftpd.conf</description>
     </item>
     
     <item>
@@ -447,9 +476,9 @@ anonymous_enable=NO local_enable=YES  vsftpd 默认会查找配置文件/etc/vsf
       
       <guid>http://blog.suconghou.cn/post/dnsmasq/</guid>
       <description>静态编译 dnsmasq静态编译十分简单,无任何其他依赖库
-apk update &amp;amp;&amp;amp; apk upgrade &amp;amp;&amp;amp; apk add wget make gcc g++ linux-headers cd /tmp &amp;amp;&amp;amp; wget http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.76.tar.xz tar Jxf dnsmasq-2.76.tar.xz &amp;amp;&amp;amp; cd dnsmasq-2.76 &amp;amp;&amp;amp; make CFLAGS=-Os LDFLAGS=-static  配置文件 dnsmasq能够缓存外部DNS记录，同时提供本地DNS解析或者作为外部DNS的代理，即dnsmasq会首先查找/etc/hosts等本地解析文件，然后再查找/etc/resolv.conf等外部nameserver配置文件中定义的外部DNS。所以说dnsmasq是一个很不错的DNS中继。DNS配置同样写入dnsmasq.conf配置文件里。
+apk update &amp;amp;&amp;amp; apk upgrade &amp;amp;&amp;amp; apk add wget make gcc g++ linux-headers cd /tmp &amp;amp;&amp;amp; wget http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.76.tar.xz tar Jxf dnsmasq-2.76.tar.xz &amp;amp;&amp;amp; cd dnsmasq-2.76 &amp;amp;&amp;amp; make CFLAGS=-Os LDFLAGS=-static 配置文件 dnsmasq能够缓存外部DNS记录，同时提供本地DNS解析或者作为外部DNS的代理，即dnsmasq会首先查找/etc/hosts等本地解析文件，然后再查找/etc/resolv.conf等外部nameserver配置文件中定义的外部DNS。所以说dnsmasq是一个很不错的DNS中继。DNS配置同样写入dnsmasq.conf配置文件里。
 /etc/dnsmasq.conf
-cache-size=500 resolv-file=/etc/resolv.conf strict-order listen-address=192.168.1.24 address=/ilanni.com/192.168.1.24 server=223.5.5.5 bogus-nxdomain=223.5.5.5  resolve-file定义dnsmasq从哪里获取上游DNS服务器的地址， 默认是从/etc/resolv.conf获取
+cache-size=500 resolv-file=/etc/resolv.conf strict-order listen-address=192.168.1.24 address=/ilanni.com/192.168.1.24 server=223.5.5.5 bogus-nxdomain=223.5.5.5 resolve-file定义dnsmasq从哪里获取上游DNS服务器的地址， 默认是从/etc/resolv.conf获取
 strict-order表示严格按照resolv-file文件中的顺序从上到下进行DNS解析，直到第一个解析成功为止。
 listen-address定义dnsmasq监听的地址，默认是监控本机的所有网卡上。
 address自定义域名解析的IP地址，在此已ilanni.com这个域名为例。注意dnsmasq是支持泛域名解析的，以上配置就是一个典型的泛域名解析实例。
@@ -474,11 +503,8 @@ address=/ilanni.com/127.0.0.1
       
       <guid>http://blog.suconghou.cn/post/git-repo/</guid>
       <description>&lt;h2 id=&#34;使用gogs搭建git-server&#34;&gt;使用gogs搭建git server&lt;/h2&gt;
-
 &lt;p&gt;使用docker&lt;/p&gt;
-
 &lt;p&gt;如何搭建一个git server&lt;/p&gt;
-
 &lt;p&gt;以及升级,备份等&lt;/p&gt;</description>
     </item>
     
@@ -542,14 +568,16 @@ redis客户端能够直接修改数据库的位置和名称,达到修改文件�
 (echo -e &amp;quot;\n\n&amp;quot;; cat ~/.ssh/id_rsa.pub; echo -e &amp;quot;\n\n&amp;quot;) &amp;gt; /tmp/id_rsa.txt
 向redis写自己的公钥 cat /tmp/id_rsa.txt |redis-cli -h 192.168.15.10 -x set redis
 登入redis,修改数据库文件地址
-config set dir /root/.ssh/ config set dbfilename &amp;quot;authorized_keys&amp;quot; save exit  /etc/crontab
+config set dir /root/.ssh/ config set dbfilename &amp;quot;authorized_keys&amp;quot; save exit /etc/crontab
 /etc/cron.d/
-/var/spool/cron/crontabs/ 用户配置文件存储目录。
+/var/spool/cron/crontabs/	用户配置文件存储目录。
 /var/spool/cron/root
 使用密码
 redis-server --protected-mode no --daemonize yes --requirepass QAZwsx123edcvfr654JKL
 或者修改CONFIG命令
-redis-server --rename-command CONFIG &amp;quot;MYCONF&amp;quot;</description>
+redis-server --rename-command CONFIG &amp;quot;MYCONF&amp;quot;
+http://wangxin123.com/2016/09/16/Redis%E5%AE%89%E8%A3%85/
+http://ruby-china.org/topics/28094</description>
     </item>
     
     <item>
@@ -559,14 +587,15 @@ redis-server --rename-command CONFIG &amp;quot;MYCONF&amp;quot;</description>
       
       <guid>http://blog.suconghou.cn/post/redis-usage/</guid>
       <description>安装redis 所有redis版本的release见http://download.redis.io/releases/
-apk update &amp;amp;&amp;amp; apk upgrade &amp;amp;&amp;amp; apk add make gcc g++ linux-headers
-cd /tmp REDIS_VERSION=redis-4.0.2 wget http://download.redis.io/releases/${REDIS_VERSION}.tar.gz tar xzf ${REDIS_VERSION}.tar.gz cd ${REDIS_VERSION} LDFLAGS=-static make -j2 &amp;amp;&amp;amp; make install mv /tmp/${REDIS_VERSION}/redis.conf /etc/redis.conf  编译1分钟即可完成
+apk update &amp;amp;&amp;amp; apk upgrade &amp;amp;&amp;amp; apk add make gcc g++ linux-headers 
+cd /tmp REDIS_VERSION=redis-4.0.2 wget http://download.redis.io/releases/${REDIS_VERSION}.tar.gz tar xzf ${REDIS_VERSION}.tar.gz cd ${REDIS_VERSION} LDFLAGS=-static make -j2 &amp;amp;&amp;amp; make install mv /tmp/${REDIS_VERSION}/redis.conf /etc/redis.conf 编译1分钟即可完成
 无其他依赖 4.0版本后 直接可静态编译的,执行完成后可执行文件位于src目录
 redis-check-aof redis-check-rdb redis-sentinel redis-server 这四个都是同一个文件,是redis-server的别名
 配置 一个简单的redis配置文件 /etc/redis.conf
-daemonize yes pidfile /var/run/redis-server.pid port 6379 bind 127.0.0.1 timeout 300 save 60 10000  使用Unix Socket 的方式运行性能会更好
+daemonize yes pidfile /var/run/redis-server.pid port 6379 bind 127.0.0.1 timeout 300 save 60 10000 使用Unix Socket 的方式运行性能会更好
 UNIX Domain Socket是在socket架构上发展起来的用于同一台主机的进程间通讯（IPC），它不需要经过网络协议栈，不需要打包拆包、计算校验和、维护序号和应答等，只是将应用层数据从一个进程拷贝到另一个进程，当用户连接到Redis通过TCP/IP连接或Unix域连接，千兆网络的典型延迟大概200us，而Unix Domain Socket可能低到30us。
-https://pics.mf8.biz/mf8/e0ajg.png</description>
+https://pics.mf8.biz/mf8/e0ajg.png
+unixsocket /var/run/redis/redis.sock unixsocketperm 700 注释掉 bind 127.</description>
     </item>
     
     <item>
@@ -585,9 +614,7 @@ https://pics.mf8.biz/mf8/e0ajg.png</description>
       
       <guid>http://blog.suconghou.cn/life/travel-to-thailand-in-201610/</guid>
       <description>&lt;p&gt;2016.10.12-2016.10.17&lt;/p&gt;
-
 &lt;p&gt;航班是凌晨五点半的飞机,首都国际机场T2,飞往马来西亚吉隆坡,(就是原来飞丢的那个航线啊!!)&lt;/p&gt;
-
 &lt;p&gt;然后还要在吉隆坡转机飞往普吉岛,&lt;/p&gt;</description>
     </item>
     
@@ -622,16 +649,16 @@ https://pics.mf8.biz/mf8/e0ajg.png</description>
       <guid>http://blog.suconghou.cn/post/iptables/</guid>
       <description>iptables相关配置 配置iptables之前,建议添加一个crontab定时重置iptables,防止将自己阻挡.
 建议写入/usr/iptab.sh,加入crontab,每个整点执行
-iptables -P INPUT ACCEPT iptables -P OUTPUT ACCEPT iptables -P FORWARD ACCEPT iptables -F iptables -X iptables -Z  查看本机关于IPTABLES的设置情况 iptables -L -n  清除原有规则. 不管你在安装linux时是否启动了防火墙,如果你想配置属于自己的防火墙,那就清除现在filter的所有规则. 清除预设表filter中的所有规则链的规则
-iptables -F  清除预设表filter中使用者自定链中的规则
-iptables -X  保存配置 刚刚配置的重启以后就会丢失,想要保存使用
-iptables save  有的可能是iptables-save
+iptables -P INPUT ACCEPT iptables -P OUTPUT ACCEPT iptables -P FORWARD ACCEPT iptables -F iptables -X iptables -Z 查看本机关于IPTABLES的设置情况 iptables -L -n 清除原有规则. 不管你在安装linux时是否启动了防火墙,如果你想配置属于自己的防火墙,那就清除现在filter的所有规则. 清除预设表filter中的所有规则链的规则
+iptables -F 清除预设表filter中使用者自定链中的规则
+iptables -X 保存配置 刚刚配置的重启以后就会丢失,想要保存使用
+iptables save 有的可能是iptables-save
 这样就写到/etc/sysconfig/iptables 文件里了. 写入后记得把防火墙重起一下,才能起作用.
-service iptables restart  设定预设规则 默认的入口,出口,转发策略都是ACCEPT 下面要改变这种规则
+service iptables restart 设定预设规则 默认的入口,出口,转发策略都是ACCEPT 下面要改变这种规则
 iptables 采用黑名单加白名单的方式, 未命中白名单的将采用预设规则
 下面操作注意,为避免ssh端口22被拦截,首先添加
-iptables -A INPUT -p tcp --dport 22 -j ACCEPT  保证22端口入口畅通,注意如果你的OUTPUT模式设置为DROP(上面已经清空了,默认为ACCEPT),还需要添加
-iptables -A OUTPUT -p tcp --sport 22 -j ACCEPT  保证出口22端口畅通 下面开始折腾吧</description>
+iptables -A INPUT -p tcp --dport 22 -j ACCEPT 保证22端口入口畅通,注意如果你的OUTPUT模式设置为DROP(上面已经清空了,默认为ACCEPT),还需要添加
+iptables -A OUTPUT -p tcp --sport 22 -j ACCEPT 保证出口22端口畅通 下面开始折腾吧</description>
     </item>
     
     <item>
@@ -643,13 +670,13 @@ iptables -A OUTPUT -p tcp --sport 22 -j ACCEPT  保证出口22端口畅通 下�
       <description>较好的PE 微PE
 http://www.wepe.com.cn/ 自带刻录,可以一键安装到U盘,硬盘等,支持UEFI,CMS等多种启动方式.
  一般的BIOS里找不到UEFI/CMS的切换设置,可能是security boot的配置,禁用security boot试试
-如果在BIOS里找不到U盘,可能是fastboot的问题,可以禁用fastboot,安装好系统后在开启.
-硬盘的设置模式里,找不到U盘或者硬盘,可以尝试切换AHCI/IDE,注意安装好系统后,此选项不能够再随意切换,否知导致系统进不去.
+  如果在BIOS里找不到U盘,可能是fastboot的问题,可以禁用fastboot,安装好系统后在开启.
+  硬盘的设置模式里,找不到U盘或者硬盘,可以尝试切换AHCI/IDE,注意安装好系统后,此选项不能够再随意切换,否知导致系统进不去.
  休眠能将现有所有工作保存到硬盘,下次开机恢复上次的会话,Windows8及以后采用了混合休眠机制
 你可能找不到单纯的休眠按钮.
 可以使用shutdown -h休眠
 其他一些补充
-关机计算机：shutdown.exe -s -t 00 重启计算机：shutdown.exe -r -t 00 注销计算机：shutdown.exe -l -t 00 锁定计算机：rundll32.exe user32.dll,LockWorkStation 休眠计算机：rundll32.exe powrProf.dll,SetSuspendState 睡眠计算机：rundll32.exe powrprof.dll,SetSuspendState 0,1,0,  性能天梯图 CPU性能列表 https://www.cpubenchmark.net/cpu_list.php
+关机计算机：shutdown.exe -s -t 00 重启计算机：shutdown.exe -r -t 00 注销计算机：shutdown.exe -l -t 00 锁定计算机：rundll32.exe user32.dll,LockWorkStation 休眠计算机：rundll32.exe powrProf.dll,SetSuspendState 睡眠计算机：rundll32.exe powrprof.dll,SetSuspendState 0,1,0, 性能天梯图 CPU性能列表 https://www.cpubenchmark.net/cpu_list.php
 在新标签查看大图
 CPU天梯图
 CPU天梯图其他版本
@@ -664,9 +691,9 @@ CPU天梯图其他版本
       <guid>http://blog.suconghou.cn/post/memcached-usage/</guid>
       <description>安装memcached http://memcached.org/downloads
 memcached所有版本见http://www.memcached.org/files/
-cd /tmp MEMCACHE_VERSION=memcached-1.5.1 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l` wget http://www.memcached.org/files/${MEMCACHE_VERSION}.tar.gz tar xzf ${MEMCACHE_VERSION}.tar.gz cd ${MEMCACHE_VERSION} export CFLAGS=&amp;quot;-O3&amp;quot; ./configure make -j$CPU_NUM &amp;amp;&amp;amp; make install  docker版本见:https://hub.docker.com/r/suconghou/memcached/
-静态编译 apk update &amp;amp;&amp;amp; apk upgrade &amp;amp;&amp;amp; apk add gcc g++ make wget   wget --no-check-certificate https://github.com/libevent/libevent/releases/download/release-2.1.8-stable/libevent-2.1.8-stable.tar.gz tar zxf libevent-2.1.8-stable.tar.gz cd libevent-2.1.8-stable ./configure &amp;amp;&amp;amp; make &amp;amp;&amp;amp; make install  libevent编译很快,不到一分钟
-cd /tmp MEMCACHE_VERSION=memcached-1.5.1 wget http://www.memcached.org/files/${MEMCACHE_VERSION}.tar.gz tar xzf ${MEMCACHE_VERSION}.</description>
+cd /tmp MEMCACHE_VERSION=memcached-1.5.1 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l` wget http://www.memcached.org/files/${MEMCACHE_VERSION}.tar.gz tar xzf ${MEMCACHE_VERSION}.tar.gz cd ${MEMCACHE_VERSION} export CFLAGS=&amp;quot;-O3&amp;quot; ./configure make -j$CPU_NUM &amp;amp;&amp;amp; make install docker版本见:https://hub.docker.com/r/suconghou/memcached/
+静态编译 apk update &amp;amp;&amp;amp; apk upgrade &amp;amp;&amp;amp; apk add gcc g++ make wget  wget --no-check-certificate https://github.com/libevent/libevent/releases/download/release-2.1.8-stable/libevent-2.1.8-stable.tar.gz tar zxf libevent-2.1.8-stable.tar.gz cd libevent-2.1.8-stable ./configure &amp;amp;&amp;amp; make &amp;amp;&amp;amp; make install libevent编译很快,不到一分钟
+cd /tmp MEMCACHE_VERSION=memcached-1.5.1 wget http://www.memcached.org/files/${MEMCACHE_VERSION}.tar.gz tar xzf ${MEMCACHE_VERSION}.tar.gz cd ${MEMCACHE_VERSION} export CFLAGS=&amp;quot;-O3&amp;quot; .</description>
     </item>
     
     <item>
@@ -676,9 +703,10 @@ cd /tmp MEMCACHE_VERSION=memcached-1.5.1 wget http://www.memcached.org/files/${M
       
       <guid>http://blog.suconghou.cn/post/nginx-usage/</guid>
       <description>使用systemd管理nginx /usr/lib/systemd/system/nginx.service
-[Unit] Description=The nginx HTTP and reverse proxy server After=network.target remote-fs.target nss-lookup.target [Service] Type=forking PIDFile=/run/nginx.pid # Nginx will fail to start if /run/nginx.pid already exists but has the wrong # SELinux context. This might happen when running `nginx -t` from the cmdline. # https://bugzilla.redhat.com/show_bug.cgi?id=1268621 ExecStartPre=/usr/bin/rm -f /run/nginx.pid ExecStartPre=/usr/sbin/nginx -t ExecStart=/usr/sbin/nginx ExecReload=/bin/kill -s HUP $MAINPID KillSignal=SIGQUIT TimeoutStopSec=5 KillMode=process PrivateTmp=true [Install] WantedBy=multi-user.target  nginx proxy_request_buffering 上传大文件时需注意
+[Unit] Description=The nginx HTTP and reverse proxy server After=network.target remote-fs.target nss-lookup.target [Service] Type=forking PIDFile=/run/nginx.pid # Nginx will fail to start if /run/nginx.pid already exists but has the wrong # SELinux context. This might happen when running `nginx -t` from the cmdline. # https://bugzilla.redhat.com/show_bug.cgi?id=1268621 ExecStartPre=/usr/bin/rm -f /run/nginx.pid ExecStartPre=/usr/sbin/nginx -t ExecStart=/usr/sbin/nginx ExecReload=/bin/kill -s HUP $MAINPID KillSignal=SIGQUIT TimeoutStopSec=5 KillMode=process PrivateTmp=true [Install] WantedBy=multi-user.target nginx proxy_request_buffering 上传大文件时需注意
 https://stackoverflow.com/questions/12282342/nginx-files-upload-streaming-with-proxy-pass
-accept_mutex and reuseport https://www.</description>
+accept_mutex and reuseport https://www.nginx.com/blog/socket-sharding-nginx-release-1-9-1/
+fast-open &amp;ndash;reuse-port &amp;ndash;no-delay no-push</description>
     </item>
     
     <item>
@@ -687,13 +715,13 @@ accept_mutex and reuseport https://www.</description>
       <pubDate>Thu, 11 Aug 2016 10:27:18 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/javascript-code-snippet/</guid>
-      <description>实用的Javascript代码锦集 Date.parse(&amp;quot;2016-04-4&amp;quot;)  Date.parse safari 不能使用单位数字的月份和日期,否则解析为NaN
+      <description>实用的Javascript代码锦集 Date.parse(&amp;quot;2016-04-4&amp;quot;) Date.parse safari 不能使用单位数字的月份和日期,否则解析为NaN
 火狐较低版本(火狐43)也是如此
 +new Date(&#39;2017-06-08 21:00:00&#39;); 在IE11上得出NaN Safari10 上也得出NaN Chrome 和 Firfox下OK 原因在于 IE 和 Safari 都不识别以-分割的日期 需要写成 +new Date(&#39;2017/06/08 21:00:00&#39;); , 这样才能在所有浏览器兼容.
 IE10 has not anchorNode focusNode 属性, 取得选中的文字需要读取 text 属性, IE11 一切正常 , 取得选中文字可以直接 toString
 IE10,IE11 不支持 html5 的 download 属性, 无法点击下载自定义名称的html和图片等文件. 可以使用 下载的 downloadFile,利用ajax下载,顺便说 ajax 下载也不能使用fetch IE系统统不支持fetch,到EDGE14才支持fetch, https://github.com/github/fetch 可支持IE10+
 火狐不支持和chrome的scrollTop表现也不相同
-// 兼容处理 chrome 和 firefox let scrollTop=document.body.scrollTop?document.body.scrollTop:document.documentElement.scrollTop; if(scrollTop&amp;lt;20){ this.headerShowStatus=true; }else if(scrollTop&amp;gt;170){ this.headerShowStatus=false; } if(document.</description>
+// 兼容处理 chrome 和 firefox let scrollTop=document.body.scrollTop?document.body.scrollTop:document.documentElement.scrollTop; if(scrollTop&amp;lt;20){ this.headerShowStatus=true; }else if(scrollTop&amp;gt;170){ this.headerShowStatus=false; } if(document.documentElement.scrollHeight-scrollTop- document.</description>
     </item>
     
     <item>
@@ -729,9 +757,9 @@ Object Array Function Date 等
 此时,形参和实参相互脱离,互不影响,原先的实参任然指向原先对象的堆内存地址.
 如果是添加修改形参的属性,那么就是修改堆内存中的对象,形参和实参将同时得到反映,因为他们指向的是同一个堆内存对象.
 这种传递方式被称为Call By Sharing
-function box(obj) { obj.name=&#39;hello&#39;; var obj=new Object(); obj.name=&#39;world&#39;; } var obj=new Object(); box(obj); console.log(obj.name);  注意两点: 1. var obj=new Object() 声明提升
-变为
-var obj; obj.name=&#39;hello&#39;; obj=new Object(); obj.name=&#39;world&#39;;  函数的已存在一个变量形参obj,再次的变量申明会忽略</description>
+function box(obj) { obj.name=&#39;hello&#39;; var obj=new Object(); obj.name=&#39;world&#39;; } var obj=new Object(); box(obj); console.log(obj.name); 注意两点:
+ var obj=new Object() 声明提升  变为
+var obj; obj.name=&#39;hello&#39;; obj=new Object(); obj.name=&#39;world&#39;; 函数的已存在一个变量形参obj,再次的变量申明会忽略</description>
     </item>
     
     <item>
@@ -744,13 +772,13 @@ var obj; obj.name=&#39;hello&#39;; obj=new Object(); obj.name=&#39;world&#39;;  
 rpm -aq|grep yum|xargs rpm -e --nodeps
 查看最新的yum
 http://mirrors.163.com/centos/6/os/x86_64/Packages/
-找到最新版yum rpm 包,使用rpm -ivh安装
-wget http://mirrors.163.com/centos/6/os/x86_64/Packages/yum-3.2.29-73.el6.centos.noarch.rpm rpm -ivh yum-3.2.29-73.el6.centos.noarch.rpm  但是会有依赖问题,需要先安装依赖,yum的依赖
-error: Failed dependencies: python-urlgrabber &amp;gt;= 3.9.1-10 is needed by yum-3.2.29-73.el6.centos.noarch yum-metadata-parser &amp;gt;= 1.1.0 is needed by yum-3.2.29-73.el6.centos.noarch yum-plugin-fastestmirror is needed by yum-3.2.29-73.el6.centos.noarch  于是,同时注意,这些依赖的旧版本也要清理
+找到最新版yum rpm 包,使用rpm -ivh 安装
+wget http://mirrors.163.com/centos/6/os/x86_64/Packages/yum-3.2.29-73.el6.centos.noarch.rpm rpm -ivh yum-3.2.29-73.el6.centos.noarch.rpm 但是会有依赖问题,需要先安装依赖,yum的依赖
+error: Failed dependencies: python-urlgrabber &amp;gt;= 3.9.1-10 is needed by yum-3.2.29-73.el6.centos.noarch yum-metadata-parser &amp;gt;= 1.1.0 is needed by yum-3.2.29-73.el6.centos.noarch yum-plugin-fastestmirror is needed by yum-3.2.29-73.el6.centos.noarch 于是,同时注意,这些依赖的旧版本也要清理
 清理
-rpm -aq|grep python-urlgrabber # 查看旧的版本 rpm -e --nodeps python-urlgrabber #把旧版本卸载掉,然后安装新版本  安装新版本
+rpm -aq|grep python-urlgrabber # 查看旧的版本 rpm -e --nodeps python-urlgrabber #把旧版本卸载掉,然后安装新版本 安装新版本
 yum-plugin-fastestmirror还会依赖yum,yum又依赖yum-plugin-fastestmirror,要一个命令一块安装
-wget http://mirrors.163.com/centos/6/os/x86_64/Packages/python-urlgrabber-3.9.1-11.el6.noarch.rpm wget http://mirrors.163.com/centos/6/os/x86_64/Packages/yum-metadata-parser-1.1.2-16.el6.x86_64.rpm wget http://mirrors.163.com/centos/6/os/x86_64/Packages/yum-plugin-fastestmirror-1.1.30-37.el6.noarch.rpm rpm -ivh python-urlgrabber-3.9.1-11.el6.noarch.rpm rpm -ivh yum-metadata-parser-1.</description>
+wget http://mirrors.163.com/centos/6/os/x86_64/Packages/python-urlgrabber-3.9.1-11.el6.noarch.rpm wget http://mirrors.163.com/centos/6/os/x86_64/Packages/yum-metadata-parser-1.1.2-16.el6.x86_64.rpm wget http://mirrors.163.com/centos/6/os/x86_64/Packages/yum-plugin-fastestmirror-1.1.30-37.el6.noarch.rpm rpm -ivh python-urlgrabber-3.9.1-11.el6.noarch.rpm rpm -ivh yum-metadata-parser-1.1.2-16.el6.x86_64.rpm rpm -ivh yum-3.</description>
     </item>
     
     <item>
@@ -762,10 +790,11 @@ wget http://mirrors.163.com/centos/6/os/x86_64/Packages/python-urlgrabber-3.9.1-
       <description>HAProxy HAProxy高性能的反向代理软件,更专注于TCP,HTTP处理,它可以基于四层或七层进行反向代理,尤其适合于高负载且需要进行七层处理的 Web 站点.
 单进程、事件驱动模型,通常用于超高流量的负载均衡.
 我们也可以使用它来作为中转站,使直连连通率不好的请求进过中转提升速度.
-编译安装 apt-get update &amp;amp;&amp;amp; apt-get install -y wget gcc g++ make libpcre++0v5 libpcre++-dev  yum update &amp;amp;&amp;amp; yum install wget gcc make  HAPROXY_VERSION=haproxy-1.7.9 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l` wget http://www.haproxy.org/download/1.7/src/${HAPROXY_VERSION}.tar.gz tar zxf ${HAPROXY_VERSION}.tar.gz cd ${HAPROXY_VERSION} export CFLAGS=&amp;quot;-O3&amp;quot; make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 -j$CPU_NUM &amp;amp;&amp;amp; make install  编译32位版本make TARGET=linux26 ARCH=i686 USE_STATIC_PCRE=1 -j$CPU_NUM
+编译安装 apt-get update &amp;amp;&amp;amp; apt-get install -y wget gcc g++ make libpcre++0v5 libpcre++-dev yum update &amp;amp;&amp;amp; yum install wget gcc make HAPROXY_VERSION=haproxy-1.7.9 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l` wget http://www.haproxy.org/download/1.7/src/${HAPROXY_VERSION}.tar.gz tar zxf ${HAPROXY_VERSION}.tar.gz cd ${HAPROXY_VERSION} export CFLAGS=&amp;quot;-O3&amp;quot; make TARGET=linux2628 ARCH=X86_64 USE_STATIC_PCRE=1 -j$CPU_NUM &amp;amp;&amp;amp; make install 编译32位版本make TARGET=linux26 ARCH=i686 USE_STATIC_PCRE=1 -j$CPU_NUM
 在64位系统下编译32位需要apt-get install gcc-multilib g++-multilib
 我编译好的haproxy version 1.7.9
- 64位 http://share.</description>
+ 64位 http://share.suconghou.cn/files/bin/haproxy.xz
+  32位 http://share.</description>
     </item>
     
     <item>
@@ -781,7 +810,7 @@ YaHei.Consolas.1.12.zip
 一些从Linux迁移到Windows的东西 最常用的当属bash了,包含md5sum,wget,curl,awk等等.
 有两个比较好的项目在移植
  unxutils http://unxutils.sourceforge.net/ 源码 https://sourceforge.net/projects/unxutils/
-win-bash https://sourceforge.net/projects/win-bash/
+  win-bash https://sourceforge.net/projects/win-bash/
  unxutils最后更新2014-04-03
 win-bash最后更新2015-03-30
 sourceforge上速度太慢,这里提供加速下载.
@@ -796,6 +825,7 @@ navcat https://www.52pojie.cn/forum.php?mod=viewthread&amp;amp;tid=620949
 链接: https://pan.baidu.com/s/1c2eWtcW 密码: dtaf
 rufus https://rufus.akeo.ie/
 U盘启动制作工具
+16进制编辑器 https://mh-nexus.de/en/hxd/
 golang filebrowser https://filebrowser.github.io/
 https://github.com/filebrowser/filebrowser
 filebrowser --port 7080 --database /tmp/img.db --scope /data/www/newwillsite/upload</description>
@@ -811,7 +841,11 @@ filebrowser --port 7080 --database /tmp/img.db --scope /data/www/newwillsite/upl
 windows平台 Shadowsocks-3.4.2
 mac平台 ShadowsocksX-2.6.3
 android平台 shadowsocks-nightly-3.3.1
-服务端可以使用docker更方便 shadowsocks docker</description>
+服务端可以使用docker更方便 shadowsocks docker
+!(Postern 3.1.3.apk)[http://share.suconghou.cn/files/arm/apk/Postern 3.1.3.apk]
+手机上的Proxifier，用过Proxifier的应该都知道怎么用吧，得先添加代理，然后设置规则（可以把默认规则改为使用代理，这样所有流量都走代理）。 支持HTTPS(也就是HTTP CONNECT，不是普通的HTTP代理)/Socks5/SSH等代理。
+!(SocksDroid 1.0.3.apk)[http://share.suconghou.cn/files/arm/apk/SocksDroid 1.0.3.apk]
+socks代理软件（只能填socks4/socks5代理，不能填http/https代理）免root，走vpn接口：</description>
     </item>
     
     <item>
@@ -853,13 +887,13 @@ taskkill /pid 1688 /F 杀死指定进程</description>
       <guid>http://blog.suconghou.cn/post/react-native/</guid>
       <description>react native 环境准备 前提是需要node和npm,这里不在赘述.介绍一个npm加速的.
 使用淘宝的npm镜像.控制台运行,或者加入你的bashrc中永久生效
-alias cnpm=&amp;quot;npm --registry=https://registry.npm.taobao.org --cache=$HOME/.npm/.cache/cnpm --disturl=https://npm.taobao.org/dist --userconfig=$HOME/.cnpmrc&amp;quot;;  安装开发必备的一些package
-cnpm install -g react-native-cli webpack  react-native也调用了npm命令,所以我们可以再来个alias加速react-native init
+alias cnpm=&amp;quot;npm --registry=https://registry.npm.taobao.org --cache=$HOME/.npm/.cache/cnpm --disturl=https://npm.taobao.org/dist --userconfig=$HOME/.cnpmrc&amp;quot;; 安装开发必备的一些package
+cnpm install -g react-native-cli webpack react-native也调用了npm命令,所以我们可以再来个alias加速react-native init
 alias npm=&#39;cnpm&#39;
 或者直接将仓库改为淘宝的NPM镜像
-npm config set registry https://registry.npm.taobao.org npm config set disturl https://npm.taobao.org/dist  在mac上还需要一些东西
-brew install flow watchman  安装完以后可以开始helloworld了.
-开始第一个例子 cd /data/tmp react-native init HelloWorld  然后正在初始化大致如下
+npm config set registry https://registry.npm.taobao.org npm config set disturl https://npm.taobao.org/dist 在mac上还需要一些东西
+brew install flow watchman 安装完以后可以开始helloworld了.
+开始第一个例子 cd /data/tmp react-native init HelloWorld 然后正在初始化大致如下
 This will walk you through creating a new React Native project in /data/tmp/HelloWorld Installing react-native package from npm... Setting up new React Native app in /data/tmp/HelloWorld HelloWorld@0.</description>
     </item>
     
@@ -871,12 +905,12 @@ This will walk you through creating a new React Native project in /data/tmp/Hell
       <guid>http://blog.suconghou.cn/post/some-hole/</guid>
       <description>微信 关于横竖屏的坑
 css3可以使用媒体查询判断设备是横屏还是竖屏
-//横屏时显示 @media all and (orientation : landscape) { #screenMask{display:block} } //竖屏时隐藏 @media all and (orientation : portrait) { #screenMask{display:none} }  在手机浏览器中表现良好,微信中看样子也可以,但是微信网页中如果聚焦输入框,弹起键盘就有问题了.
+//横屏时显示 @media all and (orientation : landscape) { #screenMask{display:block} } //竖屏时隐藏 @media all and (orientation : portrait) { #screenMask{display:none} } 在手机浏览器中表现良好,微信中看样子也可以,但是微信网页中如果聚焦输入框,弹起键盘就有问题了.
 软键盘弹起后,网页可用面积减小,安卓就自动识别为横屏了,原有的页面消失了,影响非常大.IOS则没有这个问题,媒体查询判断横竖屏在IOS上工作良好.
 并且由此发现,css3媒体查询就是根据宽度是否比高度小来判断横竖屏的.
 解决方案1
 使用javascript的orientation和orientationchange判断
- window.orientation 属于window对象上一个属性；共有三个值 ：0为竖屏模式（portrait）,90为向左反转变为横屏模式（landscape），-90为向右反转变为横屏模式（landscape），最后180就是设备上下互换还是竖屏模式。 orientationchange 是一个event，在设备旋转时，会触发此事件，如同PC上使用的resize事件。  (function(){ var init = function(){ var updateOrientation = function(){ var orientation = window.orientation; switch(orientation){ case 90: case -90: orientation = &#39;landscape&#39;; break; default: orientation = &#39;portrait&#39;; break; } //do something //比如在html标签加一个状态 //然后根据不同状态，显示不同大小 document.body.parentNode.setAttribute(&#39;class&#39;,orientation); }; window.</description>
+ window.orientation 属于window对象上一个属性；共有三个值 ：0为竖屏模式（portrait）,90为向左反转变为横屏模式（landscape），-90为向右反转变为横屏模式（landscape），最后180就是设备上下互换还是竖屏模式。 orientationchange 是一个event，在设备旋转时，会触发此事件，如同PC上使用的resize事件。  (function(){ var init = function(){ var updateOrientation = function(){ var orientation = window.orientation; switch(orientation){ case 90: case -90: orientation = &#39;landscape&#39;; break; default: orientation = &#39;portrait&#39;; break; } //do something //比如在html标签加一个状态 //然后根据不同状态，显示不同大小 document.body.parentNode.setAttribute(&#39;class&#39;,orientation); }; window.addEventListener(&#39;orientationchange&#39;,updateOrientation,false); updateOrientation(); }; window.</description>
     </item>
     
     <item>
@@ -918,7 +952,7 @@ PDO int str 使用 mysqlnd 扩展而不是 mysql扩展
 这里 utf gbk 不区分大小写,也可以混写,不区分是utf8还是utf-8,都能都正常使用
 iconv(&#39;utf-8&#39;, &#39;gbk//ignore&#39;, $str); 加上//ignore使有些字符无法装换时略过.
 但是//ignore在php5.4及以下,和个别php5.6版本上无效,任然是报NOTICE错误.
-&amp;lt;?php echo iconv(&#39;UTF8&#39;, &#39;GBK//IGNORE&#39;, &#39;l l l&#39;); ?&amp;gt;  见 https://3v4l.</description>
+&amp;lt;?php echo iconv(&#39;UTF8&#39;, &#39;GBK//IGNORE&#39;, &#39;l l l&#39;); ?&amp;gt; 见 https://3v4l.</description>
     </item>
     
     <item>
@@ -977,14 +1011,15 @@ iconv(&#39;utf-8&#39;, &#39;gbk//ignore&#39;, $str); 加上//ignore使有些字�
       
       <guid>http://blog.suconghou.cn/post/ddns/</guid>
       <description>收集的一些DDNS的工具
-利用shell获得本机局域网IP ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|awk &#39;{print $2}&#39;|tr -d &amp;quot;addr:&amp;quot;  GO语言版 package main import ( &amp;quot;fmt&amp;quot; &amp;quot;net&amp;quot; &amp;quot;strings&amp;quot; ) func main() { conn, err := net.Dial(&amp;quot;udp&amp;quot;, &amp;quot;google.com:80&amp;quot;) if err != nil { fmt.Println(err.Error()) return } defer conn.Close() fmt.Println(strings.Split(conn.LocalAddr().String(), &amp;quot;:&amp;quot;)[0]) }  获取外网IP 新浪IP地址库
+利用shell获得本机局域网IP ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|awk &#39;{print $2}&#39;|tr -d &amp;quot;addr:&amp;quot; GO语言版 package main import ( &amp;quot;fmt&amp;quot; &amp;quot;net&amp;quot; &amp;quot;strings&amp;quot; ) func main() { conn, err := net.Dial(&amp;quot;udp&amp;quot;, &amp;quot;google.com:80&amp;quot;) if err != nil { fmt.Println(err.Error()) return } defer conn.Close() fmt.Println(strings.Split(conn.LocalAddr().String(), &amp;quot;:&amp;quot;)[0]) } 获取外网IP 新浪IP地址库
 可以直接script标签引入
 直接script引入 http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js
 也支持 json 和文本格式
 json 格式 http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json
 文本格式 http://int.dpool.sina.com.cn/iplookup/iplookup.php
 curl ip.cn 直接给出IP和运营商,浏览器访问不一样 类似于 curl myip.ipip.net
-后面还可以跟一个IP地址,查询IP的位置. curl ip.cn/8.8.8.8 , 其网站还提供大陆IP列表,较快的DNS等等</description>
+后面还可以跟一个IP地址,查询IP的位置. curl ip.cn/8.8.8.8 , 其网站还提供大陆IP列表,较快的DNS等等
+curl ipinfo.io JSON格式,信息较全,可跨域,同样也可以查询指定IPcurl ipinfo.</description>
     </item>
     
     <item>
@@ -996,7 +1031,7 @@ curl ip.cn 直接给出IP和运营商,浏览器访问不一样 类似于 curl my
       <description>静态编译shadowsocks libev 在alpine里编译
 apk update &amp;amp;&amp;amp; apk upgrade &amp;amp;&amp;amp; apk add wget make gcc g++ perl
 先安装依赖
-# Installation of Libsodium cd /tmp export LIBSODIUM_VER=1.0.12 wget --no-check-certificate https://download.libsodium.org/libsodium/releases/libsodium-$LIBSODIUM_VER.tar.gz tar xvf libsodium-$LIBSODIUM_VER.tar.gz cd libsodium-$LIBSODIUM_VER ./configure --prefix=/usr &amp;amp;&amp;amp; make -j2 &amp;amp;&amp;amp; make install cd /tmp ldconfig # Installation of MbedTLS cd /tmp export MBEDTLS_VER=2.6.0 wget --no-check-certificate https://tls.mbed.org/download/mbedtls-$MBEDTLS_VER-gpl.tgz tar xvf mbedtls-$MBEDTLS_VER-gpl.tgz cd mbedtls-$MBEDTLS_VER make SHARED=1 CFLAGS=-fPIC &amp;amp;&amp;amp; make DESTDIR=/usr install cd /tmp ldconfig  安装完这两个依赖后,下面准备开始静态编译</description>
+# Installation of Libsodium cd /tmp export LIBSODIUM_VER=1.0.12 wget --no-check-certificate https://download.libsodium.org/libsodium/releases/libsodium-$LIBSODIUM_VER.tar.gz tar xvf libsodium-$LIBSODIUM_VER.tar.gz cd libsodium-$LIBSODIUM_VER ./configure --prefix=/usr &amp;amp;&amp;amp; make -j2 &amp;amp;&amp;amp; make install cd /tmp ldconfig # Installation of MbedTLS cd /tmp export MBEDTLS_VER=2.6.0 wget --no-check-certificate https://tls.mbed.org/download/mbedtls-$MBEDTLS_VER-gpl.tgz tar xvf mbedtls-$MBEDTLS_VER-gpl.tgz cd mbedtls-$MBEDTLS_VER make SHARED=1 CFLAGS=-fPIC &amp;amp;&amp;amp; make DESTDIR=/usr install cd /tmp ldconfig 安装完这两个依赖后,下面准备开始静态编译</description>
     </item>
     
     <item>
@@ -1007,11 +1042,12 @@ apk update &amp;amp;&amp;amp; apk upgrade &amp;amp;&amp;amp; apk add wget make g
       <guid>http://blog.suconghou.cn/post/tcpdump/</guid>
       <description>各版本 http://www.tcpdump.org/release/
 安装依赖 yum install -y flex gcc make byacc or apt-get install flex gcc make byacc wget bzip2
-cd /tmp wget http://www.tcpdump.org/release/libpcap-1.7.4.tar.gz tar zxf libpcap-1.7.4.tar.gz cd libpcap-1.7.4 ./configure --prefix=/tmp/lib make -j4 &amp;amp;&amp;amp; make install cd ../ wget http://www.tcpdump.org/release/tcpdump-4.7.4.tar.gz tar zxf tcpdump-4.7.4.tar.gz cd tcpdump-4.7.4 ./configure --prefix=/tmp --disable-ipv6 CFLAGS=&#39;-O3 -I/tmp/lib/include&#39; LDFLAGS=&#39;-L/tmp/lib/lib/libpcap.a&#39; make -j4 make install  安装成功后,位于ls -lh /tmp/sbin/tcpdump ldd查看此文件依赖较少,可直接复制到其他Linux上使用.
+cd /tmp wget http://www.tcpdump.org/release/libpcap-1.7.4.tar.gz tar zxf libpcap-1.7.4.tar.gz cd libpcap-1.7.4 ./configure --prefix=/tmp/lib make -j4 &amp;amp;&amp;amp; make install cd ../ wget http://www.tcpdump.org/release/tcpdump-4.7.4.tar.gz tar zxf tcpdump-4.7.4.tar.gz cd tcpdump-4.7.4 ./configure --prefix=/tmp --disable-ipv6 CFLAGS=&#39;-O3 -I/tmp/lib/include&#39; LDFLAGS=&#39;-L/tmp/lib/lib/libpcap.a&#39; make -j4 make install 安装成功后,位于ls -lh /tmp/sbin/tcpdump ldd查看此文件依赖较少,可直接复制到其他Linux上使用.
 采用CFLAGS=&amp;quot;-O3&amp;quot;编译后为1.2MB
 tcpdump -h 查看版本号以及用法
 我编译好的tcpdump version 4.7.4
- 64位 http://share.suconghou.cn/files/bin/tcpdump.xz</description>
+ 64位 http://share.suconghou.cn/files/bin/tcpdump.xz
+ 也可以直接yum install tcpdump</description>
     </item>
     
     <item>
@@ -1021,7 +1057,7 @@ tcpdump -h 查看版本号以及用法
       
       <guid>http://blog.suconghou.cn/post/use-apache-traffic-server/</guid>
       <description>编译安装 Centos下编译安装
-yum update -y &amp;amp;&amp;amp; yum install wget gcc g++ gcc-c++ glibc-headers perl openssl openssl-devel tcl-devel libxml2-devel pcre-devel wget http://apache.fayea.com/trafficserver/trafficserver-6.1.1.tar.bz2 tar xvjf trafficserver-6.1.1.tar.bz2 cd trafficserver-6.1.1 ./configure make &amp;amp;&amp;amp; make install useradd -s /sbin/nologin trafficserver  Apache镜像http://archive.apache.org/dist/
+yum update -y &amp;amp;&amp;amp; yum install wget gcc g++ gcc-c++ glibc-headers perl openssl openssl-devel tcl-devel libxml2-devel pcre-devel wget http://apache.fayea.com/trafficserver/trafficserver-6.1.1.tar.bz2 tar xvjf trafficserver-6.1.1.tar.bz2 cd trafficserver-6.1.1 ./configure make &amp;amp;&amp;amp; make install useradd -s /sbin/nologin trafficserver Apache镜像http://archive.apache.org/dist/
 国内Apache镜像http://apache.fayea.com/
 编译完成后,就可以使用了,默认是安装在/usr/local/bin,编译后是比较大
 total 98M -rwxr-xr-x 1 root root 692K May 9 14:30 header_rewrite_test -rwxr-xr-x 1 root root 520K May 9 14:30 traffic_cop -rwxr-xr-x 1 root root 1.9M May 9 14:30 traffic_crashlog -rwxr-xr-x 1 root root 259K May 9 14:30 traffic_ctl -rwxr-xr-x 1 root root 1.</description>
@@ -1035,8 +1071,8 @@ total 98M -rwxr-xr-x 1 root root 692K May 9 14:30 header_rewrite_test -rwxr-xr-x
       <guid>http://blog.suconghou.cn/post/use-docker-on-raspberry/</guid>
       <description>安装支持Docker的系统 树莓派官方系统并不支持Docker,需要安装.
 查看 集成Dcoker的树莓派系统
-aria2c -s 50 -c https://downloads.hypriot.com/hypriotos-rpi-v0.8.0.img.zip diskutil list diskutil unmountdisk /dev/disk2  用以下命令前必须卸载u盘diskutil unmountdisk /dev/disk2
-sudo dd if=hypriotos-rpi-v0.8.0.img of=/dev/disk2 bs=8k  安装完成重启就可以啦,启动后登陆的用户是pirate,密码hypriot
+aria2c -s 50 -c https://downloads.hypriot.com/hypriotos-rpi-v0.8.0.img.zip diskutil list diskutil unmountdisk /dev/disk2 用以下命令前必须卸载u盘diskutil unmountdisk /dev/disk2
+sudo dd if=hypriotos-rpi-v0.8.0.img of=/dev/disk2 bs=8k 安装完成重启就可以啦,启动后登陆的用户是pirate,密码hypriot
 修改密码:执行passwd,输入当前密码,输入新密码,再输入新密码,更新完成
 执行exit退出,或者sudo reboot重启
 创建用户:useradd -g test -d /home/test1 -s /etc/bash -m test1 注解：-g 所属组 -d 家目录 -s 所用的SHELL passwd abc
@@ -1049,13 +1085,13 @@ sudo dd if=hypriotos-rpi-v0.8.0.img of=/dev/disk2 bs=8k  安装完成重启就�
       <pubDate>Sat, 07 May 2016 14:38:47 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/use-golang/</guid>
-      <description>Go https://www.oschina.net/news/93422/go-1-10-released
-https://storage.googleapis.com/golang/go1.11.linux-amd64.tar.gz https://storage.googleapis.com/golang/go1.11.windows-amd64.msi  所有发布的版本
+      <description>Go https://storage.googleapis.com/golang/go1.13.linux-amd64.tar.gz https://storage.googleapis.com/golang/go1.13.windows-amd64.zip https://storage.googleapis.com/golang/go1.13.darwin-amd64.tar.gz 所有发布的版本
 https://storage.googleapis.com/golang/
 国内可访问地址
-https://dl.google.com/go/go1.11.windows-amd64.msi https://dl.google.com/go/go1.11.darwin-amd64.pkg https://dl.google.com/go/go1.11.linux-amd64.tar.gz https://dl.google.com/go/go1.11.src.tar.gz https://dl.google.com/go/go1.11.darwin-amd64.tar.gz https://dl.google.com/go/go1.11.linux-386.tar.gz https://dl.google.com/go/go1.11.linux-armv6l.tar.gz https://dl.google.com/go/go1.11.windows-386.zip https://dl.google.com/go/go1.11.windows-386.msi https://dl.google.com/go/go1.11.windows-amd64.zip https://dl.google.com/go/go1.11.freebsd-386.tar.gz https://dl.google.com/go/go1.11.freebsd-amd64.tar.gz https://dl.google.com/go/go1.11.linux-arm64.tar.gz https://dl.google.com/go/go1.11.linux-ppc64le.tar.gz https://dl.google.com/go/go1.11.linux-s390x.tar.gz  Creating Statically Linked Executables In Go https://joeshaw.org/smaller-docker-containers-for-go-apps/
+https://dl.google.com/go/go1.13.windows-amd64.msi https://dl.google.com/go/go1.13.darwin-amd64.pkg https://dl.google.com/go/go1.13.linux-amd64.tar.gz https://dl.google.com/go/go1.13.src.tar.gz https://dl.google.com/go/go1.13.darwin-amd64.tar.gz https://dl.google.com/go/go1.13.linux-386.tar.gz https://dl.google.com/go/go1.13.linux-armv6l.tar.gz https://dl.google.com/go/go1.13.windows-386.zip https://dl.google.com/go/go1.13.windows-386.msi https://dl.google.com/go/go1.13.windows-amd64.zip https://dl.google.com/go/go1.13.freebsd-386.tar.gz https://dl.google.com/go/go1.13.freebsd-amd64.tar.gz https://dl.google.com/go/go1.13.linux-arm64.tar.gz https://dl.google.com/go/go1.13.linux-ppc64le.tar.gz https://dl.google.com/go/go1.13.linux-s390x.tar.gz golang c lib go 编译.a用的go build -buildmode=c-archive ，c程序用的gcc
+Creating Statically Linked Executables In Go https://joeshaw.org/smaller-docker-containers-for-go-apps/
 https://github.com/gliderlabs/docker-alpine
-CGO_ENABLED=0 go build -a -ldflags &amp;quot;-s&amp;quot; tiny.go  The CGO_ENABLED environment variable tells Go to use the go compiler rather than the cgo compiler. The -a flag tells Go to rebuild all dependencies. Otherwise you still end up with dynamically linked dependencies.</description>
+CGO_ENABLED=0 go build -a -ldflags &amp;quot;-s&amp;quot; tiny.go The CGO_ENABLED environment variable tells Go to use the go compiler rather than the cgo compiler. The -a flag tells Go to rebuild all dependencies. Otherwise you still end up with dynamically linked dependencies.</description>
     </item>
     
     <item>
@@ -1074,7 +1110,8 @@ as (a sentence) 一段语句
 i} (inner {...} block, e.g. code within a block in C code)
 it (inner tag, useful for XML-like languages)
 =aB will reindent an entire code block
-cas will delete a sentence and drop you into insert mode to type a new one</description>
+cas will delete a sentence and drop you into insert mode to type a new one
+yit will yank/copy everything inside the current XML tag</description>
     </item>
     
     <item>
@@ -1083,10 +1120,10 @@ cas will delete a sentence and drop you into insert mode to type a new one</desc
       <pubDate>Fri, 08 Apr 2016 10:08:24 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/software/android-studio/</guid>
-      <description> ADB ADB 调试工具，下载地址：https://dl.google.com/android/repository/platform-tools-latest-windows.zip
+      <description>ADB ADB 调试工具，下载地址：https://dl.google.com/android/repository/platform-tools-latest-windows.zip
 下载 Android Studio Android Studio 3.0.1 正式版
 http://www.oschina.net/news/90786/android-studio-3-0-1-released
-Windows 64 位：https://dl.google.com/dl/android/studio/ide-zips/3.0.1.0/android-studio-ide-171.4443003-windows.zip Windows 32 位：https://dl.google.com/dl/android/studio/ide-zips/3.0.1.0/android-studio-ide-171.4443003-windows32.zip Mac：https://dl.google.com/dl/android/studio/install/3.0.1.0/android-studio-ide-171.4443003-mac.dmg Linux：https://dl.google.com/dl/android/studio/ide-zips/3.0.1.0/android-studio-ide-171.4443003-linux.zip  安装android-sdk brew install android-sdk 或者使用Android Studio SDK Manager
+Windows 64 位：https://dl.google.com/dl/android/studio/ide-zips/3.0.1.0/android-studio-ide-171.4443003-windows.zip Windows 32 位：https://dl.google.com/dl/android/studio/ide-zips/3.0.1.0/android-studio-ide-171.4443003-windows32.zip Mac：https://dl.google.com/dl/android/studio/install/3.0.1.0/android-studio-ide-171.4443003-mac.dmg Linux：https://dl.google.com/dl/android/studio/ide-zips/3.0.1.0/android-studio-ide-171.4443003-linux.zip 安装android-sdk brew install android-sdk  或者使用Android Studio SDK Manager
 android studio 下载的sdk 位于 /Users/admin/Library/Android/sdk
 android sdk 镜像 1、东软信息学院开源镜像站
 HTTP地址：mirrors.neusoft.edu.cn
@@ -1095,7 +1132,7 @@ HTTP地址：mirrors.neusoft.edu.cn
 HTTP地址：mirrors.zzu.edu.cn
 端口：80
 maven镜像
-maven{ url &amp;quot;http://maven.aliyun.com/nexus/content/groups/public/&amp;quot; } maven { url &amp;quot;http://mvn.leancloud.cn/nexus/content/repositories/public&amp;quot; }  </description>
+maven{ url &amp;quot;http://maven.aliyun.com/nexus/content/groups/public/&amp;quot; } maven { url &amp;quot;http://mvn.leancloud.cn/nexus/content/repositories/public&amp;quot; } </description>
     </item>
     
     <item>
@@ -1116,29 +1153,7 @@ maven{ url &amp;quot;http://maven.aliyun.com/nexus/content/groups/public/&amp;qu
       <pubDate>Sat, 20 Feb 2016 16:29:45 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/music/travel-to-hongkong-in-201604/</guid>
-      <description> 迪士尼 澳门 </description>
-    </item>
-    
-    <item>
-      <title>air</title>
-      <link>http://blog.suconghou.cn/project/air/</link>
-      <pubDate>Thu, 18 Feb 2016 20:49:27 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/project/air/</guid>
-      <description>serve static files in the air 在线解析压缩合并Less,打包压缩Javascript.
-手动压缩打包,执行Lint,静态服务器,缓存版本控制,完美结合CDN
-安装 npm install airs -g
-基本参数  纯静态项目,在项目根目录直接执行air   即可开启http服务,直接输出编译后的结果
-  PHP项目,项目根目录执行air develop   会开启静态服务器,同时开启一个PHP Server
-PHP Server 端口号为静态服务器端口号+1
-  服务器模式 air server   编译将做优化和代码压缩
- 指令
- 使用air lint 执行Jslint,而不开启http服务,文件修改实时触发
-使用air lint jsfile1.js jsfile2.js jsfile3.js 可对指定文件进行Jslint,可对一个或多个文件
-使用air compress 在static目录下执行,将会根据static.json文件描述,压缩合并输出到指定文件
-使用air compress lessfile1.less lessfile2.less 将对less文件解析压缩,多个less文件将会压缩合并为一个css文件
-使用air compress jsfile1.js jsfile2.js 将对js文件压缩,多个js文件将合并为一个js文件
-可以参数中同时存在less文件和js文件,air compress less1.less file1.js file2.less file3.js 工具自动按类型分组,less文件和js文件,各自压缩合并,其他文件类型忽略.</description>
+      <description>迪士尼 澳门 </description>
     </item>
     
     <item>
@@ -1148,7 +1163,7 @@ PHP Server 端口号为静态服务器端口号+1
       
       <guid>http://blog.suconghou.cn/post/linux/</guid>
       <description>读取文件的前几字节 head 或 tail 以字节而不是以行为单位，那该怎么办呢？您可以用 -c 选项代替 -n 选项
-前100字节,并以hex格式显示 head -c 100 file | hexdump
+前100字节,并以hex格式显示 head -c 100 file | hexdump 
 后100字节tail -c 100 file | hexdump
 还可以使用管道交给 md5sum,可比较前100字节或后100字节是否相同
 head -c 100 file | hexdump | md5sum
@@ -1181,13 +1196,13 @@ ArchLinux https://archlinuxarm.org/
 有国内的下载镜像 https://mirrors.tuna.tsinghua.edu.cn/archlinuxarm/os/
 大约293MB
 安装OSMC 下载一览,选择Disk images,此系统较省资源,默认开机进入OSMC,img.gz 大小约160M
-OSMC_FILE=OSMC_TGT_rbp2_20160621.img.gz cd /data/tmp axel -n 20 http://download.osmc.tv/installers/diskimages/$OSMC_FILE md5sum $OSMC_FILE ls -lh  查看所有版本 http://download.osmc.tv/installers/diskimages/
+OSMC_FILE=OSMC_TGT_rbp2_20160621.img.gz cd /data/tmp axel -n 20 http://download.osmc.tv/installers/diskimages/$OSMC_FILE md5sum $OSMC_FILE ls -lh 查看所有版本 http://download.osmc.tv/installers/diskimages/
  使用清华大学镜像站国内下载速度更快: https://mirrors.tuna.tsinghua.edu.cn/osmc/osmc/download/installers/
  插入内存卡,开始烧写到内存卡中.烧写之前需要取消挂载
 diskutil list 查看你的内存卡的挂载位置,取消挂载
 执行diskutil unmountdisk /dev/disk2 取消挂载,需要稍等一小会.
 烧写,烧写过程中读卡器不断闪烁. gzip -dc /data/tmp/$OSMC_FILE | sudo dd of=/dev/disk2 bs=8k
-dd的用法: dd if=/dev/zero of=hello.</description>
+dd的用法: dd if=/dev/zero of=hello.txt bs=1024</description>
     </item>
     
     <item>
@@ -1197,7 +1212,7 @@ dd的用法: dd if=/dev/zero of=hello.</description>
       
       <guid>http://blog.suconghou.cn/post/homebrew-speedup/</guid>
       <description>中国科大镜像站 提供 Debian, Ubuntu, Fedora, Archlinux, CentOS 等多个发行版的官方源. 还有brew 的二进制源,brew使用此配置能大大提升速度.
-cd /usr/local/Homebrew git remote set-url origin git://mirrors.ustc.edu.cn/brew.git git remote -v brew update  修改源：https://lug.ustc.edu.cn/wiki/mirrors/help/brew.git 和 https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-core.git 修改二进制源见https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-bottles
+cd /usr/local/Homebrew git remote set-url origin git://mirrors.ustc.edu.cn/brew.git git remote -v brew update 修改源：https://lug.ustc.edu.cn/wiki/mirrors/help/brew.git 和 https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-core.git 修改二进制源见https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-bottles
 即export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
 使用brew config 查看ORIGIN和HOMEBREW_BOTTLE_DOMAIN已经是新的mirrors.ustc.edu.cn即为配置成功
 brew list 列出所有安装的模块, 这里面包含以下依赖安装的，brew leaves 可以查看一些顶级的
@@ -1208,7 +1223,8 @@ brew commands 查看所有命令
 查询：brew info mysql 主要看具体的信息，比如目前的版本，依赖，安装后注意事项等
 更新：brew update 这会更新 Homebrew 自己，并且使得接下来的两个操作有意义——
 检查过时（是否有新版本）：brew outdated 这回列出所有安装的软件里可以升级的那些
-升级：brew upgrade 升级所有可以升级的软件们</description>
+升级：brew upgrade 升级所有可以升级的软件们
+清理：brew cleanup 清理不需要的版本极其安装包缓存</description>
     </item>
     
     <item>
@@ -1228,11 +1244,10 @@ chrome://net-internals/#dns
  Adblock Plus (ABP)
  前端开发相关
  FE 助手
-EditThisCookie https://chrome.google.com/webstore/detail/editthiscookie/fngmhnnpilhplaeedifhccceomclgfbg
-开启Chrome Ajax 跨域 https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi
-替换http响应 https://github.com/annnhan/ReRes https://chrome.google.com/webstore/detail/reres/gieocpkbblidnocefjakldecahgeeica?hl=zh-CN&amp;amp;gl=CN
- 自带截图 首先当然是打开你想截图的网页了，然后按下 F12（macOS 是 option + command + i）调出开发者工具，接着按「Ctrl + Shift + P」（macOS 是 command + Shift + P）。紧接着输入指令 capture，它会提示有三个选项，分别是截取全屏、node 模式以及当前范围，用鼠标点击或者用键盘选择对应的就可以了。
-而如果你想截取手机版的网页，可以先按「Ctrl + Shift + M」（macOS 是 command + Shift + M）切换到手机模式，再重复上面的截图操作即可。</description>
+  EditThisCookie https://chrome.google.com/webstore/detail/editthiscookie/fngmhnnpilhplaeedifhccceomclgfbg
+  开启Chrome Ajax 跨域 https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi
+  替换http响应 https://github.com/annnhan/ReRes https://chrome.google.com/webstore/detail/reres/gieocpkbblidnocefjakldecahgeeica?hl=zh-CN&amp;amp;gl=CN
+ 自带截图 首先当然是打开你想截图的网页了，然后按下 F12（macOS 是 option + command + i）调出开发者工具，接着按「Ctrl + Shift + P」（macOS 是 command + Shift + P）。紧接着输入指令 capture，它会提示有三个选项，分别是截取全屏、node 模式以及当前范围，用鼠标点击或者用键盘选择对应的就可以了。</description>
     </item>
     
     <item>
@@ -1242,12 +1257,12 @@ EditThisCookie https://chrome.google.com/webstore/detail/editthiscookie/fngmhnnp
       
       <guid>http://blog.suconghou.cn/post/use-crontab-in-your-server/</guid>
       <description>Crontab使用 crontab -l 查看当前用户的crontab列表 使用crontab -e开始编辑规则
-基本格式 : *　*　*　*　*　command 分　时 日 月　周　命令 * 第1列表示分钟1～59 每分钟用*或者*/1表示 * 第2列表示小时1～23（0表示0点） * 第3列表示日期1～31 * 第4列表示月份1～12 * 第5列标识号星期0～6（0表示星期天） * 第6列要运行的命令  禁止Crontab产生邮件: 在crontab末尾加上&amp;gt; /dev/null 2&amp;gt;&amp;amp;1 或者 &amp;gt; &amp;amp;&amp;gt; /dev/null
+基本格式 : *　*　*　*　*　command 分　时 日 月　周　命令 * 第1列表示分钟1～59 每分钟用*或者*/1表示 * 第2列表示小时1～23（0表示0点） * 第3列表示日期1～31 * 第4列表示月份1～12 * 第5列标识号星期0～6（0表示星期天） * 第6列要运行的命令 禁止Crontab产生邮件: 在crontab末尾加上&amp;gt; /dev/null 2&amp;gt;&amp;amp;1 或者 &amp;gt; &amp;amp;&amp;gt; /dev/null
 例如
-0 1 5 10 * /path/to/script.sh &amp;gt; /dev/null 2&amp;gt;&amp;amp;1 0 1 5 10 * /path/to/script.sh &amp;gt; &amp;amp;&amp;gt; /dev/null  你也可以将/dev/null换成你想要存储日志的文件地址
+0 1 5 10 * /path/to/script.sh &amp;gt; /dev/null 2&amp;gt;&amp;amp;1 0 1 5 10 * /path/to/script.sh &amp;gt; &amp;amp;&amp;gt; /dev/null 你也可以将/dev/null换成你想要存储日志的文件地址
 配置文件 对于CentOS
 /etc/ 目录下包含
-cron.d/ cron.daily/ cron.</description>
+cron.d/ cron.daily/ cron.deny cron.hourly/ cron.monthly/ crontab cron.</description>
     </item>
     
     <item>
@@ -1262,7 +1277,7 @@ cron.d/ cron.daily/ cron.</description>
 各个文件适配不同内存的配置
    文件 内存大小     my-small.cnf &amp;lt;= 64M 不经常开启mysql   my-medium.cnf 32M–64M 经常其他程序搭配mysql   my-large.cnf 512M   my-huge.cnf 1G-2G   my-innodb-heavy-4G.cnf 4GB 使用InnoDB    使用SHOW VARIABLES来查看系统参数,通过SHOW STATUS来判断系统状态
 show 命令还有很多用途
-   命令 描述     show databases 或show tables from database_name 显示mysql中所有数据库的名称   show tables 显示当前数据库中所有表的名称   show columns from table_name from database_name 显示表中列名称   show grants for user_name 显示一个用户的权限，显示结果类似于grant命令   show table status 显示当前使用或者指定的database中的每个表的信息。</description>
+   命令 描述     show databases 或show tables from database_name 显示mysql中所有数据库的名称   show tables 显示当前数据库中所有表的名称   show columns from table_name from database_name 显示表中列名称   show grants for user_name 显示一个用户的权限，显示结果类似于grant命令   show table status 显示当前使用或者指定的database中的每个表的信息。信息包括表类型和表的最新更新时间。   show index from table_name 显示表的索引   show status 显示一些系统特定资源的信息,例如,正在运行的线程数量   show variables 显示系统变量的名称和值   show processlist 显示系统中正在运行的所有进程，也就是当前正在执行的查询。大多数用户可以查看他们自己的进程，但是如果他们拥有process权限，就可以查看所有人的进程，包括密码   show engies 显示安装以后可用的存储引擎和默认引擎   show innodb status 显示innoDB存储引擎的状态   show logs 显示BDB存储引擎的日志   show warnings 显示最后一个执行的语句所产生的错误、警告和通知   show errors 只显示最后一个执行语句所产生的错误    小内存优化 依据my-small.</description>
     </item>
     
     <item>
@@ -1271,12 +1286,14 @@ show 命令还有很多用途
       <pubDate>Mon, 11 Jan 2016 10:19:20 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/ffmpeg-usage/</guid>
-      <description>下载官方的静态编译的Linux通用二进制包,同时也包含ARM版本的 ffmpeg
+      <description>下载官方的静态编译的Linux通用二进制包,同时也包含ARM版本的 下载编译好的git最新版
+wget https://johnvansickle.com/ffmpeg/builds/ffmpeg-git-amd64-static.tar.xz ffmpeg
 armhf比armel硬件要求,树莓派2可用armhf,树莓派1使用armel
 Windows版本也提供编译好的下载(也提供MacOs版)
 https://ffmpeg.zeranoe.com/builds/
 Mac编译好的下载(FFmpeg,FFserver,FFprobe,FFplay)
 http://evermeet.cx/ffmpeg/
+https://www.npmjs.com/package/ffmpeg-static#sources-of-the-binaries
 使用brew安装 brew install ffmpeg --with-ffplay
 ffmpeg -protocols 查看ffmpeg支持的协议列表
 让ffmpeg转为MP4边下边播 ffmpeg -i input.xx -c copy -movflags faststart output.mp4
@@ -1285,9 +1302,8 @@ ffmpeg -protocols 查看ffmpeg支持的协议列表
 可以使用pip install qtfaststart,仅需10KB+
 pip3 install qtfaststart 也可以
 http://blog.chinaunix.net/uid-342902-id-2416123.html
-flv to mp4 ffmpeg -i input.flv -codec copy output.mp4 快速转化flv到mp4,高质量转化( only changes container without reencoding )
-ffmpeg -i input.flv -c copy -copyts output.mp4 也比较快,高质量转化
-ffmpeg -i aaa.flv -c:v libx264 -crf 28 output.mp4 带压缩的转换,非常消耗CPU和时间</description>
+转成 dash 特殊的mp4
+ffmpeg –i input.flv –c copy –f mp4 –movflags dash output.mp4 flv to mp4 ffmpeg -i input.flv -codec copy output.mp4 快速转化flv到mp4,高质量转化( only changes container without reencoding )</description>
     </item>
     
     <item>
@@ -1305,10 +1321,11 @@ ffmpeg -i aaa.flv -c:v libx264 -crf 28 output.mp4 带压缩的转换,非常消�
       <pubDate>Fri, 08 Jan 2016 23:43:00 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/git-usage/</guid>
-      <description>git配置 git config --global user.email &amp;quot;1126045770@qq.com&amp;quot; git config --global user.name &amp;quot;sucongohu&amp;quot; git config --global core.autocrlf false git config --global color.ui true git config --global credential.helper store git config --global alias.lg &amp;quot;log --graph --all --pretty=format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci,%cr) %C(bold blue)&amp;lt;%an&amp;gt;%Creset&#39; --abbrev-commit --date=relative&amp;quot; git config --global alias.laststash &amp;quot;diff stash@{0}^!&amp;quot;   以上分别是设置用户信息,禁止转换换行符,颜色高亮,记住密码,设置别名列出分支图. 设置别名后,可以使用 git lg 查看各个分支关系
+      <description>git配置 git config --global user.email &amp;quot;1126045770@qq.com&amp;quot; git config --global user.name &amp;quot;sucongohu&amp;quot; git config --global core.autocrlf false git config --global color.ui true git config --global credential.helper store git config --global alias.lg &amp;quot;log --graph --all --pretty=format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci,%cr) %C(bold blue)&amp;lt;%an&amp;gt;%Creset&#39; --abbrev-commit --date=relative&amp;quot; git config --global alias.laststash &amp;quot;diff stash@{0}^!&amp;quot;  以上分别是设置用户信息,禁止转换换行符,颜色高亮,记住密码,设置别名列出分支图. 设置别名后,可以使用 git lg 查看各个分支关系
  设置core.autocrlf false 提交检出均不转换 , 否则同时在Mac,Windows,Linux 跨平台协作开发,eslint 检测换行符错误会很头疼.
 默认的core.pager 是less
-git config --global core.pager &amp;quot;less -FRSX&amp;quot;</description>
+git config --global core.pager &amp;quot;less -FRSX&amp;quot;
+可以修改为diff-so-fancy</description>
     </item>
     
     <item>
@@ -1319,8 +1336,8 @@ git config --global core.pager &amp;quot;less -FRSX&amp;quot;</description>
       <guid>http://blog.suconghou.cn/post/sublime-usage/</guid>
       <description>配置文件 最喜欢的字体Monaco,此处下载
 配置文件 Preferences.sublime-settings
-{ &amp;quot;close_windows_when_empty&amp;quot;: true, &amp;quot;default_encoding&amp;quot;: &amp;quot;UTF-8&amp;quot;, &amp;quot;default_line_ending&amp;quot;: &amp;quot;unix&amp;quot;, &amp;quot;folder_exclude_patterns&amp;quot;: [ &amp;quot;.svn&amp;quot;, &amp;quot;.git&amp;quot;, &amp;quot;.hg&amp;quot;, &amp;quot;CVS&amp;quot;, &amp;quot;node_modules&amp;quot; ], &amp;quot;font_face&amp;quot;: &amp;quot;Monaco&amp;quot;, &amp;quot;font_size&amp;quot;: 14, &amp;quot;highlight_line&amp;quot;: true, &amp;quot;highlight_modified_tabs&amp;quot;: true, &amp;quot;ignored_packages&amp;quot;: [ &amp;quot;Vintage&amp;quot; ], &amp;quot;show_encoding&amp;quot;: true, &amp;quot;show_line_endings&amp;quot;: true, &amp;quot;tab_size&amp;quot;: 4, &amp;quot;translate_tabs_to_spaces&amp;quot;: false, &amp;quot;update_check&amp;quot;: false, &amp;quot;word_wrap&amp;quot;: false }  插件 open_browser.py 插件
-import sublime, sublime_plugin import webbrowser import os url_map = { &#39;D:\\git\\bbs\\&#39; : &#39;http://127.0.0.3/&#39;, &#39;D:\\php\\su\\&#39; : &#39;http://127.0.0.2/&#39;, &#39;D:\\php\\htdocs\\&#39; : &#39;http://127.0.0.1/&#39; } class OpenBrowserCommand(sublime_plugin.</description>
+{ &amp;quot;close_windows_when_empty&amp;quot;: true, &amp;quot;default_encoding&amp;quot;: &amp;quot;UTF-8&amp;quot;, &amp;quot;default_line_ending&amp;quot;: &amp;quot;unix&amp;quot;, &amp;quot;folder_exclude_patterns&amp;quot;: [ &amp;quot;.svn&amp;quot;, &amp;quot;.git&amp;quot;, &amp;quot;.hg&amp;quot;, &amp;quot;CVS&amp;quot;, &amp;quot;node_modules&amp;quot; ], &amp;quot;font_face&amp;quot;: &amp;quot;Monaco&amp;quot;, &amp;quot;font_size&amp;quot;: 14, &amp;quot;highlight_line&amp;quot;: true, &amp;quot;highlight_modified_tabs&amp;quot;: true, &amp;quot;ignored_packages&amp;quot;: [ &amp;quot;Vintage&amp;quot; ], &amp;quot;show_encoding&amp;quot;: true, &amp;quot;show_line_endings&amp;quot;: true, &amp;quot;tab_size&amp;quot;: 4, &amp;quot;translate_tabs_to_spaces&amp;quot;: false, &amp;quot;update_check&amp;quot;: false, &amp;quot;word_wrap&amp;quot;: false } 插件 open_browser.py 插件
+import sublime, sublime_plugin import webbrowser import os url_map = { &#39;D:\\git\\bbs\\&#39; : &#39;http://127.0.0.3/&#39;, &#39;D:\\php\\su\\&#39; : &#39;http://127.0.0.2/&#39;, &#39;D:\\php\\htdocs\\&#39; : &#39;http://127.0.0.1/&#39; } class OpenBrowserCommand(sublime_plugin.TextCommand): def run(self,edit): window = sublime.</description>
     </item>
     
     <item>
@@ -1340,9 +1357,9 @@ sudo vim /etc/ssh/sshd_config
 如果您只想让当前的 ssh 保持连接，可以使用以下的命令：
 ssh -o ServerAliveInterval=60 user@sshserver
 ssh 链接复用
-Host * ForwardAgent yes ServerAliveInterval 30 ServerAliveCountMax 20 TCPKeepAlive no ControlMaster auto ControlPath ~/.ssh/connection-%r@%h:%p ControlPersist 20m Compression yes  http://einverne.github.io/post/2017/05/ssh-keep-alive.html
+Host * ForwardAgent yes ServerAliveInterval 30 ServerAliveCountMax 20 TCPKeepAlive no ControlMaster auto ControlPath ~/.ssh/connection-%r@%h:%p ControlPersist 20m Compression yes http://einverne.github.io/post/2017/05/ssh-keep-alive.html
 https://www.cyberciti.biz/faq/linux-unix-reuse-openssh-connection/
-ssh隧道 CfNg参数  C表示压缩数据传输 f表示后台用户验证,这个选项很有用,没有shell的不可登陆账号也能使用. N表示不执行脚本或命令 g表示允许远程主机连接转发端口,往往会没有效果,需要修改/etc/ssh/sshd_config添加gatewayports yes T禁止分配伪终端，如果ssh使用此选项登录系统时，由于禁用，将无法获得终端；但仍能够获得shell，只不过看起来像在本地，也没有很多应有的环境变量，例如命令提示符，PS1等 n Redirects stdin from /dev/null (actually, prevents reading from stdin).</description>
+ssh隧道 CfNg参数  C表示压缩数据传输 f表示后台用户验证,这个选项很有用,没有shell的不可登陆账号也能使用. N表示不执行脚本或命令 g表示允许远程主机连接转发端口,往往会没有效果,需要修改/etc/ssh/sshd_config添加gatewayports yes T禁止分配伪终端，如果ssh使用此选项登录系统时，由于禁用，将无法获得终端；但仍能够获得shell，只不过看起来像在本地，也没有很多应有的环境变量，例如命令提示符，PS1等 n Redirects stdin from /dev/null (actually, prevents reading from stdin). This must be used when ssh is run in the background  -L本地转发 -L [本地监听IP:]本地监听端口号:目标主机IP:目标端口号 (其中,“本地监听IP”可以省略，省略的话就认为是“0.</description>
     </item>
     
     <item>
@@ -1354,13 +1371,13 @@ ssh隧道 CfNg参数  C表示压缩数据传输 f表示后台用户验证,这个
       <description>安装NodeJs nodejs官方提供了编译好的二进制的包,全平台都有,十分方便 最新版本NodeJs官方库
 https://nodejs.org/en/blog/release/
 例如安装Linux版本
-wget https://nodejs.org/dist/v6.0.0/node-v6.0.0-linux-x64.tar.xz tar -xJf node-v6.0.0-linux-x64.tar.xz sudo mv node-v6.0.0-linux-x64 /usr/local/nodejs sudo ln -s /usr/local/nodejs/bin/node /usr/local/bin/node sudo ln -s /usr/local/nodejs/bin/npm /usr/local/bin/npm node -v npm -v  单文件版node.exe单独安装npm 1.clone npm 源码 git clone --recursive git://github.com/isaacs/npm.git
+wget https://nodejs.org/dist/v6.0.0/node-v6.0.0-linux-x64.tar.xz tar -xJf node-v6.0.0-linux-x64.tar.xz sudo mv node-v6.0.0-linux-x64 /usr/local/nodejs sudo ln -s /usr/local/nodejs/bin/node /usr/local/bin/node sudo ln -s /usr/local/nodejs/bin/npm /usr/local/bin/npm node -v npm -v 单文件版node.exe单独安装npm 1.clone npm 源码 git clone --recursive git://github.com/isaacs/npm.git
 2.进入npm目录,安装npm node cli.js install npm -gf
 版本切换 使用n来管理node的版本,npm install -g n,小巧无依赖,仅一个文件.
 也不会搞乱你的node_modules文件夹,node的可执行文件位置也始终不会变化.
 node-compiler 编译nodejs为可执行文件. https://github.com/pmq20/node-compiler 需要 node npm ,编译过程会安装依赖npm install
 https://sourceforge.net/projects/squashfs/files/
-yum install make gcc zlib-devel glibc-static gcc-c++ -y make -j4  一些必备package sudo npm install -g less autoprefixer express jshint uglify-js webpack react-native-cli airs  一些用node写的工具</description>
+yum install make gcc zlib-devel glibc-static gcc-c++ -y make -j4 一些必备package sudo npm install -g less autoprefixer express jshint uglify-js webpack react-native-cli airs 一些用node写的工具</description>
     </item>
     
     <item>
@@ -1371,10 +1388,6 @@ yum install make gcc zlib-devel glibc-static gcc-c++ -y make -j4  一些必备pa
       <guid>http://blog.suconghou.cn/post/some-good-useful-things/</guid>
       <description>基于网页的P2P文件分享 https://www.sharedrop.io/
 云计算,存储,分发等 阿里百川 淘宝开放平台
-淘宝云盘,也外链图片做图床 淘宝CDN,速度很快,https,仅仅图片限制3M以内
-网易的Docker服务
- 价格略贵最低29/月
- bmob移动后端云,网友示例项目BandwaghonhostAPP,结合mui移动开发框架开发手机APP
 短信,推动消息等  阿里大鱼   阿里巴巴旗下的短信验证码通知服务,价格实惠,短信通知≤0.045元／条,还有文本转语音通知≤0.055元／条
   SendCloud   短信和邮件发送服务,邮件有每日免费200封,短信5.5分每条
  移动混合应用/HHTML5开发 国产mui 最接近原生APP体验的高性能前端框架,不依赖任何第三方JS库,压缩后的JS和CSS文件仅有100+K和60+K
@@ -1389,7 +1402,9 @@ https://github.com/iioinc/iio.js 也是canvas的游戏
 medium-editor 一个非常简洁的输入框,支持很多插件扩充
 quill 功能丰富,样式简介
 网页Markdown编辑器 Editor.md 一款开源的、可嵌入的 Markdown 在线编辑器（组件），基于 CodeMirror、jQuery 和 Marked 构建。
-markdown-plus Markdown Plus,界面不是很漂亮,也有收费的桌面APP</description>
+markdown-plus Markdown Plus,界面不是很漂亮,也有收费的桌面APP
+Markdown解析库 marked 支持nodejs 和浏览器端
+markdown-js 支持nodejs 和浏览器端</description>
     </item>
     
     <item>
@@ -1413,7 +1428,7 @@ OpenVZ的VPS内核版本较低,且不能升级,并不能作为docker server,但�
 以下二种方法适用于RedHat,CentOS
  cat /etc/redhat-release 或者 cat /etc/centos-release rpm -q centos-release 或者 rpm -q redhat-release  查看是否是64位系统uname -i
 下载安装 http://www.oschina.net/news/83328/docker-17-03-1-ce-released
-deb/rpm install: curl -fsSL https://get.docker.com/ | sh Linux 64bits tgz: https://get.docker.com/builds/Linux/x86_64/docker-17.03.1-ce.tgz Darwin/OSX 64bits client tgz: https://get.docker.com/builds/Darwin/x86_64/docker-17.03.1-ce.tgz Linux 32bits arm tgz: https://get.docker.com/builds/Linux/armel/docker-17.03.1-ce.tgz Windows 64bits zip: https://get.docker.com/builds/Windows/x86_64/docker-17.03.1-ce.zip Windows 32bits client zip: https://get.docker.com/builds/Windows/i386/docker-17.03.1-ce.zip  下载地址一览 https://download.</description>
+deb/rpm install: curl -fsSL https://get.docker.com/ | sh Linux 64bits tgz: https://get.docker.com/builds/Linux/x86_64/docker-19.03.2.tgz Darwin/OSX 64bits client tgz: https://get.docker.com/builds/Darwin/x86_64/docker-19.03.2.tgz Linux 32bits arm tgz: https://get.docker.com/builds/Linux/armel/docker-19.03.2.tgz Windows 64bits zip: https://get.docker.com/builds/Windows/x86_64/docker-17.03.1-ce.zip Windows 32bits client zip: https://get.docker.com/builds/Windows/i386/docker-17.03.1-ce.zip 下载地址一览 https://download.docker.com/linux/static/stable/</description>
     </item>
     
     <item>
@@ -1422,7 +1437,7 @@ deb/rpm install: curl -fsSL https://get.docker.com/ | sh Linux 64bits tgz: https
       <pubDate>Fri, 01 Jan 2016 23:54:20 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/linux-download-tools/</guid>
-      <description>wget wget -c -O filename &amp;quot;http://xx.com&amp;quot; 下载存储到指定文件,并指定断点续传
+      <description>wget wget -c -O filename &amp;quot;http://xx.com&amp;quot;  下载存储到指定文件,并指定断点续传
 wget -nc -c -i url.txt 批量下载文件中指定的资源(每行一个连接),跳过已下载的(同名的),并且断点续传.
 wget -i url.txt -O - | mpv - 下载url.txt里的链接,输出到标准输出
 使用user-agent
@@ -1431,10 +1446,11 @@ wget 断点续传 使用 -c 限速使用--limit-rate=300k
 wget -c --limit-rate=30k http://...
 lftp wget 可以断点续传 但是不支持多线程下载, lftp 的一个用法可以实现多线程下载.
 lftp -c &amp;quot;pget -n 10 http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.18.tar.gz&amp;quot;
-curl 常用的命令
+curl Windows 编译好的下载
+https://curl.haxx.se/dlwiz/?type=bin&amp;amp;os=Win64&amp;amp;flav=-
+常用的命令
 curl http://xx.com 只获取http消息正文
-curl -I http://xx.com 只获取http消息头
-curl -i http://xx.</description>
+curl -I http://xx.</description>
     </item>
     
     <item>
@@ -1444,27 +1460,13 @@ curl -i http://xx.</description>
       
       <guid>http://blog.suconghou.cn/post/install-nginx-php-mysql-redis/</guid>
       <description>编译安装NGINX 首先安装一些依赖
-yum -y install gcc make autoconf automake install zlib zlib-devel openssl openssl-devel pcre-devel  apt-get update apt-get -y install gcc make openssl libssl-dev libpcre3 libpcre3-dev  编译安装
+yum -y install gcc make autoconf automake install zlib zlib-devel openssl openssl-devel pcre-devel apt-get update apt-get -y install gcc make openssl libssl-dev libpcre3 libpcre3-dev 编译安装
 Chrome51以后版本废弃了NPN的支持,要让Chrome51以后版本支持http2,需要更新OpenSSL到1.0.2及以上.
 查看当前系统的OpenSSL版本:openssl version
 更新OpenSSL
-OPENSSL_VERSION=openssl-1.0.2h cd /tmp wget https://www.openssl.org/source/${OPENSSL_VERSION}.tar.gz tar zxvf ${OPENSSL_VERSION}.tar.gz cd ${OPENSSL_VERSION} ./config --prefix=/usr --shared make -j4 sudo make install openssl version  最后一句查看版本是否更新了
+OPENSSL_VERSION=openssl-1.0.2h cd /tmp wget https://www.openssl.org/source/${OPENSSL_VERSION}.tar.gz tar zxvf ${OPENSSL_VERSION}.tar.gz cd ${OPENSSL_VERSION} ./config --prefix=/usr --shared make -j4 sudo make install openssl version 最后一句查看版本是否更新了
 如果没有www-data用户和组,可以先创建
-groupadd www-data adduser -M -s /sbin/nologin www-data -g www-data  编译nginx NGINX_VERSION=nginx-1.11.3 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l` cd /tmp wget http://nginx.</description>
-    </item>
-    
-    <item>
-      <title>使用hugo搭建静态博客</title>
-      <link>http://blog.suconghou.cn/post/start-your-blog-with-hugo/</link>
-      <pubDate>Fri, 01 Jan 2016 19:00:18 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/post/start-your-blog-with-hugo/</guid>
-      <description>什么是hugo hugo是用Go语言编写的静态网站生成器,与此类似的工具还有Hexo,相比Hexo,他的编译速度更快,而易于使用,主要表现在:
- 无依赖,无论是Linux环境,还是MacOs,Windows,下载一个二进制的可执行文件即可使用 即时刷新,无论是对于文章还是样式的修改都能够自动重新编译,自动刷新,无需配置,当你修改了文章,切换回浏览器,看到的已经是新页面了. 主题丰富,易于定制,编写一个主题也十分简单.  如何使用 hugo 是开源的,在github上下载即可.
-基本命令  新建一个站点/初始化 hugo new site /path/myblog 新建一篇博文hugo new post/some-post.md 开启http服务器并指定使用主题 hugo server --theme=su --buildDrafts --watch 编译文件,直接执行hugo  当然如果在config.toml里配置好了主题等,直接使用hugo server就可以开始写博文.
-如果想让草稿也被渲染,使用hugo server -D
-编写主题 在平级的themes目录下,建立一个文件夹为你主题的名字,里面有static,layouts,archetypes文件夹.
-static为你的静态目录,layouts为模板目录,archetypes为</description>
+groupadd www-data adduser -M -s /sbin/nologin www-data -g www-data 编译nginx NGINX_VERSION=nginx-1.11.3 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l` cd /tmp wget http://nginx.</description>
     </item>
     
     <item>
@@ -1476,7 +1478,7 @@ static为你的静态目录,layouts为模板目录,archetypes为</description>
       <description>关于博客 博客使用hugo搭建,自己编写的主题.
 hugo把Markdown解析为html,托管于github pages
 博客常记录一些自己折腾的东西,以备必要时查阅.
-关于我 90后,计算机宅男,PHP程序猿,前端攻城狮,也常写一些Node,Go,Python
+关于我 90后,创业公司程序猿,计算机宅男,PHP程序猿,前端攻城狮,也常写一些Node,Go,Python
 Mac用户,Linux党,常混迹于各大编程社区.
 热爱编程,目前正向全栈发展.</description>
     </item>
@@ -1487,14 +1489,16 @@ Mac用户,Linux党,常混迹于各大编程社区.
       <pubDate>Sat, 21 Nov 2015 23:55:54 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/sync-files-on-linux/</guid>
-      <description>采用scp同步 采用rsync同步 rsync -arvuzpt --progress /data/project/21text/static/ root@172.168.1.3:/data/web/21text/static/;  mac上结合fswatch自动同步
-sync1() { dir=/data/project/21textv3/ while true do rsync -arvuzpt --progress --exclude=&amp;quot;.git&amp;quot; /data/project/21textv3/ root@172.168.1.3:/data/web/21textv3/ echo &amp;quot;start morniting folder $dir&amp;quot; fswatch -1 $dir sleep 2 done }  LFTP 同步 brew install lftp
+      <description>采用scp同步 采用rsync同步 rsync -arvuzpt --progress /data/project/21text/static/ root@172.168.1.3:/data/web/21text/static/; mac上结合fswatch自动同步
+sync1() { dir=/data/project/21textv3/ while true do rsync -arvuzpt --progress --exclude=&amp;quot;.git&amp;quot; /data/project/21textv3/ root@172.168.1.3:/data/web/21textv3/ echo &amp;quot;start morniting folder $dir&amp;quot; fswatch -1 $dir sleep 2 done } LFTP 同步 brew install lftp
 登陆ftp lftp user:pass@ftphost:21
 解决办法很简单。只要你能充分相信你的host，就在 lftp 里加上这样一句
 set ssl:verify-certificate no
 或者，可以在敲 lftp 命令的时候这样输入：
 lftp -e &amp;ldquo;set ssl:verify-certificate no&amp;rdquo;
-使用btsync https://www.getsync.com/platforms/desktop/</description>
+lftp -e &amp;ldquo;set ssl-allow false&amp;rdquo; ftp://user:pass@host:21
+rclone 也支持ftp
+rclone lsf :ftp: &amp;ndash;ftp-host=speedtest.tele2.net &amp;ndash;ftp-user=anonymous &amp;ndash;ftp-pass=rclone obscure dummy</description>
     </item>
     
     <item>
@@ -1505,6 +1509,26 @@ lftp -e &amp;ldquo;set ssl:verify-certificate no&amp;rdquo;
       <guid>http://blog.suconghou.cn/photo/fenghuangling/</guid>
       <description>遇到一只慵懒的猫
 多肉长的正灿烂</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://blog.suconghou.cn/day/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.suconghou.cn/day/</guid>
+      <description> ucenter messager notepad serverstatus  </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://blog.suconghou.cn/willdoc/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.suconghou.cn/willdoc/</guid>
+      <description>480p 1000码率
+720p 2000码率
+1080p 3000码率</description>
     </item>
     
   </channel>

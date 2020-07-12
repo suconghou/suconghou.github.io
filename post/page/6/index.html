@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>Posts &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="http://blog.suconghou.cn/post/index.xml" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='/post/index.xml' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -35,25 +35,58 @@
         
             <article class="post-entry">
                 <header class="post-header">
-                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/git-usage/" class="post-link">git基本使用</a></h3>
+                    <h3 class="post-title"><a href="/post/ffmpeg-usage/" class="post-link">ffmpeg安装使用</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2016/01/11 10:19 Mon
+                    </p>
+                </header>
+                
+                <p class="post-summary">下载官方的静态编译的Linux通用二进制包,同时也包含ARM版本的 下载编译好的git最新版
+wget https://johnvansickle.com/ffmpeg/builds/ffmpeg-git-amd64-static.tar.xz ffmpeg
+armhf比armel硬件要求,树莓派2可用armhf,树莓派1使用armel
+Windows版本也提供编译好的下载(也提供MacOs版)
+https://ffmpeg.zeranoe.com/builds/
+Mac编译好的下载(FFmpeg,FFserver,FFprobe,FFplay)
+http://evermeet.cx/ffmpeg/
+https://www.npmjs.com/package/ffmpeg-static#sources-of-the-binaries
+使用brew安装 brew install ffmpeg --with-ffplay
+ffmpeg -protocols 查看ffmpeg支持的协议列表
+让ffmpeg转为MP4边下边播 ffmpeg -i input.xx -c copy -movflags faststart output.mp4
+-movflags faststart 可修改MP4的moov
+关于faststart还有一个python项目,类似于ffmpeg软件包中的qt-faststart https://github.com/danielgtaylor/qtfaststart
+可以使用pip install qtfaststart,仅需10KB&#43;
+pip3 install qtfaststart 也可以
+http://blog.chinaunix.net/uid-342902-id-2416123.html
+转成 dash 特殊的mp4
+ffmpeg –i input.flv –c copy –f mp4 –movflags dash output.mp4 flv to mp4 ffmpeg -i input.flv -codec copy output.mp4 快速转化flv到mp4,高质量转化( only changes container without reencoding )</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="/post/ffmpeg-usage/">阅读全文</a>
+                </footer>
+            </article>
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="/post/git-usage/" class="post-link">git基本使用</a></h3>
                     <p class="post-meta">
                         <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
                         2016/01/08 23:43 Fri
                     </p>
                 </header>
                 
-                <p class="post-summary">git配置 git config --global user.email &#34;1126045770@qq.com&#34; git config --global user.name &#34;sucongohu&#34; git config --global core.autocrlf false git config --global color.ui true git config --global credential.helper store git config --global alias.lg &#34;log --graph --all --pretty=format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci,%cr) %C(bold blue)&lt;%an&gt;%Creset&#39; --abbrev-commit --date=relative&#34; git config --global alias.laststash &#34;diff stash@{0}^!&#34;   以上分别是设置用户信息,禁止转换换行符,颜色高亮,记住密码,设置别名列出分支图. 设置别名后,可以使用 git lg 查看各个分支关系
+                <p class="post-summary">git配置 git config --global user.email &#34;1126045770@qq.com&#34; git config --global user.name &#34;sucongohu&#34; git config --global core.autocrlf false git config --global color.ui true git config --global credential.helper store git config --global alias.lg &#34;log --graph --all --pretty=format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci,%cr) %C(bold blue)&lt;%an&gt;%Creset&#39; --abbrev-commit --date=relative&#34; git config --global alias.laststash &#34;diff stash@{0}^!&#34;  以上分别是设置用户信息,禁止转换换行符,颜色高亮,记住密码,设置别名列出分支图. 设置别名后,可以使用 git lg 查看各个分支关系
  设置core.autocrlf false 提交检出均不转换 , 否则同时在Mac,Windows,Linux 跨平台协作开发,eslint 检测换行符错误会很头疼.
 默认的core.pager 是less
-git config --global core.pager &#34;less -FRSX&#34;</p>
+git config --global core.pager &#34;less -FRSX&#34;
+可以修改为diff-so-fancy</p>
                 <footer class="post-footer">
-                    <a class="read-more" href="http://blog.suconghou.cn/post/git-usage/">阅读全文</a>
+                    <a class="read-more" href="/post/git-usage/">阅读全文</a>
                 </footer>
             </article>
         
             <article class="post-entry">
                 <header class="post-header">
-                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/sublime-usage/" class="post-link">Sublime使用和设置</a></h3>
+                    <h3 class="post-title"><a href="/post/sublime-usage/" class="post-link">Sublime使用和设置</a></h3>
                     <p class="post-meta">
                         <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
                         2016/01/08 23:21 Fri
@@ -62,16 +95,16 @@ git config --global core.pager &#34;less -FRSX&#34;</p>
                 
                 <p class="post-summary">配置文件 最喜欢的字体Monaco,此处下载
 配置文件 Preferences.sublime-settings
-{ &#34;close_windows_when_empty&#34;: true, &#34;default_encoding&#34;: &#34;UTF-8&#34;, &#34;default_line_ending&#34;: &#34;unix&#34;, &#34;folder_exclude_patterns&#34;: [ &#34;.svn&#34;, &#34;.git&#34;, &#34;.hg&#34;, &#34;CVS&#34;, &#34;node_modules&#34; ], &#34;font_face&#34;: &#34;Monaco&#34;, &#34;font_size&#34;: 14, &#34;highlight_line&#34;: true, &#34;highlight_modified_tabs&#34;: true, &#34;ignored_packages&#34;: [ &#34;Vintage&#34; ], &#34;show_encoding&#34;: true, &#34;show_line_endings&#34;: true, &#34;tab_size&#34;: 4, &#34;translate_tabs_to_spaces&#34;: false, &#34;update_check&#34;: false, &#34;word_wrap&#34;: false }  插件 open_browser.py 插件
-import sublime, sublime_plugin import webbrowser import os url_map = { &#39;D:\\git\\bbs\\&#39; : &#39;http://127.0.0.3/&#39;, &#39;D:\\php\\su\\&#39; : &#39;http://127.0.0.2/&#39;, &#39;D:\\php\\htdocs\\&#39; : &#39;http://127.0.0.1/&#39; } class OpenBrowserCommand(sublime_plugin.</p>
+{ &#34;close_windows_when_empty&#34;: true, &#34;default_encoding&#34;: &#34;UTF-8&#34;, &#34;default_line_ending&#34;: &#34;unix&#34;, &#34;folder_exclude_patterns&#34;: [ &#34;.svn&#34;, &#34;.git&#34;, &#34;.hg&#34;, &#34;CVS&#34;, &#34;node_modules&#34; ], &#34;font_face&#34;: &#34;Monaco&#34;, &#34;font_size&#34;: 14, &#34;highlight_line&#34;: true, &#34;highlight_modified_tabs&#34;: true, &#34;ignored_packages&#34;: [ &#34;Vintage&#34; ], &#34;show_encoding&#34;: true, &#34;show_line_endings&#34;: true, &#34;tab_size&#34;: 4, &#34;translate_tabs_to_spaces&#34;: false, &#34;update_check&#34;: false, &#34;word_wrap&#34;: false } 插件 open_browser.py 插件
+import sublime, sublime_plugin import webbrowser import os url_map = { &#39;D:\\git\\bbs\\&#39; : &#39;http://127.0.0.3/&#39;, &#39;D:\\php\\su\\&#39; : &#39;http://127.0.0.2/&#39;, &#39;D:\\php\\htdocs\\&#39; : &#39;http://127.0.0.1/&#39; } class OpenBrowserCommand(sublime_plugin.TextCommand): def run(self,edit): window = sublime.</p>
                 <footer class="post-footer">
-                    <a class="read-more" href="http://blog.suconghou.cn/post/sublime-usage/">阅读全文</a>
+                    <a class="read-more" href="/post/sublime-usage/">阅读全文</a>
                 </footer>
             </article>
         
             <article class="post-entry">
                 <header class="post-header">
-                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/linux-ssh/" class="post-link">SSH</a></h3>
+                    <h3 class="post-title"><a href="/post/linux-ssh/" class="post-link">SSH</a></h3>
                     <p class="post-meta">
                         <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
                         2016/01/07 13:47 Thu
@@ -89,17 +122,17 @@ sudo vim /etc/ssh/sshd_config
 如果您只想让当前的 ssh 保持连接，可以使用以下的命令：
 ssh -o ServerAliveInterval=60 user@sshserver
 ssh 链接复用
-Host * ForwardAgent yes ServerAliveInterval 30 ServerAliveCountMax 20 TCPKeepAlive no ControlMaster auto ControlPath ~/.ssh/connection-%r@%h:%p ControlPersist 20m Compression yes  http://einverne.github.io/post/2017/05/ssh-keep-alive.html
+Host * ForwardAgent yes ServerAliveInterval 30 ServerAliveCountMax 20 TCPKeepAlive no ControlMaster auto ControlPath ~/.ssh/connection-%r@%h:%p ControlPersist 20m Compression yes http://einverne.github.io/post/2017/05/ssh-keep-alive.html
 https://www.cyberciti.biz/faq/linux-unix-reuse-openssh-connection/
-ssh隧道 CfNg参数  C表示压缩数据传输 f表示后台用户验证,这个选项很有用,没有shell的不可登陆账号也能使用. N表示不执行脚本或命令 g表示允许远程主机连接转发端口,往往会没有效果,需要修改/etc/ssh/sshd_config添加gatewayports yes T禁止分配伪终端，如果ssh使用此选项登录系统时，由于禁用，将无法获得终端；但仍能够获得shell，只不过看起来像在本地，也没有很多应有的环境变量，例如命令提示符，PS1等 n Redirects stdin from /dev/null (actually, prevents reading from stdin).</p>
+ssh隧道 CfNg参数  C表示压缩数据传输 f表示后台用户验证,这个选项很有用,没有shell的不可登陆账号也能使用. N表示不执行脚本或命令 g表示允许远程主机连接转发端口,往往会没有效果,需要修改/etc/ssh/sshd_config添加gatewayports yes T禁止分配伪终端，如果ssh使用此选项登录系统时，由于禁用，将无法获得终端；但仍能够获得shell，只不过看起来像在本地，也没有很多应有的环境变量，例如命令提示符，PS1等 n Redirects stdin from /dev/null (actually, prevents reading from stdin). This must be used when ssh is run in the background  -L本地转发 -L [本地监听IP:]本地监听端口号:目标主机IP:目标端口号 (其中,“本地监听IP”可以省略，省略的话就认为是“0.</p>
                 <footer class="post-footer">
-                    <a class="read-more" href="http://blog.suconghou.cn/post/linux-ssh/">阅读全文</a>
+                    <a class="read-more" href="/post/linux-ssh/">阅读全文</a>
                 </footer>
             </article>
         
             <article class="post-entry">
                 <header class="post-header">
-                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/install-nodejs/" class="post-link">安装NodeJs和npm</a></h3>
+                    <h3 class="post-title"><a href="/post/install-nodejs/" class="post-link">安装NodeJs和npm</a></h3>
                     <p class="post-meta">
                         <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
                         2016/01/07 10:29 Thu
@@ -109,21 +142,21 @@ ssh隧道 CfNg参数  C表示压缩数据传输 f表示后台用户验证,这个
                 <p class="post-summary">安装NodeJs nodejs官方提供了编译好的二进制的包,全平台都有,十分方便 最新版本NodeJs官方库
 https://nodejs.org/en/blog/release/
 例如安装Linux版本
-wget https://nodejs.org/dist/v6.0.0/node-v6.0.0-linux-x64.tar.xz tar -xJf node-v6.0.0-linux-x64.tar.xz sudo mv node-v6.0.0-linux-x64 /usr/local/nodejs sudo ln -s /usr/local/nodejs/bin/node /usr/local/bin/node sudo ln -s /usr/local/nodejs/bin/npm /usr/local/bin/npm node -v npm -v  单文件版node.exe单独安装npm 1.clone npm 源码 git clone --recursive git://github.com/isaacs/npm.git
+wget https://nodejs.org/dist/v6.0.0/node-v6.0.0-linux-x64.tar.xz tar -xJf node-v6.0.0-linux-x64.tar.xz sudo mv node-v6.0.0-linux-x64 /usr/local/nodejs sudo ln -s /usr/local/nodejs/bin/node /usr/local/bin/node sudo ln -s /usr/local/nodejs/bin/npm /usr/local/bin/npm node -v npm -v 单文件版node.exe单独安装npm 1.clone npm 源码 git clone --recursive git://github.com/isaacs/npm.git
 2.进入npm目录,安装npm node cli.js install npm -gf
 版本切换 使用n来管理node的版本,npm install -g n,小巧无依赖,仅一个文件.
 也不会搞乱你的node_modules文件夹,node的可执行文件位置也始终不会变化.
 node-compiler 编译nodejs为可执行文件. https://github.com/pmq20/node-compiler 需要 node npm ,编译过程会安装依赖npm install
 https://sourceforge.net/projects/squashfs/files/
-yum install make gcc zlib-devel glibc-static gcc-c&#43;&#43; -y make -j4  一些必备package sudo npm install -g less autoprefixer express jshint uglify-js webpack react-native-cli airs  一些用node写的工具</p>
+yum install make gcc zlib-devel glibc-static gcc-c&#43;&#43; -y make -j4 一些必备package sudo npm install -g less autoprefixer express jshint uglify-js webpack react-native-cli airs 一些用node写的工具</p>
                 <footer class="post-footer">
-                    <a class="read-more" href="http://blog.suconghou.cn/post/install-nodejs/">阅读全文</a>
+                    <a class="read-more" href="/post/install-nodejs/">阅读全文</a>
                 </footer>
             </article>
         
             <article class="post-entry">
                 <header class="post-header">
-                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/some-good-useful-things/" class="post-link">网摘</a></h3>
+                    <h3 class="post-title"><a href="/post/some-good-useful-things/" class="post-link">网摘</a></h3>
                     <p class="post-meta">
                         <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
                         2016/01/06 15:58 Wed
@@ -132,10 +165,6 @@ yum install make gcc zlib-devel glibc-static gcc-c&#43;&#43; -y make -j4  一些
                 
                 <p class="post-summary">基于网页的P2P文件分享 https://www.sharedrop.io/
 云计算,存储,分发等 阿里百川 淘宝开放平台
-淘宝云盘,也外链图片做图床 淘宝CDN,速度很快,https,仅仅图片限制3M以内
-网易的Docker服务
- 价格略贵最低29/月
- bmob移动后端云,网友示例项目BandwaghonhostAPP,结合mui移动开发框架开发手机APP
 短信,推动消息等  阿里大鱼   阿里巴巴旗下的短信验证码通知服务,价格实惠,短信通知≤0.045元／条,还有文本转语音通知≤0.055元／条
   SendCloud   短信和邮件发送服务,邮件有每日免费200封,短信5.5分每条
  移动混合应用/HHTML5开发 国产mui 最接近原生APP体验的高性能前端框架,不依赖任何第三方JS库,压缩后的JS和CSS文件仅有100&#43;K和60&#43;K
@@ -150,15 +179,17 @@ https://github.com/iioinc/iio.js 也是canvas的游戏
 medium-editor 一个非常简洁的输入框,支持很多插件扩充
 quill 功能丰富,样式简介
 网页Markdown编辑器 Editor.md 一款开源的、可嵌入的 Markdown 在线编辑器（组件），基于 CodeMirror、jQuery 和 Marked 构建。
-markdown-plus Markdown Plus,界面不是很漂亮,也有收费的桌面APP</p>
+markdown-plus Markdown Plus,界面不是很漂亮,也有收费的桌面APP
+Markdown解析库 marked 支持nodejs 和浏览器端
+markdown-js 支持nodejs 和浏览器端</p>
                 <footer class="post-footer">
-                    <a class="read-more" href="http://blog.suconghou.cn/post/some-good-useful-things/">阅读全文</a>
+                    <a class="read-more" href="/post/some-good-useful-things/">阅读全文</a>
                 </footer>
             </article>
         
             <article class="post-entry">
                 <header class="post-header">
-                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/mac-chrome-input-submit/" class="post-link">MacOs上Chrome中的submit按钮默认样式问题</a></h3>
+                    <h3 class="post-title"><a href="/post/mac-chrome-input-submit/" class="post-link">MacOs上Chrome中的submit按钮默认样式问题</a></h3>
                     <p class="post-meta">
                         <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
                         2016/01/05 16:44 Tue
@@ -167,13 +198,13 @@ markdown-plus Markdown Plus,界面不是很漂亮,也有收费的桌面APP</p>
                 
                 <p class="post-summary">发现MacOs的Chrome中,input为submit的按钮,添加其他样式不生效,任然是默认样式, 解决方法是为其添加一个border或者backgroud就好了</p>
                 <footer class="post-footer">
-                    <a class="read-more" href="http://blog.suconghou.cn/post/mac-chrome-input-submit/">阅读全文</a>
+                    <a class="read-more" href="/post/mac-chrome-input-submit/">阅读全文</a>
                 </footer>
             </article>
         
             <article class="post-entry">
                 <header class="post-header">
-                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/using-docker/" class="post-link">开启docker之旅</a></h3>
+                    <h3 class="post-title"><a href="/post/using-docker/" class="post-link">开启docker之旅</a></h3>
                     <p class="post-meta">
                         <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
                         2016/01/05 10:28 Tue
@@ -186,22 +217,22 @@ OpenVZ的VPS内核版本较低,且不能升级,并不能作为docker server,但�
 以下二种方法适用于RedHat,CentOS
  cat /etc/redhat-release 或者 cat /etc/centos-release rpm -q centos-release 或者 rpm -q redhat-release  查看是否是64位系统uname -i
 下载安装 http://www.oschina.net/news/83328/docker-17-03-1-ce-released
-deb/rpm install: curl -fsSL https://get.docker.com/ | sh Linux 64bits tgz: https://get.docker.com/builds/Linux/x86_64/docker-17.03.1-ce.tgz Darwin/OSX 64bits client tgz: https://get.docker.com/builds/Darwin/x86_64/docker-17.03.1-ce.tgz Linux 32bits arm tgz: https://get.docker.com/builds/Linux/armel/docker-17.03.1-ce.tgz Windows 64bits zip: https://get.docker.com/builds/Windows/x86_64/docker-17.03.1-ce.zip Windows 32bits client zip: https://get.docker.com/builds/Windows/i386/docker-17.03.1-ce.zip  下载地址一览 https://download.</p>
+deb/rpm install: curl -fsSL https://get.docker.com/ | sh Linux 64bits tgz: https://get.docker.com/builds/Linux/x86_64/docker-19.03.2.tgz Darwin/OSX 64bits client tgz: https://get.docker.com/builds/Darwin/x86_64/docker-19.03.2.tgz Linux 32bits arm tgz: https://get.docker.com/builds/Linux/armel/docker-19.03.2.tgz Windows 64bits zip: https://get.docker.com/builds/Windows/x86_64/docker-17.03.1-ce.zip Windows 32bits client zip: https://get.docker.com/builds/Windows/i386/docker-17.03.1-ce.zip 下载地址一览 https://download.docker.com/linux/static/stable/</p>
                 <footer class="post-footer">
-                    <a class="read-more" href="http://blog.suconghou.cn/post/using-docker/">阅读全文</a>
+                    <a class="read-more" href="/post/using-docker/">阅读全文</a>
                 </footer>
             </article>
         
             <article class="post-entry">
                 <header class="post-header">
-                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/linux-download-tools/" class="post-link">Linux下常用的下载利器</a></h3>
+                    <h3 class="post-title"><a href="/post/linux-download-tools/" class="post-link">Linux下常用的下载利器</a></h3>
                     <p class="post-meta">
                         <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
                         2016/01/01 23:54 Fri
                     </p>
                 </header>
                 
-                <p class="post-summary">wget wget -c -O filename &#34;http://xx.com&#34; 下载存储到指定文件,并指定断点续传
+                <p class="post-summary">wget wget -c -O filename &#34;http://xx.com&#34;  下载存储到指定文件,并指定断点续传
 wget -nc -c -i url.txt 批量下载文件中指定的资源(每行一个连接),跳过已下载的(同名的),并且断点续传.
 wget -i url.txt -O - | mpv - 下载url.txt里的链接,输出到标准输出
 使用user-agent
@@ -210,18 +241,19 @@ wget 断点续传 使用 -c 限速使用--limit-rate=300k
 wget -c --limit-rate=30k http://...
 lftp wget 可以断点续传 但是不支持多线程下载, lftp 的一个用法可以实现多线程下载.
 lftp -c &#34;pget -n 10 http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.18.tar.gz&#34;
-curl 常用的命令
+curl Windows 编译好的下载
+https://curl.haxx.se/dlwiz/?type=bin&amp;os=Win64&amp;flav=-
+常用的命令
 curl http://xx.com 只获取http消息正文
-curl -I http://xx.com 只获取http消息头
-curl -i http://xx.</p>
+curl -I http://xx.</p>
                 <footer class="post-footer">
-                    <a class="read-more" href="http://blog.suconghou.cn/post/linux-download-tools/">阅读全文</a>
+                    <a class="read-more" href="/post/linux-download-tools/">阅读全文</a>
                 </footer>
             </article>
         
             <article class="post-entry">
                 <header class="post-header">
-                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/install-nginx-php-mysql-redis/" class="post-link">安装PHP7和NGINX</a></h3>
+                    <h3 class="post-title"><a href="/post/install-nginx-php-mysql-redis/" class="post-link">安装PHP7和NGINX</a></h3>
                     <p class="post-meta">
                         <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
                         2016/01/01 23:51 Fri
@@ -229,35 +261,15 @@ curl -i http://xx.</p>
                 </header>
                 
                 <p class="post-summary">编译安装NGINX 首先安装一些依赖
-yum -y install gcc make autoconf automake install zlib zlib-devel openssl openssl-devel pcre-devel  apt-get update apt-get -y install gcc make openssl libssl-dev libpcre3 libpcre3-dev  编译安装
+yum -y install gcc make autoconf automake install zlib zlib-devel openssl openssl-devel pcre-devel apt-get update apt-get -y install gcc make openssl libssl-dev libpcre3 libpcre3-dev 编译安装
 Chrome51以后版本废弃了NPN的支持,要让Chrome51以后版本支持http2,需要更新OpenSSL到1.0.2及以上.
 查看当前系统的OpenSSL版本:openssl version
 更新OpenSSL
-OPENSSL_VERSION=openssl-1.0.2h cd /tmp wget https://www.openssl.org/source/${OPENSSL_VERSION}.tar.gz tar zxvf ${OPENSSL_VERSION}.tar.gz cd ${OPENSSL_VERSION} ./config --prefix=/usr --shared make -j4 sudo make install openssl version  最后一句查看版本是否更新了
+OPENSSL_VERSION=openssl-1.0.2h cd /tmp wget https://www.openssl.org/source/${OPENSSL_VERSION}.tar.gz tar zxvf ${OPENSSL_VERSION}.tar.gz cd ${OPENSSL_VERSION} ./config --prefix=/usr --shared make -j4 sudo make install openssl version 最后一句查看版本是否更新了
 如果没有www-data用户和组,可以先创建
-groupadd www-data adduser -M -s /sbin/nologin www-data -g www-data  编译nginx NGINX_VERSION=nginx-1.11.3 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l` cd /tmp wget http://nginx.</p>
+groupadd www-data adduser -M -s /sbin/nologin www-data -g www-data 编译nginx NGINX_VERSION=nginx-1.11.3 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l` cd /tmp wget http://nginx.</p>
                 <footer class="post-footer">
-                    <a class="read-more" href="http://blog.suconghou.cn/post/install-nginx-php-mysql-redis/">阅读全文</a>
-                </footer>
-            </article>
-        
-            <article class="post-entry">
-                <header class="post-header">
-                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/start-your-blog-with-hugo/" class="post-link">使用hugo搭建静态博客</a></h3>
-                    <p class="post-meta">
-                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
-                        2016/01/01 19:00 Fri
-                    </p>
-                </header>
-                
-                <p class="post-summary">什么是hugo hugo是用Go语言编写的静态网站生成器,与此类似的工具还有Hexo,相比Hexo,他的编译速度更快,而易于使用,主要表现在:
- 无依赖,无论是Linux环境,还是MacOs,Windows,下载一个二进制的可执行文件即可使用 即时刷新,无论是对于文章还是样式的修改都能够自动重新编译,自动刷新,无需配置,当你修改了文章,切换回浏览器,看到的已经是新页面了. 主题丰富,易于定制,编写一个主题也十分简单.  如何使用 hugo 是开源的,在github上下载即可.
-基本命令  新建一个站点/初始化 hugo new site /path/myblog 新建一篇博文hugo new post/some-post.md 开启http服务器并指定使用主题 hugo server --theme=su --buildDrafts --watch 编译文件,直接执行hugo  当然如果在config.toml里配置好了主题等,直接使用hugo server就可以开始写博文.
-如果想让草稿也被渲染,使用hugo server -D
-编写主题 在平级的themes目录下,建立一个文件夹为你主题的名字,里面有static,layouts,archetypes文件夹.
-static为你的静态目录,layouts为模板目录,archetypes为</p>
-                <footer class="post-footer">
-                    <a class="read-more" href="http://blog.suconghou.cn/post/start-your-blog-with-hugo/">阅读全文</a>
+                    <a class="read-more" href="/post/install-nginx-php-mysql-redis/">阅读全文</a>
                 </footer>
             </article>
         

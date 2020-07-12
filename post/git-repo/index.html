@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>使用Docker快速搭建一个Git Server &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -55,33 +51,19 @@
         
 		<div class="post-text">
 			<h2 id="使用gogs搭建git-server">使用gogs搭建git server</h2>
-
 <p>使用docker</p>
-
 <p>如何搭建一个git server</p>
-
 <p>以及升级,备份等</p>
-
 <h3 id="docker-方式安装">docker 方式安装</h3>
-
 <p>安装和运行<code>docker</code>就不说了.</p>
-
-<h4 id="1-首先-docker-pull-gogs-gogs-拉取镜像">1.首先<code>docker pull gogs/gogs</code> 拉取镜像</h4>
-
-<h4 id="2-创建一个数据卷-docker-volume-create-name-gogs-data">2.创建一个数据卷<code>docker volume create --name gogs-data</code></h4>
-
+<h4 id="1首先docker-pull-gogsgogs-拉取镜像">1.首先<code>docker pull gogs/gogs</code> 拉取镜像</h4>
+<h4 id="2创建一个数据卷docker-volume-create---name-gogs-data">2.创建一个数据卷<code>docker volume create --name gogs-data</code></h4>
 <p>要查看已有的数据卷,使用<code>docker volume ls</code>,数据卷用于保存数据,升级时数据不会丢,切勿删除此数据卷</p>
-
-<h4 id="3-启动服务">3.启动服务</h4>
-
+<h4 id="3启动服务">3.启动服务</h4>
 <pre><code>docker run -d --name=gogs --restart always -m 200m --log-opt max-size=2m  -p 10022:22 -p 10080:3000 -v gogs-data:/data gogs/gogs
-</code></pre>
-
-<p>使用<code>-v gogs-data:/data</code>挂载刚刚的数据卷,将数据卷内的数据映射到容器的<code>/data</code>路径下.</p>
-
+</code></pre><p>使用<code>-v gogs-data:/data</code>挂载刚刚的数据卷,将数据卷内的数据映射到容器的<code>/data</code>路径下.</p>
 <p>也可以前面添加一个nginx反向代理
-<code>/etc/nginx/conf.d/git.conf</code></p>
-
+<code>/etc/nginx/conf.d/git.conf </code></p>
 <pre><code>server{
 	listen 80;
 	server_name git.xx.cn code.xx.cn;
@@ -100,91 +82,49 @@
 	}
 }
 
-</code></pre>
-
-<h4 id="4-升级">4.升级</h4>
-
+</code></pre><h4 id="4升级">4.升级</h4>
 <p><code>docker stop gogs</code> 和 <code>docker rm gogs</code> 然后执行步骤3就可以了</p>
-
 <p>不放心的话,可以先stop,然后rename,再步骤三启动新版本的,启动成功后再删除旧版本的.</p>
-
 <h3 id="数据备份与恢复">数据备份与恢复</h3>
-
-<h4 id="备份-docker-volume-数据">备份<code>docker volume</code>数据</h4>
-
+<h4 id="备份docker-volume数据">备份<code>docker volume</code>数据</h4>
 <p>文件接收端执行 <code>nc -l  9090 &gt; data.tar.gz</code>  有些<code>nc</code>(busybox里的nc)可能是 <code>nc -l -p 9090 &gt; data.tar.gz</code></p>
-
 <p>以只读模式挂载数据卷,挂载数据卷到<code>/data</code>路径</p>
-
 <pre><code>docker run --rm -it -v gogs-data:/data:ro busybox sh -c &quot;cd /data &amp;&amp; tar czvf - . | nc host 9090&quot;
-</code></pre>
-
-<p>挂载到本地文件夹并打包</p>
-
+</code></pre><p>挂载到本地文件夹并打包</p>
 <p><code>docker run --rm -it -v gogs-data:/data:ro -v /data/backup:/backup busybox sh</code></p>
-
 <p><code>cd /data &amp;&amp; tar czvf /backup/gogs-data-2018.tgz .</code></p>
-
 <p>使用<code>crontab</code>自动备份</p>
-
 <p><code>/usr/cron/gogs.sh</code></p>
-
 <pre><code>docker run --rm -v gogs-data:/data:ro -v /data/backup:/backup -w /data busybox tar czvf /backup/gogs-data-$(date '+%Y%m%d').tgz .
-</code></pre>
-
-<p>为root用户添加<code>crontab</code>, 每5天进行一次备份</p>
-
+</code></pre><p>为root用户添加<code>crontab</code>, 每5天进行一次备份</p>
 <pre><code>10 3 */5 * * /usr/cron/gogs.sh
-</code></pre>
-
-<p>打包文件并发送到目标主机</p>
-
-<h4 id="恢复-docker-volume-数据">恢复<code>docker volume</code>数据</h4>
-
+</code></pre><p>打包文件并发送到目标主机</p>
+<h4 id="恢复docker-volume数据">恢复<code>docker volume</code>数据</h4>
 <p>如果没有这个数据卷,先创建数据卷 <code>docker volume create --name gogs-data</code></p>
-
 <p><code>docker run --rm -it -v gogs-data:/data busybox  sh -c &quot;nc -l -p 9090 | tar -C /data -zxf -&quot;</code></p>
-
 <p>然后通过宿主机发送数据 <code>nc host 9090 &lt; data.tar.gz</code></p>
-
 <p>如果两台电脑可以直接连通</p>
-
-<p>发送方 <code>docker run --rm -it -v gogs-data:/data:ro busybox sh -c &quot;cd /data &amp;&amp; tar czvf - . | nc host 9090&quot;</code></p>
-
-<p>接收方 <code>docker run --rm -p 9090:9090 -it -v gogs-data:/data busybox sh -c &quot;nc -l -p 9090 | tar -C /data -zxf -&quot;</code></p>
-
+<p>发送方 <code>docker run --rm -it -v gogs-data:/data:ro busybox sh -c &quot;cd /data &amp;&amp; tar czvf - . | nc host 9090&quot; </code></p>
+<p>接收方 <code>docker run --rm -p 9090:9090 -it -v gogs-data:/data busybox sh -c &quot;nc -l -p 9090 | tar -C /data -zxf -&quot; </code></p>
 <h3 id="相关错误">相关错误</h3>
-
 <pre><code>remote: Counting objects: 860, done.
 remote: aborting due to possible repository corruption on the remote side.
 fatal: protocol error: bad pack header
-</code></pre>
-
-<p>由于服务器端在传送 <code>git pull</code> 或者 <code>git clone</code>时需提前压缩数据,这些数据是存放在内存中.(<code>git pull</code>时服务端内存不断增长,由于我使用的docker,只分配了60M内存);当内存不够使用时造成错误.</p>
-
+</code></pre><p>由于服务器端在传送 <code>git pull</code> 或者 <code>git clone</code>时需提前压缩数据,这些数据是存放在内存中.(<code>git pull</code>时服务端内存不断增长,由于我使用的docker,只分配了60M内存);当内存不够使用时造成错误.</p>
 <p>解决方案 1. 增加服务端内存. 或者 2. 修改git客户端配置 <a href="https://stackoverflow.com/questions/4170317/git-pull-error-remote-object-is-corrupted">https://stackoverflow.com/questions/4170317/git-pull-error-remote-object-is-corrupted</a></p>
-
 <p>即客户端执行</p>
-
 <pre><code>git config --global pack.windowMemory &quot;100m&quot;
 git config --global pack.SizeLimit &quot;100m&quot;
 git config --global pack.threads &quot;1&quot;
-</code></pre>
-
-<p>顺便说 docker 修改内存配置</p>
-
+</code></pre><p>顺便说 docker 修改内存配置</p>
 <p><code>docker update gogs -m 200m --memory-swap=400m</code></p>
-
 <p><strong>配置网络转发</strong></p>
-
 <p>容器的http端口和ssh分别映射到<code>10080</code>和<code>10022</code>,我们使用域名和80端口对外服务.</p>
-
 <p>添加<code>nginx</code>配置
 <code>git.conf</code></p>
-
 <pre><code>server{
 		listen 80;
-		server_name git.ourwill.cn code.ourwill.cn;
+		server_name git.xx.cn code.xx.cn;
 		gzip on;
 		gzip_min_length 1024;
 		gzip_proxied any;
@@ -199,38 +139,27 @@ git config --global pack.threads &quot;1&quot;
 				proxy_set_header X-Forwarded-Port 80;
 		}
 }
-</code></pre>
-
-<p>少许优化:<code>gogs</code>默认没有<code>gzip</code>,我们通过<code>nginx</code>添加了<code>gzip</code>;设置最大提交文件为10M</p>
-
-<p>然后就可以使用域名直接访问,如果发现通过<code>nginx</code>代理后报 <code>502</code> <code>nginx erro log</code> 为<code>Permission denied</code>, 可能是<code>SELinux</code>的问题</p>
-
+</code></pre><p>少许优化:<code>gogs</code>默认没有<code>gzip</code>,我们通过<code>nginx</code>添加了<code>gzip</code>;设置最大提交文件为10M</p>
+<p>然后就可以使用域名直接访问,如果发现通过<code>nginx</code>代理后报	<code>502</code> <code>nginx erro log</code> 为<code> Permission denied</code>, 可能是<code>SELinux</code>的问题</p>
 <p>检查<code>SELinux</code>日志 <code>sudo cat /var/log/audit/audit.log | grep nginx | grep denied</code></p>
-
 <p>如果发现被 <code>SELinux</code>拦截, 可以执行<code>setsebool -P httpd_can_network_connect 1</code>开启此条规则</p>
-
 <p>附:</p>
-
 <blockquote>
 <p><code>getsebool -a | grep httpd</code> 可以查看 SELinux 关于 http 的配置</p>
-
+</blockquote>
+<blockquote>
 <p><code>setsebool httpd_can_network_connect on</code> 使本次生效</p>
-
+</blockquote>
+<blockquote>
 <p><code>setsebool httpd_can_network_connect on -P</code> 是<code>persist</code>模式,永久生效</p>
 </blockquote>
-
 <p>使用后立即生效,无需重启任何服务.</p>
-
 <h3 id="配合git-hook-自动部署php和静态网页">配合git hook 自动部署PHP和静态网页</h3>
-
 <p>写了一个server用于接受通知 <code>https://github.com/suconghou/gitsync.git</code></p>
-
 <p>主要是接收到用户推送代码后,不存在则clone项目,存在则更新项目.</p>
-
 <p>启动服务<code>gitsy &gt; /var/log/gitsy.log 2&gt;&amp;1 &amp;</code>,然后由nginx代理隐藏端口,使用域名访问</p>
-
 <pre><code>server{
-    server_name g.share.ourwill.cn;
+    server_name g.share.xx.cn;
     listen 80;
     gzip on;
     location / {
@@ -241,16 +170,11 @@ git config --global pack.threads &quot;1&quot;
         proxy_set_header X-Forwarded-Port 80;
     }
 }
-</code></pre>
-
-<p><code>gitsy</code> 启动后可通过http查看log<code>http://g.share.ourwill.cn/log</code></p>
-
+</code></pre><p><code>gitsy</code> 启动后可通过http查看log<code>http://g.share.xx.cn/log</code></p>
 <p><code>repos</code>目录可由docker挂载只读,防止删除操作,请求都转发到docker内,由内部<code>nginx-fpm</code>运行代码</p>
-
 <p>转发到docker里的nginx</p>
-
 <pre><code>server{
-    server_name *.share.ourwill.cn;
+    server_name *.share.xx.cn;
     listen 80;
     gzip on;
     index index.html index.php;
@@ -262,16 +186,10 @@ git config --global pack.threads &quot;1&quot;
         proxy_set_header X-Forwarded-Port 80;
     }
 }
-</code></pre>
-
-<p>docker目录的映射为<code>docker run -v /data/share/runtime/:/www  --name datafs busybox</code></p>
-
+</code></pre><p>docker目录的映射为<code>docker run -v /data/share/runtime/:/www  --name datafs busybox</code></p>
 <p><code>docker run -d --name dev --restart always -m 100m --log-opt max-size=2m --volumes-from datafs -p 18001:80 -p 12201:22 suconghou/server</code></p>
-
 <p>可以使用<code>/data/share/runtime/:/www:ro</code>使用只读</p>
-
 <p>docker内部的nginx处理各个vhost的请求</p>
-
 <pre><code>server {
 	listen  80;
 	server_name 0.0.0.0;
@@ -291,13 +209,10 @@ git config --global pack.threads &quot;1&quot;
 		include        fastcgi.conf;
 	}
 }
-</code></pre>
-
-<p><strong>也可以直接使用本地nginx+fpm请求,不使用docker,代码可本地读写</strong></p>
-
+</code></pre><p><strong>也可以直接使用本地nginx+fpm请求,不使用docker,代码可本地读写</strong></p>
 <pre><code>server{
 	listen 80;
-	server_name *.run.ourwill.cn;
+	server_name *.run.xx.cn;
 	index index.php index.html;
 	fastcgi_connect_timeout 2s;
 	fastcgi_send_timeout 10s;
@@ -321,24 +236,21 @@ git config --global pack.threads &quot;1&quot;
         include        fastcgi.conf;
 	}
 }
-</code></pre>
-
-<p>此两种环境都传递了变量 debug 到<code>php-fpm</code>,php 代码中可使用 <code>getenv('debug')</code> 判断是何种环境.线上环境没有配置debug,得出false</p>
-
+</code></pre><p>此两种环境都传递了变量 debug 到<code>php-fpm</code>,php 代码中可使用 <code>getenv('debug')</code> 判断是何种环境.线上环境没有配置debug,得出false</p>
 <p><strong>可以通过另一容器挂载git的数据目录也可实现即时部署</strong></p>
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/git-repo/"></air-messager>
+        <air-messager ns="hi" thread="/post/git-repo/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/lego-and-acme-to-enable-https/" title="快速签发免费的https证书" >
+            <a class="previous" href="/post/lego-and-acme-to-enable-https/" title="快速签发免费的https证书" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/dnsmasq/" title="编译dnsmasq">
+            <a class="next" href="/post/dnsmasq/" title="编译dnsmasq">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -350,6 +262,14 @@ git config --global pack.threads &quot;1&quot;
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

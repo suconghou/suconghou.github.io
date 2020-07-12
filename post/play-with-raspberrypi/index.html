@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>玩转树莓派 &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -54,140 +50,80 @@
         </div>
         
 		<div class="post-text">
-			
-
-<h2 id="官方操作系统">官方操作系统</h2>
-
+			<h2 id="官方操作系统">官方操作系统</h2>
 <p><a href="https://www.raspberrypi.org/downloads/raspbian/">https://www.raspberrypi.org/downloads/raspbian/</a></p>
-
 <p>带桌面版1.4G</p>
-
 <p>精简版293MB  下载 <code>wget  https://downloads.raspberrypi.org/raspbian_lite_latest</code></p>
-
 <h2 id="安装其他操作系统">安装其他操作系统</h2>
-
 <h3 id="centos">CentOS</h3>
-
 <p>CentOS7官方支持了AMRV7发布了树莓派2、香蕉派、以及CubitTruck单片机的版本</p>
-
 <p><a href="http://mirror.centos.org/altarch/7/isos/armhfp/">CentOS7官方下载</a>
 root 密码 centos
 大约275MB</p>
-
 <p><a href="http://mirror.centos.org/altarch/7.4.1708/isos/armhfp/">http://mirror.centos.org/altarch/7.4.1708/isos/armhfp/</a></p>
-
 <h3 id="archlinux">ArchLinux</h3>
-
 <p><a href="https://archlinuxarm.org/">https://archlinuxarm.org/</a></p>
-
 <p>树莓派1 <a href="https://archlinuxarm.org/platforms/armv6/raspberry-pi">https://archlinuxarm.org/platforms/armv6/raspberry-pi</a></p>
-
 <p>树莓派2 <a href="https://archlinuxarm.org/platforms/armv7/broadcom/raspberry-pi-2">https://archlinuxarm.org/platforms/armv7/broadcom/raspberry-pi-2</a></p>
-
 <p>树莓派3 <a href="https://archlinuxarm.org/platforms/armv8/broadcom/raspberry-pi-3">https://archlinuxarm.org/platforms/armv8/broadcom/raspberry-pi-3</a></p>
-
 <p>有国内的下载镜像 <a href="https://mirrors.tuna.tsinghua.edu.cn/archlinuxarm/os/">https://mirrors.tuna.tsinghua.edu.cn/archlinuxarm/os/</a></p>
-
 <p>大约293MB</p>
-
 <h2 id="安装osmc">安装OSMC</h2>
-
 <p><a href="https://osmc.tv/download/">下载一览</a>,选择<code>Disk images</code>,此系统较省资源,默认开机进入OSMC,img.gz 大小约160M</p>
-
 <pre><code>OSMC_FILE=OSMC_TGT_rbp2_20160621.img.gz
 cd /data/tmp
 axel -n 20 http://download.osmc.tv/installers/diskimages/$OSMC_FILE
 md5sum $OSMC_FILE
 ls -lh
-</code></pre>
-
-<p>查看所有版本 <a href="http://download.osmc.tv/installers/diskimages/">http://download.osmc.tv/installers/diskimages/</a></p>
-
+</code></pre><p>查看所有版本 <a href="http://download.osmc.tv/installers/diskimages/">http://download.osmc.tv/installers/diskimages/</a></p>
 <blockquote>
 <p>使用清华大学镜像站国内下载速度更快: <a href="https://mirrors.tuna.tsinghua.edu.cn/osmc/osmc/download/installers/">https://mirrors.tuna.tsinghua.edu.cn/osmc/osmc/download/installers/</a></p>
 </blockquote>
-
 <p>插入内存卡,开始烧写到内存卡中.烧写之前需要取消挂载</p>
-
 <p><code>diskutil list</code> 查看你的内存卡的挂载位置,取消挂载</p>
-
 <p>执行<code>diskutil unmountdisk /dev/disk2</code> 取消挂载,需要稍等一小会.</p>
-
 <p>烧写,烧写过程中读卡器不断闪烁.
 <code>gzip -dc /data/tmp/$OSMC_FILE | sudo dd of=/dev/disk2 bs=8k</code></p>
-
 <p>dd的用法: <code>dd if=/dev/zero of=hello.txt bs=1024</code></p>
-
 <p>dd过程中看不到进度,如果确实想要了解进度,可以再开一个终端<code>pkill -USR1 -n -x dd</code>查看进度.</p>
-
 <p>Mac上不能使用-USR1方式查看dd进度,会直接kill掉,可以使用在执行dd时插入pv查看进度 , 先安装pv<code>brew install pv</code></p>
-
 <p><code>sudo dd if=file_1 | pv | dd of=file_2</code></p>
-
 <p>在Mac OSX 上,可以使用<code>/dev/rdisk2</code> 代替<code>/dev/disk2</code> , 速度能有大幅度提升</p>
-
 <p>见 <a href="https://superuser.com/questions/631592/why-is-dev-rdisk-about-20-times-faster-than-dev-disk-in-mac-os-x">https://superuser.com/questions/631592/why-is-dev-rdisk-about-20-times-faster-than-dev-disk-in-mac-os-x</a></p>
-
 <p><code>gzip -dc OSMC_TGT_rbp2_201*.img.gz | pv | sudo dd of=/dev/rdisk2 bs=512k</code></p>
-
 <p>确定内存卡的最佳写入块大小,分别执行如下命令,查看速度</p>
-
 <pre><code>dd if=/dev/zero bs=1024 count=65536 of=/tmp/64mb
 dd if=/dev/zero bs=2048 count=32768 of=/tmp/64mb
 dd if=/dev/zero bs=4096 count=16384 of=/tmp/64mb
 dd if=/dev/zero bs=8192 count=8192 of=/tmp/64mb
-</code></pre>
-
-<p>我的内存卡 4096 比较快,能有90MB/s</p>
-
+</code></pre><p>我的内存卡 4096 比较快,能有90MB/s</p>
 <p>busybox dd 测试 <code>/dev/shm</code>
 <code>time dd bs=64k count=1k if=/dev/zero of=test conv=fsync</code></p>
-
 <p>如果是iso文件,需要装换为img文件,</p>
-
 <pre><code>hdiutil convert -format UDRW -o /path/to/generate/img/file /path/to/your/iso/file
-</code></pre>
-
-<p>mac osx会默认追加一个.dmg,这个没有影响,然后就可以使用dd写入这个img文件了.</p>
-
+</code></pre><p>mac osx会默认追加一个.dmg,这个没有影响,然后就可以使用dd写入这个img文件了.</p>
 <p><code>diskutil eject /dev/disk1</code> 弹出USB,注意和卸载(<code>unmountdisk</code>)是不同的</p>
-
 <p><a href="http://forum.kodi.tv/forumdisplay.php?fid=26">官方论坛</a></p>
-
 <p>OSMC默认的ssh连接用户是 osmc 密码 osmc</p>
-
-<p>播放界面
-&gt; 切换字幕快捷键 <code>t</code>
-&gt; 查看属性 <code>i</code>
-&gt; 播放器菜单 <code>m</code></p>
-
+<p>播放界面</p>
+<blockquote>
+<p>切换字幕快捷键 <code>t</code>
+查看属性 <code>i</code>
+播放器菜单 <code>m</code></p>
+</blockquote>
 <p>但是发现 OSMC 无法播放<code>rmvb</code>,只有声音,没有图像</p>
-
 <p>由于rmvb无法硬解,又不是开源格式,树莓派无法解码,只能通过ffmpeg转换格式 (OSMC2017.05版本已可播放<code>Real Video</code>文件,树莓派2播放超清1080P 2.3GB大文件CPU近乎满载,基本流畅播放)</p>
-
 <p>转换为MP4格式最为通用,但是发现较慢,也不能边转码,边播放.</p>
-
 <p>可以转换到flv格式,flv格式能够播放,并且还能边转码边播放!</p>
-
 <p>设置比特率高些,不然会不清楚.这里分辨率设置为1280x720,更大分辨率要适当加大比特率.</p>
-
 <p><code>ffmpeg -i xx.rmvb -s 1280x720 -b 4M a.flv</code></p>
-
 <p>osmc 启用 root 登陆</p>
-
 <pre><code>sudo passwd --unlock root
-</code></pre>
-
-<p>修改root密码</p>
-
+</code></pre><p>修改root密码</p>
 <pre><code>sudo passwd root
-</code></pre>
-
-<p>定时关机 <code>sudo shutdown -t 60</code>(一个小时后关机) -t参数后面是分钟.</p>
-
+</code></pre><p>定时关机 <code>sudo shutdown -t 60</code>(一个小时后关机) -t参数后面是分钟.</p>
 <p>修改为国内镜像源
 <code>/etc/apt/sources.list</code>原先内容 (debian9)</p>
-
 <pre><code>
 deb http://ftp.debian.org/debian stretch main contrib non-free
 
@@ -197,10 +133,7 @@ deb http://security.debian.org/ stretch/updates main contrib non-free
 
 deb http://apt.osmc.tv stretch main
 
-</code></pre>
-
-<p>修改为</p>
-
+</code></pre><p>修改为</p>
 <pre><code>
 deb http://mirrors.tuna.tsinghua.edu.cn/debian stretch main contrib non-free
 
@@ -210,297 +143,184 @@ deb http://mirrors.tuna.tsinghua.edu.cn/debian-security/ stretch/updates main co
 
 deb http://ftp.fau.de/osmc/osmc/apt/ stretch main
 
-</code></pre>
-
-<p><code>http://ftp.fau.de/osmc/osmc/apt/</code> 也可以是</p>
-
+</code></pre><p><code>http://ftp.fau.de/osmc/osmc/apt/</code> 也可以是</p>
 <p><code>http://mirrors.tuna.tsinghua.edu.cn/osmc/osmc/apt/</code></p>
-
 <p>arm php7.1  <code>http://repozytorium.mati75.eu/raspbian/pool/main/p/php7.1/</code></p>
-
 <p>在 <a href="http://www.debian.org/mirror/list">http://www.debian.org/mirror/list</a> 查看有多个国内镜像源</p>
-
 <p>执行更新<code>sudo apt update -y &amp;&amp; sudo apt upgrade -y</code></p>
-
 <p>安装常用工具<code>sudo apt install htop tree file telnet screen curlftpfs aria2</code></p>
-
 <p>安装<code>zsh</code>,可通过CURL或者WGET安装 <a href="https://github.com/robbyrussell/oh-my-zsh">https://github.com/robbyrussell/oh-my-zsh</a></p>
-
 <pre><code>chsh -s /bin/zsh
-</code></pre>
-
-<h2 id="安装openelec">安装openelec</h2>
-
+</code></pre><h2 id="安装openelec">安装openelec</h2>
 <p><a href="http://openelec.tv/get-openelec">openelec</a> 镜像下载,osmc是基于debain的,系统更加完善.此系统相比osmc更加精简,是专为跑kodi精简的系统. img.gz 大小约102M</p>
-
+<p><a href="https://openelec.tv/downloads">https://openelec.tv/downloads</a></p>
+<p>openelec 2018年后已不再更新</p>
+<p>1G内存卡也能安装</p>
+<h2 id="libreelec">libreelec</h2>
+<p><a href="https://libreelec.tv/downloads_new/raspberry-pi-2/">https://libreelec.tv/downloads_new/raspberry-pi-2/</a></p>
+<p>LibreELEC 大约126M</p>
+<p>但1G内存卡启动不了</p>
+<p>OpenELEC  大约135M</p>
+<p>OSMC      大约229M</p>
+<h2 id="dietpi">dietpi</h2>
+<p><a href="https://www.dietpi.com/">https://www.dietpi.com/</a></p>
+<h2 id="lakka">lakka</h2>
+<p><a href="http://www.lakka.tv/get/linux/rpi2/">http://www.lakka.tv/get/linux/rpi2/</a></p>
+<p>用户名 root
+密码   root</p>
+<p>系统刷入后,需要修改根目录下<code>config.txt</code>文件
+添加</p>
+<pre><code>hdmi_group=1
+hdmi_mode=16
+</code></pre><p>使之工作在1080p 60hz 下, 不然默认的分辨率比较低</p>
+<p><a href="https://elinux.org/RPiconfig">https://elinux.org/RPiconfig</a></p>
+<p>中文乱码问题</p>
+<p>找一个中文字体复制到</p>
+<p>/storage/assets/xmb/monochrome/font.ttf</p>
+<p>没有<code>xmb/monochrome</code>文件夹,可以自己建</p>
+<p>然后重启</p>
+<p>没有声音是因为config.txt文件中hdmi_drive=2 这行配置被注释了。将其注释去掉即可。</p>
 <h2 id="安装xbian">安装xbian</h2>
-
 <p><a href="http://www.xbian.org/">http://www.xbian.org/</a></p>
-
 <p>与openelec,osmc都是类似,img.gz较大,大约316MB</p>
-
 <h2 id="安装chromeos">安装ChromeOs</h2>
-
 <p>ChromeOs已经有支持树莓派的版本了</p>
-
 <h2 id="安装-flintos">安装 flintos</h2>
-
 <p>官网 <a href="https://flintos.com/">https://flintos.com/</a></p>
-
 <p>flintos 相当于中国版的ChromeOS,对各种硬件适配更好.</p>
-
 <p>下载<code>img.xz</code> 后,刻录操作同osmc,镜像大小比osmc要大不少.</p>
-
 <p><code>diskutil unmountdisk /dev/disk2</code></p>
-
 <p><code>xz -dc flintos_rpi_v0.3.img.xz | pv | sudo dd of=/dev/rdisk2 bs=512k</code></p>
-
 <h2 id="播放器">播放器</h2>
-
 <p><code>https://github.com/popcornmix/omxplayer</code></p>
-
 <p>树莓派系统Raspbian源里面有 执行 <code>sudo apt update &amp;&amp; sudo  apt install omxplayer</code> 就可以安装</p>
-
 <p>但是 debain 源里面没有, 由于我使用的OSMC,也需要自己下载安装</p>
-
 <p>有编译好的提供下载 <code>http://omxplayer.sconde.net/</code></p>
-
 <pre><code>apt install libpcre3 fonts-freefont-ttf fbset
 wget http://omxplayer.sconde.net/builds/omxplayer_0.3.7~git20170130~62fb580_armhf.deb
 sudo dpkg -i omxplayer_0.3.7~git20170130~62fb580_armhf.deb
-</code></pre>
-
-<p>安装后<code>omxplayer -v</code> 检查是否成功 <code>omxplayer -h</code> 查看使用帮助</p>
-
+</code></pre><p>安装后<code>omxplayer -v</code> 检查是否成功 <code>omxplayer -h</code> 查看使用帮助</p>
 <p>omxplayer 播放器 可由命令行执行,输出视频到hdmi <code>omxplayer -p -o hdmi test.mkv</code></p>
-
 <p><code>alias play='omxplayer -r -o hdmi'</code></p>
-
 <p>经测试omxplayer播放器并没有OSMC自带播放器好,omxplayer有时会有卡顿.</p>
-
 <p>omxplayer 取代了OSMC的GUI界面 可以使用 <code>sudo systemctl restart mediacenter</code> 恢复</p>
-
 <p>通过命令行输出图片到hdmi</p>
-
 <p><code>fbi *.jpg</code></p>
-
 <p>见 <a href="https://raspberrypi.stackexchange.com/questions/8922/how-do-i-display-images-without-starting-x11">https://raspberrypi.stackexchange.com/questions/8922/how-do-i-display-images-without-starting-x11</a></p>
-
 <h2 id="树莓派推流到youtube实现直播">树莓派推流到Youtube实现直播</h2>
-
 <p>首先需要安装 <code>ffmpeg</code>, 未安装可以去下载对于arm7的静态编译版本  <a href="http://johnvansickle.com/ffmpeg/">http://johnvansickle.com/ffmpeg/</a></p>
-
 <p>还需要使用<code>raspivid</code>和<code>raspistill</code>命令, 一个是对于视频的,一个是对于图片的.OSMC已自带这两个命令行工具.</p>
-
 <p><code>raspiyuv</code> 这个也是操作摄像头的</p>
-
 <p>插入摄像头后一般会有 <code>/dev/video0</code> 文件.</p>
-
-<p>执行 <code>vcgencmd get_camera</code> 查看结果.</p>
-
+<p>执行 <code>vcgencmd get_camera </code> 查看结果.</p>
 <p>结果是 <code>supported=1 detected=0</code> , 可能是驱动还没加载,还无法使用.</p>
-
 <p>执行 <code>grep &quot;bcm2835-v4l2&quot; /etc/modules</code> 没有结果</p>
-
 <p>我们需要手动将<code>bcm2835-v4l2</code>写入到此文件中. 然后<code>reboot</code>重启, 此配置只需配置这一次,就是告诉内核每次开机后加载摄像头驱动.</p>
-
-<p><code>raspistill -o foobar.jpg</code> 拍一张照片</p>
-
+<p><code>raspistill -o foobar.jpg </code> 拍一张照片</p>
 <p>由于我使用的是USB摄像头,并非GPIO摄像头,故使用方式不一样</p>
-
 <p>USB摄像头需<code>sudo apt install fswebcam</code></p>
-
 <p><code>fswebcam image.jpg</code> 可以拍摄照片.</p>
-
 <p><code>ffmpeg -f v4l2 -framerate 30 -video_size 640x480 -i /dev/video0 output.flv</code> 可以捕获视频.</p>
-
 <p>实时录制 <code>ffmpeg -f v4l2 -framerate 30 -video_size 640x480 -i /dev/video0 -f flv pipe:1 | nc 192.168.1.102 5001</code></p>
-
 <p>接收端播放 <code>nc -l  5001 | mpv -</code></p>
-
 <p><a href="https://maxogden.com/hd-live-streaming-cats.html">https://maxogden.com/hd-live-streaming-cats.html</a></p>
-
 <h2 id="配置镜像加速">配置镜像加速</h2>
-
 <p>一:树莓派常用软件源列表</p>
-
 <p>中山大学</p>
-
 <p>Raspbian <a href="http://mirror.sysu.edu.cn/raspbian/raspbian">http://mirror.sysu.edu.cn/raspbian/raspbian</a></p>
-
 <p>中国科学技术大学</p>
-
 <p>Raspbian <a href="http://mirrors.ustc.edu.cn/raspbian/raspbian/">http://mirrors.ustc.edu.cn/raspbian/raspbian/</a></p>
-
 <p>清华大学</p>
-
 <p>Raspbian <a href="http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/">http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/</a></p>
-
 <p>大连东软信息学院源（北方用户）</p>
-
 <p>Raspbian <a href="http://mirrors.neusoft.edu.cn/raspbian/raspbian/">http://mirrors.neusoft.edu.cn/raspbian/raspbian/</a></p>
-
 <p>重庆大学源（中西部用户）</p>
-
 <p>Raspbian <a href="http://mirrors.cqu.edu.cn/Raspbian/raspbian/">http://mirrors.cqu.edu.cn/Raspbian/raspbian/</a></p>
-
 <p>二、树莓派修改软件源的方法</p>
-
 <p>编辑/etc/apt/sources.list文件。删除原文件所有内容，用以下内容取代：</p>
-
 <pre><code>deb http://mirrors.ustc.edu.cn/raspbian/raspbian/ wheezy main non-free contrib
 
 deb-src http://mirrors.ustc.edu.cn/raspbian/raspbian/ wheezy main non-free contrib
-</code></pre>
-
-<p>编辑此文件后，请使用sudo apt-get update命令，更新软件列表。</p>
-
+</code></pre><p>编辑此文件后，请使用sudo apt-get update命令，更新软件列表。</p>
 <p>这样树莓派更新软件就会使用中国科学技术大学的镜像源，从而大大提高更新速度，要使用其他的软件源，根据以上代码就行修改。</p>
-
 <h2 id="关于各种派的性能比较">关于各种派的性能比较</h2>
-
 <p>树莓派3仅仅插单个tf卡一般功率为2.5W 树莓派2更少</p>
-
 <p>每度电0.5元,一年不间断运行.按此计算 一年电费</p>
-
 <pre><code>2.5*24*365/1000*0.5=10.95
-</code></pre>
-
-<p>不足一顿午饭钱,相当于200W的台式机不间断工作5天</p>
-
+</code></pre><p>不足一顿午饭钱,相当于200W的台式机不间断工作5天</p>
 <p><a href="https://www.zhihu.com/question/37202806">https://www.zhihu.com/question/37202806</a></p>
-
 <p>Tinker Board  比树莓派3性能更好,更贵</p>
-
 <p>其他嵌入式单片机有 nodemcu,直接包含wifi/蓝牙 适合物联网开发.</p>
-
 <p>参数一览</p>
-
 <p><a href="https://cdn.shopify.com/s/files/1/1098/4826/files/comparisonupdate.png?13077955502273113275">https://cdn.shopify.com/s/files/1/1098/4826/files/comparisonupdate.png?13077955502273113275</a></p>
-
 <p>温度 <code>/opt/vc/bin/vcgencmd measure_temp</code></p>
-
 <p><code>watch /opt/vc/bin/vcgencmd measure_temp</code></p>
-
 <p>参考</p>
-
 <p><code>https://ky0n.xyz/osmc-init/</code></p>
-
 <p><code>http://blog.laolilin.com/posts/2016/10/config_raspberry_pi.html#.WBR2huF96Rs</code></p>
-
 <p><code>https://www.zybuluo.com/yangxuan/note/321467</code></p>
-
 <h2 id="关于-arm-cpu性能">关于 arm cpu性能</h2>
-
 <p>大八核A80以问鼎国内主控芯片性能第一位的姿态把控着专业游戏盒子市场</p>
-
 <p>搜索到a53-a15好像是快48%</p>
-
 <p>A80 H8 H5都是八核。</p>
-
 <p>A80是全志最初面向平板市场开发的高性能处理器，不过生不逢时，现在也用到了盒子上。A80处理器基于四核A15+四核A7的架构，GPU配置出色，安兔兔跑分能突破5W大关。它支持4K解码和4K输出，界面本身为1080P规格。相关产品多配备2GB内存，个别机型甚至会用上4GB内存，多出现于一些主打高性能的盒子产品上</p>
-
 <p>四核A53架构的H64与八核A53架构的H5方案都在规划当中，将逐渐取代现有的H8和H3方案</p>
-
 <p>全志OTT处理器以H3、H5和H8为主，其中H3和H8都是老旧的Cortex-A7架构设计，而H5则升级到了最新Cortex-A53架构，并集成Mali-450MP6 GPU。</p>
-
 <p>以由高到低的方式来看，ARM处理器大体上可以排序为：Cortex-A57处理器、Cortex-A53处理器、Cortex-A15处理器、Cortex-A12处理器、Cortex-A9处理器、Cortex-A8处理器、Cortex-A7处理器、Cortex-A5处理器。其中A53、A9、A7和A5是网络机顶盒芯片厂商使用最多的。</p>
-
 <p>Cortex-A53、Cortex-A57两款处理器属于Cortex-A50系列，采用64位ARMv8架构。</p>
-
 <p>ARM Cortex-A15处理器隶属于Cortex-A系列，基于ARMv7-A架构。</p>
-
 <p>ARM Cortex-A9处理器隶属于Cortex-A系列，基于ARMv7-A架构。</p>
-
 <p>ARM Cortex-A8处理器隶属于Cortex-A系列，基于ARMv7-A架构,是我们目前使用的单核手机中最为常见的产品。</p>
-
 <p>ARM Cortex-A7处理器隶属于Cortex-A系列，基于ARMv7-A架构，它的特点是在保证性能的基础上提供了出色的低功耗表现。</p>
-
 <p>ARM Cortex-A5处理器隶属于Cortex-A系列，基于ARMv7-A架构，是能效最高、成本低的处理器。</p>
-
 <p>以由高到低的方式来看，ARM处理器大体上可以排序为：</p>
-
 <p>Cortex-A72处理器、Cortex-A57处理器、Cortex-A53处理器、Cortex-A15处理器、Cortex-A12处理器、Cortex-A9处理器、Cortex-A8处理器、Cortex-A7处理器、Cortex-A5处理器、ARM11处理器、ARM9处理器、ARM7处理器</p>
-
 <p>ARM发布了自己的下一代核心Cortex-A72，A72将会直接取代A57，定位高端市场。</p>
-
 <p>arm8的A53对应arm7的A7 A57对应A15</p>
-
 <p>官方介绍 <a href="https://www.arm.com/products/processors/cortex-a">https://www.arm.com/products/processors/cortex-a</a></p>
-
 <p><a href="http://dkmc.tv/2016/11/24/how-to-detect-performance-of-smart-tv-and-tv-box/?lang=pt">http://dkmc.tv/2016/11/24/how-to-detect-performance-of-smart-tv-and-tv-box/?lang=pt</a></p>
-
 <p><a href="http://irunhuayou.com/keji/ruanjian/1120329.html">http://irunhuayou.com/keji/ruanjian/1120329.html</a></p>
-
 <p><a href="http://www.allwinnertech.com/uploads/150416/7-15041610492JA.jpg">http://www.allwinnertech.com/uploads/150416/7-15041610492JA.jpg</a></p>
-
 <p><a href="http://dkmc.tv/wp-content/uploads/2016/11/arm-cortex-xxx.jpg">http://dkmc.tv/wp-content/uploads/2016/11/arm-cortex-xxx.jpg</a></p>
-
 <p><a href="http://www.21ic.com/eva/MCU/201604/669727.htm">http://www.21ic.com/eva/MCU/201604/669727.htm</a></p>
-
 <p>树莓派3的CPU性能</p>
-
 <p><a href="https://www.znds.com/forum.php?mod=viewthread&amp;tid=1118965&amp;orderby=dateline">https://www.znds.com/forum.php?mod=viewthread&amp;tid=1118965&amp;orderby=dateline</a></p>
-
 <h2 id="bash-乱码设置">bash 乱码设置</h2>
-
-<p><code>env</code> 查看当前编码</p>
-
+<p><code> env</code> 查看当前编码</p>
 <p>之前的值<code>LANG=C</code></p>
-
 <p>需要清除 <code>unset LANG</code></p>
-
 <p><code>locale -a | grep zh</code> 查看支持的中文编码</p>
-
 <p><code>export LANG=zh_CN.UTF-8</code></p>
-
 <p>有时候可能还需要设置<code>LC_ALL=zh_CN.utf8</code> , 可直接<code>export LC_ALL=zh_CN.utf8</code>加入<code>~/.bashrc</code>中</p>
-
 <pre><code>setlocale: LC_ALL: cannot change locale (zh_CN.utf8)
-</code></pre>
-
-<p>直接执行<code>locale</code>, 如果出现</p>
-
+</code></pre><p>直接执行<code>locale</code>, 如果出现</p>
 <pre><code>locale: Cannot set LC_CTYPE to default locale: No such file or directory
 locale: Cannot set LC_MESSAGES to default locale: No such file or directory
 locale: Cannot set LC_ALL to default locale: No such file or directory
-</code></pre>
-
-<p>sudo apt-get install zhcon</p>
-
-<h2 id="我的树莓派">我的树莓派</h2>
-
-<ol>
-<li>osmc 系统 ssh-copy-id配置</li>
-<li>rslsync 分布式同步网盘  开机启动</li>
-<li>syncting 开机启动</li>
-<li>docker daemon 开机启动</li>
-<li>aria2 下载</li>
-<li>frp</li>
-</ol>
-
-<p><code>curlftpfs</code> 用于挂载ftp</p>
-
-<h2 id="android-linux-arm">android linux arm</h2>
-
-<ol>
-<li>php server static build</li>
-<li>busybox httpd</li>
-</ol>
+</code></pre><p>sudo apt-get install zhcon</p>
+<h3 id="树莓派-alpine">树莓派 alpine</h3>
+<p>直接将内存卡格式化为fat32 (使用mac自带的磁盘工具抹掉就行)</p>
+<p><a href="https://mirrors.cloud.tencent.com/alpine/v3.11/releases/armv7/">https://mirrors.cloud.tencent.com/alpine/v3.11/releases/armv7/</a></p>
+<p>下载 alpine-rpi-3.11.5-armv7.tar.gz</p>
+<p>解压</p>
+<p>然后copy到内存卡</p>
+<p>加电启动,登陆使用root</p>
+<p>setup-alpine</p>
+<p>选键盘布局输入 us</p>
 
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/play-with-raspberrypi/"></air-messager>
+        <air-messager ns="hi" thread="/post/play-with-raspberrypi/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/homebrew-speedup/" title="使用镜像加速homebrew" >
+            <a class="previous" href="/post/homebrew-speedup/" title="使用镜像加速homebrew" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/linux/" title="linux相关操作">
+            <a class="next" href="/post/linux/" title="linux相关操作">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -512,6 +332,14 @@ locale: Cannot set LC_ALL to default locale: No such file or directory
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

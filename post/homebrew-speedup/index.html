@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>使用镜像加速homebrew &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -54,125 +50,73 @@
         </div>
         
 		<div class="post-text">
-			
-
-<p><a href="http://mirrors.ustc.edu.cn/">中国科大镜像站</a> 提供 Debian, Ubuntu, Fedora, Archlinux, CentOS 等多个发行版的官方源.
+			<p><a href="http://mirrors.ustc.edu.cn/">中国科大镜像站</a> 提供 Debian, Ubuntu, Fedora, Archlinux, CentOS 等多个发行版的官方源.
 还有brew 的二进制源,brew使用此配置能大大提升速度.</p>
-
 <pre><code>cd /usr/local/Homebrew
 git remote set-url origin git://mirrors.ustc.edu.cn/brew.git
 git remote -v
 brew update
-</code></pre>
-
-<p>修改源：<a href="https://lug.ustc.edu.cn/wiki/mirrors/help/brew.git">https://lug.ustc.edu.cn/wiki/mirrors/help/brew.git</a> 和 <a href="https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-core.git">https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-core.git</a>
-修改二进制源见<a href="https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-bottles">https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-bottles</a></p>
-
+</code></pre><p>修改源：https://lug.ustc.edu.cn/wiki/mirrors/help/brew.git 和 <a href="https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-core.git">https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-core.git</a>
+修改二进制源见https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-bottles</p>
 <p>即<code>export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles</code></p>
-
 <p>使用<code>brew config</code> 查看<code>ORIGIN</code>和<code>HOMEBREW_BOTTLE_DOMAIN</code>已经是新的<code>mirrors.ustc.edu.cn</code>即为配置成功</p>
-
 <p><code>brew list</code> 列出所有安装的模块, 这里面包含以下依赖安装的，<code>brew leaves</code> 可以查看一些顶级的</p>
-
 <p><code>brew search mysql</code> 查找</p>
-
 <p><code>brew commands</code> 查看所有命令</p>
-
 <p>安装（需要 Ruby）：
 <code>ruby -e &quot;$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)&quot;</code></p>
-
 <p>搜索：<code>brew search mysql</code></p>
-
 <p>查询：<code>brew info mysql</code> 主要看具体的信息，比如目前的版本，依赖，安装后注意事项等</p>
-
 <p>更新：<code>brew update</code> 这会更新 Homebrew 自己，并且使得接下来的两个操作有意义——</p>
-
 <p>检查过时（是否有新版本）：<code>brew outdated</code> 这回列出所有安装的软件里可以升级的那些</p>
-
 <p>升级：<code>brew upgrade</code> 升级所有可以升级的软件们</p>
-
 <p>清理：<code>brew cleanup</code> 清理不需要的版本极其安装包缓存</p>
-
 <h2 id="其他镜像源">其他镜像源</h2>
-
 <p><a href="http://ban.ninja/">http://ban.ninja/</a></p>
-
 <p><a href="http://homebrew-mirror-china.tycdn.net/">http://homebrew-mirror-china.tycdn.net/</a></p>
-
 <p>清华大学镜像 <a href="https://mirrors.tuna.tsinghua.edu.cn/help/homebrew/">https://mirrors.tuna.tsinghua.edu.cn/help/homebrew/</a></p>
-
 <p>相对来说中国科大镜像站更新的更及时</p>
-
 <p>编程语言</p>
-
 <pre><code>brew install node go python3 rust lua
-</code></pre>
-
-<p>brew 是没有java源的</p>
-
+</code></pre><p>brew 是没有java源的</p>
 <p>可以使用cask <code>brew cask search java</code></p>
-
 <p><code>brew cask install java</code> 即可下载<code>oracle</code>官方java</p>
-
-<p>安装执行完成以后,即可使用java命令,<code>brew cask list</code>查看都安装了哪些cask</p>
-
-<p><code>brew cask info java</code>查看有关java的说明</p>
-
+<p>安装执行完成以后,即可使用java命令,<code>brew cask list </code>查看都安装了哪些cask</p>
+<p><code>brew cask info java </code>查看有关java的说明</p>
 <p><code>brew cask</code> 可以安装常用的带GUI的软件</p>
-
 <p>一些必备的软件.</p>
-
 <pre><code> brew install vim git subversion nginx hugo openssl htop ngrep ffmpeg xz aria2 wget axel memcached redis mcrypt md5sha1sum fswatch mpv pv
-</code></pre>
-
-<pre><code>brew install the_silver_searcher
-</code></pre>
-
-<p><code>the_silver_searcher</code> 非常小，安装完只有一百多KB, ag 可执行文件只有80KB</p>
-
+</code></pre><pre><code>brew install the_silver_searcher
+</code></pre><p><code>the_silver_searcher</code> 非常小，安装完只有一百多KB, ag 可执行文件只有80KB</p>
 <p>grep -&gt; ack （perl编写） (<a href="https://github.com/petdance/ack2">https://github.com/petdance/ack2</a>)  -&gt; ag (c语言编写) (<a href="https://github.com/ggreer/the_silver_searcher">https://github.com/ggreer/the_silver_searcher</a>)</p>
-
 <p>ag &ndash;list-file-types</p>
-
 <p><code>brew install ccat</code>  ccat 是一个带代码高亮的cat版本</p>
-
 <p>使用go语言编写，单文件也很小巧。</p>
-
 <p><a href="https://github.com/jingweno/ccat">https://github.com/jingweno/ccat</a></p>
-
 <p>js 代码格式化</p>
-
 <p><a href="https://github.com/beautify-web/js-beautify">https://github.com/beautify-web/js-beautify</a></p>
-
 <p><code>brew install socat</code></p>
-
 <p>端口转发工具,仅600KB+</p>
-
 <p><code>brew install mitmproxy</code></p>
-
 <p>man in middle proxy  <a href="https://github.com/mitmproxy/mitmproxy">https://github.com/mitmproxy/mitmproxy</a></p>
-
 <p><code>brew install cadaver</code></p>
-
 <p>webdav tool <code>cadaver https://host/webdav/</code></p>
-
 <p><code>brew install ttyd</code> C语言编写,500KB+,分享任何命令行程序到web</p>
-
 <p><code>brew install gifsicle</code> gif 图片压缩优化工具</p>
 
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/homebrew-speedup/"></air-messager>
+        <air-messager ns="hi" thread="/post/homebrew-speedup/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/broswer-chrome/" title="Chrome浏览器安装" >
+            <a class="previous" href="/post/broswer-chrome/" title="Chrome浏览器安装" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/play-with-raspberrypi/" title="玩转树莓派">
+            <a class="next" href="/post/play-with-raspberrypi/" title="玩转树莓派">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -184,6 +128,14 @@ brew update
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

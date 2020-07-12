@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>Javascript传值与传引用 &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -54,66 +50,36 @@
         </div>
         
 		<div class="post-text">
-			
-
-<h2 id="javascript-参数传递">Javascript 参数传递</h2>
-
+			<h2 id="javascript-参数传递">Javascript 参数传递</h2>
 <p>说起参数传递,首先需要弄清楚javascript里的数据类型</p>
-
 <p>原始数据类型
 <code>Undefined</code> <code>Null</code> <code>Boolean</code> <code>Number</code> <code>String</code></p>
-
 <p>引用数据类型</p>
-
 <p><code>Object</code> <code>Array</code> <code>Function</code> <code>Date</code> 等</p>
-
 <p>原始数据类型存储在栈的简单数据段,他们的值直接存储在变量访问的位置(因原始数据类型占据的空间是固定的,可以存储在较小的内存区域<code>栈</code>中)</p>
-
 <p>引用数据类型是存储在堆中的对象,存储在变量处的值只是一个指针,指向存储对象的内存地址,这是因为引用类型的大小会改变.</p>
-
 <p>不同的内存分配机制带来不同的访问机制</p>
-
 <p>在JavaScript中,是不允许直接访问保存在堆内存中的对象的,访问对象时必须取得对象在堆内存中的地址,然后按地址去取得对象中的值.</p>
-
 <p>这便是传说中的按引用访问.</p>
-
 <p>而原始类型则是直接访问到的.</p>
-
 <p><strong>复制变量时的不同</strong></p>
-
 <p>原始值:</p>
-
 <p>会将原始值的副本赋值给新变量.此后两个变量完全独立.</p>
-
 <p>引用值:</p>
-
 <p>会把内存地址赋值给新变量,也就是说两个变量都指向堆内存中的同一个对象.
 他们中任何一个改变都会反映到另一个身上.</p>
-
 <p><strong>参数传递的不同</strong></p>
-
 <p>最重要的一点:<code>ECMAScript</code>中所有函数的参数都是按值传递的.</p>
-
 <p>但原始值和引用值仍会造成不同的后果.</p>
-
 <p>原始值:</p>
-
 <p>把变量里的值传递给参数,之后两个变量互不影响.(就是把实参复制给形参的过程)</p>
-
 <p>引用值:</p>
-
 <p>任然是将实参里面的值复制到形参,但是注意<em>对象变量它里面的值是这个对象的堆内存地址</em></p>
-
 <p>也就是说形参和实参都是指向同一个堆内存对象.</p>
-
 <p>但是也要记住另外一点:如果形参被赋值为另外一个对象时,那么这个形参将会丢弃对上次指向的堆内存地址,而指向新对象的堆内存地址.</p>
-
 <p>此时,形参和实参相互脱离,互不影响,原先的实参任然指向原先对象的堆内存地址.</p>
-
 <p>如果是添加修改形参的属性,那么就是修改堆内存中的对象,形参和实参将同时得到反映,因为他们指向的是同一个堆内存对象.</p>
-
 <p>这种传递方式被称为<code>Call By Sharing</code></p>
-
 <pre><code>function box(obj)
 {
 	obj.name='hello';
@@ -123,32 +89,23 @@
 var obj=new Object();
 box(obj);
 console.log(obj.name);
-</code></pre>
-
-<p>注意两点:
-1. <code>var obj=new Object()</code> 声明提升</p>
-
+</code></pre><p>注意两点:</p>
+<ol>
+<li><code>var obj=new Object()</code> 声明提升</li>
+</ol>
 <p>变为</p>
-
 <pre><code>var obj;
 obj.name='hello';
 obj=new Object();
 obj.name='world';
-</code></pre>
-
-<p>函数的已存在一个变量形参<code>obj</code>,再次的变量申明会忽略</p>
-
+</code></pre><p>函数的已存在一个变量形参<code>obj</code>,再次的变量申明会忽略</p>
 <p>2.<code>obj=new Object()</code> 时,obj的修改就不会影响外层obj变量了,因为他此时已经脱离执行那个堆内存对象了.</p>
-
 <blockquote>
 <p>参考 <a href="http://www.zhihu.com/question/27114726">http://www.zhihu.com/question/27114726</a></p>
 </blockquote>
-
-<h2 id="object-create">Object.create</h2>
-
+<h2 id="objectcreate">Object.create</h2>
 <p>简单来讲，new Object()是一种通过构造函数来创建object的方式，而Object.create(proto, [ propertiesObject ])
 不需要通过构造函数就可以创建一个object，Object.create()的第一个参数是必须要的，第二个参数可选。其实Object.create()内部依然是通过new一个构造函数的方式来实现的，它有构造函数，不过这个构造函数是隐式存在的，看一下使老旧浏览器支持Object.create方法的“polyfill”就可以对它们之间的区别一目了然了：</p>
-
 <pre><code>if (!Object.create) {
     Object.create = function (o) {
     function F() {}  //定义了一个隐式的构造函数
@@ -157,20 +114,19 @@ obj.name='world';
     };
   }
 </code></pre>
-
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/javascript-senior/"></air-messager>
+        <air-messager ns="hi" thread="/post/javascript-senior/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/install-yum/" title="yum的一些配置" >
+            <a class="previous" href="/post/install-yum/" title="yum的一些配置" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/javascript-code-snippet/" title="实用的Javascript代码锦集">
+            <a class="next" href="/post/javascript-code-snippet/" title="实用的Javascript代码锦集">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -182,6 +138,14 @@ obj.name='world';
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

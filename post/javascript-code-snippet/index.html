@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>实用的Javascript代码锦集 &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -54,28 +50,17 @@
         </div>
         
 		<div class="post-text">
-			
-
-<h2 id="实用的javascript代码锦集">实用的Javascript代码锦集</h2>
-
+			<h2 id="实用的javascript代码锦集">实用的Javascript代码锦集</h2>
 <pre><code>Date.parse(&quot;2016-04-4&quot;)
-</code></pre>
-
-<p><code>Date.parse</code> safari 不能使用单位数字的月份和日期,否则解析为NaN</p>
-
+</code></pre><p><code>Date.parse</code> safari 不能使用单位数字的月份和日期,否则解析为NaN</p>
 <p>火狐较低版本(火狐43)也是如此</p>
-
 <p><code>+new Date('2017-06-08 21:00:00');</code> 在<code>IE11</code>上得出NaN <code>Safari10</code> 上也得出NaN Chrome 和 Firfox下OK
 原因在于 IE 和 Safari 都不识别以<code>-</code>分割的日期  需要写成 <code>+new Date('2017/06/08 21:00:00');</code> , 这样才能在所有浏览器兼容.</p>
-
 <p>IE10 has not  anchorNode focusNode 属性, 取得选中的文字需要读取 text 属性, IE11 一切正常 , 取得选中文字可以直接 toString</p>
-
 <p>IE10,IE11 不支持 html5 的 download 属性, 无法点击下载自定义名称的html和图片等文件.
 可以使用 下载的 downloadFile,利用ajax下载,顺便说 ajax 下载也不能使用fetch
 IE系统统不支持fetch,到EDGE14才支持fetch, <a href="https://github.com/github/fetch">https://github.com/github/fetch</a> 可支持IE10+</p>
-
 <p>火狐不支持和chrome的<code>scrollTop</code>表现也不相同</p>
-
 <pre><code>// 兼容处理 chrome 和 firefox
 let scrollTop=document.body.scrollTop?document.body.scrollTop:document.documentElement.scrollTop;
 if(scrollTop&lt;20){
@@ -86,21 +71,12 @@ if(scrollTop&lt;20){
 if(document.documentElement.scrollHeight-scrollTop- document.documentElement.clientHeight&lt; 400 ){
     this.loadMore();
 }
-</code></pre>
-
-<p>火狐不支持 <code>e.srcElement</code> 需要使用 <code>e.target</code> 代替</p>
-
-<h2 id="ie10-ie11-不支持-location-origin">IE10,IE11, 不支持<code>location.origin</code></h2>
-
+</code></pre><p>火狐不支持 <code>e.srcElement</code> 需要使用 <code>e.target</code> 代替</p>
+<h2 id="ie10ie11-不支持locationorigin">IE10,IE11, 不支持<code>location.origin</code></h2>
 <pre><code>var origin = location.origin?location.origin:location.protocol+&quot;//&quot;+location.host;
-</code></pre>
-
-<p>firefox 浏览器下载接受的后端header 不支持单引号</p>
-
-<h2 id="旧版firefox-不支持-insertadjacentelement-直到火狐48才支持">旧版firefox 不支持<code>insertAdjacentElement</code>,直到火狐48才支持</h2>
-
+</code></pre><p>firefox 浏览器下载接受的后端header 不支持单引号</p>
+<h2 id="旧版firefox-不支持insertadjacentelement直到火狐48才支持">旧版firefox 不支持<code>insertAdjacentElement</code>,直到火狐48才支持</h2>
 <p><a href="https://gist.github.com/kafene/8e56adaf3c1ca4188938">https://gist.github.com/kafene/8e56adaf3c1ca4188938</a></p>
-
 <pre><code>if (&quot;undefined&quot; === typeof (Element.prototype.insertAdjacentElement)) {
     Object.defineProperty(Element.prototype, &quot;insertAdjacentElement&quot;, {
         enumerable: false,
@@ -122,33 +98,20 @@ if(document.documentElement.scrollHeight-scrollTop- document.documentElement.cli
         }
     });
 }
-</code></pre>
-
-<h2 id="safari8-safari10-对于父元素是border-radius-overflow-hidden">safari8 safari10 对于父元素是border-radius,overflow:hidden;</h2>
-
+</code></pre><h2 id="safari8-safari10-对于父元素是border-radiusoverflowhidden">safari8 safari10 对于父元素是border-radius,overflow:hidden;</h2>
 <p>子元素可以被父元素相切,只显示父元素相切后的内容, 但是子元素如果使用了keyframe帧动画,则出现bug,相切的并不是border-radius后的结果.</p>
-
 <h2 id="ie">IE</h2>
-
 <p><code>word-wrap: break-word;</code> 文字换行, Chrome,Safari,Firefox  无论中英文,还是超长英文单词,都能够自动换行不溢出.</p>
-
 <p>但是IE10,IE11对于超长单词仍然溢出,需要添加<code>word-break: break-all;</code></p>
-
-<h2 id="chrome-31-or-搜狗5-0-9-2014年">chrome 31 or 搜狗5.0.9 (2014年)</h2>
-
+<h2 id="chrome-31-or-搜狗509-2014年">chrome 31 or 搜狗5.0.9 (2014年)</h2>
 <p>chrome 31 内核 bug , supports  函数不能赋值给其他变量执行</p>
-
 <pre><code>var support = (window.CSS &amp;&amp; window.CSS.supports) || window.supportsCSS || false;
 if(support){
     return support('-webkit-text-decoration-style','wavy')||support('text-decoration-style','wavy');
 }
 return false;
-</code></pre>
-
-<p>如上,会报<code>TypeError:Illegal invocation</code></p>
-
+</code></pre><p>如上,会报<code>TypeError:Illegal invocation</code></p>
 <p>可修改为如下</p>
-
 <pre><code> if(window.CSS&amp;&amp;window.CSS.supports){
     return window.CSS.supports('-webkit-text-decoration-style','wavy')||window.CSS.supports('text-decoration-style','wavy');
 }else if(window.supportsCSS){
@@ -156,18 +119,11 @@ return false;
 }else{
     return false;
 }
-</code></pre>
-
-<h2 id="ie-ajax-get-缓存">IE ajax get 缓存</h2>
-
+</code></pre><h2 id="ie-ajax-get-缓存">IE ajax get 缓存</h2>
 <p>IE 发送 GET 请求的缓存策略比较激进</p>
-
 <p>当服务端没有设定相关缓存策略时，IE是默认缓存GET请求的。下次同地址的GET请求将会直接 <code>200 from cache</code></p>
-
 <p>在使用 axios 发送请求时，我们需要申明禁用缓存，表明请求该地址不使用本地缓存。</p>
-
 <p>IE11 禁用ajx get 缓存</p>
-
 <pre><code>
 const headers = {
     'X-Requested-With': 'XMLHttpRequest',
@@ -182,58 +138,31 @@ export const httpSys = axios.create({
     headers,
 });
 
-</code></pre>
-
-<h2 id="polyfill-service">polyfill service</h2>
-
+</code></pre><h2 id="polyfill-service">polyfill service</h2>
 <p>为兼容IE9,IE10,IE11等等众多浏览器，</p>
-
 <p>我们需要在自己的代码工程里引入非常多的 polyfill,</p>
-
 <p>但大部分 polyfill 对于新版的Chrome,Firefox 都是不必要的，但是也被打包到bundle里，造成bundle包很大</p>
-
 <p>使用 polyfill service 我们可以免除对于polyfill的考虑，并且每个浏览器各自下载的内容不同，不需要的不会被下载。</p>
-
 <p>并且基于CDN和缓存，各浏览器基本只需要下载一次。</p>
-
 <p>并且会自动解决各种polyfill依赖问题，例如 <code>https://cdn.polyfill.io/v2/polyfill.js?features=Element.prototype.closest|always</code></p>
-
 <p>实测 <code>EDGE16</code> 不支持 <code>Promise.prototype.finally</code></p>
-
 <p><a href="https://hospodarets.com/promise.prototype.finally#support">https://hospodarets.com/promise.prototype.finally#support</a></p>
-
 <p>node &gt;= 8.1.4  &lt;10.0.0 可以通过 <code>node -harmony-promise-finally</code> 开启 <code>Promise.prototype.finally</code></p>
-
 <p>node &gt;=10.0.0 默认支持 <code>Promise.prototype.finally</code></p>
-
 <p><code>https://cdn.polyfill.io/v2/polyfill.min.js?features=default,Promise.prototype.finally</code></p>
-
 <p><a href="https://polyfill.io/v2/docs/">https://polyfill.io/v2/docs/</a></p>
-
 <p><code>https://babeljs.io/docs/usage/polyfill/</code> <code>babel-polyfill</code>包含的<code>core-js</code> 也是一种方式</p>
-
 <h3 id="异步之中的下载文件">异步之中的下载文件</h3>
-
 <p>在异步中使用window.open是无法生效的</p>
-
 <p>发现异次元的下载链接</p>
-
 <p>使用 form.submit 向后端提交下载地址 (不要使用target _blank) ,后端302即可实现异步调用文件下载</p>
-
 <p>还可以使用定时器设定打开任务,然后ajax回调后设定变量</p>
-
-<h3 id="window-opener">window.opener</h3>
-
+<h3 id="windowopener">window.opener</h3>
 <p><code>window.open</code> 打开同源网站,目标站点可访问 window.opener, 且可操作其opener各种属性和方法</p>
-
 <p>对应打开的非同源网站, 目标站点不能读取 opener的信息,如 location.href. 出现跨域问题,但是可以调用 window.opener.location.replace/assign 等 , 让原网站跳转指定url.</p>
-
 <h3 id="判断是否在某个div内">判断是否在某个div内</h3>
-
 <p>在jQuery中，我们可以直接使用<code>closest</code>从此元素向上查找父元素,判断包含关系，</p>
-
 <p>在原生JS中可以使用如下代码</p>
-
 <pre><code>function isParent(node, parent) {
   while (node) {
     if (node === parent) {
@@ -243,19 +172,12 @@ export const httpSys = axios.create({
   }
   return false;
 }
-</code></pre>
-
-<p>下面一个函数更加灵活，使用自定义函数判断是否查找到。</p>
-
+</code></pre><p>下面一个函数更加灵活，使用自定义函数判断是否查找到。</p>
 <pre><code>var closest = function(el, fn) {
     return el &amp;&amp; (fn(el) ? el : closest(el.parentNode, fn));
 }
-</code></pre>
-
-<p>参考： <a href="http://clubmate.fi/jquerys-closest-function-and-pure-javascript-alternatives/">http://clubmate.fi/jquerys-closest-function-and-pure-javascript-alternatives/</a></p>
-
-<p>document.querySelector(&ldquo;#outer-3&rdquo;).closest(&ldquo;#outer-1&rdquo;)</p>
-
+</code></pre><p>参考： <a href="http://clubmate.fi/jquerys-closest-function-and-pure-javascript-alternatives/">http://clubmate.fi/jquerys-closest-function-and-pure-javascript-alternatives/</a></p>
+<p>document.querySelector(&quot;#outer-3&rdquo;).closest(&quot;#outer-1&rdquo;)</p>
 <pre><code>if (window.Element &amp;&amp; !Element.prototype.closest) {
     Element.prototype.closest =
     function(s) {
@@ -270,16 +192,10 @@ export const httpSys = axios.create({
     };
 }
 
-</code></pre>
-
-<p>参考： <a href="http://usefulangle.com/post/44/jquery-closest-function-in-pure-vanilla-javascript">http://usefulangle.com/post/44/jquery-closest-function-in-pure-vanilla-javascript</a></p>
-
+</code></pre><p>参考： <a href="http://usefulangle.com/post/44/jquery-closest-function-in-pure-vanilla-javascript">http://usefulangle.com/post/44/jquery-closest-function-in-pure-vanilla-javascript</a></p>
 <p>MDN上也有Polyfill</p>
-
 <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/closest">https://developer.mozilla.org/en-US/docs/Web/API/Element/closest</a></p>
-
 <h2 id="query-builder">query builder</h2>
-
 <pre><code>
 function buildQuery(params){
     var esc = encodeURIComponent;
@@ -293,10 +209,7 @@ function buildQuery(params){
 function query(o){
 	return Object.entries(o).reduce((arr, [k, v]) =&gt; arr.concat(encodeURIComponent(k) + '=' + encodeURIComponent(v)), []).join('&amp;')
 }
-</code></pre>
-
-<h3 id="获取查询查询字符串get参数值">获取查询查询字符串get参数值</h3>
-
+</code></pre><h3 id="获取查询查询字符串get参数值">获取查询查询字符串get参数值</h3>
 <pre><code>function getParam()
 {
 	var data = decodeURIComponent(location.href).split(&quot;?&quot;)[1].split(&quot;&amp;&quot;);
@@ -307,10 +220,7 @@ function query(o){
 	}
 	return param;
 }
-</code></pre>
-
-<p>类似于PHP中的<code>$_GET</code></p>
-
+</code></pre><p>类似于PHP中的<code>$_GET</code></p>
 <pre><code>var $_GET = (function()
 {
 	var url = decodeURIComponent(location.href);
@@ -331,10 +241,7 @@ function query(o){
 		return {};
 	}
 })();
-</code></pre>
-
-<p>给出要获取的参数,每次都会解析一遍</p>
-
+</code></pre><p>给出要获取的参数,每次都会解析一遍</p>
 <pre><code>function getPar(par)
 {
 	//获取当前URL
@@ -355,19 +262,13 @@ function query(o){
 	}
 	return get_par;
 }
-</code></pre>
-
-<p>QueryString</p>
-
+</code></pre><p>QueryString</p>
 <pre><code>function QueryString(item)
 {
 	var value = location.search.match(new RegExp('[\?\&amp;]' + item + '=([^\&amp;]*)(\&amp;?)','i'));
 	return value ? value[1] : value;
 }
-</code></pre>
-
-<h3 id="cookie操作">Cookie操作</h3>
-
+</code></pre><h3 id="cookie操作">Cookie操作</h3>
 <pre><code>function setCookie(cookiename, cookievalue, hours)
 {
 	var date = new Date();
@@ -375,18 +276,12 @@ function query(o){
 	document.cookie = cookiename + &quot;=&quot; + cookievalue + &quot;; path=/;expires = &quot; + date.toGMTString();
 }
 
-</code></pre>
-
-<h3 id="取得cookie中某个键的值">取得Cookie中某个键的值</h3>
-
+</code></pre><h3 id="取得cookie中某个键的值">取得Cookie中某个键的值</h3>
 <pre><code>$.getCookie = function(name)
 {
 	 if(document.cookie.indexOf(name)!=-1) return document.cookie.split(name+'=')[1].split(';')[0]
 }
-</code></pre>
-
-<p>另一个</p>
-
+</code></pre><p>另一个</p>
 <pre><code>function getcookie(cookieid)
 {
 	//获取cookie字符串
@@ -407,12 +302,8 @@ function query(o){
 	}
 	return(cookieval);
 }
-</code></pre>
-
-<p>类似于 php 中 http_build_query</p>
-
+</code></pre><p>类似于 php 中 http_build_query</p>
 <p>jQuery 中的 <code>$.param</code></p>
-
 <pre><code>var params = {
     parameter1: 'value_1',
     parameter2: 'value 2',
@@ -421,10 +312,7 @@ function query(o){
 
 var esc = encodeURIComponent;
 var query = Object.keys(params).map(k =&gt; esc(k) + '=' + esc(params[k])).join('&amp;');
-</code></pre>
-
-<h3 id="进入全屏">进入全屏</h3>
-
+</code></pre><h3 id="进入全屏">进入全屏</h3>
 <pre><code>function gofull()
 {
 	var el=document.documentElement;
@@ -432,17 +320,11 @@ var query = Object.keys(params).map(k =&gt; esc(k) + '=' + esc(params[k])).join(
 	el.mozRequestFullScreen&amp;&amp;el.mozRequestFullScreen();
 	el.requestFullscreen&amp;&amp;el.requestFullscreen();
 }
-</code></pre>
-
-<h3 id="字符串去空格">字符串去空格</h3>
-
+</code></pre><h3 id="字符串去空格">字符串去空格</h3>
 <pre><code>String.prototype.trim=function() {return this.replace(/(^\s*)|(\s*$)/g,&quot;&quot;); }
 String.prototype.ltrim=function(){return this.replace(/(^\s*)/g,&quot;&quot;); }
 String.prototype.rtrim=function(){return this.replace(/(\s*$)/g,&quot;&quot;); }
-</code></pre>
-
-<h3 id="字节格式化">字节格式化</h3>
-
+</code></pre><h3 id="字节格式化">字节格式化</h3>
 <pre><code>function size(size)
 {
 	var name=['B','KB','MB','GB','TB','PB'];
@@ -454,13 +336,8 @@ String.prototype.rtrim=function(){return this.replace(/(\s*$)/g,&quot;&quot;); }
 	}
 	return size.toFixed(2)+&quot; &quot;+name[pos];
 }
-</code></pre>
-
-<pre><code>
-</code></pre>
-
-<h3 id="判断页面滚动到底部和顶部">判断页面滚动到底部和顶部</h3>
-
+</code></pre><pre><code>
+</code></pre><h3 id="判断页面滚动到底部和顶部">判断页面滚动到底部和顶部</h3>
 <pre><code>$(document).scroll(function()
 {
 	if ($(document).scrollTop()&lt;=0)
@@ -472,39 +349,21 @@ String.prototype.rtrim=function(){return this.replace(/(\s*$)/g,&quot;&quot;); }
 		console.log(&quot;滚动条已经到达底部为&quot; + $(document).scrollTop());
 	}
 });
-</code></pre>
-
-<p><strong>滚动到顶部</strong></p>
-
+</code></pre><p><strong>滚动到顶部</strong></p>
 <pre><code>$('html,body').animate({
     scrollTop: '0px'
 }, 800);
-</code></pre>
-
-<p>纯js滚动到顶部</p>
-
+</code></pre><p>纯js滚动到顶部</p>
 <pre><code>window.scrollTo(0, 0);
-</code></pre>
-
-<p>或者</p>
-
+</code></pre><p>或者</p>
 <pre><code>document.body.scrollTop = 0
 document.documentElement.scrollTop = 0
-</code></pre>
-
-<p>平滑滚动</p>
-
+</code></pre><p>平滑滚动</p>
 <p>chrome 原生支持</p>
-
 <pre><code>window.scroll({top: 0, left: 0, behavior: 'smooth' });
-</code></pre>
-
-<p><a href="https://stackoverflow.com/questions/8917921/cross-browser-javascript-not-jquery-scroll-to-top-animation">https://stackoverflow.com/questions/8917921/cross-browser-javascript-not-jquery-scroll-to-top-animation</a></p>
-
+</code></pre><p><a href="https://stackoverflow.com/questions/8917921/cross-browser-javascript-not-jquery-scroll-to-top-animation">https://stackoverflow.com/questions/8917921/cross-browser-javascript-not-jquery-scroll-to-top-animation</a></p>
 <p>用JS实现</p>
-
 <p><strong>linear</strong></p>
-
 <pre><code>function scrollToTop(scrollDuration) {
     var scrollStep = -window.scrollY / (scrollDuration / 15),
         scrollInterval = setInterval(function(){
@@ -514,10 +373,7 @@ document.documentElement.scrollTop = 0
         else clearInterval(scrollInterval); 
     },15);
 }
-</code></pre>
-
-<p><strong>ease in and out</strong></p>
-
+</code></pre><p><strong>ease in and out</strong></p>
 <pre><code>function scrollToTop(scrollDuration) {
 const   scrollHeight = window.scrollY,
         scrollStep = Math.PI / ( scrollDuration / 15 ),
@@ -533,16 +389,10 @@ var     scrollCount = 0,
             else clearInterval(scrollInterval); 
         }, 15 );
 }
-</code></pre>
-
-<p><a href="https://stackoverflow.com/questions/21474678/scrolltop-animation-without-jquery">https://stackoverflow.com/questions/21474678/scrolltop-animation-without-jquery</a></p>
-
+</code></pre><p><a href="https://stackoverflow.com/questions/21474678/scrolltop-animation-without-jquery">https://stackoverflow.com/questions/21474678/scrolltop-animation-without-jquery</a></p>
 <p><code>scroll-behavior: smooth;</code> 也支持锚点跳转</p>
-
 <p><a href="https://stackoverflow.com/questions/17631417/css-pure-css-scroll-animation">https://stackoverflow.com/questions/17631417/css-pure-css-scroll-animation</a></p>
-
 <h3 id="运行js代码">运行JS代码</h3>
-
 <pre><code>// execute code in the content page scope
 var injectScript = function(source) {
     var script = document.createElement('script');
@@ -551,10 +401,7 @@ var injectScript = function(source) {
     document.body.appendChild(script);
     document.body.removeChild(script)
 }
-</code></pre>
-
-<h3 id="添加css代码">添加CSS代码</h3>
-
+</code></pre><h3 id="添加css代码">添加CSS代码</h3>
 <pre><code>// insert css
 function injectStyle(css) {
     var script = document.createElement('style')
@@ -562,48 +409,27 @@ function injectStyle(css) {
     script.textContent = css
     document.head.appendChild(script)
 }
-</code></pre>
-
-<p>利用注释,可也生成html,css,js 等代码</p>
-
+</code></pre><p>利用注释,可也生成html,css,js 等代码</p>
 <p>如</p>
-
 <pre><code>(function(){/* body{background:#f00} */}).toString().slice(15,-4)
-</code></pre>
-
-<p>当然利用es6的字符串模板更加方便,<a href="http://babeljs.io/repl/">http://babeljs.io/repl/</a> 在线转换为es5代码</p>
-
+</code></pre><p>当然利用es6的字符串模板更加方便,http://babeljs.io/repl/ 在线转换为es5代码</p>
 <h3 id="一些正则验证">一些正则验证</h3>
-
 <p>验证邮箱</p>
-
 <pre><code>function is_mail(str)
 {
 	return(new RegExp(/^[0-9a-zA-Z]+@(([0-9a-zA-Z]+)[.])+[a-z]{2,4}$/i).test(str));
 }
-</code></pre>
-
-<p>验证手机号</p>
-
+</code></pre><p>验证手机号</p>
 <pre><code>function is_tel(str)
 {
 	return(new RegExp(/^1[34578][0-9]{9}$/).test(str));
 }
-</code></pre>
-
-<h3 id="base64的1x1像素间隔gif">Base64的1x1像素间隔gif</h3>
-
+</code></pre><h3 id="base64的1x1像素间隔gif">Base64的1x1像素间隔gif</h3>
 <pre><code>&lt;img src=&quot;data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7&quot;&gt;
-</code></pre>
-
-<h3 id="哪个个深拷贝最快">哪个个深拷贝最快</h3>
-
+</code></pre><h3 id="哪个个深拷贝最快">哪个个深拷贝最快</h3>
 <p><a href="http://jsben.ch/bWfk9">http://jsben.ch/bWfk9</a></p>
-
 <p><code>Object.assign</code> 并不是深拷贝</p>
-
 <h3 id="一个range函数">一个range函数</h3>
-
 <pre><code>function range(start, count)
 {
 	return Array.apply(0, Array(count)).map(function (element, index)
@@ -611,48 +437,29 @@ function injectStyle(css) {
 		return index + start;
 	});
 }
-</code></pre>
-
-<h3 id="简化-console-log">简化<code>console.log</code></h3>
-
+</code></pre><h3 id="简化consolelog">简化<code>console.log</code></h3>
 <pre><code>var log = console.log.bind(console);
-</code></pre>
-
-<h3 id="简化-queryselector">简化<code>querySelector</code></h3>
-
+</code></pre><h3 id="简化queryselector">简化<code>querySelector</code></h3>
 <pre><code>srcQuery=srcQ.querySelector.bind(srcQ);
-</code></pre>
-
-<h3 id="生成较短的唯一id">生成较短的唯一ID</h3>
-
+</code></pre><h3 id="生成较短的唯一id">生成较短的唯一ID</h3>
 <p>一定年限内单线程非连续调用唯一</p>
-
 <pre><code>function shortId()
 {
 	var time=Date.now()+'';
 	time=parseInt(time.substr(1));
 	return time.toString(36);
 }
-</code></pre>
-
-<p>生成随机短ID,仅具备较低的不重复性</p>
-
+</code></pre><p>生成随机短ID,仅具备较低的不重复性</p>
 <pre><code>var t=Math.floor((1+Math.random())*0x1000000000).toString(16);
-</code></pre>
-
-<p>生成指定长度随机字符串
+</code></pre><p>生成指定长度随机字符串
 <code>PHP代码</code></p>
-
 <pre><code>function code($nc, $a='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
 {
     $l=strlen($a)-1; $r='';
     while($nc--&gt;0) $r.=$a{mt_rand(0,$l)};
     return $r;
 }
-</code></pre>
-
-<h3 id="给jquery的form添加-serializeobject">给jQuery的form添加<code>serializeObject</code></h3>
-
+</code></pre><h3 id="给jquery的form添加serializeobject">给jQuery的form添加<code>serializeObject</code></h3>
 <pre><code>jQuery.prototype.serializeObject=function()
 {
 	var a,o,h,i,e;
@@ -669,29 +476,16 @@ function injectStyle(css) {
 	}
 	return o;
 };
-</code></pre>
-
-<p>使用效果如下</p>
-
+</code></pre><p>使用效果如下</p>
 <pre><code>jQuery(&quot;form&quot;).serialize(); //&quot;username=&amp;password=&quot;
 jQuery(&quot;form&quot;).serializeArray(); //[{name:&quot;username&quot;,value:&quot;&quot;},{name:&quot;password&quot;,value:&quot;&quot;}]
 jQuery(&quot;form&quot;).serializeObject(); //{username:&quot;&quot;,password:&quot;&quot;}
-</code></pre>
-
-<h3 id="jquery-返回顶部">jQuery 返回顶部</h3>
-
+</code></pre><h3 id="jquery-返回顶部">jQuery 返回顶部</h3>
 <pre><code>$('html').animate({scrollTop: '0px'}, 800);
-</code></pre>
-
-<p>在 <code>safari</code> 中需要使用 $(&lsquo;body&rsquo;)</p>
-
+</code></pre><p>在 <code>safari</code> 中需要使用 $(&lsquo;body&rsquo;)</p>
 <p>因此使用下面代码更加兼容</p>
-
 <pre><code>$('html,body').animate({scrollTop: '0px'}, 800);
-</code></pre>
-
-<h3 id="直接下载blob数据">直接下载blob数据</h3>
-
+</code></pre><h3 id="直接下载blob数据">直接下载blob数据</h3>
 <pre><code>function downFile(blob, fileName)
 {
     if (window.navigator.msSaveOrOpenBlob)
@@ -713,42 +507,23 @@ jQuery(&quot;form&quot;).serializeObject(); //{username:&quot;&quot;,password:&q
         },200);
     }
 }
-</code></pre>
-
-<p>兼容IE,Chrome,Firefox,Safari,注意 appendChild 这一步不能缺,否则Firefox不兼容</p>
-
+</code></pre><p>兼容IE,Chrome,Firefox,Safari,注意 appendChild 这一步不能缺,否则Firefox不兼容</p>
 <pre><code>var blob = new Blob([res.data], {type: &quot;application/vnd.ms-excel&quot;}),
     fileName = '下载.xls';
 downFile(blob, fileName);
-</code></pre>
-
-<pre><code>fetch('/files/bin/http.xz').then(res=&gt;res.blob()).then(res=&gt;{console.log(res);downFile(res,&quot;http.xz&quot;)})
-</code></pre>
-
-<h3 id="iso-8-html5-canvas-限制">iso 8 html5 canvas 限制</h3>
-
+</code></pre><pre><code>fetch('/files/bin/http.xz').then(res=&gt;res.blob()).then(res=&gt;{console.log(res);downFile(res,&quot;http.xz&quot;)})
+</code></pre><h3 id="iso-8-html5-canvas-限制">iso 8 html5 canvas 限制</h3>
 <p><a href="https://stackoverflow.com/questions/18565395/why-does-canvas-context-drawimage-fail-on-iphone">https://stackoverflow.com/questions/18565395/why-does-canvas-context-drawimage-fail-on-iphone</a></p>
-
 <p>ios 的canvas 有像素限制,由于像素过大,实测拍出来的图片不能使用 <code>canvasContext.drawImage</code>处理.</p>
-
 <p>现象是canvas画出来的图片为空白,toBlob和toDataUrl也不能取到该canvas的数据.</p>
-
 <p>解决方案</p>
-
 <p><a href="https://github.com/stomita/ios-imagefile-megapixel">https://github.com/stomita/ios-imagefile-megapixel</a>  (未测试)</p>
-
 <p>还有更加全面的方案</p>
-
 <p><a href="https://github.com/blueimp/javascript-load-image">https://github.com/blueimp/javascript-load-image</a></p>
-
 <p>加上 <a href="https://github.com/blueimp/JavaScript-Canvas-to-Blob">https://github.com/blueimp/JavaScript-Canvas-to-Blob</a></p>
-
 <p>能更加方便的处理图片,实测可以解决拍出的图片过大无法处理的问题.</p>
-
 <p><a href="https://blueimp.github.io/JavaScript-Load-Image/">https://blueimp.github.io/JavaScript-Load-Image/</a> 提供在线检查Exif meta data</p>
-
 <h3 id="资源预取">资源预取</h3>
-
 <pre><code>function prefetch(url)
 {
 	var link = document.createElement(&quot;link&quot;);
@@ -756,10 +531,7 @@ downFile(blob, fileName);
 	link.rel=&quot;prefetch&quot;;
 	document.head.appendChild(link);
 }
-</code></pre>
-
-<h3 id="用-google-analytics-统计js错误">用<code>Google Analytics</code>统计JS错误</h3>
-
+</code></pre><h3 id="用google-analytics统计js错误">用<code>Google Analytics</code>统计JS错误</h3>
 <pre><code>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 window.addEventListener('error', function (err)
 {
@@ -768,20 +540,13 @@ window.addEventListener('error', function (err)
     ga('send', 'event', 'JavaScript Error', err.message, location.href+' =&gt; '+err.filename + lineAndColumnInfo + ' -&gt; ' +  navigator.userAgent, 0, true );
 });
 
-</code></pre>
-
-<p><code>UA-xxx-1</code>使用自己的统计ID</p>
-
+</code></pre><p><code>UA-xxx-1</code>使用自己的统计ID</p>
 <h3 id="jquery并发发送ajax">jQuery并发发送ajax</h3>
-
 <pre><code>$.when($.get('assets/misc/1.json'), $.get('assets/misc/2.json')).then(function(r1, r2)
 {
     console.log(r1[0].message + &quot; &quot; + r2[0].message);
 })
-</code></pre>
-
-<h3 id="微信内js获取地理位置">微信内JS获取地理位置</h3>
-
+</code></pre><h3 id="微信内js获取地理位置">微信内JS获取地理位置</h3>
 <pre><code>&lt;script type=&quot;text/javascript&quot; src=&quot;https://apis.map.qq.com/tools/geolocation/min?key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&amp;referer=mywxapp&quot;&gt;&lt;/script&gt;
 
 获取精确定位信息
@@ -790,34 +555,18 @@ geolocation.getLocation(showPosition, showErr, options);
 
 粗糙定位信息
 geolocation.getIpLocation(showPosition, showErr)
-</code></pre>
-
-<h3 id="fetch跨域带cookie">Fetch跨域带cookie</h3>
-
+</code></pre><h3 id="fetch跨域带cookie">Fetch跨域带cookie</h3>
 <pre><code>fetch(url, {credentials: 'include'})
-</code></pre>
-
-<p>jQuery ajax 跨域带 cookie</p>
-
+</code></pre><p>jQuery ajax 跨域带 cookie</p>
 <pre><code>$.ajaxSetup({xhrFields: {withCredentials: true }});
-</code></pre>
-
-<h2 id="google-closure-compiler">google closure-compiler</h2>
-
+</code></pre><h2 id="google-closure-compiler">google closure-compiler</h2>
 <p>编译好的jar下载</p>
-
 <pre><code>http://dl.google.com/closure-compiler/compiler-latest.zip
 http://dl.google.com/closure-compiler/compiler-latest.tar.gz
-</code></pre>
-
-<p>解压后包含一个jar文件</p>
-
+</code></pre><p>解压后包含一个jar文件</p>
 <p>或者 <code>https://github.com/google/closure-compiler</code> 下载源码与查看说明</p>
-
 <p><a href="https://developers.google.com/closure/compiler/docs/api-ref">https://developers.google.com/closure/compiler/docs/api-ref</a></p>
-
 <p>使用</p>
-
 <pre><code>java -jar compiler.jar --js_output_file=out.js in1.js in2.js in3.js ...
 # Recursively include all js files in subdirs
 java -jar compiler.jar --js_output_file=out.js 'src/**.js'
@@ -825,20 +574,19 @@ java -jar compiler.jar --js_output_file=out.js 'src/**.js'
 java -jar closure-compiler-v20180402.jar --js_output_file 1.js --language_out NO_TRANSPILE -O WHITESPACE_ONLY --strict_mode_input false yarn-1.6.0.js
 
 </code></pre>
-
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/javascript-code-snippet/"></air-messager>
+        <air-messager ns="hi" thread="/post/javascript-code-snippet/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/javascript-senior/" title="Javascript传值与传引用" >
+            <a class="previous" href="/post/javascript-senior/" title="Javascript传值与传引用" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/nginx-usage/" title="nginx安装与使用">
+            <a class="next" href="/post/nginx-usage/" title="nginx安装与使用">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -850,6 +598,14 @@ java -jar closure-compiler-v20180402.jar --js_output_file 1.js --language_out NO
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

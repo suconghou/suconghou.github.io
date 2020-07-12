@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>shadowsocks libev &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -54,16 +50,10 @@
         </div>
         
 		<div class="post-text">
-			
-
-<h2 id="静态编译shadowsocks-libev">静态编译shadowsocks libev</h2>
-
+			<h2 id="静态编译shadowsocks-libev">静态编译shadowsocks libev</h2>
 <p>在alpine里编译</p>
-
 <p><code>apk update &amp;&amp; apk upgrade &amp;&amp; apk add wget make gcc g++ perl</code></p>
-
 <p>先安装依赖</p>
-
 <pre><code># Installation of Libsodium
 cd /tmp
 export LIBSODIUM_VER=1.0.12
@@ -83,10 +73,7 @@ cd mbedtls-$MBEDTLS_VER
 make SHARED=1 CFLAGS=-fPIC &amp;&amp; make DESTDIR=/usr install
 cd /tmp
 ldconfig
-</code></pre>
-
-<p>安装完这两个依赖后,下面准备开始静态编译</p>
-
+</code></pre><p>安装完这两个依赖后,下面准备开始静态编译</p>
 <pre><code>apk update &amp;&amp; apk upgrade &amp;&amp; apk add gcc g++ make autoconf curl wget build-base linux-headers libev-dev libtool udns-dev libsodium-dev mbedtls-dev pcre-dev
 SS_VER=3.0.8
 cd /tmp
@@ -94,82 +81,47 @@ curl -sSL https://github.com/shadowsocks/shadowsocks-libev/releases/download/v${
 CFLAGS=-Os ./configure --prefix=/usr --enable-static --disable-documentation
 sed -i &quot;s/LDFLAGS = /LDFLAGS = -all-static/g&quot; ./src/Makefile
 sed -i &quot;s/LDFLAGS = /LDFLAGS = -all-static/g&quot; ./Makefile
-</code></pre>
-
-<p>make 之前需要存在以下文件<code>/usr/lib/libev.a /usr/lib/libsodium.a  /usr/lib/libpcre.a</code></p>
-
-<p><code>make -j2</code>编译完成后即可在src目录得到静态编译的ss-local,ss-server等</p>
-
+</code></pre><p>make 之前需要存在以下文件<code>/usr/lib/libev.a /usr/lib/libsodium.a  /usr/lib/libpcre.a </code></p>
+<p><code>make -j2 </code>编译完成后即可在src目录得到静态编译的ss-local,ss-server等</p>
 <h3 id="使用">使用</h3>
-
 <p>启动server端</p>
-
 <p><code>ss-server -s 0.0.0.0 -p 443 -k 123456 -m rc4-md5 -t 300 -d 8.8.8.8 -u</code></p>
-
 <p>with Linux kernel &gt; 3.7.0 可以加上<code>--fast-open</code></p>
-
 <p><code>ss-server -s 0.0.0.0 -p 443 -k 123456 -m rc4-md5 -t 300 -d 8.8.8.8 --fast-open -u</code></p>
-
 <p>后台运行:</p>
-
 <p><code>ss-server -s 0.0.0.0 -p 443 -k 123456 -m rc4-md5 -t 300 -d 8.8.8.8 -u &gt; /tmp/ss.log 2&gt;&amp;1 &amp;</code></p>
-
 <p><strong>GO语言版本的也十分方便哦</strong></p>
-
 <p>这里提供一个基于<code>docker</code>的go语言版本,<a href="https://hub.docker.com/r/suconghou/shadowsocks/">docker go shadowsocks</a>,只有3.3MB
 十分方便</p>
-
 <p>同时也含有libev版本的可供选择</p>
-
 <h3 id="加密方式">加密方式</h3>
-
 <p>AEAD 是 Shadowsocks 最新的协议标准，增强了应对发现和检测的强度。</p>
-
 <p><a href="https://shadowsocks.org/en/spec/AEAD-Ciphers.html">https://shadowsocks.org/en/spec/AEAD-Ciphers.html</a></p>
-
 <p>以下是四种常见的AEAD Cipher，相较OTA Cipher而言AEAD Cipher极大降低了被主动探测的风险，故推荐使用AEAD Cipher</p>
-
 <p>aes-128-gcm
 aes-192-gcm
 aes-256-gcm
 chacha20-ietf-poly1305
 以及几种常用的OTA Cipher方式</p>
-
 <p>rc4-md5
 aes-128-cfb
 aes-128-ctr
 关于AEAD Cipher的选择，需要注意的是，虽然ARM早在2015就收购了Shadowsocks-libev依赖的加密库之一mbed tls，但至今mbed tls并未对ARMv8做出实质性的优化，导致AES GCM系Cipher在较新的64位移动设备上性能低下</p>
-
 <p>1、“chacha20-poly1305” “chacha20-ietf-poly1305”有区别</p>
-
 <p>2、ChaCha20-Poly1305是Google所采用的一种新式加密算法，性能强大，在CPU为精简指令集的ARM平台上尤为显著(ARM v8前效果较明显)，在同等配置的手机中表现是AES的4倍(ARM v8之后加入了AES指令，所以在这些平台上的设备AES方式反而比chacha20-Poly1305方式更快，性能更好)，可减少加密解密所产生的数据量进而可以改善用户体验，减少等待时间，节省电池寿命等。</p>
-
 <p>3、chacha20-ietf-poly1305也是一种新式加密算法，比chacha20-poly1305”更快。</p>
-
 <p>4、谷歌选择了ChaCha20和伯恩斯坦的Poly1305消息认证码取代过去一直在互联网安全领域使用的基于OpenSSL的RC4密码，谷歌最初是为了保证能够在Android手机上的Chrome浏览器和谷歌网站间的HTTPS(TLS/SSL)通讯。</p>
-
 <p>5、在谷歌采用TLS(安全传输层协议)不久后，ChaCha20和Poly1305均用在OpenSSH中的ChaCha20-Poly1305新算法中，这使得OpenSSH可能避免因编译时间对OpenSSL产生依赖。ChaCha20还用于OpenBSD(一种多平台类UNIX操作系统)中的RC4随机数生成器，在DragonFlyBSD中作为内核的伪随机数产生器(Cryptographically Secure Pseudo-Random Number Generator，简称CSPRNG)的子程序。</p>
-
-<p><img src="http://static.suconghou.cn/img/ota-aead.jpeg" alt="AEAD&amp;OTA Cipher performance test" /></p>
-
+<p><img src="http://static.suconghou.cn/img/ota-aead.jpeg" alt="AEAD&OTA Cipher performance test"></p>
 <h2 id="网络内核参数优化">网络内核参数优化</h2>
-
 <p>修改<code>ulimit</code></p>
-
 <p><code>ulimit -n</code> 可以查看当前的</p>
-
 <p><code>vim /etc/security/limits.conf</code></p>
-
 <p>添加一下两行</p>
-
 <pre><code>* soft nofile 51200
 * hard nofile 51200
-</code></pre>
-
-<p>KVM 和 XEN 可以修改内核,明显提升网络环境差的情况下的表现,使用<code>hybla</code>控制算法,效果明显,能提速30%</p>
-
+</code></pre><p>KVM 和 XEN 可以修改内核,明显提升网络环境差的情况下的表现,使用<code>hybla</code>控制算法,效果明显,能提速30%</p>
 <p><code>/etc/sysctl.conf</code></p>
-
 <pre><code>net.core.somaxconn = 4096
 net.netfilter.nf_conntrack_max = 64000
 fs.file-max = 51200
@@ -205,53 +157,28 @@ net.core.netdev_max_backlog = 250000
 net.ipv4.tcp_mtu_probing=1
 #使用拥塞算法Hybla
 net.ipv4.tcp_congestion_control = hybla
-</code></pre>
-
-<p>然后<code>sysctl -p</code>使之生效</p>
-
+</code></pre><p>然后<code>sysctl -p</code>使之生效</p>
 <p>也可以使用命令使本次生效</p>
-
 <p><code>sysctl -w net.ipv4.tcp_congestion_control=hybla</code></p>
-
 <p><code>sysctl -w net.ipv4.tcp_fastopen=3</code></p>
-
 <p>可参见 <a href="https://github.com/Long-live-shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks">https://github.com/Long-live-shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks</a></p>
-
 <p>OPENVZ只能修改</p>
-
 <pre><code>net.core.somaxconn = 4096
 net.ipv4.tcp_syncookies = 1
 net.netfilter.nf_conntrack_max = 64000
-</code></pre>
-
-<p>使用kcptun加速</p>
-
+</code></pre><p>使用kcptun加速</p>
 <p>服务器上</p>
-
 <pre><code>alias kcptun_start='server_linux_amd64 -t 127.0.0.1:443 -l :4433 -sndwnd 2048 -rcvwnd 2048 -mode fast2 &gt; /var/log/kcptun.log 2&gt;&amp;1 &amp; '
 
-</code></pre>
-
-<p>客户机上</p>
-
+</code></pre><p>客户机上</p>
 <pre><code>alias kcptun_start='kcptun_client -r vpsIP:4433 -l :4433 -sndwnd 2048 -rcvwnd 2048 -mode fast2 &gt; /var/log/kcptun.log 2&gt;&amp;1 &amp;'
 
-</code></pre>
-
-<h2 id="python-版本">python 版本</h2>
-
+</code></pre><h2 id="python-版本">python 版本</h2>
 <p>升级pip本身</p>
-
 <pre><code>pip install --upgrade pip
-</code></pre>
-
-<pre><code>pip install shadowsocks --upgrade
-</code></pre>
-
-<p><code>--upgrade 同 -U</code> 代表如果已安装则升级到最新版</p>
-
+</code></pre><pre><code>pip install shadowsocks --upgrade
+</code></pre><p><code>--upgrade 同 -U</code> 代表如果已安装则升级到最新版</p>
 <p><code>/etc/systemd/system/</code>目录下<code>shadowsocks.service</code></p>
-
 <pre><code>[Unit]
 Description=Shadowsocks
 
@@ -261,10 +188,7 @@ ExecStart=/usr/bin/ssserver -c /etc/shadowsocks.json
 
 [Install]
 WantedBy=multi-user.target
-</code></pre>
-
-<p><code>/etc/systemd/system/v2ray.service</code></p>
-
+</code></pre><p><code>/etc/systemd/system/v2ray.service</code></p>
 <pre><code>[Unit]
 Description=V2Ray Service
 After=network.target
@@ -278,31 +202,26 @@ Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
-</code></pre>
-
+</code></pre><p>配置 tls + ws</p>
 <h3 id="使用-kcptun-加速">使用 kcptun 加速</h3>
-
 <p><code>https://github.com/xtaci/kcptun</code> go语言编写,直接下载使用即可</p>
+<p>KCP Server:</p>
+<pre><code>./server_linux_amd64 -t &quot;127.0.0.1:443&quot; -l &quot;:4000&quot; -mode fast3 -nocomp -sockbuf 16777217 -dscp 46
 
-<pre><code>alias kcptun_start='server_linux_amd64 -t 127.0.0.1:443 -l :serverPort -sndwnd 2048 -rcvwnd 2048 -mode fast2 &gt; /var/log/kcptun.log 2&gt;&amp;1 &amp; '
-</code></pre>
+</code></pre><p>KCP Client:</p>
+<pre><code>./client_darwin_amd64 -r &quot;52.78.236.26:4000&quot; -l &quot;:80&quot; -mode fast3 -nocomp -autoexpire 900 -sockbuf 16777217 -dscp 46
 
-<p>client端: <code>client_linux_amd64 -r serverIp:serverPort -l :443 -sndwnd 2048 -rcvwnd 2048 -mode fast2</code></p>
+./client_darwin_amd64 -r &quot;52.78.236.26:4000&quot; -l &quot;:443&quot; -mode fast3 -nocomp -autoexpire 900 -sockbuf 16777217 -dscp 46
 
+</code></pre><pre><code>alias kcptun_start='server_linux_amd64 -t 127.0.0.1:443 -l :serverPort -sndwnd 2048 -rcvwnd 2048 -mode fast2 &gt; /var/log/kcptun.log 2&gt;&amp;1 &amp; '
+</code></pre><p>client端: <code>client_linux_amd64 -r serverIp:serverPort -l :443 -sndwnd 2048 -rcvwnd 2048 -mode fast2</code></p>
 <p>kcptun 使用<code>udp</code>通信,监听的udp端口,未开启tcp端口. <code>python shadowsocks</code>是tcp端口和udp端口都开启.</p>
-
 <p>使用<code>netstat -anlup</code>查看本机的udp端口使用情况,远端可以使用nc测试UDP端口 <code>nc -vuz  172.168.1.3 137</code></p>
-
 <p>配置文件的json格式参见 <code>http://zhangyongcun.com/2016/11/22/使用-Kcptun-加速-shadowsocks/</code></p>
-
 <p>client <code>wget http://share.suconghou.cn/files/shadowsocks/kcp/client_config.json</code></p>
-
 <p>server <code>wget http://share.suconghou.cn/files/shadowsocks/kcp/server_config.json</code></p>
-
-<p><code>server_config.json</code></p>
-
+<p><code>server_config.json </code></p>
 <p><code>/etc/systemd/system/kcpserver.service</code></p>
-
 <pre><code>[Unit]
 Description=kcptun-server
 
@@ -312,32 +231,25 @@ ExecStart=/usr/local/bin/server_linux_amd64 -c /etc/server_config.json
 
 [Install]
 WantedBy=multi-user.target
-</code></pre>
-
-<p>server</p>
-
+</code></pre><p>server</p>
 <pre><code>./udp2raw -s -l0.0.0.0:8855 -r 127.0.0.1:4000 -k &quot;passwd&quot; --raw-mode faketcp -a
-</code></pre>
-
-<h3 id="统计ss当前的链接">统计ss当前的链接</h3>
-
+</code></pre><h3 id="统计ss当前的链接">统计ss当前的链接</h3>
 <p>统计当前连接ss的客户端,并统计连接数</p>
-
 <p><code>netstat -nat | grep &quot;192.168.1.3:443&quot; |awk '{print $5}'|awk -F: '{print $1}'|sort|uniq -c|sort -nr|head -20</code></p>
 
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/shadowsocks-libev/"></air-messager>
+        <air-messager ns="hi" thread="/post/shadowsocks-libev/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/tcpdump/" title="使用tcpdump与ngrep" >
+            <a class="previous" href="/post/tcpdump/" title="使用tcpdump与ngrep" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/ddns/" title="动态域名解析">
+            <a class="next" href="/post/ddns/" title="动态域名解析">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -349,6 +261,14 @@ WantedBy=multi-user.target
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

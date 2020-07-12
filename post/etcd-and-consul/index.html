@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>etcd和consul &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -54,56 +50,31 @@
         </div>
         
 		<div class="post-text">
-			
-
-<p><a href="https://github.com/coreos/etcd">https://github.com/coreos/etcd</a></p>
-
+			<p><a href="https://github.com/coreos/etcd">https://github.com/coreos/etcd</a></p>
 <p><a href="https://github.com/hashicorp/consul">https://github.com/hashicorp/consul</a></p>
-
 <p><code>etcd</code> 和 <code>consul</code> 都是由<code>golang</code>编写的服务发现和配置共享的软件</p>
-
 <p>传统的类似软件有<code>zookeeper</code>等,<code>zookeeper</code>采用<code>java</code>编写</p>
-
 <p>其说明比较可参见</p>
-
 <p><a href="https://blog.coding.net/blog/intro-consul?type=hot">https://blog.coding.net/blog/intro-consul?type=hot</a></p>
-
 <p>etcd 与 consul zookeeper 对比一览</p>
-
 <p><a href="https://coreos.com/etcd/docs/latest/learning/why.html">https://coreos.com/etcd/docs/latest/learning/why.html</a></p>
-
 <h2 id="consul">consul</h2>
-
 <p>启动一个server</p>
-
 <p><code>consul agent -data-dir=/tmp/consul</code></p>
-
 <p>docker run &ndash;rm -it -p 8500:8500 &ndash;name=node1 consul agent -server -bootstrap-expect=1 -node=node1 -ui -client 0.0.0.0</p>
-
 <p>docker run &ndash;rm -it &ndash;name=node2 consul agent -server -join=172.17.0.3  -node=node2</p>
-
 <p>docker run &ndash;rm -it &ndash;name=node4 consul agent -bind=172.17.0.5 -retry-join=172.17.0.3   -node=node4</p>
-
 <p>查看下集群的状态</p>
-
 <p>docker exec -t node1 consul members</p>
-
 <p><strong>测试</strong></p>
-
 <pre><code>docker run --rm -it \
 --name=consul \
 -m 100m \
 -p 8500:8500 \
 consul agent -server -ui -node=master -datacenter=dc1 -client=0.0.0.0 -bootstrap-expect=1
-</code></pre>
-
-<p>加密码</p>
-
+</code></pre><p>加密码</p>
 <pre><code>-e 'CONSUL_LOCAL_CONFIG={&quot;acl_master_token&quot;: &quot;e5fa3281-3009-4f88-bfeb-acd46438dfa0&quot;,&quot;acl_datacenter&quot;:&quot;dc1&quot;}' \
-</code></pre>
-
-<p><strong>单节点,无密码启动</strong></p>
-
+</code></pre><p><strong>单节点,无密码启动</strong></p>
 <pre><code>docker run -d \
 --name=consul \
 --restart always \
@@ -111,10 +82,7 @@ consul agent -server -ui -node=master -datacenter=dc1 -client=0.0.0.0 -bootstrap
 -p 8500:8500 \
 -v /data/consul:/consul/data \
 consul agent -server -ui -node=master -client=0.0.0.0 -bootstrap-expect=1
-</code></pre>
-
-<p><strong>单节点带密码</strong></p>
-
+</code></pre><p><strong>单节点带密码</strong></p>
 <pre><code>docker run -d \
 --name=consul \
 --restart always \
@@ -124,10 +92,7 @@ consul agent -server -ui -node=master -client=0.0.0.0 -bootstrap-expect=1
 -e 'CONSUL_LOCAL_CONFIG={&quot;acl_master_token&quot;: &quot;e5fa3281-3009-4f88-bfeb-acd46438dfa0&quot;,&quot;acl_default_policy&quot;: &quot;deny&quot;, &quot;acl_datacenter&quot;:&quot;dc1&quot;}' \
 consul agent -server -ui -node=master -datacenter=dc1 -client=0.0.0.0 -bootstrap-expect=1
 
-</code></pre>
-
-<p>配置一个策略让某个用户使用</p>
-
+</code></pre><p>配置一个策略让某个用户使用</p>
 <pre><code>
 agent &quot;&quot; {
   policy = &quot;write&quot;
@@ -144,20 +109,19 @@ service &quot;&quot; {
   policy = &quot;write&quot;
 }
 </code></pre>
-
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/etcd-and-consul/"></air-messager>
+        <air-messager ns="hi" thread="/post/etcd-and-consul/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/gcc/" title="gcc编译" >
+            <a class="previous" href="/post/gcc/" title="gcc编译" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/lego-and-acme-to-enable-https/" title="快速签发免费的https证书">
+            <a class="next" href="/post/lego-and-acme-to-enable-https/" title="快速签发免费的https证书">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -169,6 +133,14 @@ service &quot;&quot; {
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

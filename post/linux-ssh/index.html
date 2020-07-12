@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>SSH &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -52,9 +48,9 @@
                 <svg style="width: 20px; height: 13px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5131"><path d="M833.2 1008L538.8 679.8c-14.3-16-39.3-16-53.6 0L190.8 1008c-22 24.6-62.8 9-62.8-24V36c0-19.9 16.1-36 36-36h696c19.9 0 36 16.1 36 36v948c0 33-40.8 48.6-62.8 24zM538.8 572L824 890V72H200v817.9l285.2-318c14.3-15.9 39.3-15.9 53.6 0.1z" p-id="5132"></path></svg>
                 <ul class="tags">
                 
-                    <li> <a href="http://blog.suconghou.cn/tags/ssh">ssh</a> </li>
+                    <li> <a href="/tags/ssh">ssh</a> </li>
                 
-                    <li> <a href="http://blog.suconghou.cn/tags/linux">linux</a> </li>
+                    <li> <a href="/tags/linux">linux</a> </li>
                 
                 </ul>
             </div>
@@ -65,34 +61,20 @@
         </div>
         
 		<div class="post-text">
-			
-
-<h2 id="避免ssh自动断开连接">避免SSH自动断开连接</h2>
-
+			<h2 id="避免ssh自动断开连接">避免SSH自动断开连接</h2>
 <p>如果有一段时间在SSH连接上无数据传输，连接就会断开,以下设定可以解决这个问题</p>
-
 <p>方案一：在客户端设置</p>
-
 <p><code>sudo vim /etc/ssh/ssh_config</code></p>
-
 <p>开启 <code>ServerAliveInterval 60</code>
 开启 <code>TCPKeepAlive yes</code></p>
-
 <p>此后该系统里的用户连接SSH时，每60秒会发一个KeepAlive请求，避免被踢。</p>
-
 <p>方案二：在服务器端设置</p>
-
 <p><code>sudo vim /etc/ssh/sshd_config</code></p>
-
 <p>开启<code>ClientAliveInterval 60</code>
 开启 <code>TCPKeepAlive yes</code></p>
-
 <p>如果您只想让当前的 ssh 保持连接，可以使用以下的命令：</p>
-
 <p><code>ssh -o ServerAliveInterval=60 user@sshserver</code></p>
-
 <p>ssh 链接复用</p>
-
 <pre><code>Host *
 ForwardAgent yes
 ServerAliveInterval 30
@@ -103,16 +85,10 @@ ControlPath ~/.ssh/connection-%r@%h:%p
 ControlPersist 20m
 Compression yes
 
-</code></pre>
-
-<p><a href="http://einverne.github.io/post/2017/05/ssh-keep-alive.html">http://einverne.github.io/post/2017/05/ssh-keep-alive.html</a></p>
-
+</code></pre><p><a href="http://einverne.github.io/post/2017/05/ssh-keep-alive.html">http://einverne.github.io/post/2017/05/ssh-keep-alive.html</a></p>
 <p><a href="https://www.cyberciti.biz/faq/linux-unix-reuse-openssh-connection/">https://www.cyberciti.biz/faq/linux-unix-reuse-openssh-connection/</a></p>
-
 <h2 id="ssh隧道">ssh隧道</h2>
-
 <h3 id="cfng参数">CfNg参数</h3>
-
 <ul>
 <li>C表示压缩数据传输</li>
 <li>f表示后台用户验证,这个选项很有用,没有shell的不可登陆账号也能使用.</li>
@@ -121,99 +97,50 @@ Compression yes
 <li>T禁止分配伪终端，如果ssh使用此选项登录系统时，由于禁用，将无法获得终端；但仍能够获得shell，只不过看起来像在本地，也没有很多应有的环境变量，例如命令提示符，PS1等</li>
 <li>n  Redirects stdin from /dev/null (actually, prevents reading from stdin).  This must be used when ssh is run in the background</li>
 </ul>
-
-<h3 id="l本地转发">-L本地转发</h3>
-
+<h3 id="-l本地转发">-L本地转发</h3>
 <p>-L [本地监听IP:]本地监听端口号:目标主机IP:目标端口号
 (其中,“本地监听IP”可以省略，省略的话就认为是“0.0.0.0”，但为了安全性考虑，请务必使用“127.0.0.1”做为本地监听端口， 而不要使用默认的“0.0.0.0”。）</p>
-
 <p><code>ssh -D 8080 user@host</code>
 SSH会建立一个socket，去监听本地的8080端口。一旦有数据传向那个端口，就自动把它转移到SSH连接上面，发往远程主机。可以想象，如果8080端口原来是一个不加密端口，现在将变成一个加密端口。</p>
-
 <p><code>ssh -L 2121:host2:21 host3</code>
-命令中的L参数一共接受三个值，分别是&rdquo;本地端口:目标主机:目标主机端口&rdquo;，它们之间用冒号分隔。这条命令的意思，就是指定SSH绑定本地端口2121，然后指定host3将所有的数据，转发到目标主机host2的21端口（假定host2运行FTP，默认端口为21）。
+命令中的L参数一共接受三个值，分别是&quot;本地端口:目标主机:目标主机端口&rdquo;，它们之间用冒号分隔。这条命令的意思，就是指定SSH绑定本地端口2121，然后指定host3将所有的数据，转发到目标主机host2的21端口（假定host2运行FTP，默认端口为21）。
 这样一来，我们只要连接host1的2121端口，就等于连上了host2的21端口。</p>
-
 <pre><code>ssh -CTfNg -L 6300:127.0.0.1:1521 oracle@172.16.1.164
-</code></pre>
-
-<p>本机的6300端口就是远程主机172.16.1.164的1521端口</p>
-
+</code></pre><p>本机的6300端口就是远程主机172.16.1.164的1521端口</p>
 <p><strong>socket 转发</strong></p>
-
 <p>OpenSSH 自 6.7 开始支持sock文件转发，将远程sock文件映射到本地.</p>
-
 <p>例如将远程docker的socket映射到本地</p>
-
 <pre><code>ssh -CTfNng -L $(pwd)/docker.sock:/var/run/docker.sock user@someremote
-</code></pre>
-
-<p><strong>通过跳板机映射socket</strong></p>
-
+</code></pre><p><strong>通过跳板机映射socket</strong></p>
 <pre><code>ssh -CTfNng -L $(pwd)/docker.sock:/var/run/docker.sock -o &quot;ProxyCommand ssh -q -W %h:%p -p 27897 user@gateway&quot; -p 61177 user@someremote
-</code></pre>
-
-<p><code>export DOCKER_HOST=unix://$(pwd)/docker.sock</code> 本机就可以连接docker了</p>
-
+</code></pre><p><code>export DOCKER_HOST=unix://$(pwd)/docker.sock</code> 本机就可以连接docker了</p>
 <p>ssh 跳板 (ssh over ssh)</p>
-
 <p><code>ssh -o 'ProxyCommand ssh -q -W %h:%p root@transferip' root@targetip</code></p>
-
 <p>ssh over socks5</p>
-
 <p><code>ssh -o ProxyCommand='nc -x 192.0.2.0:1080 %h %p' user@targetip</code></p>
-
 <p>测试发现苹果自带的<code>nc</code> 使用<code>-x</code>会有一些问题,总是还未连上时stdin就输入一些数据,导致链接不成功.</p>
-
 <p><code>brew install nmap</code> 安装Linux版本的nmap,安装后就会有<code>ncat nmap nping ndiff</code>等命令</p>
-
 <pre><code>ssh -o 'ProxyCommand ncat --proxy-type socks5 --proxy 172.168.1.3:2388 %h %p' -p port root@hostip
-</code></pre>
-
-<p>nc 的参数<code>-x</code> 指定了使用sock5代理</p>
-
+</code></pre><p>nc 的参数<code>-x</code> 指定了使用sock5代理</p>
 <p>有了<code>ssh over socks5</code>, <code>ssh over ssh</code> 还可以以另一种方式实现</p>
-
 <p><code>ssh -D 127.0.0.1:1080 user1@ssh-server1</code> 先打通一个本地socks5,然后再使用<code>ssh over socks5</code></p>
-
 <p><strong>注意</strong> Linux 的 ncat 版本 使用代理的参数并非<code>-x</code></p>
-
 <p><code>nc --proxy 192.168.1.85:2388 --proxy-type socks5 targetip targetport</code></p>
-
 <p>ssh over socks5 proxy + socket 映射</p>
-
 <pre><code>ssh -CTfNng -L /var/run/docker.sock:/var/run/docker.sock -o 'ProxyCommand ncat --proxy-type socks5 --proxy 172.168.1.3:2388 %h %p' -p 61177 root@targetip
-</code></pre>
-
-<p><a href="https://github.com/ernw/static-toolbox/releases">https://github.com/ernw/static-toolbox/releases</a></p>
-
+</code></pre><p><a href="https://github.com/ernw/static-toolbox/releases">https://github.com/ernw/static-toolbox/releases</a></p>
 <p>参考 ： <a href="https://www.robberphex.com/2015/09/426">https://www.robberphex.com/2015/09/426</a></p>
-
-<h3 id="r远程转发">-R远程转发</h3>
-
+<h3 id="-r远程转发">-R远程转发</h3>
 <pre><code> ssh -CTfNg -R 1521:127.0.0.1:6300 oracle@172.16.1.164
-</code></pre>
-
-<p>在远程主机172.16.1.164上打开1521端口, 来映射本机的6300端口.</p>
-
+</code></pre><p>在远程主机172.16.1.164上打开1521端口, 来映射本机的6300端口.</p>
 <p><strong>在树莓派上映射ssh到外网</strong></p>
-
 <pre><code>ssh -CTfNg -R 2222:127.0.0.1:22 username@yourvps.com
-</code></pre>
-
-<p>这样就映射vps的2222端口到树莓派上了.但是这样映射的是服务器的127.0.0.1:2222,外网无法连接这个2222端口</p>
-
+</code></pre><p>这样就映射vps的2222端口到树莓派上了.但是这样映射的是服务器的127.0.0.1:2222,外网无法连接这个2222端口</p>
 <p>如果你自己的服务器连接时需要端口可以在最后加上 <code>-p port</code> 指定ssh的端口</p>
-
 <p>可以在服务器上执行<code>netstat -anltp</code>查看,这样要先登陆到自己的vps才能通过2222访问树莓派.</p>
-
 <p>可以使用</p>
-
 <pre><code>ssh -CTfNg -R 0.0.0.0:2222:127.0.0.1:22 username@yourvps.com
-</code></pre>
-
-<p>再在服务器上配置<code>/etc/ssh/sshd_config</code></p>
-
+</code></pre><p>再在服务器上配置<code>/etc/ssh/sshd_config</code></p>
 <pre><code>#增加下面一句
 GatewayPorts yes
 #如果有
@@ -224,29 +151,17 @@ GatewayPorts yes
 #centos7： systemctl restart sshd
 #centos6： service sshd restart
 #ubuntu:   service ssh restart
-</code></pre>
-
-<p>使用<code>netstat -anltp</code>查看,监听的已经是<code>0.0.0.0</code>了,不过即使你指定-R参数<code>127.0.0.1:2222</code>,也不会监听<code>127.0.0.1</code>而始终是<code>0.0.0.0</code></p>
-
+</code></pre><p>使用<code>netstat -anltp</code>查看,监听的已经是<code>0.0.0.0</code>了,不过即使你指定-R参数<code>127.0.0.1:2222</code>,也不会监听<code>127.0.0.1</code>而始终是<code>0.0.0.0</code></p>
 <p>若没有<code>netstat</code>可考虑安装<code>yum install lsof net-tools</code></p>
-
-<h3 id="使用下面的脚本可以保持断开自动重连-可以作为-frp-穿透的简单替代">使用下面的脚本可以保持断开自动重连,可以作为<code>frp</code>穿透的简单替代</h3>
-
+<h3 id="使用下面的脚本可以保持断开自动重连可以作为frp穿透的简单替代">使用下面的脚本可以保持断开自动重连,可以作为<code>frp</code>穿透的简单替代</h3>
 <p><strong>需事先配置好ssh免密码登陆</strong></p>
-
 <p>先编写一个可执行脚本,例如
 <code>/home/osmc/.autossh</code></p>
-
 <pre><code>#!/bin/bash
 while true; do ssh -CTNg -R 2222:127.0.0.1:2222 -p 23 username@yourvps.com; sleep 5;done;
-</code></pre>
-
-<p>赋予执行权限 <code>chmod +x /home/osmc/.autossh</code></p>
-
+</code></pre><p>赋予执行权限 <code>chmod +x /home/osmc/.autossh</code></p>
 <p>编写service文件 使用<code>systemd</code>开机启动</p>
-
 <p><code>/etc/systemd/system/autossh.service</code></p>
-
 <pre><code>[Unit]
 Description=autossh service
 After=network.target network-online.target
@@ -259,78 +174,50 @@ ExecStart=/home/osmc/.autossh
 
 [Install]
 WantedBy=multi-user.target
-</code></pre>
-
-<p><code>sudo systemctl daemon-reload</code>
+</code></pre><p><code>sudo systemctl daemon-reload</code>
 <code>sudo systemctl enable autossh</code>
 <code>sudo systemctl start autossh</code></p>
-
 <p><code>sudo systemctl status autossh -l</code> 查看状态
 此方法存在缺陷,有时候断开无法连接上,最好还是使用<code>frp</code></p>
-
 <h3 id="使用socks5代理">使用socks5代理</h3>
-
 <pre><code>alias socksproxy=&quot;ssh -NT -f -C -D 0.0.0.0:1090  -p 1234 root@host&quot;;
-</code></pre>
-
-<p>-D 绑定地址
+</code></pre><p>-D 绑定地址
 -N 不打开远程的shell
 -T 不分配tty
 -f 后台运行
 -C 使用压缩</p>
-
 <p>执行<code>socksproxy</code>后就建立了一条ssh socks5 proxy,本地使用127.0.0.1:1090就可以使用服务器中转流量.</p>
-
 <h3 id="ssh-服务">ssh 服务</h3>
-
 <p><code>chkconfig --list</code>可以查看所有服务是否开机启动等.</p>
-
 <p><code>chkconfig --list sshd</code>可以单独查看sshd服务的启动状态</p>
-
 <p><code>/var/empty/sshd</code>文件夹是sshd所必须的,不能被删除否则ssh服务将无法启动</p>
-
 <p><code>chkconfig sshd on</code>将其设置为开机启动</p>
-
 <p>CentOS7 用<code>systemctl</code>取代了<code>service</code>
 旧版本的 <code>chkconfig docker on</code> 改为 <code>systemctl enable docker</code></p>
-
 <p><a href="https://www.ssh.com/ssh/copy-id">https://www.ssh.com/ssh/copy-id</a></p>
-
 <p>ssh 使用了ssh-copy-id 任然不能免密码登录问题</p>
-
 <ol>
-<li>检查权限问题
-```
-chmod 700 ~/.ssh
-chmod 600 ~/.ssh/authorized_keys</li>
+<li>检查权限问题</li>
 </ol>
+<pre><code>chmod 700 ~/.ssh
+chmod 600 ~/.ssh/authorized_keys
 
-<h2 id="或者">或者</h2>
+## 如果上面还不行,使用这个
+chmod 700 ~/.ssh ; chmod 600 ~/.ssh/authorized_keys ; chmod g-w,o-w ~  ## chmod go-w ~
 
-<p>chmod 700 ~/.ssh ; chmod 600 ~/.ssh/authorized_keys ; chmod g-w,o-w ~  ## chmod go-w ~</p>
-
-<h2 id="验证文件夹所属权">验证文件夹所属权</h2>
-
-<p>chown -R root ~
-chgrp -R root ~/.ssh/</p>
-
-<pre><code>
-2. 确保sshd配置文件没有禁用密匙验证
-</code></pre>
-
-<p>RSAAuthentication yes
+## 验证文件夹所属权
+chown -R root ~
+chgrp -R root ~/.ssh/
+</code></pre><ol start="2">
+<li>确保sshd配置文件没有禁用密匙验证</li>
+</ol>
+<pre><code>RSAAuthentication yes
 PubkeyAuthentication yes
-AuthorizedKeysFile  %h/.ssh/authorized_keys</p>
-
-<pre><code>
-**sshd 配置文件**
-
-`grep -Ev '''^(#|$)''' sshd_config` 可查看有效的配置（排除注释）
-
-`/etc/ssh/sshd_config`
-</code></pre>
-
-<p>HostKey /etc/ssh/ssh_host_rsa_key
+AuthorizedKeysFile  %h/.ssh/authorized_keys
+</code></pre><p><strong>sshd 配置文件</strong></p>
+<p><code>grep -Ev '''^(#|$)''' sshd_config</code> 可查看有效的配置（排除注释）</p>
+<p><code>/etc/ssh/sshd_config</code></p>
+<pre><code>HostKey /etc/ssh/ssh_host_rsa_key
 HostKey /etc/ssh/ssh_host_ecdsa_key
 HostKey /etc/ssh/ssh_host_ed25519_key
 SyslogFacility AUTHPRIV
@@ -345,279 +232,153 @@ AcceptEnv LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES
 AcceptEnv LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT
 AcceptEnv LC_IDENTIFICATION LC_ALL LANGUAGE
 AcceptEnv XMODIFIERS
-Subsystem	sftp	/usr/libexec/openssh/sftp-server</p>
-
-<pre><code>
-
-### 编译openssh
-
-http://www.openssh.com/ftp.html
-
-在alpine中编译openssh,镜像地址 http://ftp.jaist.ac.jp/pub/OpenBSD/OpenSSH/portable/
-
-编译完成后得到一些工具,如`scp`,`sftp-server`,`ssh`,`sshd`等等
-
-</code></pre>
-
-<p>apk update &amp;&amp; apk upgrade
-apk &ndash;update add make curl gcc g++ zlib-dev openssl-dev
+Subsystem	sftp	/usr/libexec/openssh/sftp-server
+</code></pre><h3 id="编译openssh">编译openssh</h3>
+<p><a href="http://www.openssh.com/ftp.html">http://www.openssh.com/ftp.html</a></p>
+<p>在alpine中编译openssh,镜像地址 <a href="http://ftp.jaist.ac.jp/pub/OpenBSD/OpenSSH/portable/">http://ftp.jaist.ac.jp/pub/OpenBSD/OpenSSH/portable/</a></p>
+<p>编译完成后得到一些工具,如<code>scp</code>,<code>sftp-server</code>,<code>ssh</code>,<code>sshd</code>等等</p>
+<pre><code>apk update &amp;&amp; apk upgrade
+apk --update add make curl gcc g++ zlib-dev openssl-dev
 cd /tmp
 OPENSSH_VERSION=openssh-7.6p1
-CPU_NUM=<code>cat /proc/cpuinfo | grep processor | wc -l</code>
-curl <a href="http://ftp.jaist.ac.jp/pub/OpenBSD/OpenSSH/portable/${OPENSSH_VERSION}.tar.gz">http://ftp.jaist.ac.jp/pub/OpenBSD/OpenSSH/portable/${OPENSSH_VERSION}.tar.gz</a> | tar xz
+CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
+curl http://ftp.jaist.ac.jp/pub/OpenBSD/OpenSSH/portable/${OPENSSH_VERSION}.tar.gz | tar xz
 cd ${OPENSSH_VERSION}
 ./configure
-make -j$CPU_NUM CFLAGS=&ldquo;-Os&rdquo; LDFLAGS=&ldquo;-static -L./ -L./openbsd-compat/&rdquo;  &amp;&amp; make install</p>
-
-<pre><code>即可静态编译.
-
-我编译好的二进制文件,能直接用于alpine系统
-
-
-
-配合Linux`adduser`,可以ssh到docker中
-
-`curl -o /usr/local/bin/sshd.xz http://share.suconghou.cn/files/bin/sshd.xz`
-
-sshd运行不能直接执行sshd,需要执行`/usr/local/bin/sshd`
-
-配置文件为`/usr/local/etc/sshd_config`,同时还需要几个密匙文件.
-
-</code></pre>
-
-<p>curl -o /usr/local/bin/sshd.xz <a href="http://share.suconghou.cn/files/bin/sshd.xz">http://share.suconghou.cn/files/bin/sshd.xz</a>
+make -j$CPU_NUM CFLAGS=&quot;-Os&quot; LDFLAGS=&quot;-static -L./ -L./openbsd-compat/&quot;  &amp;&amp; make install
+</code></pre><p>即可静态编译.</p>
+<p>我编译好的二进制文件,能直接用于alpine系统</p>
+<p>配合Linux<code>adduser</code>,可以ssh到docker中</p>
+<p><code>curl -o /usr/local/bin/sshd.xz http://share.suconghou.cn/files/bin/sshd.xz</code></p>
+<p>sshd运行不能直接执行sshd,需要执行<code>/usr/local/bin/sshd</code></p>
+<p>配置文件为<code>/usr/local/etc/sshd_config</code>,同时还需要几个密匙文件.</p>
+<pre><code>curl -o /usr/local/bin/sshd.xz http://share.suconghou.cn/files/bin/sshd.xz
 xz -d /usr/local/bin/sshd.xz
 chmod +x /usr/local/bin/sshd
 mkdir -p /usr/local/etc/
 touch /usr/local/etc/sshd_config
-ssh-keygen -t dsa -f /usr/local/etc/ssh_host_dsa_key -N &ldquo;
-ssh-keygen -t rsa -f /usr/local/etc/ssh_host_rsa_key -N &ldquo;
-ssh-keygen -t ecdsa -f /usr/local/etc/ssh_host_ecdsa_key -N &ldquo;
-ssh-keygen -t ed25519 -f /usr/local/etc/ssh_host_ed25519_key -N &ldquo;</p>
+ssh-keygen -t dsa -f /usr/local/etc/ssh_host_dsa_key -N ''
+ssh-keygen -t rsa -f /usr/local/etc/ssh_host_rsa_key -N ''
+ssh-keygen -t ecdsa -f /usr/local/etc/ssh_host_ecdsa_key -N ''
+ssh-keygen -t ed25519 -f /usr/local/etc/ssh_host_ed25519_key -N ''
+</code></pre><p>添加一个用户:<code>adduser work</code> ,Alpine里是<code>adduser</code>,Linux发行版里是<code>useradd</code></p>
+<p><code>adduser work -M -N</code></p>
+<p>cat /etc/passwd 可以查看所有用户的列表,只输出用户名可以<code>cat /etc/passwd |cut -f 1 -d :</code></p>
+<p>看第三个参数:500以上的,就是后面建的用户了.其它则为系统的用户.</p>
+<p>cat /etc/group 查看用户组</p>
+<p><strong>非交互式修改密码</strong></p>
+<p>在 Linux 中 passwd
+<code>echo &quot;1234&quot; | passwd --stdin work</code></p>
+<p>在alpine/buxybox 中 chpasswd
+<code>echo &quot;1234&quot; | chpasswd</code> (默认修改当前用户的密码)</p>
+<p>w 可以查看当前活跃的用户列表</p>
+<p>删除用户<code>userdel</code> , 用户<code>userdel -r 用户名</code>,删除用户账户及用户主目录文件</p>
+<p>没有外网IP还可以使用ssh建立一个隧道</p>
+<pre><code>ssh -CfNg -R 0.0.0.0:2233:127.0.0.1:22 root@yourvps.com -p 27558
 
-<pre><code>
-添加一个用户:` adduser work ` ,Alpine里是`adduser`,Linux发行版里是`useradd`
-
-`adduser work -M -N`
-
-cat /etc/passwd 可以查看所有用户的列表,只输出用户名可以`cat /etc/passwd |cut -f 1 -d :`
-
-看第三个参数:500以上的,就是后面建的用户了.其它则为系统的用户.
-
-cat /etc/group 查看用户组
-
-
-**非交互式修改密码**
-
-
-在 Linux 中 passwd
-`echo &quot;1234&quot; | passwd --stdin work`
-
-在alpine/buxybox 中 chpasswd
-`echo &quot;1234&quot; | chpasswd` (默认修改当前用户的密码)
-
-
-w 可以查看当前活跃的用户列表
-
-删除用户`userdel` , 用户`userdel -r 用户名`,删除用户账户及用户主目录文件
-
-没有外网IP还可以使用ssh建立一个隧道
-</code></pre>
-
-<p>ssh -CfNg -R 0.0.0.0:2233:127.0.0.1:22 root@yourvps.com -p 27558</p>
-
-<pre><code>
-### 编译dropbear
-
-dropbear 是一个更加小巧的sshd
-
-https://matt.ucc.asn.au/dropbear/dropbear.html
-
-</code></pre>
-
-<p>cd /tmp
+</code></pre><h3 id="编译dropbear">编译dropbear</h3>
+<p>dropbear 是一个更加小巧的sshd</p>
+<p><a href="https://matt.ucc.asn.au/dropbear/dropbear.html">https://matt.ucc.asn.au/dropbear/dropbear.html</a></p>
+<pre><code>cd /tmp
 apk update &amp;&amp; apk upgrade &amp;&amp; apk add wget make gcc g++ linux-headers
-wget &ndash;no-check-certificate  <a href="https://matt.ucc.asn.au/dropbear/releases/dropbear-2017.75.tar.bz2">https://matt.ucc.asn.au/dropbear/releases/dropbear-2017.75.tar.bz2</a>
+wget --no-check-certificate  https://matt.ucc.asn.au/dropbear/releases/dropbear-2017.75.tar.bz2
 tar jxvf dropbear-2017.75.tar.bz2 &amp;&amp; cd dropbear-2017.75
-CFLAGS=&ldquo;-Os -ffunction-sections -fdata-sections&rdquo; LDFLAGS=&ldquo;-static -Wl,&ndash;gc-sections&rdquo; ./configure &ndash;disable-zlib
-make -j2</p>
-
-<pre><code>不到一分钟即可编译完成
-
-`mkdir /etc/dropbear`
-
-后台运行 `./dropbear  -E -R -m`
-不进入后台 `./dropbear -F -E -R -m`
-
-`-m` 意味着用户登陆成功后不显示`/etc/motd`文件内的提示.
-
-`dbclient` 是一个和ssh类似的客户端
-
-然后linux系统的用户即可通过22端口登陆
-
-### CentOS7修改ssh端口
-
-注意:修改ssh端口后,可能还是不能使用,主要原因可能是semanage
-
-使用以下命令查看当前SElinux 允许的ssh端口：
-semanage port -l | grep ssh
-
-添加xxxx端口到 SELinux
+CFLAGS=&quot;-Os -ffunction-sections -fdata-sections&quot; LDFLAGS=&quot;-static -Wl,--gc-sections&quot; ./configure --disable-zlib
+make -j2
+</code></pre><p>不到一分钟即可编译完成</p>
+<p><code>mkdir /etc/dropbear</code></p>
+<p>后台运行 <code>./dropbear  -E -R -m</code>
+不进入后台 <code>./dropbear -F -E -R -m</code></p>
+<p><code>-m</code> 意味着用户登陆成功后不显示<code>/etc/motd</code>文件内的提示.</p>
+<p><code>dbclient</code> 是一个和ssh类似的客户端</p>
+<p>然后linux系统的用户即可通过22端口登陆</p>
+<h3 id="centos7修改ssh端口">CentOS7修改ssh端口</h3>
+<p>注意:修改ssh端口后,可能还是不能使用,主要原因可能是semanage</p>
+<p>使用以下命令查看当前SElinux 允许的ssh端口：
+semanage port -l | grep ssh</p>
+<p>添加xxxx端口到 SELinux
 semanage port -a -t ssh_port_t -p tcp xxxx
 然后确认一下是否添加进去
 semanage port -l | grep ssh
 如果成功会输出
-ssh_port_t        tcp    xxxx, 22
-
-
-### autossh
-
-`sudo yum install gcc make`
-
-
-</code></pre>
-
-<p>wget <a href="http://www.harding.motd.ca/autossh/autossh-1.4e.tgz">http://www.harding.motd.ca/autossh/autossh-1.4e.tgz</a>
+ssh_port_t        tcp    xxxx, 22</p>
+<h3 id="autossh">autossh</h3>
+<p><code>sudo yum install gcc make</code></p>
+<pre><code>wget http://www.harding.motd.ca/autossh/autossh-1.4e.tgz
 tar zxf autossh-1.4e.tgz
 cd autossh-1.4e
-./configure &amp;&amp; make</p>
+./configure &amp;&amp; make
 
+</code></pre><h2 id="zsh">zsh</h2>
+<blockquote>
+<p>Ctrl + a ：移到命令行首
+Ctrl + e ：移到命令行尾
+Ctrl + r：逆向搜索命令历史
+Ctrl + g：从历史搜索模式退出
+Ctrl + p：历史中的上一条命令
+Ctrl + n：历史中的下一条命令</p>
+</blockquote>
+<p><a href="http://jaywcjlove.github.io/handbook/html/Vim%E7%90%86%E8%A7%A3.html">http://jaywcjlove.github.io/handbook/html/Vim%E7%90%86%E8%A7%A3.html</a></p>
+<h2 id="sudo-记住密码时间">sudo 记住密码时间</h2>
+<p>mac 系统 在第一次执行sudo命令后，默认情况下密码将持续15分钟，因此您不需要为每个sudo命令键入密码</p>
+<p>可以修改 <code>/etc/sudoers</code> 文件配置该时间 使用 <code>sudo visudo</code> 修改此文件</p>
+<pre><code>Defaults        env_reset,timestamp_timeout=60
+</code></pre><p>这里设置为1小时</p>
+<p>如果要为每个执行的sudo命令输入密码提示，也可以将时间设置为0</p>
+<h2 id="ssh-远程执行后台命令">ssh 远程执行后台命令</h2>
+<p><code>&amp;&gt;/dev/null</code>   <code>&gt;/dev/null 2&gt;/dev/null</code>   <code>&gt;/dev/null 2&gt;&amp;1</code> 三者是等价的。</p>
+<p><a href="https://www.gnu.org/software/bash/manual/bash.html#Redirecting-Standard-Output-and-Standard-Error">https://www.gnu.org/software/bash/manual/bash.html#Redirecting-Standard-Output-and-Standard-Error</a></p>
+<p><code>1.sh</code> 是一个耗时操作</p>
+<pre><code>ping -c 10 8.8.8.8
+</code></pre><pre><code>ssh user@host &quot;/1.sh&quot;
+</code></pre><p>客户端会执行等待执行完后退出,客户端显示脚本的输出,中途客户端终止，脚本立即终止执行</p>
+<pre><code>ssh user@host &quot;nohup /1.sh&quot;
+
+ssh user@host &quot;nohup /1.sh &amp;&quot;
+</code></pre><p>这两种与第一种结果一样.</p>
+<p>如果想要后台运行，需要</p>
+<pre><code>ssh user@host &quot;nohup /tmp/1.sh &gt;/dev/null &amp;&quot;
+</code></pre><p>至少需要把标准输出重定向到一个文件才行。</p>
+<p>这样做 更保险</p>
+<pre><code>ssh user@host &quot;nohup myprogram &gt; foo.out 2&gt; foo.err &lt; /dev/null &amp;&quot;
+</code></pre><p>要做到显示一部分数据，然后后台呢？</p>
+<p>修改我们要执行的脚本
+<code>1.sh</code></p>
+<pre><code>echo &quot;go to background&quot;
+
+nohup ping -c 20 t.cn &amp;&gt;/dev/null &amp;
+
+echo &quot;ping is in background &quot;
+
+ps aux | grep ping
+</code></pre><p>客户端执行 <code>ssh user@host &quot;/1.sh&quot;</code></p>
+<p>需要注意的是，这里 nohup 加不加都可以，但是最后的&amp;符号必须，否则会造成客户端等待。</p>
+<p>即使使用 <code>nohup</code> 和 <code>&amp;</code>, 重定向标准输出始终是必须的，否则造成客户端等待，并打印这些输出,至少需重定向标准输出。</p>
+<pre><code>nohup ping -c 20 t.cn &amp;&gt;/dev/null &lt;/dev/null &amp;
+</code></pre><p>ssh直接开启后台任务：</p>
+<pre><code>ssh user@host &quot;nohup ping -c 10 t.cn &amp;&gt;/dev/null &lt;/dev/null &amp;&quot;
+</code></pre><p><code>&gt;/dev/null 2&gt;&amp;1</code> 注意 <code>2&gt;&amp;1</code> 必须放在后面</p>
+<h2 id="linx-rsync">linx rsync</h2>
+<p>server</p>
+<pre><code>rsync --daemon --port 15577
+</code></pre><p>client</p>
 <pre><code>
-## zsh
 
-
-&gt; Ctrl + a ：移到命令行首
-&gt; Ctrl + e ：移到命令行尾
-&gt; Ctrl + r：逆向搜索命令历史
-&gt; Ctrl + g：从历史搜索模式退出
-&gt; Ctrl + p：历史中的上一条命令
-&gt; Ctrl + n：历史中的下一条命令
-
-
-http://jaywcjlove.github.io/handbook/html/Vim%E7%90%86%E8%A7%A3.html
-
-
-## sudo 记住密码时间
-
-
-mac 系统 在第一次执行sudo命令后，默认情况下密码将持续15分钟，因此您不需要为每个sudo命令键入密码
-
-可以修改 `/etc/sudoers` 文件配置该时间 使用 `sudo visudo` 修改此文件
 
 </code></pre>
-
-<p>Defaults        env_reset,timestamp_timeout=60</p>
-
-<pre><code>
-这里设置为1小时
-
-如果要为每个执行的sudo命令输入密码提示，也可以将时间设置为0
-
-
-## ssh 远程执行后台命令
-
-
-`&amp;&gt;/dev/null`   `&gt;/dev/null 2&gt;/dev/null`   `&gt;/dev/null 2&gt;&amp;1` 三者是等价的。
-
-
-https://www.gnu.org/software/bash/manual/bash.html#Redirecting-Standard-Output-and-Standard-Error
-
-
-`1.sh` 是一个耗时操作
-</code></pre>
-
-<p>ping -c 10 8.8.8.8</p>
-
-<pre><code>
-</code></pre>
-
-<p>ssh user@host &ldquo;/1.sh&rdquo;</p>
-
-<pre><code>客户端会执行等待执行完后退出,客户端显示脚本的输出,中途客户端终止，脚本立即终止执行
-
-</code></pre>
-
-<p>ssh user@host &ldquo;nohup /1.sh&rdquo;</p>
-
-<p>ssh user@host &ldquo;nohup /1.sh &amp;&rdquo;</p>
-
-<pre><code>这两种与第一种结果一样.
-
-如果想要后台运行，需要
-</code></pre>
-
-<p>ssh user@host &ldquo;nohup /tmp/1.sh &gt;/dev/null &amp;&rdquo;</p>
-
-<pre><code>至少需要把标准输出重定向到一个文件才行。
-
-这样做 更保险
-</code></pre>
-
-<p>ssh user@host &ldquo;nohup myprogram &gt; foo.out 2&gt; foo.err &lt; /dev/null &amp;&rdquo;</p>
-
-<pre><code>
-要做到显示一部分数据，然后后台呢？
-
-修改我们要执行的脚本
-`1.sh`
-</code></pre>
-
-<p>echo &ldquo;go to background&rdquo;</p>
-
-<p>nohup ping -c 20 t.cn &amp;&gt;/dev/null &amp;</p>
-
-<p>echo &ldquo;ping is in background &ldquo;</p>
-
-<p>ps aux | grep ping</p>
-
-<pre><code>客户端执行 `ssh user@host &quot;/1.sh&quot;`
-
-
-需要注意的是，这里 nohup 加不加都可以，但是最后的&amp;符号必须，否则会造成客户端等待。
-
-即使使用 `nohup` 和 `&amp;`, 重定向标准输出始终是必须的，否则造成客户端等待，并打印这些输出,至少需重定向标准输出。
-
-</code></pre>
-
-<p>nohup ping -c 20 t.cn &amp;&gt;/dev/null &lt;/dev/null &amp;</p>
-
-<pre><code>
-ssh直接开启后台任务：
-</code></pre>
-
-<p>ssh user@host &ldquo;nohup ping -c 10 t.cn &amp;&gt;/dev/null &lt;/dev/null &amp;&rdquo;</p>
-
-<pre><code>
-`&gt;/dev/null 2&gt;&amp;1` 注意 `2&gt;&amp;1` 必须放在后面
-
-## linx rsync
-
-
-server
-</code></pre>
-
-<p>rsync &ndash;daemon &ndash;port 15577</p>
-
-<pre><code>
-client
-
-</code></pre>
-
-<p>```</p>
-
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/linux-ssh/"></air-messager>
+        <air-messager ns="hi" thread="/post/linux-ssh/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/install-nodejs/" title="安装NodeJs和npm" >
+            <a class="previous" href="/post/install-nodejs/" title="安装NodeJs和npm" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/sublime-usage/" title="Sublime使用和设置">
+            <a class="next" href="/post/sublime-usage/" title="Sublime使用和设置">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -629,6 +390,14 @@ client
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

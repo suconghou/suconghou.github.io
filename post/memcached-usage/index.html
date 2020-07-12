@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>memcached安装与使用 &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -54,14 +50,9 @@
         </div>
         
 		<div class="post-text">
-			
-
-<h2 id="安装memcached">安装memcached</h2>
-
+			<h2 id="安装memcached">安装memcached</h2>
 <p><a href="http://memcached.org/downloads">http://memcached.org/downloads</a></p>
-
-<p>memcached所有版本见<a href="http://www.memcached.org/files/">http://www.memcached.org/files/</a></p>
-
+<p>memcached所有版本见http://www.memcached.org/files/</p>
 <pre><code>cd /tmp
 MEMCACHE_VERSION=memcached-1.5.1
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
@@ -71,24 +62,15 @@ cd ${MEMCACHE_VERSION}
 export CFLAGS=&quot;-O3&quot;
 ./configure
 make -j$CPU_NUM &amp;&amp; make install
-</code></pre>
-
-<p>docker版本见:<a href="https://hub.docker.com/r/suconghou/memcached/">https://hub.docker.com/r/suconghou/memcached/</a></p>
-
+</code></pre><p>docker版本见:https://hub.docker.com/r/suconghou/memcached/</p>
 <h2 id="静态编译">静态编译</h2>
-
 <pre><code>apk update &amp;&amp; apk upgrade &amp;&amp; apk add gcc g++ make wget
-</code></pre>
-
-<pre><code>
+</code></pre><pre><code>
 wget --no-check-certificate https://github.com/libevent/libevent/releases/download/release-2.1.8-stable/libevent-2.1.8-stable.tar.gz
 tar zxf libevent-2.1.8-stable.tar.gz
 cd libevent-2.1.8-stable
 ./configure &amp;&amp; make &amp;&amp; make install
-</code></pre>
-
-<p>libevent编译很快,不到一分钟</p>
-
+</code></pre><p>libevent编译很快,不到一分钟</p>
 <pre><code>cd /tmp
 MEMCACHE_VERSION=memcached-1.5.1
 wget http://www.memcached.org/files/${MEMCACHE_VERSION}.tar.gz
@@ -97,16 +79,9 @@ cd ${MEMCACHE_VERSION}
 export CFLAGS=&quot;-O3&quot;
 ./configure --disable-docs
 make LDFLAGS=-static &amp;&amp; make install
-</code></pre>
-
-<h2 id="启动memcached">启动Memcached</h2>
-
-<pre><code>memcached -d -u memcached -p 11211 -m 8 -P /var/run/memcached/memcached.pid
-
-</code></pre>
-
-<p>说明</p>
-
+</code></pre><h2 id="启动memcached">启动Memcached</h2>
+<pre><code>memcached -d -u nobody -p 11211 -m 8 -P /var/run/memcached.pid
+</code></pre><p>说明</p>
 <ul>
 <li>-d 以daemon方式运行</li>
 <li>-u 绑定使用指定用户运行进程(仅在以root运行的时候有效)</li>
@@ -114,47 +89,37 @@ make LDFLAGS=-static &amp;&amp; make install
 <li>-m 允许最大内存用量，单位M (默认: 64 MB)</li>
 <li>-M 内存耗尽时返回错误，而不是删除项</li>
 <li>-l 是监听的服务器IP地址，默认应该是本机</li>
-<li>-P 将PID写入文件<file>，这样可以使得后边进行快速进程终止, 需要与-d 一起使用</li>
+<li>-P 将PID写入文件<!-- raw HTML omitted -->，这样可以使得后边进行快速进程终止, 需要与-d 一起使用</li>
 <li>-c 最大同时连接数，默认是1024</li>
 <li>-t 线程数,默认为4</li>
 <li>-v 输出警告和错误信息</li>
 <li>-vv 打印客户端的请求和返回信息</li>
 </ul>
-
 <p>默认情况下是不限制访问IP的,相当于是外网和内网都能访问,-l 使只有这个IP能访问</p>
-
 <p>尽量不要用root用户运行.</p>
-
 <p><strong>状态查看</strong></p>
-
 <p>使用 telnet 连接 memcached
 <code>stats settings</code>可以查看所有参数设置</p>
-
 <p>memcached状态和性能查看</p>
-
 <p>stats命令</p>
-
-<p><img src="http://static.suconghou.cn/document/memcached.jpg" alt="memcached stats命令" /></p>
-
+<p><img src="http://static.suconghou.cn/document/memcached.jpg" alt="memcached stats命令"></p>
 <p>官方也提供监控工具</p>
-
 <p><a href="https://github.com/memcached/memcached/blob/master/scripts/memcached-tool">https://github.com/memcached/memcached/blob/master/scripts/memcached-tool</a></p>
-
 <p>使用<code>-s</code> 参数指定一个Unix Socket路径,使其不使用IP绑定,而使用unix socket</p>
 
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/memcached-usage/"></air-messager>
+        <air-messager ns="hi" thread="/post/memcached-usage/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/nginx-usage/" title="nginx安装与使用" >
+            <a class="previous" href="/post/nginx-usage/" title="nginx安装与使用" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/pc-hardware/" title="修电脑相关知识">
+            <a class="next" href="/post/pc-hardware/" title="修电脑相关知识">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -166,6 +131,14 @@ make LDFLAGS=-static &amp;&amp; make install
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

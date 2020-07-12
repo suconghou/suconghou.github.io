@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>swoole on 苏苏的博客</title>
@@ -18,13 +18,13 @@
       
       <guid>http://blog.suconghou.cn/post/install-nginx-php-mysql-redis/</guid>
       <description>编译安装NGINX 首先安装一些依赖
-yum -y install gcc make autoconf automake install zlib zlib-devel openssl openssl-devel pcre-devel  apt-get update apt-get -y install gcc make openssl libssl-dev libpcre3 libpcre3-dev  编译安装
+yum -y install gcc make autoconf automake install zlib zlib-devel openssl openssl-devel pcre-devel apt-get update apt-get -y install gcc make openssl libssl-dev libpcre3 libpcre3-dev 编译安装
 Chrome51以后版本废弃了NPN的支持,要让Chrome51以后版本支持http2,需要更新OpenSSL到1.0.2及以上.
 查看当前系统的OpenSSL版本:openssl version
 更新OpenSSL
-OPENSSL_VERSION=openssl-1.0.2h cd /tmp wget https://www.openssl.org/source/${OPENSSL_VERSION}.tar.gz tar zxvf ${OPENSSL_VERSION}.tar.gz cd ${OPENSSL_VERSION} ./config --prefix=/usr --shared make -j4 sudo make install openssl version  最后一句查看版本是否更新了
+OPENSSL_VERSION=openssl-1.0.2h cd /tmp wget https://www.openssl.org/source/${OPENSSL_VERSION}.tar.gz tar zxvf ${OPENSSL_VERSION}.tar.gz cd ${OPENSSL_VERSION} ./config --prefix=/usr --shared make -j4 sudo make install openssl version 最后一句查看版本是否更新了
 如果没有www-data用户和组,可以先创建
-groupadd www-data adduser -M -s /sbin/nologin www-data -g www-data  编译nginx NGINX_VERSION=nginx-1.11.3 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l` cd /tmp wget http://nginx.</description>
+groupadd www-data adduser -M -s /sbin/nologin www-data -g www-data 编译nginx NGINX_VERSION=nginx-1.11.3 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l` cd /tmp wget http://nginx.</description>
     </item>
     
   </channel>

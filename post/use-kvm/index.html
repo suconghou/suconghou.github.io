@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>使用kvm创建和管理虚拟机 &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -55,15 +51,10 @@
         
 		<div class="post-text">
 			<p>使用Linux<code>kvm</code>模块的相关笔记</p>
-
 <h1 id="安装和配置kvm">安装和配置KVM</h1>
-
 <h2 id="kvm与xen区别">KVM与XEN区别</h2>
-
 <p>OPENVZ就不说了,是半虚拟化,不能安装Windows操作系统</p>
-
 <p>KVM是内核模块,从2.6.20内核开始,kvm模块就包含在Linux内核中,只需加载此模块即可</p>
-
 <pre><code>#查看宿主机CPU是否在硬件上支持虚拟化扩展特性
 cat /proc/cpuinfo | grep -E &quot;(vmx|svm)&quot;
 
@@ -71,99 +62,54 @@ cat /proc/cpuinfo | grep -E &quot;(vmx|svm)&quot;
 modprobe kvm
 modprobe kvm-intel
 #注意：如果加载失败，说明服务器硬件不支持或BIOS中未开启虚拟化扩展
-</code></pre>
-
-<p>运行命令<code>lsmod | grep kvm</code>检查 KVM 模块是否成功安装</p>
-
+</code></pre><p>运行命令<code>lsmod | grep kvm</code>检查 KVM 模块是否成功安装</p>
 <p>XEN是一套虚拟化方案,可以直接安装,不需要先安装操作系统.</p>
-
 <p>KVM起步较晚,XEN起步早发展成熟,但目前KVM潜力较大.</p>
-
 <h2 id="kvm-与-qemu">KVM 与 qemu</h2>
-
-<p><code>yum install qemu-kvm libvirt virt-install bridge-utils</code></p>
-
+<p><code>yum install qemu-kvm libvirt virt-install bridge-utils </code></p>
 <p>qemu-kvm 该软件包主要包含KVM内核模块和适用于KVM的QEMU模拟器。KVM模块负责CPU和内存的调度，QEMU负责虚拟机I/O设备的模拟。</p>
-
 <p>libvirt 提供Hypervisor和虚拟机的管理功能。</p>
-
 <p>virt-install 创建和克隆虚拟机的命令行工具包。</p>
-
 <p>bridge-utils 网桥管理工具包，负责桥接网络的创建、配置和管理等工作。</p>
-
 <h2 id="激活并启动libvirtd服务">激活并启动libvirtd服务</h2>
-
 <pre><code>systemctl enable libvirtd
 systemctl start libvirtd
-</code></pre>
-
-<h2 id="安装centos7">安装CentOS7</h2>
-
+</code></pre><h2 id="安装centos7">安装CentOS7</h2>
 <p><code>diskutil list</code>查看所有磁盘</p>
-
 <p><code>diskutil unmountdisk /dev/disk1</code> 解除其挂载</p>
-
 <p>用dd将ISO文件写入</p>
-
 <p><code>sudo dd if=/data/files/iso/CentOS-7-x86_64-Minimal-1511.iso of=/dev/disk2 bs=1m</code></p>
-
 <p>安装好系统后,更换网易的源 <a href="http://mirrors.163.com/.help/centos.html">http://mirrors.163.com/.help/centos.html</a></p>
-
 <pre><code>mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
 cd /etc/yum.repos.d
 wget http://mirrors.163.com/.help/CentOS7-Base-163.repo
 yum clean all
 yum makecache
-</code></pre>
-
-<p>搜狐也有,但版本太老 <a href="http://mirrors.sohu.com/help/centos.html">http://mirrors.sohu.com/help/centos.html</a></p>
-
+</code></pre><p>搜狐也有,但版本太老 <a href="http://mirrors.sohu.com/help/centos.html">http://mirrors.sohu.com/help/centos.html</a></p>
 <p>可以使用清华大学的. <a href="https://lug.ustc.edu.cn/wiki/mirrors/help/centos">https://lug.ustc.edu.cn/wiki/mirrors/help/centos</a> 速度都十分快.</p>
-
-<h2 id="启用kvm后-需要配置网卡">启用KVM后,需要配置网卡</h2>
-
+<h2 id="启用kvm后需要配置网卡">启用KVM后,需要配置网卡</h2>
 <p><code>cd /etc/sysconfig/network-scripts/</code></p>
-
 <p>桥接网卡</p>
-
 <p><code>brctl addbr br0</code> 添加一个虚拟网卡</p>
-
-<p><code>brctl addif br0 em2</code> 将网卡<code>br0</code>桥接到<code>em2</code> ,这一步将会导致em2断网,远程ssh将会断开</p>
-
+<p><code>brctl addif br0 em2 </code> 将网卡<code>br0</code>桥接到<code>em2</code> ,这一步将会导致em2断网,远程ssh将会断开</p>
 <p><code>brctl stp br0 on</code> 将br0设置为启用STP协议</p>
-
 <p><code>ifconfig em2 0</code> #将em2的IP设置为0</p>
-
 <p><code>dhclient br0</code> #将br0网络配置好</p>
-
 <p><code>brctl show</code></p>
-
 <p>然后<code>systemctl restart network</code></p>
-
 <p><code>route</code> 查看默认网关</p>
-
 <p><a href="https://wiki.centos.org/zh/HowTos/KVM">https://wiki.centos.org/zh/HowTos/KVM</a></p>
-
 <h2 id="创建虚拟机磁盘镜像文件">创建虚拟机磁盘镜像文件</h2>
-
 <p>不能创建太小,建议5G-50G</p>
-
 <p>qcow2格式是kvm支持的标准格式，raw格式为虚拟磁盘文件通用格式。有测试数据表明raw格式的I/O性能略高于qcow2格式，但是在加密，容量，快照方面qcow2格式有优势</p>
-
 <pre><code>qemu-img create -f qcow2 test.qcow2 20G  //建立qcow2格式磁盘文件
 qemu-img create -f raw test.raw 20G      //建立raw格式磁盘文件
 qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文件
 
-</code></pre>
-
-<h2 id="创建虚拟机">创建虚拟机</h2>
-
+</code></pre><h2 id="创建虚拟机">创建虚拟机</h2>
 <p>使用<code>osinfo-query os</code>可以查看<code>os-variant</code>都有哪些代号</p>
-
 <p><a href="https://raymii.org/s/articles/virt-install_introduction_and_copy_paste_distro_install_commands.html">https://raymii.org/s/articles/virt-install_introduction_and_copy_paste_distro_install_commands.html</a></p>
-
 <p>创建 Ubuntu</p>
-
 <pre><code>virt-install \
 --name ubuntu \
 --ram 512 --vcpus 1 \
@@ -177,10 +123,7 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 --cdrom=/data/iso/ubuntu-16.04.1-server-amd64.iso \
 --extra-args='console=tty0 console=ttyS0,115200n8 serial' \
 --hvm --dry-run
-</code></pre>
-
-<p>创建CentOS</p>
-
+</code></pre><p>创建CentOS</p>
 <pre><code>virt-install \
 --name centos \
 --ram 512 --vcpus 1 \
@@ -193,20 +136,12 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 --location=/data/iso/CentOS-7-x86_64-Minimal-1511.iso \
 --extra-args='console=tty0 console=ttyS0,115200n8 serial' \
 --hvm --dry-run
-</code></pre>
-
-<p>virsh &ndash;connect qemu:///system</p>
-
+</code></pre><p>virsh &ndash;connect qemu:///system</p>
 <p>创建Debain</p>
-
 <p>先挂载 <code>sudo mount -o loop,unhide -t iso9660 -r /data/iso/debian-8.6.0-amd64-CD-1.iso /mnt/cdrom</code></p>
-
 <p>需要nfs启动 <code>service nfs start</code></p>
-
 <p>添加<code>/mnt/cdrom    *(ro,insecure,all_squash)</code>到文件<code>/etc/exports</code></p>
-
 <p>并刷新<code>exportfs -r</code></p>
-
 <pre><code>virt-install \
 --name debain \
 --ram 512 --vcpus 1 \
@@ -221,20 +156,12 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 --extra-args='console=tty0 console=ttyS0,115200n8 serial' \
 --vnc --vncport=5911 --vnclisten=0.0.0.0 \
 --hvm --dry-run
-</code></pre>
-
-<p>创建Windows Server</p>
-
+</code></pre><p>创建Windows Server</p>
 <p><code>qemu-img create -f qcow2 /disk/kvm/windisk1 50G</code></p>
-
 <p>针对Windows需要安装一些驱动</p>
-
 <p><code>sudo wget https://fedorapeople.org/groups/virt/virtio-win/virtio-win.repo -O /etc/yum.repos.d/virtio-win.repo</code></p>
-
 <p><code>sudo yum install virtio-win</code></p>
-
 <p><a href="https://fedoraproject.org/wiki/Windows_Virtio_Drivers">https://fedoraproject.org/wiki/Windows_Virtio_Drivers</a></p>
-
 <pre><code>virt-install \
 --name windows2012 \
 --ram 4096 --vcpus 2 \
@@ -248,9 +175,7 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 --graphics vnc,port=5999,listen=0.0.0.0 \
 --console pty,target_type=serial \
 --hvm --dry-run
-</code></pre>
-
-<pre><code>virt-install \
+</code></pre><pre><code>virt-install \
 --name xp1 \
 --ram 1024 --vcpus 1 \
 --disk path=/data/iso/Deepin_Windows_LiteXP_v6.2_SP3.iso,device=cdrom \
@@ -263,82 +188,53 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 --graphics vnc,port=5999,listen=0.0.0.0 \
 --console pty,target_type=serial \
 --hvm --dry-run
-</code></pre>
-
-<p>出现<code>ERROR    不能混用 --graphics 和旧式的图形选项</code>可能是需要去掉<code>--keymap</code></p>
-
+</code></pre><p>出现<code>ERROR    不能混用 --graphics 和旧式的图形选项</code>可能是需要去掉<code>--keymap</code></p>
 <p>关于 加载 virtio 驱动可以参考  <a href="http://www.ilanni.com/?p=5877">http://www.ilanni.com/?p=5877</a></p>
-
 <p><strong>选择加载<code>viostor</code>磁盘驱动</strong></p>
-
 <blockquote>
 <p>disk属性就是指虚拟机使用哪一个磁盘镜像文件作为存储地方，指定刚才创建的镜像文件位置即可，size=10,format=qcow2,bus=virtio分别是指大小，格式（跟镜像格式一致），磁盘总线类型（指Value can be ’ide’, ’scsi’, ’usb’, ’virtio’ or ’xen’，virtio是专门为kvm制定的bus，比较常用），大小需要比镜像文件大小要小，相当于镜像是容器，这个disk是里面的水，水太多就溢出了。</p>
-
+</blockquote>
+<blockquote>
 <p>bridge=br0,model=virtio –keymap=en-us分别指网卡使用，网卡模式即驱动模式，和键盘制式，桥接模式都使用br0，而虚拟机需要使用virtio这个驱动才能使用虚拟网卡，这个虚拟网卡驱动在linux下支持很好，在windows下支持一般，键盘制式如果不指定的话会出现键位错乱的情况，一般我们使用英式。</p>
 </blockquote>
-
 <p>使用<code>virsh</code>可以管理已创建的虚拟机</p>
-
 <p>virsh shutdown demo 正常关闭虚拟机</p>
-
 <p>virsh destroy demo 直接销毁虚拟机</p>
-
 <p>可见 <a href="http://www.cnblogs.com/lin1/p/5776280.html">http://www.cnblogs.com/lin1/p/5776280.html</a></p>
-
 <p>启动并进入虚拟机</p>
-
 <pre><code>virsh start 域名 --console
-</code></pre>
-
-<p>10，彻底删除虚拟机</p>
-
+</code></pre><p>10，彻底删除虚拟机</p>
 <p>1,删除虚拟机   virsh destroy +域名</p>
-
 <p>2，解除标记     virsh undefine +域名</p>
-
 <p>3，删除虚拟机文件</p>
-
 <p><code>virsh destroy windows2012 &amp;&amp;  virsh undefine windows2012</code></p>
-
 <p>通过virt-clone命令克隆虚拟机</p>
-
 <p><code>virt-clone -o centos -n centos2 -f /disk/kvm/disk2</code></p>
-
 <p><code>virsh -c qemu:///system list</code> 可以查看正在运行的机器</p>
-
 <p><code>virsh vncdisplay windows2012</code>查看vnc端口</p>
-
 <p>可以使用其他机器上的vnc  viewer 连接</p>
-
 <p>本机 <code>virt-viewer --connect qemu:///system windows2012</code></p>
-
 <p>windows系统可使用 vncviewer (<a href="http://share.suconghou.cn/files/bin/vncviewer.zip">http://share.suconghou.cn/files/bin/vncviewer.zip</a>) 连接</p>
-
 <p>全屏下用F8键可唤出菜单.</p>
-
 <h3 id="修改相关">修改相关</h3>
-
 <p><code>hostnamectl</code> 可以查看主机相关信息,主机名,内核版本,64位等</p>
-
 <p>只查看静态、瞬态或灵活主机名，分别使用<code>--static</code>,<code>--transient</code>或<code>--pretty</code>选项</p>
-
 <p>要同时修改所有三个主机名：静态、瞬态和灵活主机名：
 <code>hostnamectl set-hostname Linuxidc</code></p>
-
 <p><code>hostname -I</code> 可以获取所有网卡上配置的IP</p>
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/use-kvm/"></air-messager>
+        <air-messager ns="hi" thread="/post/use-kvm/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/iptables/" title="Linux的防火墙iptables与firewalld" >
+            <a class="previous" href="/post/iptables/" title="Linux的防火墙iptables与firewalld" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/server-safe/" title="系统安全">
+            <a class="next" href="/post/server-safe/" title="系统安全">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -350,6 +246,14 @@ qemu-img info test.qcow2                 //查看已经创建的虚拟磁盘文�
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

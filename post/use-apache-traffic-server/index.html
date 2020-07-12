@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>编译安装Apache Traffic Server &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -54,12 +50,8 @@
         </div>
         
 		<div class="post-text">
-			
-
-<h2 id="编译安装">编译安装</h2>
-
+			<h2 id="编译安装">编译安装</h2>
 <p>Centos下编译安装</p>
-
 <pre><code>yum update -y &amp;&amp; yum install wget gcc g++ gcc-c++ glibc-headers perl openssl openssl-devel tcl-devel libxml2-devel pcre-devel
 wget http://apache.fayea.com/trafficserver/trafficserver-6.1.1.tar.bz2
 tar xvjf trafficserver-6.1.1.tar.bz2
@@ -67,14 +59,9 @@ cd trafficserver-6.1.1
 ./configure
 make &amp;&amp; make install
 useradd -s /sbin/nologin trafficserver
-</code></pre>
-
-<p>Apache镜像<a href="http://archive.apache.org/dist/">http://archive.apache.org/dist/</a></p>
-
-<p>国内Apache镜像<a href="http://apache.fayea.com/">http://apache.fayea.com/</a></p>
-
+</code></pre><p>Apache镜像http://archive.apache.org/dist/</p>
+<p>国内Apache镜像http://apache.fayea.com/</p>
 <p>编译完成后,就可以使用了,默认是安装在<code>/usr/local/bin</code>,编译后是比较大</p>
-
 <pre><code>total 98M
 -rwxr-xr-x 1 root root 692K May  9 14:30 header_rewrite_test
 -rwxr-xr-x 1 root root 520K May  9 14:30 traffic_cop
@@ -92,22 +79,14 @@ useradd -s /sbin/nologin trafficserver
 -rwxr-xr-x 1 root root 2.1K May  9 14:30 tspush
 -rwxr-xr-x 1 root root 5.7K May  9 14:30 tsxs
 
-</code></pre>
-
-<p>运行<code>traffic_server -R 1</code>执行测试,经过一系列测试后,显示</p>
-
+</code></pre><p>运行<code>traffic_server -R 1</code>执行测试,经过一系列测试后,显示</p>
 <pre><code>Tests Passed: 177
 Tests Failed: 0
     REGRESSION_RESULT PARENTSELECTION:                          PASSED
 REGRESSION_TEST DONE: PASSED
-</code></pre>
-
-<p>全部测试通过</p>
-
+</code></pre><p>全部测试通过</p>
 <h2 id="使用">使用</h2>
-
 <p>默认的配置文件存放在<code>/usr/local/etc/trafficserver</code></p>
-
 <pre><code>drwxr-xr-x 3 nobody nobody 1.0K May  9 14:30 body_factory
 -rw-r--r-- 1 nobody nobody 1.7K May  9 14:30 cache.config
 -rw-r--r-- 1 nobody nobody  657 May  9 14:30 cluster.config
@@ -130,10 +109,7 @@ REGRESSION_TEST DONE: PASSED
 -rw-r--r-- 1 nobody nobody  649 May  9 14:30 vaddrs.config
 -rw-r--r-- 1 nobody nobody 1.3K May  9 14:30 volume.config
 
-</code></pre>
-
-<p><code>records.config</code>负责大部分全局的选项设置，即主要配置文件</p>
-
+</code></pre><p><code>records.config</code>负责大部分全局的选项设置，即主要配置文件</p>
 <pre><code>CONFIG proxy.config.reverse_proxy.enabled INT 1                           # 开启反向代理
 CONFIG proxy.config.url_remap.remap_required INT 1                        # 1 代理反向代理，0代表正向+反向代理
 CONFIG proxy.config.http.cache.http INT 1                                 # 打开http缓存功能
@@ -141,18 +117,11 @@ CONFIG proxy.config.cache.ram_cache.size INT 512M                         # RAM 
 CONFIG proxy.config.http.keep_alive_no_activity_timeout_out INT 120       # 当一个事务结束后同原服务器保持连接的时间
 CONFIG proxy.config.cluster.ethernet_interface STRING eth0                # 修改成需要侦听的interface名称
 
-</code></pre>
-
-<p><code>remap.config</code>定义映射规则，用于请求的重定向（rewrite）,反向代理即在此配置</p>
-
+</code></pre><p><code>remap.config</code>定义映射规则，用于请求的重定向（rewrite）,反向代理即在此配置</p>
 <p><code>storage.config</code> 用于指定磁盘存储</p>
-
 <p>启动<code>trafficserver start</code></p>
-
 <h3 id="varnish编译">varnish编译</h3>
-
 <p>alpine中编译</p>
-
 <pre><code>apk update &amp;&amp; apk upgrade
 apk --update add gcc g++ make wget curl m4 automake autoconf libtool linux-headers py-docutils ncurses-dev pcre-dev libedit-dev
 cd /tmp
@@ -165,27 +134,23 @@ cd ${VARNISH_VERSION}
 make CFLAGS=&quot;-Os&quot; CPPFLAGS=-D__NEED_mode_t -j$CPU_NUM &amp;&amp; make install
 strip -s /usr/local/bin/* /usr/local/sbin/* /usr/local/lib/varnish/*.so /usr/local/lib/varnish/vmods/*.so
 varnishd  -V
-</code></pre>
-
-<h4 id="varnish基本使用">varnish基本使用</h4>
-
+</code></pre><h4 id="varnish基本使用">varnish基本使用</h4>
 <p>varnish / squid / nginx 优缺点讨论 见 <a href="http://www.zhihu.com/question/20143441">http://www.zhihu.com/question/20143441</a></p>
-
 <p><a href="https://github.com/jiangwenyuan/nuster/wiki/Performance-benchmark:-nuster-vs-nginx-vs-varnish">https://github.com/jiangwenyuan/nuster/wiki/Performance-benchmark:-nuster-vs-nginx-vs-varnish</a></p>
 
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/use-apache-traffic-server/"></air-messager>
+        <air-messager ns="hi" thread="/post/use-apache-traffic-server/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/use-docker-on-raspberry/" title="在树莓派上使用Docker" >
+            <a class="previous" href="/post/use-docker-on-raspberry/" title="在树莓派上使用Docker" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/tcpdump/" title="使用tcpdump与ngrep">
+            <a class="next" href="/post/tcpdump/" title="使用tcpdump与ngrep">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -197,6 +162,14 @@ varnishd  -V
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

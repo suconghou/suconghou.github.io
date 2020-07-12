@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>Linux的防火墙iptables与firewalld &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -54,307 +50,213 @@
         </div>
         
 		<div class="post-text">
-			
-
-<h1 id="iptables相关配置">iptables相关配置</h1>
-
+			<h1 id="iptables相关配置">iptables相关配置</h1>
 <p>配置<code>iptables</code>之前,建议添加一个crontab定时重置iptables,防止将自己阻挡.</p>
-
 <p>建议写入<code>/usr/iptab.sh</code>,加入<code>crontab</code>,每个整点执行</p>
-
 <pre><code>iptables -P INPUT ACCEPT
 iptables -P OUTPUT ACCEPT
 iptables -P FORWARD ACCEPT
 iptables -F
 iptables -X
 iptables -Z
-</code></pre>
-
-<h2 id="查看本机关于iptables的设置情况">查看本机关于IPTABLES的设置情况</h2>
-
+</code></pre><h2 id="查看本机关于iptables的设置情况">查看本机关于IPTABLES的设置情况</h2>
 <pre><code>iptables -L -n
-</code></pre>
-
-<h2 id="清除原有规则">清除原有规则.</h2>
-
+</code></pre><h2 id="清除原有规则">清除原有规则.</h2>
 <p>不管你在安装linux时是否启动了防火墙,如果你想配置属于自己的防火墙,那就清除现在filter的所有规则.
 清除预设表filter中的所有规则链的规则</p>
-
 <pre><code>iptables -F
-</code></pre>
-
-<p>清除预设表filter中使用者自定链中的规则</p>
-
+</code></pre><p>清除预设表filter中使用者自定链中的规则</p>
 <pre><code>iptables -X
-</code></pre>
-
-<h2 id="保存配置">保存配置</h2>
-
+</code></pre><h2 id="保存配置">保存配置</h2>
 <p>刚刚配置的重启以后就会丢失,想要保存使用</p>
-
 <pre><code>iptables save
-</code></pre>
-
-<p>有的可能是<code>iptables-save</code></p>
-
+</code></pre><p>有的可能是<code>iptables-save</code></p>
 <p>这样就写到<code>/etc/sysconfig/iptables</code> 文件里了.
 写入后记得把防火墙重起一下,才能起作用.</p>
-
 <pre><code>service iptables restart
-</code></pre>
-
-<h2 id="设定预设规则">设定预设规则</h2>
-
+</code></pre><h2 id="设定预设规则">设定预设规则</h2>
 <p>默认的入口,出口,转发策略都是ACCEPT
 下面要改变这种规则</p>
-
 <p>iptables 采用黑名单加白名单的方式, 未命中白名单的将采用预设规则</p>
-
 <p>下面操作注意,为避免ssh端口22被拦截,首先添加</p>
-
 <pre><code>iptables -A INPUT -p tcp --dport 22 -j ACCEPT
-</code></pre>
-
-<p>保证22端口入口畅通,注意如果你的OUTPUT模式设置为DROP(上面已经清空了,默认为ACCEPT),还需要添加</p>
-
+</code></pre><p>保证22端口入口畅通,注意如果你的OUTPUT模式设置为DROP(上面已经清空了,默认为ACCEPT),还需要添加</p>
 <pre><code>iptables -A OUTPUT -p tcp --sport 22 -j ACCEPT
-</code></pre>
-
-<p>保证出口22端口畅通
+</code></pre><p>保证出口22端口畅通
 下面开始折腾吧</p>
-
 <p>1.修改入口流量默认规则为DROP,除非命中用户规则,否则拦截所有入口流量(注意上面一定要排除ssh的端口,否则直接掉线)</p>
-
 <pre><code>iptables -P INPUT DROP
-</code></pre>
-
-<p>如果你使用了docker,这里好像会对docker的网络造成影响</p>
-
+</code></pre><p>如果你使用了docker,这里好像会对docker的网络造成影响</p>
 <p>2.允许所有出口流量(重置iptables时,这其实就是默认的规则)</p>
-
 <pre><code>iptables -P OUTPUT ACCEPT
-</code></pre>
-
-<p>3.禁止所有转发流量,除了命中用户规则的</p>
-
+</code></pre><p>3.禁止所有转发流量,除了命中用户规则的</p>
 <pre><code>iptables -P FORWARD DROP
-</code></pre>
-
-<h3 id="查看流量统计">查看流量统计</h3>
-
-<p><code>iptables -L -vn</code></p>
-
-<p><code>iptables -L -vxn</code></p>
-
+</code></pre><h3 id="查看流量统计">查看流量统计</h3>
+<p><code> iptables -L -vn</code></p>
+<p><code> iptables -L -vxn</code></p>
 <h3 id="常用端口开启">常用端口开启</h3>
-
 <p>开启80,443端口,http,https服务</p>
-
 <pre><code>iptables -A INPUT -p tcp --dport 80 -j ACCEPT
 iptables -A INPUT -p tcp --dport 443 -j ACCEPT
-</code></pre>
-
-<p>开启21端口,ftp服务</p>
-
+</code></pre><p>开启21端口,ftp服务</p>
 <pre><code>iptables -A INPUT -p tcp --dport 21 -j ACCEPT
-</code></pre>
-
-<h3 id="开启基本端口">开启基本端口</h3>
-
+</code></pre><h3 id="开启基本端口">开启基本端口</h3>
 <p>允许icmp包通过,也就是允许ping</p>
-
 <pre><code>iptables -A INPUT -p icmp -j ACCEPT
-</code></pre>
-
-<p>允许loopback!(不然会导致DNS无法正常关闭等问题)</p>
-
+</code></pre><p>允许loopback!(不然会导致DNS无法正常关闭等问题)</p>
 <p><strong>如果未启用此项,常见的fastcgi_pass 127.0.0.1 将会有问题</strong></p>
-
 <pre><code>iptables -A INPUT -i lo -p all -j ACCEPT
-</code></pre>
-
-<p>iptables 配置实时生效,如果拦截了ssh端口,将立即掉线!</p>
-
+</code></pre><p>iptables 配置实时生效,如果拦截了ssh端口,将立即掉线!</p>
 <p>无论iptabes启动与否，ps -ef都不会看到iptables的进程，这是因为iptables是由内核来实现的，也就是说iptables的功能已经融入到内核里面了</p>
-
 <p>iptables只是一个工具，将IP规则写入内核，让内核去处理。所以iptables只有在加规则的时候才会看得到进程，加完了就退出了</p>
-
 <p>iptables并不是一个普通的daemon，只是一个普通的工具，添加一些规则到kernel的filter列表里面。</p>
-
 <p><code>systemctl stop iptables</code> 也与进程无关,他只是执行了<code>/usr/libexec/iptables/iptables.init stop</code></p>
-
 <p>将规则从内核清除到存到文件.</p>
-
 <h3 id="ip-拦截">IP 拦截</h3>
-
 <p>拦截一个IP</p>
-
 <p><code>iptables -I INPUT -s 1.2.3.4 -j DROP</code></p>
-
 <p>解封此IP</p>
-
 <p><code>iptables -D INPUT -s 1.2.3.4 -j DROP</code></p>
-
 <p>参数-I是表示Insert（添加），-D表示Delete（删除）</p>
-
 <p>INPUT表示入站，DROP表示放弃连接</p>
-
 <p>IP段</p>
-
 <p>192.168.1.x 可以写 <code>192.168.1.0/24</code></p>
-
 <p>192.168.x.x 可以写 <code>192.168.0.0/16</code></p>
-
 <p>192.x.x.x   可以写 <code>192.0.0.0/8</code></p>
-
 <p><code>iptables -I INPUT -s 112.198.0.0/16 -j DROP</code></p>
-
 <blockquote>
 <p>iptables 过滤大量IP地址任然是挨个遍历,如需拦截数以万计的IP地址,需使用<code>ipset</code>,能获取最佳性能.
 <code>yum info ipset -y</code> 安装<code>ipset</code></p>
 </blockquote>
-
 <pre><code>iptables -A INPUT -p tcp --dport 8000 -s 1.2.3.4 -j ACCEPT
 iptables -A INPUT -p tcp --dport 8000 -j DROP
-</code></pre>
-
-<p><code>iptables -D INPUT 2</code></p>
-
+</code></pre><p><code>iptables -D INPUT 2</code></p>
 <p><a href="https://stackoverflow.com/questions/7423309/iptables-block-access-to-port-8000-except-from-ip-address">https://stackoverflow.com/questions/7423309/iptables-block-access-to-port-8000-except-from-ip-address</a></p>
-
 <p><a href="https://stackoverflow.com/questions/10197405/how-can-i-remove-specific-rules-from-iptables">https://stackoverflow.com/questions/10197405/how-can-i-remove-specific-rules-from-iptables</a></p>
-
 <h3 id="路由黑洞">路由黑洞</h3>
-
 <p>linux 黑洞路由命令
 net-tool 用法
 <code>route add -host 10.10.0.1 127.0.0.1 -blackhole</code>
 iprouter2 用法
 <code>ip route add blackhole 192.168.32.128/32</code></p>
-
 <p>中国 ip 段获取</p>
-
 <pre><code>wget -O- 'http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest' | awk -F\| '/CN\|ipv4/ { printf(&quot;%s/%d\n&quot;, $4, 32-log($5)/log(2)) }' &gt; ./ignore.list
-</code></pre>
-
-<p>示例：拦截ssh登录失败次数过多的IP</p>
-
+</code></pre><p>示例：拦截ssh登录失败次数过多的IP</p>
 <pre><code>lastb -i | awk '{print $3}' | sort | uniq -c | sort -nr | head -50 | awk '{print &quot;ip route add blackhole &quot;, $2}' | sort -n | uniq | sh
-</code></pre>
-
-<p>前面是找出登录失败过多的IP,后面使用awk拼接 ip route 命令并执行</p>
-
+</code></pre><p>前面是找出登录失败过多的IP,后面使用awk拼接 ip route 命令并执行</p>
 <p>使用 <code>netstat -nr</code> 或者 <code>route -n</code> 可以验证,这两个命令都可以查看 <code>Kernel IP routing table</code></p>
-
-<p><code>ip route add</code> 的好处是会自动判断是否重复给出<code>RTNETLINK answers: File exists</code>,但不影响未重复的添加。比起iptables也更简单</p>
-
+<p><code>ip route add </code> 的好处是会自动判断是否重复给出<code>RTNETLINK answers: File exists</code>,但不影响未重复的添加。比起iptables也更简单</p>
 <p>可以存储为文件,定时执行
 <code>/home/block.sh</code></p>
-
 <pre><code>lastb -i | awk '{print $3}' | sort | uniq -c | sort -nr | head -50 | awk '{print &quot;/usr/sbin/ip route add blackhole &quot;, $2}' | sort -n | uniq | sh
-</code></pre>
-
-<p><code>crontab -e</code> 每小时执行</p>
-
+</code></pre><p><code>crontab -e</code> 每小时执行</p>
 <pre><code>0 * * * * sh /home/block.sh &amp;&gt;/dev/null
-</code></pre>
-
-<p><code>netstat -anltp | awk '{print $5}' | grep -E -o &quot;([0-9]{1,3}\.){3}[0-9]{1,3}&quot; | grep -v 0.0 | sort | uniq -c | sort -nr | head -10</code></p>
-
-<p><code>netstat -anltp | awk '{print $5}' | grep -E -o &quot;([0-9]{1,3}\.){3}[0-9]{1,3}&quot; | grep -v 0.0 | sort | uniq -c | sort -nr | head -10 | awk '{print &quot;ip route add blackhole &quot;, $2 }'</code></p>
-
+</code></pre><p><code>netstat -anltp | awk '{print $5}' | grep -E -o &quot;([0-9]{1,3}\.){3}[0-9]{1,3}&quot; | grep -v 0.0 | sort | uniq -c | sort -nr | head -10</code></p>
+<p><code>netstat -anltp | awk '{print $5}' | grep -E -o &quot;([0-9]{1,3}\.){3}[0-9]{1,3}&quot; | grep -v 0.0 | sort | uniq -c | sort -nr | head -10 | awk '{print &quot;ip route add blackhole &quot;, $2 }' </code></p>
 <p>查看路由黑洞信息
 <code>ip route show</code></p>
-
 <p>删除黑洞</p>
-
 <pre><code>ip route del 192.168.0.195
 ip route show
-</code></pre>
-
-<p>批量删除符合规则的IP  <code>ip route show | grep &quot;0.0.0 &quot; | awk {'print &quot;ip route del &quot;,$2'}  | sh</code></p>
-
+</code></pre><p>批量删除符合规则的IP  <code>ip route show | grep &quot;0.0.0 &quot; | awk {'print &quot;ip route del &quot;,$2'}  | sh</code></p>
 <p>清除所有blackhole的规则  <code>ip route show | grep blackhole | grep -E -o &quot;([0-9]{1,3}\.){3}[0-9]{1,3}&quot; | awk {'print &quot;ip route del &quot;,$1'} | sh</code></p>
-
 <p>添加的IP也可以是一个网段 <code>192.168.0.195/32</code></p>
-
 <p>路由黑洞的工作原理就是将攻击者的IP引导到一个不存在的地址，从而直接丢弃。
 当开启路由黑洞以后，攻击者到你服务器的TCP握手将不能成功，因为你的服务器根本不会响应SYN+ACK包，但是攻击者的SYN还是发过来了，这个阻止不了。所有UDP的包也不能阻止接受，但是服务器不会发送任何响应给攻击者。简单说就是攻击你没法阻止，但可以不回应。</p>
-
+<p>路由黑洞 比 iptables 更节省cpu</p>
+<p>无论是iptables还是路由黑洞,都是依次遍历查找,效率始终不如ipset,但ipset一个set最大支持65535个ip</p>
 <p>iptable 与 route 区别</p>
-
 <p><a href="http://www.linuxforums.org/forum/newbie/186273-iptables-forwarding-vs-ip-route-post877996.html#post877996">http://www.linuxforums.org/forum/newbie/186273-iptables-forwarding-vs-ip-route-post877996.html#post877996</a></p>
-
 <p><a href="https://superuser.com/questions/419659/iptables-vs-route">https://superuser.com/questions/419659/iptables-vs-route</a></p>
-
 <p><a href="http://www.adminsehow.com/2011/09/iptables-packet-traverse-map/">http://www.adminsehow.com/2011/09/iptables-packet-traverse-map/</a></p>
-
 <p>参考 <a href="http://ximunix.blogspot.com/2015/02/howto-drop-or-block-attackers-ip.html">http://ximunix.blogspot.com/2015/02/howto-drop-or-block-attackers-ip.html</a></p>
-
-<h3 id="端口转发">端口转发</h3>
-
+<h3 id="ipset">IPSET</h3>
+<p>创建一个ipset</p>
+<p><code>ipset create xxx hash:net</code> （也可以是hash:ip ，这指的是单个ip,xxx是ipset名称）</p>
+<p>ipset默认可以存储65536个元素，使用maxelem指定数量</p>
+<p><code>ipset create blacklist hash:net maxelem 1000000</code> #黑名单</p>
+<p><code>ipset create whitelist hash:net maxelem 1000000</code> #白名单</p>
+<p>查看已创建的ipset</p>
+<p><code>ipset list</code></p>
+<p>加入一个名单ip</p>
+<p><code>ipset add blacklist 10.60.10.xx</code></p>
+<p>去除名单ip</p>
+<p><code>ipset del blacklist 10.60.10.xx</code></p>
+<p>创建防火墙规则，与此同时，allset这个IP集里的ip都无法访问80端口（如：CC攻击可用）</p>
+<p>iptables -I INPUT -m set –match-set blacklist src -p tcp -j DROP</p>
+<p>iptables -I INPUT -m set –match-set blacklist src -p tcp –destination-port 80 -j DROP</p>
+<p>Enable blacklists</p>
+<p><code>iptables -I INPUT 1 -m set --match-set blacklist src -j DROP</code></p>
+<p>将ipset规则保存到文件</p>
+<p>ipset save blacklist -f blacklist.txt
+ipset save whitelist -f whitelist.txt</p>
+<p>删除ipset</p>
+<p>ipset destroy blacklist
+ipset destroy whitelist</p>
+<p>导入ipset规则</p>
+<p>ipset restore -f blacklist.txt
+ipset restore -f whitelist.txt</p>
+<p><code>ipset -exist restore -f blacklist.txt</code>可以忽略已有的当冲突时不报错</p>
+<p><code>ipset -exist add blacklist 10.60.10.0</code></p>
+<p>查看被拦截的数据包
+iptables -L INPUT -v &ndash;line-numbers</p>
+<p>输出类似</p>
+<pre><code>Chain INPUT (policy DROP 60 packets, 17733 bytes)
+num   pkts bytes target            prot opt in  out source   destination
+1       15  1349 DROP              all  --  any any anywhere anywhere     match-set blacklist src
+</code></pre><p><strong>有效期</strong></p>
+<p>在创建set时可以指定有效期,单位为秒</p>
+<p><code>ipset create blacklist hash:ip timeout 300</code></p>
+<p>set里添加的每一条记录自添加以后默认有效期就是指定的timeout值</p>
+<p>到期后会自动清理</p>
+<p>可以在添加记录时覆盖默认的有效期</p>
+<p><code>ipset add blacklist 6.6.6.6 timeout 60</code></p>
+<p>要修改一个条目的有效期,需要使用<code>-exist</code></p>
+<p><code>ipset -exist add blacklist 1.2.3.4 timeout 100</code></p>
+<p>如果在创建集合时没有指定 timeout，那么之后添加条目也就不支持 timeout 参数，执行 add 会收到报错。</p>
+<p>想要默认条目不会过期（自动删除），又需要添加某些条目时加上 timeout 参数，可以在创建集合时指定 timeout 为 0。</p>
+<h3 id="并发限制">并发限制</h3>
+<p>iptable限制，控制单个IP的最大30并发连接数</p>
+<pre><code>sudo iptables -I INPUT -p tcp --dport 443 -m connlimit --connlimit-above 30 -j REJECT
+sudo iptables -I INPUT -p tcp --dport 80 -m connlimit --connlimit-above 30 -j REJECT
+</code></pre><h3 id="端口转发">端口转发</h3>
 <p>允许服务器的IP转发功能： <code>echo 1 &gt; /proc/sys/net/ipv4/ip_forward</code></p>
-
 <p><code>iptables -t nat -A POSTROUTING -j MASQUERADE</code></p>
-
 <p><code>iptables -t nat -A PREROUTING -p tcp -i eth0 --dport 31521 -j DNAT --to 192.168.0.211:1521</code></p>
-
 <p>相同端口后面可省略不写 <code>iptables -t nat -I PREROUTING -p tcp --dport 1521 -j DNAT --to 192.168.0.211</code></p>
-
 <p><code>iptables -t nat -A POSTROUTING -d 192.168.203.235 -p tcp --dport 80 -j MASQUERADE</code></p>
-
 <p><a href="http://www.dkys.org/archives/1075.html">http://www.dkys.org/archives/1075.html</a></p>
-
 <ul>
 <li>特别注明：本地服务器 IP 未必是公网 IP ，像阿里云就是内网 IP ，请用 ipconfig 确认下走流量的网卡 IP 是外网还是内网。</li>
 </ul>
-
 <p><strong>单端口转发(tcp、udp)</strong></p>
-
 <pre><code>iptables -t nat -A PREROUTING -p tcp --dport [要转发的端口号] -j DNAT --to-destination [要转发的服务器IP]
 iptables -t nat -A PREROUTING -p udp --dport [要转发的端口号] -j DNAT --to-destination [要转发的服务器IP]
 iptables -t nat -A POSTROUTING -p tcp -d [要转发的服务器IP] --dport [要转发的端口号] -j SNAT --to-source [本机IP]
 iptables -t nat -A POSTROUTING -p udp -d [要转发的服务器IP] --dport [要转发的端口号] -j SNAT --to-source [本机IP]
-</code></pre>
-
-<p><strong>端口段转发(tcp、udp)</strong></p>
-
+</code></pre><p><strong>端口段转发(tcp、udp)</strong></p>
 <p>转发10000到20000这个端口段，则填10000:20000</p>
-
 <pre><code>iptables -t nat -A PREROUTING -p tcp --dport [要转发的端口段] -j DNAT --to-destination [要转发的服务器IP]
 iptables -t nat -A PREROUTING -p udp --dport [要转发的端口段] -j DNAT --to-destination [要转发的服务器IP]
 iptables -t nat -A POSTROUTING -p tcp -d [要转发的服务器IP] --dport [要转发的端口段] -j SNAT --to-source [本机IP]
 iptables -t nat -A POSTROUTING -p udp -d [要转发的服务器IP] --dport [要转发的端口段] -j SNAT --to-source [本机IP]
-</code></pre>
-
-<p>我们可能需要将访问主机的7979端口映射到8080端口。也可以iptables重定向完成</p>
-
+</code></pre><p>我们可能需要将访问主机的7979端口映射到8080端口。也可以iptables重定向完成</p>
 <p><code>iptables -t nat -A PREROUTING -p tcp --dport 7979 -j REDIRECT --to-ports 8080</code>
 更改iptables，使之实现nat映射功能</p>
-
 <pre><code>iptables -t nat -A PREROUTING  -p tcp --dport 21358 -j DNAT --to-destination 67.215.245.160:1358
 iptables -t nat -A POSTROUTING -p tcp -d 67.215.245.160 --dport 1358 -j SNAT --to-source 101.200.151.143:21358
-</code></pre>
-
-<p>需求很简单，把本地81端口映射到8080端口上</p>
-
+</code></pre><p>需求很简单，把本地81端口映射到8080端口上</p>
 <ol>
 <li>所有的81请求转发到了8080上.</li>
 </ol>
-
-<h1 id="iptables-t-nat-a-prerouting-p-tcp-dport-81-j-redirect-to-ports-8080">iptables -t nat -A PREROUTING -p tcp &ndash;dport 81 -j REDIRECT &ndash;to-ports 8080</h1>
-
+<h1 id="iptables--t-nat--a-prerouting--p-tcp---dport-81--j-redirect---to-ports-8080">iptables -t nat -A PREROUTING -p tcp &ndash;dport 81 -j REDIRECT &ndash;to-ports 8080</h1>
 <p>1</p>
-
-<h1 id="iptables-t-nat-a-prerouting-p-tcp-dport-81-j-redirect-to-ports-8080-1">iptables -t nat -A PREROUTING -p tcp &ndash;dport 81 -j REDIRECT &ndash;to-ports 8080</h1>
-
+<h1 id="iptables--t-nat--a-prerouting--p-tcp---dport-81--j-redirect---to-ports-8080-1">iptables -t nat -A PREROUTING -p tcp &ndash;dport 81 -j REDIRECT &ndash;to-ports 8080</h1>
 <p>如果需要本机也可以访问，则需要配置OUTPUT链：</p>
-
 <p>iptables -t nat -A OUTPUT -p tcp &ndash;dport 81 -j REDIRECT &ndash;to-ports 8080
 1
 iptables -t nat -A OUTPUT -p tcp &ndash;dport 81 -j REDIRECT &ndash;to-ports 8080
 原因：外网访问需要经过PREROUTING链，但是localhost不经过该链，因此需要用OUTPUT，或者POSTROUTING。POSTROUTING不行，需要看看。</p>
-
 <pre><code>
 #清除配置
 /sbin/iptables -P INPUT ACCEPT
@@ -381,44 +283,28 @@ iptables -t nat -A OUTPUT -p tcp &ndash;dport 81 -j REDIRECT &ndash;to-ports 808
 #开放出口
 /sbin/iptables -A OUTPUT -j ACCEPT
 
-</code></pre>
-
-<p>参考 <a href="http://liaoph.com/iptables/">http://liaoph.com/iptables/</a></p>
-
+</code></pre><p>参考 <a href="http://liaoph.com/iptables/">http://liaoph.com/iptables/</a></p>
 <h1 id="firewalld">firewalld</h1>
-
 <p><code>systemctl status firewalld</code> 查看服务状态</p>
-
 <p><code>firewall-cmd --state</code> 常看当前的状态</p>
-
 <p><code>firewall-cmd --get-active-zones</code> 查看区域信息</p>
-
 <p>查看某区域打开的端口
 <code>firewall-cmd --zone=public --list-ports</code>
 添加一个开放端口</p>
-
 <p><code>firewall-cmd --zone=public --add-port=8080/tcp</code></p>
-
+<p>开放一段端口
+<code>firewall-cmd --zone=public --add-port=6010-6060/tcp</code></p>
 <p>add-port 后只是本次生效,并没有保存到配置文件内,执行<code>firewall-cmd --reload</code>未保存到配置文件内的就丢失了.</p>
-
 <p>需要永久生效时,添加需加上<code>--permanent</code>,如 <code>firewall-cmd --permanent --zone=public --add-port=9090/tcp</code></p>
-
 <p><code>firewall-cmd --reload</code> 生效</p>
-
 <p>更多可参考 <a href="http://www.ywnds.com/?p=7570&amp;viewuser=30">http://www.ywnds.com/?p=7570&amp;viewuser=30</a>   <a href="https://linux.cn/article-8098-1.html">https://linux.cn/article-8098-1.html</a></p>
-
 <p>firewalld 新添加的规则,对于已经建立好的链接是无效的,iptables的规则则是立即对所有链接生效.</p>
-
 <p>如果要使用iptables而不用firewalld:</p>
-
 <pre><code>yum install -y iptables-services
 systemctl stop firewalld
 systemctl disable firewalld
 systemctl enable iptables
-</code></pre>
-
-<h3 id="流量转发">流量转发</h3>
-
+</code></pre><h3 id="流量转发">流量转发</h3>
 <pre><code>echo 1 &gt; /proc/sys/net/ipv4/ip_forward
 # 开启防火墙转发
 firewall-cmd --permanent --add-port=2333/tcp
@@ -427,23 +313,43 @@ firewall-cmd --permanent --add-masquerade
 firewall-cmd --permanent --add-forward-port=port=2333:proto=tcp:toport=6666:toaddr=1.1.1.1
 firewall-cmd --permanent --add-forward-port=port=2333:proto=udp:toport=6666:toaddr=1.1.1.1
 firewall-cmd --reload
-</code></pre>
-
-<p>其中 2333 代表本地监听端口， 6666 表示欲中转服务器的端口， 1.1.1.1 代表欲中转服务器的ip地址。</p>
+</code></pre><p>其中 2333 代表本地监听端口， 6666 表示欲中转服务器的端口， 1.1.1.1 代表欲中转服务器的ip地址。</p>
+<h2 id="配置服务器作为路由上网">配置服务器作为路由上网</h2>
+<p>需求:
+有两台服务器:A,B</p>
+<p>A,B 组成局域网, A有公网IP,可访问公网资源,B无公网IP,也无法访问互联网</p>
+<p>现配置B自由链接到互联网.</p>
+<p>在A上配置:</p>
+<p><code>iptables -A INPUT -i eth0 -j ACCEPT</code></p>
+<p><code>echo &quot;1&quot; &gt; /proc/sys/net/ipv4/ip_forward</code></p>
+<p><code>sysctl -w net.ipv4.ip_forward=1</code></p>
+<p>iptables -t nat -A POSTROUTING -s 172.16.0.0/24 -o eth0 -j MASQUERADE</p>
+<p>iptables -t nat -A POSTROUTING -s 172.16.0.43 -o eth0 -j MASQUERADE</p>
+<p><code>iptables -t nat -A POSTROUTING -s 172.16.0.0/24 -o eth0 -j MASQUERADE</code></p>
+<p><code>iptables -t nat -A POSTROUTING -s 172.16.0.43 -o eth0 -j MASQUERADE</code></p>
+<p>iptables -t nat -A POSTROUTING -s 172.16.0.0/24 -j SNAT &ndash;to 172.16.0.148
+iptables -t nat -A POSTROUTING -s 172.16.0.43 -o eth0 -j SNAT –to-source 172.16.0.148</p>
+<h1 id="这一行最关键就是加入-nat-table-封包伪装本例中-innet-是-172168100024">这一行最关键！就是加入 nat table 封包伪装！本例中 $innet 是 172.168.100.0/24</h1>
+<h1 id="而-extif-则是对外界面本例中为-eth0">而 $EXTIF 则是对外界面，本例中为 eth0</h1>
+<p>在B上配置,网关设置为A的IP</p>
+<p><code>ip route delete default</code></p>
+<p><code>ip route add default via 172.16.0.148</code></p>
+<p>route add default gw 172.16.0.148</p>
+<p>其中IP为A的局域网IP</p>
 
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/iptables/"></air-messager>
+        <air-messager ns="hi" thread="/post/iptables/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/pc-hardware/" title="修电脑相关知识" >
+            <a class="previous" href="/post/pc-hardware/" title="修电脑相关知识" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/use-kvm/" title="使用kvm创建和管理虚拟机">
+            <a class="next" href="/post/use-kvm/" title="使用kvm创建和管理虚拟机">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -455,6 +361,14 @@ firewall-cmd --reload
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

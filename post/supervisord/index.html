@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en" class="post">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+	<meta name='renderer' content='webkit'>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
+	<meta name='description' content='记录学习的点点滴滴'>
+	<meta name='keywords' content='前端,PHP,GO,编程博客'>
+	<title>Supervisord &middot; 苏苏的博客</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
+	<link rel="shortcut icon" href="/favicon.png">
+</head>
+<body>
+<header class="header post-header">
+    <div class="header-main" >
+        <a href="/"><img src="/img/avatar.jpg" class="header-avatar"></a>
+        <h1>苏苏的博客</h1>
+        <p class="sub-title">简约至极</p>
+        <ul class="menus">
+            <a href="/">首页</a>
+            <a href="/post">技术</a>
+            <a href="/life">生活</a>
+            <a href="/photo">相册</a>
+            <a href="/about">关于</a>
+        </ul>
+    </div>
+    
+</header>
+<div class="content container center">
+	<div class="post">
+		<h1 class="post-title">
+			Supervisord
+        </h1>
+        <div class="post-meta">
+            <div>
+                <p class="post-date">
+                    <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                    2017/11/02 16:18 Thu
+                </p>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+        
+		<div class="post-text">
+			<p>Supervisord可以通过sudo easy_install supervisor安装，当然也可以通过Supervisord官网下载后解压并转到源码所在的文件夹下执行setup.py install来安装。</p>
+<blockquote>
+<p>使用easy_install必须安装setuptools打开https://pypi.org/project/setuptools/#files</p>
+</blockquote>
+<p>或者</p>
+<ol>
+<li>安装easy_install</li>
+</ol>
+<p>sudo yum install python-setuptools-devel
+2. 安装Supervisor</p>
+<p>easy_install supervisor
+　　 3. 生成配置文件</p>
+<p>echo_supervisord_conf &gt; /etc/supervisord.conf</p>
+<p>安装完有两个可执行文件 <code>supervisorctl</code>  <code>supervisord</code></p>
+<p>配置文件</p>
+<p><code>/etc/supervisord.conf</code></p>
+<p>启动</p>
+<p><code>/usr/bin/supervisord -c /etc/supervisord.conf</code></p>
+<p>配置文件示例</p>
+<pre><code>[unix_http_server]
+file=/dev/shm/supervisor.sock   ; (the path to the socket file)
+
+[supervisord]
+logfile=/tmp/supervisord.log ; (main log file;default $CWD/supervisord.log)
+logfile_maxbytes=50MB        ; (max main logfile bytes b4 rotation;default 50MB)
+logfile_backups=10           ; (num of main logfile rotation backups;default 10)
+loglevel=info                ; (log level;default info; others: debug,warn,trace)
+pidfile=/tmp/supervisord.pid ; (supervisord pidfile;default supervisord.pid)
+nodaemon=false               ; (start in foreground if true;default false)
+minfds=1024                  ; (min. avail startup file descriptors;default 1024)
+minprocs=200                 ; (min. avail process descriptors;default 200)
+user=root		     ;
+
+; the below section must remain in the config file for RPC
+; (supervisorctl/web interface) to work, additional interfaces may be
+; added by defining them in separate rpcinterface: sections
+[rpcinterface:supervisor]
+supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
+
+[supervisorctl]
+serverurl=unix:///dev/shm/supervisor.sock ; use a unix:// URL  for a unix socket
+
+[program:php-fpm]
+command = /usr/local/sbin/php-fpm --nodaemonize --fpm-config /usr/local/etc/php-fpm.d/www.conf
+autostart=true
+autorestart=true
+priority=5
+stdout_logfile=/dev/stdout
+stdout_logfile_maxbytes=0
+stderr_logfile=/dev/stderr
+stderr_logfile_maxbytes=0
+
+[program:nginx]
+command=/usr/sbin/nginx -g &quot;daemon off; error_log /dev/stderr info;&quot;
+autostart=true
+autorestart=true
+priority=10
+stdout_events_enabled=true
+stderr_events_enabled=true
+stdout_logfile=/dev/stdout
+stdout_logfile_maxbytes=0
+stderr_logfile=/dev/stderr
+stderr_logfile_maxbytes=0
+
+[program:crond]
+command=/usr/sbin/crond -f
+numprocs=1
+autostart=true
+autorestart=true
+priority=5
+startsecs=5
+startretries=3
+stdout_events_enabled=true
+stderr_events_enabled=true
+stdout_logfile=/dev/stdout
+stdout_logfile_maxbytes=0
+stderr_logfile=/dev/stderr
+stderr_logfile_maxbytes=0
+
+
+[include]
+files = /etc/supervisor/conf.d/*.conf
+
+</code></pre><p>参考 <a href="http://www.cnblogs.com/jasonkoo/articles/3750638.html">http://www.cnblogs.com/jasonkoo/articles/3750638.html</a></p>
+<p>supervisorctl 控制命令</p>
+<p>supervisorctl start programxxx</p>
+<p>supervisorctl stop programxxx</p>
+<p>supervisorctl restart programxxx</p>
+<p>supervisorctl stop all  停止全部进程，注：start、restart、stop都不会载入最新的配置文件。</p>
+<p>supervisorctl reload  载入最新的配置文件，并按新的配置启动、管理所有进程。</p>
+<p>supervisord 目前不支持 Python 3,必须是需要python2</p>
+<p>类似工具 <a href="https://mmonit.com/monit/">https://mmonit.com/monit/</a></p>
+<p>一个简单的配置<code>/etc/monitrc</code></p>
+<pre><code>set daemon  30
+set log /var/log/monit.log
+set httpd unixsocket /var/run/monit.sock allow user:pass
+</code></pre><pre><code>set daemon  30
+set log /var/log/monit.log
+set httpd unixsocket /var/run/monit.sock allow user:pass
+
+check process crond with matching crond
+start program = &quot;/usr/local/bin/crond&quot; with timeout 10 seconds
+stop program = &quot;/usr/local/bin/busybox killall crond&quot; with timeout 10 seconds
+</code></pre><p>可以使用 <code>monit procmatch  pattern</code> 来查看规则匹配到的所有进程</p>
+<p><code>process matching</code> 匹配到多个，monit 会选择 uptime 最大的那个处理。</p>
+<p>配置文件的权限需要是 700  否则报错<code>The control file '/etc/monitrc' permission 0644 is wrong, maximum 0700 allowed</code></p>
+<pre><code>set daemon  30
+set log /var/log/monit.log
+set httpd unixsocket /var/run/monit.sock allow user:pass
+
+check process crond with matching crond
+start program = &quot;/usr/local/bin/crond&quot; with timeout 10 seconds
+stop program = &quot;/usr/local/bin/busybox killall crond&quot; with timeout 10 seconds
+
+check process redis-server with pidfile /var/run/redis-server.pid
+start program = &quot;/usr/local/bin/redis-server /etc/redis.conf&quot;
+stop  program = &quot;/usr/local/bin/busybox killall redis-server&quot;
+if failed port 6379 then restart
+</code></pre><p>监控 mysql-server</p>
+<pre><code>check process mysql with pidfile /run/mysqld/mysqld.pid
+    start program = &quot;/usr/sbin/service mysql start&quot; with timeout 60 seconds
+    stop program  = &quot;/usr/sbin/service mysql stop&quot;
+    if failed unixsocket /var/run/mysqld/mysqld.sock then restart
+</code></pre><p>发现进程挂了以后发送通知</p>
+<pre><code>set daemon 30
+set log /var/log/monit.log
+set httpd unixsocket /var/run/monit.sock allow user:pass
+
+check process webpack matching webpack
+if does not exist then exec &quot;/usr/bin/curl -sL https://xx.send?text=!~~&quot;
+
+</code></pre><p>对于非后台进程需要&amp;</p>
+<pre><code>set daemon 5
+set log /var/log/monit.log
+set httpd unixsocket /var/run/monit.sock allow user:pass
+
+
+check process webpack matching sleep
+start program = &quot;/bin/sh -c 'sleep 40 &amp;'&quot; with timeout 3 seconds
+stop program = &quot;/bin/sh -c 'pkill -f sleep'&quot; with timeout 10 seconds
+</code></pre><p><a href="https://github.com/logrotate/logrotate">https://github.com/logrotate/logrotate</a></p>
+<p>alpine 中
+<code>apk add logrotate</code></p>
+<p>配置文件</p>
+<p><code>/etc/logrotate.conf</code></p>
+<p>示例配置文件</p>
+<pre><code># see &quot;man logrotate&quot; for details
+# rotate log files weekly
+weekly
+
+# keep 4 weeks worth of backlogs
+rotate 4
+
+# create new (empty) log files after rotating old ones
+create
+
+# use date as a suffix of the rotated file
+dateext
+
+# exclude alpine files
+tabooext + .apk-new
+
+# uncomment this if you want your log files compressed
+compress
+
+# main log file
+/var/log/messages {}
+
+# apk packages drop log rotation information into this directory
+include /etc/logrotate.d
+
+# system-specific logs may be also be configured here.
+</code></pre><p><code>/etc/logrotate.d</code> 下可以存放各个程序的配置</p>
+<p><code>/etc/logrotate.d/nginx</code></p>
+<pre><code>/var/www/html/logs/*.log {
+    create 0644 nginx nginx
+    daily
+    rotate 999
+    missingok
+    notifempty
+    compress
+    sharedscripts
+    postrotate
+        /bin/kill -USR1 `cat /var/run/nginx.pid  2&gt;/dev/null` 2&gt;/dev/null || true
+    endscript
+}
+</code></pre><pre><code>/var/log/influxdb/influxd.log {
+    daily
+    rotate 7
+    missingok
+    dateext
+    copytruncate
+    compress
+}
+
+</code></pre><p>logrotate 只是做日期切割，具体的执行还依赖crontab</p>
+<p>一般安装好logrotate后，就会创建crontab的配置 , 创建的文件位于 <code>/etc/periodic/daily/</code></p>
+<p><code>/etc/periodic/daily/logrotate</code></p>
+<pre><code>#!/bin/sh
+
+if [ -f /etc/conf.d/logrotate ]; then
+	. /etc/conf.d/logrotate
+fi
+
+if [ -x /usr/bin/cpulimit ] &amp;&amp; [ -n &quot;$CPULIMIT&quot; ]; then
+	_cpulimit=&quot;/usr/bin/cpulimit --limit=$CPULIMIT&quot;
+fi
+
+$_cpulimit /usr/sbin/logrotate /etc/logrotate.conf
+EXITVALUE=$?
+if [ $EXITVALUE != 0 ]; then
+    /usr/bin/logger -t logrotate &quot;ALERT exited abnormally with [$EXITVALUE]&quot;
+fi
+exit 0
+</code></pre><p>同时 corntab 里包含</p>
+<pre><code># do daily/weekly/monthly maintenance
+# min	hour	day	month	weekday	command
+*/15	*	*	*	*	run-parts /etc/periodic/15min
+0	*	*	*	*	run-parts /etc/periodic/hourly
+0	2	*	*	*	run-parts /etc/periodic/daily
+0	3	*	*	6	run-parts /etc/periodic/weekly
+0	5	1	*	*	run-parts /etc/periodic/m
+</code></pre><p>crontab 的规则位于 <code>/var/spool/cron/crontabs</code> ， 以用户名为文件</p>
+<p><code>crond</code> 也需要常驻内存，logrotate 才能工作。</p>
+<p><code>crond</code> 默认的配置目录就是 <code>/var/spool/cron/crontabs</code> , 没有此目录,则无法运行</p>
+<p>alpine 中直接 <code>crond</code> 就可以后台运行， <code>crond -f</code> 则前台运行</p>
+<p><code>syslogd</code> 后台运行，并将日志存储于 <code>/var/log/messages</code></p>
+<pre><code>BusyBox v1.24.2 (2017-01-18 14:13:46 GMT) multi-call binary.
+
+Usage: syslogd [OPTIONS]
+
+System logging utility
+
+	-n		Run in foreground
+	-R HOST[:PORT]	Log to HOST:PORT (default PORT:514)
+	-L		Log locally and via network (default is network only if -R)
+	-C[size_kb]	Log to shared mem buffer (use logread to read it)
+	-K		Log to kernel printk buffer (use dmesg to read it)
+	-O FILE		Log to FILE (default:/var/log/messages, stdout if -)
+	-s SIZE		Max size (KB) before rotation (default:200KB, 0=off)
+	-b N		N rotated logs to keep (default:1, max=99, 0=purge)
+	-l N		Log only messages more urgent than prio N (1-8)
+	-S		Smaller output
+	-D		Drop duplicates
+	-f FILE		Use FILE as config (default:/etc/syslog.conf)
+
+</code></pre><pre><code>BusyBox v1.27.1 (2017-07-18 19:24:44 CEST) multi-call binary.
+
+Usage: crond -fbS -l N -d N -L LOGFILE -c DIR
+
+	-f	Foreground
+	-b	Background (default)
+	-S	Log to syslog (default)
+	-l N	Set log level. Most verbose 0, default 8
+	-d N	Set log level, log to stderr
+	-L FILE	Log to FILE
+	-c DIR	Cron dir. Default:/var/spool/cron/crontabs
+</code></pre><p>新版busybox 1.27 中 crond 执行的任务命令<code>ps aux</code> 已经查看不到了, 但是通过日志可以看到实际是运行了.</p>
+<p><code>syslogd -C1024</code> 启动的，使用 <code>logread</code> 获取日志</p>
+<p>在 alpine中 在crond 默认的日志是输出到syslogd的</p>
+<pre><code>BusyBox v1.27.2 (2017-11-01 22:58:00 UTC) multi-call binary.
+
+Usage: crond -fbS -l N -d N -L LOGFILE -c DIR
+
+	-f	Foreground
+	-b	Background (default)
+	-S	Log to syslog (default)
+	-l N	Set log level. Most verbose 0, default 8
+	-d N	Set log level, log to stderr
+	-L FILE	Log to FILE
+	-c DIR	Cron dir. Default:/var/spool/cron/crontabs
+</code></pre><p>启动crond,必须创建文件夹<code>/var/spool/cron/crontabs</code> 或者指定一个已存在文件夹。</p>
+<p>crond 启动以后，配置文件直接写在 <code>/var/spool/cron/crontabs</code></p>
+<p>文件修改后无需干预,自动生效。</p>
+<p>此文件夹下的同名文件就是执行crond里命令的用户，例如 root 的 cron配置 www-data 的cron配置等。</p>
+<p><code>syslogd</code> 启动以后默认是使用IPC通信的. 建立 <code>/dev/log</code> socket 文件.</p>
+<p>可执行程序 <code>logger</code> 便可向syslogd 发送日志消息。</p>
+<p>如果没有<code>/dev/log</code> 或者 <code>syslogd</code> 未运行，<code>logger</code>将静默忽略</p>
+
+		</div>
+    </div>
+    <div class="post-comment comment-render">
+        <air-messager ns="hi" thread="/post/supervisord/"></air-messager>
+    </div>
+    <div class="post-end">
+        
+            <a class="previous" href="/post/html5-wap-page/" title="Html5页面适配" >
+                <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
+            </a>
+        
+        
+            <a class="next" href="/post/oh-my-zsh/" title="Oh My Zsh">
+                <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
+            </a>
+        
+    </div>
+</div>
+<footer class="footer">
+    <div class="footer-nav">
+    </div>
+</footer>
+<script type="text/javascript" src="/js/main.js"></script>
+<script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+</body>
+</html>

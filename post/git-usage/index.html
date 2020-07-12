@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>git基本使用 &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -54,10 +50,7 @@
         </div>
         
 		<div class="post-text">
-			
-
-<h1 id="git配置">git配置</h1>
-
+			<h1 id="git配置">git配置</h1>
 <pre><code>git config --global user.email &quot;1126045770@qq.com&quot;
 git config --global user.name &quot;sucongohu&quot;
 
@@ -67,58 +60,43 @@ git config --global credential.helper store
 
 git config --global alias.lg &quot;log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci,%cr) %C(bold blue)&lt;%an&gt;%Creset' --abbrev-commit --date=relative&quot;
 git config --global alias.laststash &quot;diff stash@{0}^!&quot;
-</code></pre>
-
-<blockquote>
+</code></pre><blockquote>
 <p>以上分别是设置用户信息,禁止转换换行符,颜色高亮,记住密码,设置别名列出分支图. 设置别名后,可以使用 <code>git lg</code> 查看各个分支关系</p>
 </blockquote>
-
 <p>设置<code>core.autocrlf false</code> 提交检出均不转换 , 否则同时在Mac,Windows,Linux 跨平台协作开发,eslint 检测换行符错误会很头疼.</p>
-
 <p>默认的<code>core.pager</code> 是less</p>
-
 <p><code>git config --global core.pager &quot;less -FRSX&quot;</code></p>
-
 <p>可以修改为<code>diff-so-fancy</code></p>
-
 <p><code>git config --global core.pager &quot;diff-so-fancy | less --tabs=4 -RFX&quot;</code></p>
-
 <p>见 <a href="http://www.cnblogs.com/sdgf/p/6237847.html">http://www.cnblogs.com/sdgf/p/6237847.html</a></p>
-
 <p>记住密码</p>
-
 <p><code>if [ ! -f ~/.git-credentials ]; then touch ~/.git-credentials; fi</code></p>
-
 <p><code>cat ~/.git-credentials</code></p>
-
 <p>如果不行,可以手动使用<code>http://user:pass@git.xx.cn</code> 格式写入此文件.</p>
-
-<p>还可以记在内存中,指定有效期 <code>git config --global credential.helper &quot;cache --timeout=3600&quot;</code></p>
-
+<p>还可以记在内存中,指定有效期 <code>git config --global credential.helper &quot;cache --timeout=3600&quot; </code></p>
 <p><code>git config credential.helper store</code> 不添加<code>--global</code> 存储在当前项目中</p>
-
-<p>git-for-windows</p>
-
-<p><code>git config --global credential.helper manager</code></p>
-
+<p><strong>git-for-windows</strong></p>
+<p>配置不使用window系统的系统凭据</p>
+<pre><code>git config --global --unset credential.helper
+git config --system --unset credential.helper
+</code></pre><p>使用系统凭据记住密码</p>
+<pre><code>git config --global credential.helper manager
+</code></pre><p>如果修改了git的账户密码,需要清除osxkeychain记住的密码,可以 <code>git config --global credential.helper osxkeychain</code></p>
+<p>要清楚系统凭据,还需要使用window的凭证管理器,管理这些记住的用户身份</p>
 <p>使用git还经常碰到文件权限发生变化,也显示文件变动了,需要提交,如果你不想将文件权限的变动纳入版本控制可以</p>
-
 <pre><code>git config core.filemode false
-</code></pre>
-
-<p>对于一些本地和服务器不一致的配置文件,<code>git status</code>每次查看都显示出来,<code>git add -u</code>又会一不小心提交,可以使用
+</code></pre><p>对于一些本地和服务器不一致的配置文件,<code>git status</code>每次查看都显示出来,<code>git add -u</code>又会一不小心提交,可以使用
 <em>忽略已追踪文件的变动</em></p>
-
 <pre><code>git update-index --assume-unchanged PATH_TO_FILE
-</code></pre>
+</code></pre><p>将一些文件移除版本控制</p>
+<pre><code>git rm -r --cached &lt;folder&gt;
 
+git rm --cached &lt;file&gt;
+</code></pre><p>then commit, push</p>
+<p><a href="https://stackoverflow.com/questions/1274057/how-to-make-git-forget-about-a-file-that-was-tracked-but-is-now-in-gitignore">https://stackoverflow.com/questions/1274057/how-to-make-git-forget-about-a-file-that-was-tracked-but-is-now-in-gitignore</a></p>
 <p>批量操作当前目录下的所有仓库</p>
-
 <pre><code>for i in * ;do cd $i &amp;&amp; pwd &amp;&amp; git gc; cd -;done;
-</code></pre>
-
-<p>参数  说明</p>
-
+</code></pre><p>参数	说明</p>
 <pre><code>
 %H	commit hash
 %h	commit short hash
@@ -163,446 +141,243 @@ git config --global alias.laststash &quot;diff stash@{0}^!&quot;
 %%	a raw %
 %x00	print a byte from a hex code
 %w([[,[,]]])	switch line wrapping, like the -w option of git-shortlog(1).
-</code></pre>
-
-<p>一个命令推送到多个服务端<code>vim .git/config</code> ,添加一个区段,例如:</p>
-
+</code></pre><p>一个命令推送到多个服务端<code>vim .git/config</code> ,添加一个区段,例如:</p>
 <pre><code>[remote &quot;all&quot;]
         url = https://git.oschina.net/suconghou/mvc.git
         url = https://suconghou@git.coding.net/suconghou/mvc.git
         url = https://github.com/suconghou/mvc.git
-</code></pre>
-
-<p>以后可以使用<code>git push all master</code>一次推送到多个后端</p>
-
+</code></pre><p>以后可以使用<code>git push all master</code>一次推送到多个后端</p>
 <p>使用远程的某一分支,覆盖本地代码</p>
-
 <p><code>git fetch --all &amp;&amp; git reset --hard origin/master &amp;&amp; git pull</code></p>
-
 <p>远程分支可能有删除的,同步到本地</p>
-
 <p><code>git fetch -p origin</code></p>
-
 <h3 id="git-相关统计">git 相关统计</h3>
-
 <p>查看git上个人代码量</p>
-
 <pre><code>git log --author=&quot;username&quot; --pretty=tformat: --numstat | awk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf &quot;added lines: %s, removed lines: %s, total lines: %s\n&quot;, add, subs, loc }' -
-</code></pre>
-
-<p>统计每个人的增删行数</p>
-
+</code></pre><p>统计每个人的增删行数</p>
 <pre><code>git log --format='%aN' | sort -u | while read name; do echo -en &quot;$name\t&quot;; git log --author=&quot;$name&quot; --pretty=tformat: --numstat | awk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf &quot;added lines: %s, removed lines: %s, total lines: %s\n&quot;, add, subs, loc }' -; done
-</code></pre>
-
-<p>查看仓库提交者排名前 5</p>
-
+</code></pre><p>查看仓库提交者排名前 5</p>
 <pre><code>git log --pretty='%aN' | sort | uniq -c | sort -k1 -n -r | head -n 5
-</code></pre>
-
-<p>贡献者统计：</p>
-
+</code></pre><p>贡献者统计：</p>
 <pre><code>git log --pretty='%aN' | sort -u | wc -l
-</code></pre>
-
-<p>提交次数统计：</p>
-
+</code></pre><p>提交次数统计：</p>
 <pre><code>git log --oneline | wc -l
-</code></pre>
-
-<h1 id="git-clone">git clone</h1>
-
+</code></pre><h1 id="git-clone">git clone</h1>
 <pre><code>git clone https://xxx --branch $BRANCH --single-branch --depth=1
-</code></pre>
-
-<p>clone 某个分支的最新代码，不要历史记录</p>
-
+</code></pre><p>clone 某个分支的最新代码，不要历史记录</p>
 <p><code>git clone -b branch url</code> 使用<code>-b</code>参数,可以clone 指定的分支.</p>
-
 <h1 id="git使用代理">git使用代理</h1>
-
 <p>使用代理</p>
-
 <pre><code>git config --global http.proxy http://127.0.0.1:1080
 git config --global https.proxy https://127.0.0.1:1080
-</code></pre>
-
-<p>取消使用代理</p>
-
+</code></pre><p>取消使用代理</p>
 <pre><code>git config --global --unset http.proxy
 git config --global --unset https.proxy
-</code></pre>
-
-<p>执行git的时候动态指定</p>
-
+</code></pre><p>执行git的时候动态指定</p>
 <pre><code>git clone -c https.proxy=socks5://127.0.0.1:1080  https://github.com/me/test.git
-</code></pre>
-
-<p>使用本地shadowsocks代理</p>
-
+</code></pre><p>使用本地shadowsocks代理</p>
 <pre><code>git config --global http.proxy 'socks5://127.0.0.1:1080'
 git config --global https.proxy 'socks5://127.0.0.1:1080'
-</code></pre>
-
-<p><a href="https://segmentfault.com/a/1190000007834504">https://segmentfault.com/a/1190000007834504</a></p>
-
+</code></pre><p><a href="https://segmentfault.com/a/1190000007834504">https://segmentfault.com/a/1190000007834504</a></p>
 <h1 id="git回退">git回退</h1>
-
 <p>当前工作目录的修改都放弃 <code>git checkout .</code></p>
-
 <p>如果不小心添加了不必要的文件,但是还没有<code>commit</code>,想要撤销添加 <code>git reset FILE_TO_PATH</code></p>
-
 <p>如果最近的几次的提交完全是错误的,想要放弃,回滚到之前的某一个点继续开发</p>
-
 <p><code>git reset --hard  要恢复的点HASH</code> 然后 <code>git push -f</code>  强制提交,原先的错误提交将被强制清除,同时团队其他开发人员,也需要重新clone</p>
-
 <p>更好的是 在要恢复的点新建分支,继续开发.</p>
-
 <p>git reset 与 git revert</p>
-
 <p><a href="https://www.cnblogs.com/chenweichu/articles/5834209.html">https://www.cnblogs.com/chenweichu/articles/5834209.html</a></p>
-
 <h1 id="git分支管理">git分支管理</h1>
-
-<h2 id="1-创建分支">1.创建分支</h2>
-
+<h2 id="1创建分支">1.创建分支</h2>
 <blockquote>
 <p>git branch &lt;分支名&gt;</p>
 </blockquote>
-
-<h2 id="2-切换到分支">2.切换到分支</h2>
-
+<h2 id="2切换到分支">2.切换到分支</h2>
 <blockquote>
 <p>git checkout &lt;分支名&gt;</p>
 </blockquote>
-
-<h2 id="3-创建一个分支并切换过去">3.创建一个分支并切换过去</h2>
-
+<h2 id="3创建一个分支并切换过去">3.创建一个分支并切换过去</h2>
 <blockquote>
 <p>git checkout -b &lt;分支名&gt;</p>
 </blockquote>
-
 <p>或者</p>
-
 <blockquote>
 <p>git checkout -b &lt;分支名&gt; master</p>
 </blockquote>
-
 <p>后面是跟一个master说明创建的develop分支是基于当前的master， 如果当前就在master分支，则可以不写。 如果当前分支HEAD指向的是别的分支，又想基于master分支创建，就必须写master</p>
-
 <h2 id="git-new-branch-from-scratch">git new branch from scratch</h2>
-
 <p>新建一个孤立的分支  <code>git checkout --orphan &lt;branchname&gt;</code></p>
-
 <p>清除不必要的数据 <code>git rm --cached -r . &amp;&amp; git rm -rf .</code></p>
-
 <p>总结为</p>
-
 <pre><code>git checkout --orphan newbranch
 git rm -rf .
 &lt;do work&gt;
 git add your files
 git commit -m 'Initial commit'
-</code></pre>
-
-<p>如果版本小于1.7.2 不支持<code>--orphan</code> 可以</p>
-
+</code></pre><p>如果版本小于1.7.2 不支持<code>--orphan</code> 可以</p>
 <pre><code>git symbolic-ref HEAD refs/heads/newbranch
 rm .git/index
 git clean -fdx
 &lt;do work&gt;
 git add your files
 git commit -m 'Initial commit'
-</code></pre>
-
-<p>在没有任何提交之前<code>git branch</code>不会检查到这个分支</p>
-
+</code></pre><p>在没有任何提交之前<code>git branch</code>不会检查到这个分支</p>
 <p><strong>更简便的方法新建一个空白的分支</strong></p>
-
 <p><code>true | git mktree | xargs git commit-tree | xargs git branch branchname</code></p>
-
 <p>然后直接切换到这个分支,<code>git checkout branchname</code></p>
-
 <p>新建立的分支无任何文件和提交历史,超级赞!</p>
-
 <p>执行<code>git push --set-upstream origin branchname</code>将新建的分支提交到远程并设置本地分支与远程分支的关联</p>
-
 <p>参考</p>
-
 <blockquote>
 <p><a href="http://stackoverflow.com/questions/13969050/how-to-create-a-new-empty-branch-for-a-new-project">http://stackoverflow.com/questions/13969050/how-to-create-a-new-empty-branch-for-a-new-project</a></p>
-
+</blockquote>
+<blockquote>
 <p><a href="http://stackoverflow.com/questions/1384325/in-git-is-there-a-simple-way-of-introducing-an-unrelated-branch-to-a-repository">http://stackoverflow.com/questions/1384325/in-git-is-there-a-simple-way-of-introducing-an-unrelated-branch-to-a-repository</a></p>
 </blockquote>
-
-<h2 id="4-分支合并">4.分支合并</h2>
-
+<h2 id="4分支合并">4.分支合并</h2>
 <p>如:要将develop分支合并和master分支
 首先切换的master分支：<code>git checkout master</code>
 然后执行合并操作：<code>git merge develop</code>
 如果有冲突，会提示你，调用<code>git status</code>查看冲突文件。
 解决冲突，然后调用<code>git add</code>或<code>git rm</code>将解决后的文件暂存。
 所有冲突解决后，<code>git commit</code>提交更改。</p>
-
 <p><code>git merge brancha branchb</code>  合并其他分支 到当前所在的分支,当然也可以合并master分支的修改到当前分支</p>
-
-<h2 id="5-删除分支">5.删除分支</h2>
-
+<h2 id="5删除分支">5.删除分支</h2>
 <p>删除本地分支,删除分支之前记得先合并,以免数据丢失</p>
-
 <blockquote>
 <p>git branch -d &lt;分支名&gt;</p>
 </blockquote>
-
 <p><code>git push [远程名] [本地分支]:[远程分支]</code> 本地分支的数据推送到远程分支,如果远程分支不存在,将会自动创建</p>
-
 <p>如果本地分支为空格,则将删除远程分支 <code>git push origin :deletebranch</code></p>
-
 <p>等同于 <code>git push origin --delete deletebranch</code></p>
-
-<h2 id="6-显示所有分支">6.显示所有分支</h2>
-
+<h2 id="6显示所有分支">6.显示所有分支</h2>
 <blockquote>
 <p>git branch -a</p>
 </blockquote>
-
 <p>显示远端分支</p>
-
 <blockquote>
 <p>git branch -r</p>
 </blockquote>
-
-<p><code>git push -all</code> 把所有本地分支都推到远端</p>
-
+<p><code>git push --all</code> 把所有本地分支都推到远端</p>
 <p><code>git pull origin remotebranch:localbranch</code>
 将远程某分支拉倒本地某分支,当本地分支和远程分支名称相同时，只写一个就可以</p>
-
 <p>提交本地指定的分支 到 远程的一个分支</p>
-
 <p><code>git push origin localbranch:remotebranch</code> (注意,如果本地分支不写,就是删除远程分支的命令)</p>
-
 <h1 id="将所有commit压缩为一个">将所有commit压缩为一个</h1>
-
 <p><a href="https://stackoverflow.com/questions/1657017/how-to-squash-all-git-commits-into-one/9254257#9254257">https://stackoverflow.com/questions/1657017/how-to-squash-all-git-commits-into-one/9254257#9254257</a></p>
-
 <p><code>:%s/pick/squash/g</code>  in VIM to replace all</p>
-
 <p>操作完以后需要<code>git push -f</code></p>
-
 <h1 id="git-tag-管理">git tag 管理</h1>
-
-<h2 id="1-git-tag">1.git tag</h2>
-
+<h2 id="1git-tag">1.git tag</h2>
 <p>在控制台打印出当前仓库的所有标签</p>
-
-<h2 id="2-git-tag-l-v0-1">2.git tag -l &lsquo;v0.1.*&rsquo;</h2>
-
+<h2 id="2git-tag--l-v01">2.git tag -l &lsquo;v0.1.*&rsquo;</h2>
 <p>搜索符合模式的标签</p>
-
-<h2 id="3-git-tag-v0-1-2-light">3.git tag v0.1.2-light</h2>
-
+<h2 id="3git-tag-v012-light">3.git tag v0.1.2-light</h2>
 <p>创建轻量标签</p>
-
-<h2 id="4-git-tag-a-v0-1-2-m-0-1-2版本">4.git tag -a v0.1.2 -m &ldquo;0.1.2版本&rdquo;</h2>
-
+<h2 id="4git-tag--a-v012--m-012版本">4.git tag -a v0.1.2 -m &ldquo;0.1.2版本&rdquo;</h2>
 <p>创建附注标签</p>
-
 <p>git标签分为两种类型：轻量标签和附注标签。轻量标签是指向提交对象的引用，附注标签则是仓库中的一个独立对象。建议使用附注标签。</p>
-
-<h2 id="5-git-tag-d-v0-1-2">5.git tag -d v0.1.2</h2>
-
+<h2 id="5git-tag--d-v012">5.git tag -d v0.1.2</h2>
 <p>删除标签</p>
-
-<h2 id="6-git-push-origin-v0-1-2">6.git push origin v0.1.2</h2>
-
+<h2 id="6git-push-origin-v012">6.git push origin v0.1.2</h2>
 <p>将v0.1.2标签提交到git服务器
 git push origin –-tags
 将本地所有标签一次性提交到git服务器
 通常的git push不会将标签对象提交到git服务器，所以我们需要进行显式的操作：</p>
-
 <h2 id="git-worktree">git worktree</h2>
-
 <pre><code>git worktree add -b &lt;新分支名&gt; &lt;新路径&gt; &lt;从此分支创建&gt;
-</code></pre>
-
-<p>这样，新路径里会出现一份copy,这个仓库里只有一个 .git 文件用来记录这是主仓库的一个工作目录。</p>
-
+</code></pre><p>这样，新路径里会出现一份copy,这个仓库里只有一个 .git 文件用来记录这是主仓库的一个工作目录。</p>
 <p>自此，这两个工作目录在工作上看起来就像两个独立的仓库一样，都可以运行各种命令，包括切换分支。</p>
-
 <p>相比于克隆多个仓库，使用这种方法创建的多个目录，有诸多好处：</p>
-
 <p>只有一个仓库会占用版本库的空间，其它只占用工作目录的空间，对大型项目而言非常节省空间。
 因为所有工作目录共享一个仓库，所以一个更新意味着整个更新（A 目录里对分支做的改动，B 目录里切到此分支也是改动后的；避免到时候找不到某个未推送的改动改到了哪个仓库）</p>
-
 <h2 id="git-stash-操作">git stash 操作</h2>
-
 <p>1.git stash 可用来暂存当前正在进行的工作， 比如想pull 最新代码， 又不想加新commit， 或者另外一种情况，为了fix 一个紧急的bug,  先stash, 使返回到自己上一个commit, 改完bug之后再stash pop, 继续原来的工作。</p>
-
 <pre><code>git stash
 //do some work
 git stash pop
-</code></pre>
-
-<p>2.同样可以使用 git stash save &ldquo;work in progress for foo feature&rdquo; 添加标记</p>
-
+</code></pre><p>2.同样可以使用 git stash save &ldquo;work in progress for foo feature&rdquo; 添加标记</p>
 <p>3.当你多次使用<code>git stash</code>命令后，你的栈里将充满了未提交的代码，这时候你会对将哪个版本应用回来有些困惑，
 <code>git stash list</code> 命令可以将当前的Git栈信息打印出来，你只需要将找到对应的版本号，例如使用<code>git stash apply stash@{1}</code>就可以将你指定版本号为stash@{1}的工作取出来，当你将所有的栈都应用回来的时候，可以使用<code>git stash clear</code>来将栈清空。</p>
-
 <h3 id="查看stash与当前的差异">查看stash与当前的差异</h3>
-
 <p><code>git stash show -p</code> 最新的差异</p>
-
 <p><code>git stash show -p stash@{1}</code> 指定 stash</p>
-
 <p><code>git diff stash@{0} master</code> 与与任意版本对比</p>
-
 <p><code>git diff --name-only stash@{0} master</code> 仅仅查看哪些文件变化</p>
-
 <h3 id="查看文件变迁记录">查看文件变迁记录</h3>
-
 <p>查看某版本的指定文件</p>
-
 <p><code>git show &lt;commitHash&gt;:path/to/file</code></p>
-
 <p>查看4次提交前的某个文件</p>
-
 <p><code>git show HEAD~4:src/main.c</code></p>
-
 <p>可以使用管道符导出这个文件</p>
-
 <p>注意 <code>git show 3.0 src/components/uploadContainer.vue</code></p>
-
 <p>和</p>
-
 <p><code>git show 3.0:src/components/uploadContainer.vue</code></p>
-
 <p>是不一样的操作,前者是显示的diff, 后者是指定节点的文件数据</p>
-
 <p>查看某一文件的的所有版本的对比变化</p>
-
 <pre><code># include patch displays in the commit history
 git log -p
 git whatchanged -p
 # only get history of those commits that touch specified paths
 git log path/a path/b
 git whatchanged path/c path/d
-</code></pre>
-
-<p><code>git log app/api/article.php</code> 查看一个文件的所有版本号,要查看版本间内容对比使用 <code>git log -p app/api/article.php</code></p>
-
+</code></pre><p><code>git log app/api/article.php</code> 查看一个文件的所有版本号,要查看版本间内容对比使用 <code>git log -p app/api/article.php</code></p>
 <h2 id="git-diff">git diff</h2>
-
 <p><code>git diff</code> 默认是工作目录(Working tree)和暂存区域快照(index)之间的差异</p>
-
 <p>查看已经暂存起来的文件(staged)和上次提交时的快照之间(HEAD)的差异</p>
-
 <p><code>git diff --cached</code></p>
-
 <p><code>git diff --staged</code></p>
-
 <p>显示工作版本(Working tree)和HEAD的差别 <code>git diff HEAD</code></p>
-
 <p>直接将两个分支上最新的提交做diff  <code>git diff topic master</code> 或 <code>git diff topic..master</code></p>
-
 <p>比较上次提交commit和上上次提交 <code>git diff HEAD^ HEAD</code></p>
-
 <p>比较两个历史版本之间的差异 <code>git diff SHA1 SHA2</code></p>
-
-<p><code>git diff HEAD application/config/config.php</code></p>
-
+<p><code>git diff HEAD application/config/config.php     </code></p>
 <p>diff 还有两种简要形式</p>
-
-<p><code>git diff HEAD  --stat src</code></p>
-
-<p><code>git diff HEAD  --name-status src</code></p>
-
+<p><code>git diff HEAD  --stat src  </code></p>
+<p><code>git diff HEAD  --name-status src </code></p>
 <h1 id="给git仓库瘦身">给Git仓库瘦身</h1>
-
-<p>使用<code>git gc --aggressive</code>来整理仓库,压缩合并碎片文件能减小仓库大小.</p>
-
+<p>使用<code>git gc --aggressive </code>来整理仓库,压缩合并碎片文件能减小仓库大小.</p>
 <p>使用<code>git prune</code> 删除一些不会被使用的残留数据,使用<code>git prune -n</code>可以查看将要被删除的数据.</p>
-
-<p>如果想要更加暴力的操作git减小仓库大小,一般使用<code>git-filter-branch</code>,不过操作比较麻烦,可以参考官方的操作 <a href="http://git-scm.com/book/zh/v1/Git-内部原理-维护及数据恢复">http://git-scm.com/book/zh/v1/Git-内部原理-维护及数据恢复</a></p>
-
-<p>这里提供一个工具<a href="https://rtyley.github.io/bfg-repo-cleaner/">https://rtyley.github.io/bfg-repo-cleaner/</a></p>
-
+<p>如果想要更加暴力的操作git减小仓库大小,一般使用<code>git-filter-branch</code>,不过操作比较麻烦,可以参考官方的操作 <a href="http://git-scm.com/book/zh/v1/Git-">http://git-scm.com/book/zh/v1/Git-</a>内部原理-维护及数据恢复</p>
+<p>这里提供一个工具https://rtyley.github.io/bfg-repo-cleaner/</p>
 <p>使用这个操作更加方便</p>
-
 <p>下载<code>bfg</code>jar文件,使用<code>java -jar bfg.jar</code>运行,也可以自己写一个<code>alias</code></p>
-
 <p>首先<code>git clone --mirror 地址</code></p>
-
 <pre><code>bfg --strip-blobs-bigger-than 10M .
-</code></pre>
-
-<p><code>bfg --strip-blobs-bigger-than 1M --delete-files '{*.jar,*.zip,*.gz,*.war,*.jpg,*.png,*.jpeg}'</code></p>
-
+</code></pre><p><code>bfg --strip-blobs-bigger-than 1M --delete-files '{*.jar,*.zip,*.gz,*.war,*.jpg,*.png,*.jpeg}'</code></p>
 <p>最后执行<code>git reflog expire --expire=now --all &amp;&amp; git gc --prune=now --aggressive</code></p>
-
 <p>使用<code>du -sh</code>查看最终文件夹大小.</p>
-
 <h3 id="手动清除大文件">手动清除大文件</h3>
-
 <p><code>git count-objects -v</code> 可以查看git的磁盘使用量</p>
-
 <p>仓库中存在一个idx文件是索引文件 <code>.git/objects/pack/pack-*.idx</code></p>
-
 <p>从此文件中可查询一些大对象</p>
-
-<p><code>git verify-pack -v .git/objects/pack/*.idx | sort -k 3 -n | tail -10</code></p>
-
+<p><code>git verify-pack -v .git/objects/pack/*.idx | sort -k 3 -n | tail -10 </code></p>
 <p>使用<code>git rev-list --objects --all</code>可以列出所有 commit SHA 值，blob SHA 值及相应的文件路径</p>
-
 <p>我们两者进行对比就找出了哪些大文件的名字及其SHA,使用下面的命令我们可以一下子得出有哪些大文件.</p>
-
-<p><code>git rev-list --objects --all | grep &quot;$(git verify-pack -v .git/objects/pack/*.idx | sort -k 3 -n | tail -5 | awk '{print$1}')&quot;</code></p>
-
+<p><code>git rev-list --objects --all | grep &quot;$(git verify-pack -v .git/objects/pack/*.idx | sort -k 3 -n | tail -5 | awk '{print$1}')&quot; </code></p>
 <pre><code>git filter-branch -f --prune-empty --index-filter 'git rm -rf --cached --ignore-unmatch your-file-name' --tag-name-filter cat -- --all
-</code></pre>
-
-<p><code>your-file-name</code> 可以写多个空格隔开。执行完以后，可以再次执行上面的<code>git rev-list</code>再次查看还有那些大文件。</p>
-
+</code></pre><p><code>your-file-name</code> 可以写多个空格隔开。执行完以后，可以再次执行上面的<code>git rev-list</code>再次查看还有那些大文件。</p>
 <pre><code>git rev-list --objects --all | grep &quot;$(git verify-pack -v .git/objects/pack/*.idx | sort -k 3 -n | tail -5 | awk '{print$1}')&quot; | awk '{print$2}' | xargs
-</code></pre>
-
-<pre><code>rm -rf .git/refs/original .git/logs/
+</code></pre><pre><code>rm -rf .git/refs/original .git/logs/
 git gc
 git prune
 git count-objects -v
-</code></pre>
-
-<p>修改完要进行一次force push <code>git push -f</code> , 其他人需要重新clone</p>
-
+</code></pre><p>修改完要进行一次force push <code>git push -f</code> , 其他人需要重新clone</p>
 <h1 id="git-查找">git 查找</h1>
-
 <p><code>git grep</code>搜索仓库下的代码,比<code>grep</code>更加快</p>
-
 <p>使用:<code>https://git-scm.com/docs/git-grep</code></p>
-
 <p>如只在markdown文件中搜索 <code>git grep &quot;make&quot; '*.MD'</code></p>
-
 <h1 id="git打包">git打包</h1>
-
 <p>时常我们会使用<code>github</code>或者其他git托管网站的下载zip包功能,下载的压缩包仅包含仓库里的现有文件,不含<code>.git</code>文件夹</p>
-
 <p>那么我们本地的仓库如何做到呢,需要自己使用<code>zip</code>命令自己压缩排除文件吗.</p>
-
 <p>其实git已经自带这个功能了,可以将任意版本的数据导出为压缩包.</p>
-
-<p>将 master以zip格式打包到指定文件<code>git archive --format zip --output /path/to/file.zip master</code></p>
-
+<p>将 master以zip格式打包到指定文件<code>git archive --format zip --output /path/to/file.zip master </code></p>
 <pre><code>git archive v0.1 | gzip &gt; site.tgz
 git archive master &gt; ./fds.zip
-</code></pre>
-
-<p>最快捷的直接使用<code>git archive master -o a.tgz</code></p>
-
+</code></pre><p>最快捷的直接使用<code>git archive master -o a.tgz</code></p>
 <p>使用 -o a.tgz 或者 a.tar.gz 生成gzip格式的, -o a.zip 生成zip格式的.</p>
-
-<p><img src="http://static.suconghou.cn/document/git-usage.jpg" alt="git-usage" /></p>
-
+<p><img src="http://static.suconghou.cn/document/git-usage.jpg" alt="git-usage"></p>
 <h1 id="从源码静态编译git">从源码静态编译git</h1>
-
 <pre><code>apk update &amp;&amp; apk upgrade
 apk add curl gcc g++ make zlib-dev perl
 curl https://www.kernel.org/pub/software/scm/git/git-2.10.2.tar.xz | tar xJ
@@ -611,44 +386,33 @@ cd git-2.10.2
 make -j4
 make install
 
-</code></pre>
-
-<h1 id="svn">svn</h1>
-
-<p><code>svn revert xx.html</code> 和<code>git checkout xx.html</code> 类似,还原文件的更改</p>
-
+</code></pre><h1 id="svn">svn</h1>
+<p><code>svn revert xx.html </code> 和<code>git checkout xx.html</code> 类似,还原文件的更改</p>
 <p>账号文件：<code>/etc/svn-auth-users</code>
 密码重置：<code>htpasswd  /etc/svn-auth-users  conghou.su</code>
 新添加用户：同上
 删除用户：打开账号文件删除用户所在行即可</p>
-
 <p>修改文件以后需要 <code>service httpd restart</code> 或 <code>systemctl restart  httpd</code> 或者  <code>apachectl</code> 控制</p>
-
 <p><code>htpasswd</code> 如果没有</p>
-
 <p><code>sudo apt-get install apache2-utils</code></p>
-
 <p>对于 centos , 使用如下命令查看在哪个包中有。</p>
-
 <p><code>yum provides \*bin/htpasswd</code></p>
-
 <p><code>yum whatprovides */htpasswd</code></p>
-
 <p>一般是httpd-tools, <code>yum install httpd-tools</code> 即可</p>
 
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/git-usage/"></air-messager>
+        <air-messager ns="hi" thread="/post/git-usage/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/sublime-usage/" title="Sublime使用和设置" >
+            <a class="previous" href="/post/sublime-usage/" title="Sublime使用和设置" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/ffmpeg-usage/" title="ffmpeg安装使用">
+            <a class="next" href="/post/ffmpeg-usage/" title="ffmpeg安装使用">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -660,6 +424,14 @@ make install
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

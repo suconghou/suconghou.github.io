@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>Linux下常用的下载利器 &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -52,9 +48,9 @@
                 <svg style="width: 20px; height: 13px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5131"><path d="M833.2 1008L538.8 679.8c-14.3-16-39.3-16-53.6 0L190.8 1008c-22 24.6-62.8 9-62.8-24V36c0-19.9 16.1-36 36-36h696c19.9 0 36 16.1 36 36v948c0 33-40.8 48.6-62.8 24zM538.8 572L824 890V72H200v817.9l285.2-318c14.3-15.9 39.3-15.9 53.6 0.1z" p-id="5132"></path></svg>
                 <ul class="tags">
                 
-                    <li> <a href="http://blog.suconghou.cn/tags/download">download</a> </li>
+                    <li> <a href="/tags/download">download</a> </li>
                 
-                    <li> <a href="http://blog.suconghou.cn/tags/linux">linux</a> </li>
+                    <li> <a href="/tags/linux">linux</a> </li>
                 
                 </ul>
             </div>
@@ -65,204 +61,111 @@
         </div>
         
 		<div class="post-text">
-			
-
-<h2 id="wget">wget</h2>
-
-<p><code>wget -c -O filename &quot;http://xx.com&quot;</code> 下载存储到指定文件,并指定断点续传</p>
-
+			<h2 id="wget">wget</h2>
+<p><code>wget -c -O filename &quot;http://xx.com&quot; </code> 下载存储到指定文件,并指定断点续传</p>
 <p><code>wget -nc -c -i url.txt</code> 批量下载文件中指定的资源(每行一个连接),跳过已下载的(同名的),并且断点续传.</p>
-
 <p><code>wget -i url.txt -O - | mpv -</code> 下载url.txt里的链接,输出到标准输出</p>
-
 <p>使用user-agent</p>
-
 <p><code>wget --user-agent=&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36&quot; URL-TO-DOWNLOAD</code></p>
-
 <p>wget 断点续传 使用 <code>-c</code> 限速使用<code>--limit-rate=300k</code></p>
-
 <p><code>wget -c --limit-rate=30k http://...</code></p>
-
 <h2 id="lftp">lftp</h2>
-
 <p>wget 可以断点续传 但是不支持多线程下载, lftp 的一个用法可以实现多线程下载.</p>
-
 <p><code>lftp -c &quot;pget -n 10 http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.18.tar.gz&quot;</code></p>
-
 <h2 id="curl">curl</h2>
-
+<p>Windows 编译好的下载</p>
+<p><a href="https://curl.haxx.se/dlwiz/?type=bin&amp;os=Win64&amp;flav=-">https://curl.haxx.se/dlwiz/?type=bin&amp;os=Win64&amp;flav=-</a></p>
 <p>常用的命令</p>
-
 <p><code>curl http://xx.com</code> 只获取http消息正文</p>
-
 <p><code>curl -I http://xx.com</code> 只获取http消息头</p>
-
 <p><code>curl -i http://xx.com</code> 获取http消息头和正文</p>
-
 <p><code>curl -d &quot;name=abc&amp;pass=123&quot; http://xx.com</code> 发送<code>http post</code>请求,采用的是<code>application/x-www-form-urlencoded</code>形式</p>
-
 <p><code>curl -F &quot;name=abc&quot; -F &quot;pass=123&quot; http://xx.com</code> 发送<code>http post</code>请求,采用的是<code>multipart/form-data</code> 形式,此两种方式都可以由 <code>$_POST</code> 接收</p>
-
 <p><code>curl -F &quot;name=abc&quot; -F &quot;file=@/tmp/1.jpg&quot; http://xx.com</code> 发送 <code>http post</code>请求, <code>multipart/form-data</code> 形式还可以上传文件,只需改为@加路径</p>
-
+<p>以http body 形式上传</p>
+<p><code>curl -X POST -T todo.md media.suconghou.cn/upload.php -v</code></p>
 <p><code>curl -A</code> 设置<code>user-agent</code></p>
-
 <p><strong>设置代理</strong></p>
-
 <p><code>curl myip.ipip.net -v -x socks5://127.0.0.1:5566</code></p>
-
 <p><code>curl myip.ipip.net -v -x socks5h://127.0.0.1:5566</code>  use dns through socks proxy</p>
-
 <p><code>curl myip.ipip.net -v -x http://127.0.0.1:9088</code> http 代理</p>
-
 <p>curl 不仅能用来下载,还是网络调试的利器,Chrome的网络请求也可以直接另存为curl请求格式</p>
-
 <p>批量下载规则的URL资源</p>
-
 <pre><code>curl -O &quot;http://www.example.com/[0001-9999].jpg&quot;
 
-</code></pre>
-
-<p>在shell中可以这样用,实现同样功能</p>
-
+</code></pre><p>在shell中可以这样用,实现同样功能</p>
 <pre><code>for i in {10001..19999}; do
 wget www.example.com/${i:1}.jpg;
 done
-</code></pre>
-
-<p>或</p>
-
+</code></pre><p>或</p>
 <pre><code>for i in {0001..9999}; do
 echo www.example.com/${i}.jpg;
 done
-</code></pre>
-
-<h3 id="一个-range-请求">一个 range 请求</h3>
-
-<p><code>curl -o /tmp/1  -H &quot;Range: bytes=0-10&quot; http://share.ourwill.cn/temp/ss  -v</code></p>
-
+</code></pre><h3 id="一个-range-请求">一个 range 请求</h3>
+<p><code>curl -o /tmp/1  -H &quot;Range: bytes=0-10&quot; http://share.xx.cn/temp/ss  -v</code></p>
 <p>这样服务器会返回 206 包含 <code>Content-Length: 11</code> 共11个字节 , 即是包含第11字节的</p>
-
 <p>range 后面的值超过content-length ,响应也会正常响应,返回的<code>Content-Range</code>会纠正这个错误,给出正确的range</p>
-
 <p>range 的前值如果超过content-length, 服务器就会给出 <code>416 Requested Range Not Satisfiable</code></p>
-
 <p>假如文件的大小为<code>1024</code>,则<code>Range: bytes=0-1023</code> 就返回了整个文件大小,<code>Range: bytes=0-1024</code>也能返回同样的数据,因为服务器会纠正range的后值.</p>
-
 <p>start-end 表示不包含start(没有0位这个字节),从start开始一直到end+1 这些个字节.</p>
-
 <p>响应的大小应该是 end-start+1</p>
-
 <p>相继请求 <code>Range:bytes=0-10</code> <code>Range:bytes=10-20</code> 一共是22字节,其中第11字节是重复的.</p>
-
 <p>应为 <code>Range:bytes=0-9</code>  <code>Range:bytes=10-19</code> 一共是20字节 相当于 <code>Range:bytes=0-19</code></p>
-
-<h3 id="下载一个压缩包-不存储直接解压">下载一个压缩包,不存储直接解压</h3>
-
+<h3 id="下载一个压缩包不存储直接解压">下载一个压缩包,不存储直接解压</h3>
 <p><code>curl -sSL http://www.memcached.org/files/memcached-1.4.30.tar.gz | tar xz</code></p>
-
 <p>其中<code>-L</code>表示更随重定向<code>-s</code>为安静模式,不输出任何信息,<code>-S</code>为在安静模式下出错的话要输出错误信息.</p>
-
 <p>要解压到指定目录,后面的可以使用 tar xzC ./path/to/dir ,当然这个路径要存在</p>
-
 <p>用curl下载的好处是不会像wget那样出现多个已下载的重复文件</p>
-
-<p><code>| tar xJ</code> 后面同压缩一样指定不同的压缩格式,xJ 解压 xz 格式</p>
-
+<p><code> | tar xJ</code> 后面同压缩一样指定不同的压缩格式,xJ 解压 xz 格式</p>
 <h2 id="axel">Axel</h2>
-
 <p>下载速度最快,分段下载速度优异
 <code>axel -n 30 -a -o localfilename http://xx.com/downloadfile</code> 30个线程分段下载,存储为localfilename
 参数<code>-a</code>更新进度条而不是每次都输出
 参数<code>-H</code> 添加header,参数<code>-U</code>设定<code>user-agent</code>
 <strong>Downloads patch from 4 ftp mirrors</strong>
-axel <a href="ftp://ftp.{us,uk,br,fr}.kernel.org/pub/linux/kernel/v2.6/patch-2.6.39.gz">ftp://ftp.{us,uk,br,fr}.kernel.org/pub/linux/kernel/v2.6/patch-2.6.39.gz</a></p>
-
+axel ftp://ftp.{us,uk,br,fr}.kernel.org/pub/linux/kernel/v2.6/patch-2.6.39.gz</p>
 <p>axel <a href="http://itmp.suconghou.cn">http://itmp.suconghou.cn</a> hypriot-rpi-20160306-192317.img.zip <a href="http://wtmp.suconghou.cn">http://wtmp.suconghou.cn</a> hypriot-rpi-20160306-192317.img.zip <a href="http://btmp.suconghou.cn">http://btmp.suconghou.cn</a> hypriot-rpi-20160306-192317.img.zip</p>
-
 <h2 id="aria2c">Aria2c</h2>
-
 <p>官网 <a href="https://aria2.github.io/">https://aria2.github.io/</a></p>
-
 <p>aria2c支持多种协议,<code>URI</code> <code>MAGNET</code> <code>TORRENT_FILE</code> <code>METALINK_FILE</code>,也支持axel类似的分段下载</p>
-
 <p><a href="https://github.com/aria2/aria2/releases">https://github.com/aria2/aria2/releases</a> 发布 Windows 和 android 及 osx 系统编译好的, android里为一个可执行文件,</p>
-
 <p>但没有Linux版编译好的. 有第三方提供的静态编译好的 <a href="https://github.com/q3aql/aria2-static-builds">https://github.com/q3aql/aria2-static-builds</a> 包含 Linux,Windows,arm树莓派版</p>
-
 <p><code>aria2c -s 30 -c -o localfilename http://xx.com/downloadfile</code> 30个线程分段下载,存储为localfilename,并断点续传</p>
-
 <p>同时下载多文件 <code>aria2c file1.torrent file2.torrent</code></p>
-
 <p>从磁力链接中下载种子文件</p>
-
 <p><code>aria2c --bt-save-metadata &quot;magnet:?xt=urn:btih:xxxxxx&quot;</code></p>
-
 <p>自动调节连接数(如果每个种子的下载速度都低于 200K 的话， aria2 会临时增加连接数来试着提高下载速度。)</p>
-
 <p><code>aria2c --bt-request-peer-speed-limit=200K file.torrent</code></p>
-
 <p>打印一个种子文件中的内容</p>
-
 <p><code>aria2c -S file.torrent</code></p>
-
 <p>选择性下载文件</p>
-
 <p><code>aria2c --select-file=1-4,8 -T file.torrent</code></p>
-
 <p>bt下载慢? 使用<code>--bt-tracker</code>参数指定tracker服务器.</p>
-
 <p><code>aria2c --bt-exclude-tracker=&quot;*&quot; --bt-tracker=&quot;http://tracker1/announce,http://tracker2/announce&quot; file.torrent</code></p>
-
-<p>例子指示 aria2 移除 file.torrent 文件中所有的 tracker announce URIs ，并用&rdquo;<a href="http://tracker1/announce&quot;">http://tracker1/announce&quot;</a> 和 &ldquo;<a href="http://tracker2/announce&quot;">http://tracker2/announce&quot;</a> 代替</p>
-
+<p>例子指示 aria2 移除 file.torrent 文件中所有的 tracker announce URIs ，并用&quot;http://tracker1/announce&rdquo; 和 &ldquo;http://tracker2/announce&rdquo; 代替</p>
 <p>关于tracker源可以查看下面两个</p>
-
 <p><a href="https://newtrackon.com/api">https://newtrackon.com/api</a></p>
-
 <p><a href="https://github.com/ngosang/trackerslist">https://github.com/ngosang/trackerslist</a></p>
-
 <p><code>--file-allocation=none</code> 设定不提前分配文件空间.</p>
-
 <p>包含各项设置的示例</p>
-
 <pre><code>aria2c --seed-time=1 --seed-ratio=0.1 --bt-request-peer-speed-limit=20K --file-allocation=none --select-file=30,34  -T xx.torrent --bt-exclude-tracker=&quot;*&quot; --bt-tracker=&quot;http://tracker1/announce,http://tracker2/announce&quot;
-</code></pre>
-
-<p>参考 <a href="http://blog.csdn.net/hjwang1/article/details/44408633">http://blog.csdn.net/hjwang1/article/details/44408633</a></p>
-
+</code></pre><p>参考 <a href="http://blog.csdn.net/hjwang1/article/details/44408633">http://blog.csdn.net/hjwang1/article/details/44408633</a></p>
 <p>On CentOS 7.2.1511, I was able to install it through the EPEL repository:</p>
-
 <pre><code>yum install epel-release -y
 yum install aria2 -y
-</code></pre>
-
-<p>CentOS 6 安装可参考 <a href="http://chuansong.me/n/341279751838">http://chuansong.me/n/341279751838</a></p>
-
+</code></pre><p>CentOS 6 安装可参考 <a href="http://chuansong.me/n/341279751838">http://chuansong.me/n/341279751838</a></p>
 <p><code>pkgs.repoforge.org</code>已不可用, 可参考 <a href="https://github.com/repoforge/rpms/issues/375">https://github.com/repoforge/rpms/issues/375</a></p>
-
 <p><a href="http://repository.it4i.cz/mirrors/repoforge/">http://repository.it4i.cz/mirrors/repoforge/</a></p>
-
 <p><a href="http://mirror-status.repoforge.org/">http://mirror-status.repoforge.org/</a></p>
-
 <p>CentOS6 x86_64</p>
-
 <pre><code>rpm -Uvh http://repository.it4i.cz/mirrors/repoforge/redhat/el6/en/x86_64/rpmforge/RPMS/$(curl -s http://repository.it4i.cz/mirrors/repoforge/redhat/el6/en/x86_64/rpmforge/RPMS/ | grep rpmforge-release | grep x86_64 | grep el6 | sort | tail -n1 | sed 's%.*&gt;\(rpmforge\-release\-.*.rpm\)&lt;.*%\1%')
 yum -y install aria2
-</code></pre>
-
-<p>就可以安装成功,只不过CentOS6源里的aria2版本较旧且不再更新了.</p>
-
+</code></pre><p>就可以安装成功,只不过CentOS6源里的aria2版本较旧且不再更新了.</p>
 <p>aria2 作为服务运行.</p>
-
 <p><code>aria2c --enable-rpc --rpc-listen-all=true --rpc-allow-origin-all</code></p>
-
-<p>后台服务 <code>aria2c --enable-rpc --rpc-listen-all=true --rpc-allow-origin-all &gt; /var/log/aria2.log 2&gt;&amp;1 &amp;</code></p>
-
+<p>后台服务 <code> aria2c --enable-rpc --rpc-listen-all=true --rpc-allow-origin-all &gt; /var/log/aria2.log 2&gt;&amp;1 &amp;</code></p>
 <p><code>aria2c --conf-path=&quot;/etc/aria2/aria2.conf&quot;</code></p>
-
 <p><code>/etc/aria2/aria2.conf</code></p>
-
 <pre><code>## '#'开头为注释内容, 选项都有相应的注释说明, 根据需要修改 ##
 ## 被注释的选项填写的是默认值, 建议在需要修改时再取消注释  ##
 
@@ -366,27 +269,23 @@ bt-seed-unverified=true
 bt-save-metadata=true
 content-disposition-default-utf8=true
 
-</code></pre>
-
-<p>不错的项目提供WebUI</p>
-
+</code></pre><p>不错的项目提供WebUI</p>
 <p><code>https://github.com/ziahamza/webui-aria2</code></p>
-
 <p><code>https://github.com/mayswind/AriaNg</code></p>
 
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/linux-download-tools/"></air-messager>
+        <air-messager ns="hi" thread="/post/linux-download-tools/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/install-nginx-php-mysql-redis/" title="安装PHP7和NGINX" >
+            <a class="previous" href="/post/install-nginx-php-mysql-redis/" title="安装PHP7和NGINX" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/using-docker/" title="开启docker之旅">
+            <a class="next" href="/post/using-docker/" title="开启docker之旅">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -398,6 +297,14 @@ content-disposition-default-utf8=true
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

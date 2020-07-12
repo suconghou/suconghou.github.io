@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>vim基本使用 &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -54,46 +50,26 @@
         </div>
         
 		<div class="post-text">
-			
-
-<h2 id="vim基本使用">vim基本使用</h2>
-
+			<h2 id="vim基本使用">vim基本使用</h2>
 <p>安装<code>apt-get install vim</code></p>
-
 <p><code>daw</code> <code>(delete a word) 删除一个单词,包括左右两侧空白</code></p>
-
 <p><code>diw</code> <code>(delete inner word) 删除一个单词,不包含左右两侧空白</code></p>
-
 <p><code>dw</code> <code>删除从当前光标到下一个单词的起始位置</code></p>
-
 <p><code>caw</code> <code>同daw,但是完成后进入编辑模式</code></p>
-
 <p>关于选择
 <code>aw</code> <code>(a word) 一个单词</code></p>
-
 <p><code>as</code> <code>(a sentence) 一段语句</code></p>
-
 <p><code>i}</code> <code>(inner {...} block, e.g. code within a block in C code)</code></p>
-
 <p><code>it</code> <code>(inner tag, useful for XML-like languages)</code></p>
-
 <p><code>=aB</code> <code>will reindent an entire code block</code></p>
-
 <p><code>cas</code> <code>will delete a sentence and drop you into insert mode to type a new one</code></p>
-
 <p><code>yit</code> <code>will yank/copy everything inside the current XML tag</code></p>
-
 <pre><code>w:go to the start of the following [w]ord
 b:go to the [b]eginning of this word
 e:go to the [e]nd of this word
-</code></pre>
-
-<h2 id="配置vim">配置VIM</h2>
-
+</code></pre><h2 id="配置vim">配置VIM</h2>
 <p>主配置文件存放于<code>/etc/vim/vimrc</code>中, 如果此文件没有,那么配置文件可能是你的<code>~/.vimrc</code></p>
-
 <p>简单的配置</p>
-
 <pre><code>syntax on
 set autoread
 set completeopt=preview,menu
@@ -102,90 +78,63 @@ set cindent
 set showmatch
 set laststatus=2
 set statusline=[%F]%y%r%m%*%=[Line:%l/%L,Column:%c][%p%%][Format:%{&amp;ff}]\ %{strftime(\&quot;%d/%m/%y\ -\ %H:%M\&quot;)}
-</code></pre>
-
-<p><strong>显示行号和取消显示行号</strong>
+</code></pre><p><strong>显示行号和取消显示行号</strong>
 set number
 set nonumber</p>
-
 <p><strong>设置一个tab代表几个空格</strong>
 set tabstop＝4</p>
-
 <p>配置之前了解一下主题的安装</p>
-
 <p>主题文件放在 <code>/home/[用户名]/.vim/colors/</code>下面,没有此文件夹可以自己新建.</p>
-
 <p>主题文件为形如&rsquo;molokai.vim&rsquo;的一个描述文件.</p>
-
-<p>例如 molokai 这个主题 见<a href="http://www.vim.org/scripts/script.php?script_id=2340">http://www.vim.org/scripts/script.php?script_id=2340</a></p>
-
+<p>例如 molokai 这个主题 见http://www.vim.org/scripts/script.php?script_id=2340</p>
 <p>安装 <code>wget -O ~/.vim/colors/molokai.vim  http://www.vim.org/scripts/download_script.php?src_id=9750</code></p>
-
 <p>启用</p>
-
 <pre><code>colorscheme molokai
 set t_Co=256
-</code></pre>
-
-<p>solarized 主题 <a href="http://ethanschoonover.com/solarized">http://ethanschoonover.com/solarized</a></p>
-
+</code></pre><p>solarized 主题 <a href="http://ethanschoonover.com/solarized">http://ethanschoonover.com/solarized</a></p>
 <p><code>wget http://www.vim.org/scripts/download_script.php?src_id=15285</code></p>
-
 <p>解压后移动到colors目录</p>
-
 <p>启用</p>
-
 <pre><code>&quot;Solarized&quot;
 let g:solarized_termcolors=256
 set t_Co=256
 set background=dark
 colorscheme solarized
-</code></pre>
-
-<p>以上总结为</p>
-
+</code></pre><p>以上总结为</p>
 <pre><code>mkdir -p ~/.vim/colors
 wget -O ~/.vim/colors/molokai.vim  http://share.suconghou.cn/files/vim/colors/molokai.vim
 wget -O ~/.vim/colors/solarized.vim  http://share.suconghou.cn/files/vim/colors/solarized.vim
-</code></pre>
-
-<p>一份配置好的vimrc,服务器端也可以使用</p>
-
+</code></pre><p>一份配置好的vimrc,服务器端也可以使用</p>
 <pre><code>wget http://share.suconghou.cn/files/vim/vimrc
-</code></pre>
-
-<p>快速安装</p>
-
+</code></pre><p>快速安装</p>
 <pre><code>curl share.suconghou.cn/files/vim/install.sh | sh
-</code></pre>
-
-<p>ctrl+f 下一页</p>
-
+</code></pre><p>ctrl+f 下一页</p>
 <p>ctrl+b 上一页</p>
-
+<h2 id="paste-模式">paste 模式</h2>
+<pre><code>set pastetoggle=&lt;F11&gt;
+</code></pre><p><a href="http://xstarcd.github.io/wiki/vim/vim-copy-paste.html">http://xstarcd.github.io/wiki/vim/vim-copy-paste.html</a></p>
+<h3 id="编辑了没权限的文件">编辑了没权限的文件</h3>
+<p>不退出而使用sudo报错</p>
+<p><!-- raw HTML omitted --> :w !sudo tee %</p>
 <h2 id="bed">bed</h2>
-
 <p><a href="https://github.com/itchyny/bed">https://github.com/itchyny/bed</a></p>
-
 <p><strong>bbe</strong></p>
-
 <p><a href="https://github.com/hdorio/bbe">https://github.com/hdorio/bbe</a></p>
-
-<p>bbe -e &rsquo;s/173.244.217.42:<sup>4000</sup>&frasl;<sub>192</sub>.243.115.210:400/&rsquo; a &gt; b</p>
+<p>bbe -e &rsquo;s/173.244.217.42:4000/192.243.115.210:400/&rsquo; a &gt; b</p>
 
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/vim-usage/"></air-messager>
+        <air-messager ns="hi" thread="/post/vim-usage/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/linux/" title="linux相关操作" >
+            <a class="previous" href="/post/linux/" title="linux相关操作" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/use-golang/" title="使用golang">
+            <a class="next" href="/post/use-golang/" title="使用golang">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -197,6 +146,14 @@ wget -O ~/.vim/colors/solarized.vim  http://share.suconghou.cn/files/vim/colors/
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

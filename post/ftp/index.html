@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>编译一些ftp server &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -54,137 +50,85 @@
         </div>
         
 		<div class="post-text">
-			
-
-<h2 id="静态编辑bftp">静态编辑bftp</h2>
-
+			<h2 id="静态编辑bftp">静态编辑bftp</h2>
 <p>bftp是一个小巧的ftp server</p>
-
 <pre><code>apk update &amp;&amp; apk upgrade &amp;&amp; apk add wget make gcc g++ zlib-dev
 wget https://downloads.sourceforge.net/project/bftpd/bftpd/bftpd-4.4/bftpd-4.4.tar.gz?r=&amp;ts=1493551857&amp;use_mirror=iweb
-</code></pre>
-
-<p>解压进入目录</p>
-
+</code></pre><p>解压进入目录</p>
 <p><code>./configure --enable-libz CFLAGS=-Os</code></p>
-
 <p>修改makefile link阶段加入 -static</p>
-
 <p><code>make -j4</code>
 编译后当前目录即可得到静态编译的bftpd</p>
-
 <h2 id="ncftp">ncftp</h2>
-
 <p><a href="http://www.ncftpd.com/">http://www.ncftpd.com/</a></p>
-
 <p>既包含服务端，也有客户端</p>
-
 <h2 id="vsftpd">vsftpd</h2>
-
 <blockquote>
 <p>chroot_local_user #是否将所有用户限制在主目录,YES为启用 NO禁用.(该项默认值是NO,即在安装vsftpd后不做配置的话，ftp用户是可以向上切换到要目录之外的)</p>
 </blockquote>
-
 <p><a href="https://blog.csdn.net/bluishglc/article/details/42398811">https://blog.csdn.net/bluishglc/article/details/42398811</a></p>
-
 <p>500 OOPS: vsftpd: cannot locate user specified in &lsquo;ftp_username&rsquo;:ftp
 原因：
 配置文件在调用默认匿名用户anonymous时会去找ftp这个系统用户，但是ftp这个系统用户又不存在（可能被删除了）</p>
-
 <p>解决一：
 取消匿名模式。</p>
-
 <p>在vsftpd.conf中将anonymous_enable设置为NO,</p>
-
 <p>anonymous_enable=NO</p>
-
 <p>重新启动vsftpd,问题解决。</p>
-
 <h3 id="local-user">local user</h3>
-
 <p><code>adduser -h /home/ftpuser -s /sbin/nologin ftpuser</code></p>
-
 <p>nopriv_user=xxxx</p>
-
 <pre><code>anonymous_enable=NO
 local_enable=YES
 
-</code></pre>
-
-<p>vsftpd 默认会查找配置文件<code>/etc/vsftpd.conf</code> .可以启动时指定使用地址 <code>vsftpd /etc/vsftpd/vsftpd.conf</code></p>
-
+</code></pre><p>vsftpd 默认会查找配置文件<code>/etc/vsftpd.conf</code> .可以启动时指定使用地址 <code>vsftpd /etc/vsftpd/vsftpd.conf</code></p>
 <h3 id="virtual-users">virtual users</h3>
-
 <p>配置较复杂</p>
-
 <p>新建用户</p>
-
 <p>/etc/vsftpd/ftpusers.txt 是所有用户列表，修改此文件，奇数行为用户名，偶数行为密码</p>
-
 <p>db_load  -T   -t  hash  -f   /etc/vsftpd/ftpusers.txt   /etc/vsftpd/vsftpd_login.db  生成数据库文件</p>
-
 <p>chmod  700   /etc/vsftpd/vsftpd_login.db  然后重启vsftpd即可</p>
-
 <p>配置用户登录的目录</p>
-
 <p>/etc/vsftpd/vsftpd_user_conf 下存放每个用户的配置，里面可以放置授权的目录</p>
-
 <p>然后重启 vsftpd</p>
-
 <h2 id="proftpd">proftpd</h2>
-
 <pre><code>apk add gcc g++ make
 
 ./configure
 
 make
 
-</code></pre>
-
-<p>无其他依赖</p>
-
+</code></pre><p>无其他依赖</p>
 <h2 id="uftpd">uftpd</h2>
-
 <p><a href="https://github.com/troglobit/uftpd">https://github.com/troglobit/uftpd</a></p>
-
 <p><a href="https://github.com/troglobit/finit">https://github.com/troglobit/finit</a></p>
-
 <p><a href="https://github.com/troglobit/merecat">https://github.com/troglobit/merecat</a></p>
-
 <p><a href="https://github.com/troglobit/redir">https://github.com/troglobit/redir</a></p>
-
 <h2 id="pyftpdlib">pyftpdlib</h2>
-
 <p><a href="https://pypi.org/project/pyftpdlib/">https://pypi.org/project/pyftpdlib/</a></p>
-
 <p>安装 <code>pip install pyftpdlib</code></p>
-
 <p>启动 <code>python -m pyftpdlib</code> 默认端口是 2121</p>
-
 <p>指定用户名与密码 <code>python -m pyftpdlib -u user -P password</code></p>
-
 <p>其他参数</p>
-
 <p>p 指定端口（默认为 2121 ）
 w 写权限（默认为只读）
 d 指定目录 （默认为当前目录）</p>
-
 <p>zipapp
 <a href="https://docs.python.org/3/library/zipapp.html">https://docs.python.org/3/library/zipapp.html</a></p>
 
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/ftp/"></air-messager>
+        <air-messager ns="hi" thread="/post/ftp/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/dnsmasq/" title="编译dnsmasq" >
+            <a class="previous" href="/post/dnsmasq/" title="编译dnsmasq" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/php-on-android/" title="在Android上运行PHP">
+            <a class="next" href="/post/php-on-android/" title="在Android上运行PHP">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -196,6 +140,14 @@ d 指定目录 （默认为当前目录）</p>
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

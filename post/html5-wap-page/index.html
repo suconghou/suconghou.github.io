@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>Html5页面适配 &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -54,25 +50,14 @@
         </div>
         
 		<div class="post-text">
-			
-
-<h2 id="html5-页面等比例自适应">html5 页面等比例自适应</h2>
-
+			<h2 id="html5-页面等比例自适应">html5 页面等比例自适应</h2>
 <p>使用rem单位，默认情况下rem是默认字体的大小，即<code>1rem=16px</code></p>
-
 <p>我们修改html的<code>font-size</code> 来动态调节rem的大小。</p>
-
 <p>一般的设计稿宽度大小为750px,或者640px;</p>
-
 <p>而实际手机的逻辑分辨率一般为320px;（不是指他的物理分辨率）</p>
-
 <p>注意：使用rem适配必须首先设定meta标签,设定viewport的大小就是设备宽度</p>
-
 <pre><code>&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
-</code></pre>
-
-<p>可使用如下代码获得屏幕的信息；</p>
-
+</code></pre><p>可使用如下代码获得屏幕的信息；</p>
 <pre><code>var msg=
 [
 	&quot;逻辑分辨率&quot;+window.screen.width,
@@ -80,24 +65,14 @@
 	&quot;物理分辨率&quot;+window.screen.width*window.devicePixelRatio
 ];
 alert(msg.join(&quot;\n&quot;))
-</code></pre>
-
-<p>可参考  <a href="http://www.zhangxinxu.com/wordpress/2012/08/window-devicepixelratio/">http://www.zhangxinxu.com/wordpress/2012/08/window-devicepixelratio/</a></p>
-
+</code></pre><p>可参考  <a href="http://www.zhangxinxu.com/wordpress/2012/08/window-devicepixelratio/">http://www.zhangxinxu.com/wordpress/2012/08/window-devicepixelratio/</a></p>
 <h3 id="理想状态">理想状态</h3>
-
 <p>假设我们的设计稿是750px; 用户手机的逻辑分辨率也是750px</p>
-
 <p>那么只需要按照设计稿的像素大小，写死就可以完美呈现在750px的手机上。</p>
-
 <p>但是用户的手机像素是多样的，所以我们应该将px单位转化为rem单位，同时根据用户手机分辨率来调节rem的实际值大小</p>
-
 <p>需要保证在750px的用户手机下 rem 的值正好等于设计稿上的像素值，这需要我们根据用户屏幕的分辨率来动态调节html <code>font-size</code>的大小。</p>
-
 <p>举个例子</p>
-
 <p>在750px的设计稿里，一个按钮的宽是 280px, 其html的font-size未做修改，是16px</p>
-
 <pre><code>640  320px 
 
 80px  40px (目标手机尺寸*元素设计大小/设计稿宽)
@@ -110,10 +85,7 @@ alert(msg.join(&quot;\n&quot;))
 
 x 的值应为  (目标手机尺寸*元素设计大小/设计稿宽)/5
 
-</code></pre>
-
-<p>x 为 8</p>
-
+</code></pre><p>x 为 8</p>
 <pre><code>我们修改在640下 font-size 为100， 这样UI的像素/100 可轻易转化为rem 
 
 640      320
@@ -124,18 +96,12 @@ x 的值应为  (目标手机尺寸*元素设计大小/设计稿宽)/5
 
 100px    50px ( 与分辨率关联就是 320*(100/640) )
 
-</code></pre>
-
-<p>我们希望元素的设计大小（px）能轻易的转换为rem单位，故我们设计系数100</p>
-
+</code></pre><p>我们希望元素的设计大小（px）能轻易的转换为rem单位，故我们设计系数100</p>
 <pre><code>
 (目标手机尺寸*元素设计大小*100/设计稿宽)/17.5
 
 
-</code></pre>
-
-<p>适配代码可以总结如下</p>
-
+</code></pre><p>适配代码可以总结如下</p>
 <pre><code>(function()
 {
 
@@ -164,20 +130,19 @@ x 的值应为  (目标手机尺寸*元素设计大小/设计稿宽)/5
     app.init(750);
 })();
 </code></pre>
-
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/html5-wap-page/"></air-messager>
+        <air-messager ns="hi" thread="/post/html5-wap-page/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/about-http/" title="关于HTTP协议的基本知识" >
+            <a class="previous" href="/post/about-http/" title="关于HTTP协议的基本知识" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/oh-my-zsh/" title="Oh My Zsh">
+            <a class="next" href="/post/supervisord/" title="Supervisord">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -189,6 +154,14 @@ x 的值应为  (目标手机尺寸*元素设计大小/设计稿宽)/5
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

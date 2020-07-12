@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>react native &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -54,49 +50,25 @@
         </div>
         
 		<div class="post-text">
-			
-
-<h2 id="react-native">react native</h2>
-
+			<h2 id="react-native">react native</h2>
 <h3 id="环境准备">环境准备</h3>
-
 <p>前提是需要node和npm,这里不在赘述.介绍一个npm加速的.</p>
-
 <p>使用淘宝的npm镜像.控制台运行,或者加入你的bashrc中永久生效</p>
-
 <pre><code>alias cnpm=&quot;npm --registry=https://registry.npm.taobao.org --cache=$HOME/.npm/.cache/cnpm --disturl=https://npm.taobao.org/dist --userconfig=$HOME/.cnpmrc&quot;;
-</code></pre>
-
-<p>安装开发必备的一些package</p>
-
+</code></pre><p>安装开发必备的一些package</p>
 <pre><code>cnpm install -g react-native-cli webpack
-</code></pre>
-
-<p><code>react-native</code>也调用了<code>npm</code>命令,所以我们可以再来个alias加速<code>react-native init</code></p>
-
+</code></pre><p><code>react-native</code>也调用了<code>npm</code>命令,所以我们可以再来个alias加速<code>react-native init</code></p>
 <p><code>alias npm='cnpm'</code></p>
-
 <p>或者直接将仓库改为淘宝的NPM镜像</p>
-
 <pre><code>npm config set registry https://registry.npm.taobao.org
 npm config set disturl https://npm.taobao.org/dist
-</code></pre>
-
-<p>在mac上还需要一些东西</p>
-
+</code></pre><p>在mac上还需要一些东西</p>
 <pre><code>brew install flow watchman
-</code></pre>
-
-<p>安装完以后可以开始helloworld了.</p>
-
+</code></pre><p>安装完以后可以开始helloworld了.</p>
 <h3 id="开始第一个例子">开始第一个例子</h3>
-
 <pre><code>cd /data/tmp
 react-native init HelloWorld
-</code></pre>
-
-<p>然后正在初始化大致如下</p>
-
+</code></pre><p>然后正在初始化大致如下</p>
 <pre><code>This will walk you through creating a new React Native project in /data/tmp/HelloWorld
 Installing react-native package from npm...
 Setting up new React Native app in /data/tmp/HelloWorld
@@ -113,45 +85,24 @@ To run your app on Android:
    Have an Android emulator running (quickest way to get started), or a device connected
    cd /data/tmp/HelloWorld
    react-native run-android
-</code></pre>
-
-<p>使用<code>React</code>类名(组件名)必须首字母大写才会被认为是一个组件,否则在JSX里只会当做普通标签</p>
-
+</code></pre><p>使用<code>React</code>类名(组件名)必须首字母大写才会被认为是一个组件,否则在JSX里只会当做普通标签</p>
 <p><strong>下面是一些针对开发IOS的教程</strong></p>
-
 <p>我们执行<code>react-native run-ios</code>开始编译运行,前提是你必须安装了<code>xcode</code>哦.</p>
-
 <p>执行后,出现<code>BUILD SUCCEEDED</code>,同时自动打开新的终端运行了一个server在8081端口.</p>
-
 <p>模拟器中也会出现刚编译好的app的窗口,使用<code>cmd+r</code>刷新,<code>cmd+d</code>弹出开发菜单.</p>
-
 <p>我们可以修改<code>index.ios.js</code>开始开发了.</p>
-
 <p><strong>下面是一些针对开发Android的教程</strong></p>
-
 <h3 id="问题">问题</h3>
-
 <p>在使用<code>fetch</code>调用接口时,可能会出现<code>The resource could not be loaded because the App Transport Security policy requires the use of a secure connection.</code>错误</p>
-
 <p>这是IOS9要求必须使用https通信,需要修改 <a href="http://stackoverflow.com/questions/30731785/how-do-i-load-an-http-url-with-app-transport-security-enabled-in-ios-9">http://stackoverflow.com/questions/30731785/how-do-i-load-an-http-url-with-app-transport-security-enabled-in-ios-9</a></p>
-
 <p>其实<code>react native</code>创建<code>Info.plist</code>时就已经为我们说明了,在<code>NSExceptionDomains</code>下面的<code>dict</code>里添加一个排除域名就OK了.</p>
-
 <p>注意,不能将默认的<code>localhost</code>去掉,否则会出现<code>_fbBatchedBridge is undefined</code>错误.</p>
-
 <h2 id="打包">打包</h2>
-
 <h3 id="对android项目打包">对android项目打包</h3>
-
 <p>使用<code>keytool</code>生成签名文件,在任意目录下执行</p>
-
 <pre><code>keytool -genkey -v -keystore my-release-key.keystore  -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
-</code></pre>
-
-<p>上面<code>my-release-key</code>可以自己定义,后面的<code>my-key-alias</code>也可以自己定义.运行后输入一下相关信息后,生成<code>my-release-key.keystore</code>文件.</p>
-
+</code></pre><p>上面<code>my-release-key</code>可以自己定义,后面的<code>my-key-alias</code>也可以自己定义.运行后输入一下相关信息后,生成<code>my-release-key.keystore</code>文件.</p>
 <p>其中输入的两次密码,需要记住.将这个文件移动到<code>android/app</code>目录下,编译<code>android/app</code>里的<code>build.gradle</code>,添加下面的内容</p>
-
 <pre><code>android {
     ...
     defaultConfig { ... }
@@ -171,30 +122,25 @@ To run your app on Android:
         }
     }
 }
-</code></pre>
-
-<p>在<code>android</code>目录下运行如下命令,就可以打包,安装到自己手机上,前提是手机已usb调试连接到电脑</p>
-
+</code></pre><p>在<code>android</code>目录下运行如下命令,就可以打包,安装到自己手机上,前提是手机已usb调试连接到电脑</p>
 <pre><code>./gradlew assembleRelease
 cd app/build/outputs/apk
 adb install -r app-release.apk
-</code></pre>
-
-<p>参考 <a href="https://facebook.github.io/react-native/docs/signed-apk-android.html">https://facebook.github.io/react-native/docs/signed-apk-android.html</a></p>
+</code></pre><p>参考 <a href="https://facebook.github.io/react-native/docs/signed-apk-android.html">https://facebook.github.io/react-native/docs/signed-apk-android.html</a></p>
 
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/react-native/"></air-messager>
+        <air-messager ns="hi" thread="/post/react-native/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/some-hole/" title="微信浏览器的一些问题" >
+            <a class="previous" href="/post/some-hole/" title="微信浏览器的一些问题" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/use-haproxy/" title="HAProxy优化应用程序速度">
+            <a class="next" href="/post/use-haproxy/" title="HAProxy优化应用程序速度">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -206,6 +152,14 @@ adb install -r app-release.apk
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

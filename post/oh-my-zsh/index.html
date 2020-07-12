@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>Oh My Zsh &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -54,88 +50,54 @@
         </div>
         
 		<div class="post-text">
-			
-
-<p><a href="https://ohmyz.sh/">https://ohmyz.sh/</a></p>
-
+			<p><a href="https://ohmyz.sh/">https://ohmyz.sh/</a></p>
 <h3 id="1-目录跳转">1. 目录跳转</h3>
-
 <p>可以不用cd,直接写相对、绝对地址等。</p>
-
 <p><code>d</code> 命令显示最近的路径</p>
-
 <p><code>d: aliased to dirs -v | head -10</code></p>
-
 <p>可以直接对应的数字，直接进入此路径</p>
-
-<h3 id="2-cd-tab-也可以显示最近的访问实现快速跳转">2. <code>cd -</code> + TAB 也可以显示最近的访问实现快速跳转</h3>
-
+<h3 id="2-cd----tab-也可以显示最近的访问实现快速跳转">2. <code>cd -</code> + TAB 也可以显示最近的访问实现快速跳转</h3>
 <p><code>1: aliased to cd -</code>
 <code>3: aliased to cd -3</code></p>
-
-<h3 id="3-kill-进程名称-tab">3. kill 进程名称  + TAB</h3>
-
+<h3 id="3-kill-进程名称---tab">3. kill 进程名称  + TAB</h3>
 <p>如果有多个进程名字匹配，则会弹出显示，你可以上下键选择</p>
-
 <p>如果只有一个匹配 则会直接给出pid</p>
-
 <h3 id="4-命令参数补充">4. 命令参数补充</h3>
-
 <p>比如输入 <code>git</code> + 空格 + TAB 会列出所有git 的二级命令</p>
-
 <h3 id="5-目录自动扩展">5. 目录自动扩展</h3>
-
 <p><code>ls /d/t/ac</code>+TAB 会自动扩展为 <code>ls /data/tmp/activity</code> 一个真实存在的目录</p>
-
-<h3 id="6-ctrl-r-搜索以前执行过的命令">6. <code>CTRL+R</code> 搜索以前执行过的命令</h3>
-
+<h3 id="6-ctrlr-搜索以前执行过的命令">6. <code>CTRL+R</code> 搜索以前执行过的命令</h3>
 <h3 id="7-环境变量扩展">7. 环境变量扩展</h3>
-
 <p><code>$JAVA_HOME</code> + TAB 会自动扩展为其对应的值 <code>/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home</code></p>
-
 <h3 id="8-按键">8. 按键</h3>
-
 <p><code>&lt;CTRL&gt;+K</code> 删除字符到尾部</p>
-
 <p><code>&lt;CTRL&gt;+X &lt;CTRL&gt;+E</code> 当前命令到vim编辑器中编辑，编辑保存退出后，自动退回执行界面</p>
-
 <h3 id="9-插件">9. 插件</h3>
-
 <p>启用的插件</p>
-
 <pre><code>plugins=(git)
-</code></pre>
-
-<p>自带的所有插件 <code>ls ~/.oh-my-zsh/plugins</code></p>
-
+</code></pre><p>自带的所有插件 <code>ls ~/.oh-my-zsh/plugins</code></p>
 <p>安装其他插件</p>
-
 <p><a href="https://github.com/zsh-users/zsh-autosuggestions">https://github.com/zsh-users/zsh-autosuggestions</a></p>
-
 <pre><code>git clone https://github.com/zsh-users/zsh-autosuggestions  ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 
-</code></pre>
-
-<p>修改<code>.zshrc</code>
+</code></pre><p>修改<code>.zshrc</code>
 添加</p>
-
 <pre><code>plugins=(zsh-autosuggestions)
 
 </code></pre>
-
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/oh-my-zsh/"></air-messager>
+        <air-messager ns="hi" thread="/post/oh-my-zsh/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/html5-wap-page/" title="Html5页面适配" >
+            <a class="previous" href="/post/supervisord/" title="Supervisord" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/caddy-server/" title="Caddy Server基本用法">
+            <a class="next" href="/post/caddy-server/" title="Caddy Server基本用法">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -147,6 +109,14 @@
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

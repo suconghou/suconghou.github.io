@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>MySQL性能优化 &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -54,20 +50,12 @@
         </div>
         
 		<div class="post-text">
-			
-
-<h2 id="docker-run-mysqld">docker run mysqld</h2>
-
+			<h2 id="docker-run-mysqld">docker run mysqld</h2>
 <p>docker run mysql &ndash;character-set-server=utf8mb4 &ndash;collation-server=utf8mb4_general_ci</p>
-
 <h2 id="配置文件">配置文件</h2>
-
 <p>配置文件一般放在<code>/etc/my.cnf</code> 或者 <code>/etc/mysql/my.cnf</code></p>
-
 <p>默认的配置文件示例存放于<code>/usr/share/mysql</code></p>
-
 <p>各个文件适配不同内存的配置</p>
-
 <table>
 <thead>
 <tr>
@@ -75,39 +63,31 @@
 <th>内存大小</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>my-small.cnf</td>
 <td>&lt;= 64M 不经常开启mysql</td>
 </tr>
-
 <tr>
 <td>my-medium.cnf</td>
 <td>32M–64M 经常其他程序搭配mysql</td>
 </tr>
-
 <tr>
 <td>my-large.cnf</td>
 <td>512M</td>
 </tr>
-
 <tr>
 <td>my-huge.cnf</td>
 <td>1G-2G</td>
 </tr>
-
 <tr>
 <td>my-innodb-heavy-4G.cnf</td>
 <td>4GB 使用InnoDB</td>
 </tr>
 </tbody>
 </table>
-
 <p>使用<code>SHOW VARIABLES</code>来查看系统参数,通过<code>SHOW STATUS</code>来判断系统状态</p>
-
 <p>show 命令还有很多用途</p>
-
 <table>
 <thead>
 <tr>
@@ -115,184 +95,125 @@
 <th>描述</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>show databases 或show tables from database_name</td>
 <td>显示mysql中所有数据库的名称</td>
 </tr>
-
 <tr>
 <td>show tables</td>
 <td>显示当前数据库中所有表的名称</td>
 </tr>
-
 <tr>
 <td>show columns from table_name from database_name</td>
 <td>显示表中列名称</td>
 </tr>
-
 <tr>
 <td>show grants for user_name</td>
 <td>显示一个用户的权限，显示结果类似于grant命令</td>
 </tr>
-
 <tr>
 <td>show table status</td>
-<td>显示当前使用或者指定的database中的每个表的信息。<br>信息包括表类型和表的最新更新时间。</td>
+<td>显示当前使用或者指定的database中的每个表的信息。<!-- raw HTML omitted -->信息包括表类型和表的最新更新时间。</td>
 </tr>
-
 <tr>
 <td>show index from table_name</td>
 <td>显示表的索引</td>
 </tr>
-
 <tr>
 <td>show status</td>
 <td>显示一些系统特定资源的信息,例如,正在运行的线程数量</td>
 </tr>
-
 <tr>
 <td>show variables</td>
 <td>显示系统变量的名称和值</td>
 </tr>
-
 <tr>
 <td>show processlist</td>
-<td>显示系统中正在运行的所有进程，也就是当前正在执行的查询。<br>大多数用户可以查看他们自己的进程，但是如果他们拥有process权限，<br>就可以查看所有人的进程，包括密码</td>
+<td>显示系统中正在运行的所有进程，也就是当前正在执行的查询。<!-- raw HTML omitted -->大多数用户可以查看他们自己的进程，但是如果他们拥有process权限，<!-- raw HTML omitted -->就可以查看所有人的进程，包括密码</td>
 </tr>
-
 <tr>
 <td>show engies</td>
 <td>显示安装以后可用的存储引擎和默认引擎</td>
 </tr>
-
 <tr>
 <td>show innodb status</td>
 <td>显示innoDB存储引擎的状态</td>
 </tr>
-
 <tr>
 <td>show logs</td>
 <td>显示BDB存储引擎的日志</td>
 </tr>
-
 <tr>
 <td>show warnings</td>
 <td>显示最后一个执行的语句所产生的错误、警告和通知</td>
 </tr>
-
 <tr>
 <td>show errors</td>
 <td>只显示最后一个执行语句所产生的错误</td>
 </tr>
 </tbody>
 </table>
-
 <h2 id="小内存优化">小内存优化</h2>
-
 <p>依据<code>my-small.cnf</code>为模板</p>
-
 <p>主要指标:存储引擎,key_buffer_size,table_cache,max_connections,thread_concurrency,query_cache,thread_stack</p>
-
 <p><strong>存储引擎</strong>:
 如果不使用 BDB table 和 InnoDB table 的话，加入下面2行关闭不需要的表类型很有必要，关闭 innodb 可以省下大量内存，虽然 InnoDB 好处多多但是在一个64MB的 VPS 上并不能体现出来，并且很占内存。</p>
-
 <p><strong>key_buffer_size</strong>:
 用来缓存 tables keys 和 indexes，增加这个值可以更好的处理索引，读和写都需要索引,这里设置成16K足够了.优化性能需要<code>key_reads / key_read_requests</code>应该尽可能的低，至少是1:100，1:1000更好,使用<code>show status like 'key_%';</code>查看</p>
-
 <p><strong>table_cache</strong>:
 (5.1.3及以后版本又名TABLE_OPEN_CACHE) 所有线程打开的表的数量，增加值可以增大 MySQL 的文件描述符数量，避免频繁的打开表，原始 my-small.cnf 中 table_cache 设置成4有点小，一个 wordpress 的页面通常会涉及到10个左右的表，其他的程序比如 Drupal，MediaWiki 会涉及到更多，将table_cache改为8。</p>
-
 <p><strong>max_connections</strong>:
 数据库最大的连接数量，可以根据自己博客/网站的访问量来定这个值,如果博客/网站经常出现：Too many connections 错误的信息说明需要增大 max_connections 的值.</p>
-
 <p><strong>thread_concurrency</strong>:
 最大并发线程数，通常设置为 CPU核数量×2，在 VPS 宿主机上如果服务器有2颗物理 CPU，而每颗物理 CPU 又支持 H.T 超线程（一个处理器上整合了两个逻辑处理器单元），所以实际取值为4 × 2 ＝ 8。
 如果我们在优化 php.ini 的时候设置了同时只有2个 php-cgi 运行的话，那么我们也应该只设置2个 MySQL 线程同时运行,设置过大导致线程之间的频繁切换。</p>
-
 <p><em>这个参数在mysql 5.6.1中已经被标记为过时，在5.7.2版本的mysql中被移除</em></p>
-
 <p><strong>query_cache</strong>:
 对于博客/新闻网站来说，用得最多的就是查询，所以需要加入 query cache 的设置。query_cache_size 是执行查询所使用的缓冲大小。
 query_cache_limit指定单个查询能够使用的缓冲区大小，缺省为1M,结果集超过这个大小将不会被缓存。</p>
-
 <p>与查询缓存有关的参数还有query_cache_type、query_cache_limit、query_cache_min_res_unit。</p>
-
 <p>query_cache_type指定是否使用查询缓存，可以设置为0、1、2,分别代表了off、on、demand,如果是0，那么query cache 是关闭的。如果是1，那么查询总是先到查询缓存中查找，除非使用了sql_no_cache。如果是2，那么，只有使用 sql_cache的查询，才会去查询缓存中查找.</p>
-
 <p>query_cache_limit指定单个查询能够使用的缓冲区大小，缺省为1M。</p>
-
 <p>query_cache_min_res_unit是在4.1版本以后引入的，它指定分配缓冲区空间的最小单位，缺省为4K。</p>
-
 <p>检查状态值Qcache_free_blocks，如果该值非常大，则表明缓冲区中碎片很多，这就表明查询结果都比较小，此时需要减小 query_cache_min_res_unit。</p>
-
 <p><strong>thread_stack</strong>:
 每个线程被创建的时候,mysql分配给它的内存,每个连接使用一个线程,用来存放每个线程的标识信息，如线程id，线程运行时环境等。默认294912(288KB)</p>
-
 <p><strong>sort_buffer_size</strong>:
 每个需要排序的线程分配的缓冲区大小，增加该值可以加速 order by 和 group by 的操作。注意：该参数是以每个连接分配内存，也就是说，如果有16个连接，sort_buffer_size 为 64K，那么实际分配的内存为：16 × 64K = 1MB。如果设置的缓存大小无法满足需要，MySQL 会将数据写入磁盘来完成排序。因为磁盘操作和内存操作不在一个数量级，所以 sort_buffer_size 对排序的性能影响很大。</p>
-
 <p><strong>read_buffer_size</strong>:
 顺序读取数据时的缓冲区大小，与 sort_buffer_size 一样，该参数分配的内存也是以每连接为单位的。
 当需要顺序读取数据的时候，如无法使用索引的情况下的全表扫描，全索引扫描等。在这种时候，MySQL 按照数据的存储顺序依次读取数据块，每次读取的数据快首先会暂存在 read_buffer_size 中，当 buffer 空间被写满或者全部数据读取结束后，再将 buffer 中的数据返回给上层调用者，以提高效率。</p>
-
 <p><strong>read_rnd_buffer_size</strong>:
 随机读取数据时的缓冲区大小，与顺序读相对应。</p>
-
 <p><strong>net_buffer_size</strong>:
 用来存放客户端连接线程的连接信息和返回客户端的结果集的缓存大小。当 MySQL 接到请求后，产生返回结果集时，会在返回给请求线程之前暂存在在这个缓存中，等积累到一定大小的时候才开始向客户端发送，以提高网络效率。不 过，net_buffer_size 所设置的仅仅只是初始大小，MySQL 会根据实际需要自行申请更多的内存，但最大不会超过 max_allowed_packet。</p>
-
 <p>skip-locking用来避免 MySQL 外部锁定，减少出错几率，增强稳定性。</p>
-
 <p><strong>thread_cache_size 优化配置</strong></p>
-
 <p>Thread_Cache是mysql自己维护的连接池,将空闲的连接线程放在连接池中,而不是立即销毁.这样的好处就是,当又有一个新的请求的时候,mysql不会立即去创建连接 线程,而是先去Thread_Cache中去查找空闲的连接线程,如果存在则直接使用,不存在才创建新的连接线程.</p>
-
 <p>thread_cache_size为连接池里最大连接线程数,在短连接的应用中Thread_Cache的功效非常明显,因为在应用中数据库的连接和创建是非常频繁的,如果不使用 Thread_Cache那么消耗的资源是非常可观的!在长连接中虽然带来的改善没有短连接的那么明显,但是好处是显而易见的.但并不是越大越好大了反而浪费资源
 依据内存</p>
-
 <pre><code>1G  ---&gt; 8
 2G  ---&gt; 16
 3G  ---&gt; 32
 4G  ---&gt; 64
-</code></pre>
-
-<p><code>show variables like 'thread%';show variables like &quot;max_connections&quot;;show status like '%connections%';show status like 'thread%';</code></p>
-
+</code></pre><p><code>show variables like 'thread%';show variables like &quot;max_connections&quot;;show status like '%connections%';show status like 'thread%';</code></p>
 <p>表3中<code>Connections</code>表示服务器总共服务了多少次连接,<code>Max_used_connections</code>为实际达到的最大并发连接数</p>
-
 <p>表4中<code>Threads_cached</code>是处于连接池中的连接数(休眠的),从表1可以知道连接池允许的最大数量(<code>thread_cache_size</code>)</p>
-
 <p><code>Threads_connected</code>为当前的连接数,也可以从<code>show full processlist;</code>得知当前的连接数,他的最大值即为<code>Max_used_connections</code></p>
-
 <p><code>Threads_running</code>为此时刻正在进行SQL操作的线程,这个值必定是小于等于<code>Threads_connected</code></p>
-
 <p><code>Threads_created</code>为总共执行了多少次创建线程的操作,该数定大于等于<code>Max_used_connections</code>,一个线程创建后用于服务,客户端断开后并不会被销毁,而是放入连接池(只有连接池的数量大于设定值才会被抛弃),当创建的时候也会检查连接池内有没有,没有才会创建新的.</p>
-
 <p>配置项<code>max_connections</code>为允许的最大并发连接数,也可以依据<code>Max_used_connections</code>作为参考,增加该值不会占用系统资源,只有实际使用到的才会占用,但设置过小会出现<code>Too many connections</code>,默认值为100,须大于<code>Max_used_connections</code>,根据网站的并发量来设定.</p>
-
 <p>每一个连接都需要一个线程服务,每个线程初始分配<code>thread_stack</code>字节的内存,连接池的利用率为</p>
-
 <pre><code>Thread_Cache_Hit=(Connections-Thread_created)/Connections*100%
-</code></pre>
-
-<p>即尽量减少线程创建操作.</p>
-
+</code></pre><p>即尽量减少线程创建操作.</p>
 <p><code>show variables like '%timeout%';</code></p>
-
 <p><code>wait_timeout</code>参数有时也是什么有用,该值为客户端已连接但是未活动,最多等待的秒数,超过此时间将主动断开连接.默认是28800(8小时)</p>
-
 <p><a href="https://www.cnblogs.com/ivictor/p/5979731.html">https://www.cnblogs.com/ivictor/p/5979731.html</a></p>
-
 <p>执行<code>show full processlist;</code>可以查看所有连接的状态及空闲时间等.</p>
-
 <p>大量长期<code>Sleep</code>的连接,也是在白白消耗内存,该数量被记为<code>Threads_connected</code>,如果大量创建连接而又不断开不使用,会导致改值增加,达到<code>max_connections</code>上限后会报错<code>too many connections</code></p>
-
 <p>要改变他,要同时设置interactive_timeout和wait_timeout才会生效</p>
-
 <p>以上: 64M VPS数据库配置</p>
-
 <pre><code>skip-bdb
 skip-innodb
 
@@ -321,10 +242,7 @@ interactive_timeout=3600
 
 max_allowed_packet = 8M
 
-</code></pre>
-
-<p>为性能的优化配置</p>
-
+</code></pre><p>为性能的优化配置</p>
 <pre><code>innodb_buffer_pool_size = 128M
 tmp_table_size=64M
 key_buffer_size=256M
@@ -335,38 +253,22 @@ join_buffer_size = 32M
 bulk_insert_buffer_size = 32M
 myisam_sort_buffer_size = 128M
 max_allowed_packet = 32M
-</code></pre>
-
-<p>如果你的服务器内存较大(4G或更多),专门来跑mysql,可设置key_buffer_size为内存的一半
-<code>key_buffer_size = 2048M</code></p>
-
+</code></pre><p>如果你的服务器内存较大(4G或更多),专门来跑mysql,可设置key_buffer_size为内存的一半
+<code>key_buffer_size = 2048M </code></p>
 <p>连接的并发量不大,还有多余内存可以加大join_buffer_size和sort_buffer_size</p>
-
 <pre><code>sort_buffer_size = 64M
 join_buffer_size = 64M
-</code></pre>
-
-<h3 id="packet-for-query-is-too-large">Packet for query is too large</h3>
-
+</code></pre><h3 id="packet-for-query-is-too-large">Packet for query is too large</h3>
 <p><code>show variables like '%max%'</code></p>
-
 <p>当update或者insert的内容过大时,<code>max_allowed_packet</code>的值过小,会引起sql异常,需要改大;其默认值为1048576(1M)，</p>
-
 <p>修改<code>my.cnf</code>  <code>max_allowed_packet = 100M</code></p>
-
 <p>或者零时动态设置 <code>set global max_allowed_packet = 104857600;</code></p>
-
 <p>查看是否生效,零时修改一般断开后重新连接即可生效. <code>show variables like '%max_allowed_packet%';</code></p>
-
 <h2 id="数据库优化">数据库优化</h2>
-
 <p>查看query_cache相关配置, 默认这个开关是关闭的,就是禁止使用query_cache
 query_cache_type 为0,是关闭的</p>
-
 <p>查看当前的配置 <code>show variables like '%query_cache%';</code></p>
-
 <p>单独查询一个可以使用 <code>select @@query_cache_type;</code></p>
-
 <pre><code>+------------------------------+----------+
 | Variable_name                | Value    |
 +------------------------------+----------+
@@ -378,20 +280,12 @@ query_cache_type 为0,是关闭的</p>
 | query_cache_type             | ON       |
 | query_cache_wlock_invalidate | OFF      |
 +------------------------------+----------+
-</code></pre>
-
-<p>上述开启<code>query_cache</code> 32MB</p>
-
+</code></pre><p>上述开启<code>query_cache</code> 32MB</p>
 <p>(OFF)如果设置为0，那么可以说，你的缓存根本就没有用，相当于禁用了。</p>
-
 <p>(ON)如果设置为1，将会缓存所有的结果，除非你的select语句使用SQL_NO_CACHE禁用了查询缓存。</p>
-
 <p>(DEMAND)如果设置为2，则只缓存在select语句中通过SQL_CACHE指定需要缓存的查询。</p>
-
 <p><code>query_cache_size</code>为0,没有分配缓存空间,如果配置了<code>query_cache_size = 4M</code>,这里会显示具体的字节</p>
-
 <p>查看配置及运行的状态 <code>show global variables like '%query_cache%';show global status like '%Qcache%';</code></p>
-
 <pre><code>+-------------------------+----------+
 | Variable_name           | Value    |
 +-------------------------+----------+
@@ -404,158 +298,114 @@ query_cache_type 为0,是关闭的</p>
 | Qcache_queries_in_cache | 6922     |
 | Qcache_total_blocks     | 13850    |
 +-------------------------+----------+
-</code></pre>
-
-<p>如果<code>Qcache_lowmem_prunes</code>的值非常大，则表明经常出现缓冲不够的情况</p>
-
+</code></pre><p>如果<code>Qcache_lowmem_prunes</code>的值非常大，则表明经常出现缓冲不够的情况</p>
 <p>如果<code>Qcache_hits</code>的值也非常大，则表明查询缓存使用非常频繁，此时需要增加缓冲大小；</p>
-
 <p>如果<code>Qcache_hits</code>的值不大，则表明你的查询重复率很低，这种情况下使用查询缓存反而会影响效率，那么可以考虑不用查询缓存。</p>
-
 <p>此外，在SELECT语句中加入<code>SQL_NO_CACHE</code>可以明确表示不使用查询缓存。</p>
-
 <blockquote>
 <p>查询缓存碎片率 = Qcache_free_blocks / Qcache_total_blocks * 100%</p>
 </blockquote>
-
 <p>如果查询缓存碎片率超过20%，可以用FLUSH QUERY CACHE整理缓存碎片，或者试试减小query_cache_min_res_unit，如果你的查询都是小数据量的话.</p>
-
 <blockquote>
 <p>查询缓存利用率 = (query_cache_size – Qcache_free_memory) / query_cache_size * 100%</p>
 </blockquote>
-
 <p>查询缓存利用率在25%以下的话说明query_cache_size设置的过大，可适当减小;查询缓存利用率在80%以上而且Qcache_lowmem_prunes &gt; 50的话说明query_cache_size可能有点小，要不就是碎片太多。</p>
-
 <blockquote>
 <p>查询缓存命中率 = Qcache_hits / ( Qcache_hits + Qcache_inserts ) * 100%</p>
 </blockquote>
-
 <p>命中率越高,效果越好</p>
-
 <p>要开启<code>Query Cache</code>可以执行如下,注意<code>Query Cache</code>对于读多写少的场景才会有优势</p>
-
 <pre><code>SET GLOBAL query_cache_type = 1;
 SET GLOBAL query_cache_size = 16777216;
 SET GLOBAL query_cache_limit = 262144;
 SET GLOBAL query_cache_strip_comments = 1;
-</code></pre>
-
-<blockquote>
+</code></pre><blockquote>
 <p>query_cache_type:开启缓存</p>
-
+</blockquote>
+<blockquote>
 <p>query_cache_size:总的缓存大小16Mb</p>
-
+</blockquote>
+<blockquote>
 <p>query_cache_limit:结果集超过256KB则不缓存</p>
 </blockquote>
-
 <h2 id="各个数据库引擎对比">各个数据库引擎对比</h2>
-
 <p>主要讨论引擎: MyISAM存储引擎 InnoDB存储引擎 Memory存储引擎</p>
-
 <h3 id="myisam存储引擎">MyISAM存储引擎</h3>
-
 <p>支持B-tree/FullText/R-tree索引类型
 锁级别是表锁,表锁的开销小，加锁快;锁粒度大，发生锁冲突的概率较高，并发度低；表锁适合查询
 不支持事务性，也不支持外键。</p>
-
 <blockquote>
 <p>并发不高，不需要支持事务,需要进行全文搜索,读次数大于写次数,适合数据量不是特别大并发不太高的大部分场合</p>
 </blockquote>
-
 <h3 id="innodb存储引擎">InnoDB存储引擎</h3>
-
 <p>支持事务性，支持回滚,支持Hash/B-tree索引类型
 锁级别是行锁，行锁在锁定上带来的消耗大于表锁，但是在系统并发访问量较高时，InnoDB整体性能远高于MyISAM。
 InnoDB的索引不仅缓存索引本身，也缓存数据，所以InnoDB需要更大的内存。</p>
-
 <blockquote>
 <p>表数据量超过千万，高并发,频繁更新大字段,安全性和可用性要求高,更适合与大并发大数据量的场合，除了支持事务，在高并发时行级锁的优势就会发挥出来。</p>
 </blockquote>
-
 <h3 id="memory存储引擎">Memory存储引擎</h3>
-
 <p>内存级的存储引擎，它将所有数据都存储在内存中，所以它能够存储的数据量是比较小的
 Memory的锁级别和MyISAM一样，是表锁；并且不支持事务性。</p>
-
 <blockquote>
 <p>适合与性能要求高数据量小的地方，和缓存的效果类似。</p>
-
+</blockquote>
+<blockquote>
 <p>innodb查询表的行数需要全表扫描，速度会非常慢，查询1千万行数据的表最多时要6、7s,而myisam因为保存了总行数是极快的。
 在一个进程操作的情况下，myisam的更新和查询速度都会稍快于innodb。memory引擎插入和查询修改的速度都极快，但支持的数据量有限,不支持BLOB/TEXT数据类型,适用于单表几万行数据.</p>
-
+</blockquote>
+<blockquote>
 <p>MEMORY表最大值受系统变量 max_heap_table_size 限制，默认为16MB，要改变MEMORY表大小限制，需要改变max_heap_table_size 的值。
 MEMORY表写入性能不如InnoDB,读取优于Redis, 更多相关阅读 <a href="https://www.v2ex.com/t/303137">https://www.v2ex.com/t/303137</a></p>
 </blockquote>
-
 <h3 id="锁">锁</h3>
-
 <blockquote>
 <p>读锁：读操作时增加锁，叫共享锁，S-lock特征是阻塞其他客户端的写操作，不阻塞读操作</p>
-
+</blockquote>
+<blockquote>
 <p>写锁：写操作时增加锁，叫独占锁或排他锁，X-lock特征是阻塞其他客户端的读、写操作</p>
 </blockquote>
-
-<h3 id="锁定粒度-范围">锁定粒度（范围）</h3>
-
+<h3 id="锁定粒度范围">锁定粒度（范围）</h3>
 <blockquote>
 <p>行级：提升并发性，锁定开销大</p>
-
+</blockquote>
+<blockquote>
 <p>表级：不利于并发性，锁定开销小</p>
 </blockquote>
-
-<p><code>show global status like '%cost%';</code> 查看上一次查询的代价</p>
-
+<p><code>show global status like '%cost%'; </code> 查看上一次查询的代价</p>
 <p><code>show global variables like 'long_query_time';</code> 查看长查询设定的时间</p>
-
 <p><code>show global status like 'slow_queries';</code> &ndash;查看查询时间超过long_query_time秒的查询的个数。</p>
-
 <h3 id="分页优化">分页优化</h3>
-
 <p><a href="http://www.cnblogs.com/nnhy/p/BigData.html#!comments">http://www.cnblogs.com/nnhy/p/BigData.html#!comments</a> 37楼</p>
-
 <p>13456971 行数据 (一千三百万)
 <code>select * from orderpack order by id  limit 13456901,20;</code> 查询约 31.22 秒</p>
-
 <p>修改为2条查询语句</p>
-
 <p>第一条 <code>select id from orderpack order by id limit 13456901,1;</code> 12.80 秒</p>
-
 <p>根据查出来的首条数据的ID,然后查询该页的数据</p>
-
 <p><code>select * from orderpack where id &gt; 1251083 order by id limit 20;</code> 0.01秒</p>
-
 <p>性能能提升3倍</p>
-
 <h3 id="查看最近执行的sql">查看最近执行的sql</h3>
-
-<p>1) If general mysql logging is enabled then we can check the queries in the log file or table based what we have mentioned in the config. Check what is enabled with the following command</p>
-
-<p>mysql&gt; show variables like &lsquo;general_log%&lsquo;;
-mysql&gt; show variables like &lsquo;log_output%&lsquo;;
+<ol>
+<li>If general mysql logging is enabled then we can check the queries in the log file or table based what we have mentioned in the config. Check what is enabled with the following command</li>
+</ol>
+<p>mysql&gt; show variables like &lsquo;general_log%';
+mysql&gt; show variables like &lsquo;log_output%';
 If we need query history in table then</p>
-
 <p>Execute SET GLOBAL log_output = &lsquo;TABLE&rsquo;;
 Execute SET GLOBAL general_log = &lsquo;ON&rsquo;;
 Take a look at the table mysql.general_log</p>
-
 <p>If you prefer to output to a file:</p>
-
 <p>SET GLOBAL log_output = &ldquo;FILE&rdquo;; which is set by default.
 SET GLOBAL general_log_file = &ldquo;/path/to/your/logfile.log&rdquo;;
 SET GLOBAL general_log = &lsquo;ON&rsquo;;
 2) We can also check the queries in the .mysql_history file cat ~/.mysql_history</p>
-
 <p>例子</p>
-
 <pre><code>TRUNCATE TABLE mysql.general_log;
 SET GLOBAL log_output = 'TABLE';
 SET GLOBAL general_log = 'ON';
 SELECT SLEEP(60);
 SET GLOBAL general_log = 'OFF';
-</code></pre>
-
-<p>使用抓包工具tcpdump也可以查看（使用root,或者sudo）</p>
-
+</code></pre><p>使用抓包工具tcpdump也可以查看（使用root,或者sudo）</p>
 <pre><code>tcpdump -i eth0 -s 0 -l -w - dst port 3306 | strings | perl -e '
 while(&lt;&gt;) { chomp; next if /^[^ ]+[ ]*$/;
   if(/^(SELECT|UPDATE|DELETE|INSERT|SET|COMMIT|ROLLBACK|CREATE|DROP|ALTER)/i) {
@@ -565,46 +415,27 @@ while(&lt;&gt;) { chomp; next if /^[^ ]+[ ]*$/;
     $_ =~ s/^[ \t]+//; $q.=&quot; $_&quot;;
   }
 }'
-</code></pre>
-
-<p>使用tcpdump</p>
-
-<p><code>sudo tcpdump -i any -s 0 -l -w - tcp and host x.x.x.x and dst port 3306 | strings</code></p>
-
+</code></pre><p>使用tcpdump</p>
+<p><code>sudo tcpdump -i any -s 0 -l -w - tcp and host x.x.x.x and dst port 3306 | strings </code></p>
 <p>使用ngrep</p>
-
-<p><code>sudo ngrep -W byline -q -d any '' tcp and host x.x.x.x and dst port 3306</code></p>
-
+<p><code>sudo ngrep -W byline -q -d any '' tcp and host x.x.x.x and dst port 3306 </code></p>
 <p>还可以用tcpdump 记录数据用于 分析 slowlog</p>
-
 <p><a href="https://www.percona.com/doc/percona-toolkit/3.0/pt-query-digest.html">https://www.percona.com/doc/percona-toolkit/3.0/pt-query-digest.html</a></p>
-
 <p>dump mysql query , pg query</p>
-
 <p><a href="https://github.com/k1LoW/tcpdp">https://github.com/k1LoW/tcpdp</a></p>
-
 <h3 id="ibdata1文件过大">ibdata1文件过大</h3>
-
 <ol>
 <li>需要指定<code>innodb_file_per_table</code>参数,单独保存每个表的数据,否则MySQL的数据都会存放在ibdata1文件里，文件只增加不减小,时间久了这个文件就会变的非常大。</li>
 </ol>
-
 <p><code>show variables like '%innodb%';</code>查看目前innodb的配置, ON为开启.否则会造成都存储到一个文件内</p>
-
 <p>需要给<code>my.cnf</code>添加一行<code>innodb_file_per_table</code>,记得这个需要在<code>[mysqld]</code>段下面</p>
-
-<ol>
+<ol start="2">
 <li>可能有长时间执行但未提交的事务.</li>
 </ol>
-
 <p>解决方法可参见 <a href="http://blog.fens.me/mysql-ibdata1/">http://blog.fens.me/mysql-ibdata1/</a></p>
-
-<p><img src="https://ws2.sinaimg.cn/large/005DO33Hly1fhr7flzt6bj30qu0l4ds8.jpg" alt="sql" /></p>
-
+<p><img src="https://ws2.sinaimg.cn/large/005DO33Hly1fhr7flzt6bj30qu0l4ds8.jpg" alt="sql"></p>
 <h2 id="mysql导出数据">mysql导出数据</h2>
-
 <p>导出全部数据</p>
-
 <pre><code>USER=kris
 PASS=myPassword
 HOST=database-server.mydomain.com
@@ -617,116 +448,78 @@ MYSQL=$(mysql -N -u${USER} -p${PASS} -h${HOST} &lt;&lt;&lt;&quot;SHOW DATABASES&
 mysqldump -v -u${USER} -p${PASS} -h${HOST} --databases  --skip-lock-tables ${MYSQL} &gt; DB-DUMP.sql
 
 
-</code></pre>
-
-<p><code>mysqldump -uroot -p --all-databases | gzip  &gt; sqlfile.sql.gz</code></p>
-
+</code></pre><p><code>mysqldump -uroot -p --all-databases | gzip  &gt; sqlfile.sql.gz</code></p>
 <p><code>mysqldump -uroot -p --databases bureau_datasix_c caascms cas indoor_positioning jeecms ourcat test ucenter  | gzip &gt; backup.sql.gz</code></p>
-
 <p>命令行下具体用法如下：  mysqldump -u用戶名 -p密码 -d 數據库名 表名 脚本名;</p>
-
 <p>1、导出數據库為dbname的表结构（其中用戶名為root,密码為dbpasswd,生成的脚本名為db.sql）
 mysqldump -uroot -pdbpasswd -d dbname &gt;db.sql;</p>
-
 <p>2、导出數據库為dbname某张表(test)结构
 mysqldump -uroot -pdbpasswd -d dbname test&gt;db.sql;</p>
-
 <p>3、导出數據库為dbname所有表结构及表數據（不加-d）
 mysqldump -uroot -pdbpasswd  dbname &gt;db.sql;</p>
-
 <p>4、导出數據库為dbname某张表(test)结构及表數據（不加-d）
 mysqldump -uroot -pdbpasswd dbname test&gt;db.sql;</p>
-
 <p>5.导出数据中dbname多张表（test1,test2,test3）结构及表数据用用空格隔开</p>
-
 <p>mysqldump -uroot -pdbpasswd dbname test1 test2 test3&gt;db.sql;</p>
-
 <p>导出多个数据库,使用 mysqldump -uroot -pdbpassword &ndash;databases db1 db2</p>
-
 <p><strong>使用gzip压缩</strong></p>
-
 <p>导出时: <code>mysqldump -uroot -pdbpasswd dbname | gzip &gt; backupfile.sql.gz</code></p>
-
 <p>导入时: <code>gunzip &lt; backupfile.sql.gz | mysql -uroot -pdbpasswd dbname</code></p>
-
 <p><strong>使用xz压缩</strong></p>
-
 <p>使用xz压缩会大幅增加导出时间</p>
-
 <p>导出时: <code>mysqldump -uroot -pdbpasswd dbname | xz &gt; backupfile.sql.xz</code></p>
-
 <p>导入时: <code>unxz -c backupfile.sql.xz | mysql -uroot -pdbpasswd dbname</code></p>
-
 <p>gzip和xz压缩时后面都可以使用参数<code>-9</code>加大压缩率.但也更耗时.(如果磁盘够用,请不要使用,非常耗时)</p>
-
 <p>同理还可以使用<code>bzip2</code>和<code>bzip2 -dc</code>压缩和解压</p>
-
 <p>DELAYED仅适用于MyISAM, MEMORY和ARCHIVE表</p>
-
 <p>replace delayed into</p>
-
 <p>insert delayed into</p>
-
 <p>insert delayed ignore into</p>
-
 <p>查看数据库或某个表的磁盘占用.</p>
-
 <p><a href="https://www.oschina.net/question/12_3673">https://www.oschina.net/question/12_3673</a></p>
-
 <p>mysql 中 localhost与127.0.0.1的区别</p>
-
 <ol>
-<li><p>localhost不会解析成ip，也不会占用网卡、网络资源
-127.0.0.1是通过网卡传输，依赖网卡，并受到网络防火墙和网卡相关的限制。</p></li>
-
-<li><p>mysql -h localhost 的时候，是不使用TCP/IP连接的，而使用Unix socket；</p></li>
-
-<li><p>权限配置中， 127.0.0.1 与 localhost 中是不同的</p></li>
+<li>
+<p>localhost不会解析成ip，也不会占用网卡、网络资源
+127.0.0.1是通过网卡传输，依赖网卡，并受到网络防火墙和网卡相关的限制。</p>
+</li>
+<li>
+<p>mysql -h localhost 的时候，是不使用TCP/IP连接的，而使用Unix socket；</p>
+</li>
+<li>
+<p>权限配置中， 127.0.0.1 与 localhost 中是不同的</p>
+</li>
 </ol>
-
 <h2 id="mysql-内存占用分析">mysql 内存占用分析</h2>
-
 <p><a href="https://my.oschina.net/qcloudcommunity/blog/3004940">https://my.oschina.net/qcloudcommunity/blog/3004940</a></p>
-
 <h2 id="如何只安装mysql-client">如何只安装mysql client</h2>
-
 <p>Mysql has a client-only set of utilities:</p>
-
 <p>Mysql client shell</p>
-
 <p>Other command line utilities <a href="https://dev.mysql.com/downloads/utilities/">https://dev.mysql.com/downloads/utilities/</a></p>
-
 <p>Mac OSX version available.</p>
-
 <p>MySQL 5.7.12 中新增了 mysql-shell , 是另一个mysql的客户端管理工具</p>
-
 <p>可以到 <a href="https://dev.mysql.com/downloads/shell/">https://dev.mysql.com/downloads/shell/</a> 下载,提供编译好的mac版本</p>
-
 <p>或者使用 <code>brew cask install mysql-shell</code> 安装</p>
-
 <p>如果需要mysql命令，可以下载 MySQL Workbench DMG file,然后挂在,不用安装</p>
-
 <pre><code># Adjust the path to the version of MySQL Workbench you downloaded
 cp &quot;/Volumes/MySQL Workbench 6.3.9.CE/MySQLWorkbench.app/Contents/MacOS/mysql&quot; /usr/local/bin
 # To make sure it's executable
 chmod +x /usr/local/bin/mysql
-</code></pre>
-
-<p>可以复制其中的<code>mysqldump</code>和<code>mysql</code>命令出来。</p>
+</code></pre><p>可以复制其中的<code>mysqldump</code>和<code>mysql</code>命令出来。</p>
 
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/improve-mysqldb/"></air-messager>
+        <air-messager ns="hi" thread="/post/improve-mysqldb/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/ffmpeg-usage/" title="ffmpeg安装使用" >
+            <a class="previous" href="/post/ffmpeg-usage/" title="ffmpeg安装使用" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/use-crontab-in-your-server/" title="Crontab与自动备份">
+            <a class="next" href="/post/use-crontab-in-your-server/" title="Crontab与自动备份">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -738,6 +531,14 @@ chmod +x /usr/local/bin/mysql
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>关于HTTP协议的基本知识 &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -54,254 +50,144 @@
         </div>
         
 		<div class="post-text">
-			
-
-<h2 id="http-状态码">http 状态码</h2>
-
+			<h2 id="http-状态码">http 状态码</h2>
 <p>101</p>
-
 <p>204  206</p>
-
 <p>304  301  302  307</p>
-
 <p>404  413 416</p>
-
 <p>502  503</p>
-
 <p>nginx  444</p>
-
 <p><a href="http://baike.baidu.com/item/HTTP%E7%8A%B6%E6%80%81%E7%A0%81">http://baike.baidu.com/item/HTTP%E7%8A%B6%E6%80%81%E7%A0%81</a></p>
-
 <h2 id="使用curl调试网络请求">使用CURL调试网络请求</h2>
-
-<p><img src="https://ooo.0o0.ooo/2017/06/30/5955fbac723b9.png" alt="copy as curl" /></p>
-
+<p><img src="https://ooo.0o0.ooo/2017/06/30/5955fbac723b9.png" alt="copy as curl"></p>
 <h3 id="curl-用法">curl 用法</h3>
-
 <p><code>curl -I url</code>   发送一个HEAD请求,常用于查看HTTP消息头</p>
-
 <p>有时候HEAD请求和GET请求后端的处理逻辑不一样,我们可以使用下面的命令</p>
-
 <p>查看GET请求的响应头而忽略其响应体.在调试的时候非常有用.</p>
-
 <p>普通get请求,</p>
-
-<p><code>curl -o /dev/null url -v</code></p>
-
+<p><code>curl -o /dev/null url -v </code></p>
 <p><code>curl -i url</code> 完整输出响应头和响应正文.</p>
-
-<p><code>curl -i https://www.baidu.com</code></p>
-
-<p><img src="https://ooo.0o0.ooo/2017/06/30/5955fdc2478c8.png" alt="http response" /></p>
-
+<p><code>curl -i https://www.baidu.com </code></p>
+<p><img src="https://ooo.0o0.ooo/2017/06/30/5955fdc2478c8.png" alt="http response"></p>
 <h2 id="http-协议">http 协议</h2>
-
 <p>第一部分：请求行，第一行明了是post请求，以及http1.1版本。</p>
-
 <p>第二部分：请求头部，第二行至第六行。</p>
-
 <p>第三部分：换行</p>
-
 <p>第四部分：请求数据</p>
-
 <p>返回</p>
-
-<h5 id="第一部分-状态行-由http协议版本号-状态码-状态消息-三部分组成">第一部分：状态行，由HTTP协议版本号， 状态码， 状态消息 三部分组成</h5>
-
-<h5 id="第二部分-消息报头-用来说明客户端要使用的一些附加信息">第二部分：消息报头，用来说明客户端要使用的一些附加信息</h5>
-
-<h5 id="第三部分-空行-消息报头后面的空行是必须的">第三部分：空行，消息报头后面的空行是必须的</h5>
-
-<h5 id="第四部分-响应正文-服务器返回给客户端的文本信息">第四部分：响应正文，服务器返回给客户端的文本信息。</h5>
-
+<h5 id="第一部分状态行由http协议版本号-状态码-状态消息-三部分组成">第一部分：状态行，由HTTP协议版本号， 状态码， 状态消息 三部分组成</h5>
+<h5 id="第二部分消息报头用来说明客户端要使用的一些附加信息">第二部分：消息报头，用来说明客户端要使用的一些附加信息</h5>
+<h5 id="第三部分空行消息报头后面的空行是必须的">第三部分：空行，消息报头后面的空行是必须的</h5>
+<h5 id="第四部分响应正文服务器返回给客户端的文本信息">第四部分：响应正文，服务器返回给客户端的文本信息。</h5>
 <p>手动拼接一个http协议</p>
-
-<p><code>telnet test.share.ourwill.cn 80</code></p>
-
+<p><code>telnet test.share.xx.cn 80</code></p>
 <p>打开一个tcp链接</p>
-
 <p>最简单的GET请求</p>
-
 <pre><code>GET / HTTP/1.1
-Host: test.share.ourwill.cn
-</code></pre>
-
-<p>Host 用于表明要请求的是哪个主机</p>
-
+Host: test.share.xx.cn
+</code></pre><p>Host 用于表明要请求的是哪个主机</p>
 <p>Http1.1 默认是keep-alived 的, 一个TCP链接传送完一个完整的http请求后不会主动断开链接.</p>
-
 <pre><code>GET / HTTP/1.0
-Host: test.share.ourwill.cn
-</code></pre>
-
-<p>而http1.0 会主动断开链接.</p>
-
+Host: test.share.xx.cn
+</code></pre><p>而http1.0 会主动断开链接.</p>
 <p>post</p>
-
 <p>formdata</p>
-
 <p>url-encode</p>
-
 <p>json-data</p>
-
 <p><a href="https://github.com/koajs/bodyparser/blob/master/index.js">https://github.com/koajs/bodyparser/blob/master/index.js</a></p>
-
 <p><a href="https://github.com/expressjs/body-parser/blob/master/lib/read.js">https://github.com/expressjs/body-parser/blob/master/lib/read.js</a></p>
-
 <p>上传文件</p>
-
 <p>form data 形式</p>
-
-<p><img src="https://ooo.0o0.ooo/2017/06/30/5955fef20740f.png" alt="upload file" /></p>
-
+<p><img src="https://ooo.0o0.ooo/2017/06/30/5955fef20740f.png" alt="upload file"></p>
 <p>这个Chrome 并没有全部显示上传文件的细节,下面一部我们抓包显示具体的数据.</p>
-
 <pre><code>curl 'http://media.suconghou.cn/upload.php' -H 'Origin: http://127.0.0.1:8088' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: zh-CN,zh;q=0.8,en;q=0.6' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36' -H 'Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryMMPAAfYDlAnUIPcT' -H 'Accept: text/html, */*; q=0.01' -H 'Referer: http://127.0.0.1:8088/' -H 'Connection: keep-alive' --data-binary $'------WebKitFormBoundaryMMPAAfYDlAnUIPcT\r\nContent-Disposition: form-data; name=&quot;file0&quot;; filename=&quot;QQ20170526-172149@2x.png&quot;\r\nContent-Type: image/png\r\n\r\n\r\n------WebKitFormBoundaryMMPAAfYDlAnUIPcT\r\nContent-Disposition: form-data; name=&quot;filelist&quot;\r\n\r\nfile0\r\n------WebKitFormBoundaryMMPAAfYDlAnUIPcT\r\nContent-Disposition: form-data; name=&quot;key&quot;\r\n\r\nvalue\r\n------WebKitFormBoundaryMMPAAfYDlAnUIPcT\r\nContent-Disposition: form-data; name=&quot;data&quot;\r\n\r\n[&quot;hi&quot;,&quot;hello&quot;,&quot;set new data&quot;]\r\n------WebKitFormBoundaryMMPAAfYDlAnUIPcT--\r\n' --compressed
-</code></pre>
-
-<p>添加</p>
-
+</code></pre><p>添加</p>
 <p>keep-alive</p>
-
 <p>range</p>
-
 <p><code>http://s1.bdstatic.com/r/www/cache/static/home/css/index.css</code></p>
-
-<p><code>telnet s1.bdstatic.com 80</code></p>
-
+<p><code>telnet s1.bdstatic.com 80 </code></p>
 <pre><code>GET /r/www/cache/static/home/css/index.css HTTP/1.1
 Host: s1.bdstatic.com
 Range: bytes=1024-1034
 
-</code></pre>
-
-<p>正确响应206</p>
-
+</code></pre><p>正确响应206</p>
 <p>如何得出416响应?</p>
-
 <p>range 的大小是 end-start+1</p>
-
 <p><code>wget -c --limit-rate=1k http://s1.bdstatic.com/r/www/cache/static/home/css/index.css</code></p>
-
 <p>结合抓包同样能够观察到.</p>
-
 <h3 id="缓存控制">缓存控制</h3>
-
 <p>Cache-Control  按相对时间,实用性好,优先级高.</p>
-
 <p>Expires 按绝对时间</p>
-
 <p>Last-Modified/If-Modified-Since  对于静态资源文件非常适用,只能精确到秒.</p>
-
 <p>ETag/If-None-Match  hash校验不仅能适用于静态文件还能适用于动态生成的内容</p>
-
 <p>ETag 的计算规则并不在HTTP中规定.</p>
-
 <p>ETag有两种类型：强ETag(strong ETag)与弱ETag(weak ETag)。</p>
-
 <p>&ldquo;123456789&rdquo; &ndash; A strong ETag validator</p>
-
 <p>W/&ldquo;123456789&rdquo; &ndash; A weak ETag validator</p>
-
 <p>强ETag 表明两个资源是完全一样的.</p>
-
 <p>弱ETag 表明两个资源使用起来是等价的.</p>
-
 <h3 id="消息会话">消息会话</h3>
-
 <p>cookie</p>
-
 <p>cookie 有哪些属性?</p>
-
-<p><img src="https://ooo.0o0.ooo/2017/06/30/59560dda92a4c.png" alt="cookie" /></p>
-
-<p><img src="https://ooo.0o0.ooo/2017/06/30/59560e7e01c2d.png" alt="secure cookie" /></p>
-
+<p><img src="https://ooo.0o0.ooo/2017/06/30/59560dda92a4c.png" alt="cookie"></p>
+<p><img src="https://ooo.0o0.ooo/2017/06/30/59560e7e01c2d.png" alt="secure cookie"></p>
 <p>session</p>
-
 <p>sessionid</p>
-
 <p>https  http2</p>
-
 <p>HTTP/2 over TCP  (h2c)</p>
-
 <h3 id="http抓包">http抓包</h3>
-
 <p>ngrep</p>
-
-<p><code>sudo ngrep -W byline &quot;css&quot;</code></p>
-
+<p><code>sudo ngrep -W byline &quot;css&quot; </code></p>
 <p>tcpdump</p>
-
-<p><code>sudo tcpdump  host media.suconghou.cn  -v</code></p>
-
+<p><code>sudo tcpdump  host media.suconghou.cn  -v </code></p>
 <h3 id="http-server">http server</h3>
-
 <p><a href="https://github.com/thecoshman/http">https://github.com/thecoshman/http</a></p>
-
 <p><a href="https://github.com/svenstaro/miniserve">https://github.com/svenstaro/miniserve</a></p>
-
+<h3 id="libevhtp">libevhtp</h3>
+<p>zimg 使用的http组件,测压优于nginx</p>
+<p><a href="http://zimg.buaa.us/documents/Architecture_Design_of_Image_Server/">http://zimg.buaa.us/documents/Architecture_Design_of_Image_Server/</a></p>
+<p><a href="https://github.com/ellzey/libevhtp">https://github.com/ellzey/libevhtp</a></p>
 <h3 id="thttpd-编译">thttpd 编译</h3>
-
 <p><a href="https://acme.com/software/thttpd/">https://acme.com/software/thttpd/</a></p>
-
 <p>centos7</p>
-
 <pre><code>wget https://acme.com/software/thttpd/thttpd-2.27.tar.gz
 tar zxvf thttpd-2.27.tar.gz &amp;&amp; cd thttpd-2.27
 ./configure &amp;&amp; make
-</code></pre>
-
-<p>不到一分钟即可编译好. strip 后<code>86KB</code> (非静态编译) ,  thttpd 内存占用较小,rss显示1.5MB</p>
-
+</code></pre><p>不到一分钟即可编译好. strip 后<code>86KB</code> (非静态编译) ,  thttpd 内存占用较小,rss显示1.5MB</p>
 <p><code>busybox httpd</code> 占用内存只有几十KB,简单的golang http sever内存占用在2MB左右</p>
-
 <h3 id="darkhttpd">darkhttpd</h3>
-
 <p>另一个十分小巧的http server</p>
-
 <p><a href="https://unix4lyfe.org/darkhttpd/">https://unix4lyfe.org/darkhttpd/</a></p>
-
 <pre><code>curl -L unix4lyfe.org/gitweb/darkhttpd/blob_plain/HEAD:/darkhttpd.c | cc -O2 -o darkhttpd -xc -
 darkhttpd . --port 8000
-</code></pre>
-
+</code></pre><h3 id="mini_httpd">mini_httpd</h3>
+<p><a href="http://acme.com/software/mini_httpd/">http://acme.com/software/mini_httpd/</a></p>
 <p><a href="http://linux.bytesex.org/misc/webfs.html">http://linux.bytesex.org/misc/webfs.html</a></p>
-
 <p><a href="http://proxydb.net/">http://proxydb.net/</a></p>
-
 <p><strong>一个端口转发</strong></p>
-
 <p><a href="https://unix4lyfe.org/portfwd/">https://unix4lyfe.org/portfwd/</a></p>
-
 <h3 id="其他c语言的简易-http-server">其他c语言的简易 http server</h3>
-
 <p><a href="https://github.com/ankushagarwal/nweb">https://github.com/ankushagarwal/nweb</a>
 采用fork形式处理并发</p>
-
 <pre><code>curl -L raw.githubusercontent.com/ankushagarwal/nweb/master/nweb23.c | cc -O2 -o nweb -xc -
 nweb 8000 .
-</code></pre>
-
-<p><a href="https://github.com/shenfeng/tiny-web-server">https://github.com/shenfeng/tiny-web-server</a></p>
-
+</code></pre><p><a href="https://github.com/shenfeng/tiny-web-server">https://github.com/shenfeng/tiny-web-server</a></p>
 <pre><code>curl -L raw.githubusercontent.com/shenfeng/tiny-web-server/master/tiny.c | cc -O2 -o tiny -xc -
 tiny 8000
 </code></pre>
-
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/about-http/"></air-messager>
+        <air-messager ns="hi" thread="/post/about-http/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/php-on-android/" title="在Android上运行PHP" >
+            <a class="previous" href="/post/php-on-android/" title="在Android上运行PHP" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/html5-wap-page/" title="Html5页面适配">
+            <a class="next" href="/post/html5-wap-page/" title="Html5页面适配">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -313,6 +199,14 @@ tiny 8000
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>动态域名解析 &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -54,17 +50,10 @@
         </div>
         
 		<div class="post-text">
-			
-
-<p>收集的一些DDNS的工具</p>
-
+			<p>收集的一些DDNS的工具</p>
 <h3 id="利用shell获得本机局域网ip">利用shell获得本机局域网IP</h3>
-
 <pre><code>ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|awk '{print $2}'|tr -d &quot;addr:&quot;
-</code></pre>
-
-<h3 id="go语言版">GO语言版</h3>
-
+</code></pre><h3 id="go语言版">GO语言版</h3>
 <pre><code>package main
 
 import (
@@ -83,102 +72,65 @@ func main() {
 	fmt.Println(strings.Split(conn.LocalAddr().String(), &quot;:&quot;)[0])
 }
 
-</code></pre>
-
-<h3 id="获取外网ip">获取外网IP</h3>
-
+</code></pre><h3 id="获取外网ip">获取外网IP</h3>
 <p>新浪IP地址库</p>
-
 <p>可以直接script标签引入</p>
-
 <p>直接script引入 <code>http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js</code></p>
-
 <p>也支持 json 和文本格式</p>
-
 <p>json 格式 <code>http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json</code></p>
-
 <p>文本格式 <code>http://int.dpool.sina.com.cn/iplookup/iplookup.php</code></p>
-
 <p><code>curl ip.cn</code> 直接给出IP和运营商,浏览器访问不一样 类似于 <code>curl myip.ipip.net</code></p>
-
 <p>后面还可以跟一个IP地址,查询IP的位置. <code>curl ip.cn/8.8.8.8</code> , 其网站还提供大陆IP列表,较快的DNS等等</p>
-
 <p><code>curl ipinfo.io</code> JSON格式,信息较全,可跨域,同样也可以查询指定IP<code>curl ipinfo.io/8.8.8.8</code>,浏览器访问还会给出地图和网络运营商, <a href="http://speedsmart.net">http://speedsmart.net</a> 可以测速</p>
-
 <p><code>curl -i -H &quot;Accept:application/json, text/javascript, */*; q=0.01&quot; https://ipinfo.io</code></p>
-
 <p><a href="https://freegeoip.net">https://freegeoip.net</a> 也提供json,xml,jsonp的详细信息 可用http 也可用https</p>
-
 <p><code>curl ifconfig.me</code> 速度较慢,浏览器访问不一样,直接给出IP</p>
-
 <p><code>curl http://httpbin.org/get</code> 直接给出所有请求头,JSON格式.</p>
-
 <p><code>curl httpbin.org/ip</code> 返回JSON包含IP</p>
-
 <p><code>curl ip.gs</code> 包含运行商,国家地区</p>
-
 <p><code>curl cip.cc</code> 包含运营商和地址</p>
-
 <h3 id="直接给出ip">直接给出IP</h3>
-
 <pre><code>curl ip.6655.com/ip.aspx
 curl members.3322.org/dyndns/getip
 curl icanhazip.com
-curl ident.me
-curl ipecho.net/plain
 curl whatismyip.akamai.com
 curl myip.dnsomatic.com
 curl ifconfig.co
 curl https://api.ipify.org/
 curl http://greak.net/ip
-</code></pre>
 
-<p><code>http://ip.chinaz.com/getip.aspx</code> 比较详细的地理位置</p>
-
+curl ipecho.net/plain
+</code></pre><p><code>http://ip.chinaz.com/getip.aspx</code> 比较详细的地理位置</p>
 <p><strong>淘宝的地址库</strong></p>
-
 <p><code>http://ip.taobao.com/service/getIpInfo2.php?ip=myip</code></p>
-
 <p><code>https://jsonip.com/</code>   返回json数据IP,可以跨域</p>
-
 <p><code>http://freegeoip.net/json/</code>  返回当前IP或者指定IP的地址位置和经纬度,支持json和jsonp<code>?callback=fun</code></p>
-
 <h2 id="域名动态解析">域名动态解析</h2>
-
 <h3 id="花生壳接口">花生壳接口</h3>
-
 <p><code>http://username:password@ddns.oray.com/ph/update?hostname=yourdomain</code>
 访问这个地址，会把域名绑定到访问这个地址的外网 ip 上。一般这个 ip 都是你路由器的 ip ，路由器再转发到树莓派上，用域名就可以直接访问树莓派了。
 可以用计划任务一段时间更新一次</p>
-
 <h3 id="3322org接口">3322org接口</h3>
-
 <pre><code>lynx -mime_header -auth=su:123 &quot;http://members.3322.net/dyndns/update?system=dyndns&amp;hostname=domain&quot;
-</code></pre>
-
-<h3 id="dnspod-接口">DNSPOD 接口</h3>
-
+</code></pre><h3 id="dnspod-接口">DNSPOD 接口</h3>
 <p>网友提供的操作库</p>
-
 <p><a href="https://github.com/xdtianyu/scripts/tree/master/ddns">https://github.com/xdtianyu/scripts/tree/master/ddns</a></p>
-
 <p><a href="https://github.com/lijyigithub/ddnspod/blob/master/ddnspod.py">https://github.com/lijyigithub/ddnspod/blob/master/ddnspod.py</a></p>
-
 <p><a href="https://github.com/anrip/ArDNSPod/blob/master/ddnspod.sh">https://github.com/anrip/ArDNSPod/blob/master/ddnspod.sh</a></p>
 
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/ddns/"></air-messager>
+        <air-messager ns="hi" thread="/post/ddns/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/shadowsocks-libev/" title="shadowsocks libev" >
+            <a class="previous" href="/post/shadowsocks-libev/" title="shadowsocks libev" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/php-best-way/" title="PHP最佳实践">
+            <a class="next" href="/post/php-best-way/" title="PHP最佳实践">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -190,6 +142,14 @@ curl http://greak.net/ip
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

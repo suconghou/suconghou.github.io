@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>Crontab与自动备份 &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -54,13 +50,9 @@
         </div>
         
 		<div class="post-text">
-			
-
-<h2 id="crontab使用">Crontab使用</h2>
-
+			<h2 id="crontab使用">Crontab使用</h2>
 <p><code>crontab -l</code> 查看当前用户的crontab列表
 使用<code>crontab -e</code>开始编辑规则</p>
-
 <pre><code>基本格式 :
 *　　*　　*　　*　　*　　command
 分　 时 　日 　月　 周　 命令
@@ -71,36 +63,22 @@
 * 第4列表示月份1～12
 * 第5列标识号星期0～6（0表示星期天）
 * 第6列要运行的命令
-</code></pre>
-
-<p>禁止Crontab产生邮件:
+</code></pre><p>禁止Crontab产生邮件:
 在crontab末尾加上<code>&gt; /dev/null 2&gt;&amp;1</code> 或者 <code>&gt; &amp;&gt; /dev/null</code></p>
-
 <p>例如</p>
-
 <pre><code>0 1 5 10 * /path/to/script.sh &gt; /dev/null 2&gt;&amp;1
 0 1 5 10 * /path/to/script.sh &gt; &amp;&gt; /dev/null
-</code></pre>
-
-<p>你也可以将<code>/dev/null</code>换成你想要存储日志的文件地址</p>
-
+</code></pre><p>你也可以将<code>/dev/null</code>换成你想要存储日志的文件地址</p>
 <h2 id="配置文件">配置文件</h2>
-
 <p>对于<code>CentOS</code></p>
-
 <p><code>/etc/</code> 目录下包含</p>
-
 <pre><code>cron.d/       cron.daily/   cron.deny     cron.hourly/  cron.monthly/ crontab       cron.weekly/
-</code></pre>
-
-<p>其中 <code>crontab</code> 为其主配置文件,可以编写命令,按指定用户去执行.</p>
-
+</code></pre><p>其中 <code>crontab</code> 为其主配置文件,可以编写命令,按指定用户去执行.</p>
 <p><code>/var/spool/cron/</code> 目录下存放按用户名的配置, 使用 <code>crontab -l</code> 相当于读取其当前用户名的配置文件</p>
-
+<h2 id="简化版的scron">简化版的scron</h2>
+<p><a href="https://git.2f30.org/scron/files.html">https://git.2f30.org/scron/files.html</a></p>
 <h2 id="定时备份数据库">定时备份数据库</h2>
-
 <p>先写好shell脚本存入<code>/home/cron1.sh</code></p>
-
 <pre><code>user=&quot;root&quot;
 pass=&quot;root&quot;
 host=&quot;127.0.0.1&quot;
@@ -126,19 +104,11 @@ for i in $dbs
 		xz $backupFile
 	done
 
-</code></pre>
-
-<p>然后定时任务<code>crontab -e</code> 每5个小时备份一次数据库.</p>
-
+</code></pre><p>然后定时任务<code>crontab -e</code> 每5个小时备份一次数据库.</p>
 <pre><code>0 */5 * * * sh /home/cron1.sh
-</code></pre>
-
-<p>使用此脚本建议每20个小时以内备份一次数据库,此脚本保留最近7天备份,删除过期备份</p>
-
+</code></pre><p>使用此脚本建议每20个小时以内备份一次数据库,此脚本保留最近7天备份,删除过期备份</p>
 <h2 id="增量备份数据库">增量备份数据库</h2>
-
 <p>先写好shell脚本存入<code>/home/cron2.sh</code></p>
-
 <pre><code>user=&quot;root&quot;
 pass=&quot;root&quot;
 host=&quot;127.0.0.1&quot;
@@ -154,27 +124,15 @@ for i in $backup
 		mysql -u$user -p$pass -h$host -P$port -e &quot;$sql&quot;
 	done
 
-</code></pre>
-
-<p>数据表从源数据库中增量备份至备份数据库中的同名数据表</p>
-
+</code></pre><p>数据表从源数据库中增量备份至备份数据库中的同名数据表</p>
 <pre><code>0 */20 * * * sh /home/cron2.sh
-</code></pre>
-
-<p>每20个小时增量备份一次</p>
-
+</code></pre><p>每20个小时增量备份一次</p>
 <h2 id="更高级的文件实时同步">更高级的文件实时同步</h2>
-
 <p><code>Mac</code>上可以使用<code>fswatch + rsync</code>进行实时同步</p>
-
 <p>首先安装<code>fswatch</code>,<code>rsync</code>应该是自带了</p>
-
 <p><code>brew install fswatch</code></p>
-
 <p>监视目录输出有变动的文件 <code>fswatch -0 /tmp | xargs -0 -n 1 echo $1</code></p>
-
 <p><strong>文件变化自动同步函数</strong></p>
-
 <pre><code>sync1()
 {
     dir=/data/project/21textv3/
@@ -186,23 +144,30 @@ for i in $backup
         sleep 2
     done
 }
-</code></pre>
-
-<h3 id="全功能文件备份脚本">全功能文件备份脚本</h3>
+</code></pre><p>rsync  参数</p>
+<pre><code>-a, --archive 归档(压缩)模式,表示以递归方式传输文件,并保持所有文件属性等同于-rlptgoD(无 -H,-A,-X)
+-r, --recursive 对子目录以递归模式处理
+-v, --verbose 详细模式输出
+-u, --update 仅仅进行更新,也就是跳过所有已经存在于DST,并且文件时间晚于要备份的文件(不覆盖更新的文件)
+-z, --compress 在传输过程中进行压缩
+-t, --times 保留修改时间
+-p, --perms 保留权限
+--delete 删除那些DST中SRC没有的文件
+</code></pre><h3 id="全功能文件备份脚本">全功能文件备份脚本</h3>
 
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/use-crontab-in-your-server/"></air-messager>
+        <air-messager ns="hi" thread="/post/use-crontab-in-your-server/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/improve-mysqldb/" title="MySQL性能优化" >
+            <a class="previous" href="/post/improve-mysqldb/" title="MySQL性能优化" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/broswer-chrome/" title="Chrome浏览器安装">
+            <a class="next" href="/post/broswer-chrome/" title="Chrome浏览器安装">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -214,6 +179,14 @@ for i in $backup
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

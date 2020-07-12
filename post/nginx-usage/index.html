@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>nginx安装与使用 &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -54,12 +50,8 @@
         </div>
         
 		<div class="post-text">
-			
-
-<h3 id="使用systemd管理nginx">使用systemd管理nginx</h3>
-
+			<h3 id="使用systemd管理nginx">使用systemd管理nginx</h3>
 <p><code>/usr/lib/systemd/system/nginx.service</code></p>
-
 <pre><code>[Unit]
 Description=The nginx HTTP and reverse proxy server
 After=network.target remote-fs.target nss-lookup.target
@@ -82,24 +74,14 @@ PrivateTmp=true
 [Install]
 WantedBy=multi-user.target
 
-</code></pre>
-
-<h2 id="nginx-proxy-request-buffering">nginx proxy_request_buffering</h2>
-
+</code></pre><h2 id="nginx-proxy_request_buffering">nginx proxy_request_buffering</h2>
 <p>上传大文件时需注意</p>
-
 <p><a href="https://stackoverflow.com/questions/12282342/nginx-files-upload-streaming-with-proxy-pass">https://stackoverflow.com/questions/12282342/nginx-files-upload-streaming-with-proxy-pass</a></p>
-
-<h2 id="accept-mutex-and-reuseport">accept_mutex and reuseport</h2>
-
+<h2 id="accept_mutex-and-reuseport">accept_mutex and reuseport</h2>
 <p><a href="https://www.nginx.com/blog/socket-sharding-nginx-release-1-9-1/">https://www.nginx.com/blog/socket-sharding-nginx-release-1-9-1/</a></p>
-
 <p>fast-open &ndash;reuse-port &ndash;no-delay no-push</p>
-
 <h2 id="nginx-mirror-module">nginx mirror module</h2>
-
 <p><a href="https://alex.dzyoba.com/blog/nginx-mirror/">https://alex.dzyoba.com/blog/nginx-mirror/</a></p>
-
 <pre><code>upstream test {
     server 127.0.0.1:9091;
     server 127.0.0.1:9092;
@@ -127,29 +109,81 @@ server{
     }
 }
 
-</code></pre>
+</code></pre><h3 id="nginx-负载均衡与健康检查">nginx 负载均衡与健康检查</h3>
+<pre><code>upstream report{
+    server localhost1:18080 max_fails=3 fail_timeout=30s;
+    server localhost1:28080 max_fails=3 fail_timeout=30s;
+    server localhost2:18080 max_fails=3 fail_timeout=30s;
+    server localhost2:28080 max_fails=3 fail_timeout=30s;
+}
+</code></pre><p>负载均衡配置了4台机器</p>
+<p>max_fails = 3 fail_timeout=30s  表示 ${fail_timeout}（30秒）时间内出现${max-fails}（3次）次失败，就会把这个机器状态置为down（下线），失败$(fail_timeout)(30秒)时间后，会重新尝试启用这服务器；</p>
+<p>Nginx只有当有访问时后，才发起对后端节点探测。如果本次请求中，节点正好出现故障，Nginx将把请求转交给接下来的节点处理。是否转发给下一个节点处理由 proxy_next_upstream 控制</p>
+<p>语法: proxy_next_upstream error | timeout | invalid_header | http_500 | http_502 | http_503 | http_504 |http_404 | off &hellip;;</p>
+<p>默认值: proxy_next_upstream error timeout;</p>
+<p>上下文: http, server, location</p>
+<pre><code>error # 和后端服务器建立连接时，或者向后端服务器发送请求时，或者从后端服务器接收响应头时，出现错误
+timeout # 和后端服务器建立连接时，或者向后端服务器发送请求时，或者从后端服务器接收响应头时，出现超时
+invalid_header # 后端服务器返回空响应或者非法响应头
+http_500 # 后端服务器返回的响应状态码为500
+http_502 # 后端服务器返回的响应状态码为502
+http_503 # 后端服务器返回的响应状态码为503
+http_504 # 后端服务器返回的响应状态码为504
+http_404 # 后端服务器返回的响应状态码为404
+off # 停止将请求发送给下一台后端服务器
+</code></pre><p>如果探测所有节点均失效，备机也为失效时，那么nginx会对所有节点恢复为有效，重新尝试探测有效节点，如果探测到有效节点则返回正确节点内容，如果还是全部错误，那么继续探测下去，当没有正确信息时，节点失效时默认返回状态为502，但是下次访问节点时会继续探测正确节点，直到找到正确的为止。</p>
+<p>nginx 默认是对非幂等请求不重试的(POST、LOCK、PATCH)</p>
+<p>要对非幂等请求也重试要加上<code>non_idemponent</code>;</p>
+<p><code>proxy_next_upstream error timeout http_500 non_idemponent;</code></p>
+<p>生产环境中不建议加上<code>non_idempotent</code>选项</p>
+<pre><code>   location / {
+        proxy_intercept_errors on;
+        proxy_set_header Host $host;
+        proxy_pass http://www_server3_plools;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_next_upstream error timeout http_503 non_idempotent;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+   }
 
-<h2 id="nginx-tls1-3">nginx tls1.3</h2>
-
+        error_page 500 502 503 504 =200 /error.json;
+        location = /error.json{
+            default_type application/json;
+            return 200 '{&quot;retCode&quot;:&quot;1001&quot;,&quot;retMsg&quot;:&quot;invoke failed&quot;}';
+       }
+</code></pre><h2 id="nginx-tls13">nginx tls1.3</h2>
 <p>nginx 性能提升</p>
-
 <p>http2 + tls1.3 + nginx upstream keepalive</p>
-
 <p>openssl-cli s_client -connect beta.tupianzhibo.cn:443 -tls1_3</p>
+<p>The only 100% safe things which may be done inside if in a location context are:</p>
+<p>return &hellip;;
+rewrite &hellip; last;</p>
+<h2 id="header">header</h2>
+<p><a href="https://www.jianshu.com/p/20a687873bf0">https://www.jianshu.com/p/20a687873bf0</a></p>
+<pre><code>client_header_buffer_size
+large_client_header_buffers
+</code></pre><p>为什么 Nginx 在处理 header 时会只能读取 default_server 的 client_header_buffer_size 配置呢？</p>
+<p>这个 default_server 是相对于 vhost 而言的。同一 ip:port 上的不同 vhost 通过域名相互区分。Nginx 收到请求后会根据域名定位到对应的 vhost 的 server 配置。然而，Nginx 解析域名（header 解析阶段）的时候就要用到 client_header_buffer_size 这个配置，所以没办法，只能取个默认值（default_server）了。最终结论是所有在 header 解析阶段用到的配置都只能从 default_server 读取，因为这个时候无法确定要用哪个具体的 server。</p>
+<h2 id="query">query</h2>
+<p>如果域名后面添加了路径,则不会转发</p>
+<p><code>proxy_pass $live_server/beta$uri;</code></p>
+<p>可以使用下面的</p>
+<p><code>proxy_pass $live_server/beta$uri$is_args$args;</code></p>
+<p>或者
+$request_uri 变量</p>
 
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/nginx-usage/"></air-messager>
+        <air-messager ns="hi" thread="/post/nginx-usage/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/javascript-code-snippet/" title="实用的Javascript代码锦集" >
+            <a class="previous" href="/post/javascript-code-snippet/" title="实用的Javascript代码锦集" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/memcached-usage/" title="memcached安装与使用">
+            <a class="next" href="/post/memcached-usage/" title="memcached安装与使用">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -161,6 +195,14 @@ server{
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

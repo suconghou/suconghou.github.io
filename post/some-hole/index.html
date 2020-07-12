@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>微信浏览器的一些问题 &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -54,14 +50,9 @@
         </div>
         
 		<div class="post-text">
-			
-
-<h2 id="微信">微信</h2>
-
+			<h2 id="微信">微信</h2>
 <p><strong>关于横竖屏的坑</strong></p>
-
 <p>css3可以使用媒体查询判断设备是横屏还是竖屏</p>
-
 <pre><code>//横屏时显示
 @media all and (orientation : landscape) {
 #screenMask{display:block}
@@ -71,23 +62,15 @@
 @media all and (orientation : portrait) {
 #screenMask{display:none}
 }
-</code></pre>
-
-<p>在手机浏览器中表现良好,微信中看样子也可以,但是微信网页中如果聚焦输入框,弹起键盘就有问题了.</p>
-
+</code></pre><p>在手机浏览器中表现良好,微信中看样子也可以,但是微信网页中如果聚焦输入框,弹起键盘就有问题了.</p>
 <p>软键盘弹起后,网页可用面积减小,安卓就自动识别为横屏了,原有的页面消失了,影响非常大.IOS则没有这个问题,媒体查询判断横竖屏在IOS上工作良好.</p>
-
 <p>并且由此发现,css3媒体查询就是根据宽度是否比高度小来判断横竖屏的.</p>
-
 <p><strong>解决方案1</strong></p>
-
 <p>使用<code>javascript</code>的<code>orientation</code>和<code>orientationchange</code>判断</p>
-
 <ul>
 <li>window.orientation   属于window对象上一个属性；共有三个值 ：0为竖屏模式（portrait）,90为向左反转变为横屏模式（landscape），-90为向右反转变为横屏模式（landscape），最后180就是设备上下互换还是竖屏模式。</li>
 <li>orientationchange    是一个event，在设备旋转时，会触发此事件，如同PC上使用的resize事件。</li>
 </ul>
-
 <pre><code>(function(){
     var init = function(){
         var updateOrientation = function(){
@@ -114,16 +97,10 @@
 
     window.addEventListener('DOMContentLoaded',init,false);
 })();
-</code></pre>
-
-<p>经测试使用JS判断能够正确得出安卓微信客户端里输入框聚焦时的横竖屏状态.</p>
-
+</code></pre><p>经测试使用JS判断能够正确得出安卓微信客户端里输入框聚焦时的横竖屏状态.</p>
 <p>orientation和orientationchange只有移动设备有这些属性和事件.</p>
-
 <p>在不支持这种属性和事件的设备上使用宽高比来判断做一下兼容,这样在不支持<code>orientation</code>的设备上就相当于使用了媒体查询</p>
-
 <p>最终总结代码如下:</p>
-
 <pre><code>(function(w)
 {
     var supportOrientation = (typeof w.orientation === 'number' &amp;&amp; typeof w.onorientationchange === 'object');
@@ -165,23 +142,21 @@
     };
     w.addEventListener('DOMContentLoaded',init,false);
 })(window);
-</code></pre>
-
-<p>可以访问如下网址测试: /html/wx</p>
+</code></pre><p>可以访问如下网址测试: /html/wx</p>
 
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/some-hole/"></air-messager>
+        <air-messager ns="hi" thread="/post/some-hole/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/enable-http2-in-chrome/" title="开始HTTP2" >
+            <a class="previous" href="/post/enable-http2-in-chrome/" title="开始HTTP2" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/react-native/" title="react native">
+            <a class="next" href="/post/react-native/" title="react native">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -193,6 +168,14 @@
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

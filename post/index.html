@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>Posts &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="http://blog.suconghou.cn/post/index.xml" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='/post/index.xml' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -35,7 +35,49 @@
         
             <article class="post-entry">
                 <header class="post-header">
-                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/dnscrypt-proxy/" class="post-link">Dnscrypt Proxy配置</a></h3>
+                    <h3 class="post-title"><a href="/post/mse-p2p-player/" class="post-link">MSE播放器与P2P</a></h3>
+                    <p class="post-meta">
+                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
+                        2020/06/27 15:46 Sat
+                    </p>
+                </header>
+                
+                <p class="post-summary">由于疫情原因,这个寒假格外长,闲赋在家,看了看之前的TODO LIST ,一个YouTube的播放器问题吸引了我,趁时间,捡起来研究研究,于是便有了这片文章
+要想做一个YouTube播放器,首先是API部分,这个有官方的API,不用我们自己爬数据,但是有请求量限制,不过这个也好说,加一层缓存,既提高了性能也降低了源请求量,等流量真的大了,还可以做多密钥负载均衡.
+https://developers.google.cn/youtube/v3/docs/
+提供的API很多,但是我们只需要实现自己需要的就OK了.
+总体来说就是加密钥,处理缓存,中转代理,我们选用GO语言来编写,这个处理起来十分容易.不得不说GO语言的网络库封装的非常好用.
+有了API下面就是前端界面,我们直接VUE全家桶搞起来,UI界面懒得慢慢打磨直接用个muse-ui框架,看起来还是很简洁的.
+播放地址解析 播放器部分是我们的重点.
+Data API 是不提供资源的播放地址的,播放地址也是敏感信息,我们需要自己实现.
+根据页面分析和抓包,再参考广大互联网群众的智慧,我们完成了 https://github.com/suconghou/youtubevideoparser 这个库
+根据视频ID解析出播放地址,但是播放地址由于某种原因我们是无法直接播放的,所以这需要一个合适的中转.
+如果中转整个视频,CDN很不友好,文件太大,CDN节点也不会为我们缓存.并且分析播放器我们也知道官方的播放器也不是一整个加载的,而是分片加载.
+如何分片是个问题,因为一旦采取了分片,意味着我们要使用MSE去处理视频.
+尝试了一下随便range分片结合mse,实践证明是行不通的.
+那官方的播放器是怎么做的呢,很明显关键点在这个分片的算法,不是随意分片的.
+但是找遍了源码也没找到这个分片的规则定义在哪?
+最后突然想到突破点可能是在视频文件本身,顺着这个思路问题解决.
+中间浪费了大量时间.这里不得不吐槽一下广大科普MSE的文章.
+大部分文章都提到了fragment mp4,都知道range请求,一片一片去addSourceBuffer
+但是对于range的划分原则,.mpd索引的原理和sidx segment丝毫未提.
+换句话说就是不是你想addSourceBuffer就能addSourceBuffer的,你必须取到一块完整的fragment才能addSourceBuffer,如何从视频中知道哪一字节至哪一字节是一个完整的fragment
+我们需要从视频的sidx segment中提取,.mpd索引就是预先根据sidx segment分析出来的结果.
+持有mpd索引,我们播放时就不需要再去下载视频中的sidx segment现场分析了.
+如何解析sidx segment 关于MSE的基本使用,这里不再赘述,网上入门的文章太多了,这里主要展开讨论一下mp4文件与sidx segment,无论是mp4还是fragment mp4,我们都可以将mp4文件拆解为基本的box
+常见的box类型有
+ ftyp 确定文件的类型 moov 保存了媒体的时间信息、trak信息和媒体索引等。 mdat 所有媒体数据统一存放在mdat中 free sidx moof  一个moov box中,可能还会嵌入其他的box,这个我们现在用不到,可以不用考虑.
+我们只看顶层的box,使用qtfaststart -l file.mp4 可以查看他的顶层box
+对于普通的mp4
+ftyp (32 bytes) moov (135554 bytes) free (8 bytes) mdat (35973570 bytes) 对于fragment mp4</p>
+                <footer class="post-footer">
+                    <a class="read-more" href="/post/mse-p2p-player/">阅读全文</a>
+                </footer>
+            </article>
+        
+            <article class="post-entry">
+                <header class="post-header">
+                    <h3 class="post-title"><a href="/post/dnscrypt-proxy/" class="post-link">Dnscrypt Proxy配置</a></h3>
                     <p class="post-meta">
                         <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
                         2018/09/20 13:57 Thu
@@ -45,13 +87,13 @@
                 <p class="post-summary">默认的配置文件是当前目录下的 dnscrypt-proxy.toml, 可以使用-config指定配置文件
  listen_addresses = [&#39;0.0.0.0:53&#39;] max_clients = 250 ipv4_servers = true ipv6_servers = false dnscrypt_servers = true doh_servers = true require_dnssec = false require_nolog = true require_nofilter = true force_tcp = false timeout = 2500 keepalive = 30 lb_strategy = &#39;fastest&#39; use_syslog = false cert_refresh_delay = 240 fallback_resolver = &#39;114.114.114.114:53&#39; ignore_system_dns = false netprobe_timeout = 30 log_files_max_size = 10 log_files_max_age = 7 log_files_max_backups = 1 block_ipv6 = true cache = true cache_size = 512 cache_min_ttl = 600 cache_max_ttl = 86400 cache_neg_min_ttl = 60 cache_neg_max_ttl = 600 [query_log] file = &#39;query.</p>
                 <footer class="post-footer">
-                    <a class="read-more" href="http://blog.suconghou.cn/post/dnscrypt-proxy/">阅读全文</a>
+                    <a class="read-more" href="/post/dnscrypt-proxy/">阅读全文</a>
                 </footer>
             </article>
         
             <article class="post-entry">
                 <header class="post-header">
-                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/linux-improve/" class="post-link">Linux系统优化的其他配置</a></h3>
+                    <h3 class="post-title"><a href="/post/linux-improve/" class="post-link">Linux系统优化的其他配置</a></h3>
                     <p class="post-meta">
                         <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
                         2018/09/19 12:07 Wed
@@ -73,20 +115,23 @@ cat /proc/sys/fs/file-nr 会在系统内核层面统计,比较正确
 ls -l /proc/28290/fd | wc -l
 查看 hard limit ulimit -Hn</p>
                 <footer class="post-footer">
-                    <a class="read-more" href="http://blog.suconghou.cn/post/linux-improve/">阅读全文</a>
+                    <a class="read-more" href="/post/linux-improve/">阅读全文</a>
                 </footer>
             </article>
         
             <article class="post-entry">
                 <header class="post-header">
-                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/image-compress-tools/" class="post-link">收集的图片压缩工具</a></h3>
+                    <h3 class="post-title"><a href="/post/image-compress-tools/" class="post-link">收集的图片压缩工具</a></h3>
                     <p class="post-meta">
                         <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
                         2018/08/29 14:10 Wed
                     </p>
                 </header>
                 
-                <p class="post-summary">png 图片压缩工具 https://css-ig.net/png-tools-overview.php#overview
+                <p class="post-summary">imagemagick https://www.imagemagick.org/script/download.php
+https://www.imagemagick.org/download/
+并提供各平台二进制可执行文件下载
+png 图片压缩工具 https://css-ig.net/png-tools-overview.php#overview
 https://github.com/chrissimpkins/Crunch
 https://nukesaq88.github.io/Pngyu/
 图像压缩软件 ImageOptim无损压缩
@@ -99,13 +144,13 @@ nodejs imagemin NodeJs模块,压缩jpg,png,压缩效果一般
 https://zhitu.isux.us/
 https://www.picdiet.com/zh-cn</p>
                 <footer class="post-footer">
-                    <a class="read-more" href="http://blog.suconghou.cn/post/image-compress-tools/">阅读全文</a>
+                    <a class="read-more" href="/post/image-compress-tools/">阅读全文</a>
                 </footer>
             </article>
         
             <article class="post-entry">
                 <header class="post-header">
-                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/file-manage/" class="post-link">一些好用的WEB文件管理器</a></h3>
+                    <h3 class="post-title"><a href="/post/file-manage/" class="post-link">一些好用的WEB文件管理器</a></h3>
                     <p class="post-meta">
                         <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
                         2018/08/25 17:57 Sat
@@ -120,13 +165,13 @@ filerun 的模式和 nextcloud 类似,比较复杂
 h5ai h5ai 是一个比较简单的php网盘
 https://larsjung.de/h5ai/</p>
                 <footer class="post-footer">
-                    <a class="read-more" href="http://blog.suconghou.cn/post/file-manage/">阅读全文</a>
+                    <a class="read-more" href="/post/file-manage/">阅读全文</a>
                 </footer>
             </article>
         
             <article class="post-entry">
                 <header class="post-header">
-                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/debug-x5-webview/" class="post-link">调试微信内置浏览器和QQ浏览器</a></h3>
+                    <h3 class="post-title"><a href="/post/debug-x5-webview/" class="post-link">调试微信内置浏览器和QQ浏览器</a></h3>
                     <p class="post-meta">
                         <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
                         2018/08/18 14:01 Sat
@@ -139,13 +184,13 @@ https://larsjung.de/h5ai/</p>
 Chrome 打开 chrome://inspect/#devices
 使用其他 工具 https://github.com/liriliri/eruda</p>
                 <footer class="post-footer">
-                    <a class="read-more" href="http://blog.suconghou.cn/post/debug-x5-webview/">阅读全文</a>
+                    <a class="read-more" href="/post/debug-x5-webview/">阅读全文</a>
                 </footer>
             </article>
         
             <article class="post-entry">
                 <header class="post-header">
-                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/frp-net-tunnel/" class="post-link">FRP内网穿透</a></h3>
+                    <h3 class="post-title"><a href="/post/frp-net-tunnel/" class="post-link">FRP内网穿透</a></h3>
                     <p class="post-meta">
                         <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
                         2018/05/27 14:39 Sun
@@ -154,36 +199,36 @@ Chrome 打开 chrome://inspect/#devices
                 
                 <p class="post-summary">配置frp服务器端 查看 https://github.com/fatedier/frp
 服务器端配置文件/etc/frps.ini
-[common] bind_port = 7000 kcp_bind_port = 7000 privilege_allow_ports = 7700,7800-7900 vhost_http_port = 5050 dashboard_port = 7500 dashboard_user = admin dashboard_pwd = 123abc881  网页控制台为7500端口
+[common] bind_port = 7000 kcp_bind_port = 7000 privilege_allow_ports = 7700,7800-7900 vhost_http_port = 5050 dashboard_port = 7500 dashboard_user = admin dashboard_pwd = 123abc881 网页控制台为7500端口
 编写/etc/systemd/system/frps.service文件使开机启动
-[Unit] Description=frps service After=network.target network-online.target [Service] Restart=on-failure TimeoutStartSec=0 ExecStart=/usr/local/bin/frps -c /etc/frps.ini [Install] WantedBy=multi-user.target  sudo systemctl daemon-reload sudo systemctl enable frps sudo systemctl start frps
+[Unit] Description=frps service After=network.target network-online.target [Service] Type=simple User=nobody Restart=on-failure RestartSec=5s ExecStart=/usr/local/bin/frps -c /etc/frps.ini [Install] WantedBy=multi-user.target sudo systemctl daemon-reload sudo systemctl enable frps sudo systemctl start frps
 配置frp客户端 要穿透的代理配置 /etc/frpc.ini
 [common] server_addr = x.x.x.x server_port = 7000 [ssh] type = tcp local_ip = 127.</p>
                 <footer class="post-footer">
-                    <a class="read-more" href="http://blog.suconghou.cn/post/frp-net-tunnel/">阅读全文</a>
+                    <a class="read-more" href="/post/frp-net-tunnel/">阅读全文</a>
                 </footer>
             </article>
         
             <article class="post-entry">
                 <header class="post-header">
-                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/css-tricks/" class="post-link">CSS技巧</a></h3>
+                    <h3 class="post-title"><a href="/post/css-tricks/" class="post-link">CSS技巧</a></h3>
                     <p class="post-meta">
                         <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
                         2018/05/18 17:16 Fri
                     </p>
                 </header>
                 
-                <p class="post-summary"> https://css-tricks.com/
+                <p class="post-summary">https://css-tricks.com/
 1. 使用CSS画出三角 box shadow with angle
-content: &#34; &#34;; border: 6px solid #fff; border-left-color: transparent; border-bottom-color: transparent; display: block; position: absolute; bottom: -6px; left: 50%; -webkit-transform: translateX(-50%) rotate(135deg); transform: translateX(-50%) rotate(135deg); box-shadow: 2px -2px 2px rgba(1,1,1,.12);  </p>
+content: &#34; &#34;; border: 6px solid #fff; border-left-color: transparent; border-bottom-color: transparent; display: block; position: absolute; bottom: -6px; left: 50%; -webkit-transform: translateX(-50%) rotate(135deg); transform: translateX(-50%) rotate(135deg); box-shadow: 2px -2px 2px rgba(1,1,1,.12); </p>
                 <footer class="post-footer">
-                    <a class="read-more" href="http://blog.suconghou.cn/post/css-tricks/">阅读全文</a>
+                    <a class="read-more" href="/post/css-tricks/">阅读全文</a>
                 </footer>
             </article>
         
             <article class="post-entry">
                 <header class="post-header">
-                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/tcp-data-copy-and-forward/" class="post-link">TCP端口转发和复制</a></h3>
+                    <h3 class="post-title"><a href="/post/tcp-data-copy-and-forward/" class="post-link">TCP端口转发和复制</a></h3>
                     <p class="post-meta">
                         <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
                         2018/05/05 18:43 Sat
@@ -195,55 +240,20 @@ macOs 可直接编译
 make darwin
 ./proxy 查看用法
 监听本地8080端口,并将流量同时复制到192.168.1.2:80 , 必须确保 192.168.1.2:80 可写.
-proxy -l 8080 -h 192.168.1.2 -p 80  默认后台运行,使用参数-f不进入后台
+proxy -l 8080 -h 192.168.1.2 -p 80 默认后台运行,使用参数-f不进入后台
 proxy -l 8080 -h 192.168.1.2 -p 80 -f
 查看转发的数据
-proxy -l 80 -h 67.215.245.160 -p 80 -i &#34;tee input.log&#34; -o &#34;tee output.log&#34;  直接输出到控制台
-proxy -l 80 -h 67.215.245.160 -p 80 -f -i &#34;tee /dev/stderr&#34; -o &#34;tee /dev/stderr&#34;  转发到多个后端
+proxy -l 80 -h 67.215.245.160 -p 80 -i &#34;tee input.log&#34; -o &#34;tee output.log&#34; 直接输出到控制台
+proxy -l 80 -h 67.215.245.160 -p 80 -f -i &#34;tee /dev/stderr&#34; -o &#34;tee /dev/stderr&#34; 转发到多个后端
 查看 https://github.com/kklis/proxy</p>
                 <footer class="post-footer">
-                    <a class="read-more" href="http://blog.suconghou.cn/post/tcp-data-copy-and-forward/">阅读全文</a>
+                    <a class="read-more" href="/post/tcp-data-copy-and-forward/">阅读全文</a>
                 </footer>
             </article>
         
             <article class="post-entry">
                 <header class="post-header">
-                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/databases/" class="post-link">一些数据库</a></h3>
-                    <p class="post-meta">
-                        <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
-                        2018/04/09 21:33 Mon
-                    </p>
-                </header>
-                
-                <p class="post-summary">CockroachDB 使用 pgsql 协议，golang开发,提供编译好的单文件可执行程序
-单文件可直接执行,但是非静态编译
-https://www.cockroachlabs.com/docs/releases/
-开源地址
-https://github.com/cockroachdb/cockroach
-其存储引擎使用了 RocksDB
-https://www.cockroachlabs.com/docs/stable/architecture/storage-layer.html
-有关内存的使用说明
-https://www.cockroachlabs.com/blog/memory-usage-cockroachdb/
-cockroach start --insecure --cache=64MB --max-sql-memory=8MB
-cockroach start --insecure --cache=.15 --max-sql-memory=.05
-tidb 开原地址 https://github.com/pingcap/tidb
-tidb 使用的存储引擎是rust开发的 tikv tikv 同样使用了RocksDB
-pgsql 10.5 https://get.enterprisedb.com/postgresql/postgresql-10.5-1-linux.run https://get.enterprisedb.com/postgresql/postgresql-10.5-1-linux-x64.run https://get.enterprisedb.com/postgresql/postgresql-10.5-1-windows.exe https://get.enterprisedb.com/postgresql/postgresql-10.5-1-windows-x64.exe https://get.enterprisedb.com/postgresql/postgresql-10.5-1-osx.dmg
-9.5.15 https://get.enterprisedb.com/postgresql/postgresql-9.5.14-1-linux.run https://get.enterprisedb.com/postgresql/postgresql-9.5.14-1-linux-x64.run https://get.enterprisedb.com/postgresql/postgresql-9.5.14-1-windows.exe https://get.enterprisedb.com/postgresql/postgresql-9.5.14-1-windows-x64.exe https://get.enterprisedb.com/postgresql/postgresql-9.5.14-1-osx.dmg
-9.4.19 https://get.enterprisedb.com/postgresql/postgresql-9.4.19-1-linux.run https://get.enterprisedb.com/postgresql/postgresql-9.4.19-1-linux-x64.run https://get.enterprisedb.com/postgresql/postgresql-9.4.19-1-windows.exe https://get.enterprisedb.com/postgresql/postgresql-9.4.19-1-windows-x64.exe https://get.enterprisedb.com/postgresql/postgresql-9.4.19-1-osx.dmg
-命令行安装
-mysql 见另一边文章
-mongodb 见另一边文章
-数据库管理工具 https://tableplus.io/
-支持多种数据库，有免费版</p>
-                <footer class="post-footer">
-                    <a class="read-more" href="http://blog.suconghou.cn/post/databases/">阅读全文</a>
-                </footer>
-            </article>
-        
-            <article class="post-entry">
-                <header class="post-header">
-                    <h3 class="post-title"><a href="http://blog.suconghou.cn/post/caddy-server/" class="post-link">Caddy Server基本用法</a></h3>
+                    <h3 class="post-title"><a href="/post/caddy-server/" class="post-link">Caddy Server基本用法</a></h3>
                     <p class="post-meta">
                         <svg style="width: 26px; height: 16px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1946" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M959.381795 958.445982l-895.392924 0 0-740.873688 895.392924 0L959.381795 958.445982zM89.571527 932.863327l844.227614 0 0-689.708378-844.227614 0L89.571527 932.863327z" p-id="1947"></path><path d="M268.650111 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1948"></path><path d="M729.137901 64.076364l25.582655 0 0 267.082918-25.582655 0 0-267.082918Z" p-id="1949"></path><path d="M88.54822 408.930553l845.25092 0 0 25.582655-845.25092 0 0-25.582655Z" p-id="1950"></path><path d="M586.898339 651.454122l-139.169643 0 0-114.610294 139.169643 0L586.898339 651.454122zM473.311351 625.871467l88.004333 0 0-63.444984-88.004333 0L473.311351 625.871467z" p-id="1951"></path><path d="M586.898339 831.556013l-139.169643 0 0-115.6336 139.169643 0L586.898339 831.556013zM473.311351 805.973358l88.004333 0 0-64.46829-88.004333 0L473.311351 805.973358z" p-id="1952"></path><path d="M319.815421 651.454122l-141.216255 0 0-114.610294 141.216255 0L319.815421 651.454122zM204.181821 625.871467l90.050945 0 0-63.444984-90.050945 0L204.181821 625.871467z" p-id="1953"></path><path d="M319.815421 831.556013l-141.216255 0 0-115.6336 141.216255 0L319.815421 831.556013zM204.181821 805.973358l90.050945 0 0-64.46829-90.050945 0L204.181821 805.973358z" p-id="1954"></path><path d="M856.027869 651.454122l-139.169643 0 0-114.610294 139.169643 0L856.027869 651.454122zM742.440881 625.871467l88.004333 0 0-63.444984-88.004333 0L742.440881 625.871467z" p-id="1955"></path><path d="M856.027869 831.556013l-139.169643 0 0-115.6336 139.169643 0L856.027869 831.556013zM742.440881 805.973358l88.004333 0 0-64.46829-88.004333 0L742.440881 805.973358z" p-id="1956"></path></svg>
                         2018/02/23 15:56 Fri
@@ -263,7 +273,7 @@ Chrome浏览器支持quic,可以通过chrome://net-internals/#quic 查看是使�
 使用配置文件 Caddyfile
 :80 { log stdout errors stderr redir https://{host}{uri} } :443 { log stdout errors stderr gzip tls /caddy/ssl/default.crt /caddy/ssl/default.key root /caddy/sites.d/0-default markdown / } site1.local { log stdout errors stderr gzip proxy / dockerhost.local:32000 { policy least_conn transparent insecure_skip_verify fail_timeout 10s max_fails 1 try_duration 1s } } site2.</p>
                 <footer class="post-footer">
-                    <a class="read-more" href="http://blog.suconghou.cn/post/caddy-server/">阅读全文</a>
+                    <a class="read-more" href="/post/caddy-server/">阅读全文</a>
                 </footer>
             </article>
         

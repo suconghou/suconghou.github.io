@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>使用tcpdump与ngrep &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -54,12 +50,8 @@
         </div>
         
 		<div class="post-text">
-			
-
-<p>各版本 <code>http://www.tcpdump.org/release/</code></p>
-
+			<p>各版本 <code>http://www.tcpdump.org/release/</code></p>
 <p>安装依赖 <code>yum install -y flex gcc make byacc</code> or <code>apt-get install flex gcc make byacc wget bzip2</code></p>
-
 <pre><code>cd /tmp
 wget http://www.tcpdump.org/release/libpcap-1.7.4.tar.gz
 tar zxf libpcap-1.7.4.tar.gz
@@ -73,86 +65,79 @@ cd tcpdump-4.7.4
 ./configure --prefix=/tmp  --disable-ipv6 CFLAGS='-O3 -I/tmp/lib/include' LDFLAGS='-L/tmp/lib/lib/libpcap.a'
 make -j4
 make install
-</code></pre>
-
-<p>安装成功后,位于<code>ls -lh /tmp/sbin/tcpdump</code> <code>ldd</code>查看此文件依赖较少,可直接复制到其他Linux上使用.</p>
-
+</code></pre><p>安装成功后,位于<code>ls -lh /tmp/sbin/tcpdump</code> <code>ldd</code>查看此文件依赖较少,可直接复制到其他Linux上使用.</p>
 <p>采用<code>CFLAGS=&quot;-O3&quot;</code>编译后为1.2MB</p>
-
 <p><code>tcpdump -h</code> 查看版本号以及用法</p>
-
 <p>我编译好的tcpdump version 4.7.4</p>
-
 <blockquote>
 <p>64位 <a href="http://share.suconghou.cn/files/bin/tcpdump.xz">http://share.suconghou.cn/files/bin/tcpdump.xz</a></p>
 </blockquote>
-
 <p>也可以直接<code>yum install tcpdump</code></p>
-
 <h2 id="使用tcpdump">使用tcpdump</h2>
-
 <blockquote>
 <p>-a 　　　将网络地址和广播地址转变成名字；</p>
-
+</blockquote>
+<blockquote>
 <p>-d 　　　将匹配信息包的代码以人们能够理解的汇编格式给出；</p>
-
+</blockquote>
+<blockquote>
 <p>-dd 　　 将匹配信息包的代码以c语言程序段的格式给出；</p>
-
+</blockquote>
+<blockquote>
 <p>-ddd 　　将匹配信息包的代码以十进制的形式给出；</p>
-
+</blockquote>
+<blockquote>
 <p>-e 　　　在输出行打印出数据链路层的头部信息；</p>
-
+</blockquote>
+<blockquote>
 <p>-f 　　　将外部的Internet地址以数字的形式打印出来；</p>
-
+</blockquote>
+<blockquote>
 <p>-l 　　　使标准输出变为缓冲行形式；</p>
-
+</blockquote>
+<blockquote>
 <p>-n 　　　不把网络地址转换成名字；</p>
-
+</blockquote>
+<blockquote>
 <p>-t 　　　在输出的每一行不打印时间戳；</p>
-
+</blockquote>
+<blockquote>
 <p>-v 　　　输出一个稍微详细的信息，例如在ip包中可以包括ttl和服务类型的信息；</p>
-
+</blockquote>
+<blockquote>
 <p>-vv 　　 输出详细的报文信息；</p>
-
+</blockquote>
+<blockquote>
 <p>-c 　　　在收到指定的包的数目后，tcpdump就会停止；</p>
-
+</blockquote>
+<blockquote>
 <p>-F 　　　从指定的文件中读取表达式,忽略其它的表达式；</p>
-
+</blockquote>
+<blockquote>
 <p>-i 　　　指定监听的网络接口；</p>
-
+</blockquote>
+<blockquote>
 <p>-r 　　　从指定的文件中读取包(这些包一般通过-w选项产生)；</p>
-
+</blockquote>
+<blockquote>
 <p>-w 　　　直接将包写入文件中，并不分析和打印出来；</p>
-
+</blockquote>
+<blockquote>
 <p>-T 　　　将监听到的包直接解释为指定的类型的报文，常见的类型有rpc （远程过程调用）和snmp（简单网络管理协议；</p>
 </blockquote>
-
 <p><code>tcpdump host 210.27.48.1</code></p>
-
 <p><code>sudo tcpdump  host media.suconghou.cn  -v -X</code>  -X 能查看每个TCP报文的十六进制对照</p>
-
 <p><code>sudo tcpdump  host media.suconghou.cn  -v -A</code>  -A 能查看每个TCP报文的数据</p>
-
 <p><code>tcpdump -i venet0:0 port not 22 and port not 53 and port not 27897 and port not 111</code></p>
-
 <p><code>tcpdump tcp -n -c 90 -v -X -i venet0:0 port not 22 and port not 53 and port not 27897 and port not 111</code></p>
-
 <p><code>-A</code>和<code>-X</code>有助于你查看详细的报文数据</p>
-
 <p>tcpdump 对截获的数据并没有进行彻底解码，数据包内的大部分内容是使用十六进制的形式直接打印输出的。</p>
-
 <p>ngrep 对于http数据解析更加清晰.</p>
-
 <h2 id="ngrep">ngrep</h2>
-
 <p>ngrep 编译总是出问题,建议直接安装:<code>apt-get install ngrep</code> <code>yum install ngrep</code></p>
-
 <p>如果更关注于TCP流量内容,可以使用<code>ngrep</code>,他是grep命令的网络版,同样需要libpcap库,能识别TCP、UDP和ICMP包，理解bpf的过滤机制</p>
-
 <p><code>ngrep -W byline -d eno1 port 80</code></p>
-
 <p>用-d指定网卡,使用<code>ifconfig</code>可以查看网卡信息</p>
-
 <pre><code>-e ：显示空数据包
 -i ：忽略大小写
 -v ：反转匹配
@@ -181,32 +166,18 @@ make install
 -d ：使用哪个网卡，可以用-L选项查询
 -L ：查询网卡接口
 
-</code></pre>
-
-<p>如果需要匹配关键字可以在-d参数之后, port 参数之前添加字符串匹配</p>
-
+</code></pre><p>如果需要匹配关键字可以在-d参数之后, port 参数之前添加字符串匹配</p>
 <p>同时可以使用-i忽略大小写,-w整字匹配等</p>
-
 <p><code>sudo ngrep  -W byline -d en0 -iw &quot;easy&quot;  port 80</code></p>
-
 <p>还可以使用这种过滤 <code>host www.google.com and port 80</code></p>
-
 <p>抓本机eth0 与192.168.1.9的通信信息，并且以行来打印出来</p>
-
 <p><code>ngrep -q -d eth0 -W byline host 192.168.1.9</code></p>
-
 <p>抓本机与192.168.1.8的通信端口为80（本机）的信息</p>
-
 <p><code>ngrep -q -W byline host 192.168.1.8 and port 80</code></p>
-
 <p>抓本机与192.168.1.8和192.168.1.9的通信，并且本地端口为80</p>
-
 <p><code>ngrep -q -W byline host 192.168.1.8 or host 192.168.1.9 port 80</code></p>
-
 <p>ngrep 不仅可以抓包TCP,还可以抓包UDP</p>
-
 <p>抓包udp的137端口</p>
-
 <pre><code>sudo ngrep -W byline  ''  udp
 
 sudo ngrep -W byline  ''  tcp
@@ -216,32 +187,21 @@ sudo ngrep -W byline -qd any '' udp port 137
 sudo ngrep -W byline  '' udp src port 137
 sudo ngrep -W byline  '' udp dst port 137
 
-</code></pre>
-
-<p>抓包TCP端口8080 , 并包含关键字<code>http</code>
+</code></pre><p>抓包TCP端口8080 , 并包含关键字<code>http</code>
 <code>sudo ngrep -W byline -qd any 'http' tcp port 8080</code></p>
-
 <p><code>sudo ngrep -W byline -qd any '' host 127.0.0.1 and tcp port 8080</code></p>
-
 <p>具体使用见
 <a href="http://man.linuxde.net/ngrep">http://man.linuxde.net/ngrep</a></p>
-
 <p>注意：要捕获127.0.0.1的流量，需要设定 <code>-d any</code> 检查所有网卡</p>
-
 <h2 id="tcpflow">tcpflow</h2>
-
-<p>tcpflow -ci eth0</p>
-
+<p>tcpflow -ci docker0</p>
 <p>其中 -c 表示将报文直接打印在 terminal 中。不指定 -c 参数会将抓取的 TCP 报文保存在文件中。 -i 表示你要监听的网络端口。 假如你不指定 -c 参数， tcpflow 会将每个 TCP 流的数据存储在他自己的文件中</p>
-
+<p>在docker0 网卡, 172.17.0.4:6060 端口接受和响应的数据</p>
+<p>tcpflow -i docker0 host 172.17.0.4 and port 6060</p>
 <p>读取已有的 pcap 文件</p>
-
 <p><code>tcpflow -cr test.pcap</code></p>
-
 <p>可以将 pcap 包打印到 terminal 中。当然你也可以将 TCP 流保存在文件中</p>
-
 <p><code>tcpflow -r test.pcap</code></p>
-
 <pre><code>
 # 过滤经过 192.168.1.202 的流量：
 tcpflow -i any host 192.168.1.202
@@ -258,31 +218,25 @@ tcpflow -i en0 any port 443 or port 80
 # 过滤主机 192.168.1.202 端口为 80 或 443 的流量：
 tcpflow -i en0 'host 192.168.1.202 and (port 80 or port 443)'
 
-</code></pre>
-
-<p><code>sudo tcpflow -i docker0 port not 443</code></p>
-
-<p>tcpflow -i eth0 &lsquo;( host live.ourwill.cn or host v1.tuwenzhibo.com )&rsquo;</p>
-
+</code></pre><p><code>sudo tcpflow -i docker0 port not 443</code></p>
+<p>tcpflow -i eth0 &lsquo;( host live.xx.cn or host v1.tuwenzhibo.com )&rsquo;</p>
 <p>tcpflow -i eth0 &lsquo;( host v1.tuwenzhibo.com )&rsquo;</p>
-
 <p>find . -type f -size +1k | xargs rm -f</p>
-
 <p>find . -type f -size 157b</p>
 
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/tcpdump/"></air-messager>
+        <air-messager ns="hi" thread="/post/tcpdump/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/use-apache-traffic-server/" title="编译安装Apache Traffic Server" >
+            <a class="previous" href="/post/use-apache-traffic-server/" title="编译安装Apache Traffic Server" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/shadowsocks-libev/" title="shadowsocks libev">
+            <a class="next" href="/post/shadowsocks-libev/" title="shadowsocks libev">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -294,6 +248,14 @@ tcpflow -i en0 'host 192.168.1.202 and (port 80 or port 443)'
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

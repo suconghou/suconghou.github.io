@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>linux on 苏苏的博客</title>
@@ -18,7 +18,7 @@
       
       <guid>http://blog.suconghou.cn/post/linux/</guid>
       <description>读取文件的前几字节 head 或 tail 以字节而不是以行为单位，那该怎么办呢？您可以用 -c 选项代替 -n 选项
-前100字节,并以hex格式显示 head -c 100 file | hexdump
+前100字节,并以hex格式显示 head -c 100 file | hexdump 
 后100字节tail -c 100 file | hexdump
 还可以使用管道交给 md5sum,可比较前100字节或后100字节是否相同
 head -c 100 file | hexdump | md5sum

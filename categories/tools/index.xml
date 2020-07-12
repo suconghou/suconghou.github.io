@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>tools on 苏苏的博客</title>
@@ -17,7 +17,7 @@
       <pubDate>Fri, 01 Jan 2016 23:54:20 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/linux-download-tools/</guid>
-      <description>wget wget -c -O filename &amp;quot;http://xx.com&amp;quot; 下载存储到指定文件,并指定断点续传
+      <description>wget wget -c -O filename &amp;quot;http://xx.com&amp;quot;  下载存储到指定文件,并指定断点续传
 wget -nc -c -i url.txt 批量下载文件中指定的资源(每行一个连接),跳过已下载的(同名的),并且断点续传.
 wget -i url.txt -O - | mpv - 下载url.txt里的链接,输出到标准输出
 使用user-agent
@@ -26,10 +26,11 @@ wget 断点续传 使用 -c 限速使用--limit-rate=300k
 wget -c --limit-rate=30k http://...
 lftp wget 可以断点续传 但是不支持多线程下载, lftp 的一个用法可以实现多线程下载.
 lftp -c &amp;quot;pget -n 10 http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.18.tar.gz&amp;quot;
-curl 常用的命令
+curl Windows 编译好的下载
+https://curl.haxx.se/dlwiz/?type=bin&amp;amp;os=Win64&amp;amp;flav=-
+常用的命令
 curl http://xx.com 只获取http消息正文
-curl -I http://xx.com 只获取http消息头
-curl -i http://xx.</description>
+curl -I http://xx.</description>
     </item>
     
     <item>
@@ -38,14 +39,16 @@ curl -i http://xx.</description>
       <pubDate>Sat, 21 Nov 2015 23:55:54 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/sync-files-on-linux/</guid>
-      <description>采用scp同步 采用rsync同步 rsync -arvuzpt --progress /data/project/21text/static/ root@172.168.1.3:/data/web/21text/static/;  mac上结合fswatch自动同步
-sync1() { dir=/data/project/21textv3/ while true do rsync -arvuzpt --progress --exclude=&amp;quot;.git&amp;quot; /data/project/21textv3/ root@172.168.1.3:/data/web/21textv3/ echo &amp;quot;start morniting folder $dir&amp;quot; fswatch -1 $dir sleep 2 done }  LFTP 同步 brew install lftp
+      <description>采用scp同步 采用rsync同步 rsync -arvuzpt --progress /data/project/21text/static/ root@172.168.1.3:/data/web/21text/static/; mac上结合fswatch自动同步
+sync1() { dir=/data/project/21textv3/ while true do rsync -arvuzpt --progress --exclude=&amp;quot;.git&amp;quot; /data/project/21textv3/ root@172.168.1.3:/data/web/21textv3/ echo &amp;quot;start morniting folder $dir&amp;quot; fswatch -1 $dir sleep 2 done } LFTP 同步 brew install lftp
 登陆ftp lftp user:pass@ftphost:21
 解决办法很简单。只要你能充分相信你的host，就在 lftp 里加上这样一句
 set ssl:verify-certificate no
 或者，可以在敲 lftp 命令的时候这样输入：
 lftp -e &amp;ldquo;set ssl:verify-certificate no&amp;rdquo;
-使用btsync https://www.getsync.com/platforms/desktop/</description>
+lftp -e &amp;ldquo;set ssl-allow false&amp;rdquo; ftp://user:pass@host:21
+rclone 也支持ftp
+rclone lsf :ftp: &amp;ndash;ftp-host=speedtest.tele2.net &amp;ndash;ftp-user=anonymous &amp;ndash;ftp-pass=rclone obscure dummy</description>
     </item>
     
   </channel>

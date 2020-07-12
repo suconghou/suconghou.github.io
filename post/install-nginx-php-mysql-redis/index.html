@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>安装PHP7和NGINX &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -52,15 +48,15 @@
                 <svg style="width: 20px; height: 13px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5131"><path d="M833.2 1008L538.8 679.8c-14.3-16-39.3-16-53.6 0L190.8 1008c-22 24.6-62.8 9-62.8-24V36c0-19.9 16.1-36 36-36h696c19.9 0 36 16.1 36 36v948c0 33-40.8 48.6-62.8 24zM538.8 572L824 890V72H200v817.9l285.2-318c14.3-15.9 39.3-15.9 53.6 0.1z" p-id="5132"></path></svg>
                 <ul class="tags">
                 
-                    <li> <a href="http://blog.suconghou.cn/tags/php">php</a> </li>
+                    <li> <a href="/tags/php">php</a> </li>
                 
-                    <li> <a href="http://blog.suconghou.cn/tags/nginx">nginx</a> </li>
+                    <li> <a href="/tags/nginx">nginx</a> </li>
                 
-                    <li> <a href="http://blog.suconghou.cn/tags/mysql">mysql</a> </li>
+                    <li> <a href="/tags/mysql">mysql</a> </li>
                 
-                    <li> <a href="http://blog.suconghou.cn/tags/redis">redis</a> </li>
+                    <li> <a href="/tags/redis">redis</a> </li>
                 
-                    <li> <a href="http://blog.suconghou.cn/tags/swoole">swoole</a> </li>
+                    <li> <a href="/tags/swoole">swoole</a> </li>
                 
                 </ul>
             </div>
@@ -71,27 +67,15 @@
         </div>
         
 		<div class="post-text">
-			
-
-<h2 id="编译安装nginx">编译安装NGINX</h2>
-
+			<h2 id="编译安装nginx">编译安装NGINX</h2>
 <p>首先安装一些依赖</p>
-
 <pre><code>yum -y install gcc make autoconf automake install zlib zlib-devel openssl openssl-devel pcre-devel
-</code></pre>
-
-<pre><code>apt-get update
+</code></pre><pre><code>apt-get update
 apt-get -y install gcc make  openssl libssl-dev libpcre3 libpcre3-dev
-</code></pre>
-
-<p><strong>编译安装</strong></p>
-
+</code></pre><p><strong>编译安装</strong></p>
 <p>Chrome51以后版本废弃了NPN的支持,要让Chrome51以后版本支持http2,需要更新OpenSSL到1.0.2及以上.</p>
-
 <p>查看当前系统的OpenSSL版本:<code>openssl version</code></p>
-
 <p>更新OpenSSL</p>
-
 <pre><code>OPENSSL_VERSION=openssl-1.0.2h
 cd /tmp
 wget https://www.openssl.org/source/${OPENSSL_VERSION}.tar.gz
@@ -101,18 +85,11 @@ cd ${OPENSSL_VERSION}
 make -j4
 sudo make install
 openssl version
-</code></pre>
-
-<p>最后一句查看版本是否更新了</p>
-
+</code></pre><p>最后一句查看版本是否更新了</p>
 <p>如果没有<code>www-data</code>用户和组,可以先创建</p>
-
 <pre><code>groupadd www-data
 adduser -M -s /sbin/nologin www-data -g www-data
-</code></pre>
-
-<h3 id="编译nginx">编译nginx</h3>
-
+</code></pre><h3 id="编译nginx">编译nginx</h3>
 <pre><code>NGINX_VERSION=nginx-1.11.3
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
 cd /tmp
@@ -125,20 +102,12 @@ sudo make -j$CPU_NUM  &amp;&amp; sudo make install
 sudo strip -s /usr/local/sbin/nginx
 rm -rf /tmp/nginx* /etc/nginx/*.default ${OPENSSL_VERSION}*
 nginx -V
-</code></pre>
-
-<p>如果找不到<code>sudo nginx</code>,使用以下命令:</p>
-
-<p><code>sudo ln -sf /usr/local/sbin/nginx /usr/sbin/nginx</code></p>
-
+</code></pre><p>如果找不到<code>sudo nginx</code>,使用以下命令:</p>
+<p><code>sudo ln -sf /usr/local/sbin/nginx /usr/sbin/nginx </code></p>
 <h3 id="通过yum安装nginx">通过YUM安装nginx</h3>
-
 <pre><code>sudo rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
 
-</code></pre>
-
-<p>还可以添加<a href="https://github.com/cuber/ngx_http_google_filter_module">Google反代模块</a>,按下面操作编译</p>
-
+</code></pre><p>还可以添加<a href="https://github.com/cuber/ngx_http_google_filter_module">Google反代模块</a>,按下面操作编译</p>
 <pre><code>cd /tmp
 git clone https://github.com/cuber/ngx_http_google_filter_module
 git clone https://github.com/yaoweibin/ngx_http_substitutions_filter_module
@@ -148,12 +117,8 @@ cd ${NGINX_VERSION}
 export CFLAGS=&quot;-O3&quot;
 ./configure  --with-http_ssl_module  --add-module=/tmp/ngx_http_google_filter_module  --add-module=/tmp/ngx_http_substitutions_filter_module
 make -j$CPU_NUM &amp;&amp; make install
-</code></pre>
-
-<p>注意:重复执行,需要清理上次编译数据<code>make clean</code></p>
-
+</code></pre><p>注意:重复执行,需要清理上次编译数据<code>make clean</code></p>
 <p><code>nginx -V</code> 查看编译的参数和已加载的模块</p>
-
 <pre><code>server {
 	listen       80;
 	server_name  xxx.domain.com google.com www.google.com;
@@ -175,20 +140,14 @@ make -j$CPU_NUM &amp;&amp; make install
 
 }
 
-</code></pre>
-
-<blockquote>
+</code></pre><blockquote>
 <p>gzip压缩级别，1-10，数字越大压缩的越好，时间也越长,建议3-4
 gzip_min_length 大于这个长度才会压缩,也可以写1k,文本过小压缩反而没有效果
 gzip_http_version 默认是1.1,也就是对于http1.1才会压缩,在proxy_pass时注意,proxy_pass默认就是http1.0的</p>
 </blockquote>
-
 <p><strong>除此之外, 这个模块还会读取 <code>Accept-Encoding</code>的值,客户端接受gzip,才会使用压缩,例如直接curl访问是不使用gzip的.</strong></p>
-
 <p>更多见 <a href="http://www.jb51.net/article/48995.htm">http://www.jb51.net/article/48995.htm</a></p>
-
 <p>反向代理</p>
-
 <pre><code>location / {
 	proxy_pass http://127.0.0.1:1080;
 	proxy_set_header Host $host;
@@ -196,12 +155,9 @@ gzip_http_version 默认是1.1,也就是对于http1.1才会压缩,在proxy_pass�
 	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 	proxy_set_header X-Forwarded-Port 80;
 }
-</code></pre>
-
-<p>一个纯静态文件服务器,开启目录浏览</p>
-
+</code></pre><p>一个纯静态文件服务器,开启目录浏览</p>
 <pre><code>server{
-        server_name share.ourwill.cn;
+        server_name share.xx.cn;
         listen 80;
         gzip on;
         etag on;
@@ -211,10 +167,7 @@ gzip_http_version 默认是1.1,也就是对于http1.1才会压缩,在proxy_pass�
         index index.html;
         root /data/share;
 }
-</code></pre>
-
-<p>使用<code>nginx</code>正向代理</p>
-
+</code></pre><p>使用<code>nginx</code>正向代理</p>
 <pre><code>server {
     listen 127.0.0.1:3128;
     resolver 8.8.8.8 8.8.4.4 valid=300s;
@@ -237,49 +190,33 @@ gzip_http_version 默认是1.1,也就是对于http1.1才会压缩,在proxy_pass�
         proxy_cache_valid any 1m;
    }
 }
-</code></pre>
-
-<p>正向代理必须配置<code>dns解析resolver</code></p>
-
+</code></pre><p>正向代理必须配置<code>dns解析resolver</code></p>
 <p>配置DNS服务器IP地址。可以指定多个，以轮询方式请求</p>
-
 <p><code>resolver_timeout 5s;</code> DNS解析超时时间（5秒）</p>
-
 <p>nginx会缓存解析的结果。默认情况下，缓存时间是名字解析响应中的TTL字段的值，可以通过valid参数更改。</p>
-
 <p><code>resolver 8.8.8.8 8.8.4.4 valid=300s;</code></p>
-
 <pre><code>proxy_pass $scheme://$host$request_uri;
 proxy_set_header Host $http_host;
-</code></pre>
-
-<p>配置缓存大小，关闭磁盘缓存读写减少I/O，以及代理连接超时时间。</p>
-
+</code></pre><p>配置缓存大小，关闭磁盘缓存读写减少I/O，以及代理连接超时时间。</p>
 <pre><code>proxy_buffers 256 4k; # 设置用于读取应答（来自被代理服务器）的缓冲区数目和大小，默认情况也为分页大小，根据操作系统的不同可能是4k或者8k。
 proxy_max_temp_file_size 0; # 当代理缓冲区过大时使用一个临时文件的最大值，如果文件大于这个值，将同步传递请求而不写入磁盘进行缓存。如果这个值设置为零，则禁止使用临时文件。
 proxy_connect_timeout 30;
 proxy_busy_buffers_size 256k; #高负荷下缓冲大小（proxy_buffers*2）
-</code></pre>
-
-<p>配置代理服务器 Http 状态缓存时间。</p>
-
+</code></pre><p>配置代理服务器 Http 状态缓存时间。</p>
 <pre><code>proxy_cache_valid 200 302 10m;
 proxy_cache_valid 301 1h;
 proxy_cache_valid any 1m;
-</code></pre>
-
-<p><code>host</code> <code>http_host</code> 变量可参考  <a href="http://www.pureage.info/2014/02/22/host-variable-in-nginx.html">http://www.pureage.info/2014/02/22/host-variable-in-nginx.html</a></p>
-
+</code></pre><h3 id="host-vs-http_host">host vs http_host</h3>
+<p><code>host</code> <code>http_host</code> 变量可参考</p>
+<p>host变量的值按照如下优先级获得： 1. 请求行中的host.
+2. 请求头中的Host头部.
+3. 与一条请求匹配的server name.</p>
 <p><code>uri</code> <code>request_uri</code> <a href="http://blog.sina.com.cn/s/blog_4ff12f66010158lk.html">http://blog.sina.com.cn/s/blog_4ff12f66010158lk.html</a></p>
-
 <p>因为Nginx不支持CONNECT，所以无法正向代理Https网站</p>
-
 <blockquote>
 <p>使用我编译的google代理的docker版本更易部署 <a href="https://hub.docker.com/r/suconghou/nginx-google/">https://hub.docker.com/r/suconghou/nginx-google/</a></p>
 </blockquote>
-
 <p>使用Map,根据请求得出不同变量值</p>
-
 <pre><code>map $http_user_agent $fileServe {
     default /data/www/dir;
     ~*&quot;Baiduspider|Sosospider|Googlebot|YoudaoBot|MSNBot|ia_archiver|twiceler|Scrubby|Gigabot|spider|bot|slurp|crawler&quot;  /data/www/dir1;
@@ -299,10 +236,7 @@ server {
 	}
 }
 
-</code></pre>
-
-<p>nginx 对于 php 的 pathinfo 配置</p>
-
+</code></pre><p>nginx 对于 php 的 pathinfo 配置</p>
 <pre><code>location ~ [^/]\.php(/|$) {
     fastcgi_pass 127.0.0.1:9000;
     # fastcgi_pass unix:/var/run/php-fpm.sock;
@@ -312,22 +246,16 @@ server {
     fastcgi_param PATH_INFO $real_path_info;
     include fastcgi.conf;
 }
-</code></pre>
-
-<pre><code>location ~ [^/]\.php(/|$) {
+</code></pre><pre><code>location ~ [^/]\.php(/|$) {
     fastcgi_split_path_info ^(.+?\.php)(/.*)$;
     if (!-f $document_root$fastcgi_script_name) {
         return 404;
     }
-</code></pre>
-
-<p>注意 fastcgi_split_path_info 要在 include 之前</p>
-
+</code></pre><p>注意 fastcgi_split_path_info 要在 include 之前</p>
 <p>更好玩的,代理任意IP和端口号.</p>
-
 <pre><code>server{
     listen 80;
-    server_name *.proxy.ourwill.cn;
+    server_name *.proxy.xx.cn;
     if ($host ~* ^((\d+)\.(\d+)\.(\d+)\.(\d+)\.(\d+)\.proxy\.ourwill\.cn)$) {
         set $proxy $2.$3.$4.$5;
         set $port $6;
@@ -355,10 +283,7 @@ server {
 
 }
 
-</code></pre>
-
-<p>代理websocket</p>
-
+</code></pre><p>代理websocket</p>
 <pre><code>http {
     map $http_upgrade $connection_upgrade {
         default upgrade;
@@ -379,54 +304,31 @@ server {
         }
     }
 }
-</code></pre>
-
-<h3 id="nginx转发的权限问题">nginx转发的权限问题</h3>
-
+</code></pre><h3 id="nginx转发的权限问题">nginx转发的权限问题</h3>
 <p><code>setsebool httpd_can_network_connect on</code>或许能解决问题.</p>
-
 <p><a href="http://stackoverflow.com/questions/23948527/13-permission-denied-while-connecting-to-upstreamnginx">http://stackoverflow.com/questions/23948527/13-permission-denied-while-connecting-to-upstreamnginx</a></p>
-
 <h3 id="propfind-协议转发">PROPFIND 协议转发</h3>
-
 <p>NGINX 不支持 PROPFIND 协议，此协议的请求默认是405，但是可以转发此协议的请求。但是不能使用 proxy_set_header 指令</p>
-
 <pre><code>location / {
     index      index.html;
     if ($request_method ~ ^(PROPFIND)$) {
         proxy_pass http://172.17.37.126:8088;
     }
 }
-</code></pre>
-
-<h3 id="各模块说明">各模块说明</h3>
-
+</code></pre><h3 id="各模块说明">各模块说明</h3>
 <p>http_gzip_module提供了对gzip的基本的支持，默认是编译到nginx的发行版本里面的。</p>
-
 <p>http_gzip_static_module则是针对nginx serve的静态文件，需要编译进去才能有。比如a.html，如果启用了<code>gzip_static on</code>，如果同一目录下还有a.html.gz作为a.html压缩版本存在，那么nginx会以a.html.gz作为a.html的gzip version来serve。</p>
-
 <h3 id="配置gzip">配置Gzip</h3>
-
 <p><code>gzip on</code> 开启Gzip</p>
-
 <p><code>gzip_proxied any</code></p>
-
 <h3 id="可能需要移动配置目录">可能需要移动配置目录</h3>
-
 <p>在<code>nginx.conf</code>中配置<code>include /usr/local/nginx/conf/conf.d/*.conf;</code></p>
-
 <p>建立目录<code>mkdir /etc/nginx/conf.d</code></p>
-
 <p>使用<code>ln -s /etc/nginx/conf.d /usr/local/nginx/conf/conf.d</code>建立软连接</p>
-
 <h3 id="修改nginx配置">修改Nginx配置</h3>
-
 <p><strong>设置最大上传文件大小</strong>,配置<code>nginx.conf</code></p>
-
 <p><code>client_max_body_size 50m</code> Default value for client_max_body_size is 1 MiB,超过大小报错<code>413 Request Entity Too Large</code></p>
-
 <p>静态由Nginx,动态转到后端</p>
-
 <pre><code>root /home/demo/goproj/src/Test/public;
 try_files $uri/index.html $uri.html $uri @goapp;
 
@@ -436,28 +338,18 @@ location @goapp {
 	proxy_redirect off;
 	proxy_pass http://localhost:8080;
 }
-</code></pre>
-
-<p>nginx 301 重定向</p>
-
+</code></pre><p>nginx 301 重定向</p>
 <pre><code>server{
     listen 80;
     server_name xxx.com;
     rewrite ^(.*) https://xxx.com$1 permanent;
 }
 
-</code></pre>
-
-<p>要使用 302 跳转，直接将permanent，改为redirect;</p>
-
+</code></pre><p>要使用 302 跳转，直接将permanent，改为redirect;</p>
 <p>使用匹配跳转后也加上之前访问的路径和<code>query_string</code>,可以转为https协议,也可以让多个域名301到一个域名</p>
-
 <p><code>proxy_set_header Host $http_host;</code></p>
-
 <p>有时候是很有必要的,nginx转发时默认不会携带当前域名,只会从proxy_pass 后面的地址中提取域名.</p>
-
 <p><code>proxy_pass</code> 后面再三种模式下不能添加URI</p>
-
 <blockquote>
 <ol>
 <li>Regular Expression Locations</li>
@@ -465,9 +357,7 @@ location @goapp {
 <li>if Blocks</li>
 </ol>
 </blockquote>
-
 <p>使用重写达到类似的效果</p>
-
 <pre><code>try_files $uri $uri/  @goapp;
 location @goapp{
         rewrite ^(.*)$ /www$1 break;
@@ -478,33 +368,18 @@ location @goapp{
         proxy_set_header Connection &quot;upgrade&quot;;
         proxy_pass http://127.0.0.1:18080;
 }
-</code></pre>
-
-<p>在我们请求的URI上拼接上<code>/www</code> 于是请求 <code>/home/index</code> 后端转发到<code>/www/home/index</code></p>
-
+</code></pre><p>在我们请求的URI上拼接上<code>/www</code> 于是请求 <code>/home/index</code> 后端转发到<code>/www/home/index</code></p>
 <p>参考 <code>https://lufficc.com/blog/configure-nginx-as-a-web-server</code></p>
-
 <p>去除一个子目录也可以使用rewrite</p>
-
 <p>example.com/component/tag/whatever</p>
-
 <p>example.com/tag/whatever</p>
-
 <pre><code>rewrite ^/component(.*)$ $1 break;
-</code></pre>
-
-<p>对于上面这个配置, 直接访问 <code>/component</code> 会导致500错误<code>the rewritten URI has a zero length</code>, 因为正则匹配的是空,不能作为rewrite后的uri</p>
-
+</code></pre><p>对于上面这个配置, 直接访问 <code>/component</code> 会导致500错误<code>the rewritten URI has a zero length</code>, 因为正则匹配的是空,不能作为rewrite后的uri</p>
 <p>可以写成 <code>rewrite ^/live(/.*)$ $1 break;</code> 保证rewrite后的uri是有数据的.</p>
-
 <p>或者 <code>rewrite ^/live(.+)$ $1 break;</code> 更为通用</p>
-
 <p>在之前添加其他rewrite指令 <code>rewrite ^(/live)$ $1/;</code>可以确保 <code>/live</code>的请求改写为<code>/live/</code> , 从而保证 <code>/live</code>和<code>/live/</code> 都能被重写为<code>/</code></p>
-
 <p><a href="https://serverfault.com/questions/302509/how-to-quick-and-easy-remove-part-of-an-url-in-nginx-with-httprewritemodule">https://serverfault.com/questions/302509/how-to-quick-and-easy-remove-part-of-an-url-in-nginx-with-httprewritemodule</a></p>
-
 <h3 id="代理与后端保持长连接">代理与后端保持长连接</h3>
-
 <pre><code>
 keepalive_timeout 75 75;
 keepalive_requests 1024;
@@ -524,56 +399,30 @@ upstream backend {
     keepalive 64;
 }
 
-</code></pre>
-
-<p><code>keepalive_timeout 75 75; keepalive_requests 1024;</code> 用于与浏览器端保持长连接,时间为timeout参数.</p>
-
+</code></pre><p><code>keepalive_timeout 75 75; keepalive_requests 1024;</code> 用于与浏览器端保持长连接,时间为timeout参数.</p>
 <p><code>keepalive_requests</code>是与客户端在同一个长连接中服务的请求次数,一个长连接服务次数超过限定,nginx将会强行关闭,在客户端请求密集时提高此参数有助于性能提升.</p>
-
 <p>nginx代理模式使用http1.0,<code>proxy_http_version 1.1;</code>指明需要使用http1.1协议</p>
-
 <p><code>proxy_set_header Connection &quot;&quot;;</code> 清除向后端传送的Connection字段,http1.1 默认就是keepalive, 重置此字段是忽略客户端此字段的值,不将其发送到后端.</p>
-
 <p>upstream中<code>keepalive 64</code>参数十分关键,他表明nginx连接池内最多保留的空闲长连接数.此值设置过小会导致nginx频繁关闭空闲连接,需要时又创建长连接,创建多了超过指定又会关闭.</p>
-
 <p>若服务器每秒仅收到20个请求,每个请求后端要300ms处理,则这20个请求始终会使用到长连接,此场景下最多64个空闲长连接已经足够.</p>
-
 <p>请求处理时间小于1秒,每秒请求数小于设定的<code>keepalive</code>,那么这些请求就是线程池长连接服务的,没有额外开销.</p>
-
 <p><strong>注意</strong>:<code>nginx</code>的<code>proxy_pass</code>后面带不带<code>/</code>是有区别的.</p>
-
 <p>不带<code>/</code>,nginx将不会对请求做任何形式的修改,仅仅是分发到不同主机上.</p>
-
-<p>带有<code>/</code>,nginx会将你<code>location</code>中匹配的东西略过.例如<code>location /service/</code>对于请求<code>http://nginx/service/add.php</code>将变为<code>http://proxy/add.php</code></p>
-
+<p>带有<code>/</code>,nginx会将你<code>location</code>中匹配的东西略过.例如<code>location /service/ </code>对于请求<code>http://nginx/service/add.php</code>将变为<code>http://proxy/add.php</code></p>
 <p>如果还在<code>/</code>后面添加<code>uri</code>,<code>uri</code>也会在之前拼入,如<code>proxy_pass http://proxy/request/</code> 变为 <code>http://proxy/request/add.php</code></p>
-
 <p>对于这个<code>uri</code>后面加不加<code>/</code>, nginx是不关心的, nginx 仅仅是将原先请求的URL根据location的值,截取后面的uri拼接到这个uri后面, 所以 <code>location /api</code> <code>proxy_pass http://proxy/myapi/</code> , 对于请求 <code>http://xx.com/api/userinfo</code> 会拼接出 <code>http://proxy/myapi//userinfo</code> 这种多余的<code>/</code></p>
-
 <p>在使用正则匹配时,<code>proxy_pass</code>后面是禁止添加<code>/</code>或者<code>uri</code>的,否则报错.</p>
-
 <p>proxy_pass 的时候, 被代理的主机发出301/302跳转,跳转的域名是被代理的主机域名. 那么经过<code>nginx</code> <code>proxy_pass</code> 时,nginx 将会将location中匹配 proxy_pass 里的域名改为当前的域名,使得向浏览器发出的是外层nginx配置的域名,而不是一个内部域名.</p>
-
 <p>有些时候我们可以使用</p>
-
 <p><code>proxy_redirect off</code> 禁用掉这个替换.</p>
-
 <p><code>proxy_redirect</code> 还有其他用法,还能自定义我们需要的替换.</p>
-
 <p>注意: <code>proxy_pass</code> 对于代理较大的文件,会使用文件缓存,注意proxy_pass缓存文件夹是否有写入权限.</p>
-
 <p>否则出现的情况是 资源下载一小部分,链接就被断掉,下载到的和content-length不服. 只能下载到即将使用文件缓存时的临界值大小.</p>
-
 <p>curl 出现<code>transfer closed with xxx bytes remaining to read</code> 等问题.</p>
-
 <p>这个缓存文件夹地址可由 <code>proxy_temp_path</code> 配置.</p>
-
 <p>一般<code>nginx</code>默认的零时文件夹是<code>/var/lib/nginx</code></p>
-
 <p><code>chown -R www-data:www-data /var/lib/nginx</code> 该文件夹所有者须与nginx worker进程的用户保持相同.</p>
-
 <p><strong>client_body</strong></p>
-
 <pre><code>large_client_header_buffers 1024 32k;
 client_max_body_size 10240m;
 client_body_buffer_size 128k;
@@ -582,10 +431,7 @@ client_header_timeout 2m;
 client_body_temp_path /dev/shm/nginx/body_temp/ 1 2 ;
 proxy_ignore_client_abort on;
 
-</code></pre>
-
-<p><strong>proxy module</strong></p>
-
+</code></pre><p><strong>proxy module</strong></p>
 <pre><code>proxy_connect_timeout 2m;
 proxy_read_timeout 5m;
 proxy_send_timeout 2m;
@@ -597,10 +443,7 @@ proxy_max_temp_file_size 10240m;
 proxy_http_version 1.1 ;
 proxy_buffering off ;
 proxy_temp_path /dev/shm/nginx/proxy_temp 1 2;
-</code></pre>
-
-<p>如果没有大文件上传,可以设置较大的<code>client_body_buffer_size</code>,避免文件IO.</p>
-
+</code></pre><p>如果没有大文件上传,可以设置较大的<code>client_body_buffer_size</code>,避免文件IO.</p>
 <pre><code>http {
     # ...
 
@@ -610,20 +453,12 @@ proxy_temp_path /dev/shm/nginx/proxy_temp 1 2;
 
     # ...
 }
-</code></pre>
-
-<p><strong>注意</strong></p>
-
+</code></pre><p><strong>注意</strong></p>
 <p>使用if判断时,if和括号之间是必须要加空格的,判断文件,目录是否存在<code>!-f</code>,<code>!-d</code>也是连起来的不能有空格</p>
-
 <h3 id="nginx-sni-反带">Nginx SNI 反带</h3>
-
 <p>nginx1.11.5以上版本支持SNI反带,此模块默认不是启用的,需要在编译的启用<code>--with-stream_ssl_preread_module</code></p>
-
 <p><code>https://www.v2ex.com/t/341913</code></p>
-
 <p>最外部添加</p>
-
 <pre><code>events {
     worker_connections 1024;
 }
@@ -637,26 +472,18 @@ stream {
         proxy_pass $ssl_preread_server_name:$server_port;
     }
 }
-</code></pre>
-
-<p>server{
-    listen 80;
-    resolver 8.8.8.8 8.8.4.4 valid=3600s;
-    resolver_timeout 5s;
-    proxy_connect_timeout 10s;
-    proxy_pass $hostname;
+</code></pre><p>server{
+listen 80;
+resolver 8.8.8.8 8.8.4.4 valid=3600s;
+resolver_timeout 5s;
+proxy_connect_timeout 10s;
+proxy_pass $hostname;
 }</p>
-
 <p>还可以结合map使用<code>https://nginx.org/en/docs/stream/ngx_stream_ssl_preread_module.html</code></p>
-
 <p>nginx 官方yum源.</p>
-
 <p><code>https://www.nginx.com/resources/wiki/start/topics/tutorials/install/</code></p>
-
 <p><code>nginx -t -c /etc/stream/stream.conf</code> 使用校验指定配置文件</p>
-
 <p><code>nginx -c /etc/stream/stream.conf</code> 使用指定配置文件启动.</p>
-
 <pre><code>error_log  /tmp/error.log;
 events {
     worker_connections  1024;
@@ -670,12 +497,8 @@ stream {
         proxy_pass $ssl_preread_server_name:$server_port;
     }
 }
-</code></pre>
-
-<p>nginx 启动时必须确保编译时配置的<code>error_log</code>所在的路径存在.因为nginx在解析配置文件之前就要写日志.</p>
-
+</code></pre><p>nginx 启动时必须确保编译时配置的<code>error_log</code>所在的路径存在.因为nginx在解析配置文件之前就要写日志.</p>
 <p>** TCP 端口转发**</p>
-
 <pre><code>stream {
     server {
         listen 443;
@@ -684,65 +507,37 @@ stream {
         proxy_pass 192.168.1.5:9090;
     }
 }
-</code></pre>
-
-<p>其他用法 <a href="https://www.v2ex.com/t/488039#reply9">https://www.v2ex.com/t/488039#reply9</a></p>
-
+</code></pre><p>其他用法 <a href="https://www.v2ex.com/t/488039#reply9">https://www.v2ex.com/t/488039#reply9</a></p>
 <h3 id="附上卸载apache方法">附上卸载Apache方法</h3>
-
 <ul>
 <li><strong>完全卸载使用apt-get安装的apache</strong></li>
 </ul>
-
 <ol>
 <li><code>sudo apt-get remove apache2</code></li>
 <li><code>sudo apt-get remove apache2.2-common</code></li>
 <li><code>sudo apt-get autoremove (此命令会自动卸载PHP)</code></li>
 </ol>
-
 <ul>
 <li><strong>卸载由rpm方式安装的apache</strong></li>
 </ul>
-
 <pre><code>rpm -qa|grep httpd
-</code></pre>
-
-<p>得出结果</p>
-
+</code></pre><p>得出结果</p>
 <p><code>httpd-2.2.15-39.el6.centos.i686</code></p>
-
 <p><code>httpd-tools-2.2.15-39.el6.centos.i686</code></p>
-
 <p>从上往下一个一个卸载</p>
-
 <pre><code>rpm -e httpd-2.2.15
 rpm -e httpd-tools
-</code></pre>
-
-<p>ab压力测试在httpd-tools,可以不卸载;</p>
-
+</code></pre><p>ab压力测试在httpd-tools,可以不卸载;</p>
 <p>在CentOS上安装ab压力测试</p>
-
 <pre><code>yum install httpd-tools
-</code></pre>
-
-<h2 id="编译安装php7">编译安装PHP7</h2>
-
+</code></pre><h2 id="编译安装php7">编译安装PHP7</h2>
 <p>最好先<code>yum update</code>一下,再安装以下依赖</p>
-
 <pre><code>yum install -y git wget curl  curl-devel libzip libzip-devel libmcrypt libmcrypt-devel gcc gcc-c++ cmake  autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libpng libpng-devel libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses  openssl-devel gdbm-devel db4-devel libXpm-devel libX11-devel gd-devel gmp-devel readline-devel libxslt-devel expat-devel xmlrpc-c xmlrpc-c-devel
-</code></pre>
-
-<p>下载PHP7最新版本,解压,有多种压缩格式可选,其中xz最小</p>
-
+</code></pre><p>下载PHP7最新版本,解压,有多种压缩格式可选,其中xz最小</p>
 <p>如果你在国内下载,将<code>php.net</code>改为<code>cn.php.net</code>下载会更快</p>
-
 <p>php 7.2 编译时 <code>unrecognized options: –with-mcrypt, –enable-gd-native-ttf</code></p>
-
 <p>php7.2 已废除mcrypt扩展,推荐使用openssl加密方法</p>
-
 <p><code>–enable-gd-native-ttf</code> 在php7.2中已无需使用.</p>
-
 <pre><code>cd /tmp
 PHP_VERSION=php-7.0.18
 CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
@@ -750,37 +545,22 @@ wget http://php.net/distributions/${PHP_VERSION}.tar.xz
 tar -xJf ${PHP_VERSION}.tar.xz
 cd ${PHP_VERSION}
 export CFLAGS=&quot;-O3&quot;
-</code></pre>
-
-<p>编译之前,可以开启O3编译优化,生成的可执行文件更小,性能更好</p>
-
+</code></pre><p>编译之前,可以开启O3编译优化,生成的可执行文件更小,性能更好</p>
 <p>包含部分常用扩展的编译</p>
-
 <pre><code>./configure --enable-inline-optimization --enable-static=yes --prefix=/tmp --with-config-file-path=/etc --without-pear --disable-cgi --disable-opcache --disable-fpm --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath --enable-zip --enable-mbstring --enable-gd-native-ttf --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd --with-freetype-dir=/usr/include/freetype2 --with-png-dir=/usr/include --with-jpeg-dir=/usr/include --with-openssl --with-mcrypt
 make -j$CPU_NUM &amp;&amp; make install
-</code></pre>
-
-<p>功能更全的编译</p>
-
+</code></pre><p>功能更全的编译</p>
 <p>包含<code>php-fpm</code>和<code>opcache</code>,添加其他常用扩展<code>--enable-exif --enable-calendar --with-xsl --with-bz2</code></p>
-
 <p>注意编译GD库的时候需要<code>--with-freetype-dir=/usr/include/freetype2</code>否则会出现<code>Call to undefined function imagettftext()</code></p>
-
 <pre><code>字库 配置开关
 FreeType 1.x 要激活 FreeType 1.x 的支持，加上 --with-ttf[=DIR]。
 FreeType 2 要激活 FreeType 2 的支持，加上 --with-freetype-dir=DIR。
 T1lib 要激活 T1lib（Type 1 字体），加上 --with-t1lib[=DIR]。
 本地 TrueType 字符串函数 要激活本地 TrueType 字符串函数的支持，加上 --enable-gd-native-ttf。
-</code></pre>
-
-<pre><code>./configure --enable-inline-optimization --enable-static=yes --prefix=/usr/local --with-config-file-path=/etc --disable-cgi --enable-opcache --enable-fpm  --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath --enable-zip --enable-mbstring --enable-gd-native-ttf --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd --with-freetype-dir=/usr/include/freetype2 --with-png-dir=/usr/include --with-jpeg-dir=/usr/include --with-openssl --with-mcrypt --enable-exif --enable-calendar  --with-xsl --with-bz2
+</code></pre><pre><code>./configure --enable-inline-optimization --enable-static=yes --prefix=/usr/local --with-config-file-path=/etc --disable-cgi --enable-opcache --enable-fpm  --enable-posix --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath --enable-zip --enable-mbstring --enable-gd-native-ttf --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd --with-freetype-dir=/usr/include/freetype2 --with-png-dir=/usr/include --with-jpeg-dir=/usr/include --with-openssl --with-mcrypt --enable-exif --enable-calendar  --with-xsl --with-bz2
 make -j$CPU_NUM &amp;&amp; make install
-</code></pre>
-
-<h3 id="静态编译php7">静态编译php7</h3>
-
+</code></pre><h3 id="静态编译php7">静态编译php7</h3>
 <p>alpine</p>
-
 <pre><code>apk update &amp;&amp; apk upgrade
 apk --update add xz gcc g++ make wget file pcre-dev zlib-dev  jpeg-dev libpng-dev freetype-dev bzip2-dev
 cd /tmp
@@ -790,121 +570,76 @@ tar xJf ${PHP_VERSION}.tar.xz
 cd ${PHP_VERSION}
 
 ./configure --enable-inline-optimization --enable-static=yes --enable-shared=no --prefix=/usr/local --with-config-file-path=/etc --without-pear --disable-cgi --disable-opcache --enable-fpm  --disable-phpdbg --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath  --enable-zip --enable-mbstring --enable-gd-native-ttf --with-mysqli --with-pdo-mysql --with-openssl  --enable-exif --enable-calendar --with-bz2 --enable-sysvsem --enable-sysvshm --enable-sysvmsg --enable-shmop --with-xsl --with-curl=/usr/local/  LDFLAGS=&quot;-static&quot; LIBS=&quot;/usr/local/lib/libcurl.a -L/lib -lssl -lcrypto -lssl -lcrypto -lz&quot; CFLAGS=&quot;-Os&quot;
-</code></pre>
-
-<p>configure 过程中 需要确保</p>
-
+</code></pre><p>configure 过程中 需要确保</p>
 <p><code>curl-config</code> <code>xml2-config</code> <code>xslt-config</code> 这几个库都有</p>
-
 <p>其中 <code>apk add curl-dev libxslt-dev</code> 都提供了静态库,但是<code>apk add libxml2-dev</code> 不包含静态库,需要自己编译</p>
-
 <p>如果报<code>libxml2</code>错误需要自己下载编译官方xml2</p>
-
 <pre><code>cd /tmp
 wget ftp://xmlsoft.org/libxml2/libxml2-2.9.7.tar.gz
 tar zxf libxml2-2.9.7.tar.gz
 cd libxml2-2.9.7
 ./configure &amp;&amp; make -j4 &amp;&amp; make install &amp;&amp; cd /tmp
-</code></pre>
-
-<p><code>libexslt.a(crypto.o)</code>相关问题</p>
-
+</code></pre><p><code>libexslt.a(crypto.o)</code>相关问题</p>
 <pre><code>cd /tmp
 wget ftp://xmlsoft.org/libxslt/libxslt-1.1.29.tar.gz
 tar zxf libxslt-1.1.29.tar.gz
 cd libxslt-1.1.29
 ./configure &amp;&amp; make -j4 &amp;&amp; make install &amp;&amp; cd /tmp
-</code></pre>
-
-<p>添加<code>--with-curl=</code> 注意,需要有静态库<code>libcurl.a</code> 参见 <code>http://php.net/manual/zh/curl.installation.php</code></p>
-
+</code></pre><p>添加<code>--with-curl=</code> 注意,需要有静态库<code>libcurl.a</code> 参见 <code>http://php.net/manual/zh/curl.installation.php</code></p>
 <pre><code>cd /tmp
 wget https://curl.haxx.se/download/curl-7.56.1.tar.xz
 tar Jxf curl-7.56.1.tar.gz
 cd curl-7.56.1
 ./configure &amp;&amp; make -j4 &amp;&amp; make install &amp;&amp; cd /tmp
-</code></pre>
-
-<p>并且需要设置变量LIBS,可以使用<code>curl-config --static-libs</code> 得出其值,若没有可能需要自己先下载curl编译.</p>
-
+</code></pre><p>并且需要设置变量LIBS,可以使用<code>curl-config --static-libs</code> 得出其值,若没有可能需要自己先下载curl编译.</p>
 <p><code>/usr/local/lib/libcurl.a -L/lib -lssl -lcrypto -lssl -lcrypto -lz</code></p>
-
 <p><code>/usr/local/lib/libcurl.a -L/lib -lssh2 -lssl -lcrypto -lssl -lcrypto -lz</code></p>
-
 <p>生成Makefile后,打开 Makefile,搜索<code>-export-dynamic</code> ,如果你还开启了编译php-fpm phpdbg 等会有多个,如果只编译php-cli就只会有一个.</p>
-
 <pre><code>BUILD_CLI = $(LIBTOOL) --mode=link $(CC) -export-dynamic $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_CLI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -o $(SAPI_CLI_PATH)
-</code></pre>
-
-<p>这里决定了只会静态链接 php 自己的库,系统库还是动态的.</p>
-
+</code></pre><p>这里决定了只会静态链接 php 自己的库,系统库还是动态的.</p>
 <p>删掉 <code>-export-dynamic</code>,在最后面加上<code>-all-static</code>,可以使用脚本替换掉</p>
-
 <pre><code>sed -i &quot;s{-export-dynamic{-all-static{&quot; Makefile
-</code></pre>
-
-<p>之后开开心心 <code>make -j4, make install</code> 后便可得到静态编译的PHP</p>
-
+</code></pre><p>之后开开心心 <code>make -j4, make install</code> 后便可得到静态编译的PHP</p>
 <p>php安装过后就可以使用<code>php</code>命令了,但是<code>php-fpm</code>还需要配置一下</p>
-
 <pre><code>php -v
 php -m
 mv /usr/local/etc/php-fpm.conf.default  /usr/local/etc/php-fpm.conf
 mv /usr/local/etc/php-fpm.d/www.conf.default /usr/local/etc/php-fpm.d/www.conf
 php-fpm -t
-</code></pre>
-
-<p>修改文件名,使配置文件正确,还可以修改配置,记录log和slow log</p>
-
+</code></pre><p>修改文件名,使配置文件正确,还可以修改配置,记录log和slow log</p>
 <p>提前建立文件夹<code>mkdir -p /var/log/php-fpm</code></p>
-
 <ul>
 <li>修改<code>php-fpm.conf</code>内<code>global</code>段<code>error_log</code>为<code>/var/log/php-fpm/php-fpm.log</code></li>
 <li>修改<code>php-fpm.conf</code>内<code>global</code>段<code>pid</code>为<code>/var/run/php-fpm.pid</code></li>
 <li>修改<code>www.conf</code>内<code>slowlog</code>为<code>/var/log/php-fpm/$pool.log.slow</code></li>
 <li>修改<code>www.conf</code>内<code>request_slowlog_timeout</code>为<code>5</code></li>
 </ul>
-
 <p>下面一段代码实现自动修改</p>
-
 <pre><code>mkdir -p /var/log/php-fpm
 sed -i '/^;error_log.*/cerror_log = \/var\/log\/php-fpm\/php-fpm.log' /usr/local/etc/php-fpm.conf
 sed -i '/^;pid.*/cpid = \/var\/run\/php-fpm.pid' /usr/local/etc/php-fpm.conf
 sed -i '/^;slowlog.*/cslowlog = \/var\/log\/php-fpm\/$pool.log.slow' /usr/local/etc/php-fpm.d/www.conf
 sed -i '/^;request_slowlog_timeout.*/crequest_slowlog_timeout = 5' /usr/local/etc/php-fpm.d/www.conf
 php-fpm -t
-</code></pre>
-
-<p>启动<code>php-fpm</code>
+</code></pre><p>启动<code>php-fpm</code>
 以下一些常用操作相信十分有用,<code>vim ~/.shell.sh</code>加入吧</p>
-
 <pre><code>alias phpfpmreload=' sudo kill -USR2 `cat /var/run/php-fpm.pid` ';
 alias phpfpmstop=' sudo kill -INT `cat /var/run/php-fpm.pid` ';
 alias errorlog='tail -f /var/log/nginx/error.log  /var/log/php-fpm/*.log ';
-</code></pre>
-
-<p>在你的<code>.baserc</code>,<code>vim ~/.baserc</code></p>
-
+</code></pre><p>在你的<code>.baserc</code>,<code>vim ~/.baserc</code></p>
 <pre><code>if [ -f ~/.shell.sh ]; then
         . ~/.shell.sh
 fi
-</code></pre>
-
-<p><code>source</code>一下就可以使用了.</p>
-
+</code></pre><p><code>source</code>一下就可以使用了.</p>
 <p>其中部分步骤可能需要root权限</p>
-
 <h3 id="可能出现的错误">可能出现的错误</h3>
-
 <p>1.curl未安装
 执行
 <code>yum install curl-devel</code>
 或者 <code>sudo apt-get install curl libcurl3 libcurl3-dev</code>
 然后再次尝试编译</p>
-
-<p>2.<code>error: mcrypt.h not found. Please reinstall libmcrypt.</code>
+<p>2.<code> error: mcrypt.h not found. Please reinstall libmcrypt.</code>
 需要安装libcrytpt</p>
-
 <pre><code>cd /tmp
 wget ftp://mcrypt.hellug.gr/pub/crypto/mcrypt/attic/libmcrypt/libmcrypt-2.5.7.tar.gz
 tar -zxvf libmcrypt-2.5.7.tar.gz
@@ -912,16 +647,11 @@ cd libmcrypt-2.5.7
 mkdir -p /usr/local/libmcrytpt
 ./configure prefix=/usr/local/libmcrytpt/
 make -j$CPU_NUM  &amp;&amp; make install
-</code></pre>
-
-<p>然后重新编译,设定编译参数mcrypt指定路径:
+</code></pre><p>然后重新编译,设定编译参数mcrypt指定路径:
 <code>--with-mcrypt=/usr/local/libmcrytpt/</code></p>
-
 <p>3.OpenSSL相关错误</p>
-
 <p><code>Cannot find OpenSSL's &lt;evp.h&gt;</code>
 或者</p>
-
 <pre><code>Undefined symbols for architecture x86_64:
 	&quot;_PKCS5_PBKDF2_HMAC&quot;, referenced from:
 			_zif_openssl_pbkdf2 in openssl.o
@@ -941,40 +671,21 @@ make -j$CPU_NUM  &amp;&amp; make install
 			_php_openssl_setup_crypto in xp_ssl.o
 	&quot;_TLSv1_2_server_method&quot;, referenced from:
 			_php_openssl_setup_crypto in xp_ssl.o
-</code></pre>
-
-<p>解决:
+</code></pre><p>解决:
 Linux上 <code>yum install openssl openssl-devel</code></p>
-
 <p>Mac上编译须做如下配置</p>
-
 <p><code>brew install openssl</code> 然后执行 <code>brew link openssl --force</code> 并添加环境变量</p>
-
 <p><code>export LDFLAGS=&quot;/usr/local/opt/openssl/lib/libssl.dylib /usr/local/opt/openssl/lib/libcrypto.dylib&quot;</code></p>
-
 <p>4.configure: error: xml2-config not found. Please check your libxml2 installation.</p>
-
 <pre><code>apt-get install libxml2 libxml2-dev libmcrypt-dev openssl libssl-dev libcurl4-openssl-dev
-</code></pre>
-
-<p>mac 用户<code>brew install libxml2</code> 然后配置时指定 <code>--with-libxml-dir=/usr/local/opt/libxml2/</code></p>
-
+</code></pre><p>mac 用户<code>brew install libxml2</code> 然后配置时指定 <code>--with-libxml-dir=/usr/local/opt/libxml2/</code></p>
 <p>可以使用<code>brew info libxml2</code>查看brew把它安装在哪里</p>
-
 <p>5.Cannot find OpenSSL&rsquo;s libraries</p>
-
 <pre><code>apt-get install libmcrypt-dev openssl libssl-dev libcurl4-openssl-dev
-</code></pre>
-
-<p>6.configure: error: png.h not found.</p>
-
+</code></pre><p>6.configure: error: png.h not found.</p>
 <pre><code>apt-get install libjpeg-dev libpng-dev
-</code></pre>
-
-<p>7.make: *** [ext/fileinfo/libmagic/apprentice.lo] Error 1</p>
-
+</code></pre><p>7.make: *** [ext/fileinfo/libmagic/apprentice.lo] Error 1</p>
 <p>这是由于内存小于1G所导致.可以<code>--disable-fileinfo</code>,或者添加添加零时的swap</p>
-
 <pre><code>#创建一个大小为512M的文件(要创建2G的话把2048改为8192)
 dd if=/dev/zero of=/swapfile bs=2048 count=262144
 #把这个文件变成swap文件
@@ -983,33 +694,22 @@ mkswap /swapfile
 swapon /swapfile
 #查看已经生效了
 free -m
-</code></pre>
-
-<p>如果要每次开机就加载</p>
-
+</code></pre><p>如果要每次开机就加载</p>
 <pre><code>#编辑/etc/fstab文件，使在每次开机时自动加载swap文件
 /swapfile    swap    swap    default   0 0
-</code></pre>
-
-<p><code>unmount</code></p>
-
+</code></pre><p><code>unmount</code></p>
 <p><code>fuser -v  /data</code></p>
-
 <p>使用 <code>blkid</code> 可查看关于此文件的配置信息</p>
-
 <p><a href="http://man.linuxde.net/blkid">http://man.linuxde.net/blkid</a></p>
-
 <p><a href="http://man.linuxde.net/lsblk">http://man.linuxde.net/lsblk</a></p>
-
 <blockquote>
 <p>注意:XEN KVM 可以创建SWAP,OVZ本身就是Virtual Environmen,不支持创建SWAP</p>
-
+</blockquote>
+<blockquote>
 <p>通过<code>df -lhT</code> 看到磁盘类型为simfs,而不是ext3,ext4,一般就不支持</p>
 </blockquote>
-
 <p>8.<code>system libzip must be upgraded to version &gt;= 0.11</code>
 libzip 地址 <a href="http://www.nih.at/libzip/">http://www.nih.at/libzip/</a></p>
-
 <pre><code>cd /tmp
 wget http://www.nih.at/libzip/libzip-1.1.2.tar.xz
 tar Jxvf libzip-1.1.2.tar.xz
@@ -1017,57 +717,35 @@ cd libzip-1.1.2
 mkdir -p /usr/local/libzip
 ./configure prefix=/usr/local/libzip/
 make -j$CPU_NUM  &amp;&amp; make install
-</code></pre>
-
-<p>编译PHP时加上<code>--with-libzip=/usr/local/libzip/</code></p>
-
+</code></pre><p>编译PHP时加上<code>--with-libzip=/usr/local/libzip/</code></p>
 <p><strong>使用多核提升编译性能</strong></p>
-
 <p>用make -j带一个参数，可以把项目进行并行编译，比如在一台双核的机器上，完全可以用<code>make -j4</code>，让make最多允许4个编译命令同时执行，这样可以更有效的利用CPU资源。</p>
-
 <p><strong>优化等级</strong></p>
-
 <p>-O这个选项控制所有的优化等级。使用优化选项会使编译过程耗费更多的时间，并且占用更多的内存，尤其是在提高优化等级的时候。
 -O2是推荐的优化等级,O3是最高等级。如果编译软件出现错误，请先检查是否启用了-O3</p>
-
 <p><strong>无缝升级</strong></p>
-
 <p>php编译完成以后,无缝升级php
 只需<code>kill -USR2 php-fpm master 进程的PID</code>,向<code>php-fpm master</code>进程发送重启指令,php-fpm的master和worker都会重新加载配置,重新运行起来.
 <code>curl -I 127.0.0.1</code>查看,新版本的fpm已经在工作了.</p>
-
 <p><code>ps -ylC php-fpm --sort:rss</code>可以查看所有php-fpm进程的内存消耗.</p>
-
 <p><code>ps --no-headers -o &quot;rss,cmd&quot; -C php-fpm | awk '{ sum+=$1 } END { printf (&quot;%d%s\n&quot;, sum/NR/1024,&quot;M&quot;) }'</code>
 得出平均每进程消耗的内存.</p>
-
 <p>8G以上内存生产服务器可以加大子进程数量.</p>
-
 <pre><code>pm.max_children = 70
 pm.start_servers = 20
 pm.min_spare_servers = 20
 pm.max_spare_servers = 35
 pm.max_requests = 500
-</code></pre>
-
-<p>如果pm设置为static，那么其实只有pm.max_children这个参数生效,start_servers的值要介于min和max之前</p>
-
+</code></pre><p>如果pm设置为static，那么其实只有pm.max_children这个参数生效,start_servers的值要介于min和max之前</p>
 <p>PHP的数据库长连接有没有效,
 实际测试,采用香港服务器远程连接mysql,非长连接模式下耗时约600ms,使用PDO长连接,耗时下降到260ms左右,是有一定作用的.
 但是长连接不适用于CLI模式,CLI模式下,php进程退出,连接即断开.</p>
-
-<h2 id="通过yum安装php5-6或php7">通过Yum安装PHP5.6或PHP7</h2>
-
+<h2 id="通过yum安装php56或php7">通过Yum安装PHP5.6或PHP7</h2>
 <p>安装PHP7 <a href="https://webtatic.com/packages/php70/">https://webtatic.com/packages/php70/</a></p>
-
 <p>安装PHP5.6 <a href="https://webtatic.com/packages/php56/">https://webtatic.com/packages/php56/</a></p>
-
 <p>其他 <a href="https://webtatic.com/news/2016/09/latest-updates-php-7-0-11-5-6-26-mysql-5-5-52/">https://webtatic.com/news/2016/09/latest-updates-php-7-0-11-5-6-26-mysql-5-5-52/</a></p>
-
 <h2 id="安装一些其他扩展">安装一些其他扩展</h2>
-
 <p>php redis 扩展</p>
-
 <pre><code>wget -c -O php-redis.zip https://github.com/phpredis/phpredis/archive/php7.zip
 unzip php-redis.zip
 cd phpredis-php7
@@ -1075,38 +753,26 @@ phpize
 ./configure --enable-redis-igbinary
 make -j$CPU_NUM  &amp;&amp; make install
 
-</code></pre>
-
-<p>安装libmemcached,memcached依赖此项</p>
-
+</code></pre><p>安装libmemcached,memcached依赖此项</p>
 <pre><code>wget -c https://launchpad.net/libmemcached/1.0/1.0.18/+download/libmemcached-1.0.18.tar.gz
 tar -xzf libmemcached-1.0.18.tar.gz -C /tmp
 cd /tmp/libmemcached-1.0.18
 ./configure
 make -j$CPU_NUM  &amp;&amp; make install
-</code></pre>
-
-<p>php memcached 扩展</p>
-
+</code></pre><p>php memcached 扩展</p>
 <pre><code>wget -c -O php-memcached.zip https://github.com/php-memcached-dev/php-memcached/archive/php7.zip
 unzip php-memcached.zip
 cd php-memcached-php7
 phpize
 make -j$CPU_NUM  &amp;&amp; make install
-</code></pre>
-
-<p>安装swoole扩展</p>
-
+</code></pre><p>安装swoole扩展</p>
 <pre><code>wget -c -O php-swoole.zip https://github.com/swoole/swoole-src/archive/master.zip
 unzip php-swoole.zip
 cd swoole-src-master
 phpize
 ./configure
 make -j$CPU_NUM  &amp;&amp; make install
-</code></pre>
-
-<h2 id="编译redis-memcached-opcache到php7">编译redis,memcached,opcache到php7</h2>
-
+</code></pre><h2 id="编译redismemcachedopcache到php7">编译redis,memcached,opcache到php7</h2>
 <pre><code>wget -c http://php.net/distributions/${PHP_VERSION}.tar.xz
 wget -c -O php-redis.zip https://github.com/phpredis/phpredis/archive/php7.zip
 wget -c -O php-memcached.zip https://github.com/php-memcached-dev/php-memcached/archive/php7.zip
@@ -1121,20 +787,12 @@ rm -rf configure
 ./configure --enable-inline-optimization --enable-static=yes --prefix=/tmp --with-config-file-path=/etc --enable-opcache --enable-redis --enable-memcached --disable-memcached-sasl --enable-pcntl --enable-sockets --enable-ftp --enable-bcmath --enable-zip --enable-mbstring --with-iconv --with-mysqli --with-pdo-mysql --with-curl --with-gd --with-openssl
 make -j$CPU_NUM
 make install
-</code></pre>
-
-<p>可能出现的错误</p>
-
+</code></pre><p>可能出现的错误</p>
 <p>1.<code>configure: error: no, sasl.h is not available. Run configure with --disable-memcached-sasl to disable this check</code></p>
-
 <p>解决:</p>
-
 <p><code>yum install cyrus-sasl-devel</code> 或 <code>sudo apt-get install libsasl2-dev</code></p>
-
 <p>或者禁用掉</p>
-
 <p>搭配PHP的配置</p>
-
 <pre><code>server{
 	listen 8080;
 	server_name 127.0.0.1;
@@ -1152,10 +810,7 @@ make install
 	}
 }
 
-</code></pre>
-
-<p>一个Server实现多个域名,多个主机</p>
-
+</code></pre><p>一个Server实现多个域名,多个主机</p>
 <pre><code>server{
 	listen 8080;
 	server_name *.git.suconghou.cn;
@@ -1179,26 +834,17 @@ make install
 		include        fastcgi_params;
 	}
 }
-</code></pre>
-
-<p>Nginx里同<code>fastcgi_params</code>文件一样,还存在一份配置<code>fastcgi.conf</code>;</p>
-
+</code></pre><p>Nginx里同<code>fastcgi_params</code>文件一样,还存在一份配置<code>fastcgi.conf</code>;</p>
 <p>只不过后者多了一行<code>fastcgi_param  SCRIPT_FILENAME    $document_root$fastcgi_script_name;</code></p>
-
 <p>我们可以直接使用它来替换<code>fastcgi_params</code>文件配置,同时我们也都添加了try_files检测,也可以略去<code>fastcgi_index</code>,故可以简写为:</p>
-
 <pre><code>location ~ \.php$ {
 	try_files $uri /index.php$is_args$args;
 	fastcgi_pass  unix:/var/run/php-fpm.sock;
 	include fastcgi.conf;
 }
-</code></pre>
-
-<p>注意<code>fastcgi_param</code>指令是数组型的,内层替换外层,但是同级多次使用的时候，是新增而不是替换。注意不要重复使用.</p>
-
+</code></pre><p>注意<code>fastcgi_param</code>指令是数组型的,内层替换外层,但是同级多次使用的时候，是新增而不是替换。注意不要重复使用.</p>
 <p><code>try_files</code> 的最后一个参数是作为<code>fallback</code>的,具有特殊的意义,命中这个规则会发起一个内部重定向,而前几个参数是不会发生内部重定向的。
 下面的例子可以描述这个过程</p>
-
 <pre><code>server{
     listen 7090;
     server_name 127.0.0.1;
@@ -1211,9 +857,7 @@ make install
         return 200 &quot;break&quot;;
     }
 }
-</code></pre>
-
-<pre><code>server{
+</code></pre><pre><code>server{
     listen 7090;
     server_name 127.0.0.1;
     index index.html index.php;
@@ -1225,27 +869,21 @@ make install
         return 200 &quot;break&quot;;
     }
 }
-</code></pre>
-
-<p>需要注意的是<code>index</code>指令也会触发一个内部重定向。</p>
-
+</code></pre><p>需要注意的是<code>index</code>指令也会触发一个内部重定向。</p>
 <p>访问<code>http://127.0.0.1:7090/</code> 这两种配置都会返回403,因为此时<code>$uri</code>的值为<code>/</code></p>
-
 <p>proxy_pass 与 regexp location 结合</p>
-
-<p>1.</p>
-
+<ol>
+<li></li>
+</ol>
 <pre><code>location ~* ^/dir/ {
   rewrite ^/dir/(.*) /$1 break;
   proxy_pass http://backend;
-</code></pre>
-
-<blockquote>
+</code></pre><blockquote>
 <p>注意backend后没有/</p>
 </blockquote>
-
-<p>2.</p>
-
+<ol start="2">
+<li></li>
+</ol>
 <pre><code>location / {
 
  if ($arg_test ~ &quot;true&quot;) {
@@ -1258,90 +896,58 @@ make install
         proxy_pass http://backend;
     }
 }
-</code></pre>
-
-<blockquote>
+</code></pre><blockquote>
 <p>注意 backend后面没有<code>/</code>
 注意必须在 <code>location /</code>内部</p>
 </blockquote>
-
 <p><a href="http://linuxplayer.org/2013/06/nginx-try-files-on-multiple-named-location-or-server">http://linuxplayer.org/2013/06/nginx-try-files-on-multiple-named-location-or-server</a></p>
-
 <p>fastcgi_busy_buffers_size 必须小于 fastcgi_buffers</p>
-
 <p>排除favicon.ico错误</p>
-
 <pre><code>location = /favicon.ico {
 log_not_found off;
 access_log off;
 }
-</code></pre>
-
-<p>不允许以.开头的文件</p>
-
+</code></pre><p>不允许以.开头的文件</p>
 <pre><code>location ~ /. {
 deny all;
 access_log off;
 log_not_found off;
 }
-</code></pre>
-
-<p>排除找不到robots错误</p>
-
+</code></pre><p>排除找不到robots错误</p>
 <pre><code>location = /robots.txt {
 allow all;
 log_not_found off;
 access_log off;
 }
-</code></pre>
-
-<p>php-fpm 运行时错误
-1. [pool www] cannot get gid for group &lsquo;nobody&rsquo;
+</code></pre><p>php-fpm 运行时错误</p>
+<ol>
+<li>[pool www] cannot get gid for group &lsquo;nobody&rsquo;
 <code>groupadd nobody</code>或者
- 修改php-fpm.conf</p>
-
+修改php-fpm.conf</li>
+</ol>
 <pre><code>user = www-data
 group = www-data
-</code></pre>
-
-<h2 id="使用-goaccess-nginx-日志分析">使用 goaccess nginx 日志分析</h2>
-
+</code></pre><h2 id="使用-goaccess-nginx-日志分析">使用 goaccess nginx 日志分析</h2>
 <p>nginx日志分析工具 <a href="https://goaccess.io/">https://goaccess.io/</a>  <a href="https://github.com/allinurl/goaccess/">https://github.com/allinurl/goaccess/</a> 采用c语言编写,还能生成网页</p>
-
 <h3 id="静态编辑goaccess">静态编辑goaccess</h3>
-
 <p>查看实时日志</p>
-
 <p><code>goaccess access.log -o /var/www/html/report.html --log-format=COMBINED --real-time-html</code></p>
-
 <p><code>use docker</code></p>
-
 <p>docker run &ndash;rm -it -m 60m -v /var/log/nginx:/data suconghou/tools:goaccess  goaccess /data/access.log -o /data/report.html &ndash;log-format=COMBINED &ndash;real-time-html</p>
-
 <p>提供静态编译好的无依赖可执行文件 <a href="http://share.suconghou.cn/files/bin/goaccess.xz">http://share.suconghou.cn/files/bin/goaccess.xz</a></p>
-
 <h2 id="安装mariadb">安装MariaDB</h2>
-
 <pre><code>apt-get install mariadb-server
-</code></pre>
-
-<p>MySql</p>
-
+</code></pre><p>MySql</p>
 <pre><code>apt-get install mysql-server
-</code></pre>
-
-<p>安装过程中要求设定一个root密码,安装完<code>service mysql status</code>查看运行状态,<code>sudo service mysql restart</code>可以重启</p>
-
+</code></pre><p>安装过程中要求设定一个root密码,安装完<code>service mysql status</code>查看运行状态,<code>sudo service mysql restart</code>可以重启</p>
+<p>升级mariadb</p>
+<p><a href="https://www.zerostopbits.com/how-to-upgrade-mariadb-5-5-to-mariadb-10-3-on-centos-7-5-1804/">https://www.zerostopbits.com/how-to-upgrade-mariadb-5-5-to-mariadb-10-3-on-centos-7-5-1804/</a></p>
+<p><a href="https://www.mysterydata.com/update-upgrade-to-mariadb-10-4-on-vestacp-cwp-centos-7/">https://www.mysterydata.com/update-upgrade-to-mariadb-10-4-on-vestacp-cwp-centos-7/</a></p>
 <h3 id="编译安装">编译安装</h3>
-
 <p>源码下载页 <a href="http://dev.mysql.com/downloads/mysql/">http://dev.mysql.com/downloads/mysql/</a> 选择<code>source code</code>下载</p>
-
 <p><strong>Alpine下编译</strong></p>
-
 <p>先为mysql添加一个用户运行 <code>addgroup mysql; adduser -H -D -s /sbin/nologin mysql -G mysql</code></p>
-
 <p>删除此用户的命令是 <code>deluser mysql</code></p>
-
 <pre><code>apk update &amp;&amp; apk upgrade
 apk --update add cmake gcc g++
 MYSQL_VERSION=mysql-5.7.14
@@ -1350,16 +956,10 @@ tar zxf ${MYSQL_VERSION}.tar.gz
 cd ${MYSQL_VERSION}
 cmake  -DCMAKE_INSTALL_PREFIX=/usr/local/mysql -DCMAKE_C_FLAGS_RELWITHDEBINFO=&quot;-O3 -g&quot; -DCMAKE_CXX_FLAGS_RELWITHDEBINFO=&quot;-O3 -g&quot; -DCMAKE_C_FLAGS=&quot;-O3 -g&quot; -DCMAKE_CXX_FLAGS=&quot;-O3 -g&quot; -DDEFAULT_CHARSET=utf8mb4 -DDEFAULT_COLLATION=utf8mb4_general_ci -DMYSQL_DATADIR=/usr/local/mysql/data -DSYSCONFDIR=/etc -DDOWNLOAD_BOOST=1 -DWITH_BOOST=/tmp -DWITH_INNOBASE_STORAGE_ENGINE=1 -DWITH_ARCHIVE_STORAGE_ENGINE=0 -DWITH_BLACKHOLE_STORAGE_ENGINE=0 -DWITH_EXAMPLE_STORAGE_ENGINE=0 -DWITH_FEDERATED_STORAGE_ENGINE=0 -DWITH_NDB_STORAGE_ENGINE=0 -DWITH_NDBCLUSTER_STORAGE_ENGINE=0  -DWITH_PARTITION_STORAGE_ENGINE=0 -DWITH_PERFSCHEMA_STORAGE_ENGINE=0
 
-</code></pre>
-
-<p>mysql5.7 编译时的参数 <a href="http://dev.mysql.com/doc/refman/5.7/en/source-configuration-options.html">http://dev.mysql.com/doc/refman/5.7/en/source-configuration-options.html</a></p>
-
+</code></pre><p>mysql5.7 编译时的参数 <a href="http://dev.mysql.com/doc/refman/5.7/en/source-configuration-options.html">http://dev.mysql.com/doc/refman/5.7/en/source-configuration-options.html</a></p>
 <p>Alpine中mysql无法编译,报错<code>No mysys timer support detected!</code></p>
-
 <p>下面尝试编译mariadb</p>
-
 <p>mariadb官网 <a href="https://downloads.mariadb.org/mariadb/">https://downloads.mariadb.org/mariadb/</a></p>
-
 <pre><code>apk update &amp;&amp; apk upgrade
 apk --update add curl cmake gcc g++ ncurses-dev pcre-dev xz-dev linux-headers
 MARIADB_VERSION=mariadb-10.1.17
@@ -1368,60 +968,37 @@ cd ${MARIADB_VERSION}
 cmake  -DCMAKE_INSTALL_PREFIX=/usr/local/mysql -DDEFAULT_CHARSET=utf8mb4 -DDEFAULT_COLLATION=utf8mb4_general_ci -DMYSQL_DATADIR=/usr/local/mysql/data -DSYSCONFDIR=/etc -DWITHOUT_TOKUDB=1 -DWITHOUT_MROONGA=1 -DWITHOUT_SPIDER=1 -DWITHOUT_PERFSCHEMA=1  -DWITHOUT_CONNECT=1 -DWITHOUT_XTRADB=1 -DWITHOUT_INNOBASE=1 -DWITHOUT_MYISAMMRG=1 -DWITHOUT_HEAP=1 -DWITHOUT_MYISAM=1 -DWITHOUT_SPHINX=1  -DWITHOUT_FEDERATEDX=1 -DWITHOUT_SEQUENCE=1 -DWITHOUT_CSV=1 -DWITHOUT_MARIA=1
 make -j `grep processor /proc/cpuinfo | wc -l`
 make install
-</code></pre>
-
-<p>修改了cmake参数后需要清除编译缓存 <code>make clean;rm CMakeCache.txt</code></p>
-
+</code></pre><p>修改了cmake参数后需要清除编译缓存 <code>make clean;rm CMakeCache.txt</code></p>
 <p>这些引擎是必须编译的</p>
-
 <p>xtradb
 myisam
 perfschema</p>
-
 <p>失败..</p>
-
 <p>添加MySql用户</p>
+<pre><code>create user 'work'@'localhost' identified by '123456'
 
-<pre><code>insert into mysql.user (host,user,password) values('%','user',PASSWORD('user'));
-</code></pre>
+或者
 
-<p>修改密码</p>
-
+create user 'work'@'%' identified by '123456'
+</code></pre><p>修改密码</p>
 <pre><code>update mysql.user set password=PASSWORD('123456') where user='root';
 
-</code></pre>
-
-<p>注意 mysql5.7 user表 密码列不再是<code>Password</code> ，而是<code>authentication_string</code></p>
-
+</code></pre><p>注意 mysql5.7 user表 密码列不再是<code>Password</code> ，而是<code>authentication_string</code></p>
+<p>如果不生效的话,可以将这两个字段都修改</p>
 <pre><code>update mysql.user set authentication_string=PASSWORD('abcd1234') where user='root';
-</code></pre>
-
-<p>也可以这样添加用户并授权.</p>
-
+</code></pre><p>也可以这样添加用户并授权.</p>
 <pre><code>GRANT ALL ON *.* to 'work'@'%' IDENTIFIED BY '123456';
 FLUSH PRIVILEGES;
-</code></pre>
-
-<p>show status; // 显示一些系统特定资源的信息，例如，正在运行的线程数量</p>
-
+</code></pre><p>show status; // 显示一些系统特定资源的信息，例如，正在运行的线程数量</p>
 <p>show variables; // 显示系统变量的名称和值</p>
-
 <p>show table status; // 显示当前使用或者指定的database中的每个表的信息。信息包括表类型和表的最新更新时间</p>
-
 <p>如:<code>show table status like 'user_%' \G</code></p>
-
 <p><code>show warnings;</code> 查看最后一条警告</p>
-
 <p><code>show errors;</code> 查看最后一条错误</p>
-
 <p><code>show full processlist;</code>查看mysql服务器当前的所有连接</p>
-
 <p><code>show status like 'uptime';</code> 查看在线时间</p>
-
 <p><code>show status like 'com_%';</code>查看使用这些指令的计数,如查看MySQL启动后执行的SELECT语句的次数<code>show status like 'com_select';</code></p>
-
 <p><code>show status like 'Thread_%';</code>查看当前的线程状态</p>
-
 <pre><code>--查看MySQL本次启动后的运行时间(单位：秒)
 show status like 'uptime';
 
@@ -1467,15 +1044,10 @@ show status like 'slow_launch_threads';
 
 --查看查询时间超过long_query_time秒的查询的个数。返回的是当前session的,要查看全局的加上`global`
 show status like 'slow_queries';
-</code></pre>
-
-<h2 id="开机启动脚本">开机启动脚本</h2>
-
+</code></pre><h2 id="开机启动脚本">开机启动脚本</h2>
 <p>Debian and Ubuntu function at <code>/lib/lsb/init-functions</code>
-<code>ln -s  /lib/lsb/init-functions /etc/init.d/functions</code></p>
-
+<code>ln -s  /lib/lsb/init-functions /etc/init.d/functions </code></p>
 <p>nginx</p>
-
 <pre><code>#!/bin/sh
 #chkconfig: 2345 90 91
 
@@ -1521,12 +1093,8 @@ reload)
 echo $&quot;Usage: $0 {start|stop|restart|reload}&quot;
 exit 2
 esac
-</code></pre>
-
-<h3 id="php-fpm">php-fpm</h3>
-
+</code></pre><h3 id="php-fpm">php-fpm</h3>
 <p><code>sudo vim /etc/init.d/php-fpm</code></p>
-
 <pre><code>#!/bin/sh
 #chkconfig: 2345 90 91
 
@@ -1574,9 +1142,7 @@ reload)
 echo $&quot;Usage: $0 {start|stop|restart|reload}&quot;
 exit 2
 esac
-</code></pre>
-
-<pre><code>##  添加执行权限
+</code></pre><pre><code>##  添加执行权限
 sudo chmod a+x /etc/init.d/nginx
 sudo chmod a+x /etc/init.d/php-fpm
 
@@ -1591,65 +1157,37 @@ sudo chkconfig php-fpm on
 ## 查看是否开机启动
 
 sudo chkconfig --list nginx
-</code></pre>
-
-<p>Ubuntu里没有chkconfig
+</code></pre><p>Ubuntu里没有chkconfig
 可以使用sysv-rc-conf
 <code>sudo apt-get install sysv-rc-conf</code>,
 然后直接使用 sysv-rc-conf 来管理;</p>
-
 <p>或者<code>sudo sysv-rc-conf nginx on</code>直接把<code>/etc/init.d/nginx</code> 加入到系统自动 启动列表中</p>
-
-<h3 id="centos7-快速安装php7并使用-memcached-redis">centos7 快速安装php7并使用 memcached,redis</h3>
-
+<h3 id="centos7-快速安装php7并使用-memcachedredis">centos7 快速安装php7并使用 memcached,redis</h3>
 <p>Centos 5.X</p>
-
 <pre><code>rpm -Uvh http://mirror.webtatic.com/yum/el5/latest.rpm
-</code></pre>
-
-<p>CentOs 6.x</p>
-
+</code></pre><p>CentOs 6.x</p>
 <pre><code>rpm -Uvh http://mirror.webtatic.com/yum/el6/latest.rpm
-</code></pre>
-
-<p>CentOs 7.X</p>
-
+</code></pre><p>CentOs 7.X</p>
 <pre><code>rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
-</code></pre>
-
-<p>安装之前还需要 <code>epel-release</code></p>
-
+</code></pre><p>安装之前还需要 <code>epel-release</code></p>
 <p><code>yum -y install epel-release</code></p>
-
 <p>安装php7 <code>yum install php70w php70w-cli php70w-fpm php70w-gd php70w-process php70w-mbstring php70w-mcrypt php70w-pdo php70w-xml php70w-mysqlnd php70w-pear php70w-opcache</code></p>
-
 <p>对于php7.2</p>
-
 <pre><code>yum install php72w php72w-cli php72w-fpm php72w-opcache php72w-gd php72w-mbstring php72w-pdo php72w-mysqlnd
-</code></pre>
-
-<p>安装 memcached和redis <code>yum install memcached redis</code></p>
-
+</code></pre><p>安装 memcached和redis <code>yum install memcached redis</code></p>
+<p>安装php7.3</p>
+<p><a href="https://tecadmin.net/install-php7-on-centos7/">https://tecadmin.net/install-php7-on-centos7/</a></p>
 <p>设置开机启动</p>
-
 <pre><code>systemctl enable memcached
 systemctl enable redis
 systemctl start memcached
 systemctl start redis
-</code></pre>
-
-<p>安装redis扩展 <code>yum install php70w-pecl-redis</code></p>
-
+</code></pre><p>安装redis扩展 <code>yum install php70w-pecl-redis</code></p>
 <p>使用<code>pecl</code>安装<code>memcached</code>或其他扩展</p>
-
 <p>搜索一下看看 <code>pecl search memcached</code></p>
-
 <p><code>pecl install memcached</code> 目前memcached在pecl上发布的包还不支持php7</p>
-
 <p>需要自己编译</p>
-
 <p>要编译扩展,还需要安装 <code>yum install php70w-devel</code></p>
-
 <pre><code>wget -O php-memcached.zip https://codeload.github.com/php-memcached-dev/php-memcached/zip/php7
 unzip php-memcached.zip
 cd php-memcached-php7
@@ -1657,70 +1195,44 @@ cd php-memcached-php7
 ./configure --with-php-config=/usr/bin/php-config
 make &amp;&amp; make install
 echo &quot;extension=memcached.so&quot; &gt; `php --ini | grep &quot;Scan for additional&quot; | sed -e &quot;s|.*:\s*||&quot;`/memcached.ini
-</code></pre>
-
-<p>加入php.ini也可以</p>
-
+</code></pre><p>加入php.ini也可以</p>
 <pre><code>echo &quot;extension=memcached.so&quot; &gt;&gt; `php --ini | grep &quot;Loaded Configuration&quot; | sed -e &quot;s|.*:\s*||&quot;`
-</code></pre>
-
-<p>设置开启nginx和php-fpm自启动</p>
-
+</code></pre><p>设置开启nginx和php-fpm自启动</p>
 <pre><code>systemctl enable nginx
 systemctl start nginx
 systemctl enable php-fpm
 systemctl start php-fpm
-</code></pre>
-
-<h3 id="数据库通过yum安装">数据库通过yum安装</h3>
-
+</code></pre><h3 id="数据库通过yum安装">数据库通过yum安装</h3>
 <p><code>yum info mariadb</code>可查看版本,然后<code>yum install mariadb mariadb-server</code>安装,<code>mysql -V</code>可查看版本</p>
-
 <pre><code>systemctl enable mariadb
 systemctl start mariadb
-</code></pre>
-
-<h3 id="docker-通过docker运行mysql">docker 通过docker运行mysql</h3>
-
+</code></pre><h3 id="docker-通过docker运行mysql">docker 通过docker运行mysql</h3>
 <p><code>docker pull mysql</code></p>
-
 <pre><code>docker run -d --name mysqlserver --restart always -m 500m --log-opt max-size=2m -v mysql-data:/var/lib/mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456  mysql
-</code></pre>
-
-<h3 id="mongodb">mongodb</h3>
-
+</code></pre><h3 id="mongodb">mongodb</h3>
 <pre><code>yum install mongodb mongodb-server
 systemctl enable mongod
 systemctl start mongod
-</code></pre>
-
-<h2 id="sqlite">sqlite</h2>
-
+</code></pre><h2 id="sqlite">sqlite</h2>
 <p>执行 <code>VACUUM</code> 整理sqlite文件,缩小体积</p>
-
 <p>从SQL中获取数据库大小</p>
-
 <pre><code>SELECT table_schema AS &quot;Database Name&quot;,  ROUND(SUM(data_length + index_length) / 1024 / 1024, 2) AS &quot;Size in (MB)&quot;  FROM information_schema.TABLES  GROUP BY table_schema;
-</code></pre>
-
-<p>获取指定数据库中，各表的大小</p>
-
+</code></pre><p>获取指定数据库中，各表的大小</p>
 <pre><code>SELECT table_name AS &quot;Table Name&quot;, ROUND(((data_length + index_length) / 1024 / 1024), 2) AS &quot;Size in (MB)&quot; FROM information_schema.TABLES WHERE table_schema = &quot;xsucongh_test&quot; ORDER BY (data_length + index_length) DESC;
 </code></pre>
-
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/install-nginx-php-mysql-redis/"></air-messager>
+        <air-messager ns="hi" thread="/post/install-nginx-php-mysql-redis/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/start-your-blog-with-hugo/" title="使用hugo搭建静态博客" >
+            <a class="previous" href="/post/sync-files-on-linux/" title="Linux下同步文件的多种方法" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/linux-download-tools/" title="Linux下常用的下载利器">
+            <a class="next" href="/post/linux-download-tools/" title="Linux下常用的下载利器">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -1732,6 +1244,14 @@ systemctl start mongod
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

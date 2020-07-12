@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>Caddy Server基本用法 &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -54,36 +50,20 @@
         </div>
         
 		<div class="post-text">
-			
-
-<h2 id="命令行参数">命令行参数</h2>
-
+			<h2 id="命令行参数">命令行参数</h2>
 <p>在当前目录下开启静态服务器</p>
-
 <p><code>caddy -host t.xxx.cn</code></p>
-
 <p>首次运行后会提示输入邮箱,用于获取https证书,获取完证书即开启成功</p>
-
 <p>默认启用<code>http2</code>,默认http端口80,https端口443,默认启用http跳转到https,默认首页自动加载index.html</p>
-
 <p>使用<code>-root</code>参数可以设置根目录,默认为当前目录</p>
-
 <p>相关文件会存储于<code>~/.caddy</code>文件夹中.</p>
-
 <p><code>sudo setcap cap_net_bind_service=+ep ./caddy</code></p>
-
 <h3 id="使用quic">使用QUIC</h3>
-
 <p><code>caddy -host t.xxx.cn -quic</code> 使用<code>quic</code>协议</p>
-
 <p>使用quic参数后,通过<code>netstat -anltup</code> 可以查看到tcp和udp的80和443端口都被监听.</p>
-
 <p>Chrome浏览器支持quic,可以通过<code>chrome://net-internals/#quic</code> 查看是使用的是<code>quic</code>还是<code>http2</code></p>
-
 <h2 id="使用配置文件">使用配置文件</h2>
-
 <p><code>Caddyfile</code></p>
-
 <pre><code>:80 {
         log stdout
         errors stderr
@@ -129,10 +109,7 @@ site2.local {
                 try_duration 1s
         }
 }
-</code></pre>
-
-<p>an example conf</p>
-
+</code></pre><p>an example conf</p>
 <pre><code>g.xx.cn:443 {
     log /var/log/caddy/access.log
     errors /var/log/caddy/error.log
@@ -149,74 +126,63 @@ site2.local {
 t.xx.cn:443 {
     root /root
 }
-</code></pre>
-
-<h3 id="配置fastcgi链接php-fpm">配置fastcgi链接php-fpm</h3>
-
+</code></pre><pre><code>h2.suconghou.cn:443 {
+    log stdout
+    errors stderr
+    root /path/to/your/site
+    forwardproxy {
+        hide_ip
+        hide_via
+        basicauth user pass
+        probe_resistance secret.localhost
+        serve_pac        /secret-proxy.pac
+    }
+}
+</code></pre><h3 id="配置fastcgi链接php-fpm">配置fastcgi链接php-fpm</h3>
 <p><code>php-fpm</code>开启php-fpm服务，监听 <code>127.0.0.1:9000</code></p>
-
 <p><code>Caddyfile</code></p>
-
 <pre><code>localhost:9098
 tls off
 gzip
 root /data/
 fastcgi / 127.0.0.1:9000 php
-</code></pre>
-
-<p>本地使用<code>tls off</code>关闭自动获取https证书</p>
-
+</code></pre><p>本地使用<code>tls off</code>关闭自动获取https证书</p>
 <p><code>fastcgi / 127.0.0.1:9000 php</code>最后面的一个php是预设值的值，相当于</p>
-
 <pre><code>ext   .php
 split .php
 index index.php
-</code></pre>
-
-<p>caddy 会默认在当前目录查找<code>Caddyfile</code> 可以使用参数<code>-conf</code>指定配置文件路径</p>
-
+</code></pre><p>caddy 会默认在当前目录查找<code>Caddyfile</code> 可以使用参数<code>-conf</code>指定配置文件路径</p>
 <p>log stdout
-proxy / <a href="https://localhost:8081">https://localhost:8081</a> {
-     header_upstream Host &ldquo;xmpp.git.suconghou.cn&rdquo;
-        header_upstream X-Forwarded-Proto &ldquo;https&rdquo;
-        insecure_skip_verify
+proxy / https://localhost:8081 {
+header_upstream Host &ldquo;xmpp.git.suconghou.cn&rdquo;
+header_upstream X-Forwarded-Proto &ldquo;https&rdquo;
+insecure_skip_verify
 }</p>
-
 <p>ejabberdctl register admin langzhetest.com 123456</p>
-
 <p>执行<code>caddy -conf /etc/Caddyfile -validate</code>验证配置文件。</p>
-
 <p><code>caddy -conf /etc/Caddyfile</code>开启服务</p>
-
 <p>注意 访问地址需要与配置文件中声明的域名地址相同</p>
-
 <p>配置文件中是<code>localhost:9098</code>，不能用<code>127.0.0.1:9098</code>访问。</p>
-
 <h2 id="log-to-stdout">log to stdout</h2>
-
 <p>systemctl service example , log collectioned by journalctl</p>
-
 <p><code>/usr/local/bin/caddy -log stdout -agree=true -conf=/etc/caddy/Caddyfile -root=/var/tmp</code></p>
-
 <h2 id="local-https">local https</h2>
-
 <p><code>caddy -host localhost &quot;proxy / localhost:9000&quot; &quot;tls self_signed&quot;</code></p>
-
 <p><code>sudo caddy -host ssl.git.suconghou.cn --port 443 &quot;proxy / localhost:8000&quot; &quot;tls self_signed&quot;</code></p>
 
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/caddy-server/"></air-messager>
+        <air-messager ns="hi" thread="/post/caddy-server/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/oh-my-zsh/" title="Oh My Zsh" >
+            <a class="previous" href="/post/oh-my-zsh/" title="Oh My Zsh" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/databases/" title="一些数据库">
+            <a class="next" href="/post/tcp-data-copy-and-forward/" title="TCP端口转发和复制">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -228,6 +194,14 @@ proxy / <a href="https://localhost:8081">https://localhost:8081</a> {
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

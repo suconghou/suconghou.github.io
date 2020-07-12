@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>开启docker之旅 &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -54,153 +50,103 @@
         </div>
         
 		<div class="post-text">
-			
-
-<h2 id="安装docker">安装Docker</h2>
-
+			<h2 id="安装docker">安装Docker</h2>
 <p>docker 安装需要Linux内核在3.10.0以上,仅支持Linux,在Windows和MacOs上也是基于虚拟机方式运行,需要提前安装虚拟机</p>
-
 <p>OpenVZ的VPS内核版本较低,且不能升级,并不能作为docker server,但是可以使用docker client</p>
-
 <ul>
 <li>通过<code>df -lhT</code> 看到Type为simfs,而不是ext3,ext4,一般就代表使用的是OpenVZ虚拟化的</li>
 <li>查看系统内核版本<code>uname -r</code></li>
 </ul>
-
 <p>查看安装的系统版本
 <code>lsb_release -a</code> 或者 <code>cat /etc/issue</code></p>
-
 <p>以下二种方法适用于RedHat,CentOS</p>
-
 <ul>
 <li><code>cat /etc/redhat-release</code> 或者 <code>cat /etc/centos-release</code></li>
 <li><code>rpm -q centos-release</code> 或者 <code>rpm -q redhat-release</code></li>
 </ul>
-
 <p>查看是否是64位系统<code>uname -i</code></p>
-
 <h3 id="下载安装">下载安装</h3>
-
 <p><a href="http://www.oschina.net/news/83328/docker-17-03-1-ce-released">http://www.oschina.net/news/83328/docker-17-03-1-ce-released</a></p>
-
 <pre><code>deb/rpm install: curl -fsSL https://get.docker.com/ | sh
 
-Linux 64bits tgz: https://get.docker.com/builds/Linux/x86_64/docker-17.03.1-ce.tgz
+Linux 64bits tgz: https://get.docker.com/builds/Linux/x86_64/docker-19.03.2.tgz
 
-Darwin/OSX 64bits client tgz: https://get.docker.com/builds/Darwin/x86_64/docker-17.03.1-ce.tgz
+Darwin/OSX 64bits client tgz: https://get.docker.com/builds/Darwin/x86_64/docker-19.03.2.tgz
 
-Linux 32bits arm tgz: https://get.docker.com/builds/Linux/armel/docker-17.03.1-ce.tgz
+Linux 32bits arm tgz: https://get.docker.com/builds/Linux/armel/docker-19.03.2.tgz
 
 Windows 64bits zip: https://get.docker.com/builds/Windows/x86_64/docker-17.03.1-ce.zip
 
 Windows 32bits client zip: https://get.docker.com/builds/Windows/i386/docker-17.03.1-ce.zip
-</code></pre>
-
-<p>下载地址一览 <a href="https://download.docker.com/linux/static/stable/">https://download.docker.com/linux/static/stable/</a></p>
-
+</code></pre><p>下载地址一览 <a href="https://download.docker.com/linux/static/stable/">https://download.docker.com/linux/static/stable/</a></p>
 <p>armhf比armel硬件要求,树莓派2可用armhf,树莓派1使用armel</p>
-
 <p>64位的arm默认就是hf的，因此不需要hf的后缀。</p>
-
 <p><code>/lib/arm-linux-gnueabihf</code></p>
-
 <p><code>/lib/arm-linux-gnueabi</code></p>
-
 <p><code>dpkg -l</code></p>
-
 <p><code>dpkg --print-architecture</code></p>
-
 <p><code>readelf -A $(which dpkg)</code></p>
-
-<h2 id="windows-安装">Windows 安装</h2>
-
+<p>快速安装</p>
+<pre><code>curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
+</code></pre><h2 id="windows-安装">Windows 安装</h2>
 <p><a href="http://mirrors.aliyun.com/docker-toolbox/">http://mirrors.aliyun.com/docker-toolbox/</a></p>
-
 <p>包含 Window 的
 docker-for-windows
 docker-toolbox
 等</p>
-
 <p>docker-for-windows 要求 window10 pro 或者 window server 2016 以上</p>
-
 <p>低版本windows 可以使用 旧方案 docker-toolbox 解决</p>
-
 <p>首先需要知道是当前docker的虚拟IP地址，一般都是192.168.99.100</p>
-
 <p>查看C:\Users\Administrator.docker\machine\machines\default</p>
-
 <p>ssh的用户名默认是：docker  密码默认：tcuser  端口：22</p>
-
 <p><code>/etc/init.d/docker restart</code></p>
-
 <h3 id="快速安装docker并启动">快速安装docker并启动</h3>
-
 <p><a href="https://docs.docker.com/install/linux/docker-ce/centos/">官方安装教程</a></p>
-
 <p>新版的docker包名改为<code>docker-ce</code></p>
-
-<pre><code>sudo yum install -y yum-utils device-mapper-persistent-data lvm2
-sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-sudo yum makecache fast
-sudo yum install -y docker-ce
+<pre><code>sudo yum remove docker \
+                  docker-client \
+                  docker-client-latest \
+                  docker-common \
+                  docker-latest \
+                  docker-latest-logrotate \
+                  docker-logrotate \
+                  docker-engine
+sudo yum install -y yum-utils \
+  device-mapper-persistent-data \
+  lvm2
+sudo yum-config-manager \
+    --add-repo \
+    https://download.docker.com/linux/centos/docker-ce.repo
+sudo yum install docker-ce docker-ce-cli containerd.io
 sudo systemctl enable docker
 sudo systemctl start docker
-</code></pre>
-
-<p>清华大学镜像源提供docker安装镜像与说明</p>
-
+</code></pre><p>清华大学镜像源提供docker安装镜像与说明</p>
 <p><code>https://mirror.tuna.tsinghua.edu.cn/help/docker/</code></p>
-
 <p>或者<code>http://get.daocloud.io/docker/builds/</code>查看</p>
-
 <p>阿里云也提供安装脚本 见<code>http://mirrors.aliyun.com/help/docker-engine</code>,</p>
-
 <p>阿里云的软件源可以使用内网源不占用外网流量</p>
-
 <p>七牛云也提供镜像</p>
-
 <p><a href="https://reg-mirror.qiniu.com/">https://reg-mirror.qiniu.com/</a></p>
-
 <p>使用docker 需要开机宿主机IPV4转发功能,否则<code>docker info</code> 会有警告,容器内无法上网</p>
-
 <p><code>sysctl -w net.ipv4.ip_forward=1</code></p>
-
 <h2 id="基本使用">基本使用</h2>
-
 <p>运行<code>docker -v</code>即可查看当前docker版本
 docker 分为两部分,一分部是docker daemon , 一部分是docker client</p>
-
 <p>1.12.0及以后版本,采用<code>dockerd</code>启动<code>daemon</code>服务,之前版本采用<code>docker daemon</code>启动<code>daemon</code>服务.</p>
-
 <p>docker daemon 与 client 可分离部署运行,如</p>
-
 <p><code>docker daemon -H=unix:///var/run/docker.sock -H=0.0.0.0:4243 --default-ulimit nofile=1024:4096</code></p>
-
 <p>服务器同时监听unixsocket和tcp端口,然后客户端设置远端服务变量<code>export DOCKER_HOST=tcp://1.1.1.1:4243</code>,就可以使用docker client,不过这种没有认证,适合局域网玩.</p>
-
 <p>如果是在公网上,最好做一些身份认证</p>
-
 <p>生成证书可参考官网 <a href="https://docs.docker.com/engine/security/https/">https://docs.docker.com/engine/security/https/</a></p>
-
 <p>其他参考 <code>https://github.com/chenzhiwei/linux/tree/master/ssl-cert</code></p>
-
 <p>这里一份脚本可以快速生成证书,只需修改DOMAIN变量即可(只修改域名不需要加端口). <a href="https://gist.github.com/suconghou/707d9c61367c4bb91e8ed2585b094853">https://gist.github.com/suconghou/707d9c61367c4bb91e8ed2585b094853</a></p>
-
 <p>将证书放在<code>~/.docker</code>目录下可以免去设置<code>DOCKER_CERT_PATH</code></p>
-
 <p>放置生成的证书</p>
-
 <pre><code>sudo yum install -y zip curl
 mkdir -pv ~/.docker &amp;&amp; cp -vf ca.pem ~/.docker &amp;&amp; mv server-cert.pem ~/.docker/cert.pem &amp;&amp; mv server-key.pem ~/.docker/key.pem &amp;&amp; zip -r client.zip ca.pem cert.pem key.pem &amp;&amp; rm ca.pem cert.pem key.pem
-</code></pre>
-
-<p><code>docker service</code>的配置<code>vim /usr/lib/systemd/system/docker.service</code></p>
-
+</code></pre><p><code>docker service</code>的配置<code>vim /usr/lib/systemd/system/docker.service</code></p>
 <pre><code>ExecStart=/usr/bin/dockerd -H unix:///var/run/docker.sock -H tcp://0.0.0.0:2376 --tlsverify --tlscacert=/root/.docker/ca.pem --tlscert=/root/.docker/cert.pem --tlskey=/root/.docker/key.pem -s devicemapper --storage-opt dm.datadev=/dev/centos/docker-data --storage-opt dm.metadatadev=/dev/centos/docker-metadata
-</code></pre>
-
-<p>最好是将这些配置写入<code>/etc/docker/daemon.json</code> 防止更新docker覆盖配置文件</p>
-
+</code></pre><p>最好是将这些配置写入<code>/etc/docker/daemon.json</code> 防止更新docker覆盖配置文件</p>
 <pre><code>{
     &quot;registry-mirrors&quot;: [
         &quot;https://docker.mirrors.ustc.edu.cn&quot;,
@@ -211,110 +157,62 @@ mkdir -pv ~/.docker &amp;&amp; cp -vf ca.pem ~/.docker &amp;&amp; mv server-cert
     &quot;tlscert&quot;: &quot;/root/.docker/cert.pem&quot;,
     &quot;tlskey&quot;: &quot;/root/.docker/key.pem&quot;
 }
-</code></pre>
-
-<p><a href="https://success.docker.com/article/how-do-i-enable-the-remote-api-for-dockerd">https://success.docker.com/article/how-do-i-enable-the-remote-api-for-dockerd</a></p>
-
+</code></pre><p><a href="https://success.docker.com/article/how-do-i-enable-the-remote-api-for-dockerd">https://success.docker.com/article/how-do-i-enable-the-remote-api-for-dockerd</a></p>
 <p>service里的配置项和json文件里的不能相同 <code>ExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:2736</code></p>
-
 <p><code>cat /etc/docker/daemon.json | python -m json.tool</code> 格式化</p>
-
 <p><code>sudo systemctl restart docker</code></p>
-
 <p>client端配置下面这几个变量就好</p>
-
 <pre><code>export DOCKER_HOST=tcp://some.domain:2376
 export DOCKER_TLS_VERIFY=1
 export DOCKER_CERT_PATH=$DIR
-</code></pre>
-
-<p>动态设置$DIR,将你的docker.env和证书放在相同文件夹下.</p>
-
+</code></pre><p>动态设置$DIR,将你的docker.env和证书放在相同文件夹下.</p>
 <pre><code>export DOCKER_HOST=tcp://some.domain:2376
 export DOCKER_TLS_VERIFY=1
 export DOCKER_CERT_PATH=$(cd `dirname $0`; pwd)
-</code></pre>
-
-<p>可能防火墙<code>iptanles</code>或者<code>firewalld</code>拦截了其他端口,需要开放</p>
-
+</code></pre><p>可能防火墙<code>iptanles</code>或者<code>firewalld</code>拦截了其他端口,需要开放</p>
 <p><code>systemctl stop firewalld</code></p>
-
 <p>其他脚本参考</p>
-
 <p><a href="https://gist.github.com/bradrydzewski/a6090115b3fecfc25280">https://gist.github.com/bradrydzewski/a6090115b3fecfc25280</a></p>
-
 <p><a href="https://gist.github.com/cameron/10797040">https://gist.github.com/cameron/10797040</a></p>
-
 <p>搜索 <code>docker search 镜像名字</code>
 下载 <code>docker pull learn/tutorial</code>, 下载时要写完整名字</p>
-
 <p>若证书始终验证不通过可能是两者的时间不一致
-<code>ntpdate cn.pool.ntp.org</code> 同步一下服务器时间.</p>
-
+<code>ntpdate cn.pool.ntp.org </code> 同步一下服务器时间.</p>
 <p>改动后,重启docker服务生效.</p>
-
 <pre><code>sudo systemctl daemon-reload
 sudo systemctl restart docker
-</code></pre>
-
-<p><a href="https://hub.docker.com/explore/">官方Docker镜像一览</a></p>
-
+</code></pre><p><a href="https://hub.docker.com/explore/">官方Docker镜像一览</a></p>
 <p>下载官方ubuntu <code>docker pull ubuntu</code></p>
-
-<p>运行此ubuntu <code>docker run ubuntu echo &quot;hello&quot;</code></p>
-
+<p>运行此ubuntu <code>docker run ubuntu echo &quot;hello&quot; </code></p>
 <p>运行完以后docker容器就退出了.</p>
-
 <p>进入此ubuntu的shell
 <code>docker run -i -t ubuntu /bin/bash</code> 也可以写为 <code>docker run -it ubuntu /bin/bash</code></p>
-
 <p>期间如果有需要退出按 <code>Ctrl+P+Q</code>,退出后,容器任然是运行的,<code>Ctrl+D</code>退出后容器停止</p>
-
 <p><code>docker ps</code> 查看正在运行的docker容器,可以看到后台的docker</p>
-
 <p>重新进入容器需要<code>docker attach CONTAINER</code> 此命令代表<code>Attach to a running container</code>.</p>
-
 <p>CONTAINER可以是最前面的CONTAINER ID ,也可以是最后面的NAMES</p>
-
 <p>你还可以使用 <code>docker run -it --name myname ubuntu /bin/bash</code> 来指定它使用的名字,否则名字的随机的</p>
-
 <p>你可以用不同的名字同时运行多个此种镜像</p>
-
 <p>使用 <code>docker rename hello hello2</code> 将原先名字为hello的容器改名为hello2</p>
-
 <p>使用 <code>docker top hello2</code> 查看运行在hello2中的所有进程</p>
-
 <p>使用<code>docker stats</code> 查看容器运行的CPU,内存,网络等消耗统计</p>
-
 <p>使用 <code>docker pause hello2</code> 将docker hello2 中的所有进程暂停,使用<code>docker ps</code> 可以看到容器已经暂停了</p>
-
 <p>使用 <code>docker unpass hello2</code> 恢复暂停的容器</p>
-
 <p>使用 <code>docker stop hello2</code> 将名字为hello2的容器停止</p>
-
 <p>使用 <code>docker ps -a</code> 查看所有的容器,将会看到很多容器,因为每次执行<code>docker run</code>命令都是<code>Run a command in a new container</code>新建了一个容器,
 可以考虑使用 <code>docker start 容器名称</code> 然后再<code>docker attach</code> 进去,你上次的改动依然在那.</p>
-
 <p>也可以考虑使用<code>docker rm 容器名称</code> 删除容器以节约资源,rm后可用空格分隔多个容器名称,此命令执行较慢</p>
-
 <p>也可以在创建的时候指明结束运行时清除docker容器<code>docker run --rm ubuntu echo &quot;hello&quot;</code></p>
-
 <p>或者将要执行的命令附加到正在运行的容器上<code>docker exec hello2  echo &quot;hihi&quot;</code></p>
-
 <p>当<code>docker start</code>后立即退出,来不及attach时,使用<code>docker start -ia vps</code> 这种方式</p>
-
 <p>使用<code>docker rmi</code>来删除镜像
 <code>docker ps</code> 默认显示当前正在运行中的container
 <code>docker ps -a</code> 查看包括已经停止的所有容器
 <code>docker ps -l</code> 显示最新启动的一个容器（包括已停止的）</p>
-
 <p>使用<code>docker info</code>查看机器的配置,docker版本,容器和镜像的数量,存储驱动等</p>
-
 <p>技巧:
 attach是可以带上<code>--sig-proxy=false</code>来确保<code>CTRL-D</code>或<code>CTRL-C</code>不会关闭容器</p>
-
 <p>这是一些经常使用的镜像相关的数据：</p>
-
 <table>
 <thead>
 <tr>
@@ -323,44 +221,37 @@ attach是可以带上<code>--sig-proxy=false</code>来确保<code>CTRL-D</code>�
 <th>大小</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>scratch</td>
 <td>基础镜像</td>
 <td>大小为0</td>
 </tr>
-
 <tr>
 <td>busybox</td>
 <td>最小Unix系统 (uClibc)</td>
 <td>1.1MB</td>
 </tr>
-
 <tr>
 <td>Alpine</td>
 <td>基于busybox(musl)</td>
 <td>4.8MB</td>
 </tr>
-
 <tr>
 <td>CirrOS</td>
 <td>最小化的Linux发行版</td>
 <td>7.7MB</td>
 </tr>
-
 <tr>
 <td>ubuntu:16.04</td>
 <td>Ubuntu</td>
 <td>121MB</td>
 </tr>
-
 <tr>
 <td>debian:jessie</td>
 <td>Debian最新版</td>
 <td>125MB</td>
 </tr>
-
 <tr>
 <td>centos:latest</td>
 <td>Centos最新版</td>
@@ -368,295 +259,172 @@ attach是可以带上<code>--sig-proxy=false</code>来确保<code>CTRL-D</code>�
 </tr>
 </tbody>
 </table>
-
 <h2 id="文件系统">文件系统</h2>
-
 <p>把一个宿主机上的目录挂载到镜像里</p>
-
 <p><strong>通过挂载的方式</strong></p>
-
 <blockquote>
 <p>通过-v参数,冒号前为宿主机目录,必须为绝对路径,冒号后为镜像内挂载的路径.</p>
 </blockquote>
-
 <p><code>docker run -it --name tmp -v /data/tmp:/home ubuntu /bin/bash</code></p>
-
 <p>宿主目录不存在会自动创建,但是镜像内挂载路径必须存在,挂载后双向可写,实时生效
 此镜像将一直保持挂载,stop,exit后重新进入,依然是挂载状态.</p>
-
 <p>默认挂载的路径权限为读写.如果指定为只读可以用：ro
 <code>docker run -it --name tmp -v /data/tmp:/home:ro ubuntu /bin/bash</code>
 挂载后,镜像内对挂载的数据不可写</p>
-
 <p>docker还提供了一种高级的用法,叫数据卷.
-数据卷：&rdquo;其实就是一个正常的容器,专门用来提供数据卷供其它容器挂载的&rdquo;.感觉像是由一个容器定义的一个数据挂载信息.其他的容器启动可以直接挂载数据卷容器中定义的挂载信息.</p>
-
+数据卷：&ldquo;其实就是一个正常的容器,专门用来提供数据卷供其它容器挂载的&rdquo;.感觉像是由一个容器定义的一个数据挂载信息.其他的容器启动可以直接挂载数据卷容器中定义的挂载信息.</p>
 <p>创建一个普通容器,定义一个名称,挂载目录. 数据容器是不需要运行的.</p>
-
 <p><code>docker run -v /data/tmp:/home  --name datafs busybox</code></p>
-
 <p>其他容器使用这个数据卷
 <code>docker run -it --name tmp --volumes-from datafs ubuntu /bin/bash</code></p>
-
 <p><code>--volumes-from</code> 已过时,不建议使用.</p>
-
 <p><strong>通过volume方式(建议使用这种最新的方式)</strong></p>
-
 <p>docker1.9及以上可以使用<code>docker volume create --name datafs</code>创建<code>volume</code>
 使用时类似<code>docker run --name=yourcontainername -p 10022:22 -p 10080:3000 -v datafs:/data ubuntu</code></p>
-
 <p><code>docker volume ls</code> 查看创建的<code>volume</code></p>
-
 <p><code>docker volume rm</code>用来删除</p>
-
 <p><code>docker volume inspect datafs</code>查看详情</p>
-
 <p>这些数据是放在<code>/var/lib/docker/volumes/</code>下面的</p>
-
 <p>docker的container是无状态的,也就是说标记状态的数据,例如：数据库数据,应用程序的log等等,是不应该放到container里的,而是放到 Data Volume Container里</p>
-
 <p>建议使用Data Volume Container不要使用过去的方法了</p>
-
 <h2 id="docker-容器中的host">Docker 容器中的host</h2>
-
-<p>/etc/hosts, /etc/resolv.conf和/etc/hostname，容器中的这三个文件不存在于镜像，而是存在于/var/lib/docker/containers/<container_id>，在启动容器的时候，通过mount的形式将这些文件挂载到容器内部。因此，如果在容器中修改这些文件的话，修改部分不会存在于容器的top layer，而是直接写入这三个物理文件中。</p>
-
+<p>/etc/hosts, /etc/resolv.conf和/etc/hostname，容器中的这三个文件不存在于镜像，而是存在于/var/lib/docker/containers/&lt;container_id&gt;，在启动容器的时候，通过mount的形式将这些文件挂载到容器内部。因此，如果在容器中修改这些文件的话，修改部分不会存在于容器的top layer，而是直接写入这三个物理文件中。</p>
 <p>可以通过<code>docker inspect 容器ID</code> 查看到挂载的物理路径</p>
-
 <p>但对这几个文件的修改,容器重启后就会还原,因为容器重启,IP可能发生变化,docker就会重新生成这些文件。</p>
-
 <p>可以使用 <code>--add-host</code> 启动容器,这样,重启就不会丢失。</p>
-
 <p><code>docker run -ti --add-host db-static:86.75.30.9 busybox cat /etc/hosts</code></p>
-
 <p><code>docker build</code> 的时候也可以使用 <code>--add-host</code></p>
-
 <h2 id="网络系统">网络系统</h2>
-
 <p>使用<code>-p</code>进行映射端口,第一个是外部端口,第二个是内部端口</p>
-
 <p>默认的规则是TCP,如果需要UDP,采用类似<code>-p 1234:1234/udp</code></p>
-
 <p><code>-p</code> 参数详解</p>
-
 <p><code>http://udn.yyuap.com/doc/docker_practice/advanced_network/port_mapping.html</code></p>
-
-<p><code>-p 80:8080</code>容器内部的8080端口,对外暴漏于80端口
-<code>-p 22</code>内部是22端口映射,外部则为一个随机可用的端口,<code>-P</code>则是将Dockerfile里EXPOSE的所有端口分配到宿主机的动态端口上,EXPOSE的端口不创建和宿主机的映射,是不能直接访问的</p>
-
+<p><code>-p 80:8080 </code>容器内部的8080端口,对外暴漏于80端口
+<code>-p 22 </code>内部是22端口映射,外部则为一个随机可用的端口,<code>-P</code>则是将Dockerfile里EXPOSE的所有端口分配到宿主机的动态端口上,EXPOSE的端口不创建和宿主机的映射,是不能直接访问的</p>
 <p>-p参数只能在<code>docker run</code>时指明,一旦生成了container就不能修改端口映射
 可以采用如下方式生成新的容器修改</p>
-
 <pre><code>docker stop vps
 docker commit vps vpsimage
 docker rm vps
 docker run -it -p 8080:8000 --name vps vpsimage bash
-</code></pre>
-
-<p>多个端口类似<code>docker run -it --name vps -p 443:443 -p 80:8080 -p 8000:80 vpsimage bash</code></p>
-
+</code></pre><p>多个端口类似<code>docker run -it --name vps -p 443:443 -p 80:8080 -p 8000:80 vpsimage bash</code></p>
 <p>使用<code>docker port vps</code>可以查看此容器当前的端口映射,容器停止后,<code>docker port vps</code>不会显示出来,他显示的是正在工作的.</p>
-
 <p><code>docker inspect vps</code> 查看容器的详细配置信息,包括端口映射,来源镜像,日志存储路径,内存,CPU等</p>
-
 <h2 id="容器与镜像">容器与镜像</h2>
-
 <p>容器:  <code>docker export</code> <code>docker import</code> (不能用在镜像上)</p>
-
 <p>镜像:  <code>docker save</code> <code>docker load</code>  (不能用在容器上)</p>
-
 <p>在执行 导入以后,无论是import还是load,都会生成一个新的镜像.</p>
-
 <p>导出后再导入<code>exported-imported</code>生成的镜像会丢失所有的历史.</p>
-
 <p>而保存后再加载<code>saveed-loaded</code>生成的镜像没有丢失历史和层(layer).</p>
-
 <p>这意味着使用导出后再导入的方式,你将无法回滚到之前的层(layer),</p>
-
 <p>同时,使用保存后再加载的方式持久化整个镜像,就可以做到层回滚（可以执行<code>docker tag &lt;LAYER ID&gt; &lt;IMAGE NAME&gt;</code>来回滚之前的层）</p>
-
 <p><code>docker history vpsimage</code> 查看镜像的变迁历史</p>
-
 <blockquote>
 <p>Export命令用于持久化容器[Export a container&rsquo;s filesystem as a tar archive]</p>
-
+</blockquote>
+<blockquote>
 <p>Save命令用于持久化镜像[Save an image(s) to a tar archive]</p>
 </blockquote>
-
 <p>要转移一个正在使用中的容器,可以</p>
-
 <p>接收方 <code>nc -l 9090 | docker import - myimage</code></p>
-
 <p>发送方 <code>docker export container_name_or_id | nc 172.168.1.3 9090</code></p>
-
 <p><strong>容器</strong></p>
-
 <p><code>docker ps -a</code> 查看所有的容器,包含已经停止的,暂停的,在运行的等,可以恢复运行,停止等,删除使用<code>docker rm xx</code></p>
-
 <p>修改容器名字:<code>docker rename old new</code></p>
-
 <p>导出:<code>docker export vps &gt; vpsdata.tar</code></p>
-
 <p>导入:<code>cat /home/vpsdata.tar | docker import – yourname</code>,也可以通过指定 URL 或者某个目录来导入<code>docker import http://example.com/exampleimage.tgz example/imagerepo</code></p>
-
 <p><strong>镜像</strong></p>
-
 <p><code>docker images</code> 显示本机上存在的资源,大部分是<code>docker pull</code>下来的,可以使用 <code>docker rmi xx</code> 删除</p>
-
-<p>修改镜像名字:<code>docker tag old new</code> 然后 <code>docker rmi old</code></p>
-
+<p>修改镜像名字:<code>docker tag old new </code> 然后 <code>docker rmi old </code></p>
 <p>导出:<code>docker save vpsimage &gt; image.tar</code></p>
-
 <p>导入:<code>docker load &lt; /home/image.tar</code></p>
-
 <p>不使用重定向还可以使用参数</p>
-
 <p><code>docker save -o image.tar vpsimage</code></p>
-
 <p><code>docker load -i /home/image.tar</code></p>
-
 <p>docker server 与 client 分离时,save,export等操作会非常慢,因为会通过网络把生成的文件下载到本地.</p>
-
 <blockquote>
 <p><code>docker rm $(docker ps -q -a)</code> 一次性删除所有的容器</p>
-
+</blockquote>
+<blockquote>
 <p><code>docker rm $(docker ps -a -q)</code> 删除所有停止运行的容器</p>
-
+</blockquote>
+<blockquote>
 <p><code>docker rmi $(docker images -q)</code> 一次性删除所有的镜像</p>
-
+</blockquote>
+<blockquote>
 <p><code>docker ps -l -q</code> 获取最后(-l)一个启动的容器id(-q)</p>
-
+</blockquote>
+<blockquote>
 <p><code>docker rmi $(docker images | grep &quot;^&lt;none&gt;&quot; | awk &quot;{print \$3}&quot;)</code> 清除none标签的镜像</p>
 </blockquote>
-
 <p>Docker 1.13 引进了新的管理命令，如下：</p>
-
 <p>命令 <code>docker system df</code> 提供 Docker 整体磁盘使用率的概况，包括镜像、容器和（本地） volume</p>
-
 <p>docker 提供命令可以直接查看容器的差异</p>
-
 <p>提供 shell 用于分析两个 image的差异 <code>https://github.com/moul/docker-diff</code></p>
-
 <p><code>docker images --digests</code> 可以查看镜像的 <code>digests</code></p>
-
 <p>多种命令都可以使用<code>digests</code></p>
-
 <pre><code>docker push localhost:5000/andy/busybox@sha256:2aac5e7514fbc77125bd315abe9e7b0257db05fe498af01a58e239ebaccf82a8
 docker pull localhost:5000/andy/busybox@sha256:2aac5e7514fbc77125bd315abe9e7b0257db05fe498af01a58e239ebaccf82a8
 docker run localhost:5000/andy/busybox@sha256:2aac5e7514fbc77125bd315abe9e7b0257db05fe498af01a58e239ebaccf82a8
 docker create localhost:5000/andy/busybox@sha256:2aac5e7514fbc77125bd315abe9e7b0257db05fe498af01a58e239ebaccf82a8
 docker rmi localhost:5000/andy/busybox@sha256:2aac5e7514fbc77125bd315abe9e7b0257db05fe498af01a58e239ebaccf82a8
-</code></pre>
-
-<p>Dockerfile 内</p>
-
+</code></pre><p>Dockerfile 内</p>
 <pre><code>FROM localhost:5000/andy/busybox@sha256:2aac5e7514fbc77125bd315abe9e7b0257db05fe498af01a58e239ebaccf82a8
 
-</code></pre>
-
-<h3 id="docker-stats-显示容器名字">docker stats 显示容器名字</h3>
-
+</code></pre><h3 id="docker-stats-显示容器名字">docker stats 显示容器名字</h3>
 <pre><code>docker stats $(docker ps --format='{{.Names}}')
-</code></pre>
-
-<p>1.13 及以后可以</p>
-
+</code></pre><p>1.13 及以后可以</p>
 <pre><code>docker stats --format 'table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}\t{{.BlockIO}}\t{{.PIDs}}'
-</code></pre>
-
-<p>17.10 以后 Name 已经是默认显示的了。</p>
-
+</code></pre><p>17.10 以后 Name 已经是默认显示的了。</p>
 <p><a href="https://github.com/moby/moby/issues/20973">https://github.com/moby/moby/issues/20973</a></p>
-
 <h2 id="国内加速">国内加速</h2>
-
 <p><code>docker pull</code> 默认采用https通信,国内一般提供镜像,或者自己的registry,可以采用
 例如<code>docker pull registry.aliyuncs.com/suconghou/http</code> 这种方式指明registry</p>
-
 <p><strong><a href="https://dev.aliyun.com/search.html">阿里云的registry</a>,提供私有,公开docker镜像,单独https域名官方镜像加速</strong></p>
-
 <p><strong>Daocloud提供的Docker服务地址 daocloud.io</strong>
 并提供单独域名的加速器, 还有写好的脚本可以指定docker启动时使用的registry</p>
-
 <p>网易提供的镜像 <code>https://hub-mirror.c.163.com/</code></p>
-
 <p>同时中科大USTC也提供镜像加速 <code>https://docker.mirrors.ustc.edu.cn/</code> 见 <a href="https://servers.ustclug.org/2015/05/new-docker-hub-registry-mirror/">https://servers.ustclug.org/2015/05/new-docker-hub-registry-mirror/</a></p>
-
 <p>最新的配置帮助 <a href="https://lug.ustc.edu.cn/wiki/mirrors/help/docker">https://lug.ustc.edu.cn/wiki/mirrors/help/docker</a></p>
-
 <p>docker 配置文件 <code>/etc/docker/daemon.json</code></p>
-
 <p>配置镜像加速.</p>
-
 <pre><code>{
   &quot;registry-mirrors&quot;: [&quot;https://docker.mirrors.ustc.edu.cn&quot;]
 }
-</code></pre>
-
-<p>配置文件介绍见 <a href="https://docs.docker.com/engine/reference/commandline/dockerd/">https://docs.docker.com/engine/reference/commandline/dockerd/</a></p>
-
+</code></pre><p>配置文件介绍见 <a href="https://docs.docker.com/engine/reference/commandline/dockerd/">https://docs.docker.com/engine/reference/commandline/dockerd/</a></p>
 <p>docker 官网已提供中国加速镜像了，镜像地址 <code>https://registry.docker-cn.com</code></p>
-
 <p>详情见 <a href="https://docs.docker.com/registry/recipes/mirror/#use-case-the-china-registry-mirror">https://docs.docker.com/registry/recipes/mirror/#use-case-the-china-registry-mirror</a></p>
-
 <h2 id="修改alpine-linux-的镜像源地址">修改alpine linux 的镜像源地址</h2>
-
 <p><code>vi /etc/apk/repositories</code></p>
-
 <pre><code>http://dl-cdn.alpinelinux.org/alpine/v3.8/main
 http://dl-cdn.alpinelinux.org/alpine/v3.8/community
-</code></pre>
-
-<p>可替换为</p>
-
+</code></pre><p>可替换为</p>
 <pre><code>https://mirror.tuna.tsinghua.edu.cn/alpine/v3.8/main
 https://mirror.tuna.tsinghua.edu.cn/alpine/v3.8/community
-</code></pre>
-
-<p>简化为</p>
-
+</code></pre><p>简化为</p>
 <pre><code>echo -e 'https://mirror.tuna.tsinghua.edu.cn/alpine/v3.8/main\nhttps://mirror.tuna.tsinghua.edu.cn/alpine/v3.8/community' &gt; /etc/apk/repositories
-</code></pre>
-
-<p><code>https://mirrors.aliyun.com/alpine/</code></p>
-
+</code></pre><p><code>https://mirrors.aliyun.com/alpine/</code></p>
+<p><a href="https://developer.aliyun.com/mirror/alpine?spm=a2c6h.13651102.0.0.194e1b11vMUxDz">https://developer.aliyun.com/mirror/alpine?spm=a2c6h.13651102.0.0.194e1b11vMUxDz</a></p>
 <h2 id="使用流程">使用流程</h2>
-
 <pre><code>sudo groupadd docker
-</code></pre>
-
-<p>重新加载配置</p>
-
+</code></pre><p>重新加载配置</p>
 <p><code>sudo systemctl daemon-reload</code>
 <code>sudo systemctl restart docker</code></p>
-
 <p>当你的docker不支持<code>devicemapper</code>存储驱动时,会报错
 可以使用<code>-s overlay</code> 参数指定存储驱动</p>
-
 <p><code>ExecStart=/usr/bin/docker daemon -s overlay -H fd://</code></p>
-
 <p>如果已经启动<code>docker daemon</code>但是任然无法连接上,查看<code>systemctl status  docker.service</code>
 监听是否正确,如正确,查看当前登录的用户是否和docker用户一个组内
 假设当前登录用户是root</p>
-
 <pre><code>sudo usermod -aG docker root
 newgrp docker
-</code></pre>
-
-<p>再次重启docker daemon,退出当前用户再次登录</p>
-
+</code></pre><p>再次重启docker daemon,退出当前用户再次登录</p>
 <h2 id="根据dockerfile创建">根据Dockerfile创建</h2>
-
 <p><code>sudo docker build -t=&quot;user/imgname:tag&quot; .</code></p>
-
 <p>其中-t标记来添加 tag,指定新的镜像的用户信息.</p>
-
-<p>&rdquo;.&rdquo; 是 Dockerfile 所在的路径（当前目录）,也可以替换为一个具体的 Dockerfile 的路径.</p>
-
+<p>&ldquo;.&rdquo; 是 Dockerfile 所在的路径（当前目录）,也可以替换为一个具体的 Dockerfile 的路径.</p>
 <p><code>-f</code> 指定dockerfile 的文件名称</p>
-
 <p><strong>如何使构建的镜像更小</strong></p>
-
 <blockquote>
 <ol>
 <li>基于busybox或者alpine等构建</li>
@@ -664,230 +432,212 @@ newgrp docker
 <li>新版本docker可以使用 多阶段构建(multi-stage build)</li>
 </ol>
 </blockquote>
-
 <h2 id="文件结构">文件结构</h2>
-
 <p>进入目录查看 <code>/var/lib/docker</code></p>
-
 <p><code>volumes</code> 目录里存放着创建的<code>Data Volume Container</code></p>
-
 <p><code>containers</code> 目录存储启动的容器配置信息,查看<code>docker ps -a</code>里的CONTAINER ID和此文件夹下某些目录的前几位是相同的</p>
-
 <p><code>graph</code> pull的镜像信息保存在了graph文件夹下,镜像的内容存在了<code>devicemapper/devicemapper/data</code> 下,根据存储驱动不同,也可能存放在<code>overlay</code>目录,这些目录都比较大</p>
-
 <p><code>ls -lh /var/lib/docker/graph/</code>,进入一个文件夹,文件夹内保存着:</p>
-
 <blockquote>
 <p>json -保存着关于这个镜像的元数据, <code>cat json | python -m json.tool</code></p>
-
+</blockquote>
+<blockquote>
 <p>layersize – 一个整数,表示layer的大小.</p>
-
+</blockquote>
+<blockquote>
 <p>checksum - 一个sha256值</p>
 </blockquote>
-
 <p><code>image</code></p>
-
 <h3 id="存储驱动">存储驱动</h3>
-
 <p>做paas一般使用aufs驱动,用于存储大量的docker,但是aufs只在ubuntu系的内核才自带此功能.</p>
-
 <p>devicemapper驱动将所有文件存储在一个100G的虚拟磁盘,但是静态编译好的二进制文件不支持此驱动</p>
-
 <p>overlay驱动将镜像里的各个文件还是存储在磁盘的各个文件,镜像过多存储的文件数量也很多,一般兼容性较好</p>
-
 <p>aufs &gt; overlay2 &gt; devicemapper</p>
-
 <p>docker 1.13 已将默认存储驱动由<code>devicemapper</code>修改为<code>overlay</code>了
 有旧数据,新版docker不会自私切换驱动,
 清除<code>/var/lib/docker</code>后重新启动,docker会使用新的驱动.</p>
-
 <h2 id="构建镜像">构建镜像</h2>
-
 <p>build images 使用
-<code>docker build -t=&quot;http&quot; .</code></p>
-
+<code>docker build -t=&quot;http&quot; . </code></p>
 <p>-t 指明tag
 后面的.指明Dockerfile所在的目录</p>
-
 <p>如果想要使用非Dockerfile为名字的构建文件可以使用-f参数指定构建文件</p>
-
 <p><code>docker build -t=myimage -f mydockerfile .</code></p>
-
 <p>还可以使用<code>docker build -t=myimage - &lt; mydockerfile</code> , 不过尝试发现这种方式好像对路径处理有问题,还是推荐上面一种自定义的方式.</p>
-
 <h2 id="关联远端docker-hub仓库">关联远端Docker Hub仓库</h2>
-
 <p><code>docker login</code>
 输入用户名,密码,邮箱登陆</p>
-
 <p><code>docker push yourname/imagename</code></p>
-
 <h2 id="技巧">技巧</h2>
-
 <h3 id="清除docker-container-log">清除docker container log</h3>
-
 <p>使用 <code>docker logs &lt;container_name_or_id&gt;</code> 可以查看容器的log,也可以将重定向到一个文件,可以类似于<code>tail -f</code>一样跟踪变化.</p>
-
 <p>但是未提供清空log的选项.</p>
-
 <p>其实可以使用<code>$(docker inspect --format='{{.LogPath}}' &lt;container_name_or_id&gt;)</code>得出此容器的日志存储文件.</p>
-
 <pre><code>sudo ls -lh $(docker inspect --format='{{.LogPath}}' &lt;container_name_or_id&gt;) //查看日志文件
 echo -n &quot;&quot; &gt; $(docker inspect --format='{{.LogPath}}' &lt;container_name_or_id&gt;) //可以清空日志文件
-</code></pre>
-
-<p>还可以使用<code>truncate -s 0 /var/lib/docker/containers/*/*-json.log</code>清空所有的日志文件.</p>
-
+</code></pre><p>还可以使用<code>truncate -s 0 /var/lib/docker/containers/*/*-json.log</code>清空所有的日志文件.</p>
 <p>不过这个都是需要<code>docker daemon</code>和<code>docker client</code>在同一台机器上.</p>
-
 <p><code>docker 1.8</code>及以后版本可以使用参数<code>--log-opt max-size=10m</code>限制日志文件的大小,更多详细介绍 <a href="https://docs.docker.com/engine/admin/logging/overview/">https://docs.docker.com/engine/admin/logging/overview/</a></p>
-
 <p>使用<code>docker -m</code>可以限制内存的使用,这个是直到程序内存使用超过此限定的2倍,才会因OOM而被进程杀掉.容器仍会正常运行.</p>
-
 <p>要使超过限定大小如100,就杀死,可以 <code>-m 100m --memory-swap=100m</code></p>
-
 <p><code>docker update</code> 可以动态修改容器的资源限制</p>
-
+<h2 id="docker-service-update">docker service update</h2>
+<pre><code>docker service update --log-driver json-file --log-opt max-size=100m
+</code></pre><p>docker service update &ndash;log-driver syslog &ndash;log-opt syslog-address=udp://127.0.0.1:514 &ndash;log-opt tag=&rdquo;{{.Name}}&rdquo;</p>
 <h2 id="问题排查">问题排查</h2>
-
 <p><code>systemctl status docker.service -l</code> 可查看docker工作状态,为什么启动失败等</p>
-
 <h2 id="coreos使用docker">CoreOs使用docker</h2>
-
 <p>下载 <a href="https://coreos.com/releases/">https://coreos.com/releases/</a></p>
-
 <p><a href="https://wongxingjun.github.io/2015/12/01/CoreOS-Quick-Start/">https://wongxingjun.github.io/2015/12/01/CoreOS-Quick-Start/</a></p>
-
 <p>查看 <code>cat /run/systemd/system/docker.service</code> 可以看到使用的环境变量文件</p>
-
 <p>docker 配置远程访问.</p>
-
 <pre><code>sudo touch /run/flannel_docker_opts.env &amp;&amp; sudo chmod 777 /run/flannel_docker_opts.env
 sudo echo 'DOCKER_OPTS=&quot; -H=unix:///var/run/docker.sock -H=0.0.0.0:4243  --registry-mirror=https://docker.mirrors.ustc.edu.cn&quot;' &gt; /run/flannel_docker_opts.env
 sudo systemctl restart docker
-</code></pre>
-
-<p><code>semanage port -a -t http_port_t -p tcp 2376</code></p>
-
+</code></pre><p><code>semanage port -a -t http_port_t -p tcp 2376</code></p>
 <p>解决
-<code>Usage of loopback devices is strongly discouraged for production use. Use</code>&ndash;storage-opt dm.thinpooldev<code>to specify a custom block storage device.</code></p>
-
+<code>Usage of loopback devices is strongly discouraged for production use. Use </code>&ndash;storage-opt dm.thinpooldev<code> to specify a custom block storage device.</code></p>
 <h2 id="备份docker-volume数据卷">备份docker volume数据卷</h2>
-
 <p>文件接收端执行 <code>nc -l  9090 &gt; data.tar.gz</code>  有些<code>nc</code>(busybox里的nc)可能是 <code>nc -l -p 9090 &gt; data.tar.gz</code></p>
-
 <p>以只读模式挂载数据卷,挂载数据卷到<code>/data</code>路径</p>
-
 <pre><code>docker run --rm -it -v gogs-data:/data:ro busybox sh -c &quot;cd /data &amp;&amp; tar czvf - . | nc host 9090&quot;
-</code></pre>
-
-<p>打包文件并发送到目标主机</p>
-
-<h3 id="恢复-docker-volume-数据">恢复<code>docker volume</code>数据</h3>
-
+</code></pre><p>打包文件并发送到目标主机</p>
+<h3 id="恢复docker-volume数据">恢复<code>docker volume</code>数据</h3>
 <p>如果没有这个数据卷,先创建数据卷 <code>docker volume create --name gogs-data</code></p>
-
 <p><code>docker run --rm -it -v gogs-data:/data busybox  sh -c &quot;nc -l -p 9090 | tar -C /data -zxf -&quot;</code></p>
-
 <p>然后通过宿主机发送数据 <code>nc host 9090 &lt; data.tar.gz</code></p>
-
 <h3 id="如果两台电脑可以直接连通">如果两台电脑可以直接连通</h3>
-
-<p>发送方 <code>docker run --rm -it -v gogs-data:/data:ro busybox sh -c &quot;cd /data &amp;&amp; tar czvf - . | nc host 9090&quot;</code></p>
-
-<p>接收方 <code>docker run --rm -p 9090:9090 -it -v gogs-data:/data busybox sh -c &quot;nc -l -p 9090 | tar -C /data -zxf -&quot;</code></p>
-
+<p>发送方 <code>docker run --rm -it -v gogs-data:/data:ro busybox sh -c &quot;cd /data &amp;&amp; tar czvf - . | nc host 9090&quot; </code></p>
+<p>接收方 <code>docker run --rm -p 9090:9090 -it -v gogs-data:/data busybox sh -c &quot;nc -l -p 9090 | tar -C /data -zxf -&quot; </code></p>
 <p>参考 <a href="https://blog.lab99.org/post/docker-2016-07-14-faq.html#docker-yin-qing-xiang-guan-wen-ti-61">https://blog.lab99.org/post/docker-2016-07-14-faq.html#docker-yin-qing-xiang-guan-wen-ti-61</a></p>
-
 <p><code>docker service ls</code>
 <code>docker node ls</code>
 <code>docker stack ls</code>
-<code>docker swarm</code></p>
-
+<code>docker swarm </code></p>
 <p>To rebuild this image you must use <code>docker-compose build</code> or <code>docker-compose up --build</code></p>
-
 <h2 id="docker-内的date">docker 内的date</h2>
-
 <p>docker 容器内的时间与宿主机是一致的,不可更改,因为共享一个内核</p>
-
 <p><code>docker run -i -t --rm --privileged my_image /bin/bash</code> 通过特权模式运行的容器可以修改,但操作的是宿主机的时间,需注意.</p>
-
 <h2 id="sudo-vs-gosu">sudo vs gosu</h2>
-
 <p><a href="https://segmentfault.com/a/1190000004527476">https://segmentfault.com/a/1190000004527476</a></p>
-
 <p><a href="https://github.com/ncopa/su-exec">https://github.com/ncopa/su-exec</a></p>
-
 <h2 id="ctop">ctop</h2>
-
 <p><a href="https://github.com/bcicen/ctop">https://github.com/bcicen/ctop</a></p>
-
+<h2 id="cron">cron</h2>
+<p>Cron for containers</p>
 <p><a href="https://github.com/aptible/supercronic">https://github.com/aptible/supercronic</a></p>
-
 <h2 id="docker-compose">docker-compose</h2>
-
 <p><a href="https://dl.bintray.com/docker-compose/master/">https://dl.bintray.com/docker-compose/master/</a></p>
-
 <p><a href="http://legendtkl.com/2015/11/06/pyinstaller/">http://legendtkl.com/2015/11/06/pyinstaller/</a></p>
-
 <h2 id="docker-swarm">docker swarm</h2>
-
 <p>TCP端口2377集群管理端口</p>
-
 <p>TCP与UDP端口7946节点之间通讯端口</p>
-
 <p>TCP与UDP端口4789 overlay网络通讯端口</p>
-
 <pre><code>firewall-cmd --zone=public --add-port=2377/tcp --permanent
 firewall-cmd --zone=public --add-port=7946/tcp --permanent
 firewall-cmd --zone=public --add-port=7946/udp --permanent
 firewall-cmd --zone=public --add-port=4789/tcp --permanent
 firewall-cmd --zone=public --add-port=4789/udp --permanent
 firewall-cmd --reload
-</code></pre>
-
-<p>重启一个service</p>
-
+</code></pre><p>重启一个service</p>
 <p><code>docker service update --force serverless_swoole</code></p>
-
 <p>或者,去除所有实例,在新建</p>
-
 <p><code>docker service scale serverless_swoole=0</code></p>
-
 <p><code>docker service scale serverless_swoole=1</code></p>
-
 <h2 id="docker-的web管理程序">docker 的WEB管理程序</h2>
-
 <ol>
 <li><a href="https://portainer.io/">https://portainer.io/</a></li>
 </ol>
-
-<p>演示网址：<a href="http://demo.portainer.io">http://demo.portainer.io</a> 账号admin 密码 tryportainer</p>
-
-<ol>
-<li><p><a href="https://github.com/shipyard/shipyard">https://github.com/shipyard/shipyard</a>  (已弃坑)</p></li>
-
-<li><p><a href="https://github.com/kevana/ui-for-docker">https://github.com/kevana/ui-for-docker</a>  (已弃坑)</p></li>
+<p>演示网址：http://demo.portainer.io 账号admin 密码 tryportainer</p>
+<ol start="2">
+<li>
+<p><a href="https://github.com/shipyard/shipyard">https://github.com/shipyard/shipyard</a>  (已弃坑)</p>
+</li>
+<li>
+<p><a href="https://github.com/kevana/ui-for-docker">https://github.com/kevana/ui-for-docker</a>  (已弃坑)</p>
+</li>
 </ol>
-
 <p>目前只有portainer比较活跃</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker run -d -p 9000:9000 --name portainer -m 200m --restart always -v /var/run/docker.sock:/var/run/docker.sock -v /data/disk/portainer/data:/data portainer/portainer
+</code></pre></div><h3 id="docker-dns">docker dns</h3>
+<p>docker run 的时候支持配置dns</p>
+<p><code>docker run --dns=xx.xx.xx.xx images</code></p>
+<p>docker build 的时候不支持dns配置</p>
+<pre><code>echo '{&quot;dns&quot;: [&quot;10.0.0.2&quot;, &quot;8.8.8.8&quot;]}' &gt; /etc/docker/daemon.json
+</code></pre><h3 id="访问宿主机服务">访问宿主机服务</h3>
+<p>docker容器内<code>172.17.0.1</code>为宿主机地址</p>
+<p>如:</p>
+<pre><code>docker run -d \
+-p 7070:6060 \
+-m 100m \
+--name wxcode \
+-e REDIS_SERVER=&quot;172.17.0.1:6379&quot; \
+-e REDIS_PASSWORD=&quot;will2020&quot; \
+suconghou/tools:wxcode
+</code></pre><p>容器内,内置DNS,地址 : 127.0.0.11</p>
+<p>如使用nginx配置resolver</p>
+<pre><code>user www-data;
+worker_processes 1;
+daemon off;
+error_log /var/log/nginx/error.log;
+events {
+    worker_connections 8192;
+}
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    sendfile        on;
+    tcp_nopush      on;
+    tcp_nodelay     on;
+    keepalive_timeout  65;
+    log_format  main  '$remote_addr - $remote_user [$time_local] &quot;$request&quot; '
+                      '$status $body_bytes_sent &quot;$http_referer&quot; '
+                      '&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;';
+    access_log  /var/log/nginx/access.log  main;
+    server{
+        listen 0.0.0.0:80;
+        server_name drone.xx.cn;
+        client_max_body_size 10m;
+        location / {
+            resolver 127.0.0.11 valid=30s;
+            set $upstream_drone drone;
+            proxy_pass http://$upstream_drone;
+            proxy_set_header Host $http_host;
+            proxy_http_version 1.1;
+            proxy_set_header Connection '';
+	    	proxy_buffering off;
+            proxy_redirect off;
+        }
+    }
+}
 
-<pre><code class="language-bash">docker run -d -p 9000:9000 --name portainer -m 200m --restart always -v /var/run/docker.sock:/var/run/docker.sock -v /data/disk/portainer/data:/data portainer/portainer
-</code></pre>
+</code></pre><h3 id="stopped-container">stopped container</h3>
+<p>访问一个已停止的容器的文件系统</p>
+<ol>
+<li>提交为新的镜像,然后修改入口启动</li>
+</ol>
+<pre><code>docker commit CONTAINER NEWIMAGENAME
+docker run -ti --entrypoint /bin/bash NEWIMAGENAME
+</code></pre><ol start="2">
+<li>docker cp 访问</li>
+</ol>
+<p>docker cp docker_web_1:/etc/apache2/sites-enabled/apache.conf .
+(correct the file)
+docker cp apache.conf docker_web_1:/etc/apache2/sites-enabled/apache.conf</p>
 
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/using-docker/"></air-messager>
+        <air-messager ns="hi" thread="/post/using-docker/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/linux-download-tools/" title="Linux下常用的下载利器" >
+            <a class="previous" href="/post/linux-download-tools/" title="Linux下常用的下载利器" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/mac-chrome-input-submit/" title="MacOs上Chrome中的submit按钮默认样式问题">
+            <a class="next" href="/post/mac-chrome-input-submit/" title="MacOs上Chrome中的submit按钮默认样式问题">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -899,6 +649,14 @@ firewall-cmd --reload
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

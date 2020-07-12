@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>download on 苏苏的博客</title>
@@ -17,7 +17,7 @@
       <pubDate>Fri, 01 Jan 2016 23:54:20 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/post/linux-download-tools/</guid>
-      <description>wget wget -c -O filename &amp;quot;http://xx.com&amp;quot; 下载存储到指定文件,并指定断点续传
+      <description>wget wget -c -O filename &amp;quot;http://xx.com&amp;quot;  下载存储到指定文件,并指定断点续传
 wget -nc -c -i url.txt 批量下载文件中指定的资源(每行一个连接),跳过已下载的(同名的),并且断点续传.
 wget -i url.txt -O - | mpv - 下载url.txt里的链接,输出到标准输出
 使用user-agent
@@ -26,10 +26,11 @@ wget 断点续传 使用 -c 限速使用--limit-rate=300k
 wget -c --limit-rate=30k http://...
 lftp wget 可以断点续传 但是不支持多线程下载, lftp 的一个用法可以实现多线程下载.
 lftp -c &amp;quot;pget -n 10 http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.18.tar.gz&amp;quot;
-curl 常用的命令
+curl Windows 编译好的下载
+https://curl.haxx.se/dlwiz/?type=bin&amp;amp;os=Win64&amp;amp;flav=-
+常用的命令
 curl http://xx.com 只获取http消息正文
-curl -I http://xx.com 只获取http消息头
-curl -i http://xx.</description>
+curl -I http://xx.</description>
     </item>
     
   </channel>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>Sublime使用和设置 &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -52,7 +48,7 @@
                 <svg style="width: 20px; height: 13px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5131"><path d="M833.2 1008L538.8 679.8c-14.3-16-39.3-16-53.6 0L190.8 1008c-22 24.6-62.8 9-62.8-24V36c0-19.9 16.1-36 36-36h696c19.9 0 36 16.1 36 36v948c0 33-40.8 48.6-62.8 24zM538.8 572L824 890V72H200v817.9l285.2-318c14.3-15.9 39.3-15.9 53.6 0.1z" p-id="5132"></path></svg>
                 <ul class="tags">
                 
-                    <li> <a href="http://blog.suconghou.cn/tags/sublime">sublime</a> </li>
+                    <li> <a href="/tags/sublime">sublime</a> </li>
                 
                 </ul>
             </div>
@@ -63,15 +59,10 @@
         </div>
         
 		<div class="post-text">
-			
-
-<h2 id="配置文件">配置文件</h2>
-
+			<h2 id="配置文件">配置文件</h2>
 <p>最喜欢的字体<code>Monaco</code>,<a href="http://share.suconghou.cn/files/fonts/MONACO.TTF">此处下载</a></p>
-
 <p>配置文件
 <code>Preferences.sublime-settings</code></p>
-
 <pre><code>{
 	&quot;close_windows_when_empty&quot;: true,
 	&quot;default_encoding&quot;: &quot;UTF-8&quot;,
@@ -100,12 +91,8 @@
 	&quot;word_wrap&quot;: false
 }
 
-</code></pre>
-
-<h2 id="插件">插件</h2>
-
+</code></pre><h2 id="插件">插件</h2>
 <p><code>open_browser.py</code> 插件</p>
-
 <pre><code>import sublime, sublime_plugin
 import webbrowser
 import os
@@ -134,39 +121,23 @@ class OpenBrowserCommand(sublime_plugin.TextCommand):
             os.popen(cmd2)
             url =  'http://127.0.0.1:8088/'+os.path.basename(self.view.file_name())
         webbrowser.open_new(url)
-</code></pre>
-
-<h2 id="编译系统">编译系统</h2>
-
+</code></pre><h2 id="编译系统">编译系统</h2>
 <p><code>node.sublime-build</code> 执行nodejs代码</p>
-
 <pre><code>{
 	&quot;shell_cmd&quot;: &quot;node ${file}&quot;
 }
-</code></pre>
-
-<h2 id="快捷键配置">快捷键配置</h2>
-
+</code></pre><h2 id="快捷键配置">快捷键配置</h2>
 <p><code>Default (OSX).sublime-keymap</code></p>
-
 <pre><code>[
 	{ &quot;keys&quot;: [&quot;alt+d&quot;], &quot;command&quot;: &quot;open_dir&quot;, &quot;args&quot;: {&quot;dir&quot;: &quot;$file_path&quot;, &quot;file&quot;: &quot;$file_name&quot;} },
 	{ &quot;keys&quot;: [&quot;ctrl+shift+c&quot;], &quot;command&quot;: &quot;copy_path&quot; },
 	{ &quot;keys&quot;: [&quot;ctrl+f11&quot;], &quot;command&quot;: &quot;toggle_distraction_free&quot; }
 ]
-</code></pre>
-
-<h2 id="添加sublime到命令行">添加sublime到命令行</h2>
-
+</code></pre><h2 id="添加sublime到命令行">添加sublime到命令行</h2>
 <p><code>MacOs</code>下</p>
-
 <pre><code>ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/local/bin/sublime
-</code></pre>
-
-<h2 id="激活码">激活码</h2>
-
+</code></pre><h2 id="激活码">激活码</h2>
 <p>Sublime Text 3 build 3143 LICENSE</p>
-
 <pre><code>—– BEGIN LICENSE —–
 TwitterInc
 200 User License
@@ -180,10 +151,7 @@ D5D52613 C3D12E98 BC49967F 7652EED2
 9D2D2E61 67610860 6D338B72 5CF95C69
 E36B85CC 84991F19 7575D828 470A92AB
 —— END LICENSE ——
-</code></pre>
-
-<p>3103,3126可用激活码</p>
-
+</code></pre><p>3103,3126可用激活码</p>
 <pre><code>—– BEGIN LICENSE —–
 Ryan Clark
 Single User License
@@ -197,10 +165,7 @@ D304FA8D B1B4F0AF 8A76C7BA 0FA94D55
 FD032C30 AD5E7241 4EAA66ED 167D91FB
 55896B16 EA125C81 F550AF6B A6820916
 —— END LICENSE ——
-</code></pre>
-
-<p>3103之前版本可用</p>
-
+</code></pre><p>3103之前版本可用</p>
 <pre><code>----- BEGIN LICENSE -----
 Andrew Weber
 Single User License
@@ -215,20 +180,19 @@ E1D0AE85 A0BBD039 0E9C8D55 E1B89D5D
 B98FC99C 8FAC73EE D2B95564 DF450523
 ------ END LICENSE ------
 </code></pre>
-
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/sublime-usage/"></air-messager>
+        <air-messager ns="hi" thread="/post/sublime-usage/"></air-messager>
     </div>
     <div class="post-end">
         
-            <a class="previous" href="http://blog.suconghou.cn/post/linux-ssh/" title="SSH" >
+            <a class="previous" href="/post/linux-ssh/" title="SSH" >
                 <svg t="1542528774445" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1114"><path d="M532.526499 904.817574L139.506311 511.797385 532.526499 118.777197c12.258185-12.258185 12.432147-32.892131-0.187265-45.51052-12.707416-12.707416-32.995485-12.703323-45.511543-0.187265L75.166957 484.739123c-7.120165 7.120165-10.163477 17.065677-8.990768 26.624381-1.500167 9.755178 1.5104 20.010753 8.990768 27.491121l411.660734 411.660734c12.258185 12.258185 32.892131 12.432147 45.511543-0.187265 12.707416-12.707416 12.7023-32.995485 0.187265-45.51052z" p-id="1115"></path></svg>
             </a>
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/git-usage/" title="git基本使用">
+            <a class="next" href="/post/git-usage/" title="git基本使用">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -240,6 +204,14 @@ B98FC99C 8FAC73EE D2B95564 DF450523
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

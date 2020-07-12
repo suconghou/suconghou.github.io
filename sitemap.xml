@@ -1,22 +1,30 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://blog.suconghou.cn/post/mse-p2p-player/</loc>
+    <lastmod>2020-06-27T15:46:27+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.suconghou.cn/post/</loc>
+    <lastmod>2020-06-27T15:46:27+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.suconghou.cn/</loc>
+    <lastmod>2020-06-27T15:46:27+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://blog.suconghou.cn/photo/</loc>
     <lastmod>2019-05-02T20:10:25+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>http://blog.suconghou.cn/photo/beijing-expo-2019/</loc>
     <lastmod>2019-05-02T20:10:25+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://blog.suconghou.cn/</loc>
-    <lastmod>2019-05-02T20:10:25+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -55,12 +63,6 @@
   </url>
   
   <url>
-    <loc>http://blog.suconghou.cn/post/</loc>
-    <lastmod>2018-09-20T13:57:44+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>http://blog.suconghou.cn/post/linux-improve/</loc>
     <lastmod>2018-09-19T12:07:45+08:00</lastmod>
   </url>
@@ -96,11 +98,6 @@
   </url>
   
   <url>
-    <loc>http://blog.suconghou.cn/post/databases/</loc>
-    <lastmod>2018-04-09T21:33:50+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://blog.suconghou.cn/post/caddy-server/</loc>
     <lastmod>2018-02-23T15:56:50+08:00</lastmod>
   </url>
@@ -113,6 +110,11 @@
   <url>
     <loc>http://blog.suconghou.cn/post/oh-my-zsh/</loc>
     <lastmod>2018-02-09T12:49:11+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.suconghou.cn/post/supervisord/</loc>
+    <lastmod>2017-11-02T16:18:47+08:00</lastmod>
   </url>
   
   <url>
@@ -188,7 +190,6 @@
   <url>
     <loc>http://blog.suconghou.cn/life/</loc>
     <lastmod>2016-10-19T08:04:25+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -244,7 +245,6 @@
   <url>
     <loc>http://blog.suconghou.cn/software/</loc>
     <lastmod>2016-07-17T20:48:49+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -355,7 +355,6 @@
   <url>
     <loc>http://blog.suconghou.cn/music/</loc>
     <lastmod>2016-02-20T16:29:45+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -364,42 +363,27 @@
   </url>
   
   <url>
-    <loc>http://blog.suconghou.cn/project/</loc>
-    <lastmod>2016-02-18T20:49:27+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://blog.suconghou.cn/project/air/</loc>
-    <lastmod>2016-02-18T20:49:27+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://blog.suconghou.cn/categories/</loc>
     <lastmod>2016-01-21T13:40:53+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://blog.suconghou.cn/tags/</loc>
-    <lastmod>2016-01-21T13:40:53+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://blog.suconghou.cn/categories/linux/</loc>
-    <lastmod>2016-01-21T13:40:53+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>http://blog.suconghou.cn/tags/linux/</loc>
     <lastmod>2016-01-21T13:40:53+08:00</lastmod>
-    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.suconghou.cn/categories/linux/</loc>
+    <lastmod>2016-01-21T13:40:53+08:00</lastmod>
   </url>
   
   <url>
     <loc>http://blog.suconghou.cn/post/linux/</loc>
+    <lastmod>2016-01-21T13:40:53+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.suconghou.cn/tags/</loc>
     <lastmod>2016-01-21T13:40:53+08:00</lastmod>
   </url>
   
@@ -444,14 +428,13 @@
   </url>
   
   <url>
-    <loc>http://blog.suconghou.cn/post/sublime-usage/</loc>
+    <loc>http://blog.suconghou.cn/tags/sublime/</loc>
     <lastmod>2016-01-08T23:21:12+08:00</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.suconghou.cn/tags/sublime/</loc>
+    <loc>http://blog.suconghou.cn/post/sublime-usage/</loc>
     <lastmod>2016-01-08T23:21:12+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -462,7 +445,6 @@
   <url>
     <loc>http://blog.suconghou.cn/tags/ssh/</loc>
     <lastmod>2016-01-07T13:47:22+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -486,84 +468,53 @@
   </url>
   
   <url>
+    <loc>http://blog.suconghou.cn/tags/download/</loc>
+    <lastmod>2016-01-01T23:54:20+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://blog.suconghou.cn/post/linux-download-tools/</loc>
     <lastmod>2016-01-01T23:54:20+08:00</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.suconghou.cn/tags/download/</loc>
-    <lastmod>2016-01-01T23:54:20+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>http://blog.suconghou.cn/categories/tools/</loc>
     <lastmod>2016-01-01T23:54:20+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>http://blog.suconghou.cn/categories/lnmp/</loc>
     <lastmod>2016-01-01T23:51:02+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>http://blog.suconghou.cn/tags/mysql/</loc>
     <lastmod>2016-01-01T23:51:02+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>http://blog.suconghou.cn/tags/nginx/</loc>
     <lastmod>2016-01-01T23:51:02+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>http://blog.suconghou.cn/tags/php/</loc>
     <lastmod>2016-01-01T23:51:02+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>http://blog.suconghou.cn/tags/redis/</loc>
     <lastmod>2016-01-01T23:51:02+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>http://blog.suconghou.cn/tags/swoole/</loc>
     <lastmod>2016-01-01T23:51:02+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>http://blog.suconghou.cn/post/install-nginx-php-mysql-redis/</loc>
     <lastmod>2016-01-01T23:51:02+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://blog.suconghou.cn/categories/blog/</loc>
-    <lastmod>2016-01-01T19:00:18+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://blog.suconghou.cn/tags/blog/</loc>
-    <lastmod>2016-01-01T19:00:18+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://blog.suconghou.cn/tags/hugo/</loc>
-    <lastmod>2016-01-01T19:00:18+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://blog.suconghou.cn/post/start-your-blog-with-hugo/</loc>
-    <lastmod>2016-01-01T19:00:18+08:00</lastmod>
   </url>
   
   <url>
@@ -579,6 +530,16 @@
   <url>
     <loc>http://blog.suconghou.cn/photo/fenghuangling/</loc>
     <lastmod>2015-07-05T21:23:29+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.suconghou.cn/day/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.suconghou.cn/willdoc/</loc>
+    <priority>0</priority>
   </url>
   
 </urlset>

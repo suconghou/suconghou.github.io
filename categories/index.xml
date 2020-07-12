@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on 苏苏的博客</title>
@@ -35,15 +35,6 @@
       <pubDate>Fri, 01 Jan 2016 23:51:02 +0800</pubDate>
       
       <guid>http://blog.suconghou.cn/categories/lnmp/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>blog</title>
-      <link>http://blog.suconghou.cn/categories/blog/</link>
-      <pubDate>Fri, 01 Jan 2016 19:00:18 +0800</pubDate>
-      
-      <guid>http://blog.suconghou.cn/categories/blog/</guid>
       <description></description>
     </item>
     

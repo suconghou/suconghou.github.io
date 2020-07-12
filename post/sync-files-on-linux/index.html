@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="post hidetop">
+<html lang="en" class="post">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -9,7 +9,7 @@
 	<meta name='keywords' content='前端,PHP,GO,编程博客'>
 	<title>Linux下同步文件的多种方法 &middot; 苏苏的博客</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href="" rel="alternate" type="application/rss+xml" title="苏苏的博客" />
+	<link href='' rel="alternate" type="application/rss+xml" title="苏苏的博客" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png">
 	<link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -27,11 +27,7 @@
             <a href="/about">关于</a>
         </ul>
     </div>
-    <div class="pull-button">
-        <div class="rbutton">
-            <svg t="1542524857955" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1684" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><defs><style type="text/css"></style></defs><path d="M904 332c0-8.189-3.124-16.379-9.372-22.628-12.497-12.496-32.759-12.496-45.256 0L512 646.745 174.628 309.372c-12.497-12.496-32.758-12.496-45.255 0-12.497 12.498-12.497 32.758 0 45.256l360 360c12.497 12.496 32.758 12.496 45.255 0l360-360C900.876 348.379 904 340.189 904 332z" fill="" p-id="1685"></path></svg>
-        </div>
-    </div>
+    
 </header>
 <div class="content container center">
 	<div class="post">
@@ -52,7 +48,7 @@
                 <svg style="width: 20px; height: 13px;position:relative;top:3px;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5131"><path d="M833.2 1008L538.8 679.8c-14.3-16-39.3-16-53.6 0L190.8 1008c-22 24.6-62.8 9-62.8-24V36c0-19.9 16.1-36 36-36h696c19.9 0 36 16.1 36 36v948c0 33-40.8 48.6-62.8 24zM538.8 572L824 890V72H200v817.9l285.2-318c14.3-15.9 39.3-15.9 53.6 0.1z" p-id="5132"></path></svg>
                 <ul class="tags">
                 
-                    <li> <a href="http://blog.suconghou.cn/tags/linux">linux</a> </li>
+                    <li> <a href="/tags/linux">linux</a> </li>
                 
                 </ul>
             </div>
@@ -63,17 +59,10 @@
         </div>
         
 		<div class="post-text">
-			
-
-<h2 id="采用scp同步">采用scp同步</h2>
-
+			<h2 id="采用scp同步">采用scp同步</h2>
 <h2 id="采用rsync同步">采用rsync同步</h2>
-
 <pre><code>rsync -arvuzpt --progress  /data/project/21text/static/  root@172.168.1.3:/data/web/21text/static/;
-</code></pre>
-
-<p><strong>mac上结合fswatch自动同步</strong></p>
-
+</code></pre><p><strong>mac上结合fswatch自动同步</strong></p>
 <pre><code>sync1()
 {
     dir=/data/project/21textv3/
@@ -85,35 +74,29 @@
         sleep 2
     done
 }
-</code></pre>
-
-<h2 id="lftp-同步">LFTP 同步</h2>
-
+</code></pre><h2 id="lftp-同步">LFTP 同步</h2>
 <p><code>brew install lftp</code></p>
-
 <p>登陆ftp <code>lftp user:pass@ftphost:21</code></p>
-
 <p>解决办法很简单。只要你能充分相信你的host，就在 lftp 里加上这样一句</p>
-
 <p>set ssl:verify-certificate no</p>
-
 <p>或者，可以在敲 lftp 命令的时候这样输入：</p>
-
 <p>lftp -e &ldquo;set ssl:verify-certificate no&rdquo;</p>
-
+<p>lftp -e &ldquo;set ssl-allow false&rdquo; ftp://user:pass@host:21</p>
+<h3 id="rclone">rclone</h3>
+<p>也支持ftp</p>
+<p>rclone lsf :ftp: &ndash;ftp-host=speedtest.tele2.net &ndash;ftp-user=anonymous &ndash;ftp-pass=<code>rclone obscure dummy</code></p>
 <h2 id="使用btsync">使用btsync</h2>
-
 <p><a href="https://www.getsync.com/platforms/desktop/">https://www.getsync.com/platforms/desktop/</a></p>
 
 		</div>
     </div>
     <div class="post-comment comment-render">
-        <air-messager ns="hi" kid="/post/sync-files-on-linux/"></air-messager>
+        <air-messager ns="hi" thread="/post/sync-files-on-linux/"></air-messager>
     </div>
     <div class="post-end">
         
         
-            <a class="next" href="http://blog.suconghou.cn/post/start-your-blog-with-hugo/" title="使用hugo搭建静态博客">
+            <a class="next" href="/post/install-nginx-php-mysql-redis/" title="安装PHP7和NGINX">
                 <svg t="1542528747675" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="997" data-spm-anchor-id="a313x.7781069.0.i0"><path d="M492.675886 904.817574L885.696074 511.797385 492.675886 118.777197c-12.258185-12.258185-12.432147-32.892131 0.187265-45.51052 12.707416-12.707416 32.995485-12.703323 45.511543-0.187265l411.660734 411.660734c7.120165 7.120165 10.163477 17.065677 8.990768 26.624381 1.500167 9.755178-1.5104 20.010753-8.990768 27.491121L538.374694 950.515359c-12.258185 12.258185-32.892131 12.432147-45.511543-0.187265-12.707416-12.707416-12.703323-32.995485-0.187265-45.51052z" p-id="998"></path></svg>
             </a>
         
@@ -125,6 +108,14 @@
 </footer>
 <script type="text/javascript" src="/js/main.js"></script>
 <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
-<script src="http://feds.club/static/air-messager.min.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3ead3d84d47c5d12ba92a5cd59b5d750";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>
